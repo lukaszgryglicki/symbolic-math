@@ -1,0 +1,27 @@
+[package]
+name = "symbolic-math"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+description = "Symbolic mathematics on the command line: exact and arbitrary-precision complex arithmetic, equations, calculus"
+license = "AGPL-3.0-only"
+repository = "https://github.com/lukaszgryglicki/symbolic-math"
+
+[lib]
+name = "symbolic_math"
+path = "src/lib.rs"
+
+[[bin]]
+name = "symbolic-math"
+path = "src/main.rs"
+
+[dependencies]
+rug = "1"
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

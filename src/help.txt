@@ -1,0 +1,455 @@
+Usage: symbolic-math [OPTIONS] [INPUT]...
+
+  Simplifies each expression, solves each equation, system of equations or inequality, runs
+  each command, and prints the exact result with its numeric value. Each argument is one input:
+  quote it for the shell. An input holds one or more statements separated by `;`. Without an
+  input the program reads lines from the standard input. All inputs of one run share their
+  definitions, their assumptions and the last result (`ans` or `%`).
+
+Options:
+  -d, --digits N    significant digits of numeric values (default 32, or more when a number of the
+                    input has more digits)
+  -r, --real        real numbers only: symbols are real, only real solutions are given, odd roots
+                    of negative numbers are real; the same as the statement domain(real)
+  -q, --quaternions quaternions: j and k are units next to i (i*j = k), symbols are real, the
+                    unknown of an equation is a quaternion; the same as domain(quaternion);
+                    quat(a, b, c, d) works in every domain
+  -n, --numeric     print numeric values instead of exact forms
+  -e, --exact       print exact forms only, without the numeric line
+      --functions   list the functions with all their names
+      --constants   list the constants with all their names
+      --units       list the units of convert(...) with their names and sizes
+  -h, --help        this text
+  -V, --version     the version
+
+Numbers are exact (integers, fractions, decimals, complex with i) or have the digits asked for.
+An input with a decimal point is answered in decimals. Names have ASCII and Unicode spellings:
+pi or π, sqrt(2) or √2, inf or ∞, x^2 or x², <= or ≤. A line `  ~ ...` of the output is the
+numeric value of the line above it, a line `note: ...` is a remark.
+
+Examples of every kind of operation. Each line is what follows `symbolic-math` on the command
+line: one or more inputs in quotes, sometimes an option before them, and after `#` what the
+line shows.
+
+Simplifying, numbers and elementary functions:
+  '10*x - (2+3)*x'  # like terms: 5x
+  '(x^2 - 1)/(x - 1)' 'sin(x)^2 + cos(x)^2' 'sqrt(12) - 2sqrt(3)'  # simplest forms
+  'i^2' '(1+2i)*(3-i)' '(2+3i)/(1-i)' 'e^(i*pi) + 1'  # complex numbers
+  '2^100' '2**10' '30!' '7!!' '1/3 + 1/6' '17 % 5' '17 mod 5'  # exact whole numbers and fractions
+  '0.1 + 0.2' '1.5e-3 * 2' '0.(3) + 0.1(6)' '0x1F + 0b101 + 0o17'
+      # decimals, repeating decimals, bases
+  '2x(x+1) - 2x^2' '(x+1)(x-1)' '2 pi r / r'  # multiplication without a sign
+  'sqrt(8)' 'cbrt(54)' 'root(32, 5)' 'sqr(3)' 'pow(2, 10)' '(-8)^(1/3)'  # roots and powers
+  'exp(1)' 'exp2(10)' 'expf(2, 3)' 'ln(e^3)' 'log(8, 2)' 'log2(1024)' 'log10(1000)'
+      # exponentials, logarithms
+  'sin(pi/6)' 'cos(pi/5)' 'tan(pi/4)' 'cot(pi/3)' 'sec(pi/3)' 'csc(pi/6)' 'sin(30°)'  # trigonometry
+  'asin(1/2)' 'acos(1/2)' 'atan(1)' 'acot(1)' 'asec(2)' 'acsc(2)' 'atan2(1, -1)'
+      # inverse functions
+  'sinh(ln(2))' 'cosh(0)' 'tanh(x)^2 + sech(x)^2' 'coth(x)*tanh(x)' 'csch(x)*sinh(x)'
+      # hyperbolic functions
+  'asinh(0)' 'acosh(1)' 'atanh(1/2)' 'acoth(2)' 'asech(1)' 'acsch(1)'  # their inverses
+  'floor(3.7)' 'ceil(3.2)' 'round(2.5)' 'trunc(-3.7)' 'frac(3.75)'  # whole parts
+  'min(3, 1, 2)' 'max(3, 1, 2)' 'avg(1, 2, 6)'
+  'hypot(3, 4)' 'agm(1, 2)' 'minabs(3, -4)' 'maxabs(3, -4)'
+  'is_nan(0/0)' 'is_infinite(1/0)' 'is_finite(1)' 'is_normal(0)' '1/0' '0/0' 'inf - inf'
+      # values that are none
+  'N(pi, 50)' 'N(sqrt(2) + e)' 'rationalize(0.333)' 'identify(1.6180339887498948482)'
+      # numeric values and back
+
+Complex numbers:
+  'abs(3+4i)' '|3+4i|' 'mod(3+4i)' 'norm(3+4i)' 'abs2(3+4i)' 'l1_norm(3+4i)'  # sizes
+  'arg(1+i)' 're((1+2i)^2)' 'im((1+2i)^2)' 'conj(1+2i)' 'inv(1+i)' 'sign(-3+4i)'  # parts
+  'cis(pi/2)' 'complex(1, 2)' 'rect(1, 2)' 'polar(2, pi/2)' 'to_polar(1+i)'
+      # from and to polar form
+  'rectform(e^(i*pi/4))' 'polarform(1+i)' 'complexexpand(e^(x+i*y))' 'rectform(asin(2))'
+      # real and imaginary parts
+  'scale(1+i, 2)' 'unscale(2+2i, 2)' 'fdiv(1, 1+i)' 'sqrt(-4)' 'ln(-1)' 'i^i'  # principal values
+
+Algebra:
+  'simplify((x^2 + 2x + 1)/(x + 1))' 'expand((x+1)^3)' 'factor(x^4 - 1)' 'factor(360)'
+  'collect(x*y + x*z + x^2, x)' 'together(1/x + 1/y)' 'cancel((x^2-1)/(x-1))' 'apart(1/(x^2-1))'
+  'numer((x+1)/(x-1))' 'denom((x+1)/(x-1))' 'subst(x^2 + y, x, 3)' 'subst(x^2, x = a + 1)'
+  'coeff(3x^2 + 2x, x, 2)' 'degree(x^5 + x, x)' 'quo(x^3 - 1, x - 1)' 'rem(x^3, x^2 + 1)'
+      # polynomials
+  'gcd(x^2 - 1, x^2 - 2x + 1)' 'lcm(x^2 - 1, x + 1)' 'gcd(12, 18)' 'lcm(4, 6)'
+  'resultant(x^2 - 1, x - a, x)' 'discriminant(a*x^2 + b*x + c, x)' 'roots(x^3 - 3x + 2)'
+  'trigexpand(sin(2x))' 'trigreduce(sin(x)^2)' 'rewrite_exp(cos(x))'  # trigonometric forms
+  'minpoly(sqrt(2) + sqrt(3), x)' 'findrelation([ln(2), ln(3), ln(6)])'
+      # algebraic numbers, whole-number relations
+
+Equations, systems and inequalities:
+  '4*(x^2)+2x+2=0'  # complex roots, exact and numeric
+  'x^3 - 6x^2 + 11x - 6 = 0' 'x^4 = 16' 'x^5 - x - 1 = 0'  # polynomials of any degree
+  'sin(x) = 0' 'cos(x) = 1/2' 'e^x = 5' 'x*e^x = 2'  # every solution: x = k*pi, k is an integer
+  'sqrt(x + 1) = 3' 'abs(x - 1) = 2' 'ln(x) + ln(x - 1) = 1' '2^x = 8'
+  'solve(a*x^2 + b*x + c = 0, x)' 'solve(x*y = 1, y)'  # the unknown is named
+  'x + y = 3, x - y = 1' 'solve([x^2 + y^2 = 25, x - y = 1], [x, y])'  # systems
+  '[x + y, x*y] = [3, 2]' 'x^2 = [1, 4]' 'x^2 = 2 ± 1' 'x = 3 +/- 1'
+      # lists of equations and of values
+  'nsolve(cos(x) = x, x, 1)' 'nsolve([x^2 + y^2 = 4, x*y = 1], [x, y], [2, 0.5])'  # numeric roots
+  'x^2 - 4 > 0' 'abs(x - 1) <= 2' '1 < x and x^2 < 9' '(x - 1)/(x + 2) >= 0' 'x^2 != 4'
+      # inequalities
+  'modsolve(x^2 = 2, x, 10^9 + 7)' 'modsolve(x^2 = 1, x, 8)'  # equations modulo a number
+  'diophantine(3x + 5y = 1, [x, y])' 'diophantine(x^2 - 2y^2 = 1, [x, y])'
+  'diophantine(x^2 + y^2 = 25, [x, y])'
+  'x^5 + x = i' 'x*y = 0, x + y = 1'  # complex coefficients; a product of unknowns gives cases
+  'sin(x)/x = 0' 'cot(x) = 0' 'sin(2x)/sin(x) = 0'  # a solution must give the equation a value
+  'x*sin(x) = sin(x)' 'sin(x) = 0, cos(x) = 1'  # common factors; one unknown in several equations
+  'exp(x)*sin(y) = 1, exp(x)*cos(y) = 1'  # no exact method: a numeric search from many points
+  'assume(x, positive); x^2 = 4' 'assume(n, integer); 6n^2 - 5n + 1 = 0'
+      # only solutions of the assumed kind
+  'x^2 = 2; N(ans)' 's := solve(x^2 = 4, x); s'  # the solutions as a list
+
+Equations with quaternion unknowns:
+  -q 'x^2 = -1' 'x^2 + x + 1 = 0' 'x^3 = 1'
+      # the unknown is a quaternion: whole spheres of solutions
+  -q 'i*x = j' 'x*i - i*x = j' '2x + i*x*j = 1 + j' 'x - 2conj(x) = 1 + i + j'
+      # linear, the unknown on any side
+  -q 'x^2 = 1 + j' 'x^3 = j' 'exp(x) = j' 'sin(x) = 2'
+      # roots and functions: in the plane of the right side
+  -q 'x^2 + i*x + j = 0' 'x^2 = x*j' 'x^3 + i*x = j'
+      # polynomials with quaternion coefficients on one side
+  -q 'x*i*x = j' 'x*i*x = i' 'x^2 = conj(x)' 'abs(x) = 2'
+      # other equations: by the four real components
+  -q 'x + y = 1 + j, x - y = i + k' 'solve([x*y = 1, x = j], [x, y])' '[x, y] = [1 + j, k]'
+      # systems
+  -q 'x*(x - i)*(x - j) = 0' 'x^2 = [-1, 4]'  # a product: each factor; a list: each entry
+  -q 'assume(x, real); assume(y, real); x*j + y*k = 4j + 2k' 'quat(a, b, c, d)*i = j + 2k'
+      # real unknowns
+  'qsolve(i*x = j, x)' 'qsolve(x^2 = -1)'  # quaternion unknowns from every domain
+
+Derivatives, integrals, limits, series and sums:
+  'diff(sin(x)^2, x)' 'diff(x^3*y^2, x, 2)' 'diff(x^3*y^2, x, y)' 'D(x^x, x)' 'd/dx x^3' '∂(x²y, x)'
+      # derivatives
+  "f(x) := x^3 + x; f'(2); f''(x)" "(x^2 * sin(x))'"  # the derivative with '
+  'integrate(x*e^x, x)' 'integrate(1/(x^2 + 1), x)' 'integrate(ln(x)/(1 - x), x)'  # antiderivatives
+  'integrate(e^(-x^2), x, -inf, inf)' 'integrate(sin(x)/x, x, 0, inf)' '∫(x², x, 0, 1)'
+      # definite integrals
+  'integrate(x*y, x, 0, 1, y, 0, 2)' 'nintegrate(sin(x^2), x, 0, 1)'
+      # several variables, numeric integrals
+  'limit(sin(x)/x, x, 0)' 'limit((1 + 1/n)^n, n, inf)'
+  'limit(1/x, x, 0, +)' 'limit(abs(x)/x, x -> 0-)'
+  'series(e^x, x, 0, 5)' 'series(ln(x), x, 1, 3)' 'seriescoeff(tan(x), x, 7)' 'pade(e^x, x, 2, 2)'
+  'sum(1/k^2, k, 1, inf)' 'sum(k^2, k, 1, n)' 'sum(x^k/k!, k, 0, inf)' '∑(1/2^k, k, 0, ∞)'  # sums
+  'product(k, k, 1, 5)' 'product((k + 1)/k, k, 1, n)'
+  'product(1 - 1/(4k^2), k, 1, inf)' '∏(1 - 1/k², k, 2, ∞)'  # products
+  'residue(1/(z^2 + 1), z, i)' 'minimize(x^2 - 2x, x)' 'maximize(x*e^(-x), x)'  # residues, extrema
+  'criticalpoints(x^3 - 3x, x)' 'criticalpoints(x^2 - y^2, [x, y])'
+      # stationary points and their kinds
+  'grad(x^2*y, [x, y])' 'divergence([x^2, y^2, z^2], [x, y, z])' 'curl([y, -x, 0], [x, y, z])'
+  'laplacian(x^2 + y^2, [x, y])' 'jacobian([x*y, x + y], [x, y])' 'hessian(x^2*y, [x, y])'
+
+Integral transforms:
+  'laplace(t*sin(t), t, s)' 'invlaplace(1/(s^2 + 1), s, t)' 'laplace(heaviside(t - 2), t, s)'
+  'fourier(e^(-x^2), x, w)' 'invfourier(e^(-w^2/4), w, x)' 'fourierseries(x, x, 3)'
+  'ztransform(2^n, n, z)' 'invztransform(z/(z - 2), z, n)'
+
+Differential equations and recurrences:
+  "dsolve(y'' + y = 0, y, x)" "dsolve(y' = x*y, y, x)" "dsolve(y'' - 3y' + 2y = e^x, y, x)"
+  "dsolve([y' = y, y(0) = 2], y, x)" "dsolve(x^2*y'' + x*y' + (x^2 - 4)*y = 0, y, x)"
+      # start values, Bessel's equation
+  "dsolve([x'(t) = y(t), y'(t) = -x(t), x(0) = 1, y(0) = 0], [x, y], t)"  # a system
+  "ndsolve([y' = x^2 + y^2, y(0) = 0], y, [x, 0, 1])"
+  "ndsolve([y'' = -y, y(0) = 0, y'(0) = 1], y, [x, 0, 1, 4])"
+  'rsolve(a(n+2) = a(n+1) + a(n), a)' 'rsolve([a(n+1) = 2a(n) + 1, a(0) = 0], a)'  # recurrences
+
+Functional equations and iterates (a function applied t times):
+  'funsolve(f(x+y) = f(x)*f(y), f)' 'funsolve(f(x+y) = f(x) + f(y), f)' 'funsolve(f(2x) = 2f(x), f)'
+  'iterate(2x + 1, x, 1/2)' 'iterate(x^2, x, t)' 'iterate(x/(1 + x), x, t)'
+      # closed forms for any t
+  'iterate(x^2 - 2, x, 1/2)' 'iterate(2x^2 - 1, x, i)' 'iterate(e^x - 1, x, 3)'
+      # half, i times, three times
+  'exp[1/2](1)' 'sin[1/2](1)' 'sqrt[-1](x)' 'sin[2](x)'
+      # f[t](x): half of exp and of sin, the inverse, twice
+  'iterate(e^x - 1, x, 1/2, 1)' 'iterate(x^2 + 1, x, 1/2, 1)' 'iterate(sin(x), x, 0.5 + i, 1)'
+      # at a number
+  'iterate(x^2 - 1, x, 1/2, -3/10, -3/5)'
+      # the fifth argument: the fixed point that the iterate is taken at
+  'f(x) := x/2 + x^2/4; h := f[1/2](1/3); f[1/2](h); f(1/3)'  # two halves make one step
+  'nest(x -> x^2 + 1, x, 3)' 'nestlist(x -> 2x, 1, 5)' 'fixedpoint(cos, 1.0)'
+      # whole numbers of steps
+
+Tetration (runs the tet program for heights that are not whole):
+  '2^^3' 'tet(2, 3)' '2↑↑4' '2^^x = 65536' 'x^^2 = 27'  # whole heights
+  'tet(2, 1/2)' 'e^^(1/2)' 'slog(2, 65536)' 'slog(2, 100)' 'ssrt(256, 2)' 'ssrt(2, 3)'
+      # tet, its height, its base
+  'sqrt(2)^^inf' 'i^^inf' 'x^^inf = 2'  # towers without end
+
+Special functions:
+  'gamma(5)' 'gamma(1/2)' 'lgamma(10)' 'factorial(5)' 'factorial2(7)' 'binomial(10, 3)' 'beta(2, 3)'
+  'gamma(n + 2)/gamma(n)' 'gamma(x)*gamma(1 - x)' '(n + 1)!/n!'  # quotients and reflection
+  'digamma(1)' 'polygamma(1, 1)' 'harmonic(10)' 'zeta(2)' 'zeta(3)' 'zeta(2, 3)' 'dirichleteta(2)'
+  'erf(1)' 'erfc(1)' 'erfi(1)' 'erfinv(1/2)' 'erfcinv(1/2)' 'fresnels(1)' 'fresnelc(1)' 'sinc(pi/2)'
+  'ei(1)' 'li(2)' 'li2(1/2)' 'si(1)' 'ci(1)' 'shi(1)' 'chi(1)' 'lambertw(1)' 'lambertw(-1, -1/10)'
+  'uppergamma(2, 1)' 'lowergamma(2, 1)' 'gammaq(2, 1)' 'gammap(2, 1)' 'expint(1, 1)'
+  'betainc(1/2, 2, 3)' 'betaregularized(1/2, 2, 3)' 'polylog(3, 1/2)'  # incomplete functions
+  'besselj(0, 1)' 'bessely(0, 1)' 'besseli(0, 1)' 'besselk(0, 1)' 'hankel1(0, 1)' 'hankel2(0, 1)'
+  'besselj(1/2, x)' 'sphericalbesselj(1, x)' 'sphericalbessely(0, x)' 'diff(besselj(0, x), x)'
+      # closed forms
+  'airyai(1)' 'airybi(1)' 'airyaiprime(1)' 'airybiprime(1)' 'struveh(0, 1)' 'struvel(0, 1)'
+  'hyp0f1(1, 1)' 'hyp1f1(1, 2, 1)' 'hyperu(1, 2, 1)'
+  'hyp2f1(1, 1, 2, 1/2)' 'hypergeometric([1, 1], [2], 1/2)'
+  'elliptick(1/2)' 'elliptice(1/2)' 'ellipticf(1, 1/2)' 'ellipticpi(1/3, 1/2)' 'ellipticnome(1/2)'
+  'jacobisn(1, 1/2)' 'jacobicn(1, 1/2)' 'jacobidn(1, 1/2)' 'elliptictheta(3, 0, 1/10)'
+  'legendrep(3, x)' 'legendreq(1, x)' 'chebyshevt(4, x)'
+  'chebyshevu(3, x)' 'hermiteh(3, x)' 'laguerrel(2, x)'
+  'gegenbauerc(2, a, x)' 'jacobip(1, a, b, x)' 'sphericalharmonicy(1, 0, t, p)'
+      # orthogonal polynomials
+  'heaviside(2)' 'unitstep(0)' 'diracdelta(x - 1)' 'integrate(diracdelta(x - 1)*x^2, x, -inf, inf)'
+  'besselj(0, 1 + i)' 'gamma(1/3 + 2i)' 'zeta(1/2 + 14i)' 'N(besselk(1/3, 2), 60)'
+      # complex arguments, any precision
+
+Areas, volumes and regions:
+  'area(x^2, x, 0, 1)' 'area(x, x^2, x, 0, 1)' 'arclength(x^2, x, 0, 1)'
+      # under a curve, between curves
+  'area(disk(2))' 'area(annulus(0, 1, 2))' 'area(sector(0, 1, 0, pi/2))' 'area(ellipse(0, 2, 1))'
+  'area(triangle(0, 4, 3i))' 'area(polygon(0, 2, 2+2i, 2i))' 'area(rectangle(0, 2+3i))'
+  'perimeter(disk(1))' 'perimeter(ellipse(0, 2, 1))' 'centroid(triangle(0, 3, 3i))'
+  'volume(re(z^2) + 1, z, disk(0, 1))' 'volume(abs(z)^2, z, rectangle(0, 1+i))'
+      # under Re f(z) over a region
+  'volume(x*y, [x, y], rectangle(0, 1, 0, 2))' 'surfacearea(x^2 + y^2, [x, y], disk(1))'
+  'volume(ball([0, 0, 0], 1))' 'volume(ball([0, 0, 0, 0], r))' 'surfacearea(ball([0, 0, 0], 1))'
+      # 3 and 4 dimensions
+  'volume(box([0, 0, 0], [1, 2, 3]))' 'volume(shell([0, 0, 0], 1, 2))'
+  'volume(ellipsoid([0, 0, 0], [1, 2, 3]))'
+  'volume(cylinder([0, 0, 0], 1, 2))' 'volume(cone([0, 0, 0], 1, 3))'
+  'surfacearea(cone([0, 0, 0], 3, 4))'
+  'volume(tetrahedron([0,0,0], [1,0,0], [0,1,0], [0,0,1]))' 'volume(simplex([0,0], [1,0], [0,1]))'
+  'integrate(x^2 + y^2, [x, y], disk(1))' 'integrate(x*y*z, [x, y, z], box([0,0,0], [1,1,1]))'
+      # over a region
+  'revolutionvolume(x, x, 0, 1)' 'revolutionarea(x, x, 0, 1)'  # a curve turned about the x axis
+
+Vectors and matrices:
+  '[1, 2; 3, 4]^2' '[[1, 2], [3, 4]] * [5, 6]' '2*[1, 2, 3] + [1, 1, 1]'
+      # matrices are lists of rows
+  'det([[1, 2], [3, 4]])' 'inv([[1, 2], [3, 4]])'
+  'transpose([[1, 2], [3, 4]])' 'trace([[1, 2], [3, 4]])'
+  'rank([[1, 2], [2, 4]])' 'rref([[1, 2, 3], [4, 5, 6]])'
+  'nullspace([[1, 2], [2, 4]])' 'adjugate([[1, 2], [3, 4]])'
+  'eigenvalues([[2, 1], [1, 2]])' 'eigenvectors([[2, 1], [1, 2]])' 'charpoly([[2, 1], [1, 2]], x)'
+  'dot([1, 2, 3], [4, 5, 6])' 'cross([1, 0, 0], [0, 1, 0])'
+  'norm([3, 4])' 'linsolve([[1, 2], [3, 4]], [5, 6])'
+  'identity(2)' 'diag([1, 2, 3])' 'zeros(2, 3)' 'ones(2)' 'hilbert(3)' 'vandermonde([1, 2, 3])'
+  'matrixexp([[0, 1], [-1, 0]], t)'
+  'matrixpower([[1, 1], [0, 1]], n)' 'matrixsqrt([[4, 0], [0, 9]])'
+  'matrixlog([[1, 1], [0, 1]])' 'matrixfunction(sin(x), x, [[0, 1], [0, 0]])'
+      # functions of matrices
+  'gramschmidt([[1, 1], [1, 0]])' 'cholesky([[4, 2], [2, 3]])' 'qr([[1, 1], [0, 1]])'
+      # decompositions
+  'pinv([[1, 2], [3, 4], [5, 6]])' 'singularvalues([[3, 0], [0, 4]])'
+  'leastsquares([[1, 1], [1, 2], [1, 3]], [1, 2, 2])'
+  'latticereduce([[1, 1, 1], [-1, 0, 2], [3, 5, 6]])'  # a reduced basis of a lattice (LLL)
+
+Tensors and curved spaces:
+  'dimensions([[1, 2, 3], [4, 5, 6]])' 'tensorrank([[1, 2], [3, 4]])'
+  'flatten([[1, 2], [3, 4]])' 'reshape(range(6), [2, 3])'
+  'outer([1, 2], [3, 4])' 'inner([[1, 2], [3, 4]], [1, 1])'
+  'contract([[1, 2], [3, 4]], 1, 2)' 'kron([[1, 2], [3, 4]], [[0, 1], [1, 0]])'
+  'levicivita(1, 2, 3)' 'levicivita(2)' 'signature([2, 1, 3])'
+  'kroneckerdelta(1, 1)' 'transpose(outer([1, 2], [3, 4]), [2, 1])'
+  'symmetrize([[1, 2], [3, 4]])' 'antisymmetrize([[1, 2], [3, 4]])'
+  'wedge([1, 0, 0], [0, 1, 0])' 'hodge([1, 0, 0])'
+  'christoffel([[1, 0], [0, r^2]], [r, t])' 'geodesics([[1, 0], [0, r^2]], [r, t])'
+      # the plane in polar coordinates
+  'ricciscalar([[R^2, 0], [0, R^2*sin(t)^2]], [t, p])'
+  'ricci([[R^2, 0], [0, R^2*sin(t)^2]], [t, p])'  # a sphere
+  'riemann([[1, 0], [0, sin(t)^2]], [t, p])' 'einstein([[1, 0], [0, sin(t)^2]], [t, p])'
+  'kretschmann([[1, 0], [0, sin(t)^2]], [t, p])'
+  'covariant([r, 0], [[1, 0], [0, r^2]], [r, t])'
+  'raiseindex([a, b], [[1, 0], [0, r^2]], 1)' 'lowerindex([a, b], [[1, 0], [0, r^2]], 1)'
+  'laplacian(r^2, [r, t], [[1, 0], [0, r^2]])' 'divergence([r, 0], [r, t], [[1, 0], [0, r^2]])'
+      # with a metric
+
+Geometry in 2, 3, 4 and more dimensions:
+  'distance([0, 0], [3, 4])' 'distance([1, 1, 1], plane([0, 0, 0], [0, 0, 1]))'
+  'midpoint([0, 0], [2, 2])'
+  'equation(line([0, 0], [1, 2]))' 'equation(plane([1, 0, 0], [0, 1, 0], [0, 0, 1]))'
+  'equation(circle([1, 2], 3))' 'equation(sphere([0, 0, 0], 2))'
+  'angle([1, 0], [1, 1])' 'angle([1, 0, 0], [0, 0, 0], [0, 1, 0])'
+  'angle([1, 0, 0, 0], [1, 1, 1, 1])'  # angles in any dimension
+  'projection([1, 2], [1, 0])'
+  'intersection(line([0, 0], [1, 1]), line([0, 1], [1, 0]))' 'normalize([3, 4])'
+  'triple([1, 0, 0], [0, 1, 0], [0, 0, 1])' 'collinear([0, 0], [1, 1], [2, 2])'
+  'coplanar([0,0,0], [1,0,0], [0,1,0], [1,1,0])'
+  'circumcircle([0, 0], [2, 0], [0, 2])' 'incircle([0, 0], [4, 0], [0, 3])'
+  'solidangle([1, 0, 0], [0, 1, 0], [0, 0, 1])'
+  'ballvolume(4, r)' 'spherearea(4, r)' 'regularpolygon(6, 1)'
+  'polytope(tesseract)' 'polytope(cell600)'  # 4-dimensional bodies
+  'rotationmatrix(pi/2)' 'rotationmatrix(pi/2, [0, 0, 1])'
+  'rotate([1, 0], pi/2)' 'rotate([1, 0, 0], pi/2, [0, 0, 1])'
+  'reflect([1, 2], [0, 1])' 'topolar([1, 1])' 'frompolar([2, pi/2])'
+  'topolar([1, 1, 1, 1])' 'rotationquat(pi/2, [0, 0, 1])'
+
+Whole numbers:
+  'isprime(2^61 - 1)' 'iscomposite(91)' 'isprimepower(81)'
+  'isperfect(28)' 'iscoprime(8, 9)' 'issquare(49)' 'issquarefree(30)'
+  'primes(30)' 'nextprime(100)' 'prevprime(100)' 'prime(100)' 'primepi(100)' 'primorial(10)'
+  'factor(2^64 + 1)' 'ifactors(360)' 'primefactors(360)'
+  'divisors(28)' 'radical(360)' 'perfectpower(1024)'
+  'totient(36)' 'sigma(28)' 'sigma(6, 2)' 'mobius(30)' 'carmichael(36)'
+  'liouville(12)' 'mangoldt(27)' 'primenu(360)' 'primeomega(360)'
+  'powmod(2, 100, 7)' 'modinv(3, 7)' 'mod(17, 5)' 'sqrtmod(2, 7)' 'sqrtmodall(1, 8)' 'ord(2, 7)'
+      # arithmetic modulo a number
+  'primitiveroot(7)' 'primitiveroots(7)'
+  'discretelog(3, 13, 17)' 'crt([2, 3], [3, 5])' 'egcd(12, 18)'
+  'legendre(2, 7)' 'jacobi(2, 15)' 'kronecker(2, 15)' 'isqrt(50)' 'iroot(100, 3)'
+  'base(255, 2)' 'frombase([1, 1, 1], 2)' 'digitsum(12345)'
+  'cfrac(pi, 5)' 'convergents(pi, 4)' 'egyptian(4/13)' 'farey(4)'
+  'sumoftwosquares(13)' 'squaresr(2, 25)' 'pell(61)'
+  'fibonacci(100)' 'lucas(10)' 'bernoulli(10)' 'eulernumber(4)'
+  'catalannumber(5)' 'bell(5)' 'stirling1(5, 2)' 'stirling2(5, 2)'
+  'partitions(100)' 'partitionsq(10)' 'derangements(5)'
+  'multinomial(2, 3, 4)' 'eulerian(4, 1)' 'superfactorial(4)'
+  'hyperfactorial(3)' 'pochhammer(3, 4)' 'fallingfactorial(5, 2)'
+
+Lists:
+  'range(5)' 'range(2, 10, 3)' 'table(k^2, k, 1, 5)'
+  'table(a + b, [a, 1, 2], [b, 1, 3])' 'array(k -> k^2, 3)'
+  'length([a, b, c])' 'first([a, b, c])' 'last([a, b, c])' 'rest([a, b, c])'
+  'most([a, b, c])' 'part([a, b, c], 2)' '[a, b, c][[-1]]'
+  'take([1, 2, 3, 4], 2)' 'drop([1, 2, 3, 4], 2)' 'reverse([1, 2, 3])'
+  'sort([3, pi, e, sqrt(2)])' 'sortby([3, -1, 2], abs)'
+  'rotateleft([1, 2, 3, 4])' 'rotateright([1, 2, 3, 4], 2)'
+  'append([1, 2], 3)' 'prepend([1, 2], 0)' 'join([1, 2], [3], [4, 5])'
+  'insert([1, 2, 3], x, 2)' 'delete([1, 2, 3], 2)' 'union([1, 2], [2, 3])'
+  'intersection([1, 2, 3], [2, 3, 4])' 'complement([1, 2, 3, 4], [2, 4])'
+  'unique([1, 1, 2, 3, 3])' 'contains([1, 2, 3], 2)'
+  'count([1, 2, 1, 1], 1)' 'position([a, b, a], a)' 'tally([a, b, a])'
+  'total([1, 2, 3, 4])' 'accumulate([1, 2, 3, 4])'
+  'differences([1, 4, 9, 16])' 'ratios([1, 2, 4, 8])' 'zip([1, 2], [a, b])'
+  'permutations([1, 2, 3])' 'subsets([1, 2, 3], 2)' 'tuples([0, 1], 2)'
+  'cartesianproduct([1, 2], [a, b])' 'partition([1, 2, 3, 4], 2)'
+  'map(x -> x^2, [1, 2, 3])' 'map(sin, [0, pi/2])'
+  'select([1, 2, 3, 4, 5, 6], isprime)' 'reject([1, 2, 3, 4], x -> x > 2)'
+  'countif([1, 2, 3, 4], iseven)' 'anytrue([1, 2, 3], x -> x > 2)'
+  'alltrue([1, 2, 3], ispositive)' 'findfirst([4, 6, 7, 9], isprime)'
+  'fold((a, b) -> a + b, 0, [1, 2, 3])'
+  'foldlist((a, b) -> a*b, 1, [1, 2, 3, 4])' 'apply((a, b) -> a^b, [2, 10])'
+  '[1, 2, 3] + [10, 20, 30]' 'sin([0, pi/2, pi])'
+  '[1, 2, 3] == [1, 2, 3]' 'sum([1, 2, 3])' 'product([1, 2, 3, 4])'
+
+Programs, conditions and logic:
+  'a := 5; f(x) := x^2 + a; f(3); ans + 1' 'g := x -> 2x + 1; g(g(1))'
+      # variables, functions, the last result
+  'if(2 < 3, yes, no)' 'if(x > 0, x, -x)' 'piecewise(x < 0, -x, x < 1, x^2, 1)'  # conditions
+  'f(x) := piecewise(x < 0, 0, x); f(-2); f(3); integrate(f(x), x, -1, 2)'
+  'k := 1; while(k < 100, k := 2k); k' 's := 0; do(s := s + k^2, [k, 1, 10]); s'
+  'for(k, 1, 3, k^2)' 'block(a := 2, b := 3, a*b)'
+  'true and false' 'and(1 < 2, 2 < 3)' 'or(true, false)'
+  'not(1 < 2)' 'xor(true, true)' 'implies(false, true)'
+  '1 < 2 && 2 < 3' 'true or false' '¬(2 ≤ 1) ∨ false' '(1 < 2) ∧ true'
+      # the same with signs and words
+  '2 < 3' 'pi > 3' 'e^pi > pi^e' 'sqrt(2)^2 == 2' '3 != 3'  # comparisons of exact numbers
+  'islist([1])' 'isnumber(pi)' 'isinteger(4/2)' 'isrational(sqrt(2))' 'iseven(4)' 'isodd(4)'
+  'isreal(1 + i)' 'ispositive(-1)' 'isnegative(-1)' 'isnonnegative(0)'
+  'assume(x > 0); sqrt(x^2); forget(x); sqrt(x^2)'
+  'assume(n, integer); sin(n*pi)' 'assume(t ∈ ℝ); conj(t)'  # assumptions
+
+Statistics and probability:
+  'mean([1, 2, 3, 4])' 'median([3, 1, 2])' 'mode([1, 2, 2, 3])'
+  'variance([1, 2, 3, 4])' 'stddev([1, 2, 3, 4])'
+  'pvariance([1, 2, 3, 4])' 'pstddev([2, 4, 4, 4, 5, 5, 7, 9])'
+  'covariance([1, 2, 3], [2, 4, 7])' 'correlation([1, 2, 3], [2, 4, 7])'
+  'quantile([1, 2, 3, 4, 5], 1/4)' 'quartiles([1, 2, 3, 4, 5, 6, 7, 8])'
+  'iqr([1, 2, 3, 4, 5, 6, 7, 8])' 'moment([1, 2, 3], 2)'
+  'centralmoment([1, 2, 3, 4], 2)' 'skewness([1, 2, 3, 10])'
+  'kurtosis([1, 2, 3, 10])' 'meandeviation([1, 2, 3, 4])'
+  'geometricmean([1, 2, 4])' 'harmonicmean([1, 2, 4])' 'rms([3, 4])'
+  'pdf(normaldist(0, 1), x)' 'cdf(normaldist(0, 1), 1)'
+  'quantile(normaldist(0, 1), 0.975)' 'mgf(normaldist(m, s), t)'
+  'mean(exponentialdist(r))' 'variance(uniformdist(a, b))'
+  'stddev(normaldist(m, s))' 'median(lognormaldist(m, s))'
+  'expectation(x^2, x, normaldist(0, 1))' 'probability(x > 1, x, exponentialdist(1))'
+  'probability(1 < x < 2, x, uniformdist(0, 4))'
+  'pdf(binomialdist(10, 1/3), 4)' 'cdf(poissondist(3), 2)'
+  'mean(geometricdist(p))' 'variance(bernoullidist(p))'
+  'pdf(discreteuniformdist(1, 6), 3)' 'mean(negativebinomialdist(3, 1/2))'
+  'pdf(hypergeometricdist(3, 4, 10), 1)'
+  'mean(gammadist(a, b))' 'mean(chisquaredist(k))' 'variance(studenttdist(5))'
+  'mean(betadist(2, 3))' 'pdf(cauchydist(0, 1), x)'
+  'mean(weibulldist(2, 1))' 'variance(laplacedist(0, b))'
+  'mean(rayleighdist(s))' 'cdf(logisticdist(0, 1), x)'
+  'mean(paretodist(1, 3))' 'mean(fdist(3, 5))' 'quantile(studenttdist(5), 0.975)'
+  'interpolate([[0, 1], [1, 3], [2, 7]], x)' 'fit([[1, 2], [2, 4.1], [3, 5.9]], [1, x], x)'
+      # a polynomial through points, least squares
+
+Units (names are units inside these commands; --units lists them):
+  'convert(100 km/h, m/s)' 'convert(5 ft + 3 in, cm)' 'convert(1 kWh, MJ)'
+      # a quantity in another unit
+  'convert(72 degF, degC)' 'convert(0 K, degC)' 'convert(100 min, [h, min])' 'convert(90 deg, rad)'
+      # temperatures, several units, angles
+  'convert(planck*c/(500 nm), eV)' 'convert(1 mol*Rgas*300 K/(1 atm), l)' 'convert(c, km/s)'
+      # constants of nature
+  'siunits(60 mph)' 'siunits(1 N*m)' 'dimension(5 kWh)'
+  'quantity(5, km)' 'convert(quantity(5, km), mi)'
+  'convert(5 km, m)/convert(2 h, s)' 'convert(1 GiB, MB)' 'convert(x km, m)'
+      # quantities in expressions
+
+Graphs (a graph is the list of its edges):
+  'vertexlist([[1, 2], [2, 3], [3, 1], [3, 4]])' 'edgelist([[1, 2], [2, 3]])'
+  'vertexcount([[1, 2], [3]])' 'edgecount([[1, 2], [2, 3]])'
+      # [a, b] is an edge, [v] a vertex alone
+  'degrees([[1, 2], [2, 3], [3, 1], [3, 4]])'
+  'vertexdegree([[1, 2], [2, 3]], 2)' 'neighbors([[1, 2], [2, 3]], 2)'
+  'indegrees([1 -> 2, 2 -> 3, 1 -> 3])' 'outdegrees([1 -> 2, 2 -> 3, 1 -> 3])'
+      # a -> b is an edge with a direction
+  'adjacencymatrix(cyclegraph(4))' 'incidencematrix(pathgraph(3))' 'laplacianmatrix(pathgraph(3))'
+  'weightmatrix([[a, b, 7], [b, c, 2]])' 'adjacencygraph([[0, 1], [1, 0]])'
+  'shortestpath([[a, b, 7], [b, c, 1], [a, c, 3]], a, b)'
+  'graphdistance([[a, b, 7], [b, c, 1], [a, c, 3]], a, b)'  # a third entry is a weight
+  'distancematrix(pathgraph(4))' 'eccentricity(pathgraph(5), 1)' 'diameter(petersengraph())'
+  'graphradius(pathgraph(5))' 'graphcenter(pathgraph(5))' 'girth(petersengraph())'
+  'components([[1, 2], [3, 4], [5]])'
+  'strongcomponents([1 -> 2, 2 -> 3, 3 -> 1, 3 -> 4])' 'isconnected([[1, 2], [3, 4]])'
+  'spanningtree([[a, b, 7], [b, c, 1], [a, c, 3], [c, d, 2]])'
+  'spanningtreecount(completegraph(5))' 'istree(stargraph(5))'
+  'isbipartite(cyclegraph(6))' 'bipartition(cyclegraph(6))' 'isacyclic([1 -> 2, 2 -> 3])'
+  'findcycle([[1, 2], [2, 3], [3, 4], [4, 2]])' 'topologicalsort([a -> b, b -> c, d -> a])'
+  'chromaticpolynomial(cyclegraph(5))'
+  'chromaticnumber(petersengraph())' 'graphcoloring(wheelgraph(6))'  # colorings
+  'iseulerian(completegraph(5))' 'eulerianpath([[1, 2], [2, 3], [3, 1], [3, 4]])'
+  'ishamiltonian(petersengraph())' 'hamiltoniancycle(hypercubegraph(3))'
+  'hamiltonianpath(petersengraph())'
+  'maxflow([[s -> a, 3], [s -> b, 2], [a -> b, 1], [a -> t, 2], [b -> t, 3]], s, t)'
+  'maxmatching(petersengraph())'  # flows and matchings
+  'maxclique(wheelgraph(6))' 'cliquenumber(completegraph(5))' 'maxindependentset(petersengraph())'
+  'independencenumber(cyclegraph(7))' 'vertexcover(cyclegraph(5))'
+  'complementgraph(cyclegraph(5))' 'linegraph(stargraph(4))' 'subgraph(completegraph(5), [1, 2, 3])'
+  'isisomorphic(cyclegraph(5), complementgraph(cyclegraph(5)))'
+  'pagerank([1 -> 2, 2 -> 3, 3 -> 1, 3 -> 2])' 'gridgraph(2, 3)'
+  'completebipartite(2, 3)' 'eigenvalues(adjacencymatrix(cyclegraph(4)))'
+      # graphs with a name, matrices of graphs
+
+Plots drawn with characters:
+  'plot(sin(x), x, 0, 2pi)'  # a curve of Braille dots
+  'plot([sin(x), cos(x)], x, 0, 2pi, ascii)' 'plot(tan(x), x, -3, 3, [-5, 5], 60, 12)'
+      # plain marks; a range, a width and a height
+  'parametricplot([sin(2t), sin(3t)], t, 0, 2pi)' 'polarplot(cos(3t), t, 0, pi)'  # curves of points
+  'implicitplot(x^2 + y^2 = 1, x, -1.5, 1.5, y, -1.5, 1.5)'
+  'listplot([1, 4, 9, 16, 25])' 'histogram([1, 2, 2, 3, 3, 3, 4, 4, 5])'
+
+Real numbers only, quaternions, digits and forms of the output:
+  -r 'x^3 = -8'  # real numbers only: x = -2
+  -r '(-8)^(1/3)' 'x^2 + 1 = 0' 'sqrt(x^2)'  # real roots, no solution, abs(x)
+  'domain(real); x^4 = 1; domain(complex); x^4 = 1'  # the same as statements
+  -q 'i*j' 'j*i' '(1 + 2i + 3j + 4k)^2' 'abs(1 + i + j + k)'  # quaternions
+  'quat(1, 2, 3, 4)*quat(0, 1, 0, 0)' 'inv(quat(1, 1, 1, 1))' 'domain(quaternion); k*j'
+      # without the option
+  'rotate([1, 0, 0], rotationquat(pi/2, [0, 0, 1]))'  # a rotation by a quaternion
+  -d 50 'pi' 'sqrt(2)'  # fifty digits
+  -n 'sqrt(2) + pi' 'x^2 = 2'  # numbers only
+  -e 'x^2 = 2' 'cos(pi/5)'  # exact forms only
+  'x := 0.1234567890123456789012345678901234567890123; sin(x)'  # as many digits as the input has
+
+Names: every name has a plain spelling and a Unicode one:
+  '√2 · √8' 'x² + 2x + 1 = 0' '∛27' 'e^(iπ) + 1'
+  '90° + ½ + ⅓' '2 × 3 ÷ 4 − 1' '⌊3.7⌋ + ⌈3.2⌉' '‖[3, 4]‖'
+  'x ≤ 3 ∧ x ≥ 1' 'x ≠ 2' 'α := 2; α^2 + β' 'Γ(5) + ζ(2)'
+  'sin²(x) + cos²(x)' 'lim(1/x, x → ∞)' 'x₁ + x₂ - x₁'
+  'N([pi, e, tau, phi, eulergamma, catalan, apery, omega, dottie])'
+      # the constants: --constants lists them
+  'N([halfpi, sqrtpi, einv, eta, towermin, gelfond, gelfondschneider, ramanujan])'
+  'N([silver, plastic, supergolden, tribonacci, sqrt2, sqrt3, sqrt5, ln2, ln10, zeta2])'
+  'N([lemniscate, gauss, parabolic, levy, khinchin, gompertz, soldner, laplacelimit])'
+  'N([erdosborwein, cahen, recfib, niven, mertens, twinprime, 180*deg])'
+  '[inf, -inf, ComplexInfinity, undefined, true, false]'  # values that are no numbers
