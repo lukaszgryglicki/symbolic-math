@@ -1843,112 +1843,134 @@ there is left as it is). They are JPEG XL files: a viewer that knows the format 
 the moving ones with their frames.
 
 <!-- pictures -->
-**Shapes of four dimensions.** `plot4d`: 512 x 512 pixels, 512 frames, 512 colours; alpha says where the shape is. `save_jxl("name.jxl", drawing)`.
+**Shapes of four dimensions (`plot4d`: 512 x 512 pixels, 512 frames, 512 colours; alpha says where the shape is)**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [plot4d_sin.jxl](jxls/plot4d_sin.jxl) | `plot4d(sin(z))` |
-| [plot4d_gamma_body.jxl](jxls/plot4d_gamma_body.jxl) | `plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
-| [plot4d_three_poles_body.jxl](jxls/plot4d_three_poles_body.jxl) | `plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma` |
-| [plot4d_tan.jxl](jxls/plot4d_tan.jxl) | `plot4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo` |
-| [plot4d_zeta_body.jxl](jxls/plot4d_zeta_body.jxl) | `plot4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3]` |
-| [plot4d_waves_body.jxl](jxls/plot4d_waves_body.jxl) | `plot4d(sin(z)*cos(z), z, pi), fill = below, palette = twilight, range_real = [-2, 2], range_imag = [-2, 2]` |
-| [plot4d_ribbons.jxl](jxls/plot4d_ribbons.jxl) | `plot4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
-| [plot4d_rings.jxl](jxls/plot4d_rings.jxl) | `plot4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
-| [plot4d_circles.jxl](jxls/plot4d_circles.jxl) | `plot4d(e^z, z, -2 - pi*i, 2 + pi*i), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 3` |
-| [plot4d_bows.jxl](jxls/plot4d_bows.jxl) | `plot4d(z^2, z, 2), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 2, palette = spectrum` |
-| [plot4d_moebius.jxl](jxls/plot4d_moebius.jxl) | `plot4d((z - 1)/(z + 1), z, 3), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, range_real = [-3, 5], range_imag = [-4, 4], thickness = 2` |
-| [plot4d_cube_bands.jxl](jxls/plot4d_cube_bands.jxl) | `plot4d(z^3 - 1, z, 1.5), fill = below, palette = cube, normalize` |
-| [plot4d_turned_sheet.jxl](jxls/plot4d_turned_sheet.jxl) | `plot4d(sin(z), z, pi), rotate(35, 25, 10), thickness = 2, palette = turbo` |
-| [plot4d_curves.jxl](jxls/plot4d_curves.jxl) | `plot4d(sin(z)*cos(z)), arg_imag = frame, val_real = height, normalize, thickness = 3` |
-| [plot4d_gray9.jxl](jxls/plot4d_gray9.jxl) | `plot4d(z + 1/z), gray, bits = 9, range_real = [-4, 4], range_imag = [-4, 4]` |
-| [plot4d_cube3.jxl](jxls/plot4d_cube3.jxl) | `plot4d(exp(z), z, 3), palette = cube, bits = 3, fill = below` |
+| [plot4d_sin.jxl](jxls/plot4d_sin.jxl) | `save_jxl("plot4d_sin.jxl", plot4d(sin(z)))` |
+| [plot4d_gamma_body.jxl](jxls/plot4d_gamma_body.jxl) | `save_jxl("plot4d_gamma_body.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat)` |
+| [plot4d_three_poles_body.jxl](jxls/plot4d_three_poles_body.jxl) | `save_jxl("plot4d_three_poles_body.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma)` |
+| [plot4d_tan.jxl](jxls/plot4d_tan.jxl) | `save_jxl("plot4d_tan.jxl", plot4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo)` |
+| [plot4d_zeta_body.jxl](jxls/plot4d_zeta_body.jxl) | `save_jxl("plot4d_zeta_body.jxl", plot4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3])` |
+| [plot4d_waves_body.jxl](jxls/plot4d_waves_body.jxl) | `save_jxl("plot4d_waves_body.jxl", plot4d(sin(z)*cos(z), z, pi), fill = below, palette = twilight, range_real = [-2, 2], range_imag = [-2, 2])` |
+| [plot4d_ribbons.jxl](jxls/plot4d_ribbons.jxl) | `save_jxl("plot4d_ribbons.jxl", plot4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2)` |
+| [plot4d_rings.jxl](jxls/plot4d_rings.jxl) | `save_jxl("plot4d_rings.jxl", plot4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2)` |
+| [plot4d_circles.jxl](jxls/plot4d_circles.jxl) | `save_jxl("plot4d_circles.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 3)` |
+| [plot4d_bows.jxl](jxls/plot4d_bows.jxl) | `save_jxl("plot4d_bows.jxl", plot4d(z^2, z, 2), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 2, palette = spectrum)` |
+| [plot4d_moebius.jxl](jxls/plot4d_moebius.jxl) | `save_jxl("plot4d_moebius.jxl", plot4d((z - 1)/(z + 1), z, 3), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, range_real = [-3, 5], range_imag = [-4, 4], thickness = 2)` |
+| [plot4d_cube_bands.jxl](jxls/plot4d_cube_bands.jxl) | `save_jxl("plot4d_cube_bands.jxl", plot4d(z^3 - 1, z, 1.5), fill = below, palette = cube, normalize)` |
+| [plot4d_turned_sheet.jxl](jxls/plot4d_turned_sheet.jxl) | `save_jxl("plot4d_turned_sheet.jxl", plot4d(sin(z), z, pi), rotate(35, 25, 10), thickness = 2, palette = turbo)` |
+| [plot4d_curves.jxl](jxls/plot4d_curves.jxl) | `save_jxl("plot4d_curves.jxl", plot4d(sin(z)*cos(z)), arg_imag = frame, val_real = height, normalize, thickness = 3)` |
+| [plot4d_gray9.jxl](jxls/plot4d_gray9.jxl) | `save_jxl("plot4d_gray9.jxl", plot4d(z + 1/z), gray, bits = 9, range_real = [-4, 4], range_imag = [-4, 4])` |
+| [plot4d_cube3.jxl](jxls/plot4d_cube3.jxl) | `save_jxl("plot4d_cube3.jxl", plot4d(exp(z), z, 3), palette = cube, bits = 3, fill = below)` |
 
-**The shapes seen from outside.** `view4d`: one picture of the body of 512 x 512 x 512 voxels. `save_jxl("name.jxl", drawing, width = 1920, height = 1080, effort = 10)`.
+**The shapes seen from outside (`view4d`: one picture of a body of 512 x 512 x 512 voxels)**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [view4d_sin.jxl](jxls/view4d_sin.jxl) | `view4d(sin(z))` |
-| [view4d_gamma.jxl](jxls/view4d_gamma.jxl) | `view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
-| [view4d_three_poles.jxl](jxls/view4d_three_poles.jxl) | `view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3], perspective = 3` |
-| [view4d_tan.jxl](jxls/view4d_tan.jxl) | `view4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo` |
-| [view4d_zeta.jxl](jxls/view4d_zeta.jxl) | `view4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3], voxels = [256, 512, 256]` |
-| [view4d_carpet.jxl](jxls/view4d_carpet.jxl) | `view4d(z + 1/z), range_real = [-4, 4], range_imag = [-4, 4], palette = turbo, azimuth = 30, elevation = 60` |
-| [view4d_waves.jxl](jxls/view4d_waves.jxl) | `view4d(sin(z)*cos(z), z, pi), palette = twilight, range_real = [-2, 2], range_imag = [-2, 2]` |
-| [view4d_ribbons.jxl](jxls/view4d_ribbons.jxl) | `view4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, thickness = 2` |
-| [view4d_rings.jxl](jxls/view4d_rings.jxl) | `view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
-| [view4d_root.jxl](jxls/view4d_root.jxl) | `view4d(sqrt(z)), val_real = color, val_imag = frame, background = white` |
-| [view4d_hang.jxl](jxls/view4d_hang.jxl) | `view4d(z^4 - 1, z, 1.3), fill = above, palette = plasma` |
-| [view4d_two_poles_stereo.jxl](jxls/view4d_two_poles_stereo.jxl) | `view4d(1/(z^2 + 1), z, 2), range_real = [-2, 2], range_imag = [-2, 2], stereo = 5` |
-| [view4d_erf_turned.jxl](jxls/view4d_erf_turned.jxl) | `view4d(erf(z), z, 2), fill = below, rotate(25, 20, 0), palette = coolwarm, range_real = [-3, 3], range_imag = [-3, 3]` |
-| [view4d_exp.jxl](jxls/view4d_exp.jxl) | `view4d(e^z, z, -2 - pi*i, 2 + pi*i), title = "the exponential function"` |
+| [view4d_sin.jxl](jxls/view4d_sin.jxl) | `save_jxl("view4d_sin.jxl", view4d(sin(z)), width = 1920, height = 1080, effort = 10)` |
+| [view4d_gamma.jxl](jxls/view4d_gamma.jxl) | `save_jxl("view4d_gamma.jxl", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat, width = 1920, height = 1080, effort = 10)` |
+| [view4d_three_poles.jxl](jxls/view4d_three_poles.jxl) | `save_jxl("view4d_three_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3], perspective = 3, width = 1920, height = 1080, effort = 10)` |
+| [view4d_tan.jxl](jxls/view4d_tan.jxl) | `save_jxl("view4d_tan.jxl", view4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo, width = 1920, height = 1080, effort = 10)` |
+| [view4d_zeta.jxl](jxls/view4d_zeta.jxl) | `save_jxl("view4d_zeta.jxl", view4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3], voxels = [256, 512, 256], width = 1920, height = 1080, effort = 10)` |
+| [view4d_carpet.jxl](jxls/view4d_carpet.jxl) | `save_jxl("view4d_carpet.jxl", view4d(z + 1/z), range_real = [-4, 4], range_imag = [-4, 4], palette = turbo, azimuth = 30, elevation = 60, width = 1920, height = 1080, effort = 10)` |
+| [view4d_waves.jxl](jxls/view4d_waves.jxl) | `save_jxl("view4d_waves.jxl", view4d(sin(z)*cos(z), z, pi), palette = twilight, range_real = [-2, 2], range_imag = [-2, 2], width = 1920, height = 1080, effort = 10)` |
+| [view4d_ribbons.jxl](jxls/view4d_ribbons.jxl) | `save_jxl("view4d_ribbons.jxl", view4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, thickness = 2, width = 1920, height = 1080, effort = 10)` |
+| [view4d_rings.jxl](jxls/view4d_rings.jxl) | `save_jxl("view4d_rings.jxl", view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2, width = 1920, height = 1080, effort = 10)` |
+| [view4d_root.jxl](jxls/view4d_root.jxl) | `save_jxl("view4d_root.jxl", view4d(sqrt(z)), val_real = color, val_imag = frame, background = white, width = 1920, height = 1080, effort = 10)` |
+| [view4d_hang.jxl](jxls/view4d_hang.jxl) | `save_jxl("view4d_hang.jxl", view4d(z^4 - 1, z, 1.3), fill = above, palette = plasma, width = 1920, height = 1080, effort = 10)` |
+| [view4d_two_poles_stereo.jxl](jxls/view4d_two_poles_stereo.jxl) | `save_jxl("view4d_two_poles_stereo.jxl", view4d(1/(z^2 + 1), z, 2), range_real = [-2, 2], range_imag = [-2, 2], stereo = 5, width = 1920, height = 1080, effort = 10)` |
+| [view4d_erf_turned.jxl](jxls/view4d_erf_turned.jxl) | `save_jxl("view4d_erf_turned.jxl", view4d(erf(z), z, 2), fill = below, rotate(25, 20, 0), palette = coolwarm, range_real = [-3, 3], range_imag = [-3, 3], width = 1920, height = 1080, effort = 10)` |
+| [view4d_exp.jxl](jxls/view4d_exp.jxl) | `save_jxl("view4d_exp.jxl", view4d(e^z, z, -2 - pi*i, 2 + pi*i), title = "the exponential function", width = 1920, height = 1080, effort = 10)` |
 
-**Walks of digits and of primes, spirals.** `save_jxl("name.jxl", drawing, width = 1920, height = 1080, effort = 10)`.
+**Walks of digits and of primes, spirals**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [walk_pi.jxl](jxls/walk_pi.jxl) | `walk(pi, 10, 200000)` |
-| [walk_e_base4.jxl](jxls/walk_e_base4.jxl) | `walk(e, 4, 300000), palette = fire` |
-| [walk_sqrt2_base6.jxl](jxls/walk_sqrt2_base6.jxl) | `walk(sqrt(2), 6, 200000), palette = viridis` |
-| [primewalk.jxl](jxls/primewalk.jxl) | `primewalk(200000)` |
-| [primemodwalk.jxl](jxls/primemodwalk.jxl) | `primemodwalk(300000, 12)` |
-| [ulamspiral.jxl](jxls/ulamspiral.jxl) | `ulamspiral(500000)` |
-| [sacksspiral.jxl](jxls/sacksspiral.jxl) | `sacksspiral(200000)` |
-| [walk3d_near.jxl](jxls/walk3d_near.jxl) | `walk3d(e + pi*i, 12, 100000), perspective = 3, fog = 0.8` |
-| [walk3d_stereo.jxl](jxls/walk3d_stereo.jxl) | `walk3d(sqrt(2) + sqrt(3)*i, 12, 60000), stereo` |
-| [walk3d_depth.jxl](jxls/walk3d_depth.jxl) | `walk3d(e + pi*i, 12, 100000), depth, azimuth = 300, elevation = 35` |
-| [primewalk3d.jxl](jxls/primewalk3d.jxl) | `primewalk3d(100000), axes` |
-| [primemodwalk3d.jxl](jxls/primemodwalk3d.jxl) | `primemodwalk3d(100000)` |
-| [primes3d_xyz.jxl](jxls/primes3d_xyz.jxl) | `primes3d_xyz(20000, 4)` |
+| [walk_pi.jxl](jxls/walk_pi.jxl) | `save_jxl("walk_pi.jxl", walk(pi, 10, 200000), width = 1920, height = 1080, effort = 10)` |
+| [walk_e_base4.jxl](jxls/walk_e_base4.jxl) | `save_jxl("walk_e_base4.jxl", walk(e, 4, 300000), palette = fire, width = 1920, height = 1080, effort = 10)` |
+| [walk_sqrt2_base6.jxl](jxls/walk_sqrt2_base6.jxl) | `save_jxl("walk_sqrt2_base6.jxl", walk(sqrt(2), 6, 200000), palette = viridis, width = 1920, height = 1080, effort = 10)` |
+| [primewalk.jxl](jxls/primewalk.jxl) | `save_jxl("primewalk.jxl", primewalk(200000), width = 1920, height = 1080, effort = 10)` |
+| [primemodwalk.jxl](jxls/primemodwalk.jxl) | `save_jxl("primemodwalk.jxl", primemodwalk(300000, 12), width = 1920, height = 1080, effort = 10)` |
+| [ulamspiral.jxl](jxls/ulamspiral.jxl) | `save_jxl("ulamspiral.jxl", ulamspiral(500000), width = 1920, height = 1080, effort = 10)` |
+| [sacksspiral.jxl](jxls/sacksspiral.jxl) | `save_jxl("sacksspiral.jxl", sacksspiral(200000), width = 1920, height = 1080, effort = 10)` |
+| [walk3d_near.jxl](jxls/walk3d_near.jxl) | `save_jxl("walk3d_near.jxl", walk3d(e + pi*i, 12, 100000), perspective = 3, fog = 0.8, width = 1920, height = 1080, effort = 10)` |
+| [walk3d_stereo.jxl](jxls/walk3d_stereo.jxl) | `save_jxl("walk3d_stereo.jxl", walk3d(sqrt(2) + sqrt(3)*i, 12, 60000), stereo, width = 1920, height = 1080, effort = 10)` |
+| [walk3d_depth.jxl](jxls/walk3d_depth.jxl) | `save_jxl("walk3d_depth.jxl", walk3d(e + pi*i, 12, 100000), depth, azimuth = 300, elevation = 35, width = 1920, height = 1080, effort = 10)` |
+| [primewalk3d.jxl](jxls/primewalk3d.jxl) | `save_jxl("primewalk3d.jxl", primewalk3d(100000), axes, width = 1920, height = 1080, effort = 10)` |
+| [primemodwalk3d.jxl](jxls/primemodwalk3d.jxl) | `save_jxl("primemodwalk3d.jxl", primemodwalk3d(100000), width = 1920, height = 1080, effort = 10)` |
+| [primes3d_xyz.jxl](jxls/primes3d_xyz.jxl) | `save_jxl("primes3d_xyz.jxl", primes3d_xyz(20000, 4), width = 1920, height = 1080, effort = 10)` |
 
-**Surfaces and curves of space.** The same sizes.
+**Surfaces and curves of space**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [plot3d_ripples.jxl](jxls/plot3d_ripples.jxl) | `plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo, perspective = 3` |
-| [plot3d_saddle.jxl](jxls/plot3d_saddle.jxl) | `plot3d(x^2 - y^2, x, -2, 2, y, -2, 2), palette = turbo` |
-| [surf_peaks.jxl](jxls/surf_peaks.jxl) | `surf(peaks(80)), palette = turbo, azimuth = 50, elevation = 30` |
-| [surfc_peaks.jxl](jxls/surfc_peaks.jxl) | `surfc(peaks(60)), palette = jet` |
-| [waterfall_peaks.jxl](jxls/waterfall_peaks.jxl) | `waterfall(peaks(40))` |
-| [hyperboloid.jxl](jxls/hyperboloid.jxl) | `fimplicit3(x^2 + y^2 - z^2 = 1, x, -2, 2, y, -2, 2, z, -2, 2)` |
-| [contour3_cells.jxl](jxls/contour3_cells.jxl) | `contour3(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)` |
-| [bar3_magic.jxl](jxls/bar3_magic.jxl) | `bar3(magic(6))` |
-| [helix.jxl](jxls/helix.jxl) | `scatter3(cos((0:400)/10), sin((0:400)/10), (0:400)/40)` |
-| [knot.jxl](jxls/knot.jxl) | `parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3, perspective = 4` |
+| [plot3d_ripples.jxl](jxls/plot3d_ripples.jxl) | `save_jxl("plot3d_ripples.jxl", plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo, perspective = 3, width = 1920, height = 1080, effort = 10)` |
+| [plot3d_saddle.jxl](jxls/plot3d_saddle.jxl) | `save_jxl("plot3d_saddle.jxl", plot3d(x^2 - y^2, x, -2, 2, y, -2, 2), palette = turbo, width = 1920, height = 1080, effort = 10)` |
+| [surf_peaks.jxl](jxls/surf_peaks.jxl) | `save_jxl("surf_peaks.jxl", surf(peaks(80)), palette = turbo, azimuth = 50, elevation = 30, width = 1920, height = 1080, effort = 10)` |
+| [surfc_peaks.jxl](jxls/surfc_peaks.jxl) | `save_jxl("surfc_peaks.jxl", surfc(peaks(60)), palette = jet, width = 1920, height = 1080, effort = 10)` |
+| [waterfall_peaks.jxl](jxls/waterfall_peaks.jxl) | `save_jxl("waterfall_peaks.jxl", waterfall(peaks(40)), width = 1920, height = 1080, effort = 10)` |
+| [hyperboloid.jxl](jxls/hyperboloid.jxl) | `save_jxl("hyperboloid.jxl", fimplicit3(x^2 + y^2 - z^2 = 1, x, -2, 2, y, -2, 2, z, -2, 2), width = 1920, height = 1080, effort = 10)` |
+| [contour3_cells.jxl](jxls/contour3_cells.jxl) | `save_jxl("contour3_cells.jxl", contour3(sin(x)*cos(y), x, -pi, pi, y, -pi, pi), width = 1920, height = 1080, effort = 10)` |
+| [bar3_magic.jxl](jxls/bar3_magic.jxl) | `save_jxl("bar3_magic.jxl", bar3(magic(6)), width = 1920, height = 1080, effort = 10)` |
+| [helix.jxl](jxls/helix.jxl) | `save_jxl("helix.jxl", scatter3(cos((0:400)/10), sin((0:400)/10), (0:400)/40), width = 1920, height = 1080, effort = 10)` |
+| [knot.jxl](jxls/knot.jxl) | `save_jxl("knot.jxl", parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3, perspective = 4, width = 1920, height = 1080, effort = 10)` |
 
-**Functions of a complex number in colours, charts.** The same sizes.
+**Functions of a complex number in colours, charts**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [complexplot_cubic.jxl](jxls/complexplot_cubic.jxl) | `complexplot(z^3 - 1, z, -2.4 - 1.35i, 2.4 + 1.35i)` |
-| [complexplot_gamma.jxl](jxls/complexplot_gamma.jxl) | `complexplot(gamma(z), z, -6.4 - 3.6i, 6.4 + 3.6i)` |
-| [complexplot_zeta.jxl](jxls/complexplot_zeta.jxl) | `complexplot(zeta(z), z, -16 - 9i, 16 + 9i)` |
-| [complexplot_essential.jxl](jxls/complexplot_essential.jxl) | `complexplot(sin(1/z), z, -0.8 - 0.45i, 0.8 + 0.45i)` |
-| [complexplot_blaschke.jxl](jxls/complexplot_blaschke.jxl) | `complexplot((z^2 - 1)/(z^2 + 1), z, -3.2 - 1.8i, 3.2 + 1.8i)` |
-| [densityplot_waves.jxl](jxls/densityplot_waves.jxl) | `densityplot(sin(x)*cos(y) + sin(x*y/3), x, -8, 8, y, -4.5, 4.5), palette = twilight` |
-| [contour_cells.jxl](jxls/contour_cells.jxl) | `contour(sin(x)*cos(y), x, -2pi, 2pi, y, -pi, pi)` |
-| [implicitplot_heart.jxl](jxls/implicitplot_heart.jxl) | `implicitplot((x^2 + y^2 - 1)^3 = x^2*y^3, x, -2.4, 2.4, y, -1.2, 1.5)` |
-| [streamline_spiral.jxl](jxls/streamline_spiral.jxl) | `streamline([-y, x + y/2], x, -2, 2, y, -1.2, 1.2)` |
-| [plot_four_curves.jxl](jxls/plot_four_curves.jxl) | `plot([sin(x), cos(x), sin(2x)/2, x*cos(3x)/6], x, -2pi, 2pi), grid, title = "four curves"` |
-| [parametricplot_lissajous.jxl](jxls/parametricplot_lissajous.jxl) | `parametricplot([sin(3t), sin(4t)], t, 0, 2pi)` |
-| [polarplot_rose.jxl](jxls/polarplot_rose.jxl) | `polarplot(cos(7t/4), t, 0, 8pi)` |
-| [bodeplot.jxl](jxls/bodeplot.jxl) | `bodeplot(tf([1], [1, 0.4, 1]))` |
-| [nyquistplot.jxl](jxls/nyquistplot.jxl) | `nyquistplot(tf([4], [1, 3, 3, 1]))` |
-| [rlocusplot.jxl](jxls/rlocusplot.jxl) | `rlocusplot(tf([1, 2], [1, 3, 5, 0]))` |
-| [graphplot_petersen.jxl](jxls/graphplot_petersen.jxl) | `graphplot(petersengraph())` |
+| [complexplot_cubic.jxl](jxls/complexplot_cubic.jxl) | `save_jxl("complexplot_cubic.jxl", complexplot(z^3 - 1, z, -2.4 - 1.35i, 2.4 + 1.35i), width = 1920, height = 1080, effort = 10)` |
+| [complexplot_gamma.jxl](jxls/complexplot_gamma.jxl) | `save_jxl("complexplot_gamma.jxl", complexplot(gamma(z), z, -6.4 - 3.6i, 6.4 + 3.6i), width = 1920, height = 1080, effort = 10)` |
+| [complexplot_zeta.jxl](jxls/complexplot_zeta.jxl) | `save_jxl("complexplot_zeta.jxl", complexplot(zeta(z), z, -16 - 9i, 16 + 9i), width = 1920, height = 1080, effort = 10)` |
+| [complexplot_essential.jxl](jxls/complexplot_essential.jxl) | `save_jxl("complexplot_essential.jxl", complexplot(sin(1/z), z, -0.8 - 0.45i, 0.8 + 0.45i), width = 1920, height = 1080, effort = 10)` |
+| [complexplot_blaschke.jxl](jxls/complexplot_blaschke.jxl) | `save_jxl("complexplot_blaschke.jxl", complexplot((z^2 - 1)/(z^2 + 1), z, -3.2 - 1.8i, 3.2 + 1.8i), width = 1920, height = 1080, effort = 10)` |
+| [densityplot_waves.jxl](jxls/densityplot_waves.jxl) | `save_jxl("densityplot_waves.jxl", densityplot(sin(x)*cos(y) + sin(x*y/3), x, -8, 8, y, -4.5, 4.5), palette = twilight, width = 1920, height = 1080, effort = 10)` |
+| [contour_cells.jxl](jxls/contour_cells.jxl) | `save_jxl("contour_cells.jxl", contour(sin(x)*cos(y), x, -2pi, 2pi, y, -pi, pi), width = 1920, height = 1080, effort = 10)` |
+| [implicitplot_heart.jxl](jxls/implicitplot_heart.jxl) | `save_jxl("implicitplot_heart.jxl", implicitplot((x^2 + y^2 - 1)^3 = x^2*y^3, x, -2.4, 2.4, y, -1.2, 1.5), width = 1920, height = 1080, effort = 10)` |
+| [streamline_spiral.jxl](jxls/streamline_spiral.jxl) | `save_jxl("streamline_spiral.jxl", streamline([-y, x + y/2], x, -2, 2, y, -1.2, 1.2), width = 1920, height = 1080, effort = 10)` |
+| [plot_four_curves.jxl](jxls/plot_four_curves.jxl) | `save_jxl("plot_four_curves.jxl", plot([sin(x), cos(x), sin(2x)/2, x*cos(3x)/6], x, -2pi, 2pi), grid, title = "four curves", width = 1920, height = 1080, effort = 10)` |
+| [parametricplot_lissajous.jxl](jxls/parametricplot_lissajous.jxl) | `save_jxl("parametricplot_lissajous.jxl", parametricplot([sin(3t), sin(4t)], t, 0, 2pi), width = 1920, height = 1080, effort = 10)` |
+| [polarplot_rose.jxl](jxls/polarplot_rose.jxl) | `save_jxl("polarplot_rose.jxl", polarplot(cos(7t/4), t, 0, 8pi), width = 1920, height = 1080, effort = 10)` |
+| [bodeplot.jxl](jxls/bodeplot.jxl) | `save_jxl("bodeplot.jxl", bodeplot(tf([1], [1, 0.4, 1])), width = 1920, height = 1080, effort = 10)` |
+| [nyquistplot.jxl](jxls/nyquistplot.jxl) | `save_jxl("nyquistplot.jxl", nyquistplot(tf([4], [1, 3, 3, 1])), width = 1920, height = 1080, effort = 10)` |
+| [rlocusplot.jxl](jxls/rlocusplot.jxl) | `save_jxl("rlocusplot.jxl", rlocusplot(tf([1, 2], [1, 3, 5, 0])), width = 1920, height = 1080, effort = 10)` |
+| [nicholsplot.jxl](jxls/nicholsplot.jxl) | `save_jxl("nicholsplot.jxl", nicholsplot(tf([4], [1, 3, 3, 1])), width = 1920, height = 1080, effort = 10)` |
+| [graphplot_petersen.jxl](jxls/graphplot_petersen.jxl) | `save_jxl("graphplot_petersen.jxl", graphplot(petersengraph()), width = 1920, height = 1080, effort = 10)` |
 
-**Moving pictures.** 512 frames of 512 x 512 pixels: the eye goes once around the drawing, a walk grows, or space is cut into 512 slabs. `save_jxl("name.jxl", drawing, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` (`slices = 512` instead of `frames` for the slabs).
+**Moving pictures: 512 frames of 512 x 512 pixels (the eye goes once around, a walk grows, space is cut into slabs)**
 
-| File | Drawing |
+| File | Made with `symbolic-math '...'` |
 | --- | --- |
-| [view4d_around_sin.jxl](jxls/view4d_around_sin.jxl) | `view4d(sin(z))` |
-| [view4d_around_gamma.jxl](jxls/view4d_around_gamma.jxl) | `view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
-| [view4d_around_poles.jxl](jxls/view4d_around_poles.jxl) | `view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3]` |
-| [walk_pi_grows.jxl](jxls/walk_pi_grows.jxl) | `walk(pi, 10, 100000), grow` |
-| [walk3d_around.jxl](jxls/walk3d_around.jxl) | `walk3d(e + pi*i, 12, 50000)` |
-| [walk3d_slices.jxl](jxls/walk3d_slices.jxl) | `walk3d(e + pi*i, 12, 100000)` |
-| [plot3d_around.jxl](jxls/plot3d_around.jxl) | `plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo` |
-| [knot_around.jxl](jxls/knot_around.jxl) | `parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3` |
+| [view4d_around_sin.jxl](jxls/view4d_around_sin.jxl) | `save_jxl("view4d_around_sin.jxl", view4d(sin(z)), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [view4d_around_gamma.jxl](jxls/view4d_around_gamma.jxl) | `save_jxl("view4d_around_gamma.jxl", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [view4d_around_poles.jxl](jxls/view4d_around_poles.jxl) | `save_jxl("view4d_around_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3], width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [walk_pi_grows.jxl](jxls/walk_pi_grows.jxl) | `save_jxl("walk_pi_grows.jxl", walk(pi, 10, 100000), grow, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [walk3d_around.jxl](jxls/walk3d_around.jxl) | `save_jxl("walk3d_around.jxl", walk3d(e + pi*i, 12, 50000), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [walk3d_slices.jxl](jxls/walk3d_slices.jxl) | `save_jxl("walk3d_slices.jxl", walk3d(e + pi*i, 12, 100000), slices = 512, width = 512, height = 512, fps = 24, effort = 10)` |
+| [plot3d_around.jxl](jxls/plot3d_around.jxl) | `save_jxl("plot3d_around.jxl", plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [knot_around.jxl](jxls/knot_around.jxl) | `save_jxl("knot_around.jxl", parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+
+**Tetration `b^^h`, its inverse in the height `slog` and in the base `ssrt` (these ask the program `tet` for their values)**
+
+| File | Made with `symbolic-math '...'` |
+| --- | --- |
+| [tetration_curves.jxl](jxls/tetration_curves.jxl) | `save_jxl("tetration_curves.jxl", plot([2^^x, e^^x, sqrt(2)^^x, 1.2^^x], x, -1.9, 2.2, [-4, 12]), grid, title = "b^^x for b = 2, e, sqrt(2) and 1.2", width = 1920, height = 1080, effort = 10)` |
+| [slog_curves.jxl](jxls/slog_curves.jxl) | `save_jxl("slog_curves.jxl", plot([slog(2, x), slog(e, x), slog(10, x)], x, 0.05, 30), grid, title = "slog(b, x) for b = 2, e and 10", width = 1920, height = 1080, effort = 10)` |
+| [ssrt_curves.jxl](jxls/ssrt_curves.jxl) | `save_jxl("ssrt_curves.jxl", plot([ssrt(x, 2), ssrt(x, 3), ssrt(x, 4)], x, 1, 30), grid, title = "ssrt(x, n) for n = 2, 3 and 4", width = 1920, height = 1080, effort = 10)` |
+| [tetration_surface.jxl](jxls/tetration_surface.jxl) | `save_jxl("tetration_surface.jxl", plot3d(b^^h, b, 1.05, 1.44, h, -1.5, 8), palette = turbo, width = 1920, height = 1080, effort = 10)` |
+| [tetration_surface_kneser.jxl](jxls/tetration_surface_kneser.jxl) | `save_jxl("tetration_surface_kneser.jxl", plot3d(b^^h, b, 1.6, 3, h, -1.5, 1.5), palette = plasma, width = 1920, height = 1080, effort = 10)` |
+| [slog_surface.jxl](jxls/slog_surface.jxl) | `save_jxl("slog_surface.jxl", plot3d(slog(b, x), b, 1.1, 1.44, x, -0.5, 1.05), palette = viridis, width = 1920, height = 1080, effort = 10)` |
+| [plot4d_tetration.jxl](jxls/plot4d_tetration.jxl) | `save_jxl("plot4d_tetration.jxl", plot4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4])` |
+| [plot4d_tetration_body.jxl](jxls/plot4d_tetration_body.jxl) | `save_jxl("plot4d_tetration_body.jxl", plot4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma)` |
+| [view4d_tetration.jxl](jxls/view4d_tetration.jxl) | `save_jxl("view4d_tetration.jxl", view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], palette = turbo, width = 1920, height = 1080, effort = 10)` |
+| [view4d_tetration_body.jxl](jxls/view4d_tetration_body.jxl) | `save_jxl("view4d_tetration_body.jxl", view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma, width = 1920, height = 1080, effort = 10)` |
+| [view4d_tetration_e.jxl](jxls/view4d_tetration_e.jxl) | `save_jxl("view4d_tetration_e.jxl", view4d(e^^z, z, -1.8 - 2i, 2.2 + 2i), voxels = 192, range_real = [-4, 8], range_imag = [-6, 6], palette = plasma, width = 1920, height = 1080, effort = 10)` |
+| [view4d_slog.jxl](jxls/view4d_slog.jxl) | `save_jxl("view4d_slog.jxl", view4d(slog(sqrt(2), z), z, -2 - 2i, 1.9 + 2i), voxels = 256, range_real = [-3, 6], palette = twilight, width = 1920, height = 1080, effort = 10)` |
+| [view4d_ssrt.jxl](jxls/view4d_ssrt.jxl) | `save_jxl("view4d_ssrt.jxl", view4d(ssrt(z, 2), z, -4 - 4i, 6 + 4i), voxels = 256, palette = spectrum, width = 1920, height = 1080, effort = 10)` |
+| [view4d_around_tetration.jxl](jxls/view4d_around_tetration.jxl) | `save_jxl("view4d_around_tetration.jxl", view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [complexplot_tetration.jxl](jxls/complexplot_tetration.jxl) | `save_jxl("complexplot_tetration.jxl", complexplot(sqrt(2)^^z, z, -4.8 - 2.7i, 4.8 + 2.7i), width = 1920, height = 1080, effort = 10)` |
+| [complexplot_tetration_fifth.jxl](jxls/complexplot_tetration_fifth.jxl) | `save_jxl("complexplot_tetration_fifth.jxl", complexplot(0.2^^z, z, -4 - 2.25i, 4 + 2.25i), width = 1920, height = 1080, effort = 10)` |
 <!-- /pictures -->
 
 ## What MATLAB has
@@ -2297,12 +2319,30 @@ is sampled): `tf`, `zpk`, `ss` and `pid` make one, the four operations, `series`
 and `feedback` join them. Answers are exact where the input is: `step`, `impulse` and `lsim`
 give expressions in `t`. There are `pole`, `zero`, `dcgain`, `damp`, `bode`, `nyquist`, `margin`,
 `allmargin`, `hinfnorm`, `h2norm`, `stepinfo`, `c2d`, `d2c`, `rlocus`, `ctrb`, `obsv`, `gram`,
-`lyap`, `dlyap`, `care`, `dare`, `lqr`, `dlqr`, `lqe`, `acker`, `place`, and the charts
-`bodeplot`, `nyquistplot`, `pzplot`, `rlocusplot`, `stepplot`, `impulseplot`.
+`lyap`, `dlyap`, `care`, `dare`, `lqr`, `dlqr`, `lqe`, `dlqe`, `lqi`, `reg`, `acker`, `place`,
+and the charts `bodeplot`, `nyquistplot`, `nicholsplot`, `pzplot`, `rlocusplot`, `stepplot`,
+`impulseplot`, `initialplot`.
+
+Systems are values that the signs join: with `s := tf("s")` a formula in `s` is a system, and
+so are `tf(...) + tf(...)`, `2*tf(...)`, `1/tf(...)` and whole powers, with numbers and names
+among them; `plus`, `minus`, `times`, `mtimes`, `rdivide`, `mrdivide`, `power` and the others
+do the same by name. What a numerator and a denominator share cancels. In lists the systems
+are joined entry by entry, and a product of matrices of systems is one of systems.
+
+The states of a stable system are weighed by `hsvd`, put into the balanced form by `balreal`,
+and the weak ones are taken out by `balred` (at rest, so that the gain at frequency 0 stays,
+or cut off); states that the input does not reach or the output does not show go first. `covar` is the spread of the output under white noise, `lyapchol` and `dlyapchol`
+give the triangles of the Gramians, `initial` the output of a system left alone from a state,
+`gensig` a signal to drive it with, `ss2ss` other states, `d2d` another time between samples,
+`ord2` and `filt` systems of the second order and in `1/z`, `sigma` and `nichols` the gain
+(and the phase) at frequencies.
 
 ```
 's := tf("s"); g := 1/(s^2 + 3s + 2); step(g)'
-                                              error: invlaplace(f, x, y): tf([1, 0], [1]) is not a variable
+                                              tf([1, 0], [1])
+                                              tf([1], [1, 3, 2])
+                                              e^(-2t)*(e^t - 1)^2/2
+'tf([1], [1, 1]) + 2/tf([1, 3], [1, 2])'      tf([2, 7, 7], [1, 4, 3])
 'feedback(tf([1], [1, 1]), 1)'                tf([1], [1, 2])
 'margin(tf([4], [1, 3, 3, 1]))'               [2, 27.141630595376226979139373587665, 1.7320508075688772935274463415059, 1.2328187619393802564187234770704]
 'c2d(tf([1], [1, 1]), 1/10)'                  tf([1 - 1/e^(1/10)], [1, -1/e^(1/10)], 1/10)
@@ -2310,6 +2350,12 @@ give expressions in `t`. There are `pole`, `zero`, `dcgain`, `damp`, `bode`, `ny
                                               [[[1, 1.7320508075688772935274463415059]], [[1.7320508075688772935274463415059, 1], [1, 1.7320508075688772935274463415059]], [-0.86602540378443864676372317075294 - 0.5i, -0.86602540378443864676372317075294 + 0.5i]]
 'place([[0, 1], [0, 0]], [[0], [1]], [-1 + i, -1 - i])'
                                               [2, 2]
+'hsvd(tf([1, 2], [1, 3, 5, 4]))'              [0.39556142619996876043940750810744, 0.15403860116411174834253601363655, 0.0084771749641429879031285055291039]
+'dcgain(balred(tf([1, 2], [1, 3, 5, 4]), 2))'
+                                              0.5
+'covar(tf([1], [1, 3, 2]), 1)'                [1/12, [[1/6, 0], [0, 1/12]]]
+'initial(ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0]], [[0]]), [1, 0])'
+                                              2e^(-t) - e^(-2t)
 ```
 
 ### Filters and spectra
@@ -2322,6 +2368,14 @@ order, spectra (`periodogram`, `pwelch`, `cpsd`, `mscohere`, `tfestimate`, `spec
 `findpeaks`, `envelope`, linear prediction (`levinson`, `aryule`, `arburg`, `lpc`) and
 waveforms. A filter is its pair `[b, a]`, which every command takes as one value.
 
+Filters of linear phase are also made with the least square error (`firls`), with ripples of
+one size (`firpm` or `remez`: the exchange of Remez, with the greatest errors sought on the
+whole bands, not on a grid) and through given gains (`fir2`). `resample` changes the rate by
+a ratio, `phasez`, `phasedelay` and `zerophase` are the phase without jumps, its delay and the
+real response, `finddelay` and `dtw` lay two signals along each other, `residuez` takes a
+ratio in `1/z` apart, `tf2latc`, `latc2tf` and `latcfilt` are the lattices, `fftfilt` and
+`filtic` filter by transforms and from a state.
+
 ```
 'butter(2, 0.3)'                              [[0.13110643991662595261757758343356, 0.26221287983325190523515516686712, 0.13110643991662595261757758343356], [1, -0.74778917825850341013599412216864, 0.27221493792500722060630445590287]]
 'freqz(butter(3, 0.4), 3)'                    [[1, -0.21005729606506965947802060512306 - 0.86874640169822398370743979245151i, -0.056166563213096094569655954231284 + 0.047574864502733976185738788522147i], [0, 1.0471975511965977461542144610932, 2.0943951023931954923084289221863]]
@@ -2329,6 +2383,11 @@ waveforms. A filter is its pair `[b, a]`, which every command takes as one value
                                               [1.0063625254535161969171634115367, 2.00516952495721321678757610403, 3.00234167168594773687911336378, 4.0007282808866946751750414760592, 5.0001993519080990591169947487595, 5.999341269108394711220813597023, 6.9967052832026297237267613257207, 7.9924062890931669964367006107933, 8.9907279576137653315456385413321, 10.00230214168777727040206240452]
 'buttord(0.2, 0.3, 1, 40)'                    [12, 0.21270871824929540864901253127966]
 'findpeaks([1, 3, 2, 5, 4, 6, 1])'            [[3, 5, 6], [2, 4, 6]]
+'firpm(6, [0, 0.4, 0.6, 1], [1, 1, 0, 0])'    [-0.11959674888504780243751827482553, 0, 0.3131083535250412376370471014008, 0.5, 0.3131083535250412376370471014008, 0, -0.11959674888504780243751827482553]
+'resample([1, 2, 3, 4, 5, 6], 3, 2)'          [1.0006061735537776941809619013042, 1.8079145190652872091275328461087, 2.1680722384446313211004223855346, 3.0018185206613330825428857039125, 3.940992689282657130100073137418, 3.9656716408048488224405763555171, 5.0030308677688884709048095065208, 6.5681064576906517785429079645452, 4.240290707826440579514136673378]
+'finddelay([1, 2, 3, 0, 0], [0, 0, 1, 2, 3])'
+                                              2
+'tf2latc([1, 1/2, 1/4])'                      [0.4, 0.25]
 ```
 
 ### The earth
@@ -2440,8 +2499,11 @@ What is the same thing under another form, and what differs on purpose:
 ### What is not there
 
 Of the toolboxes for control, signal design, maps and deep learning their cores are here, not
-all of them: systems with several inputs and outputs, `firpm` and resampling, raster maps and
-geoids, convolutional networks that are trained and stochastic training are missing. There is
+all of them: systems with several inputs and outputs (and what is made of them: `kalman`,
+`lqg`, `append`, `connect`), delays inside systems, the filters of `firls` and `firpm` with
+taps of the other sign from the end (Hilbert transformers, differentiators), MATLAB's own
+lowpass in `resample` (the one of SciPy's `resample_poly` is used), raster maps and geoids,
+convolutional networks that are trained and stochastic training are missing. There is
 no Simulink, no image processing beyond the functions above, no cell array as a type of its own
 (a list holds unlike things), no `latex`, no `newUnit`, no MATLAB streams of `randn` and
 `randperm`, and no graphical user interface, object or file of MATLAB's own formats.
@@ -2481,6 +2543,45 @@ solution `c^(1/c)` when the tower of that base settles at `c`.
 
 When `tet` cannot be run, a request for a numeric value is an error; an exact answer is still
 printed, with a note.
+
+Every drawing takes tetration: `plot`, `plot3d`, `densityplot`, `complexplot`, `plot4d` and
+`view4d` ask `tet` for the values at all their places before they draw, as many runs of the
+program at a time as the machine has processors (the values are the same as one by one; a
+drawing of `2^^x` and `e^^x` is made nine times as fast on 16 processors). Bases from `e^(-e)`
+to `e^(1/e)` take hundredths of a second for a value, the others about a second.
+
+```
+$ symbolic-math 'plot(sqrt(2)^^x, x, -1, 3, 40, 10)'
+1.761 │          │                 ⣀⣀⣠⠤⠤⠴⠒⠒⠒⠚⠉⠉
+      │          │         ⣀⣠⠤⠴⠒⠚⠉⠉⠁
+      │          │    ⣀⡤⠔⠚⠉⠁
+      │          │⣀⠤⠚⠉
+      │        ⣀⠴⠋⠁
+      │      ⡠⠞⠁ │
+      │    ⡠⠊    │
+      │  ⢠⠞⠁     │
+      │ ⡰⠃       │
+    0 │⡼⠁        │
+      └────────────────────────────────────────
+       -1                                     3
+$ symbolic-math 'complexplot(sqrt(2)^^z, z, -1 - 2i, 3 + 2i, width = 24, height = 8)'
+ 2.1 │⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⠶⠶⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⠶⠶⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶
+     │⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶
+-2.1 │⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶
+     └────────────────────────
+      -2.15               4.15
+the colour is the argument of the value: red for the positive numbers, then yellow, green, cyan for the negative ones, blue, magenta; the lightness is its absolute value: black is 0, the full colour 1, white the infinitely large
+$ symbolic-math 'save_jxl("tetration.jxl", plot4d(sqrt(2)^^z, z, 2), width = 12, height = 12, frames = 4)'
+plot4d of (sqrt(2))^^z
+the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real part of f(z) from -2.247 to 2.021; the colours: the imaginary part of f(z) from -3.866 to 3.866 (512 colours of the palette rainbow, the least value first)
+164 voxels of the box of 12 x 12 x 4 belong to the surface (28.47 %)
+saved tetration.jxl: JPEG XL, 12 x 12 pixels, 4 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossless, effort 10, 513 bytes
+```
 
 ## Syntax
 
@@ -2587,8 +2688,9 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **Tables of named columns, tables with times, values of a few kinds**: `istable`, `timetable`, `istimetable`, `height`, `width`, `head`, `tail`, `varnames`, `takerows`, `takevars`, `addvars`, `removevars`, `renamevars`, `movevars`, `topkrows`, `table2array` (`table2cell`), `array2table` (`cell2table`), `struct2table`, `table2struct`, `timetable2table`, `table2timetable`, `innerjoin`, `outerjoin`, `varfun`, `rowfun`, `groupsummary`, `groupcounts`, `summary`, `stack`, `unstack`, `readtable`, `writetable`, `isregular`, `lag`, `retime`, `synchronize`, `categorical`, `iscategorical`, `categories`, `countcats`, `isundefined`, `isordinal`, `iscategory`, `addcats`, `removecats`, `renamecats`, `reordercats`, `mergecats`, `setcats`, `grp2idx`, `cellstr`.
 - **More charts of data**: `bar3`, `histogram2`, `surfc` (`meshc`), `streamline`, `polarhistogram` (`rose`), `dendrogram`, `bubblechart`, `fimplicit3`, `isosurface`, `triplot`, `trisurf` (`trimesh`), `pareto`, `fill` (`patch`), `ribbon`, `normplot` (`qqplot`, `probplot`), `parallelplot`, `swarmchart`, `violinplot`, `histfit`, `gscatter`, `andrewsplot`, `bar3h`, `cdfplot`, `plotmatrix`, `stackedplot`, `biplot`, `silhouette`.
 - **Expressions as code, their shared parts, and as a picture of text**: `ccode`, `fortran`, `matlabcode` (`octavecode`), `matlabfunction`, `subexpr`, `cse`, `pretty`.
-- **Systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)**: `tf`, `zpk`, `ss`, `tfdata`, `zpkdata`, `ssdata`, `tf2sym`, `tf2ss`, `ss2tf`, `tf2zp` (`tf2zpk`), `zp2tf`, `ss2zp`, `zp2ss`, `isct`, `isdt`, `isproper`, `isstable`, `pole`, `zero` (`tzero`), `dcgain`, `damp`, `parallel`, `feedback`, `minreal`, `evalfr`, `freqresp`, `bode`, `nyquist`, `margin`, `allmargin`, `hinfnorm` (`getpeakgain`), `h2norm`, `step`, `impulse`, `lsim`, `stepinfo`, `c2d`, `d2c`, `pid`, `rlocus`, `esort`, `dsort`, `ctrb`, `obsv`, `lyap`, `dlyap`, `gram`, `care` (`icare`), `dare` (`idare`), `lqr`, `dlqr`, `lqe`, `acker`, `place`, `bodeplot`, `nyquistplot`, `pzplot` (`pzmap`), `rlocusplot`, `stepplot`, `impulseplot`.
+- **Systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)**: `tf`, `zpk`, `ss`, `tfdata`, `zpkdata`, `ssdata`, `tf2sym`, `tf2ss`, `ss2tf`, `tf2zp` (`tf2zpk`), `zp2tf`, `ss2zp`, `zp2ss`, `isct`, `isdt`, `isproper`, `isstable`, `pole`, `zero` (`tzero`), `dcgain`, `damp`, `parallel`, `feedback`, `minreal`, `evalfr`, `freqresp`, `bode` (`nichols`), `nyquist`, `margin`, `allmargin`, `hinfnorm` (`getpeakgain`), `h2norm`, `step`, `impulse`, `lsim`, `stepinfo`, `c2d`, `d2c`, `pid`, `rlocus`, `esort`, `dsort`, `ctrb`, `obsv`, `lyap`, `dlyap`, `gram`, `care` (`icare`), `dare` (`idare`), `lqr`, `dlqr`, `lqe`, `acker`, `place`, `hsvd`, `balreal`, `balred`, `covar`, `dlqe`, `lyapchol`, `dlyapchol`, `initial`, `gensig`, `lqi`, `ss2ss`, `ord2`, `d2d`, `reg`, `filt`, `bodeplot`, `nyquistplot`, `pzplot` (`pzmap`), `rlocusplot`, `stepplot`, `impulseplot`, `initialplot`, `nicholsplot`.
 - **Filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction**: `rectwin` (`boxcar`), `hann`, `hanning`, `hamming`, `blackman`, `blackmanharris`, `nuttallwin`, `flattopwin`, `triang`, `bohmanwin`, `parzenwin`, `gausswin`, `tukeywin`, `kaiser`, `chebwin`, `barthannwin`, `buttap`, `cheb1ap`, `cheb2ap`, `ellipap`, `besselap`, `butter`, `cheby1`, `cheby2`, `ellip`, `besself`, `buttord`, `cheb1ord`, `cheb2ord`, `ellipord`, `lp2lp`, `lp2hp`, `lp2bp`, `lp2bs`, `bilinear`, `iirnotch`, `iirpeak`, `fir1`, `kaiserord`, `sgolay`, `sgolayfilt`, `freqz`, `freqs`, `grpdelay`, `impz`, `stepz`, `filtfilt`, `sosfilt`, `sos2tf`, `tf2sos`, `zp2sos`, `isminphase`, `ismaxphase`, `islinphase`, `firtype`, `polystab`, `periodogram`, `pwelch`, `cpsd`, `mscohere`, `tfestimate`, `spectrogram`, `bandpower`, `rssq`, `peak2rms`, `enbw`, `mag2db` (`db`), `db2mag`, `pow2db`, `db2pow`, `rceps`, `goertzel`, `czt`, `dftmtx`, `cconv`, `envelope`, `findpeaks`, `medfilt1`, `upfirdn`, `decimate`, `buffer`, `xcov`, `levinson`, `aryule`, `arburg`, `lpc`, `poly2rc`, `rc2poly`, `sawtooth`, `rectpuls`, `tripuls`, `gauspuls`, `chirp`, `diric`, `zplane`.
+- **More of the design of filters: least squares, samples of the response, equal ripples, another rate, lattices, phases, delays**: `firls`, `firpm` (`remez`), `fir2`, `resample`, `phasez`, `phasedelay`, `zerophase`, `finddelay`, `dtw`, `residuez`, `tf2latc`, `latc2tf`, `latcfilt`, `fftfilt`, `filtic`.
 - **A function of a complex number as a shape of four dimensions: frames are the third, colours the fourth**: `plot4d`, `view4d` (`plot4dview`, `look4d`, `snapshot4d`).
 - **Quick looks: the commands that save, with small pictures that are packed fast**: `save_png_fast` (`savepngfast`), `save_jxl_fast` (`savejxlfast`), `save_fast` (`savefast`).
 - **The earth: ways on a sphere and on an ellipsoid. Angles are degrees unless "radians" is said last; an ellipsoid is [half axis, eccentricity], the radius of a sphere or a name like "wgs84" (metres); without one, lengths are arcs of the sphere in degrees**: `azimuth`, `reckon`, `haversine`, `geoddistance`, `geodreckon`, `geodarea`, `areaint`, `areaquad`, `departure`, `antipode`, `meanm`, `track2`, `track1`, `gcwaypts`, `scircle1`, `scircle2`, `legs`, `gc2sc`, `gcxgc`, `scxsc`, `gcxsc`, `rhxrh`, `interpm`.
@@ -2681,22 +2783,23 @@ are kept as names and have numeric values of any precision.
 
 `make test` runs the unit tests (number theory, iterates) and the integration tests, which
 run the program on fixed inputs: `tests/cli.rs` (with a stand-in `tet`, and with the real one
-when it is installed), `tests/iterates.rs` (fractional and complex iterates: closed forms,
+when it is installed; a drawing asks `tet` once for every place, many runs at a time), `tests/iterates.rs` (fractional and complex iterates: closed forms,
 values checked with other software, the law `f[s](f[t](x)) = f[s + t](x)`), `tests/round3.rs`
 (lists, statistics, distributions, transforms, special functions and more), `tests/round4.rs`
 (equations in one unknown and with quaternion unknowns, units, graphs, plots),
 `tests/round5.rs` (numbers in a base, walks, pictures of characters, saved pictures: PNG
 files byte for byte, JPEG XL files decoded and compared with them), `tests/help.rs` (every
-example of `--help` runs, and every function and constant has one) and `tests/coverage.rs`
-with the tables of `tests/coverage/`: more than 51000 inputs with their answers, among them
+example of `--help` runs, every function and constant has one, and every picture of `jxls/`
+stands there with its input, which runs with small sizes) and `tests/coverage.rs`
+with the tables of `tests/coverage/`: more than 52000 inputs with their answers, among them
 every name of every function, too few and too many arguments, numbers against exact
 arithmetic, functions against values of 25 digits from mpmath, identities of matrices, lists
 and polynomials, derivatives of integrals, texts, programs, refusals, what MATLAB has area by
 area, the shapes of four dimensions through every value of every choice, and the inputs
 whose answers agreed with other software (the tables `checked_by_*`). A test fails when a
 function has no row.
-What MATLAB has was compared with GNU Octave (more than 1100 cases), SciPy and NumPy (more
-than 1300 checks), python-control, statsmodels and scikit-learn, geographiclib, PROJ and
+What MATLAB has was compared with GNU Octave (more than 1200 cases), SciPy and NumPy (more
+than 1800 checks), python-control, statsmodels and scikit-learn, geographiclib, PROJ and
 pymap3d (more than 1200 cases) and mpmath while it was written; the scripts are not part of
 the repository.
 `make lint` checks the formatting and runs clippy with warnings as errors.
