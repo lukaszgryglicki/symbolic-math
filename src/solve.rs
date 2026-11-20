@@ -1487,6 +1487,12 @@ fn sort_key(r: &Root) -> (u8, Option<(bool, f64, f64)>, String) {
 
 /// Solves `f = 0` for `var`.
 pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
+    // (a factored form that simplification keeps from multiplying out is solved as what it says)
+    let open = crate::canon::map_bottom_up(given, &mut |x| match x.fn_arg("hold") {
+        Some(inner) => inner.clone(),
+        None => x,
+    });
+    let given = &open;
     let f = simplify::normal(given);
     if !f.has_sym(var) {
         return Ok(Solved {

@@ -184,7 +184,7 @@ fftshift||1|1|the halves of a list swapped, so that the middle of a transform co
 ifftshift||1|1|the inverse of fftshift
 dct||1|2|the discrete cosine transform (the second kind, with orthonormal waves)
 idct||1|2|the inverse of dct
-lfilter||3|3|lfilter(b, a, x): the output y of the filter a[1]*y[n] = b[1]*x[n] + b[2]*x[n-1] + ... - a[2]*y[n-1] - ...
+lfilter||2|3|lfilter(b, a, x): the output y of the filter a[1]*y[n] = b[1]*x[n] + b[2]*x[n-1] + ... - a[2]*y[n-1] - ...; lfilter(butter(2, 0.3), x): b and a as the pair that a function that makes filters gives
 conv2||2|3|conv2(A, B): the convolution of two matrices; conv2(A, B, "same"), conv2(A, B, "valid")
 xcorr||1|2|xcorr(x, y): the correlation of two lists at every shift, 2n - 1 values; xcorr(x): of x with itself
 upsample||2|2|upsample(x, n): n - 1 zeros after every entry
@@ -574,9 +574,10 @@ scatter3||1|*|scatter3([x values], [y values], [z values]): points of space
 surf|mesh|1|*|surf(matrix of heights) or surf([x values], [y values], matrix): a surface over a grid
 spy||1|*|spy(matrix): where the entries of a matrix are not zero
 boxplot||1|*|boxplot([values]) or boxplot([[values], ...]): boxes of the quartiles with whiskers and outliers
-imread||1|1|imread("picture.png"): the samples of a PNG or JPEG XL picture as a matrix (gray) or as a list of the matrices of its channels
+imread||1|2|imread("picture.png"): the samples of a PNG or JPEG XL picture as a matrix (gray) or as a list of the matrices of its channels; imread("moving.jxl", 3): of its third frame
+imframes||1|1|imframes("moving.jxl"): how many frames a PNG or JPEG XL picture has
 imwrite||2|3|imwrite(A, "picture.png"[, bits]): writes a matrix of numbers from 0 to 1 (or whole numbers up to 255 or 65535) as a gray picture, a list of 3 or 4 matrices as RGB or RGBA
-+matrixplot|imagesc imshow pcolor
++matrixplot|imagesc imshow pcolor image
 +plot|fplot ezplot
 +plot3d|fsurf fmesh ezsurf
 +implicitplot|fimplicit
@@ -712,7 +713,7 @@ signrank||1|3|signrank(x), signrank(x, y), signrank(x, m): [p, h] of Wilcoxon's 
 signtest||1|3|signtest(x), signtest(x, y), signtest(x, m): [p, h] of the test of signs that the median is 0, that of x - y is 0, or is m
 kruskalwallis||1|1|kruskalwallis([[group], [group], ...]): the probability that groups of one distribution have ranks as far apart
 friedman||1|1|friedman(matrix): the probability that columns alike differ as much by their ranks within the rows
-vartestn|bartlett|1|1|vartestn([[group], [group], ...]): the probability, by Bartlett's test, that groups of one variance differ as much
+vartestn|bartlett|1|1|vartestn([[group], [group], ...]): the probability, by Bartlett's test, that groups of one variance differ as much; bartlett(n) with a whole number: the triangle window of n values with zeros at its ends
 fishertest||1|1|fishertest([[a, b], [c, d]]): [h, p, odds ratio] of Fisher's exact test of a table of counts; p is a fraction
 chi2gof||2|3|chi2gof(counts, expected): [h, p, statistic] of the chi-square test that counts follow the expected counts or shares; chi2gof(counts, expected, k): with k parameters fitted
 kstest||1|2|kstest(x): [h, p, distance] of the Kolmogorov-Smirnov test that a sample is standard normal; kstest(x, distribution): that it has that distribution
@@ -891,7 +892,6 @@ violinplot||1|*|violinplot([values]) or violinplot([[values], ...]): the smooth 
 histfit||1|*|histfit([values][, bins]): the counts of the values in bins and the normal law of their mean and spread
 gscatter||3|*|gscatter([x values], [y values], [groups]): dots in the colour of their group
 andrewsplot||1|*|andrewsplot(matrix): every row as the curve x1/sqrt(2) + x2*sin(t) + x3*cos(t) + x4*sin(2t) + ... from -pi to pi
-+matrixplot|image
 +boxplot|boxchart
 +surf|surfl
 bar3h||1|*|bar3h(matrix of lengths): the bars of bar3 lying along x
@@ -918,12 +918,12 @@ tfdata||1|1|tfdata(system): [numerator, denominator], the highest power first
 zpkdata||1|1|zpkdata(system): [zeros, poles, gain]
 ssdata||1|1|ssdata(system): [A, B, C, D]
 tf2sym||1|1|tf2sym(system): its transfer function as an expression in s, or z for a sampled system
-tf2ss||2|2|tf2ss([numerator], [denominator]): [A, B, C, D] in the companion form that has the coefficients in the first row of A
+tf2ss||1|2|tf2ss([numerator], [denominator]): [A, B, C, D] in the companion form that has the coefficients in the first row of A
 ss2tf||4|4|ss2tf(A, B, C, D): [numerator, denominator] of C*inv(s*I - A)*B + D
-tf2zp|tf2zpk|2|2|tf2zp([numerator], [denominator]): [zeros, poles, gain]
-zp2tf||3|3|zp2tf([zeros], [poles], gain): [numerator, denominator]
+tf2zp|tf2zpk|1|2|tf2zp([numerator], [denominator]): [zeros, poles, gain]
+zp2tf||1|3|zp2tf([zeros], [poles], gain): [numerator, denominator]
 ss2zp||4|4|ss2zp(A, B, C, D): [zeros, poles, gain]
-zp2ss||3|3|zp2ss([zeros], [poles], gain): [A, B, C, D]
+zp2ss||1|3|zp2ss([zeros], [poles], gain): [A, B, C, D]
 isct||1|1|isct(system): whether its time runs (it is not sampled)
 isdt||1|1|isdt(system): whether it is sampled
 isproper||1|1|isproper(system): whether the numerator has no higher degree than the denominator
@@ -971,3 +971,106 @@ pzplot|pzmap|1|*|pzplot(system): a cross at every pole and a circle at every zer
 rlocusplot||1|*|rlocusplot(system[, [gains]]): where the poles of the closed loop go as the gain grows from 0: from the poles (crosses) to the zeros (circles) or away without end
 stepplot||1|*|stepplot(system[, the last time]): the answer to a step along the time (for a sampled system: the number of samples)
 impulseplot||1|*|impulseplot(system[, the last time]): the answer to an impulse along the time (for a sampled system: the number of samples)
+# filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction
+rectwin|boxcar|1|2|rectwin(n): the window of n ones
+hann||1|2|hann(n): the window 0.5 - 0.5*cos(2*pi*k/(n - 1)), zero at both ends; hann(n, "periodic"): the first n values of the window of n + 1
+hanning||1|2|hanning(n): the window of Hann without its zeros at the ends, 0.5 - 0.5*cos(2*pi*k/(n + 1)) for k = 1..n
+hamming||1|2|hamming(n): the window 0.54 - 0.46*cos(2*pi*k/(n - 1)); hamming(n, "periodic")
+blackman||1|2|blackman(n): the window 0.42 - 0.5*cos(2*pi*k/(n - 1)) + 0.08*cos(4*pi*k/(n - 1)); blackman(n, "periodic")
+blackmanharris||1|2|blackmanharris(n): the window of four cosines whose side lobes are 92 dB down
+nuttallwin||1|2|nuttallwin(n): Nuttall's window of four cosines
+flattopwin||1|2|flattopwin(n): the window of five cosines with a flat top, for reading the heights of peaks of a spectrum
+triang||1|2|triang(n): the triangle without zeros at its ends
+bohmanwin||1|2|bohmanwin(n): Bohman's window (1 - |x|)*cos(pi*|x|) + sin(pi*|x|)/pi for x from -1 to 1
+parzenwin||1|2|parzenwin(n): the window of de la Vallee Poussin, pieces of cubic curves
+gausswin||1|2|gausswin(n, alpha): the bell e^(-(alpha*x)^2/2) for x from -1 to 1; alpha is 2.5 unless given
+tukeywin||1|2|tukeywin(n, r): flat in the middle, a cosine on the share r of the length at the ends (r = 0.5 unless given; 0 a rectangle, 1 a Hann window)
+kaiser||1|2|kaiser(n, beta): the window of Kaiser, I0(beta*sqrt(1 - x^2))/I0(beta) for x from -1 to 1; beta is 0.5 unless given
+chebwin||1|2|chebwin(n, r): the window of Dolph and Chebyshev whose side lobes are all r dB down (100 unless given)
+barthannwin||1|2|barthannwin(n): the window of Bartlett and Hann, 0.62 - 0.48*|x| + 0.38*cos(2*pi*x) for x from -1/2 to 1/2
+buttap||1|1|buttap(n): [zeros, poles, gain] of Butterworth's lowpass of order n with the edge 1 rad/s
+cheb1ap||2|2|cheb1ap(n, Rp): [zeros, poles, gain] of Chebyshev's lowpass with Rp dB of ripple in the passband, edge 1
+cheb2ap||2|2|cheb2ap(n, Rs): [zeros, poles, gain] of Chebyshev's lowpass of the second kind, whose stopband begins at 1 and is Rs dB down
+ellipap||3|3|ellipap(n, Rp, Rs): [zeros, poles, gain] of Cauer's (elliptic) lowpass: Rp dB of ripple up to 1, Rs dB down in the stopband
+besselap||1|1|besselap(n): [zeros, poles, gain] of Bessel's lowpass, whose delay is as flat as it can be; the product of the poles is 1
+butter||2|4|butter(n, Wn): [b, a] of Butterworth's sampled lowpass of order n, 3 dB down at Wn (a share of half the sampling rate); butter(n, [w1, w2]): a bandpass; with "high", "stop"; with "s" a filter of running time, Wn in rad/s
+cheby1||3|5|cheby1(n, Rp, Wp): [b, a] of Chebyshev's filter with Rp dB of ripple in its passband, which ends at Wp; with "high", [w1, w2], "stop", "s" as butter
+cheby2||3|5|cheby2(n, Rs, Ws): [b, a] of Chebyshev's filter of the second kind, flat in the passband and Rs dB down from Ws on; the other arguments as butter
+ellip||4|6|ellip(n, Rp, Rs, Wp): [b, a] of Cauer's (elliptic) filter: Rp dB of ripple up to Wp, Rs dB down in the stopband; the other arguments as butter
+besself||2|3|besself(n, Wo): [b, a] of Bessel's filter of running time with the frequency Wo in rad/s; with "high", [w1, w2], "stop"
+buttord||4|5|buttord(Wp, Ws, Rp, Rs): [the least order, Wn] of a Butterworth filter that loses Rp dB at most up to Wp and Rs dB at least from Ws on; "s" for running time
+cheb1ord||4|5|cheb1ord(Wp, Ws, Rp, Rs): [the least order, Wp] for cheby1
+cheb2ord||4|5|cheb2ord(Wp, Ws, Rp, Rs): [the least order, Ws] for cheby2
+ellipord||4|5|ellipord(Wp, Ws, Rp, Rs): [the least order, Wp] for ellip
+lp2lp||2|3|lp2lp(b, a, Wo): [b, a] of the lowpass of edge 1 moved to the edge Wo
+lp2hp||2|3|lp2hp(b, a, Wo): [b, a] of the highpass with the edge Wo made of a lowpass of edge 1
+lp2bp||3|4|lp2bp(b, a, Wo, Bw): [b, a] of the bandpass around Wo of the width Bw made of a lowpass of edge 1
+lp2bs||3|4|lp2bs(b, a, Wo, Bw): [b, a] of the bandstop around Wo of the width Bw made of a lowpass of edge 1
+bilinear||2|3|bilinear(b, a, fs): [b, a] of the sampled filter for one of running time, by s = 2*fs*(z - 1)/(z + 1)
+iirnotch||2|2|iirnotch(w0, bw): [b, a] of the filter of second order that takes out the frequency w0, 3 dB down over the width bw (shares of half the sampling rate)
+iirpeak||2|2|iirpeak(w0, bw): [b, a] of the filter of second order that passes the frequency w0 alone
+fir1||2|5|fir1(n, Wn): the n + 1 coefficients of a lowpass by a Hamming window; fir1(n, [w1, w2]): a bandpass; with "high", "stop", a window (a name or n + 1 values), "noscale"
+kaiserord||3|4|kaiserord([band edges], [amplitudes], [deviations][, fs]): [order, Wn, beta, kind] for fir1 with a Kaiser window that keeps within the deviations
+sgolay||2|2|sgolay(order, framelen): the matrix whose rows fit a polynomial of that order to framelen values and give its value at every place (Savitzky and Golay)
+sgolayfilt||3|3|sgolayfilt(x, order, framelen): every value by the polynomial fitted to the framelen values around it
+freqz||1|3|freqz(b, a, n): [H, w]: the response B(e^(-iw))/A(e^(-iw)) of a sampled filter at n frequencies from 0 up to pi (512 unless given); freqz(b, a, [w]): at those
+freqs||2|3|freqs(b, a, [w]): the response B(iw)/A(iw) of a filter of running time
+grpdelay||1|3|grpdelay(b, a, n): [delays, w]: the delay of the envelope in samples, the slope of the phase turned round
+impz||1|3|impz(b, a, n): the first n values of the answer of a sampled filter to one 1 (20 unless given; of a filter without a: its coefficients)
+stepz||1|3|stepz(b, a, n): the first n values of its answer to ones
+filtfilt||2|3|filtfilt(b, a, x): x through the filter forwards and backwards: no shift of the phase, the squared gain; filtfilt(butter(2, 0.3), x): with the pair [b, a] as one value, as everywhere a filter is taken
+sosfilt||2|2|sosfilt(sections, x): x through sections of second order [b0, b1, b2, a0, a1, a2], one after the other
+sos2tf||1|2|sos2tf(sections[, gain]): [b, a] of the product of the sections
+tf2sos||1|2|tf2sos(b, a): [sections, gain]: the filter as sections of second order, every pair of poles with its nearest zeros, the poles nearest to the unit circle last
+zp2sos||1|3|zp2sos(zeros, poles, gain): [sections, gain]; zp2sos(buttap(4)): with the three as one value
+isminphase||1|2|isminphase(b, a): whether every zero lies inside the unit circle or on it, and every pole inside
+ismaxphase||1|2|ismaxphase(b, a): whether every zero lies outside the unit circle or on it, and every pole inside
+islinphase||1|2|islinphase(b, a): whether the filter delays every frequency alike: no a, and b a mirror of itself
+firtype||1|1|firtype(b): the kind 1 to 4 of a filter with linear phase: even or odd symmetry, odd or even length
+polystab||1|1|polystab(a): the polynomial with every zero outside the unit circle turned to the inside
+periodogram||1|4|periodogram(x, window, nfft, fs): [Pxx, f]: the power of x over the frequencies up to half the sampling rate, from one transform; without fs per rad/sample over 0..pi
+pwelch||1|5|pwelch(x, window, noverlap, nfft, fs): [Pxx, f] by Welch: the mean of the periodograms of overlapping pieces (unless given: Hamming pieces of 2/9 of the data, half shared)
+cpsd||2|6|cpsd(x, y, window, noverlap, nfft, fs): [Pxy, f]: the cross spectrum of two signals by Welch's pieces
+mscohere||2|6|mscohere(x, y, window, noverlap, nfft, fs): [Cxy, f]: |Pxy|^2/(Pxx*Pyy), from 0 to 1 how well one signal follows the other at every frequency
+tfestimate||2|6|tfestimate(x, y, window, noverlap, nfft, fs): [Txy, f]: the transfer from x to y, conj(Pxy)/Pxx
+spectrogram||1|4|spectrogram(x, window, noverlap, nfft): the transforms of overlapping pieces, a row for every frequency up to half the sampling rate, a column for every piece
+bandpower||1|1|bandpower(x): the mean of the squares of a signal
+rssq||1|1|rssq(x): the root of the sum of the squares
+peak2rms||1|1|peak2rms(x): the largest absolute value over the root of the mean of the squares
+enbw||1|2|enbw(window[, fs]): the width of the rectangle that passes as much noise as the window, in bins of the transform (in Hz with fs)
+mag2db|db|1|1|mag2db(x): 20*log10(|x|)
+db2mag||1|1|db2mag(x): 10^(x/20)
+pow2db||1|1|pow2db(x): 10*log10(x)
+db2pow||1|1|db2pow(x): 10^(x/10)
+rceps||1|1|rceps(x): the real cepstrum, the inverse transform of ln|fft(x)|
+goertzel||2|2|goertzel(x, k or [k]): the entries k of fft(x), each by a sum of its own
+czt||1|4|czt(x, m, w, a): the z-transform of x at the m points a*w^(-k) (unless given: the unit circle once, as fft)
+dftmtx||1|1|dftmtx(n): the matrix whose product with a column is its fft
+cconv||2|3|cconv(a, b, n): the convolution of two lists around a circle of n places
+envelope||1|1|envelope(x): [upper, lower]: the mean plus and minus the size of the analytic signal of what is left
+findpeaks||1|*|findpeaks(x): [values, places] of the entries above both neighbours; with "MinPeakHeight", h, "Threshold", t, "MinPeakProminence", p, "MinPeakDistance", d, "NPeaks", n, "SortStr", "descend"
+medfilt1||1|2|medfilt1(x, n): every value replaced by the median of the n values around it (3 unless given; zeros beyond the ends)
+upfirdn||2|4|upfirdn(x, h, p, q): p - 1 zeros after every value, the filter h, then every q-th value
+decimate||2|3|decimate(x, r, n): every r-th value after a Chebyshev lowpass of order n (8 unless given) both ways
+buffer||2|3|buffer(x, n, p): the matrix whose columns are frames of n values, each sharing p values with the one before
+xcov||1|2|xcov(x, y): the correlation at every shift of two lists without their means
+levinson||1|2|levinson(r, p): [a, e, k]: the predictor of order p for the autocorrelations r by the recursion of Levinson and Durbin, the power of its error, the reflections
+aryule||2|2|aryule(x, p): [a, e, k]: the autoregressive model of order p by the equations of Yule and Walker
+arburg||2|2|arburg(x, p): [a, e, k]: the autoregressive model of order p by Burg's method
+lpc||2|2|lpc(x, p): [a, g]: the linear predictor of order p and the power of its error
+poly2rc||1|1|poly2rc(a): the reflections of a predictor polynomial
+rc2poly||1|1|rc2poly(k): the predictor polynomial of reflections
+sawtooth||1|2|sawtooth(t, width): the sawtooth of period 2*pi between -1 and 1; the top at the share width of the period (1 unless given; 1/2 gives a triangle)
+rectpuls||1|2|rectpuls(t, w): 1 for t from -w/2 up to w/2, else 0 (w = 1 unless given)
+tripuls||1|3|tripuls(t, w, s): the triangle of width w and height 1 around 0; s from -1 to 1 moves its top
+gauspuls||3|3|gauspuls(t, fc, bw): a cosine of the frequency fc under a bell, with the share bw of fc as its band
+chirp||4|5|chirp(t, f0, t1, f1[, "linear" | "quadratic" | "logarithmic"]): a cosine whose frequency goes from f0 at 0 to f1 at t1
+diric||2|2|diric(x, n): Dirichlet's kernel sin(n*x/2)/(n*sin(x/2))
+!hilbert|1|1|hilbert(n): the Hilbert matrix; hilbert([x]): the analytic signal of a list, whose imaginary part is its Hilbert transform
+zplane||1|*|zplane(b, a): the zeros (circles) and the poles (crosses) of a sampled filter, with the unit circle
+# a function of a complex number as a shape of four dimensions: frames are the third, colours the fourth
+plot4d||1|*|plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b as a shape of four dimensions: the real and the imaginary part of z and of f(z) lie on the width, the height, the frames and the colours of a picture (arg_real = width, arg_imag = height, val_real = frame, val_imag = color unless chosen otherwise: any of the four on any side); save_jxl("name.jxl", plot4d(sin(z))) saves the frames, whose alpha says where the shape is; plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i, the name z may be left out, f may be a text; chosen with name = value: width, height, frames, colors (512 each), palette (a name or colours), range_real = [least, greatest], range_imag, fill = surface | below | above, thickness, rotate = [yaw, pitch, roll] or rotate(yaw, pitch, roll) (degrees that the body is turned), bits, effort, quality, distance, fps (16), and the words gray, reverse and normalize (every frame stretched on its own: what it holds fills the picture and takes the whole palette); as a statement: the frame in the middle as characters
+# quick looks: the commands that save, with small pictures that are packed fast
+save_png_fast|savepngfast|1|*|save_png_fast("name.png", drawing, choices): save_png for a quick look: 256 pixels wide unless a width is chosen (plot4d: 256 x 256 pixels, 256 frames, 256 colours) and packed fast (level = 1); every choice of save_png may be given
+save_jxl_fast|savejxlfast|1|*|save_jxl_fast("name.jxl", drawing, choices): save_jxl for a quick look: 256 pixels wide (plot4d: 256 x 256 pixels, 256 frames, 256 colours), lossy at the distance 1 unless lossless, quality or distance is chosen (alpha stays exact), effort = 3; every choice of save_jxl may be given
+save_fast|savefast|2|*|save_fast("name.png", drawing, choices) or save_fast("name.jxl", ...): save_png_fast or save_jxl_fast by the end of the name

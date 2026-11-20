@@ -1802,7 +1802,7 @@ fn biplot(a: &[Expr]) -> Result<Drawing, String> {
 pub fn is_control_chart(name: &str) -> bool {
     matches!(
         name,
-        "bodeplot" | "nyquistplot" | "pzplot" | "rlocusplot" | "stepplot" | "impulseplot"
+        "bodeplot" | "nyquistplot" | "pzplot" | "rlocusplot" | "stepplot" | "impulseplot" | "zplane"
     )
 }
 
@@ -2144,7 +2144,7 @@ pub fn build(name: &str, a: &[Expr], detail: usize) -> Result<Drawing, String> {
     match name {
         "bodeplot" => bodeplot(a),
         "nyquistplot" => nyquistplot(a),
-        "pzplot" => pzplot(a),
+        "pzplot" | "zplane" => pzplot(a),
         "rlocusplot" => rlocusplot(a),
         "stepplot" | "impulseplot" => answerplot(name, a),
         "bar3" => bar3(a),

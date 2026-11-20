@@ -125,6 +125,7 @@ fn write_picture(data: &Expr, file: &Expr, bits: Option<&Expr>) -> Result<Vec<St
         distance: None,
         effort: 7,
         rate: (1, 1),
+        alpha_bits: None,
     };
     let bytes = encode(1, &mut |_| Ok(image.clone()), &encoding)?;
     write(path, &bytes)?;
@@ -147,11 +148,16 @@ fn write_picture(data: &Expr, file: &Expr, bits: Option<&Expr>) -> Result<Vec<St
 }
 
 /// `imread("picture.png")`: the samples as whole numbers; a gray picture is one matrix, a
-/// picture with more channels the list of their matrices.
-fn read_picture(file: &Expr) -> Res {
-    let path =
-        crate::radix::text_of(file).ok_or("imread(\"picture.png\") or imread(\"picture.jxl\")")?;
-    let p = crate::imgfile::read(path).map_err(|e| format!("imread: {e}"))?;
+/// picture with more channels the list of their matrices. `frame`: which frame of a moving
+/// picture, the first one is 1.
+fn read_picture(file: &Expr, frame: Option<&Expr>) -> Res {
+    let usage = "imread(\"picture.png\") or imread(\"picture.jxl\"); imread(\"picture.jxl\", 3): the third frame";
+    let path = crate::radix::text_of(file).ok_or(usage)?;
+    let frame = match frame {
+        None => 0,
+        Some(k) => k.as_i64().filter(|k| *k >= 1).ok_or(usage)? as usize - 1,
+    };
+    let p = crate::imgfile::read_frame(path, frame).map_err(|e| format!("imread: {e}"))?;
     let plane = |k: usize| -> Expr {
         Expr::list(
             (0..p.height)
@@ -1955,7 +1961,13 @@ impl Session {
                 }
             }
             ("readmatrix", 1) => self.read_matrix(&a[0]),
-            ("imread", 1) => read_picture(&a[0]),
+            ("imread", 1 | 2) => read_picture(&a[0], a.get(1)),
+            ("imframes", 1) => match crate::radix::text_of(&a[0]) {
+                Some(path) => crate::imgfile::frames(path)
+                    .map(|count| Expr::int(count as i64))
+                    .map_err(|e| format!("imframes: {e}")),
+                None => Err("imframes(\"picture.jxl\"): how many frames the picture has".into()),
+            },
             ("tic", 0) => {
                 STARTED.with(|s| s.set(Some(std::time::Instant::now())));
                 Ok(Expr::Bool(true))

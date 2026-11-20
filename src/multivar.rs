@@ -695,6 +695,10 @@ fn normal_inverse(u: &Float) -> Float {
         1.0,
     ];
     let p = u.prec();
+    // (the upper half by the lower one: a share near 1 is known by what it lacks)
+    if *u > 0.5 {
+        return -normal_inverse(&Float::with_val(p, 1u32 - u));
+    }
     let curve = |c: &[f64], x: &Float| c.iter().fold(Float::new(p), |s, k| s * x + *k);
     let tail = |share: Float| -> Float {
         let q = (share.ln() * -2i32).sqrt();
@@ -702,8 +706,6 @@ fn normal_inverse(u: &Float) -> Float {
     };
     let mut x = if *u < 0.02425 {
         tail(u.clone())
-    } else if *u > 1.0 - 0.02425 {
-        -tail(Float::with_val(p, 1u32 - u))
     } else {
         let q = Float::with_val(p, u - 0.5f64);
         let r = Float::with_val(p, q.square_ref());
@@ -1901,9 +1903,11 @@ mod tests {
         let p = 64;
         for u in [1e-12, 0.001, 0.02, 0.3, 0.5, 0.77, 0.99, 1.0 - 1e-9] {
             let u = Float::with_val(p, u);
-            let z = Complex::with_val(p, (Float::with_val(p, &u * 2u32) - 1u32, 0));
-            let sure = crate::zetas::call("erfinv", &[z], p).unwrap().unwrap();
-            let sure = Float::with_val(p, sure.real() * Float::with_val(p, 2).sqrt());
+            // (2u - 1 keeps a share near 0 only with more bits)
+            let wide = 4 * p;
+            let z = Complex::with_val(wide, (Float::with_val(wide, &u * 2u32) - 1u32, 0));
+            let sure = crate::zetas::call("erfinv", &[z], wide).unwrap().unwrap();
+            let sure = Float::with_val(p, sure.real() * Float::with_val(wide, 2).sqrt());
             let off = Float::with_val(p, normal_inverse(&u) - &sure).abs();
             assert!(off < 1e-13, "{u}: {off}");
         }

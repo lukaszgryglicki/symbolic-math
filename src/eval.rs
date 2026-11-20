@@ -226,8 +226,11 @@ impl Session {
                 let args = self.eval_args(a)?;
                 return Ok((Expr::Bool(true), self.shown(n, &args)?));
             }
+            Expr::Fn(n, a) if &**n == "plot4d" => {
+                return Ok((Expr::Bool(true), self.plot4d(a, &[], None)?));
+            }
             Expr::Fn(n, a) if crate::picture::is_drawing(n) => {
-                let (drawing, choices) = self.drawing(n, a, &[], false)?;
+                let (drawing, choices) = self.drawing(n, a, &[], false, false)?;
                 let lines = crate::picture::show(n, &drawing, &choices)?;
                 return Ok((Expr::Bool(true), lines));
             }
@@ -1583,18 +1586,34 @@ impl Session {
         Ok(answer.value)
     }
 
-    /// The drawing of a command with what is chosen for its picture, in its own arguments
-    /// and in those of the command that saves it. `pixels`: for a picture of pixels.
-    fn drawing(
+    /// The arguments of a command that draws, as they were written, apart from what is chosen
+    /// for its picture there and in the arguments `more` of the command that saves it.
+    pub(crate) fn chosen(
         &mut self,
         name: &str,
         raw: &[Expr],
         more: &[Expr],
-        pixels: bool,
-    ) -> Result<(crate::scene::Drawing, crate::picture::Choices), String> {
+    ) -> Result<(Vec<Expr>, crate::picture::Choices), String> {
         let mut choices = crate::picture::Choices::default();
         let mut plain = Vec::new();
         for (k, arg) in raw.iter().chain(more).enumerate() {
+            // rotate(yaw, pitch, roll) after a drawing, or in plot4d: its body is turned
+            if let Expr::Fn(f, angles) = arg
+                && &**f == "rotate"
+                && (1..=3).contains(&angles.len())
+                && (k >= raw.len() || name == "plot4d")
+            {
+                let angles = self.eval_all(angles)?;
+                if angles.iter().all(|v| crate::plot::number(v).is_some()) {
+                    choices.set("rotate", Some(&Expr::list(angles)))?;
+                    continue;
+                }
+            }
+            if matches!(arg, Expr::Fn(f, _) if &**f == "rotate") && (k >= raw.len() || name == "plot4d") {
+                return Err(format!(
+                    "rotate(yaw, pitch, roll) takes one to three numbers: the degrees that the body of plot4d is turned about its upright axis, about its width and about its frames; not {arg}"
+                ));
+            }
             match crate::picture::choice(arg) {
                 Some((option, value)) => {
                     let value = match value {
@@ -1610,7 +1629,7 @@ impl Session {
                 }
                 None => {
                     // (a name that is no choice is a slip of the pen where no equation stands)
-                    if crate::walks::is_walk(name)
+                    if (crate::walks::is_walk(name) || name == "plot4d")
                         && matches!(arg, Expr::Rel(crate::expr::Rel::Eq, l, _) if l.sym_name().is_some())
                         && let Some(why) = crate::picture::stray(arg)
                     {
@@ -1620,6 +1639,21 @@ impl Session {
                 }
             }
         }
+        Ok((plain, choices))
+    }
+
+    /// The drawing of a command with what is chosen for its picture, in its own arguments
+    /// and in those of the command that saves it. `pixels`: for a picture of pixels.
+    fn drawing(
+        &mut self,
+        name: &str,
+        raw: &[Expr],
+        more: &[Expr],
+        pixels: bool,
+        fast: bool,
+    ) -> Result<(crate::scene::Drawing, crate::picture::Choices), String> {
+        let (plain, mut choices) = self.chosen(name, raw, more)?;
+        choices.fast = fast;
         let args = self.eval_args(&plain)?;
         let args = match crate::morecharts::is_control_chart(name) {
             true => self.control_chart(name, &args)?,
@@ -1643,14 +1677,24 @@ impl Session {
     fn save(&mut self, name: &str, raw: &[Expr]) -> Result<Vec<String>, String> {
         let usage = || {
             format!(
-                "{name}(\"name\", drawing, choices): {name}(\"walk.{}\", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot",
-                if name == "save_jxl" { "jxl" } else { "png" }
+                "{name}(\"name\", drawing, choices): {name}(\"walk.{}\", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; {name}(drawing) takes the name of the drawing for the file",
+                if name.starts_with("save_jxl") { "jxl" } else { "png" }
             )
         };
-        let [path, drawn, more @ ..] = raw else {
-            return Err(usage());
+        let fast = name.ends_with("_fast");
+        let known = |e: &Expr| {
+            matches!(e, Expr::Fn(command, _)
+                if crate::picture::is_drawing(command) || crate::plot::is_plot(command))
         };
-        let path = self.eval(path)?;
+        let (path, drawn, more) = match raw {
+            // a drawing without a name is saved under its own
+            [drawn @ Expr::Fn(command, _), more @ ..] if known(drawn) && !name.starts_with("save_fast") && name != "save" => {
+                let end = if name.starts_with("save_jxl") { "jxl" } else { "png" };
+                (crate::texts::text(&format!("{command}.{end}")), drawn, more)
+            }
+            [path, drawn, more @ ..] => (self.eval(path)?, drawn, more),
+            _ => return Err(usage()),
+        };
         let path = crate::radix::text_of(&path)
             .ok_or_else(|| {
                 format!(
@@ -1666,7 +1710,10 @@ impl Session {
         if !crate::picture::is_drawing(command) && !crate::plot::is_plot(command) {
             return Err(usage());
         }
-        let (drawing, choices) = self.drawing(command, args, more, true)?;
+        if &**command == "plot4d" {
+            return self.plot4d(args, more, Some((&path, format, fast)));
+        }
+        let (drawing, choices) = self.drawing(command, args, more, true, fast)?;
         crate::picture::save(&path, format, &drawing, &choices)
     }
 
@@ -2005,7 +2052,13 @@ impl Session {
             return Ok(crate::quat::make([x, y, z, w]));
         }
         let digits = numeric::digits();
+        if let Some(parts) = crate::sigdesign::apart(name, &a) {
+            return self.call(name, &parts?);
+        }
         if let Some(r) = self.control(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.sigdesign(name, &a) {
             return r;
         }
         if let Some(r) = self.table_function(name, &a) {

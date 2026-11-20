@@ -60,7 +60,7 @@ fn radix2(x: &mut [Complex], inverse: bool, prec: u32) {
 }
 
 /// The sums `y[k] = sum x[j] w^(jk)` for any number of points; not divided by n.
-fn dft(x: &[Complex], inverse: bool, prec: u32) -> Vec<Complex> {
+pub(crate) fn dft(x: &[Complex], inverse: bool, prec: u32) -> Vec<Complex> {
     let n = x.len();
     if n.is_power_of_two() {
         let mut y = x.to_vec();

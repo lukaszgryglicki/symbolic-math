@@ -65,6 +65,8 @@ pub struct Encoding {
     pub effort: u8,
     /// Frames a second, as a fraction.
     pub rate: (u32, u32),
+    /// JPEG XL: the bits of the alpha channel when they are fewer than those of the colours.
+    pub alpha_bits: Option<u32>,
 }
 
 /// The frames of a picture, one after the other.
@@ -108,27 +110,70 @@ pub struct Pixels {
 
 /// The first frame of a PNG or a JPEG XL file.
 pub fn read(path: &str) -> Result<Pixels, String> {
+    read_frame(path, 0)
+}
+
+/// The bytes of a picture file and its kind.
+fn opened(path: &str) -> Result<(Vec<u8>, Format), String> {
     crate::sandbox::allowed(path)?;
     let bytes = std::fs::read(path).map_err(|e| format!("{path}: {e}"))?;
     let jxl_box = [0, 0, 0, 0x0c, b'J', b'X', b'L', b' '];
     if bytes.starts_with(&[0x89, b'P', b'N', b'G']) {
-        png_pixels(&bytes).map_err(|e| format!("{path}: {e}"))
+        Ok((bytes, Format::Png))
     } else if bytes.starts_with(&[0xff, 0x0a]) || bytes.starts_with(&jxl_box) {
-        jxl_pixels(&bytes).map_err(|e| format!("{path}: {e}"))
+        Ok((bytes, Format::Jxl))
     } else {
         Err(format!("{path} is neither a PNG nor a JPEG XL file"))
     }
 }
 
-fn png_pixels(bytes: &[u8]) -> Result<Pixels, String> {
+/// A frame of a PNG or a JPEG XL file: 0 is the first one.
+pub fn read_frame(path: &str, frame: usize) -> Result<Pixels, String> {
+    let (bytes, format) = opened(path)?;
+    match format {
+        Format::Png => png_pixels(&bytes, frame),
+        Format::Jxl => jxl_pixels(&bytes, frame),
+    }
+    .map_err(|e| format!("{path}: {e}"))
+}
+
+/// How many frames a PNG or a JPEG XL file has.
+pub fn frames(path: &str) -> Result<usize, String> {
+    let (bytes, format) = opened(path)?;
+    match format {
+        Format::Png => png::Decoder::new(std::io::Cursor::new(&bytes))
+            .read_info()
+            .map(|reader| reader.info().animation_control().map_or(1, |a| a.num_frames as usize))
+            .map_err(|e| e.to_string()),
+        Format::Jxl => jxl_frames_of(&bytes),
+    }
+    .map_err(|e| format!("{path}: {e}"))
+}
+
+fn no_frame(frame: usize, count: usize) -> String {
+    format!(
+        "the file has {count} frame{}, no frame {}",
+        if count == 1 { "" } else { "s" },
+        frame + 1
+    )
+}
+
+fn png_pixels(bytes: &[u8], frame: usize) -> Result<Pixels, String> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(bytes));
     decoder.set_transformations(png::Transformations::EXPAND);
     let mut reader = decoder.read_info().map_err(|e| e.to_string())?;
+    let count = reader.info().animation_control().map_or(1, |a| a.num_frames as usize);
+    if frame >= count {
+        return Err(no_frame(frame, count));
+    }
     let size = reader
         .output_buffer_size()
         .ok_or("the PNG file is too large")?;
     let mut buffer = vec![0; size];
-    let info = reader.next_frame(&mut buffer).map_err(|e| e.to_string())?;
+    let mut info = reader.next_frame(&mut buffer).map_err(|e| e.to_string())?;
+    for _ in 0..frame {
+        info = reader.next_frame(&mut buffer).map_err(|e| e.to_string())?;
+    }
     let data = &buffer[..info.buffer_size()];
     let channels = match info.color_type {
         png::ColorType::Grayscale => 1,
@@ -167,7 +212,31 @@ impl Drop for Decoder {
     }
 }
 
-fn jxl_pixels(bytes: &[u8]) -> Result<Pixels, String> {
+/// The frames of a JPEG XL file, counted without their pixels.
+fn jxl_frames_of(bytes: &[u8]) -> Result<usize, String> {
+    use jxl::JxlDecoderStatus as Status;
+    let failed = || "the JPEG XL file cannot be read".to_string();
+    unsafe {
+        let decoder = Decoder(jxl::JxlDecoderCreate(ptr::null()));
+        if decoder.0.is_null()
+            || jxl::JxlDecoderSubscribeEvents(decoder.0, Status::JXL_DEC_FRAME as i32) != Status::JXL_DEC_SUCCESS
+            || jxl::JxlDecoderSetInput(decoder.0, bytes.as_ptr(), bytes.len()) != Status::JXL_DEC_SUCCESS
+        {
+            return Err(failed());
+        }
+        jxl::JxlDecoderCloseInput(decoder.0);
+        let mut count = 0;
+        loop {
+            match jxl::JxlDecoderProcessInput(decoder.0) {
+                Status::JXL_DEC_FRAME => count += 1,
+                Status::JXL_DEC_SUCCESS => return Ok(count),
+                _ => return Err(failed()),
+            }
+        }
+    }
+}
+
+fn jxl_pixels(bytes: &[u8], frame: usize) -> Result<Pixels, String> {
     use jxl::JxlDecoderStatus as Status;
     let failed = || "the JPEG XL file cannot be read".to_string();
     unsafe {
@@ -183,6 +252,7 @@ fn jxl_pixels(bytes: &[u8]) -> Result<Pixels, String> {
             return Err(failed());
         }
         jxl::JxlDecoderCloseInput(decoder.0);
+        jxl::JxlDecoderSkipFrames(decoder.0, frame);
         let mut shape: Option<(usize, usize, usize, u32)> = None;
         let mut buffer: Vec<u16> = Vec::new();
         let mut format = jxl::JxlPixelFormat {
@@ -233,6 +303,9 @@ fn jxl_pixels(bytes: &[u8]) -> Result<Pixels, String> {
             }
         }
         let (width, height, channels, bits) = shape.ok_or_else(failed)?;
+        if buffer.is_empty() && frame > 0 {
+            return Err(no_frame(frame, jxl_frames_of(bytes)?));
+        }
         if buffer.len() < width * height * channels {
             return Err(failed());
         }
@@ -404,169 +477,190 @@ fn levels(samples: &[f32], bits: u32) -> Vec<u8> {
     out
 }
 
-fn jxl_file(count: usize, frames: Frames, e: &Encoding, threads: usize) -> Result<Vec<u8>, String> {
-    if !(1..=16).contains(&e.bits) {
-        return Err(format!(
-            "a JPEG XL file of this program has 1 to 16 bits a sample, not {}",
-            e.bits
-        ));
-    }
-    let first = next(0, frames, None)?;
-    let (width, height) = (
-        u32::try_from(first.width).map_err(|_| "the picture is too wide")?,
-        u32::try_from(first.height).map_err(|_| "the picture is too high")?,
-    );
-    let lossless = e.distance.is_none();
-    let extra = usize::from(first.alpha) + usize::from(first.depth.is_some());
-    let data_type = if e.bits > 8 {
-        jxl::JxlDataType::JXL_TYPE_UINT16
-    } else {
-        jxl::JxlDataType::JXL_TYPE_UINT8
-    };
-    let format = |channels: usize| jxl::JxlPixelFormat {
-        num_channels: channels as u32,
-        data_type,
-        endianness: jxl::JxlEndianness::JXL_NATIVE_ENDIAN,
-        align: 0,
-    };
-    let mut out = Vec::new();
-    unsafe {
-        let encoder = jxl::JxlEncoderCreate(ptr::null());
-        if encoder.is_null() {
-            return Err("JPEG XL: no encoder".to_string());
-        }
-        let mut j = Jxl {
-            encoder,
-            runner: ptr::null_mut(),
-        };
-        if threads > 0 {
-            j.runner = jxl::JxlThreadParallelRunnerCreate(ptr::null(), threads);
-            if j.runner.is_null() {
-                return Err("JPEG XL: no threads".to_string());
+/// An encoder with the layout of a picture: frames go in, their bytes come out.
+struct Stream {
+    j: Jxl,
+    settings: *mut jxl::JxlEncoderFrameSettings,
+    bits: u32,
+    moving: bool,
+}
+
+impl Stream {
+    /// An encoder for frames like `first`; `moving`: of a picture with several frames.
+    unsafe fn open(first: &Image, e: &Encoding, moving: bool, threads: usize) -> Result<Stream, String> {
+        let (width, height) = (
+            u32::try_from(first.width).map_err(|_| "the picture is too wide")?,
+            u32::try_from(first.height).map_err(|_| "the picture is too high")?,
+        );
+        let lossless = e.distance.is_none();
+        let extra = usize::from(first.alpha) + usize::from(first.depth.is_some());
+        unsafe {
+            let encoder = jxl::JxlEncoderCreate(ptr::null());
+            if encoder.is_null() {
+                return Err("JPEG XL: no encoder".to_string());
             }
-            j.check(
-                jxl::JxlEncoderSetParallelRunner(
-                    encoder,
-                    Some(jxl::JxlThreadParallelRunner),
-                    j.runner,
-                ),
-                "the threads",
-            )?;
-        }
-        let mut info = MaybeUninit::uninit();
-        jxl::JxlEncoderInitBasicInfo(info.as_mut_ptr());
-        let mut info = info.assume_init();
-        info.xsize = width;
-        info.ysize = height;
-        info.bits_per_sample = e.bits;
-        info.exponent_bits_per_sample = 0;
-        info.num_color_channels = first.colors as u32;
-        info.num_extra_channels = extra as u32;
-        info.alpha_bits = if first.alpha { e.bits } else { 0 };
-        info.uses_original_profile = i32::from(lossless);
-        if count > 1 {
-            info.have_animation = 1;
-            info.animation.tps_numerator = e.rate.0.max(1);
-            info.animation.tps_denominator = e.rate.1.max(1);
-            info.animation.num_loops = 0;
-        }
-        j.check(jxl::JxlEncoderSetBasicInfo(encoder, &info), "the layout")?;
-        let mut color = MaybeUninit::uninit();
-        jxl::JxlColorEncodingSetToSRGB(color.as_mut_ptr(), i32::from(first.colors == 1));
-        j.check(
-            jxl::JxlEncoderSetColorEncoding(encoder, color.as_ptr()),
-            "the colours",
-        )?;
-        let kinds = first
-            .alpha
-            .then_some(jxl::JxlExtraChannelType::JXL_CHANNEL_ALPHA)
-            .into_iter()
-            .chain(
-                first
-                    .depth
-                    .is_some()
-                    .then_some(jxl::JxlExtraChannelType::JXL_CHANNEL_DEPTH),
-            );
-        for (index, kind) in kinds.enumerate() {
-            let depth = kind == jxl::JxlExtraChannelType::JXL_CHANNEL_DEPTH;
-            let mut channel = MaybeUninit::uninit();
-            jxl::JxlEncoderInitExtraChannelInfo(kind, channel.as_mut_ptr());
-            let mut channel = channel.assume_init();
-            channel.bits_per_sample = e.bits;
-            j.check(
-                jxl::JxlEncoderSetExtraChannelInfo(encoder, index, &channel),
-                "an extra channel",
-            )?;
-            if depth {
-                let name = b"depth";
-                j.check(
-                    jxl::JxlEncoderSetExtraChannelName(
-                        encoder,
-                        index,
-                        name.as_ptr().cast(),
-                        name.len(),
-                    ),
-                    "the name of a channel",
-                )?;
-            }
-        }
-        let settings = jxl::JxlEncoderFrameSettingsCreate(encoder, ptr::null());
-        if settings.is_null() {
-            return Err("JPEG XL: no settings".to_string());
-        }
-        j.check(
-            jxl::JxlEncoderFrameSettingsSetOption(
-                settings,
-                jxl::JxlEncoderFrameSettingId::JXL_ENC_FRAME_SETTING_EFFORT,
-                i64::from(e.effort.clamp(1, 10)),
-            ),
-            "the effort",
-        )?;
-        j.check(
-            jxl::JxlEncoderSetFrameLossless(settings, i32::from(lossless)),
-            "the kind of compression",
-        )?;
-        if let Some(distance) = e.distance {
-            j.check(
-                jxl::JxlEncoderSetFrameDistance(settings, distance),
-                "the distance",
-            )?;
-            // (transparency and depth stay exact in a lossy picture)
-            for index in 0..extra {
-                j.check(
-                    jxl::JxlEncoderSetExtraChannelDistance(settings, index, 0.0),
-                    "the distance of a channel",
-                )?;
-            }
-        }
-        let depth = jxl::JxlBitDepth {
-            type_: jxl::JxlBitDepthType::JXL_BIT_DEPTH_FROM_CODESTREAM,
-            ..Default::default()
-        };
-        j.check(
-            jxl::JxlEncoderSetFrameBitDepth(settings, &depth),
-            "the bits of a sample",
-        )?;
-        let mut image = Some(first.clone());
-        for k in 0..count {
-            let frame = match image.take() {
-                Some(frame) => frame,
-                None => next(k, frames, Some(&first))?,
+            let mut j = Jxl {
+                encoder,
+                runner: ptr::null_mut(),
             };
-            if count > 1 {
+            if threads > 0 {
+                j.runner = jxl::JxlThreadParallelRunnerCreate(ptr::null(), threads);
+                if j.runner.is_null() {
+                    return Err("JPEG XL: no threads".to_string());
+                }
+                j.check(
+                    jxl::JxlEncoderSetParallelRunner(
+                        encoder,
+                        Some(jxl::JxlThreadParallelRunner),
+                        j.runner,
+                    ),
+                    "the threads",
+                )?;
+            }
+            let mut info = MaybeUninit::uninit();
+            jxl::JxlEncoderInitBasicInfo(info.as_mut_ptr());
+            let mut info = info.assume_init();
+            info.xsize = width;
+            info.ysize = height;
+            info.bits_per_sample = e.bits;
+            info.exponent_bits_per_sample = 0;
+            info.num_color_channels = first.colors as u32;
+            info.num_extra_channels = extra as u32;
+            let alpha_bits = e.alpha_bits.filter(|_| first.alpha).unwrap_or(e.bits);
+            if !(1..=e.bits).contains(&alpha_bits) {
+                return Err(format!(
+                    "the alpha channel has 1 to {} bits here, not {alpha_bits}",
+                    e.bits
+                ));
+            }
+            info.alpha_bits = if first.alpha { alpha_bits } else { 0 };
+            info.uses_original_profile = i32::from(lossless);
+            if moving {
+                info.have_animation = 1;
+                info.animation.tps_numerator = e.rate.0.max(1);
+                info.animation.tps_denominator = e.rate.1.max(1);
+                info.animation.num_loops = 0;
+            }
+            j.check(jxl::JxlEncoderSetBasicInfo(encoder, &info), "the layout")?;
+            let mut color = MaybeUninit::uninit();
+            jxl::JxlColorEncodingSetToSRGB(color.as_mut_ptr(), i32::from(first.colors == 1));
+            j.check(
+                jxl::JxlEncoderSetColorEncoding(encoder, color.as_ptr()),
+                "the colours",
+            )?;
+            let kinds = first
+                .alpha
+                .then_some(jxl::JxlExtraChannelType::JXL_CHANNEL_ALPHA)
+                .into_iter()
+                .chain(
+                    first
+                        .depth
+                        .is_some()
+                        .then_some(jxl::JxlExtraChannelType::JXL_CHANNEL_DEPTH),
+                );
+            for (index, kind) in kinds.enumerate() {
+                let depth = kind == jxl::JxlExtraChannelType::JXL_CHANNEL_DEPTH;
+                let mut channel = MaybeUninit::uninit();
+                jxl::JxlEncoderInitExtraChannelInfo(kind, channel.as_mut_ptr());
+                let mut channel = channel.assume_init();
+                channel.bits_per_sample = if depth { e.bits } else { alpha_bits };
+                j.check(
+                    jxl::JxlEncoderSetExtraChannelInfo(encoder, index, &channel),
+                    "an extra channel",
+                )?;
+                if depth {
+                    let name = b"depth";
+                    j.check(
+                        jxl::JxlEncoderSetExtraChannelName(
+                            encoder,
+                            index,
+                            name.as_ptr().cast(),
+                            name.len(),
+                        ),
+                        "the name of a channel",
+                    )?;
+                }
+            }
+            let settings = jxl::JxlEncoderFrameSettingsCreate(encoder, ptr::null());
+            if settings.is_null() {
+                return Err("JPEG XL: no settings".to_string());
+            }
+            j.check(
+                jxl::JxlEncoderFrameSettingsSetOption(
+                    settings,
+                    jxl::JxlEncoderFrameSettingId::JXL_ENC_FRAME_SETTING_EFFORT,
+                    i64::from(e.effort.clamp(1, 10)),
+                ),
+                "the effort",
+            )?;
+            j.check(
+                jxl::JxlEncoderSetFrameLossless(settings, i32::from(lossless)),
+                "the kind of compression",
+            )?;
+            if let Some(distance) = e.distance {
+                j.check(
+                    jxl::JxlEncoderSetFrameDistance(settings, distance),
+                    "the distance",
+                )?;
+                // (transparency and depth stay exact in a lossy picture)
+                for index in 0..extra {
+                    j.check(
+                        jxl::JxlEncoderSetExtraChannelDistance(settings, index, 0.0),
+                        "the distance of a channel",
+                    )?;
+                }
+            }
+            let depth = jxl::JxlBitDepth {
+                type_: jxl::JxlBitDepthType::JXL_BIT_DEPTH_FROM_CODESTREAM,
+                ..Default::default()
+            };
+            j.check(
+                jxl::JxlEncoderSetFrameBitDepth(settings, &depth),
+                "the bits of a sample",
+            )?;
+            Ok(Stream {
+                j,
+                settings,
+                bits: e.bits,
+                moving,
+            })
+        }
+    }
+
+    /// Whether the file is the bare stream of the frames, without boxes around its parts.
+    fn bare(&self) -> bool {
+        unsafe { jxl::JxlEncoderGetRequiredCodestreamLevel(self.j.encoder) == 5 }
+    }
+
+    /// Takes a frame and appends its bytes: with the head of the file before the first one.
+    unsafe fn add(&mut self, frame: &Image, last: bool, out: &mut Vec<u8>) -> Result<(), String> {
+        let data_type = if self.bits > 8 {
+            jxl::JxlDataType::JXL_TYPE_UINT16
+        } else {
+            jxl::JxlDataType::JXL_TYPE_UINT8
+        };
+        let format = |channels: usize| jxl::JxlPixelFormat {
+            num_channels: channels as u32,
+            data_type,
+            endianness: jxl::JxlEndianness::JXL_NATIVE_ENDIAN,
+            align: 0,
+        };
+        unsafe {
+            if self.moving {
                 let mut header = MaybeUninit::uninit();
                 jxl::JxlEncoderInitFrameHeader(header.as_mut_ptr());
                 let mut header = header.assume_init();
                 header.duration = 1;
-                j.check(
-                    jxl::JxlEncoderSetFrameHeader(settings, &header),
+                self.j.check(
+                    jxl::JxlEncoderSetFrameHeader(self.settings, &header),
                     "the time of a frame",
                 )?;
             }
-            let pixels = levels(&frame.data, e.bits);
-            j.check(
+            // (alpha among the colours is written with their bits, whatever its own are)
+            let pixels = levels(&frame.data, self.bits);
+            self.j.check(
                 jxl::JxlEncoderAddImageFrame(
-                    settings,
+                    self.settings,
                     &format(frame.channels()),
                     pixels.as_ptr().cast(),
                     pixels.len(),
@@ -574,10 +668,10 @@ fn jxl_file(count: usize, frames: Frames, e: &Encoding, threads: usize) -> Resul
                 "a frame",
             )?;
             if let Some(far) = &frame.depth {
-                let far = levels(far, e.bits);
-                j.check(
+                let far = levels(far, self.bits);
+                self.j.check(
                     jxl::JxlEncoderSetExtraChannelBuffer(
-                        settings,
+                        self.settings,
                         &format(1),
                         far.as_ptr().cast(),
                         far.len(),
@@ -586,11 +680,143 @@ fn jxl_file(count: usize, frames: Frames, e: &Encoding, threads: usize) -> Resul
                     "the depth",
                 )?;
             }
-            if k + 1 == count {
-                jxl::JxlEncoderCloseInput(encoder);
+            if last {
+                jxl::JxlEncoderCloseInput(self.j.encoder);
             }
-            j.drain(&mut out)?;
+            self.j.drain(out)
         }
+    }
+}
+
+/// How many encoders work on the frames of a picture at a time: as many as there are
+/// processors, and as their memory allows (a strong effort keeps much of a frame in mind).
+fn encoders(count: usize, first: &Image, e: &Encoding, threads: usize) -> usize {
+    if count < 4 || threads == 0 || e.effort < 4 {
+        return 1;
+    }
+    let each = first.width * first.height * if e.effort >= 8 { 512 } else { 256 };
+    let memory: usize = if crate::sandbox::active() { 1 << 29 } else { 1 << 31 };
+    (memory / each.max(1)).clamp(1, threads + 1).min(count / 2)
+}
+
+/// The file of several frames, worked out by several encoders at a time. Every frame of a
+/// moving picture stands for itself in the file, so that the bytes of the frames are those
+/// that one encoder gives for them one after the other. `None`: the file is not of that kind.
+fn jxl_frames(
+    count: usize,
+    frames: Frames,
+    e: &Encoding,
+    first: &Image,
+    encoders: usize,
+) -> Result<Option<Vec<u8>>, String> {
+    use std::sync::mpsc;
+    if !unsafe { Stream::open(first, e, true, 0)? }.bare() {
+        return Ok(None);
+    }
+    let blank = Image {
+        data: vec![0.0; first.data.len()],
+        depth: first.depth.as_ref().map(|d| vec![0.0; d.len()]),
+        ..first.clone()
+    };
+    let (done, results) = mpsc::channel::<Result<(usize, Vec<u8>), String>>();
+    let mut parts: Vec<Option<Vec<u8>>> = vec![None; count];
+    let failure = std::thread::scope(|scope| -> Option<String> {
+        let mut feeds = Vec::new();
+        for worker in 0..encoders {
+            let (feed, taken) = mpsc::sync_channel::<(usize, Image)>(1);
+            feeds.push(feed);
+            let (done, blank) = (done.clone(), &blank);
+            scope.spawn(move || {
+                let work = || -> Result<(), String> {
+                    let mut stream = unsafe { Stream::open(blank, e, true, 0)? };
+                    if worker > 0 {
+                        // (the head of the file comes with the first frame of an encoder:
+                        // an empty frame takes it away)
+                        unsafe { stream.add(blank, false, &mut Vec::new())? };
+                    }
+                    for (k, frame) in taken {
+                        let mut bytes = Vec::new();
+                        unsafe { stream.add(&frame, k + 1 == count, &mut bytes)? };
+                        if done.send(Ok((k, bytes))).is_err() {
+                            break;
+                        }
+                    }
+                    Ok(())
+                };
+                if let Err(why) = work() {
+                    let _ = done.send(Err(why));
+                }
+            });
+        }
+        drop(done);
+        let mut failure = None;
+        for k in 0..count {
+            let frame = match k {
+                0 => Ok(first.clone()),
+                _ => next(k, frames, Some(first)),
+            };
+            let sent = frame.and_then(|frame| {
+                feeds[k % encoders]
+                    .send((k, frame))
+                    .map_err(|_| "JPEG XL: an encoder stopped".to_string())
+            });
+            if let Err(why) = sent {
+                failure = Some(why);
+                break;
+            }
+            for result in results.try_iter() {
+                match result {
+                    Ok((k, bytes)) => parts[k] = Some(bytes),
+                    Err(why) => failure = Some(why),
+                }
+            }
+            if failure.is_some() {
+                break;
+            }
+        }
+        drop(feeds);
+        for result in results.iter() {
+            match result {
+                Ok((k, bytes)) => parts[k] = Some(bytes),
+                // (what an encoder says of its failure tells more than that it stopped)
+                Err(why) => failure = Some(why),
+            }
+        }
+        failure
+    });
+    if let Some(why) = failure {
+        return Err(why);
+    }
+    let mut out = Vec::new();
+    for part in parts {
+        out.extend(part.ok_or("JPEG XL: a frame is missing")?);
+    }
+    Ok(out.starts_with(&[0xff, 0x0a]).then_some(out))
+}
+
+fn jxl_file(count: usize, frames: Frames, e: &Encoding, threads: usize) -> Result<Vec<u8>, String> {
+    if !(1..=16).contains(&e.bits) {
+        return Err(format!(
+            "a JPEG XL file of this program has 1 to 16 bits a sample, not {}",
+            e.bits
+        ));
+    }
+    let first = next(0, frames, None)?;
+    let several = encoders(count, &first, e, threads);
+    if several > 1
+        && let Some(bytes) = jxl_frames(count, frames, e, &first, several)?
+    {
+        return Ok(bytes);
+    }
+    let mut out = Vec::new();
+    let mut stream = unsafe { Stream::open(&first, e, count > 1, threads)? };
+    let mut image = Some(first.clone());
+    for k in 0..count {
+        let frame = match image.take() {
+            Some(frame) => frame,
+            None => next(k, frames, Some(&first))?,
+        };
+        unsafe { stream.add(&frame, k + 1 == count, &mut out)? };
     }
     Ok(out)
 }
@@ -735,11 +961,70 @@ mod tests {
             distance: None,
             effort: 3,
             rate: (10, 1),
+            alpha_bits: None,
         }
     }
 
     fn one(image: &Image, e: &Encoding) -> Vec<u8> {
         encode(1, &mut |_| Ok(image.clone()), e).expect("a file")
+    }
+
+    #[test]
+    fn several_encoders_give_the_bytes_of_one() {
+        // frames that differ: a dot that moves, with alpha of one bit and without
+        for (alpha, effort, bits) in [(true, 4, 8), (true, 7, 8), (false, 5, 8), (true, 9, 3), (true, 4, 12)] {
+            let channels = 3 + usize::from(alpha);
+            let frame = |k: usize| {
+                let mut data = vec![0.0f32; 24 * 16 * channels];
+                for at in [k, 3 * k + 20, 24 * 16 - 1 - k] {
+                    for c in 0..channels {
+                        data[at * channels + c] = if c == 3 { 1.0 } else { (k + c) as f32 / 16.0 };
+                    }
+                }
+                Image {
+                    width: 24,
+                    height: 16,
+                    colors: 3,
+                    alpha,
+                    data,
+                    depth: None,
+                }
+            };
+            let e = Encoding {
+                effort,
+                alpha_bits: alpha.then_some(1),
+                ..encoding(Format::Jxl, bits)
+            };
+            let alone = jxl_file(11, &mut |k| Ok(frame(k)), &e, 0).expect("a file");
+            for encoders in [2, 3, 5] {
+                let together = jxl_frames(11, &mut |k| Ok(frame(k)), &e, &frame(0), encoders)
+                    .expect("a file")
+                    .expect("a bare stream");
+                assert_eq!(together, alone, "alpha {alpha}, effort {effort}, {encoders} encoders");
+            }
+            let (_, read, _) = read_jxl(&alone);
+            assert_eq!(read.len(), 11);
+        }
+        // 16 bits need boxes around the stream: one encoder writes it
+        let deep = encoding(Format::Jxl, 16);
+        let frame = Image {
+            width: 4,
+            height: 4,
+            colors: 1,
+            alpha: false,
+            data: vec![0.5; 16],
+            depth: None,
+        };
+        assert_eq!(jxl_frames(8, &mut |_| Ok(frame.clone()), &deep, &frame, 2), Ok(None));
+        // an encoder that fails says why
+        let failed = jxl_frames(
+            8,
+            &mut |k| if k == 5 { Err("no frame 5".to_string()) } else { Ok(frame.clone()) },
+            &encoding(Format::Jxl, 8),
+            &frame,
+            3,
+        );
+        assert_eq!(failed, Err("no frame 5".to_string()));
     }
 
     #[test]

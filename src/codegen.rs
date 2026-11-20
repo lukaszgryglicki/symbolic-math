@@ -822,7 +822,7 @@ mod tests {
         let e = parsed("x^2/3 + sqrt(y) - exp(-x)");
         let c = lines(&e, Lang::C, "t0").unwrap();
         assert!(c.starts_with("t0 = ") && c.ends_with(';'), "{c}");
-        assert!(c.contains("x*x/3.0") && c.contains("sqrt(y)") && c.contains("exp(-x)"), "{c}");
+        assert!(c.contains("(x*x)/3.0") && c.contains("sqrt(y)") && c.contains("exp(-x)"), "{c}");
         let f = lines(&e, Lang::Fortran, "t0").unwrap();
         assert!(f.contains("x**2/3.0D0"), "{f}");
         let m = matlab(&e).unwrap();

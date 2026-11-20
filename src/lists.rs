@@ -1014,10 +1014,16 @@ impl Session {
         .to_string()
         };
         // the function may come first or last: map(f, list) and select(list, f) are both read
-        let pos = raw
-            .iter()
-            .position(|e| self.is_function(e))
-            .ok_or_else(usage)?;
+        let Some(pos) = raw.iter().position(|e| self.is_function(e)) else {
+            // filter([b, a], x): a filter as the pair that the functions that make filters give
+            if name == "select" && raw.len() == 2 {
+                let both = self.eval_all(raw)?;
+                if let Some(parts) = crate::sigdesign::apart(name, &both) {
+                    return self.call("lfilter", &parts?);
+                }
+            }
+            return Err(usage());
+        };
         let f = raw[pos].clone();
         let mut rest = Vec::new();
         for (k, e) in raw.iter().enumerate() {

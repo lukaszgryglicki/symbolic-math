@@ -17,6 +17,11 @@ fn limit() -> Option<u64> {
     megabytes(&value).map(|m| m << 20)
 }
 
+/// Whether the program runs in a sandbox.
+pub fn active() -> bool {
+    limit().is_some()
+}
+
 fn megabytes(value: &str) -> Option<u64> {
     match value.trim() {
         "" => None,

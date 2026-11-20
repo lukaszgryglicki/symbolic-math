@@ -1946,6 +1946,23 @@ impl Session {
     /// What the chart of a system draws, as lists of real numbers.
     pub(crate) fn control_chart(&mut self, name: &str, a: &[Expr]) -> Result<Vec<Expr>, String> {
         let who = name;
+        if name == "zplane" {
+            let parts = crate::sigdesign::apart(name, a).transpose()?;
+            // the filter b(1/z)/a(1/z) as a sampled system
+            let filter = match parts.as_deref().unwrap_or(a) {
+                [b] => Expr::call("tf", vec![b.clone(), Expr::list(vec![Expr::one()]), Expr::one()]),
+                [b, den] => {
+                    // (both written in powers of 1/z: of one length as polynomials in z)
+                    let (mut top, mut bottom) = (list_of(b), list_of(den));
+                    let size = top.len().max(bottom.len());
+                    top.resize(size, Expr::zero());
+                    bottom.resize(size, Expr::zero());
+                    Expr::call("tf", vec![Expr::list(top), Expr::list(bottom), Expr::one()])
+                }
+                _ => return Err("zplane(b, a): the coefficients of a sampled filter".into()),
+            };
+            return self.control_chart("pzplot", &[filter]);
+        }
         let first = a.first().ok_or_else(|| format!("{name}(system)"))?;
         if a.len() > 2 {
             return Err(format!("{name}(system) or {name}(system, one thing more)"));

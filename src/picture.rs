@@ -40,27 +40,78 @@ pub const NAMED: &[&str] = &[
     "title",
     "xlabel",
     "ylabel",
+    "arg_real",
+    "arg_imag",
+    "val_real",
+    "val_imag",
+    "colors",
+    "colours",
+    "fill",
+    "range_real",
+    "range_imag",
+    "rotate",
+];
+
+/// What is chosen for the shape of plot4d alone.
+pub const OF_SHAPES: &[&str] = &[
+    "arg_real",
+    "arg_imag",
+    "val_real",
+    "val_imag",
+    "colors",
+    "colours",
+    "fill",
+    "range_real",
+    "range_imag",
+    "rotate",
+    "normalize",
 ];
 
 /// What is chosen with a word.
 pub const WORDS: &[&str] = &[
-    "gray", "grey", "alpha", "lossless", "depth", "grow", "axes", "noaxes", "grid", "ascii",
-    "reverse", "views", "stereo",
+    "gray",
+    "grey",
+    "alpha",
+    "lossless",
+    "depth",
+    "grow",
+    "axes",
+    "noaxes",
+    "grid",
+    "ascii",
+    "reverse",
+    "views",
+    "stereo",
+    "normalize",
 ];
 
-/// The choices whose value is a name: a colour or a palette.
+/// The choices whose value is a name: a colour, a palette, a side of a picture, a kind of body.
 pub fn takes_name(option: &str) -> bool {
-    matches!(option, "color" | "colour" | "background" | "palette")
+    matches!(
+        option,
+        "color"
+            | "colour"
+            | "background"
+            | "palette"
+            | "arg_real"
+            | "arg_imag"
+            | "val_real"
+            | "val_imag"
+            | "fill"
+    )
 }
 
 /// The commands that save a drawing.
 pub fn is_save(name: &str) -> bool {
-    matches!(name, "save_png" | "save_jxl" | "save")
+    matches!(
+        name,
+        "save_png" | "save_jxl" | "save" | "save_png_fast" | "save_jxl_fast" | "save_fast"
+    )
 }
 
 /// The commands that draw, besides the plots of `plot`.
 pub fn is_drawing(name: &str) -> bool {
-    crate::walks::is_walk(name) || crate::chart::is_chart(name)
+    crate::walks::is_walk(name) || crate::chart::is_chart(name) || name == "plot4d"
 }
 
 /// The commands whose arguments may be choices of a picture.
@@ -94,6 +145,21 @@ pub struct Choices {
     pub fps: Option<f64>,
     pub ascii: bool,
     pub reverse: bool,
+    /// plot4d: what the real and the imaginary part of the argument and of the value lie on.
+    pub axes: [Option<crate::plot4d::Axis>; 4],
+    /// plot4d: how many colours the palette is cut into.
+    pub colors: Option<usize>,
+    pub fill: Option<crate::plot4d::Fill>,
+    /// plot4d: the real and the imaginary parts of the values that are drawn.
+    pub range_real: Option<(f64, f64)>,
+    pub range_imag: Option<(f64, f64)>,
+    /// plot4d: degrees that the body is turned about the upright axis (yaw), about the
+    /// width (pitch) and about the frames (roll).
+    pub rotate: Option<[f64; 3]>,
+    /// plot4d: every frame is stretched on its own.
+    pub normalize: bool,
+    /// A quick look: a small picture that is packed fast.
+    pub fast: bool,
 }
 
 /// The name of a choice and its value, when an argument is one.
@@ -227,6 +293,7 @@ impl Choices {
                 "grid" => look.grid = true,
                 "ascii" => self.ascii = true,
                 "views" => look.views = true,
+                "normalize" => self.normalize = true,
                 "stereo" => look.stereo = Some(4.0),
                 _ => self.reverse = true,
             }
@@ -260,6 +327,62 @@ impl Choices {
             "center" | "centre" => look.center = Some(point(name, value)?),
             "viewpoint" => look.viewpoint = Some(point(name, value)?),
             "stereo" => look.stereo = Some(number(name, value, (0.1, 30.0))?),
+            "arg_real" | "arg_imag" | "val_real" | "val_imag" => {
+                let axis = crate::plot4d::Axis::named(value).ok_or_else(|| {
+                    format!(
+                        "{name} is one of width, height, frame, color: what this part of the argument z or of the value f(z) lies on; not {value}"
+                    )
+                })?;
+                let part = ["arg_real", "arg_imag", "val_real", "val_imag"]
+                    .iter()
+                    .position(|n| *n == name)
+                    .unwrap_or(0);
+                self.axes[part] = Some(axis);
+            }
+            "colors" | "colours" => self.colors = Some(whole(name, value, (2, 65535))?),
+            "fill" => {
+                self.fill = Some(crate::plot4d::Fill::named(value).ok_or_else(|| {
+                    format!(
+                        "fill is one of surface, below, above: the surface alone, or the body from it down to the first frame or up to the last one; not {value}"
+                    )
+                })?);
+            }
+            "range_real" | "range_imag" => {
+                let ends: Option<Vec<f64>> = value
+                    .as_list()
+                    .map(|items| items.iter().map(crate::plot::number).collect())
+                    .unwrap_or_default();
+                let ends = match ends.as_deref() {
+                    Some([low, high]) if low < high => (*low, *high),
+                    _ => {
+                        return Err(format!(
+                            "{name} is [least, greatest]: the {} parts of the values that are drawn; not {value}",
+                            if name == "range_real" { "real" } else { "imaginary" }
+                        ));
+                    }
+                };
+                if name == "range_real" {
+                    self.range_real = Some(ends);
+                } else {
+                    self.range_imag = Some(ends);
+                }
+            }
+            "rotate" => {
+                let angles: Option<Vec<f64>> = value
+                    .as_list()
+                    .map(|items| items.iter().map(crate::plot::number).collect())
+                    .unwrap_or_else(|| crate::plot::number(value).map(|yaw| vec![yaw]));
+                self.rotate = Some(match angles.as_deref() {
+                    Some([yaw]) => [*yaw, 0.0, 0.0],
+                    Some([yaw, pitch]) => [*yaw, *pitch, 0.0],
+                    Some([yaw, pitch, roll]) => [*yaw, *pitch, *roll],
+                    _ => {
+                        return Err(format!(
+                            "rotate(yaw, pitch, roll) or rotate = [yaw, pitch, roll]: the degrees that the body of plot4d is turned about its upright axis, about its width and about its frames; not {value}"
+                        ));
+                    }
+                });
+            }
             "title" | "xlabel" | "ylabel" => {
                 let text = match crate::radix::text_of(value) {
                     Some(t) => t.to_string(),
@@ -284,9 +407,17 @@ impl Choices {
     }
 
     /// How finely a drawing is worked out: the dots across the picture.
+    /// What is chosen for plot4d alone, when something of it is.
+    pub fn of_shapes(&self) -> Option<&str> {
+        self.given
+            .iter()
+            .map(String::as_str)
+            .find(|g| OF_SHAPES.contains(g))
+    }
+
     pub fn detail(&self, pixels: bool) -> usize {
         if pixels {
-            self.width.unwrap_or(1024)
+            self.width.unwrap_or(if self.fast { 256 } else { 1024 })
         } else {
             2 * self.width.unwrap_or(64)
         }
@@ -299,6 +430,9 @@ impl Choices {
 
 /// The drawing as lines of characters with what is to tell about it.
 pub fn show(command: &str, drawing: &Drawing, choices: &Choices) -> Result<Vec<String>, String> {
+    if let Some(other) = choices.of_shapes() {
+        return Err(format!("{other} belongs to plot4d, not to {command}"));
+    }
     if let Some(other) = choices.given.iter().find(|g| {
         !matches!(
             g.as_str(),
@@ -370,14 +504,68 @@ pub fn words_apart(args: &[Expr]) -> (Vec<Expr>, Vec<(&str, &Expr)>) {
 pub fn format_of(command: &str, path: &str) -> Result<Format, String> {
     let lower = path.to_ascii_lowercase();
     match command {
-        "save_png" => Ok(Format::Png),
-        "save_jxl" => Ok(Format::Jxl),
+        "save_png" | "save_png_fast" => Ok(Format::Png),
+        "save_jxl" | "save_jxl_fast" => Ok(Format::Jxl),
         _ if lower.ends_with(".png") || lower.ends_with(".apng") => Ok(Format::Png),
         _ if lower.ends_with(".jxl") => Ok(Format::Jxl),
         _ => Err(format!(
             "save tells the kind of file by the end of its name, .png or .jxl, which \"{path}\" lacks: save_png and save_jxl take any name"
         )),
     }
+}
+
+/// How the file is written, from what was chosen; `effort` is that of JPEG XL unless one is chosen.
+pub(crate) fn encoding_of(format: Format, choices: &Choices, effort: u8) -> Result<Encoding, String> {
+    let png = format == Format::Png;
+    let bits = choices.bits.unwrap_or(8);
+    let mut encoding = Encoding {
+        format,
+        bits,
+        level: choices.level.unwrap_or(if choices.fast { 1 } else { 9 }),
+        distance: None,
+        effort: choices.effort.unwrap_or(effort),
+        rate: rate(choices.fps.unwrap_or(12.0)),
+        alpha_bits: None,
+    };
+    if png {
+        if !matches!(bits, 8 | 16) {
+            return Err(format!(
+                "a PNG file has 8 or 16 bits, not {bits}: save_jxl takes 1 to 16"
+            ));
+        }
+        for (given, name) in [
+            (choices.lossless, "lossless"),
+            (choices.quality.is_some(), "quality"),
+            (choices.distance.is_some(), "distance"),
+            (choices.effort.is_some(), "effort"),
+            (choices.depth, "depth"),
+        ] {
+            if given {
+                return Err(format!(
+                    "{name} belongs to save_jxl: a PNG file is lossless, and its level from 0 to 9 says how hard it is packed"
+                ));
+            }
+        }
+    } else {
+        if choices.level.is_some() {
+            return Err("level belongs to save_png: save_jxl takes effort from 1 to 10, and quality or distance for a lossy picture".into());
+        }
+        let lossy = match (choices.quality, choices.distance) {
+            (Some(_), Some(_)) => {
+                return Err("quality or distance, not both: quality = 90 is distance = 1".into());
+            }
+            (Some(q), None) if q < 100.0 => Some(imgfile::distance_of(q as f32)),
+            (None, Some(d)) if d > 0.0 => Some(d as f32),
+            // (a quick look is lossy unless it is said otherwise)
+            (None, None) if choices.fast && !choices.lossless => Some(1.0),
+            _ => None,
+        };
+        if choices.lossless && lossy.is_some() {
+            return Err("lossless, or lossy with quality or distance: not both".into());
+        }
+        encoding.distance = lossy;
+    }
+    Ok(encoding)
 }
 
 /// Saves the drawing as a file and tells what was saved.
@@ -393,9 +581,12 @@ pub fn save(
     if path.is_empty() {
         return Err("the name of the file is empty".to_string());
     }
+    if let Some(other) = choices.of_shapes() {
+        return Err(format!("{other} belongs to plot4d, not to this drawing"));
+    }
     let png = format == Format::Png;
     let mut look = choices.look.clone();
-    look.width = choices.width.unwrap_or(1024);
+    look.width = choices.width.unwrap_or(if choices.fast { 256 } else { 1024 });
     look.height = choices.height.unwrap_or(0);
     if choices.reverse {
         let mut stops = look
@@ -441,51 +632,8 @@ pub fn save(
             (gray, alpha)
         }
     };
-    let bits = choices.bits.unwrap_or(8);
-    let mut encoding = Encoding {
-        format,
-        bits,
-        level: choices.level.unwrap_or(9),
-        distance: None,
-        effort: choices.effort.unwrap_or(7),
-        rate: rate(choices.fps.unwrap_or(12.0)),
-    };
-    if png {
-        if !matches!(bits, 8 | 16) {
-            return Err(format!(
-                "a PNG file has 8 or 16 bits, not {bits}: save_jxl takes 1 to 16"
-            ));
-        }
-        for (given, name) in [
-            (choices.lossless, "lossless"),
-            (choices.quality.is_some(), "quality"),
-            (choices.distance.is_some(), "distance"),
-            (choices.effort.is_some(), "effort"),
-            (choices.depth, "depth"),
-        ] {
-            if given {
-                return Err(format!(
-                    "{name} belongs to save_jxl: a PNG file is lossless, and its level from 0 to 9 says how hard it is packed"
-                ));
-            }
-        }
-    } else {
-        if choices.level.is_some() {
-            return Err("level belongs to save_png: save_jxl takes effort from 1 to 10, and quality or distance for a lossy picture".into());
-        }
-        let lossy = match (choices.quality, choices.distance) {
-            (Some(_), Some(_)) => {
-                return Err("quality or distance, not both: quality = 90 is distance = 1".into());
-            }
-            (Some(q), None) if q < 100.0 => Some(imgfile::distance_of(q as f32)),
-            (None, Some(d)) if d > 0.0 => Some(d as f32),
-            _ => None,
-        };
-        if choices.lossless && lossy.is_some() {
-            return Err("lossless, or lossy with quality or distance: not both".into());
-        }
-        encoding.distance = lossy;
-    }
+    let encoding = encoding_of(format, choices, if choices.fast { 3 } else { 7 })?;
+    let bits = encoding.bits;
     if look.stereo.is_some() && (gray || alpha || choices.depth) {
         return Err(format!(
             "stereo is a picture of red and cyan for glasses of these colours: this does not go with {}",

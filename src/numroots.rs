@@ -49,8 +49,11 @@ fn aberth(
         .collect();
     let mut c = c;
     let mut budget = 400 + 60 * n;
+    // the smallest of the largest steps of a round so far, and the rounds since it
+    let (mut best, mut stale) = (i64::MAX, 0u32);
     loop {
         let mut moved = false;
+        let mut largest = i64::MIN;
         for k in 0..n {
             let (p, d) = horner(&c, &z[k], prec);
             if p.is_zero() {
@@ -76,15 +79,30 @@ fn aberth(
             } else {
                 newton / denom
             };
-            if exponent(&step) > exponent(&z[k]).max(-i64::from(prec)) - i64::from(prec) + 12 {
+            let size = exponent(&step) - exponent(&z[k]).max(-i64::from(prec));
+            largest = largest.max(size);
+            if size > 12 - i64::from(prec) {
                 moved = true;
             }
             z[k] -= step;
+        }
+        // roots that lie close together settle only as far as the coefficients tell them
+        // apart: there the steps stop getting smaller, and that is as near as they come
+        if moved {
+            if largest < best {
+                (best, stale) = (largest, 0);
+            } else {
+                stale += 1;
+            }
+            if stale >= 16 && best < -i64::from(prec) / 3 {
+                moved = false;
+            }
         }
         if !moved {
             if prec >= target {
                 break;
             }
+            (best, stale) = (i64::MAX, 0);
             prec = (prec * 2).min(target);
             c = c_at(prec)?;
             for zk in z.iter_mut() {

@@ -1069,6 +1069,12 @@ impl Parser<'_> {
             self.bump();
             return Ok(Expr::sym(&word));
         }
+        // rotate(yaw, pitch, roll) turns the body of a picture of space: any count of angles
+        if word == "rotate" && self.op_at(1, "(") {
+            self.bump();
+            let args = self.arguments(Lenient::No)?;
+            return Ok(Expr::call("rotate", args));
+        }
         if !matches!(self.peek_at(1), Tok::Op("="))
             || !crate::picture::NAMED.contains(&word.as_str())
         {
@@ -1081,9 +1087,50 @@ impl Parser<'_> {
                 self.bump();
                 Expr::sym(&name)
             }
+            Tok::Op(open @ ("[" | "{")) if word == "palette" => {
+                self.colours(if open == "[" { "]" } else { "}" })?
+            }
             _ => self.item()?,
         };
         Ok(Expr::rel(crate::expr::Rel::Eq, Expr::sym(&word), value))
+    }
+
+    /// The colours of a palette: names, or numbers that may be written (red, green, blue).
+    fn colours(&mut self, close: &str) -> Res {
+        self.bump();
+        let outer = std::mem::take(&mut self.bars);
+        let mut items = Vec::new();
+        if !self.eat(close) {
+            loop {
+                let alone = self.op_at(1, ",") || self.op_at(1, close);
+                items.push(match self.peek().clone() {
+                    Tok::Ident(name) if alone => {
+                        self.bump();
+                        Expr::sym(&name)
+                    }
+                    Tok::Op("(") => {
+                        self.bump();
+                        let mut parts = vec![self.item()?];
+                        while self.eat(",") {
+                            parts.push(self.item()?);
+                        }
+                        self.expect(")")?;
+                        if parts.len() == 1 {
+                            parts.remove(0)
+                        } else {
+                            Expr::list(parts)
+                        }
+                    }
+                    _ => self.item()?,
+                });
+                if self.eat(close) {
+                    break;
+                }
+                self.expect(",")?;
+            }
+        }
+        self.bars = outer;
+        Ok(Expr::list(items))
     }
 
     fn enclosed(&mut self, close: &str, name: &str) -> Res {

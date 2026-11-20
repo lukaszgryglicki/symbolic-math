@@ -471,6 +471,50 @@ pub(crate) const fn rgb(code: u32) -> Rgb {
     ]
 }
 
+/// Every colour of the cube with 8 steps a side, each one next to the one before it: the
+/// curve of Hilbert through the cube, from black to red.
+const fn cube() -> [Rgb; 512] {
+    let mut out = [[0.0f32; 3]; 512];
+    let mut place = 0usize;
+    while place < 512 {
+        // the bits of the place along the curve, dealt to the three sides
+        let mut x = [0u32; 3];
+        let mut bit = 0;
+        while bit < 9 {
+            if place >> (8 - bit) & 1 == 1 {
+                x[bit % 3] |= 1 << (2 - bit / 3);
+            }
+            bit += 1;
+        }
+        // (Skilling: the sides of a place whose bits are dealt so)
+        let t = x[2] >> 1;
+        x[2] ^= x[1];
+        x[1] ^= x[0];
+        x[0] ^= t;
+        let mut q = 2u32;
+        while q != 8 {
+            let p = q - 1;
+            let mut i = 3;
+            while i > 0 {
+                i -= 1;
+                if x[i] & q != 0 {
+                    x[0] ^= p;
+                } else {
+                    let t = (x[0] ^ x[i]) & p;
+                    x[0] ^= t;
+                    x[i] ^= t;
+                }
+            }
+            q <<= 1;
+        }
+        out[place] = [x[0] as f32 / 7.0, x[1] as f32 / 7.0, x[2] as f32 / 7.0];
+        place += 1;
+    }
+    out
+}
+
+const CUBE: [Rgb; 512] = cube();
+
 /// The rows of colours that have names.
 pub const PALETTES: &[(&str, &[Rgb])] = &[
     (
@@ -533,6 +577,18 @@ pub const PALETTES: &[(&str, &[Rgb])] = &[
     ),
     (
         "heat",
+        &[
+            rgb(0x000000),
+            rgb(0x5a2d0c),
+            rgb(0xd01010),
+            rgb(0xff8000),
+            rgb(0xffe030),
+            rgb(0xffffff),
+            rgb(0xa8c8ff),
+        ],
+    ),
+    (
+        "thermal",
         &[
             rgb(0x000080),
             rgb(0x0000ff),
@@ -680,6 +736,103 @@ pub const PALETTES: &[(&str, &[Rgb])] = &[
     ("ink", &[rgb(0x000000), rgb(0x808080)]),
     ("cool", &[rgb(0x00ffff), rgb(0xff00ff)]),
     ("warm", &[rgb(0xffe000), rgb(0xff0000)]),
+    (
+        "magma",
+        &[
+            rgb(0x000004),
+            rgb(0x1c1044),
+            rgb(0x4f127b),
+            rgb(0x812581),
+            rgb(0xb5367a),
+            rgb(0xe55064),
+            rgb(0xfb8761),
+            rgb(0xfec287),
+            rgb(0xfcfdbf),
+        ],
+    ),
+    (
+        "inferno",
+        &[
+            rgb(0x000004),
+            rgb(0x1f0c48),
+            rgb(0x550f6d),
+            rgb(0x88226a),
+            rgb(0xba3655),
+            rgb(0xe35933),
+            rgb(0xf98e09),
+            rgb(0xf9cb35),
+            rgb(0xfcffa4),
+        ],
+    ),
+    (
+        "cividis",
+        &[
+            rgb(0x00224e),
+            rgb(0x123570),
+            rgb(0x3b496c),
+            rgb(0x575d6d),
+            rgb(0x707173),
+            rgb(0x8a8678),
+            rgb(0xa59c74),
+            rgb(0xc3b369),
+            rgb(0xe1cc55),
+            rgb(0xfee838),
+        ],
+    ),
+    (
+        "twilight",
+        &[
+            rgb(0xe2d9e2),
+            rgb(0x9ebbc9),
+            rgb(0x6785be),
+            rgb(0x5e43a5),
+            rgb(0x421257),
+            rgb(0x471340),
+            rgb(0x8e2c50),
+            rgb(0xba6657),
+            rgb(0xceac94),
+            rgb(0xe2d9e2),
+        ],
+    ),
+    (
+        "coolwarm",
+        &[
+            rgb(0x3b4cc0),
+            rgb(0x6788ee),
+            rgb(0x9abbff),
+            rgb(0xc9d7f0),
+            rgb(0xedd1c2),
+            rgb(0xf7a889),
+            rgb(0xe26952),
+            rgb(0xb40426),
+        ],
+    ),
+    (
+        "earth",
+        &[
+            rgb(0x08306b),
+            rgb(0x2171b5),
+            rgb(0x6baed6),
+            rgb(0xf2e6a2),
+            rgb(0x4a9c3c),
+            rgb(0x8c6d31),
+            rgb(0x8f8f8f),
+            rgb(0xffffff),
+        ],
+    ),
+    (
+        "spectrum",
+        &[
+            rgb(0x7f00ff),
+            rgb(0x0000ff),
+            rgb(0x00ffff),
+            rgb(0x00ff00),
+            rgb(0xffff00),
+            rgb(0xff8000),
+            rgb(0xff0000),
+        ],
+    ),
+    ("cube", &CUBE),
 ];
 
 /// The colours that have names.
@@ -1065,5 +1218,16 @@ mod tests {
         for (name, stops) in PALETTES {
             assert!(stops.len() >= 2, "{name}");
         }
+        // the curve through the cube takes every colour once and goes to a neighbour each time
+        let whole = |c: Rgb| c.map(|v| (v * 7.0).round() as i32);
+        let mut seen = std::collections::HashSet::new();
+        for pair in CUBE.windows(2) {
+            let (a, b) = (whole(pair[0]), whole(pair[1]));
+            assert_eq!((0..3).map(|k| (a[k] - b[k]).abs()).sum::<i32>(), 1, "{a:?} {b:?}");
+            seen.insert(a);
+        }
+        seen.insert(whole(CUBE[511]));
+        assert_eq!(seen.len(), 512);
+        assert_eq!((whole(CUBE[0]), whole(CUBE[511])), ([0, 0, 0], [7, 0, 0]));
     }
 }
