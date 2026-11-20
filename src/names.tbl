@@ -966,7 +966,7 @@ lqe||5|5|lqe(A, G, C, Q, R): [L, P, poles]: the gain of the watcher (Kalman's fi
 acker||3|3|acker(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places, for one input (the formula of Ackermann)
 place||3|3|place(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places
 hsvd||1|1|hsvd(system): the singular values of Hankel of a stable system, the largest first: how much every state of its balanced form carries from the input to the output
-balreal||1|1|balreal(system): [the balanced system as ss(A, B, C, D), the singular values of Hankel]: its Gramians of steering and of watching are equal and diagonal
+balreal||1|1|balreal(system): [the balanced system as ss(A, B, C, D), the singular values of Hankel]: its Gramians of steering and of watching are equal and diagonal; states that the input does not reach or the output does not show are taken out first
 balred||2|3|balred(system, order[, "matchdc" | "truncate"]): the system with that many states that stays nearest: the weakest states of the balanced form are put at rest, so that the gain at frequency 0 stays ("matchdc", the usual), or cut off ("truncate")
 covar||2|2|covar(system, W): [the spread of the output, the covariance of the states] when white noise of the intensity W drives the system
 dlqe||5|5|dlqe(A, G, C, Q, R): [M, P, Z, poles]: the gain M of Kalman's filter for the sampled system x[n+1] = A*x[n] + G*w[n], y = C*x + v, the covariance P of the error before a sample is seen and Z after it

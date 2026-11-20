@@ -372,13 +372,18 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
                 ));
             }
             let scaled = |v: &[Expr]| -> Vec<Expr> {
-                v.iter().map(|c| tidy(div(c.clone(), lead.clone()))).collect()
+                v.iter()
+                    .map(|c| tidy(div(c.clone(), lead.clone())))
+                    .collect()
             };
             let (b, den) = (scaled(&b), scaled(&den));
             let at = |v: &[Expr], k: usize| v.get(k).cloned().unwrap_or_else(Expr::zero);
             let mut y: Vec<Expr> = Vec::with_capacity(x.len());
             for value in &x {
-                let out = tidy(add(vec![mul(vec![at(&b, 0), value.clone()]), at(&state, 0)]));
+                let out = tidy(add(vec![
+                    mul(vec![at(&b, 0), value.clone()]),
+                    at(&state, 0),
+                ]));
                 for i in 0..state.len() {
                     state[i] = tidy(add(vec![
                         mul(vec![at(&b, i + 1), value.clone()]),

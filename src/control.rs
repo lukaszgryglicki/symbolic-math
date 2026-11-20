@@ -418,6 +418,9 @@ fn c_size(a: &CMat) -> Float {
 
 /// The solution X of `A'*X + X*A - X*G*X + Q = 0` that makes `A - G*X` stable, by the sign
 /// of the matrix [[A, -G], [-Q, -A']]: steps of Newton towards the matrix of signs.
+/// A balanced form: [A, B, C, D], the time between samples, the singular values of Hankel.
+type Balanced = ([CMat; 4], Option<Expr>, Vec<Float>);
+
 /// The singular values of Hankel from their squares, the largest first: one that is as
 /// small against the largest as the rounding of the Gramians is no value, it is 0.
 fn weights(squares: Vec<Float>, prec: u32) -> Vec<Float> {
@@ -425,7 +428,9 @@ fn weights(squares: Vec<Float>, prec: u32) -> Vec<Float> {
         .into_iter()
         .map(|x| if x > 0 { x.sqrt() } else { Float::new(prec) })
         .collect();
-    let least = roots.first().map_or_else(|| Float::new(prec), |top| top.clone() >> (prec / 2 - 12));
+    let least = roots
+        .first()
+        .map_or_else(|| Float::new(prec), |top| top.clone() >> (prec / 2 - 12));
     roots
         .into_iter()
         .map(|x| if x > least { x } else { Float::new(prec) })
@@ -454,13 +459,15 @@ fn cholesky(m: &CMat) -> Option<CMat> {
     let size = m.len();
     let prec = crate::mfun::bits();
     let mut lower: CMat = vec![vec![Complex::new(prec); size]; size];
-    let top = m.iter().flatten().fold(Float::new(prec), |most, x| most.max(&Float::with_val(prec, x.abs_ref())));
+    let top = m.iter().flatten().fold(Float::new(prec), |most, x| {
+        most.max(&Float::with_val(prec, x.abs_ref()))
+    });
     let least = top * (Float::with_val(prec, 1) >> (prec / 2));
     for i in 0..size {
         for j in 0..=i {
             let mut sum = m[i][j].clone();
-            for k in 0..j {
-                sum -= Complex::with_val(prec, &lower[i][k] * Complex::with_val(prec, lower[j][k].conj_ref()));
+            for (x, y) in lower[i].iter().zip(&lower[j]).take(j) {
+                sum -= Complex::with_val(prec, x * Complex::with_val(prec, y.conj_ref()));
             }
             if i == j {
                 let own = sum.real().clone();
@@ -571,25 +578,38 @@ fn riccati_sampled(a: &CMat, g: &CMat, q: &CMat) -> Result<CMat, String> {
 impl Session {
     /// The coefficients of a polynomial in a variable, from the highest power.
     /// The matrices of a stable system and its Gramians of steering and of watching.
-    fn gramians(&mut self, e: &Expr, who: &str) -> Result<([Rows; 4], Option<Expr>, CMat, CMat), String> {
+    fn gramians(
+        &mut self,
+        e: &Expr,
+        who: &str,
+    ) -> Result<([Rows; 4], Option<Expr>, CMat, CMat), String> {
         let prec = crate::mfun::bits();
         let (m, ts) = self.with_states(e, who)?;
-        let numbers = decomp::to_complex(&m[0]).map_err(|_| format!("{who}: a system of numbers"))?;
+        let numbers =
+            decomp::to_complex(&m[0]).map_err(|_| format!("{who}: a system of numbers"))?;
         let (_, triangle) = decomp::schur(&numbers)?;
         let stable = (0..triangle.len()).all(|k| match &ts {
             None => triangle[k][k].real().is_sign_negative() && !triangle[k][k].real().is_zero(),
             Some(_) => Float::with_val(prec, triangle[k][k].abs_ref()) < 1,
         });
         if !stable {
-            return Err(format!("{who}: the system is not stable, its Gramians have no values"));
+            return Err(format!(
+                "{who}: the system is not stable, its Gramians have no values"
+            ));
         }
         let name = if ts.is_some() { "dlyap" } else { "lyap" };
         let steering = matrix::matmul(&m[1], &matrix::transpose(&m[1]))?;
         let watching = matrix::matmul(&matrix::transpose(&m[2]), &m[2])?;
-        let wc = self.lyapunov(name, &[matrix::from_rows(m[0].clone()), matrix::from_rows(steering)])?;
+        let wc = self.lyapunov(
+            name,
+            &[matrix::from_rows(m[0].clone()), matrix::from_rows(steering)],
+        )?;
         let wo = self.lyapunov(
             name,
-            &[matrix::from_rows(matrix::transpose(&m[0])), matrix::from_rows(watching)],
+            &[
+                matrix::from_rows(matrix::transpose(&m[0])),
+                matrix::from_rows(watching),
+            ],
         )?;
         let numbers = |e: &Expr| -> Result<CMat, String> {
             to_cmat(&matrix::rows(e).unwrap_or_default(), prec)
@@ -601,24 +621,41 @@ impl Session {
 
     /// The balanced form of a stable system that can be steered: [A, B, C, D], the time
     /// between samples, and the values of Hankel (both Gramians are the diagonal of them).
-    fn balanced(&mut self, e: &Expr, who: &str) -> Result<([CMat; 4], Option<Expr>, Vec<Float>), String> {
+    fn balanced(&mut self, e: &Expr, who: &str) -> Result<Balanced, String> {
         let prec = crate::mfun::bits();
         let (m, ts, wc, wo) = self.gramians(e, who)?;
         let size = wc.len();
-        let lower = cholesky(&wc)
-            .ok_or_else(|| format!("{who}: the system cannot be steered in every direction (it has more states than it needs: minreal)"))?;
+        // states that are not steered or not seen are taken out first: the balanced form is
+        // that of what is left
+        let without = |session: &mut Session, what: &str| -> Result<Balanced, String> {
+            let less = session.call("minreal", std::slice::from_ref(e))?;
+            match session.with_states(&less, who)?.0[0].len() < size {
+                true => session.balanced(&less, who),
+                false => Err(format!("{who}: {what}")),
+            }
+        };
+        let Some(lower) = cholesky(&wc) else {
+            return without(self, "the input does not reach every state of the system");
+        };
         let inner = c_mul(&c_mul(&c_turned(&lower), &wo), &lower);
         let (u, t) = decomp::schur(&inner)?;
         let mut order: Vec<usize> = (0..size).collect();
         order.sort_by(|i, j| {
-            t[*j][*j].real().partial_cmp(t[*i][*i].real()).unwrap_or(std::cmp::Ordering::Equal)
+            t[*j][*j]
+                .real()
+                .partial_cmp(t[*i][*i].real())
+                .unwrap_or(std::cmp::Ordering::Equal)
         });
-        let values = weights(order.iter().map(|k| t[*k][*k].real().clone()).collect(), prec);
+        let values = weights(
+            order.iter().map(|k| t[*k][*k].real().clone()).collect(),
+            prec,
+        );
         if values.iter().any(|v| v.is_zero()) {
-            return Err(format!("{who}: a state of the system is not seen at the output (minreal takes it out)"));
+            return without(self, "the output does not show every state of the system");
         }
         let unit = c_unit(size, prec);
-        let lower_inverse = solved(&lower, &unit).ok_or_else(|| format!("{who}: the Gramian has no inverse"))?;
+        let lower_inverse =
+            solved(&lower, &unit).ok_or_else(|| format!("{who}: the Gramian has no inverse"))?;
         let spread = c_mul(&lower, &u);
         let gathered = c_mul(&c_turned(&u), &lower_inverse);
         // T = Lc U S^(-1/2) and its inverse S^(1/2) U' Lc^-1, the states in the order of their values
@@ -629,20 +666,38 @@ impl Session {
             // (the sign of a state is free: its largest part in T counts as positive)
             let largest = (0..size)
                 .max_by(|i, j| {
-                    let (x, y) = (Float::with_val(prec, spread[*i][*k].abs_ref()), Float::with_val(prec, spread[*j][*k].abs_ref()));
+                    let (x, y) = (
+                        Float::with_val(prec, spread[*i][*k].abs_ref()),
+                        Float::with_val(prec, spread[*j][*k].abs_ref()),
+                    );
                     x.partial_cmp(&y).unwrap_or(std::cmp::Ordering::Equal)
                 })
                 .unwrap_or(0);
-            let sign = if spread[largest][*k].real().is_sign_negative() { -1 } else { 1 };
+            let sign = if spread[largest][*k].real().is_sign_negative() {
+                -1
+            } else {
+                1
+            };
             for i in 0..size {
                 to[i][place] = Complex::with_val(prec, &spread[i][*k] / &root) * sign;
                 back[place][i] = Complex::with_val(prec, &gathered[*k][i] * &root) * sign;
             }
         }
-        let numbers = |rows: &Rows| to_cmat(rows, prec).map_err(|_| format!("{who}: a system of numbers"));
-        let (a, b, c, d) = (numbers(&m[0])?, numbers(&m[1])?, numbers(&m[2])?, numbers(&m[3])?);
+        let numbers =
+            |rows: &Rows| to_cmat(rows, prec).map_err(|_| format!("{who}: a system of numbers"));
+        let (a, b, c, d) = (
+            numbers(&m[0])?,
+            numbers(&m[1])?,
+            numbers(&m[2])?,
+            numbers(&m[3])?,
+        );
         Ok((
-            [c_mul(&c_mul(&back, &a), &to), c_mul(&back, &b), c_mul(&c, &to), d],
+            [
+                c_mul(&c_mul(&back, &a), &to),
+                c_mul(&back, &b),
+                c_mul(&c, &to),
+                d,
+            ],
             ts,
             values,
         ))
@@ -665,7 +720,11 @@ impl Session {
         if ts.is_some() {
             num.push(Expr::zero());
         }
-        Ok(Sys { num: trimmed(num), den, ts })
+        Ok(Sys {
+            num: trimmed(num),
+            den,
+            ts,
+        })
     }
 
     fn poly_of(&mut self, p: &Expr, var: &Expr, who: &str) -> Result<Vec<Expr>, String> {
@@ -745,7 +804,9 @@ impl Session {
     fn with_states(&mut self, e: &Expr, who: &str) -> Result<([Rows; 4], Option<Expr>), String> {
         let (m, ts) = self.matrices(e, who)?;
         if m[0].first().is_none_or(|row| row.is_empty()) {
-            return Err(format!("{who}: the system has no states, it is a gain alone"));
+            return Err(format!(
+                "{who}: the system has no states, it is a gain alone"
+            ));
         }
         Ok((m, ts))
     }
@@ -1048,8 +1109,16 @@ impl Session {
             return self.systems_joined(sum, &items);
         }
         let systems = listed && items.iter().any(|e| is_system(e) || lists_a_system(e));
-        let all = if sum { matrix::add(items)? } else { matrix::mul(items)? };
-        if systems { self.systems_in_lists(all) } else { Ok(all) }
+        let all = if sum {
+            matrix::add(items)?
+        } else {
+            matrix::mul(items)?
+        };
+        if systems {
+            self.systems_in_lists(all)
+        } else {
+            Ok(all)
+        }
     }
 
     /// A power of values: of a system, or of a list that holds systems.
@@ -1059,7 +1128,11 @@ impl Session {
         }
         let systems = lists_a_system(&base);
         let all = matrix::pow(base, exponent)?;
-        if systems { self.systems_in_lists(all) } else { Ok(all) }
+        if systems {
+            self.systems_in_lists(all)
+        } else {
+            Ok(all)
+        }
     }
 
     /// The entries of lists worked out again where systems wait in sums, products and powers.
@@ -1624,8 +1697,9 @@ impl Session {
                             Expr::list(values.iter().map(crate::mfun::value).collect()),
                         ]));
                     }
-                    let size = m.len();
-                    let kept = crate::arrays::whole(&a[1], "the order", 1, size as i64)? as usize;
+                    // (states that the system does not need are gone already)
+                    let (size, given) = (m.len(), self.with_states(&a[0], who)?.0[0].len());
+                    let kept = (crate::arrays::whole(&a[1], "the order", 1, given as i64)? as usize).min(size);
                     let cut = match a.get(2).and_then(word).as_deref() {
                         None | Some("matchdc") => false,
                         Some("truncate") => true,
@@ -3081,5 +3155,123 @@ mod tests {
         let x = riccati_sampled(&one(1.0), &one(1.0), &one(1.0)).unwrap();
         let golden = (Float::with_val(prec, 5).sqrt() + 1u32) / 2u32;
         assert!(Float::with_val(prec, x[0][0].real() - golden).abs() < 1e-40);
+    }
+
+    fn said(input: &str) -> String {
+        crate::eval::run_line(input).map_or_else(|e| format!("error: {e}"), |lines| lines.join("|"))
+    }
+
+    #[test]
+    fn the_triangle_of_a_positive_matrix() {
+        let prec = crate::mfun::bits();
+        let m = |rows: [[i32; 2]; 2]| -> CMat {
+            rows.iter()
+                .map(|r| r.iter().map(|x| Complex::with_val(prec, *x)).collect())
+                .collect()
+        };
+        let lower = cholesky(&m([[4, 2], [2, 3]])).unwrap();
+        assert_eq!(lower[0][0].real().to_f64(), 2.0);
+        assert_eq!(lower[1][0].real().to_f64(), 1.0);
+        assert!(lower[0][1].real().is_zero());
+        assert!((lower[1][1].real().to_f64() - 2f64.sqrt()).abs() < 1e-15);
+        assert!(cholesky(&m([[1, 2], [2, 1]])).is_none());
+        assert!(cholesky(&m([[1, 1], [1, 1]])).is_none());
+    }
+
+    #[test]
+    fn values_below_the_rounding_are_nothing() {
+        let prec = 128;
+        let squares = [4.0, 1.0, 1e-60, -1e-40]
+            .iter()
+            .map(|x| Float::with_val(prec, *x))
+            .collect();
+        let found: Vec<f64> = weights(squares, prec).iter().map(Float::to_f64).collect();
+        assert_eq!(found, vec![2.0, 1.0, 0.0, 0.0]);
+        assert!(weights(Vec::new(), prec).is_empty());
+    }
+
+    #[test]
+    fn systems_are_joined_where_they_stand() {
+        assert_eq!(
+            said("tf([1], [1, 1]) + tf([1], [1, 2])"),
+            "tf([2, 3], [1, 3, 2])"
+        );
+        assert_eq!(said("2/tf([1, 3], [1, 1]) - 1"), "tf([1, -1], [1, 3])");
+        assert_eq!(
+            said("s := tf(\"s\"); g := 1/(s^2 + 3s + 2); pole(g)"),
+            "tf([1, 0], [1])|tf([1], [1, 3, 2])|[-2, -1]"
+        );
+        assert_eq!(said("[tf([1], [1, 1]), 1] + 1"), "[tf([1, 2], [1, 1]), 2]");
+        assert_eq!(
+            said("tf([1], [1, 1])*[1, 2]"),
+            "[tf([1], [1, 1]), tf([2], [1, 1])]"
+        );
+        assert_eq!(
+            said("[[tf([1], [1, 1]), tf([1], [1, 2])]]*[[tf([1], [1, 3])], [2]]"),
+            "[[tf([2, 9, 8], [1, 6, 11, 6])]]"
+        );
+        assert_eq!(
+            said("sum([tf([1], [1, 1]), tf([1], [1, 2])])"),
+            "tf([2, 3], [1, 3, 2])"
+        );
+        assert_eq!(said("[1, 2] + 1"), "[2, 3]");
+        assert!(said("tf([1], [1, 1])^(1/2)").starts_with("error: a power of a system"));
+        assert!(said("tf([1], [1, -1/2], 1) + tf([1], [1, 1])").starts_with("error: a sum"));
+    }
+
+    #[test]
+    fn the_weights_of_the_states_and_fewer_of_them() {
+        // 1/((s + 1)(s + 2)): the values of Hankel are (sqrt(17) +- 3)/24
+        assert!(said("hsvd(tf([1], [1, 3, 2]))").starts_with("[0.29679606773406918957589207"));
+        assert_eq!(said("hsvd(tf([1, 1], [1, 3, 2]))"), "[0.25, 0]");
+        assert_eq!(said("dcgain(balred(tf([1, 2], [1, 3, 5, 4]), 1))"), "0.5");
+        assert_eq!(
+            said("pole(balred(tf([1], [1, 3, 2]), 2, \"truncate\"))"),
+            said("pole(part(balreal(tf([1], [1, 3, 2])), 1))")
+        );
+        // a state that the system does not need is taken out first
+        assert_eq!(
+            said("balreal(tf([1, 1], [1, 3, 2]))"),
+            "[ss([[-2]], [[1]], [[1]], [[0]]), [0.25]]"
+        );
+        assert_eq!(
+            said("tf(balred(ss([[-1, 2], [0, -3]], [[1], [1]], [[1, 1]], [[0]]), 2))"),
+            "tf([2], [1, 1])"
+        );
+        assert_eq!(
+            said("hsvd(5)"),
+            "error: hsvd: the system has no states, it is a gain alone"
+        );
+        assert_eq!(
+            said("covar(tf([1], [1, 3, 2]), 1)"),
+            "[1/12, [[1/6, 0], [0, 1/12]]]"
+        );
+    }
+
+    #[test]
+    fn a_system_left_alone_and_its_controller() {
+        let plant = "ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0]], [[0]])";
+        assert_eq!(
+            said(&format!("initial({plant}, [1, 0])")),
+            "2e^(-t) - e^(-2t)"
+        );
+        assert_eq!(
+            said("initial(ss([[1/2]], [[1]], [[1]], [[0]], 1), [3], 4)"),
+            "[3, 3/2, 3/4, 3/8]"
+        );
+        assert_eq!(
+            said(&format!("reg({plant}, [[1, 2]], [[3], [4]])")),
+            "ss([[-3, 1], [-7, -5]], [[3], [4]], [[-1, -2]], [[0]])"
+        );
+        assert_eq!(said("ord2(2, 1/2)"), "tf([1], [1, 2, 4])");
+        assert_eq!(
+            said("filt([1], [1, 1/2, 1/4])"),
+            "tf([1, 0, 0], [1, 1/2, 1/4], -1)"
+        );
+        assert_eq!(said("sigma(6)"), "12");
+        assert_eq!(
+            said("gensig(\"square\", 4, 4, 1)"),
+            "[[0, 0, 1, 1, 0], [0, 1, 2, 3, 4]]"
+        );
     }
 }

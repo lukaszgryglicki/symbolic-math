@@ -35,6 +35,9 @@ pub enum Shade {
 /// The colour of every point of the plane, where there is one.
 pub type Field = Box<dyn Fn(f64, f64) -> Option<Shade>>;
 
+/// What a field is told before it is asked: the places of a row of the picture.
+pub type Ahead = Box<dyn Fn(&[(f64, f64)])>;
+
 pub enum Item {
     /// A walk from the origin: step `k` goes `runs[k]` times (once without `runs`) along
     /// the direction `dirs[steps[k]]`.
@@ -168,6 +171,8 @@ pub struct Drawing {
     /// Edges of areas that would show the steps of the pixels: the picture is drawn twice
     /// as large and made smaller.
     pub smooth: bool,
+    /// A field whose values take long gets the places of every row before it is asked there.
+    pub ahead: Option<Ahead>,
 }
 
 impl Drawing {
@@ -189,6 +194,7 @@ impl Drawing {
             axis_names: None,
             legend: None,
             smooth: false,
+            ahead: None,
         }
     }
 
@@ -1092,6 +1098,12 @@ impl<'a> Shot<'a> {
                         continue;
                     }
                     for j in top..bottom {
+                        if let Some(ahead) = &self.drawing.ahead {
+                            let row: Vec<(f64, f64)> = (left..right)
+                                .map(|i| view.back(i as f64 + 0.5, j as f64 + 0.5))
+                                .collect();
+                            ahead(&row);
+                        }
                         for i in left..right {
                             let (x, y) = view.back(i as f64 + 0.5, j as f64 + 0.5);
                             let color = match field(x, y) {
@@ -1851,9 +1863,15 @@ pub fn text(
             if let Some(field) = field {
                 canvas.axes = false;
                 for r in 0..height {
+                    let py = y.1 - (y.1 - y.0) * (r as f64 + 0.5) / height as f64;
+                    if let Some(ahead) = &drawing.ahead {
+                        let row: Vec<(f64, f64)> = (0..width)
+                            .map(|c| (x.0 + (x.1 - x.0) * (c as f64 + 0.5) / width as f64, py))
+                            .collect();
+                        ahead(&row);
+                    }
                     for c in 0..width {
                         let px = x.0 + (x.1 - x.0) * (c as f64 + 0.5) / width as f64;
-                        let py = y.1 - (y.1 - y.0) * (r as f64 + 0.5) / height as f64;
                         let light = match field(px, py) {
                             Some(Shade::Level(v)) => v.clamp(0.0, 1.0),
                             Some(Shade::Tint(_, light)) => light.clamp(0.0, 1.0),

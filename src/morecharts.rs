@@ -2138,21 +2138,41 @@ fn nicholsplot(a: &[Expr]) -> Result<Drawing, String> {
             (low - 1.0, high + 1.0)
         }
     };
-    let phase_span = wide(span(&points.iter().map(|p| p.0).chain([-180.0]).collect::<Vec<_>>()));
-    let gain_span = wide(span(&points.iter().map(|p| p.1).chain([0.0]).collect::<Vec<_>>()));
-    let (across, upwards) = ((phase_span.1 - phase_span.0) / 90.0, (gain_span.1 - gain_span.0) / 50.0);
+    let phase_span = wide(span(
+        &points
+            .iter()
+            .map(|p| p.0)
+            .chain([-180.0])
+            .collect::<Vec<_>>(),
+    ));
+    let gain_span = wide(span(
+        &points.iter().map(|p| p.1).chain([0.0]).collect::<Vec<_>>(),
+    ));
+    let (across, upwards) = (
+        (phase_span.1 - phase_span.0) / 90.0,
+        (gain_span.1 - gain_span.0) / 50.0,
+    );
     let mut drawing = Drawing::new(
         chart(phase_span, gain_span),
         vec![
             Item::Line {
-                points: points.iter().map(|(phase, gain)| flat(*phase, *gain)).collect(),
+                points: points
+                    .iter()
+                    .map(|(phase, gain)| flat(*phase, *gain))
+                    .collect(),
                 paint: Paint::Curve(0),
                 weight: 1.0,
             },
             Item::Segments {
                 pairs: vec![
-                    [flat(-180.0 - across, -upwards), flat(-180.0 + across, upwards)],
-                    [flat(-180.0 - across, upwards), flat(-180.0 + across, -upwards)],
+                    [
+                        flat(-180.0 - across, -upwards),
+                        flat(-180.0 + across, upwards),
+                    ],
+                    [
+                        flat(-180.0 - across, upwards),
+                        flat(-180.0 + across, -upwards),
+                    ],
                 ],
                 paint: Paint::Curve(1),
                 weight: 1.5,

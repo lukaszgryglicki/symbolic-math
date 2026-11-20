@@ -2455,6 +2455,78 @@ mod tetration {
         std::fs::remove_dir_all(dir).unwrap();
     }
 
+    /// A stand-in that answers with the height it was asked for: `b^^h` is then `h` itself.
+    /// It takes its time and writes down when it starts and when it ends.
+    const HEIGHTS: &str = "#!/bin/sh\necho \"S $*\" >> \"$0.log\"\n/bin/sleep 0.05\necho E >> \"$0.log\"\necho \"$5\"; echo \"$6\"\n";
+
+    #[test]
+    fn a_grid_asks_tet_once_for_every_place_and_each_place_gets_its_value() {
+        let dir = stand_in("grid", HEIGHTS);
+        // (the text below a drawing names the function)
+        for (with_tet, plain, name, plain_name) in [
+            (
+                "plot(1.5^^x, x, 0.1, 0.9, 24, 8)",
+                "plot(x, x, 0.1, 0.9, 24, 8)",
+                "",
+                "",
+            ),
+            (
+                "plot4d(1.5^^z, z, 0.1 + 0.1i, 0.9 + 0.9i, width = 8, height = 4, frames = 3)",
+                "plot4d(z, z, 0.1 + 0.1i, 0.9 + 0.9i, width = 8, height = 4, frames = 3)",
+                "(3/2)^^z",
+                "z",
+            ),
+            (
+                "complexplot(1.5^^z, z, 0.15 + 0.15i, 0.85 + 0.85i, width = 16, height = 6)",
+                "complexplot(z, z, 0.15 + 0.15i, 0.85 + 0.85i, width = 16, height = 6)",
+                "",
+                "",
+            ),
+            (
+                "plot3d(re(1.5^^(x + i*y)), x, 0.2, 0.8, y, 0.3, 0.7, width = 20, height = 8)",
+                "plot3d(re(x + i*y), x, 0.2, 0.8, y, 0.3, 0.7, width = 20, height = 8)",
+                "re((3/2)^^(x + i*y))",
+                "re(x) - im(y)",
+            ),
+        ] {
+            let (got, err, ok) = run_with_path(&dir, with_tet);
+            let (want, _, _) = run_with_path(&dir, plain);
+            assert!(ok && err.is_empty(), "{with_tet}: stderr `{err}`");
+            let got = match name {
+                "" => got,
+                _ => got.replace(name, plain_name),
+            };
+            assert_eq!(got, want, "{with_tet}");
+            // no place is asked twice, none again by the drawing
+            let log = std::fs::read_to_string(dir.join("tet.log")).unwrap();
+            std::fs::remove_file(dir.join("tet.log")).unwrap();
+            let lines: Vec<&str> = log.lines().collect();
+            let mut asked: Vec<&str> = lines
+                .iter()
+                .copied()
+                .filter(|l| l.starts_with('S'))
+                .collect();
+            let runs = asked.len();
+            asked.sort_unstable();
+            asked.dedup();
+            assert!(
+                runs > 40 && asked.len() == runs,
+                "{with_tet}: {runs} runs of tet for {} places",
+                asked.len()
+            );
+            // and the runs are made many at a time: one starts before another has ended
+            let together = lines
+                .windows(2)
+                .any(|w| w[0].starts_with('S') && w[1].starts_with('S'));
+            let alone = std::thread::available_parallelism().map_or(1, |n| n.get()) < 2;
+            assert!(
+                together || alone,
+                "{with_tet}: the runs of tet were made one by one"
+            );
+        }
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
     #[test]
     fn real_tet_when_installed() {
         let installed = std::env::var_os("PATH")

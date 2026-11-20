@@ -459,6 +459,18 @@ fn complex(a: &[Expr]) -> Result<Drawing, String> {
         _ => return Err(usage.to_string()),
     };
     let f = f.clone();
+    // (values of tetration are asked of the program tet for a whole row at once)
+    let ahead = crate::tetration::uses_tet(&f).then(|| {
+        let (f, var) = (f.clone(), var.clone());
+        Box::new(move |row: &[(f64, f64)]| {
+            let places = row.iter().map(|(px, py)| {
+                let mut env = Env::new();
+                env.insert(var.clone(), Complex::with_val(64, (*px, *py)));
+                env
+            });
+            crate::tetration::fetch(&f, 64, places);
+        }) as crate::scene::Ahead
+    });
     let field = move |px: f64, py: f64| -> Option<Shade> {
         let mut env = Env::new();
         env.insert(var.clone(), Complex::with_val(64, (px, py)));
@@ -485,6 +497,7 @@ fn complex(a: &[Expr]) -> Result<Drawing, String> {
         vec![Item::Field(Box::new(field))],
     );
     drawing.aspect = Some((y.1 - y.0) / (x.1 - x.0));
+    drawing.ahead = ahead;
     drawing.facts = vec![
         "the colour is the argument of the value: red for the positive numbers, then yellow, green, cyan for the negative ones, blue, magenta; the lightness is its absolute value: black is 0, the full colour 1, white the infinitely large".to_string(),
     ];

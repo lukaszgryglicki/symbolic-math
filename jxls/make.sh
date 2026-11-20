@@ -100,6 +100,7 @@ picture polarplot_rose 'polarplot(cos(7t/4), t, 0, 8pi)'
 picture bodeplot 'bodeplot(tf([1], [1, 0.4, 1]))'
 picture nyquistplot 'nyquistplot(tf([4], [1, 3, 3, 1]))'
 picture rlocusplot 'rlocusplot(tf([1, 2], [1, 3, 5, 0]))'
+picture nicholsplot 'nicholsplot(tf([4], [1, 3, 3, 1]))'
 picture graphplot_petersen 'graphplot(petersengraph())'
 
 # tetration b^^h, its inverse in the height (slog) and in the base (ssrt): the values come
@@ -118,3 +119,5 @@ picture view4d_tetration_e 'view4d(e^^z, z, -1.8 - 2i, 2.2 + 2i), voxels = 192, 
 picture view4d_slog 'view4d(slog(sqrt(2), z), z, -2 - 2i, 1.9 + 2i), voxels = 256, range_real = [-3, 6], palette = twilight'
 picture view4d_ssrt 'view4d(ssrt(z, 2), z, -4 - 4i, 6 + 4i), voxels = 256, palette = spectrum'
 turning view4d_around_tetration 'view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma'
+picture complexplot_tetration 'complexplot(sqrt(2)^^z, z, -4.8 - 2.7i, 4.8 + 2.7i)'
+picture complexplot_tetration_fifth 'complexplot(0.2^^z, z, -4 - 2.25i, 4 + 2.25i)'

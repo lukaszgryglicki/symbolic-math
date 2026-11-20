@@ -237,13 +237,18 @@ fn the_pictures_of_the_repository_have_their_inputs() {
             .unwrap_or_default();
     if !there.is_empty() {
         let missing: Vec<&&str> = names.iter().filter(|n| !there.contains(**n)).collect();
-        let unlisted: Vec<&String> = there.iter().filter(|n| !names.contains(n.as_str())).collect();
+        let unlisted: Vec<&String> = there
+            .iter()
+            .filter(|n| !names.contains(n.as_str()))
+            .collect();
         assert!(
             missing.is_empty() && unlisted.is_empty(),
             "not in jxls: {missing:?}; not in the help text: {unlisted:?}"
         );
     }
-    let sizes = ["width", "height", "frames", "effort", "fps", "slices", "voxels"];
+    let sizes = [
+        "width", "height", "frames", "effort", "fps", "slices", "voxels",
+    ];
     for (name, input) in &listed {
         assert!(
             input.starts_with(&format!("save_jxl(\"{name}\", ")) && input.ends_with(')'),
@@ -253,7 +258,10 @@ fn the_pictures_of_the_repository_have_their_inputs() {
         let chosen = |choice: &str| all.iter().any(|a| a.starts_with(&format!("{choice} = ")));
         // (the values of tetration come from the program tet, which is not asked here)
         let drawing = &all[1];
-        if ["^^", "slog(", "ssrt(", "tet("].iter().any(|t| drawing.contains(t)) {
+        if ["^^", "slog(", "ssrt(", "tet("]
+            .iter()
+            .any(|t| drawing.contains(t))
+        {
             continue;
         }
         let mut small: Vec<String> = all

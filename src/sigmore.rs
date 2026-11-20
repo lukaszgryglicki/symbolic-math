@@ -177,7 +177,8 @@ fn least_squares(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 false => {
                     let end = |w: &Float| -> Float {
                         let angle = Float::with_val(bits(), &mi * w);
-                        let line = Float::with_val(bits(), &offset + Float::with_val(bits(), &slope * w));
+                        let line =
+                            Float::with_val(bits(), &offset + Float::with_val(bits(), &slope * w));
                         line * angle.clone().sin() / &mi
                             + Float::with_val(bits(), &slope * angle.cos())
                                 / Float::with_val(bits(), &mi * &mi)
@@ -186,8 +187,7 @@ fn least_squares(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 }
             };
             d[i] += Float::with_val(bits(), weight * part);
-            for j in i..unknowns {
-                let mj = at(j);
+            for (j, mj) in (i..unknowns).map(|j| (j, at(j))) {
                 let both = cosines(&Float::with_val(bits(), &mi - &mj), low, high)
                     + cosines(&Float::with_val(bits(), &mi + &mj), low, high);
                 let value = Float::with_val(bits(), weight * both) / 2u32;
@@ -207,7 +207,7 @@ fn least_squares(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
 /// whole bands.
 fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
     let taps = order + 1;
-    let even = taps % 2 == 0;
+    let even = taps.is_multiple_of(2);
     let r = if even { taps / 2 } else { taps.div_ceil(2) };
     // a filter with an even number of taps is cos(w/2) times a sum of r cosines
     let lean = |w: &Float| -> Float {
@@ -225,7 +225,10 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
         for band in 0..bands.count() {
             let wide = Float::with_val(bits(), &bands.edges[2 * band + 1] - &bands.edges[2 * band]);
             if left <= wide || band + 1 == bands.count() {
-                return (band, Float::with_val(bits(), &bands.edges[2 * band] + left.min(&wide)));
+                return (
+                    band,
+                    Float::with_val(bits(), &bands.edges[2 * band] + left.min(&wide)),
+                );
             }
             left -= wide;
         }
@@ -312,7 +315,12 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
             let share = Float::with_val(64, &wide / &total).to_f64();
             let cells = ((density * r) as f64 * share).ceil().max(4.0) as usize;
             let grid: Vec<Float> = (0..=cells)
-                .map(|k| Float::with_val(bits(), low + Float::with_val(bits(), &wide * k as u64) / cells as u64))
+                .map(|k| {
+                    Float::with_val(
+                        bits(),
+                        low + Float::with_val(bits(), &wide * k as u64) / cells as u64,
+                    )
+                })
                 .collect();
             let errors: Vec<Float> = grid.iter().map(|w| error(band, w)).collect();
             let size = |k: usize| errors[k].clone().abs();
@@ -339,21 +347,41 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 let height = |w: &Float| -> Float { error(band, w) * sign };
                 let ratio = (Float::with_val(bits(), 5).sqrt() - 1u32) / 2u32;
                 let (mut from, mut to) = (grid[k - 1].clone(), grid[k + 1].clone());
-                let mut inner_low = Float::with_val(bits(), &to - Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)));
-                let mut inner_high = Float::with_val(bits(), &from + Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)));
+                let mut inner_low = Float::with_val(
+                    bits(),
+                    &to - Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)),
+                );
+                let mut inner_high = Float::with_val(
+                    bits(),
+                    &from + Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)),
+                );
                 let (mut at_low, mut at_high) = (height(&inner_low), height(&inner_high));
-                while Float::with_val(bits(), &to - &from) > Float::with_val(bits(), &tiny * &wide) {
+                while Float::with_val(bits(), &to - &from) > Float::with_val(bits(), &tiny * &wide)
+                {
                     if at_low > at_high {
                         to = inner_high;
                         inner_high = inner_low;
                         at_high = at_low;
-                        inner_low = Float::with_val(bits(), &to - Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)));
+                        inner_low = Float::with_val(
+                            bits(),
+                            &to - Float::with_val(
+                                bits(),
+                                &ratio * Float::with_val(bits(), &to - &from),
+                            ),
+                        );
                         at_low = height(&inner_low);
                     } else {
                         from = inner_low;
                         inner_low = inner_high;
                         at_low = at_high;
-                        inner_high = Float::with_val(bits(), &from + Float::with_val(bits(), &ratio * Float::with_val(bits(), &to - &from)));
+                        inner_high = Float::with_val(
+                            bits(),
+                            &from
+                                + Float::with_val(
+                                    bits(),
+                                    &ratio * Float::with_val(bits(), &to - &from),
+                                ),
+                        );
                         at_high = height(&inner_high);
                     }
                 }
@@ -384,7 +412,11 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 continue;
             }
             let least = (0..=last)
-                .min_by(|a, b| size(*a).partial_cmp(&size(*b)).unwrap_or(std::cmp::Ordering::Equal))
+                .min_by(|a, b| {
+                    size(*a)
+                        .partial_cmp(&size(*b))
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                })
                 .unwrap_or(0);
             if least == 0 || least == last {
                 turns.remove(least);
@@ -411,7 +443,8 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
         let least = turns
             .iter()
             .fold(greatest.clone(), |m, t| m.min(&t.2.clone().abs()));
-        let settled = Float::with_val(bits(), &greatest - &least) <= Float::with_val(bits(), &greatest * &done);
+        let settled = Float::with_val(bits(), &greatest - &least)
+            <= Float::with_val(bits(), &greatest * &done);
         points = turns.into_iter().map(|(band, w, _)| (band, w)).collect();
         if settled || greatest.is_zero() {
             // the coefficients of the cosines from the values of the sum at as many places
@@ -516,7 +549,7 @@ fn sampled(
         all.extend(values[1..grid].iter().rev().map(cx));
         all
     };
-    let h: Vec<Float> = if order % 2 == 0 {
+    let h: Vec<Float> = if order.is_multiple_of(2) {
         let b = fft(&mirrored(0), true);
         let half = order / 2;
         (b.len() - half..b.len())
@@ -532,7 +565,10 @@ fn sampled(
             .map(|k| Float::with_val(bits(), b[k].real() * 2u32))
             .collect()
     };
-    Ok(h.iter().zip(win).map(|(x, w)| Float::with_val(bits(), x * w)).collect())
+    Ok(h.iter()
+        .zip(win)
+        .map(|(x, w)| Float::with_val(bits(), x * w))
+        .collect())
 }
 
 /// The values at another rate: `up - 1` zeros after every value, a lowpass of sinc with
@@ -590,7 +626,10 @@ fn another_rate(x: &[Float], up: usize, down: usize) -> Result<Vec<Float>, Strin
 /// The reflections of a polynomial `1 + a1/z + ...` and the polynomials of all lower orders
 /// (the first one is the given one).
 fn stepped_down(a: &[Float], who: &str) -> Result<(Vec<Float>, Vec<Vec<Float>>), String> {
-    let mut now: Vec<Float> = a.iter().map(|x| Float::with_val(bits(), x / &a[0])).collect();
+    let mut now: Vec<Float> = a
+        .iter()
+        .map(|x| Float::with_val(bits(), x / &a[0]))
+        .collect();
     let mut all = vec![now.clone()];
     let mut reflections = Vec::new();
     for m in (1..now.len()).rev() {
@@ -990,11 +1029,11 @@ impl Session {
                     let state: Vec<Float> = (0..size)
                         .map(|m| {
                             let mut sum = zero();
-                            for k in m + 1..b.len() {
-                                sum += Float::with_val(bits(), &b[k] * at(&x, k - m - 1));
+                            for (k, c) in b.iter().enumerate().skip(m + 1) {
+                                sum += Float::with_val(bits(), c * at(&x, k - m - 1));
                             }
-                            for k in m + 1..den.len() {
-                                sum -= Float::with_val(bits(), &den[k] * at(&y, k - m - 1));
+                            for (k, c) in den.iter().enumerate().skip(m + 1) {
+                                sum -= Float::with_val(bits(), c * at(&y, k - m - 1));
                             }
                             sum
                         })
@@ -1005,5 +1044,88 @@ impl Session {
             })
         })())
         .filter(|r| !matches!(r, Err(e) if e.is_empty()))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    fn said(input: &str) -> String {
+        crate::eval::run_line(input).map_or_else(|e| format!("error: {e}"), |lines| lines.join("|"))
+    }
+
+    #[test]
+    fn filters_of_least_squares_and_of_equal_ripples() {
+        // half of the band: the middle tap is 1/2, the next ones 1/pi, every second one 0
+        assert_eq!(
+            said("firls(4, [0, 1/2, 1/2, 1], [1, 1, 0, 0])"),
+            "[0, 0.31830988618379067153776752674503, 0.5, 0.31830988618379067153776752674503, 0]"
+        );
+        // three taps with ripples of one size: 1/2 - sqrt(5)/10 beside 1/2
+        assert!(
+            said("firpm(2, [0, 0.2, 0.8, 1], [1, 1, 0, 0])")
+                .starts_with("[0.276393202250021030359082633")
+        );
+        assert_eq!(
+            said("islinphase(remez(6, [0, 0.4, 0.6, 1], [1, 1, 0, 0], [1, 10]))"),
+            "true"
+        );
+        assert_eq!(
+            said("length(firls(5, [0, 0.4, 0.6, 1], [0, 0, 1, 1]))"),
+            "7"
+        );
+        assert!(said("firpm(4, [0, 0.5, 0.3, 1], [1, 1, 0, 0])").starts_with("error: firpm("));
+    }
+
+    #[test]
+    fn lattices_go_there_and_back() {
+        assert_eq!(said("tf2latc([1, 1/2, 1/4])"), "[0.4, 0.25]");
+        assert_eq!(said("latc2tf(tf2latc([1, 1/2, 1/4]))"), "[1, 0.5, 0.25]");
+        assert_eq!(
+            said("latcfilt([2/5, 1/4], [1, 0, 0, 0])"),
+            "[1, 0.5, 0.25, 0]"
+        );
+        assert!(said("tf2latc([1, 1/2, 1])").contains("unit circle"));
+    }
+
+    #[test]
+    fn shifts_ways_and_parts() {
+        assert_eq!(said("finddelay([1, 2, 3, 0, 0], [0, 0, 1, 2, 3])"), "2");
+        assert_eq!(
+            said("dtw([1, 2, 3, 4], [1, 1, 2, 3, 4])"),
+            "[0, [1, 1, 2, 3, 4], [1, 2, 3, 4, 5]]"
+        );
+        assert_eq!(
+            said("residuez([1, 2], [1, -3/4, 1/8])"),
+            "[[10, -9], [0.5, 0.25], []]"
+        );
+        assert_eq!(said("resample([1, 2, 3, 4], 1, 1)"), "[1, 2, 3, 4]");
+        assert_eq!(
+            said("fftfilt([1, -1], [1, 4, 9, 16, 25])"),
+            "[1, 3, 5, 7, 9]"
+        );
+        assert_eq!(
+            said("part(phasedelay([0, 0, 1], [1], 4), 1)"),
+            "[2, 2, 2, 2]"
+        );
+    }
+
+    #[test]
+    fn a_filter_goes_on_from_its_state() {
+        assert_eq!(
+            said("filter([1, 1], [1, -1/2], [1, 2, 3, 4])"),
+            "[1, 7/2, 27/4, 83/8]"
+        );
+        // the second half from the state that the first half leaves
+        assert_eq!(
+            said("filter([1, 1], [1, -1/2], [3, 4], filtic([1, 1], [1, -1/2], [7/2, 1], [2, 1]))"),
+            "[6.75, 10.375]"
+        );
+        assert_eq!(
+            said("filter([1, 1], [1, -1/2], [1, 1, 1], [4])"),
+            "[5, 9/2, 17/4]"
+        );
+        assert!(
+            said("filter([1, 1], [1, -1/2], [1, 1, 1], [4, 5])").contains("the state zi has 1")
+        );
     }
 }

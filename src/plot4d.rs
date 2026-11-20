@@ -465,7 +465,9 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
     crate::tetration::fetch(
         &plan.f,
         64,
-        (0..=nb).flat_map(|j| (0..=na).map(move |i| (i, j))).map(|(i, j)| at(i, j)),
+        (0..=nb)
+            .flat_map(|j| (0..=na).map(move |i| (i, j)))
+            .map(|(i, j)| at(i, j)),
     );
     let mut values = Vec::with_capacity((na + 1) * (nb + 1));
     for j in 0..=nb {
