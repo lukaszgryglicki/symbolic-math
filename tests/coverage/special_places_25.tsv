@@ -1,0 +1,407 @@
+-e	softplus(-inf)	0
+-e	softplus(undefined)	undefined
+-e	softplus(10^20)	ln(1 + e^100000000000000000000)
+-e	softplus(10^(-20))	ln(1 + e^(1/100000000000000000000))
+-e	softplus(x)	ln(e^x + 1)
+-e	softplus([])	[]
+-e	softplus([1, 2])	[ln(1 + e), ln(1 + e^2)]
+-e	softplus("text")	ln(e^"text" + 1)
+-e	softplus(true)	ln(1 + e^(true))
+-e	softplus(-7/3)	ln(1 + 1/e^(7/3))
+-e	softplus(0.5)	0.97407698418010668087299735508117
+-e	softsign(0)	0
+-e	softsign(1)	1/2
+-e	softsign(-1)	-1/2
+-e	softsign(1/2)	1/3
+-e	softsign(2)	2/3
+-e	softsign(i)	i/2
+-e	softsign(inf)	undefined
+-e	softsign(-inf)	undefined
+-e	softsign(undefined)	undefined
+-e	softsign(10^20)	100000000000000000000/100000000000000000001
+-e	softsign(10^(-20))	1/100000000000000000001
+-e	softsign(x)	x/(abs(x) + 1)
+-e	softsign([])	[]
+-e	softsign([1, 2])	[1/2, 2/3]
+-e	softsign("text")	"text"/(abs("text") + 1)
+-e	softsign(true)	true/(1 + abs(true))
+-e	softsign(-7/3)	-7/10
+-e	softsign(0.5)	0.33333333333333333333333333333333
+-e	sigmoid(0)	1/2
+-e	sigmoid(1)	e/(1 + e)
+-e	sigmoid(-1)	1/(1 + e)
+-e	sigmoid(1/2)	1/(1 + 1/sqrt(e))
+-e	sigmoid(2)	1/(1 + 1/e^2)
+-e	sigmoid(i)	e^i/(1 + e^i)
+-e	sigmoid(inf)	1
+-e	sigmoid(-inf)	0
+-e	sigmoid(undefined)	undefined
+-e	sigmoid(10^20)	1/(1 + 1/e^100000000000000000000)
+-e	sigmoid(10^(-20))	1/(1 + 1/e^(1/100000000000000000000))
+-e	sigmoid(x)	e^x/(e^x + 1)
+-e	sigmoid([])	[]
+-e	sigmoid([1, 2])	[e/(1 + e), 1/(1 + 1/e^2)]
+-e	sigmoid("text")	1/(e^(-"text") + 1)
+-e	sigmoid(true)	1/(1 + e^(-true))
+-e	sigmoid(-7/3)	1/(1 + e^(7/3))
+-e	sigmoid(0.5)	0.62245933120185456463890056574551
+-e	tansig(0)	0
+-e	tansig(1)	tanh(1)
+-e	tansig(-1)	-tanh(1)
+-e	tansig(1/2)	tanh(1/2)
+-e	tansig(2)	tanh(2)
+-e	tansig(i)	i*tan(1)
+-e	tansig(inf)	1
+-e	tansig(-inf)	-1
+-e	tansig(undefined)	undefined
+-e	tansig(10^20)	tanh(100000000000000000000)
+-e	tansig(10^(-20))	tanh(1/100000000000000000000)
+-e	tansig(x)	tanh(x)
+-e	tansig([])	[]
+-e	tansig([1, 2])	[tanh(1), tanh(2)]
+-e	tansig("text")	tanh("text")
+-e	tansig(true)	tanh(true)
+-e	tansig(-7/3)	-tanh(7/3)
+-e	tansig(0.5)	0.46211715726000975850231848364367
+-e	purelin(0)	0
+-e	purelin(1)	1
+-e	purelin(-1)	-1
+-e	purelin(1/2)	1/2
+-e	purelin(2)	2
+-e	purelin(i)	i
+-e	purelin(inf)	inf
+-e	purelin(-inf)	-inf
+-e	purelin(undefined)	undefined
+-e	purelin(10^20)	100000000000000000000
+-e	purelin(10^(-20))	1/100000000000000000000
+-e	purelin(x)	x
+-e	purelin([])	[]
+-e	purelin([1, 2])	[1, 2]
+-e	purelin("text")	"text"
+-e	purelin(true)	true
+-e	purelin(-7/3)	-7/3
+-e	purelin(0.5)	0.5
+-e	satlin(0)	0
+-e	satlin(1)	1
+-e	satlin(-1)	0
+-e	satlin(1/2)	1/2
+-e	satlin(2)	1
+-e	satlin(i)	error: satlin: i is not a real number
+-e	satlin(inf)	error: satlin: inf is not a real number
+-e	satlin(-inf)	error: satlin: -inf is not a real number
+-e	satlin(undefined)	error: satlin: undefined is not a real number
+-e	satlin(10^20)	1
+-e	satlin(10^(-20))	1/100000000000000000000
+-e	satlin(x)	-abs(x - 1)/2 + abs(x)/2 + 1/2
+-e	satlin([])	[]
+-e	satlin([1, 2])	[1, 1]
+-e	satlin("text")	-abs("text" - 1)/2 + abs("text")/2 + 1/2
+-e	satlin(true)	error: satlin: true is not a real number
+-e	satlin(-7/3)	0
+-e	satlin(0.5)	0.5
+-e	satlins(0)	0
+-e	satlins(1)	1
+-e	satlins(-1)	-1
+-e	satlins(1/2)	1/2
+-e	satlins(2)	1
+-e	satlins(i)	error: satlins: i is not a real number
+-e	satlins(inf)	error: satlins: inf is not a real number
+-e	satlins(-inf)	error: satlins: -inf is not a real number
+-e	satlins(undefined)	error: satlins: undefined is not a real number
+-e	satlins(10^20)	1
+-e	satlins(10^(-20))	1/100000000000000000000
+-e	satlins(x)	abs(x + 1)/2 - abs(x - 1)/2
+-e	satlins([])	[]
+-e	satlins([1, 2])	[1, 1]
+-e	satlins("text")	abs("text" + 1)/2 - abs("text" - 1)/2
+-e	satlins(true)	error: satlins: true is not a real number
+-e	satlins(-7/3)	-1
+-e	satlins(0.5)	0.5
+-e	hardlim(0)	1
+-e	hardlim(1)	1
+-e	hardlim(-1)	0
+-e	hardlim(1/2)	1
+-e	hardlim(2)	1
+-e	hardlim(i)	error: hardlim: i is not a real number
+-e	hardlim(inf)	error: hardlim: inf is not a real number
+-e	hardlim(-inf)	error: hardlim: -inf is not a real number
+-e	hardlim(undefined)	error: hardlim: undefined is not a real number
+-e	hardlim(10^20)	1
+-e	hardlim(10^(-20))	1
+-e	hardlim(x)	hardlim(x)
+-e	hardlim([])	[]
+-e	hardlim([1, 2])	[1, 1]
+-e	hardlim("text")	hardlim("text")
+-e	hardlim(true)	error: hardlim: true is not a real number
+-e	hardlim(-7/3)	0
+-e	hardlim(0.5)	1
+-e	hardlims(0)	1
+-e	hardlims(1)	1
+-e	hardlims(-1)	-1
+-e	hardlims(1/2)	1
+-e	hardlims(2)	1
+-e	hardlims(i)	error: hardlims: i is not a real number
+-e	hardlims(inf)	error: hardlims: inf is not a real number
+-e	hardlims(-inf)	error: hardlims: -inf is not a real number
+-e	hardlims(undefined)	error: hardlims: undefined is not a real number
+-e	hardlims(10^20)	1
+-e	hardlims(10^(-20))	1
+-e	hardlims(x)	hardlims(x)
+-e	hardlims([])	[]
+-e	hardlims([1, 2])	[1, 1]
+-e	hardlims("text")	hardlims("text")
+-e	hardlims(true)	error: hardlims: true is not a real number
+-e	hardlims(-7/3)	-1
+-e	hardlims(0.5)	1
+-e	radbas(0)	1
+-e	radbas(1)	1/e
+-e	radbas(-1)	1/e
+-e	radbas(1/2)	1/e^(1/4)
+-e	radbas(2)	1/e^4
+-e	radbas(i)	e
+-e	radbas(inf)	0
+-e	radbas(-inf)	0
+-e	radbas(undefined)	undefined
+-e	radbas(10^20)	1/e^10000000000000000000000000000000000000000
+-e	radbas(10^(-20))	1/e^(1/10000000000000000000000000000000000000000)
+-e	radbas(x)	e^(-x^2)
+-e	radbas([])	[]
+-e	radbas([1, 2])	[1/e, 1/e^4]
+-e	radbas("text")	e^(-"text"^2)
+-e	radbas(true)	e^(-(true)^2)
+-e	radbas(-7/3)	1/e^(49/9)
+-e	radbas(0.5)	0.77880078307140486824517026697832
+-e	tribas(0)	1
+-e	tribas(1)	0
+-e	tribas(-1)	0
+-e	tribas(1/2)	1/2
+-e	tribas(2)	0
+-e	tribas(i)	error: tribas: i is not a real number
+-e	tribas(inf)	error: tribas: inf is not a real number
+-e	tribas(-inf)	error: tribas: -inf is not a real number
+-e	tribas(undefined)	error: tribas: undefined is not a real number
+-e	tribas(10^20)	0
+-e	tribas(10^(-20))	99999999999999999999/100000000000000000000
+-e	tribas(x)	abs(1 - abs(x))/2 - abs(x)/2 + 1/2
+-e	tribas([])	[]
+-e	tribas([1, 2])	[0, 0]
+-e	tribas("text")	-abs("text")/2 + abs(1 - abs("text"))/2 + 1/2
+-e	tribas(true)	error: tribas: true is not a real number
+-e	tribas(-7/3)	0
+-e	tribas(0.5)	0.5
+-e	netinv(0)	ComplexInfinity
+-e	netinv(1)	1
+-e	netinv(-1)	-1
+-e	netinv(1/2)	2
+-e	netinv(2)	1/2
+-e	netinv(i)	-i
+-e	netinv(inf)	0
+-e	netinv(-inf)	0
+-e	netinv(undefined)	undefined
+-e	netinv(10^20)	1/100000000000000000000
+-e	netinv(10^(-20))	100000000000000000000
+-e	netinv(x)	1/x
+-e	netinv([])	[]
+-e	netinv([1, 2])	[1, 1/2]
+-e	netinv("text")	1/"text"
+-e	netinv(true)	1/true
+-e	netinv(-7/3)	-3/7
+-e	netinv(0.5)	2
+-e	softmax(0)	[1]
+-e	softmax(1)	[1]
+-e	softmax(-1)	[1]
+-e	softmax(1/2)	[1]
+-e	softmax(2)	[1]
+-e	softmax(i)	[1]
+-e	softmax(inf)	[undefined]
+-e	softmax(-inf)	[undefined]
+-e	softmax(undefined)	[undefined]
+-e	softmax(10^20)	[1]
+-e	softmax(10^(-20))	[1]
+-e	softmax(x)	[1]
+-e	softmax([])	[]
+-e	softmax([1, 2])	[1/(1 + e), e/(1 + e)]
+-e	softmax("text")	[1]
+-e	softmax(true)	[1]
+-e	softmax(-7/3)	[1]
+-e	softmax(0.5)	[1]
+-e	compet(0)	[1]
+-e	compet(1)	[1]
+-e	compet(-1)	[1]
+-e	compet(1/2)	[1]
+-e	compet(2)	[1]
+-e	compet(i)	[1]
+-e	compet(inf)	[1]
+-e	compet(-inf)	[1]
+-e	compet(undefined)	[1]
+-e	compet(10^20)	[1]
+-e	compet(10^(-20))	[1]
+-e	compet(x)	[1]
+-e	compet([])	error: compet needs values
+-e	compet([1, 2])	[0, 1]
+-e	compet("text")	[1]
+-e	compet(true)	[1]
+-e	compet(-7/3)	[1]
+-e	compet(0.5)	[1]
+-e	onehotencode(0)	[1]
+-e	onehotencode(1)	[1]
+-e	onehotencode(-1)	[1]
+-e	onehotencode(1/2)	[1]
+-e	onehotencode(2)	[1]
+-e	onehotencode(i)	[1]
+-e	onehotencode(inf)	[1]
+-e	onehotencode(-inf)	[1]
+-e	onehotencode(undefined)	[1]
+-e	onehotencode(10^20)	[1]
+-e	onehotencode(10^(-20))	[1]
+-e	onehotencode(x)	[1]
+-e	onehotencode([])	[]
+-e	onehotencode([1, 2])	[[1, 0], [0, 1]]
+-e	onehotencode("text")	[1]
+-e	onehotencode(true)	[1]
+-e	onehotencode(-7/3)	[1]
+-e	onehotencode(0.5)	[1]
+-e	onehotdecode(0)	1
+-e	onehotdecode(1)	1
+-e	onehotdecode(-1)	1
+-e	onehotdecode(1/2)	1
+-e	onehotdecode(2)	1
+-e	onehotdecode(i)	1
+-e	onehotdecode(inf)	1
+-e	onehotdecode(-inf)	1
+-e	onehotdecode(undefined)	1
+-e	onehotdecode(10^20)	1
+-e	onehotdecode(10^(-20))	1
+-e	onehotdecode(x)	1
+-e	onehotdecode([])	error: onehotdecode needs values
+-e	onehotdecode([1, 2])	2
+-e	onehotdecode("text")	1
+-e	onehotdecode(true)	1
+-e	onehotdecode(-7/3)	1
+-e	onehotdecode(0.5)	1
+-e	ind2vec(0)	error: an index must be a whole number from 1 to 1000000, not 0
+-e	ind2vec(1)	[[1]]
+-e	ind2vec(-1)	error: an index must be a whole number from 1 to 1000000, not -1
+-e	ind2vec(1/2)	error: an index must be a whole number from 1 to 1000000, not 1/2
+-e	ind2vec(2)	[[0], [1]]
+-e	ind2vec(i)	error: an index must be a whole number from 1 to 1000000, not i
+-e	ind2vec(inf)	error: an index must be a whole number from 1 to 1000000, not inf
+-e	ind2vec(-inf)	error: an index must be a whole number from 1 to 1000000, not -inf
+-e	ind2vec(undefined)	error: an index must be a whole number from 1 to 1000000, not undefined
+-e	ind2vec(10^20)	error: an index must be a whole number from 1 to 1000000, not 100000000000000000000
+-e	ind2vec(10^(-20))	error: an index must be a whole number from 1 to 1000000, not 1/100000000000000000000
+-e	ind2vec(x)	error: an index must be a whole number from 1 to 1000000, not x
+-e	ind2vec([])	[]
+-e	ind2vec([1, 2])	[[1, 0], [0, 1]]
+-e	ind2vec("text")	error: an index must be a whole number from 1 to 1000000, not "text"
+-e	ind2vec(true)	error: an index must be a whole number from 1 to 1000000, not true
+-e	ind2vec(-7/3)	error: an index must be a whole number from 1 to 1000000, not -7/3
+-e	ind2vec(0.5)	error: an index must be a whole number from 1 to 1000000, not 1/2
+-e	vec2ind(0)	[1]
+-e	vec2ind(1)	[1]
+-e	vec2ind(-1)	[1]
+-e	vec2ind(1/2)	[1]
+-e	vec2ind(2)	[1]
+-e	vec2ind(i)	[1]
+-e	vec2ind(inf)	[1]
+-e	vec2ind(-inf)	[1]
+-e	vec2ind(undefined)	[1]
+-e	vec2ind(10^20)	[1]
+-e	vec2ind(10^(-20))	[1]
+-e	vec2ind(x)	[1]
+-e	vec2ind([])	[]
+-e	vec2ind([1, 2])	[1, 1]
+-e	vec2ind("text")	[1]
+-e	vec2ind(true)	[1]
+-e	vec2ind(-7/3)	[1]
+-e	vec2ind(0.5)	[1]
+-e	mapminmax(0)	[-1]
+-e	mapminmax(1)	[-1]
+-e	mapminmax(-1)	[-1]
+-e	mapminmax(1/2)	[-1]
+-e	mapminmax(2)	[-1]
+-e	mapminmax(i)	[-1]
+-e	mapminmax(inf)	[undefined]
+-e	mapminmax(-inf)	[undefined]
+-e	mapminmax(undefined)	[undefined]
+-e	mapminmax(10^20)	[-1]
+-e	mapminmax(10^(-20))	[-1]
+-e	mapminmax(x)	[-1]
+-e	mapminmax([])	[]
+-e	mapminmax([1, 2])	[-1, 1]
+-e	mapminmax("text")	[-1]
+-e	mapminmax(true)	[-1]
+-e	mapminmax(-7/3)	[-1]
+-e	mapminmax(0.5)	[-1]
+-e	mapstd(0)	[0]
+-e	mapstd(1)	[0]
+-e	mapstd(-1)	[0]
+-e	mapstd(1/2)	[0]
+-e	mapstd(2)	[0]
+-e	mapstd(i)	[0]
+-e	mapstd(inf)	[undefined]
+-e	mapstd(-inf)	[undefined]
+-e	mapstd(undefined)	[undefined]
+-e	mapstd(10^20)	[0]
+-e	mapstd(10^(-20))	[0]
+-e	mapstd(x)	[0]
+-e	mapstd([])	[]
+-e	mapstd([1, 2])	[-sqrt(2)/2, sqrt(2)/2]
+-e	mapstd("text")	[0]
+-e	mapstd(true)	[0]
+-e	mapstd(-7/3)	[0]
+-e	mapstd(0.5)	[0]
+-e	divideblock(0)	error: the number of observations must be a whole number from 1 to 100000000, not 0
+-e	divideblock(1)	[[1], [], []]
+-e	divideblock(-1)	error: the number of observations must be a whole number from 1 to 100000000, not -1
+-e	divideblock(1/2)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
+-e	divideblock(2)	[[1, 2], [], []]
+-e	divideblock(i)	error: the number of observations must be a whole number from 1 to 100000000, not i
+-e	divideblock(inf)	error: the number of observations must be a whole number from 1 to 100000000, not inf
+-e	divideblock(-inf)	error: the number of observations must be a whole number from 1 to 100000000, not -inf
+-e	divideblock(undefined)	error: the number of observations must be a whole number from 1 to 100000000, not undefined
+-e	divideblock(10^20)	error: the number of observations must be a whole number from 1 to 100000000, not 100000000000000000000
+-e	divideblock(10^(-20))	error: the number of observations must be a whole number from 1 to 100000000, not 1/100000000000000000000
+-e	divideblock(x)	error: the number of observations must be a whole number from 1 to 100000000, not x
+-e	divideblock([])	error: the number of observations must be a whole number from 1 to 100000000, not []
+-e	divideblock([1, 2])	error: the number of observations must be a whole number from 1 to 100000000, not [1, 2]
+-e	divideblock("text")	error: the number of observations must be a whole number from 1 to 100000000, not "text"
+-e	divideblock(true)	error: the number of observations must be a whole number from 1 to 100000000, not true
+-e	divideblock(-7/3)	error: the number of observations must be a whole number from 1 to 100000000, not -7/3
+-e	divideblock(0.5)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
+-e	feedforwardnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
+-e	feedforwardnet(1)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
+-e	feedforwardnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	feedforwardnet(2)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
+-e	feedforwardnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
+-e	feedforwardnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
+-e	feedforwardnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
+-e	feedforwardnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
+-e	feedforwardnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
+-e	feedforwardnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
+-e	feedforwardnet([])	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "purelin"]]
+-e	feedforwardnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
+-e	feedforwardnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
+-e	feedforwardnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
+-e	feedforwardnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	patternnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
+-e	patternnet(1)	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
+-e	patternnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	patternnet(2)	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
+-e	patternnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
+-e	patternnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
+-e	patternnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
+-e	patternnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
+-e	patternnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
+-e	patternnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
+-e	patternnet([])	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "softmax"]]
+-e	patternnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
+-e	patternnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
+-e	patternnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
+-e	patternnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2

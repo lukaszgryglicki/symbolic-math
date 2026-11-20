@@ -1355,7 +1355,8 @@ fn verify(f: &Expr, var: &str, root: &Root, params: &[String]) -> bool {
             let prec = numeric::bits_for(numeric::digits()) + 64;
             let size = match root.approx {
                 true => numeric::relative_size(&g, prec, &env),
-                false => rounding(f, var, &root.value, &env).or_else(|| numeric::relative_size(&g, prec, &env)),
+                false => rounding(f, var, &root.value, &env)
+                    .or_else(|| numeric::relative_size(&g, prec, &env)),
             };
             match size {
                 Some(size) if size > -bits + 24 => return false,

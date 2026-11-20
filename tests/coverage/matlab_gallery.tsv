@@ -52,7 +52,7 @@
 -e	gallery(3, 3)	error: gallery(kind, ...) needs the kind in quotes
 -e	gallery("cauchy", [1, 2], [3])	error: gallery("cauchy", x, y): two lists of one length
 -e	peaks(1)	error: the size must be a whole number from 2 to 1000, not 1
--e	colormap("nothing", 3)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap("nothing", 3)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube
 -e	colormap("gray", 0)	error: the number of colours must be a whole number from 1 to 65536, not 0
 -e	histcounts2([1, 2], [1], 2)	error: histcounts2 needs two lists of one length
 -e	histcounts2([1, 2], [1, 2], [1, 2, 3])	error: histcounts2(x, y, cells) or histcounts2(x, y, [cells of x, cells of y]) or histcounts2(x, y, edges of x, edges of y)

@@ -50,6 +50,7 @@ pub const NAMED: &[&str] = &[
     "range_real",
     "range_imag",
     "rotate",
+    "voxels",
 ];
 
 /// What is chosen for the shape of plot4d alone.
@@ -111,7 +112,7 @@ pub fn is_save(name: &str) -> bool {
 
 /// The commands that draw, besides the plots of `plot`.
 pub fn is_drawing(name: &str) -> bool {
-    crate::walks::is_walk(name) || crate::chart::is_chart(name) || name == "plot4d"
+    crate::walks::is_walk(name) || crate::chart::is_chart(name) || name == "plot4d" || name == "view4d"
 }
 
 /// The commands whose arguments may be choices of a picture.
@@ -158,6 +159,8 @@ pub struct Choices {
     pub rotate: Option<[f64; 3]>,
     /// plot4d: every frame is stretched on its own.
     pub normalize: bool,
+    /// view4d: the cubes of the body across, upwards and along its frames.
+    pub voxels: Option<[usize; 3]>,
     /// A quick look: a small picture that is packed fast.
     pub fast: bool,
 }
@@ -357,7 +360,11 @@ impl Choices {
                     _ => {
                         return Err(format!(
                             "{name} is [least, greatest]: the {} parts of the values that are drawn; not {value}",
-                            if name == "range_real" { "real" } else { "imaginary" }
+                            if name == "range_real" {
+                                "real"
+                            } else {
+                                "imaginary"
+                            }
                         ));
                     }
                 };
@@ -379,6 +386,23 @@ impl Choices {
                     _ => {
                         return Err(format!(
                             "rotate(yaw, pitch, roll) or rotate = [yaw, pitch, roll]: the degrees that the body of plot4d is turned about its upright axis, about its width and about its frames; not {value}"
+                        ));
+                    }
+                });
+            }
+            "voxels" => {
+                let sides: Option<Vec<usize>> = match value.as_list() {
+                    Some(items) => items
+                        .iter()
+                        .map(|item| whole(name, item, (2, 1024)).ok())
+                        .collect(),
+                    None => whole(name, value, (2, 1024)).ok().map(|n| vec![n; 3]),
+                };
+                self.voxels = Some(match sides.as_deref() {
+                    Some([w, h, d]) => [*w, *h, *d],
+                    _ => {
+                        return Err(format!(
+                            "voxels is a whole number from 2 to 1024, or [across, upwards, frames] of such numbers: the cubes that the body of view4d is made of; not {value}"
                         ));
                     }
                 });
@@ -432,6 +456,9 @@ impl Choices {
 pub fn show(command: &str, drawing: &Drawing, choices: &Choices) -> Result<Vec<String>, String> {
     if let Some(other) = choices.of_shapes() {
         return Err(format!("{other} belongs to plot4d, not to {command}"));
+    }
+    if choices.has("voxels") {
+        return Err(format!("voxels belongs to view4d, not to {command}"));
     }
     if let Some(other) = choices.given.iter().find(|g| {
         !matches!(
@@ -515,7 +542,11 @@ pub fn format_of(command: &str, path: &str) -> Result<Format, String> {
 }
 
 /// How the file is written, from what was chosen; `effort` is that of JPEG XL unless one is chosen.
-pub(crate) fn encoding_of(format: Format, choices: &Choices, effort: u8) -> Result<Encoding, String> {
+pub(crate) fn encoding_of(
+    format: Format,
+    choices: &Choices,
+    effort: u8,
+) -> Result<Encoding, String> {
     let png = format == Format::Png;
     let bits = choices.bits.unwrap_or(8);
     let mut encoding = Encoding {
@@ -584,9 +615,14 @@ pub fn save(
     if let Some(other) = choices.of_shapes() {
         return Err(format!("{other} belongs to plot4d, not to this drawing"));
     }
+    if choices.has("voxels") {
+        return Err("voxels belongs to view4d, not to this drawing".to_string());
+    }
     let png = format == Format::Png;
     let mut look = choices.look.clone();
-    look.width = choices.width.unwrap_or(if choices.fast { 256 } else { 1024 });
+    look.width = choices
+        .width
+        .unwrap_or(if choices.fast { 256 } else { 1024 });
     look.height = choices.height.unwrap_or(0);
     if choices.reverse {
         let mut stops = look
@@ -646,8 +682,23 @@ pub fn save(
             }
         ));
     }
+    // (a body with edges of areas is drawn twice as large when that is not too much)
+    let high = if look.height == 0 {
+        look.width
+    } else {
+        look.height
+    };
+    let fine = if drawing.smooth && 4 * look.width * high <= PIXELS {
+        2
+    } else {
+        1
+    };
+    look.fine = fine;
+    look.width *= fine;
+    look.height *= fine;
     let shot = Shot::new(drawing, &look)?;
     let (width, height) = shot.size();
+    let (width, height) = (width / fine, height / fine);
     if width * height > PIXELS {
         return Err(format!(
             "a picture has {PIXELS} pixels at most ({} by {}), not {width} by {height}",
@@ -660,13 +711,17 @@ pub fn save(
     let bytes = imgfile::encode(
         count,
         &mut |k| {
-            Ok(match look.stereo {
+            let image = match look.stereo {
                 None => shot.raster(k).image(&tone),
                 Some(_) => {
                     let lights = shot.tone(true, false, false);
                     let [left, right] = shot.pair(k);
                     two_eyes(&left.image(&lights), &right.image(&lights))
                 }
+            };
+            Ok(match fine {
+                1 => image,
+                _ => smaller(&image, fine),
             })
         },
         &encoding,
@@ -731,6 +786,60 @@ fn two_eyes(left: &imgfile::Image, right: &imgfile::Image) -> imgfile::Image {
         alpha: false,
         data,
         depth: None,
+    }
+}
+
+/// A picture whose pixels are the means of squares of `by` times `by` pixels; where the
+/// picture says how much of a pixel is drawn, the colours count as much as is drawn.
+fn smaller(image: &imgfile::Image, by: usize) -> imgfile::Image {
+    let channels = image.channels();
+    let (width, height) = (image.width / by, image.height / by);
+    let square = (by * by) as f32;
+    let mut data = Vec::with_capacity(width * height * channels);
+    let mut depth = image
+        .depth
+        .as_ref()
+        .map(|_| Vec::with_capacity(width * height));
+    for row in 0..height {
+        for column in 0..width {
+            let places = (0..by).flat_map(|j| {
+                (0..by).map(move |i| (row * by + j) * image.width + column * by + i)
+            });
+            let mut sums = [0.0f32; 4];
+            let (mut drawn, mut far) = (0.0f32, 0.0f32);
+            for at in places {
+                let pixel = &image.data[at * channels..(at + 1) * channels];
+                let share = if image.alpha {
+                    pixel[channels - 1]
+                } else {
+                    1.0
+                };
+                for (sum, sample) in sums.iter_mut().zip(&pixel[..image.colors]) {
+                    *sum += share * sample;
+                }
+                drawn += share;
+                if let Some(depths) = &image.depth {
+                    far += depths[at];
+                }
+            }
+            for sum in &sums[..image.colors] {
+                data.push(if drawn > 0.0 { sum / drawn } else { 0.0 });
+            }
+            if image.alpha {
+                data.push(drawn / square);
+            }
+            if let Some(depth) = &mut depth {
+                depth.push(far / square);
+            }
+        }
+    }
+    imgfile::Image {
+        width,
+        height,
+        colors: image.colors,
+        alpha: image.alpha,
+        data,
+        depth,
     }
 }
 
@@ -1417,6 +1526,44 @@ mod tests {
         assert_eq!(rate(29.97), (2997, 100));
         assert_eq!(rate(0.5), (1, 2));
         assert_eq!(rate(0.001), (1, 1000));
+    }
+
+    #[test]
+    fn a_picture_made_smaller() {
+        // four pixels become one: their mean
+        let image = imgfile::Image {
+            width: 4,
+            height: 2,
+            colors: 1,
+            alpha: false,
+            data: vec![0.0, 1.0, 0.5, 0.5, 1.0, 0.0, 0.25, 0.75],
+            depth: Some(vec![0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]),
+        };
+        let half = smaller(&image, 2);
+        assert_eq!((half.width, half.height, half.colors), (2, 1, 1));
+        assert_eq!(half.data, [0.5, 0.5]);
+        assert_eq!(half.depth, Some(vec![0.5, 1.0]));
+        // where a part of the pixels is drawn, the colour is that of the drawn part and
+        // alpha says how much is drawn
+        let image = imgfile::Image {
+            width: 2,
+            height: 2,
+            colors: 3,
+            alpha: true,
+            data: vec![
+                1.0, 0.5, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.5,
+            ],
+            depth: None,
+        };
+        let one = smaller(&image, 2);
+        assert_eq!((one.width, one.height, one.alpha), (1, 1, true));
+        assert_eq!(one.data, [1.0, 0.5, 0.0, 0.375]);
+        // nothing drawn: no colour, no alpha
+        let empty = imgfile::Image {
+            data: [0.3, 0.3, 0.3, 0.0].repeat(4),
+            ..image
+        };
+        assert_eq!(smaller(&empty, 2).data, [0.0; 4]);
     }
 
     #[test]

@@ -10,9 +10,9 @@ use rug::ops::Pow;
 use rug::{Complex, Float};
 use std::cmp::Ordering;
 
-type Res = Result<Expr, String>;
+pub(crate) type Res = Result<Expr, String>;
 
-fn bits() -> u32 {
+pub(crate) fn bits() -> u32 {
     crate::mfun::bits()
 }
 
@@ -21,44 +21,44 @@ fn fl(x: f64) -> Float {
     Float::with_val(bits(), x)
 }
 
-fn int(x: i64) -> Float {
+pub(crate) fn int(x: i64) -> Float {
     Float::with_val(bits(), x)
 }
 
 /// A decimal number of a formula, as it is written.
-fn dec(text: &str) -> Float {
+pub(crate) fn dec(text: &str) -> Float {
     Float::with_val(bits(), Float::parse(text).expect("a number"))
 }
 
-fn pi() -> Float {
+pub(crate) fn pi() -> Float {
     Float::with_val(bits(), rug::float::Constant::Pi)
 }
 
-fn cx(re: &Float) -> Complex {
+pub(crate) fn cx(re: &Float) -> Complex {
     Complex::with_val(bits(), re)
 }
 
-fn unit(angle: &Float) -> Complex {
+pub(crate) fn unit(angle: &Float) -> Complex {
     let (sin, cos) = angle.clone().sin_cos(Float::new(bits()));
     Complex::with_val(bits(), (cos, sin))
 }
 
-fn items(e: &Expr) -> Vec<Expr> {
+pub(crate) fn items(e: &Expr) -> Vec<Expr> {
     match e.as_list() {
         Some(l) => l.to_vec(),
         None => vec![e.clone()],
     }
 }
 
-fn real(e: &Expr, who: &str) -> Result<Float, String> {
+pub(crate) fn real(e: &Expr, who: &str) -> Result<Float, String> {
     crate::mfun::real(e, bits(), who)
 }
 
-fn reals(e: &Expr, who: &str) -> Result<Vec<Float>, String> {
+pub(crate) fn reals(e: &Expr, who: &str) -> Result<Vec<Float>, String> {
     items(e).iter().map(|x| real(x, who)).collect()
 }
 
-fn complexes(e: &Expr, who: &str) -> Result<Vec<Complex>, String> {
+pub(crate) fn complexes(e: &Expr, who: &str) -> Result<Vec<Complex>, String> {
     items(e)
         .iter()
         .map(|x| numeric::evalf(x, bits()).map_err(|_| format!("{who}: {x} is no number")))
@@ -66,8 +66,10 @@ fn complexes(e: &Expr, who: &str) -> Result<Vec<Complex>, String> {
 }
 
 /// A list of numbers as a value; what rounding left where a zero belongs is 0.
-fn shown(v: &[Float]) -> Expr {
-    let top = v.iter().fold(Float::new(bits()), |m, x| m.max(&x.clone().abs()));
+pub(crate) fn shown(v: &[Float]) -> Expr {
+    let top = v
+        .iter()
+        .fold(Float::new(bits()), |m, x| m.max(&x.clone().abs()));
     let least = top * Float::with_val(bits(), Float::i_pow_u(10, numeric::digits() + 8)).recip();
     Expr::list(
         v.iter()
@@ -79,16 +81,16 @@ fn shown(v: &[Float]) -> Expr {
     )
 }
 
-fn shown_c(v: &[Complex]) -> Expr {
+pub(crate) fn shown_c(v: &[Complex]) -> Expr {
     Expr::list(crate::decomp::from_complex_list(v))
 }
 
-fn count(e: &Expr, what: &str, low: i64, high: i64) -> Result<usize, String> {
+pub(crate) fn count(e: &Expr, what: &str, low: i64, high: i64) -> Result<usize, String> {
     Ok(whole(e, what, low, high)? as usize)
 }
 
 /// The transform of Fourier of any number of points.
-fn fft(x: &[Complex], inverse: bool) -> Vec<Complex> {
+pub(crate) fn fft(x: &[Complex], inverse: bool) -> Vec<Complex> {
     let n = x.len();
     let mut y = crate::signal::dft(x, inverse, bits());
     if inverse {
@@ -145,12 +147,20 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
     Ok(match name {
         "rectwin" => vec![int(1); n],
         "hann" => cosines(&["0.5", "0.5"]),
-        "hanning" => (1..=n).map(|k| (int(1) - (pi() * 2u32 * k as u64 / (n as u64 + 1)).cos()) / 2u32).collect(),
+        "hanning" => (1..=n)
+            .map(|k| (int(1) - (pi() * 2u32 * k as u64 / (n as u64 + 1)).cos()) / 2u32)
+            .collect(),
         "hamming" => cosines(&["0.54", "0.46"]),
         "blackman" => cosines(&["0.42", "0.5", "0.08"]),
         "blackmanharris" => cosines(&["0.35875", "0.48829", "0.14128", "0.01168"]),
         "nuttallwin" => cosines(&["0.3635819", "0.4891775", "0.1365995", "0.0106411"]),
-        "flattopwin" => cosines(&["0.21557895", "0.41663158", "0.277263158", "0.083578947", "0.006947368"]),
+        "flattopwin" => cosines(&[
+            "0.21557895",
+            "0.41663158",
+            "0.277263158",
+            "0.083578947",
+            "0.006947368",
+        ]),
         "bartlett" => (0..n).map(|k| int(1) - across(k).abs()).collect(),
         "triang" => (1..=n as i64)
             .map(|k| match n % 2 {
@@ -177,7 +187,9 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
             .collect(),
         "gausswin" => {
             let alpha = shape.cloned().unwrap_or_else(|| dec("2.5"));
-            (0..n).map(|k| (-(Float::with_val(bits(), &alpha * across(k))).pow(2u32) / 2u32).exp()).collect()
+            (0..n)
+                .map(|k| (-(Float::with_val(bits(), &alpha * across(k))).pow(2u32) / 2u32).exp())
+                .collect()
         }
         "tukeywin" => {
             let r = shape.cloned().unwrap_or_else(|| dec("0.5"));
@@ -221,7 +233,9 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
         "chebwin" => {
             let ripple = shape.cloned().unwrap_or_else(|| int(100));
             let order = int(last as i64);
-            let beta = (Float::with_val(bits(), int(10).pow(ripple.abs() / 20u32)).acosh() / &order).cosh();
+            let beta = (Float::with_val(bits(), int(10).pow(ripple.abs() / 20u32)).acosh()
+                / &order)
+                .cosh();
             let mut p: Vec<Complex> = (0..n)
                 .map(|k| {
                     let x = Float::with_val(bits(), &beta * (pi() * k as u64 / n as u64).cos());
@@ -239,8 +253,12 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
             let w: Vec<Float> = match n % 2 {
                 1 => {
                     let t = fft(&p, false);
-                    let half = (n + 1) / 2;
-                    (1..half).rev().chain(0..half).map(|k| t[k].real().clone()).collect()
+                    let half = n.div_ceil(2);
+                    (1..half)
+                        .rev()
+                        .chain(0..half)
+                        .map(|k| t[k].real().clone())
+                        .collect()
                 }
                 _ => {
                     for (k, v) in p.iter_mut().enumerate() {
@@ -248,10 +266,16 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
                     }
                     let t = fft(&p, false);
                     let half = n / 2 + 1;
-                    (1..half).rev().chain(1..half).map(|k| t[k].real().clone()).collect()
+                    (1..half)
+                        .rev()
+                        .chain(1..half)
+                        .map(|k| t[k].real().clone())
+                        .collect()
                 }
             };
-            let top = w.iter().fold(Float::with_val(bits(), f64::NEG_INFINITY), |m, v| m.max(v));
+            let top = w
+                .iter()
+                .fold(Float::with_val(bits(), f64::NEG_INFINITY), |m, v| m.max(v));
             w.into_iter().map(|v| v / &top).collect()
         }
         _ => return Err(format!("{name} is no window")),
@@ -259,23 +283,42 @@ fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, Str
 }
 
 const WINDOWS: [&str; 16] = [
-    "rectwin", "hann", "hanning", "hamming", "blackman", "blackmanharris", "nuttallwin", "flattopwin",
-    "bartlett", "triang", "bohmanwin", "parzenwin", "gausswin", "tukeywin", "kaiser", "chebwin",
+    "rectwin",
+    "hann",
+    "hanning",
+    "hamming",
+    "blackman",
+    "blackmanharris",
+    "nuttallwin",
+    "flattopwin",
+    "bartlett",
+    "triang",
+    "bohmanwin",
+    "parzenwin",
+    "gausswin",
+    "tukeywin",
+    "kaiser",
+    "chebwin",
 ];
 
 /// A window as the argument of a function gives it: a name with a number of values, or
 /// its values.
-fn window_of(e: Option<&Expr>, n: usize, usual: &str, who: &str) -> Result<Vec<Float>, String> {
+pub(crate) fn window_of(e: Option<&Expr>, n: usize, usual: &str, who: &str) -> Result<Vec<Float>, String> {
     match e {
         None => window(usual, n, None),
         Some(e) => match word(e) {
-            Some(name) if WINDOWS.contains(&name.as_str()) || name == "barthannwin" => window(&name, n, None),
+            Some(name) if WINDOWS.contains(&name.as_str()) || name == "barthannwin" => {
+                window(&name, n, None)
+            }
             Some(name) => Err(format!("{who}: {name} is no window")),
             None => {
                 let values = reals(e, who)?;
                 match values.len() == n {
                     true => Ok(values),
-                    false => Err(format!("{who}: the window has {} values, {n} are needed", values.len())),
+                    false => Err(format!(
+                        "{who}: the window has {} values, {n} are needed",
+                        values.len()
+                    )),
                 }
             }
         },
@@ -301,7 +344,7 @@ fn real_parts(p: &[Complex]) -> Vec<Float> {
     p.iter().map(|c| c.real().clone()).collect()
 }
 
-fn poly_mul(a: &[Float], b: &[Float]) -> Vec<Float> {
+pub(crate) fn poly_mul(a: &[Float], b: &[Float]) -> Vec<Float> {
     if a.is_empty() || b.is_empty() {
         return Vec::new();
     }
@@ -314,11 +357,15 @@ fn poly_mul(a: &[Float], b: &[Float]) -> Vec<Float> {
     out
 }
 
-fn poly_add(a: &[Float], b: &[Float]) -> Vec<Float> {
+pub(crate) fn poly_add(a: &[Float], b: &[Float]) -> Vec<Float> {
     let n = a.len().max(b.len());
     (0..n)
         .map(|k| {
-            let at = |p: &[Float]| (k + p.len()).checked_sub(n).map_or_else(|| Float::new(bits()), |i| p[i].clone());
+            let at = |p: &[Float]| {
+                (k + p.len())
+                    .checked_sub(n)
+                    .map_or_else(|| Float::new(bits()), |i| p[i].clone())
+            };
             at(a) + at(b)
         })
         .collect()
@@ -330,21 +377,31 @@ fn poly_power(p: &[Float], k: usize) -> Vec<Float> {
 
 /// Without the zeros that stand before the first coefficient; what rounding left of a
 /// zero counts as one.
-fn trimmed(p: Vec<Float>) -> Vec<Float> {
-    let top = p.iter().fold(Float::new(bits()), |m, v| m.max(&v.clone().abs()));
+pub(crate) fn trimmed(p: Vec<Float>) -> Vec<Float> {
+    let top = p
+        .iter()
+        .fold(Float::new(bits()), |m, v| m.max(&v.clone().abs()));
     let tiny = Float::with_val(bits(), &top >> (bits() - 24));
-    let first = p.iter().position(|c| c.clone().abs() > tiny).unwrap_or(p.len().saturating_sub(1));
+    let first = p
+        .iter()
+        .position(|c| c.clone().abs() > tiny)
+        .unwrap_or(p.len().saturating_sub(1));
     p[first..].to_vec()
 }
 
 /// A polynomial at a complex place.
-fn poly_at(p: &[Float], x: &Complex) -> Complex {
+pub(crate) fn poly_at(p: &[Float], x: &Complex) -> Complex {
     p.iter().fold(Complex::new(bits()), |s, c| s * x + c)
 }
 
 /// `b(s)/a(s)` with `top(s)/bottom(s)` in the place of s, and 1 as the first coefficient
 /// of the new denominator.
-fn substituted(b: &[Float], a: &[Float], top: &[Float], bottom: &[Float]) -> (Vec<Float>, Vec<Float>) {
+fn substituted(
+    b: &[Float],
+    a: &[Float],
+    top: &[Float],
+    bottom: &[Float],
+) -> (Vec<Float>, Vec<Float>) {
     let degree = b.len().max(a.len()) - 1;
     let turned = |p: &[Float]| {
         let own = p.len() - 1;
@@ -352,7 +409,13 @@ fn substituted(b: &[Float], a: &[Float], top: &[Float], bottom: &[Float]) -> (Ve
         for (i, c) in p.iter().enumerate() {
             let power = own - i;
             let term = poly_mul(&poly_power(top, power), &poly_power(bottom, degree - power));
-            total = poly_add(&total, &term.iter().map(|t| Float::with_val(bits(), t * c)).collect::<Vec<_>>());
+            total = poly_add(
+                &total,
+                &term
+                    .iter()
+                    .map(|t| Float::with_val(bits(), t * c))
+                    .collect::<Vec<_>>(),
+            );
         }
         total
     };
@@ -364,7 +427,7 @@ fn substituted(b: &[Float], a: &[Float], top: &[Float], bottom: &[Float]) -> (Ve
 
 // ---- filters as zeros, poles and a gain ----
 
-struct Zpk {
+pub(crate) struct Zpk {
     z: Vec<Complex>,
     p: Vec<Complex>,
     k: Float,
@@ -372,12 +435,19 @@ struct Zpk {
 
 impl Zpk {
     fn shown(&self) -> Expr {
-        Expr::list(vec![shown_c(&self.z), shown_c(&self.p), crate::mfun::value(&self.k)])
+        Expr::list(vec![
+            shown_c(&self.z),
+            shown_c(&self.p),
+            crate::mfun::value(&self.k),
+        ])
     }
 
     /// The coefficients of numerator and denominator.
     fn tf(&self) -> (Vec<Float>, Vec<Float>) {
-        let b: Vec<Float> = real_parts(&poly_of_roots(&self.z)).into_iter().map(|c| c * &self.k).collect();
+        let b: Vec<Float> = real_parts(&poly_of_roots(&self.z))
+            .into_iter()
+            .map(|c| c * &self.k)
+            .collect();
         (b, real_parts(&poly_of_roots(&self.p)))
     }
 
@@ -387,8 +457,14 @@ impl Zpk {
 
     /// The real part of prod(-z)/prod(-p).
     fn ratio(&self) -> Float {
-        let product = |v: &[Complex]| v.iter().fold(Complex::with_val(bits(), 1), |s, x| s * Complex::with_val(bits(), -x));
-        Complex::with_val(bits(), product(&self.z) / product(&self.p)).real().clone()
+        let product = |v: &[Complex]| {
+            v.iter().fold(Complex::with_val(bits(), 1), |s, x| {
+                s * Complex::with_val(bits(), -x)
+            })
+        };
+        Complex::with_val(bits(), product(&self.z) / product(&self.p))
+            .real()
+            .clone()
     }
 
     fn lowpass(mut self, wo: &Float) -> Zpk {
@@ -403,10 +479,18 @@ impl Zpk {
     fn highpass(self, wo: &Float) -> Zpk {
         let degree = self.degree();
         let k = Float::with_val(bits(), &self.k * self.ratio());
-        let turn = |v: &[Complex]| v.iter().map(|x| Complex::with_val(bits(), wo / x)).collect::<Vec<_>>();
+        let turn = |v: &[Complex]| {
+            v.iter()
+                .map(|x| Complex::with_val(bits(), wo / x))
+                .collect::<Vec<_>>()
+        };
         let mut z = turn(&self.z);
         z.extend(vec![Complex::new(bits()); degree]);
-        Zpk { z, p: turn(&self.p), k }
+        Zpk {
+            z,
+            p: turn(&self.p),
+            k,
+        }
     }
 
     fn bandpass(self, wo: &Float, bw: &Float) -> Zpk {
@@ -415,7 +499,11 @@ impl Zpk {
             let mut out = Vec::new();
             for x in v {
                 let half = Complex::with_val(bits(), x * bw) / 2u32;
-                let root = Complex::with_val(bits(), half.clone().square() - Float::with_val(bits(), wo * wo)).sqrt();
+                let root = Complex::with_val(
+                    bits(),
+                    half.clone().square() - Float::with_val(bits(), wo * wo),
+                )
+                .sqrt();
                 out.push(Complex::with_val(bits(), &half + &root));
                 out.push(Complex::with_val(bits(), &half - &root));
             }
@@ -423,7 +511,11 @@ impl Zpk {
         };
         let mut z = split(&self.z);
         z.extend(vec![Complex::new(bits()); degree]);
-        Zpk { z, p: split(&self.p), k: self.k * Float::with_val(bits(), bw.pow(degree as u32)) }
+        Zpk {
+            z,
+            p: split(&self.p),
+            k: self.k * Float::with_val(bits(), bw.pow(degree as u32)),
+        }
     }
 
     fn bandstop(self, wo: &Float, bw: &Float) -> Zpk {
@@ -433,7 +525,11 @@ impl Zpk {
             let mut out = Vec::new();
             for x in v {
                 let half = Complex::with_val(bits(), Float::with_val(bits(), bw / 2u32) / x);
-                let root = Complex::with_val(bits(), half.clone().square() - Float::with_val(bits(), wo * wo)).sqrt();
+                let root = Complex::with_val(
+                    bits(),
+                    half.clone().square() - Float::with_val(bits(), wo * wo),
+                )
+                .sqrt();
                 out.push(Complex::with_val(bits(), &half + &root));
                 out.push(Complex::with_val(bits(), &half - &root));
             }
@@ -444,29 +540,50 @@ impl Zpk {
             z.push(Complex::with_val(bits(), (0, wo)));
             z.push(Complex::with_val(bits(), (0, -wo.clone())));
         }
-        Zpk { z, p: split(&self.p), k }
+        Zpk {
+            z,
+            p: split(&self.p),
+            k,
+        }
     }
 
     /// The sampled filter by z = (2 fs + s)/(2 fs - s).
     fn bilinear(self, fs: &Float) -> Zpk {
         let degree = self.degree();
         let two = Float::with_val(bits(), fs * 2u32);
-        let product = |v: &[Complex]| v.iter().fold(Complex::with_val(bits(), 1), |s, x| s * Complex::with_val(bits(), &two - x));
-        let gain = Complex::with_val(bits(), product(&self.z) / product(&self.p)).real().clone();
+        let product = |v: &[Complex]| {
+            v.iter().fold(Complex::with_val(bits(), 1), |s, x| {
+                s * Complex::with_val(bits(), &two - x)
+            })
+        };
+        let gain = Complex::with_val(bits(), product(&self.z) / product(&self.p))
+            .real()
+            .clone();
         let turn = |v: &[Complex]| {
             v.iter()
-                .map(|x| Complex::with_val(bits(), Complex::with_val(bits(), &two + x) / Complex::with_val(bits(), &two - x)))
+                .map(|x| {
+                    Complex::with_val(
+                        bits(),
+                        Complex::with_val(bits(), &two + x) / Complex::with_val(bits(), &two - x),
+                    )
+                })
                 .collect::<Vec<_>>()
         };
         let mut z = turn(&self.z);
         z.extend(vec![Complex::with_val(bits(), -1); degree]);
-        Zpk { z, p: turn(&self.p), k: self.k * gain }
+        Zpk {
+            z,
+            p: turn(&self.p),
+            k: self.k * gain,
+        }
     }
 }
 
 fn product_real(v: &[Complex]) -> Float {
     v.iter()
-        .fold(Complex::with_val(bits(), 1), |s, x| s * Complex::with_val(bits(), -x))
+        .fold(Complex::with_val(bits(), 1), |s, x| {
+            s * Complex::with_val(bits(), -x)
+        })
         .real()
         .clone()
 }
@@ -475,10 +592,14 @@ fn buttap(n: usize) -> Zpk {
     let p = (1..=n)
         .map(|k| unit(&(pi() * (2 * k + n - 1) as u64 / (2 * n) as u64)))
         .collect();
-    Zpk { z: Vec::new(), p, k: int(1) }
+    Zpk {
+        z: Vec::new(),
+        p,
+        k: int(1),
+    }
 }
 
-fn cheb1ap(n: usize, rp: &Float) -> Zpk {
+pub(crate) fn cheb1ap(n: usize, rp: &Float) -> Zpk {
     let eps = (int(10).pow(Float::with_val(bits(), rp / 10u32)) - 1u32).sqrt();
     let mu = eps.clone().recip().asinh() / n as u64;
     let p: Vec<Complex> = (1..=n)
@@ -489,14 +610,20 @@ fn cheb1ap(n: usize, rp: &Float) -> Zpk {
         })
         .collect();
     let mut k = product_real(&p);
-    if n % 2 == 0 {
+    if n.is_multiple_of(2) {
         k /= (int(1) + eps.square()).sqrt();
     }
-    Zpk { z: Vec::new(), p, k }
+    Zpk {
+        z: Vec::new(),
+        p,
+        k,
+    }
 }
 
 fn cheb2ap(n: usize, rs: &Float) -> Zpk {
-    let delta = (int(10).pow(Float::with_val(bits(), rs / 10u32)) - 1u32).sqrt().recip();
+    let delta = (int(10).pow(Float::with_val(bits(), rs / 10u32)) - 1u32)
+        .sqrt()
+        .recip();
     let mu = delta.recip().asinh() / n as u64;
     let (mut z, mut p) = (Vec::new(), Vec::new());
     for k in 1..=n {
@@ -509,7 +636,9 @@ fn cheb2ap(n: usize, rs: &Float) -> Zpk {
         let pole = Complex::with_val(bits(), (-mu.clone().sinh() * sin, mu.clone().cosh() * cos));
         p.push(pole.recip());
     }
-    let k = Complex::with_val(bits(), cx(&product_real(&p)) / cx(&product_real(&z))).real().clone();
+    let k = Complex::with_val(bits(), cx(&product_real(&p)) / cx(&product_real(&z)))
+        .real()
+        .clone();
     Zpk { z, p, k }
 }
 
@@ -547,7 +676,9 @@ fn asn(w: &Complex, k: &Float) -> Complex {
     moduli.extend(landen(k));
     let mut w = w.clone();
     for pair in moduli.windows(2) {
-        let root = (Complex::with_val(bits(), 1) - Complex::with_val(bits(), w.clone().square() * pair[0].clone().square())).sqrt();
+        let root = (Complex::with_val(bits(), 1)
+            - Complex::with_val(bits(), w.clone().square() * pair[0].clone().square()))
+        .sqrt();
         w = Complex::with_val(bits(), w / (root + 1u32)) * 2u32 / (int(1) + &pair[1]);
     }
     // u = 1 - (2/pi)*acos(w)
@@ -576,7 +707,10 @@ fn ellipap(n: usize, rp: &Float, rs: &Float) -> Zpk {
     let k = degree_modulus(n, &k1);
     let i = Complex::with_val(bits(), (0, 1));
     // v0 = -i*asn(i/eps_p, k1)/n
-    let v0 = Complex::with_val(bits(), -i.clone() * asn(&Complex::with_val(bits(), &i / &eps_p), &k1)) / n as u64;
+    let v0 = Complex::with_val(
+        bits(),
+        -i.clone() * asn(&Complex::with_val(bits(), &i / &eps_p), &k1),
+    ) / n as u64;
     let (mut z, mut p) = (Vec::new(), Vec::new());
     for index in 1..=n / 2 {
         let u = int((2 * index - 1) as i64) / n as u64;
@@ -584,16 +718,28 @@ fn ellipap(n: usize, rp: &Float, rs: &Float) -> Zpk {
         let zero = Complex::with_val(bits(), &i / Complex::with_val(bits(), zeta * &k));
         z.push(zero.clone());
         z.push(zero.conj());
-        let pole = Complex::with_val(bits(), &i * cd_sn(&Complex::with_val(bits(), cx(&u) - Complex::with_val(bits(), &i * &v0)), &k, false));
+        let pole = Complex::with_val(
+            bits(),
+            &i * cd_sn(
+                &Complex::with_val(bits(), cx(&u) - Complex::with_val(bits(), &i * &v0)),
+                &k,
+                false,
+            ),
+        );
         p.push(pole.clone());
         p.push(pole.conj());
     }
     if n % 2 == 1 {
-        let pole = Complex::with_val(bits(), &i * cd_sn(&Complex::with_val(bits(), &i * &v0), &k, true));
+        let pole = Complex::with_val(
+            bits(),
+            &i * cd_sn(&Complex::with_val(bits(), &i * &v0), &k, true),
+        );
         p.push(cx(pole.real()));
     }
-    let mut gain = Complex::with_val(bits(), cx(&product_real(&p)) / cx(&product_real(&z))).real().clone();
-    if n % 2 == 0 {
+    let mut gain = Complex::with_val(bits(), cx(&product_real(&p)) / cx(&product_real(&z)))
+        .real()
+        .clone();
+    if n.is_multiple_of(2) {
         gain /= (int(1) + eps_p.square()).sqrt();
     }
     Zpk { z, p, k: gain }
@@ -601,13 +747,21 @@ fn ellipap(n: usize, rp: &Float, rs: &Float) -> Zpk {
 
 /// The filter of a prototype for the wanted band: `edges` in rad/s for a filter of
 /// running time, as shares of half the sampling rate for a sampled one.
-fn designed(proto: Zpk, edges: &[Float], kind: &str, analog: bool, who: &str) -> Result<(Vec<Float>, Vec<Float>), String> {
+pub(crate) fn designed(
+    proto: Zpk,
+    edges: &[Float],
+    kind: &str,
+    analog: bool,
+    who: &str,
+) -> Result<(Vec<Float>, Vec<Float>), String> {
     let mut warped = Vec::new();
     for w in edges {
         if *w <= 0 || (!analog && *w >= 1) {
             return Err(match analog {
                 true => format!("{who}: a frequency of the band is above zero"),
-                false => format!("{who}: a frequency of a sampled filter lies between 0 and 1, where 1 is half the sampling rate; \"s\" as the last argument makes a filter of running time"),
+                false => format!(
+                    "{who}: a frequency of a sampled filter lies between 0 and 1, where 1 is half the sampling rate; \"s\" as the last argument makes a filter of running time"
+                ),
             });
         }
         warped.push(match analog {
@@ -619,14 +773,23 @@ fn designed(proto: Zpk, edges: &[Float], kind: &str, analog: bool, who: &str) ->
         ("low", [w]) => proto.lowpass(w),
         ("high", [w]) => proto.highpass(w),
         ("bandpass" | "stop", [low, high]) if low < high => {
-            let (wo, bw) = (Float::with_val(bits(), low * high).sqrt(), Float::with_val(bits(), high - low));
+            let (wo, bw) = (
+                Float::with_val(bits(), low * high).sqrt(),
+                Float::with_val(bits(), high - low),
+            );
             match kind {
                 "bandpass" => proto.bandpass(&wo, &bw),
                 _ => proto.bandstop(&wo, &bw),
             }
         }
-        ("low" | "high", _) => return Err(format!("{who}: a lowpass or a highpass has one frequency")),
-        _ => return Err(format!("{who}: a bandpass or a bandstop has two frequencies [low, high], the lower first")),
+        ("low" | "high", _) => {
+            return Err(format!("{who}: a lowpass or a highpass has one frequency"));
+        }
+        _ => {
+            return Err(format!(
+                "{who}: a bandpass or a bandstop has two frequencies [low, high], the lower first"
+            ));
+        }
     };
     Ok(match analog {
         true => made.tf(),
@@ -646,7 +809,11 @@ fn design_words(words: &[Expr], edges: usize, who: &str) -> Result<(String, bool
             Some("high" | "highpass") => kind = Some("high"),
             Some("bandpass" | "pass") => kind = Some("bandpass"),
             Some("stop" | "bandstop") => kind = Some("stop"),
-            _ => return Err(format!("{who}: {w} is none of \"low\", \"high\", \"bandpass\", \"stop\" and \"s\"")),
+            _ => {
+                return Err(format!(
+                    "{who}: {w} is none of \"low\", \"high\", \"bandpass\", \"stop\" and \"s\""
+                ));
+            }
         }
     }
     let kind = kind.unwrap_or(if edges == 2 { "bandpass" } else { "low" });
@@ -657,10 +824,18 @@ fn design_words(words: &[Expr], edges: usize, who: &str) -> Result<(String, bool
 
 /// The filter a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... - a[1]*y[n-1] - ..., from the
 /// given state (the transposed second direct form).
-fn lfilter(b: &[Float], a: &[Float], x: &[Float], state: Option<&[Float]>) -> Vec<Float> {
+pub(crate) fn lfilter(b: &[Float], a: &[Float], x: &[Float], state: Option<&[Float]>) -> Vec<Float> {
     let n = b.len().max(a.len());
-    let at = |p: &[Float], k: usize| p.get(k).map_or_else(|| Float::new(bits()), |c| Float::with_val(bits(), c / &a[0]));
-    let (b, a): (Vec<Float>, Vec<Float>) = ((0..n).map(|k| at(b, k)).collect(), (0..n).map(|k| at(a, k)).collect());
+    let at = |p: &[Float], k: usize| {
+        p.get(k).map_or_else(
+            || Float::new(bits()),
+            |c| Float::with_val(bits(), c / &a[0]),
+        )
+    };
+    let (b, a): (Vec<Float>, Vec<Float>) = (
+        (0..n).map(|k| at(b, k)).collect(),
+        (0..n).map(|k| at(a, k)).collect(),
+    );
     let mut z: Vec<Float> = match state {
         Some(s) => s.to_vec(),
         None => vec![Float::new(bits()); n.saturating_sub(1)],
@@ -670,7 +845,8 @@ fn lfilter(b: &[Float], a: &[Float], x: &[Float], state: Option<&[Float]>) -> Ve
     for v in x {
         let y = Float::with_val(bits(), &b[0] * v) + &z[0];
         for k in 1..n {
-            z[k - 1] = Float::with_val(bits(), &b[k] * v) + &z[k] - Float::with_val(bits(), &a[k] * &y);
+            z[k - 1] =
+                Float::with_val(bits(), &b[k] * v) + &z[k] - Float::with_val(bits(), &a[k] * &y);
         }
         out.push(y);
     }
@@ -678,14 +854,24 @@ fn lfilter(b: &[Float], a: &[Float], x: &[Float], state: Option<&[Float]>) -> Ve
 }
 
 /// The state in which the filter rests on an input that stays 1.
-fn resting(b: &[Float], a: &[Float]) -> Vec<Float> {
+pub(crate) fn resting(b: &[Float], a: &[Float]) -> Vec<Float> {
     let n = b.len().max(a.len());
-    let at = |p: &[Float], k: usize| p.get(k).map_or_else(|| Float::new(bits()), |c| Float::with_val(bits(), c / &a[0]));
-    let (b, a): (Vec<Float>, Vec<Float>) = ((0..n).map(|k| at(b, k)).collect(), (0..n).map(|k| at(a, k)).collect());
+    let at = |p: &[Float], k: usize| {
+        p.get(k).map_or_else(
+            || Float::new(bits()),
+            |c| Float::with_val(bits(), c / &a[0]),
+        )
+    };
+    let (b, a): (Vec<Float>, Vec<Float>) = (
+        (0..n).map(|k| at(b, k)).collect(),
+        (0..n).map(|k| at(a, k)).collect(),
+    );
     if n < 2 {
         return Vec::new();
     }
-    let rest: Vec<Float> = (1..n).map(|k| Float::with_val(bits(), &b[k] - Float::with_val(bits(), &a[k] * &b[0]))).collect();
+    let rest: Vec<Float> = (1..n)
+        .map(|k| Float::with_val(bits(), &b[k] - Float::with_val(bits(), &a[k] * &b[0])))
+        .collect();
     let total_a = a.iter().fold(Float::new(bits()), |s, c| s + c);
     let first = rest.iter().fold(Float::new(bits()), |s, c| s + c) / total_a;
     let mut state = vec![first.clone()];
@@ -699,17 +885,26 @@ fn resting(b: &[Float], a: &[Float]) -> Vec<Float> {
 }
 
 /// Forwards and backwards through the filter: no shift of the phase.
-fn filtfilt(b: &[Float], a: &[Float], x: &[Float]) -> Result<Vec<Float>, String> {
+pub(crate) fn filtfilt(b: &[Float], a: &[Float], x: &[Float]) -> Result<Vec<Float>, String> {
     let edge = 3 * (b.len().max(a.len()) - 1);
     if x.len() <= edge {
-        return Err(format!("filtfilt: the data must have more than {edge} values, three times the order of the filter"));
+        return Err(format!(
+            "filtfilt: the data must have more than {edge} values, three times the order of the filter"
+        ));
     }
     let n = x.len();
-    let mut ext: Vec<Float> = (1..=edge).rev().map(|k| Float::with_val(bits(), &x[0] * 2u32) - &x[k]).collect();
+    let mut ext: Vec<Float> = (1..=edge)
+        .rev()
+        .map(|k| Float::with_val(bits(), &x[0] * 2u32) - &x[k])
+        .collect();
     ext.extend(x.iter().cloned());
     ext.extend((1..=edge).map(|k| Float::with_val(bits(), &x[n - 1] * 2u32) - &x[n - 1 - k]));
     let rest = resting(b, a);
-    let from = |first: &Float| rest.iter().map(|z| Float::with_val(bits(), z * first)).collect::<Vec<_>>();
+    let from = |first: &Float| {
+        rest.iter()
+            .map(|z| Float::with_val(bits(), z * first))
+            .collect::<Vec<_>>()
+    };
     let mut y = lfilter(b, a, &ext, Some(&from(&ext[0])));
     y.reverse();
     let mut y = lfilter(b, a, &y, Some(&from(&y[0])));
@@ -718,14 +913,18 @@ fn filtfilt(b: &[Float], a: &[Float], x: &[Float]) -> Result<Vec<Float>, String>
 }
 
 /// B(e^(-iw))/A(e^(-iw)) at a frequency in radians a sample.
-fn response_at(b: &[Float], a: &[Float], w: &Float) -> Complex {
+pub(crate) fn response_at(b: &[Float], a: &[Float], w: &Float) -> Complex {
     let back = unit(&Float::with_val(bits(), -w));
-    let sum = |p: &[Float]| p.iter().rev().fold(Complex::new(bits()), |s, c| s * &back + c);
+    let sum = |p: &[Float]| {
+        p.iter()
+            .rev()
+            .fold(Complex::new(bits()), |s, c| s * &back + c)
+    };
     sum(b) / sum(a)
 }
 
 /// The frequencies of a response: n of them from 0 up to pi, or the ones given.
-fn frequencies(e: Option<&Expr>, who: &str) -> Result<Vec<Float>, String> {
+pub(crate) fn frequencies(e: Option<&Expr>, who: &str) -> Result<Vec<Float>, String> {
     match e {
         Some(e) if e.as_list().is_some() => reals(e, who),
         Some(e) => {
@@ -744,7 +943,9 @@ fn pieces(x: &[Float], win: &[Float], overlap: usize, nfft: usize) -> Vec<Vec<Co
     let mut out = Vec::new();
     let mut start = 0;
     while start + length <= x.len() {
-        let mut piece: Vec<Complex> = (0..length).map(|k| cx(&Float::with_val(bits(), &x[start + k] * &win[k]))).collect();
+        let mut piece: Vec<Complex> = (0..length)
+            .map(|k| cx(&Float::with_val(bits(), &x[start + k] * &win[k])))
+            .collect();
         piece.resize(nfft.max(length), Complex::new(bits()));
         out.push(fft(&piece, false));
         start += step;
@@ -780,17 +981,24 @@ impl Spectrum {
     /// As pwelch reads them: pieces of an eighth of the data with a Hamming window, half
     /// of each shared with the next, unless said otherwise.
     fn welch(a: &[Expr], n: usize, who: &str) -> Result<Spectrum, String> {
-        let given = |k: usize| a.get(k).filter(|e| !matches!(e.as_list(), Some(l) if l.is_empty()));
+        let given = |k: usize| {
+            a.get(k)
+                .filter(|e| !matches!(e.as_list(), Some(l) if l.is_empty()))
+        };
         let win = match given(0) {
-            Some(e) if e.as_list().is_none() && word(e).is_none() => {
-                window("hamming", count(e, "the length of a piece", 1, n as i64)?, None)?
-            }
+            Some(e) if e.as_list().is_none() && word(e).is_none() => window(
+                "hamming",
+                count(e, "the length of a piece", 1, n as i64)?,
+                None,
+            )?,
             Some(e) if word(e).is_some() => window_of(Some(e), (2 * n / 9).max(1), "hamming", who)?,
             Some(e) => reals(e, who)?,
             None => window("hamming", (2 * n / 9).max(1), None)?,
         };
         if win.is_empty() || win.len() > n {
-            return Err(format!("{who}: a piece has 1 to {n} values, as many as the data at most"));
+            return Err(format!(
+                "{who}: a piece has 1 to {n} values, as many as the data at most"
+            ));
         }
         let overlap = match given(1) {
             Some(e) => count(e, "the overlap", 0, win.len() as i64 - 1)?,
@@ -804,13 +1012,20 @@ impl Spectrum {
             Some(e) => Some(real(e, who)?),
             None => None,
         };
-        Ok(Spectrum { win, overlap, nfft, rate })
+        Ok(Spectrum {
+            win,
+            overlap,
+            nfft,
+            rate,
+        })
     }
 
     /// What the squared sizes are divided by: the rate (2 pi without one) times the sum
     /// of the squares of the window.
     fn scale(&self) -> Float {
-        let power = self.win.iter().fold(Float::new(bits()), |s, w| s + Float::with_val(bits(), w * w));
+        let power = self.win.iter().fold(Float::new(bits()), |s, w| {
+            s + Float::with_val(bits(), w * w)
+        });
         match &self.rate {
             Some(rate) => power * rate,
             None => power * pi() * 2u32,
@@ -822,17 +1037,23 @@ impl Spectrum {
             Some(rate) => rate.clone(),
             None => pi() * 2u32,
         };
-        (0..=self.nfft / 2).map(|k| Float::with_val(bits(), &whole * k as u64) / self.nfft as u64).collect()
+        (0..=self.nfft / 2)
+            .map(|k| Float::with_val(bits(), &whole * k as u64) / self.nfft as u64)
+            .collect()
     }
 
     /// The mean over the pieces of conj(x)*y, one side.
     fn cross(&self, x: &[Float], y: &[Float]) -> Vec<Complex> {
         let nfft = self.nfft.max(self.win.len());
-        let (px, py) = (pieces(x, &self.win, self.overlap, nfft), pieces(y, &self.win, self.overlap, nfft));
+        let (px, py) = (
+            pieces(x, &self.win, self.overlap, nfft),
+            pieces(y, &self.win, self.overlap, nfft),
+        );
         let mut sum = vec![Complex::new(bits()); nfft];
         for (u, v) in px.iter().zip(&py) {
             for k in 0..nfft {
-                sum[k] += Complex::with_val(bits(), Complex::with_val(bits(), u[k].conj_ref()) * &v[k]);
+                sum[k] +=
+                    Complex::with_val(bits(), Complex::with_val(bits(), u[k].conj_ref()) * &v[k]);
             }
         }
         let scale = Float::with_val(bits(), self.scale() * px.len() as u64);
@@ -844,9 +1065,12 @@ impl Spectrum {
 
 /// The recursion of Levinson and Durbin on autocorrelations r[0..=p]: the coefficients
 /// of the predictor (the first is 1), the power of the error, the reflections.
-fn levinson(r: &[Float], order: usize) -> Result<(Vec<Float>, Float, Vec<Float>), String> {
+pub(crate) fn levinson(r: &[Float], order: usize) -> Result<(Vec<Float>, Float, Vec<Float>), String> {
     if r.len() <= order || r[0].is_zero() {
-        return Err("levinson: the autocorrelations r(0), ..., r(p) are needed, and r(0) is not zero".into());
+        return Err(
+            "levinson: the autocorrelations r(0), ..., r(p) are needed, and r(0) is not zero"
+                .into(),
+        );
     }
     let mut a = vec![int(1)];
     let mut error = r[0].clone();
@@ -860,8 +1084,16 @@ fn levinson(r: &[Float], order: usize) -> Result<(Vec<Float>, Float, Vec<Float>)
         let mut next = a.clone();
         next.push(Float::new(bits()));
         for j in 1..=m {
-            let other = if m - j < a.len() { a[m - j].clone() } else { Float::new(bits()) };
-            next[j] = if j < a.len() { a[j].clone() } else { Float::new(bits()) } + Float::with_val(bits(), &k * other);
+            let other = if m - j < a.len() {
+                a[m - j].clone()
+            } else {
+                Float::new(bits())
+            };
+            next[j] = if j < a.len() {
+                a[j].clone()
+            } else {
+                Float::new(bits())
+            } + Float::with_val(bits(), &k * other);
         }
         a = next;
         error *= int(1) - Float::with_val(bits(), &k * &k);
@@ -888,25 +1120,38 @@ fn burg(x: &[Float], order: usize) -> (Vec<Float>, Float, Vec<Float>) {
     let n = x.len();
     let (mut forward, mut backward) = (x.to_vec(), x.to_vec());
     let mut a = vec![int(1)];
-    let mut error = x.iter().fold(Float::new(bits()), |s, v| s + Float::with_val(bits(), v * v)) / n as u64;
+    let mut error = x.iter().fold(Float::new(bits()), |s, v| {
+        s + Float::with_val(bits(), v * v)
+    }) / n as u64;
     let mut reflections = Vec::new();
     for m in 0..order {
         let (mut top, mut bottom) = (Float::new(bits()), Float::new(bits()));
         for k in m + 1..n {
             top += Float::with_val(bits(), &forward[k] * &backward[k - 1]);
-            bottom += Float::with_val(bits(), &forward[k] * &forward[k]) + Float::with_val(bits(), &backward[k - 1] * &backward[k - 1]);
+            bottom += Float::with_val(bits(), &forward[k] * &forward[k])
+                + Float::with_val(bits(), &backward[k - 1] * &backward[k - 1]);
         }
         let k = -top * 2u32 / bottom;
         let old = (forward.clone(), backward.clone());
         for j in m + 1..n {
-            forward[j] = Float::with_val(bits(), &old.0[j] + Float::with_val(bits(), &k * &old.1[j - 1]));
-            backward[j] = Float::with_val(bits(), &old.1[j - 1] + Float::with_val(bits(), &k * &old.0[j]));
+            forward[j] = Float::with_val(
+                bits(),
+                &old.0[j] + Float::with_val(bits(), &k * &old.1[j - 1]),
+            );
+            backward[j] = Float::with_val(
+                bits(),
+                &old.1[j - 1] + Float::with_val(bits(), &k * &old.0[j]),
+            );
         }
         let mut next = a.clone();
         next.push(Float::new(bits()));
         for j in 1..=m + 1 {
             let other = a[m + 1 - j].clone();
-            next[j] = if j <= m { a[j].clone() } else { Float::new(bits()) } + Float::with_val(bits(), &k * other);
+            next[j] = if j <= m {
+                a[j].clone()
+            } else {
+                Float::new(bits())
+            } + Float::with_val(bits(), &k * other);
         }
         a = next;
         error *= int(1) - Float::with_val(bits(), &k * &k);
@@ -972,12 +1217,14 @@ fn modulo(x: &Float, m: &Float) -> Float {
     Float::with_val(bits(), x - turns * m)
 }
 
-fn matrix_of(rows: &[Vec<Float>]) -> Expr {
+pub(crate) fn matrix_of(rows: &[Vec<Float>]) -> Expr {
     Expr::list(rows.iter().map(|r| shown(r)).collect())
 }
 
-fn rows_of(e: &Expr, who: &str) -> Result<Vec<Vec<Float>>, String> {
-    let rows = e.as_list().ok_or_else(|| format!("{who}: a matrix with a row for every section"))?;
+pub(crate) fn rows_of(e: &Expr, who: &str) -> Result<Vec<Vec<Float>>, String> {
+    let rows = e
+        .as_list()
+        .ok_or_else(|| format!("{who}: a matrix with a row for every section"))?;
     match rows.first().is_some_and(|r| r.as_list().is_some()) {
         true => rows.iter().map(|r| reals(r, who)).collect(),
         false => Ok(vec![reals(e, who)?]),
@@ -988,10 +1235,17 @@ fn rows_of(e: &Expr, who: &str) -> Result<Vec<Vec<Float>>, String> {
 /// `[zeros, poles, gain]`, as the functions that make filters give them. An error when there are
 /// too few arguments for the function without such a value.
 pub(crate) fn apart(name: &str, a: &[Expr]) -> Option<Result<Vec<Expr>, String>> {
-    let flat = |e: &Expr| e.as_list().is_some_and(|l| !l.is_empty() && l.iter().all(|x| x.as_list().is_none()));
-    let row = |e: &Expr| e.as_list().is_some_and(|l| l.iter().all(|x| x.as_list().is_none()));
+    let flat = |e: &Expr| {
+        e.as_list()
+            .is_some_and(|l| !l.is_empty() && l.iter().all(|x| x.as_list().is_none()))
+    };
+    let row = |e: &Expr| {
+        e.as_list()
+            .is_some_and(|l| l.iter().all(|x| x.as_list().is_none()))
+    };
     let (least, three) = match name {
-        "freqz" | "grpdelay" | "impz" | "stepz" | "isminphase" | "ismaxphase" | "islinphase" | "zplane" | "tf" => (1, false),
+        "freqz" | "grpdelay" | "impz" | "stepz" | "isminphase" | "ismaxphase" | "islinphase"
+        | "zplane" | "tf" => (1, false),
         "tf2sos" | "tf2zp" | "tf2ss" | "select" => (2, false),
         "lfilter" | "filtfilt" | "freqs" | "lp2lp" | "lp2hp" | "bilinear" => (3, false),
         "lp2bp" | "lp2bs" => (4, false),
@@ -1003,12 +1257,17 @@ pub(crate) fn apart(name: &str, a: &[Expr]) -> Option<Result<Vec<Expr>, String>>
         if three {
             l.len() == 3 && row(&l[0]) && row(&l[1]) && l[2].as_list().is_none()
         } else {
-            l.len() == 2 && l.iter().all(flat) && (name != "select" || (a.len() == 2 && flat(&a[1])))
+            l.len() == 2
+                && l.iter().all(flat)
+                && (name != "select" || (a.len() == 2 && flat(&a[1])))
         }
     });
     match parts {
         Some(l) => Some(Ok(l.iter().chain(&a[1..]).cloned().collect())),
-        None if a.len() < least => Some(Err(format!("{name} takes {least} argument(s), {} given", a.len()))),
+        None if a.len() < least => Some(Err(format!(
+            "{name} takes {least} argument(s), {} given",
+            a.len()
+        ))),
         None => None,
     }
 }
@@ -1030,15 +1289,27 @@ impl Session {
         use rug::Integer;
         let factorial = |m: usize| (1..=m).fold(Integer::from(1), |p, k| p * k as u64);
         // the coefficient of s^k is (2n - k)!/(2^(n - k) k! (n - k)!)
-        let coefficient = |k: usize| factorial(2 * n - k) / (Integer::from(1) << (n - k) as u32) / factorial(k) / factorial(n - k);
-        let coefficients: Vec<Expr> = (0..=n).rev().map(|k| Expr::integer(coefficient(k))).collect();
+        let coefficient = |k: usize| {
+            factorial(2 * n - k)
+                / (Integer::from(1) << (n - k) as u32)
+                / factorial(k)
+                / factorial(n - k)
+        };
+        let coefficients: Vec<Expr> = (0..=n)
+            .rev()
+            .map(|k| Expr::integer(coefficient(k)))
+            .collect();
         let found = self.call("roots", &[Expr::list(coefficients)])?;
         let scale = Float::with_val(bits(), &coefficient(0)).pow(-(int(1) / n as u64));
         let mut p = complexes(&found, "besselap")?;
         for x in &mut p {
             *x *= &scale;
         }
-        Ok(Zpk { z: Vec::new(), p, k: int(1) })
+        Ok(Zpk {
+            z: Vec::new(),
+            p,
+            k: int(1),
+        })
     }
 
     /// Sections of second order for zeros, poles and a gain: every pair of poles with
@@ -1049,21 +1320,34 @@ impl Session {
             let tiny = Float::with_val(bits(), 1) >> (bits() / 2);
             let (mut complex, mut real): (Vec<Complex>, Vec<Complex>) = (Vec::new(), Vec::new());
             for x in v {
-                if x.imag().clone().abs() <= Float::with_val(bits(), &tiny * (int(1) + x.clone().abs().real())) {
+                if x.imag().clone().abs()
+                    <= Float::with_val(bits(), &tiny * (int(1) + x.clone().abs().real()))
+                {
                     real.push(cx(x.real()));
                 } else if *x.imag() > 0 {
                     complex.push(x.clone());
                 }
             }
-            let mut pairs: Vec<Vec<Complex>> = complex.into_iter().map(|x| vec![x.clone(), x.conj()]).collect();
-            real.sort_by(|a, b| a.real().clone().abs().partial_cmp(&b.real().clone().abs()).unwrap_or(Ordering::Equal));
+            let mut pairs: Vec<Vec<Complex>> = complex
+                .into_iter()
+                .map(|x| vec![x.clone(), x.conj()])
+                .collect();
+            real.sort_by(|a, b| {
+                a.real()
+                    .clone()
+                    .abs()
+                    .partial_cmp(&b.real().clone().abs())
+                    .unwrap_or(Ordering::Equal)
+            });
             for two in real.chunks(2) {
                 pairs.push(two.to_vec());
             }
             pairs
         };
         let far = |pair: &Vec<Complex>| {
-            let size = pair.iter().fold(Float::new(bits()), |m, x| m.max(x.clone().abs().real()));
+            let size = pair
+                .iter()
+                .fold(Float::new(bits()), |m, x| m.max(x.clone().abs().real()));
             (int(1) - size).abs()
         };
         let mut poles = paired(p);
@@ -1073,8 +1357,15 @@ impl Session {
         let mut out = Vec::new();
         for pair in &poles {
             let nearest = (0..zeros.len()).min_by(|i, j| {
-                let distance = |k: &usize| Complex::with_val(bits(), &zeros[*k][0] - &pair[0]).abs().real().clone();
-                distance(i).partial_cmp(&distance(j)).unwrap_or(Ordering::Equal)
+                let distance = |k: &usize| {
+                    Complex::with_val(bits(), &zeros[*k][0] - &pair[0])
+                        .abs()
+                        .real()
+                        .clone()
+                };
+                distance(i)
+                    .partial_cmp(&distance(j))
+                    .unwrap_or(Ordering::Equal)
             });
             let own = nearest.map(|k| zeros.remove(k)).unwrap_or_default();
             out.push((own, pair.clone()));
@@ -1117,6 +1408,10 @@ impl Session {
             let who = name;
             let number = |k: usize| real(&a[k], who);
             let list = |k: usize| reals(&a[k], who);
+            let some = |v: Vec<Float>| match v.is_empty() {
+                true => Err(format!("{who} needs values")),
+                false => Ok(v),
+            };
             let pair = |b: Vec<Float>, a: Vec<Float>| Expr::list(vec![shown(&b), shown(&a)]);
             Ok(match (name, n) {
                 // ---- windows
@@ -1485,7 +1780,7 @@ impl Session {
                     Expr::list(vec![shown(&delays), shown(&ws)])
                 }
                 ("impz" | "stepz", 1..=3) => {
-                    let (b, den) = (list(0)?, if n > 1 { list(1)? } else { vec![int(1)] });
+                    let (b, den) = (some(list(0)?)?, if n > 1 { some(list(1)?)? } else { vec![int(1)] });
                     let samples = match a.get(2) {
                         Some(e) => count(e, "the number of samples", 1, 1 << 20)?,
                         None if den.len() == 1 => b.len(),
@@ -1576,7 +1871,7 @@ impl Session {
                     }
                 }
                 ("polystab", 1) => {
-                    let p = trimmed(list(0)?);
+                    let p = some(trimmed(list(0)?))?;
                     let mut roots = self.signal_roots(&p, who)?;
                     for r in &mut roots {
                         if *r.clone().abs().real() > 1 {
@@ -1587,7 +1882,7 @@ impl Session {
                 }
                 // ---- spectra
                 ("periodogram", 1..=4) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     let given = |k: usize| a.get(k).filter(|e| !matches!(e.as_list(), Some(l) if l.is_empty()));
                     let spectrum = Spectrum {
                         win: window_of(given(1), x.len(), "rectwin", who)?,
@@ -1605,13 +1900,13 @@ impl Session {
                     Expr::list(vec![shown(&power), shown(&spectrum.places())])
                 }
                 ("pwelch", 1..=5) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     let spectrum = Spectrum::welch(&a[1..], x.len(), who)?;
                     let power: Vec<Float> = spectrum.cross(&x, &x).iter().map(|v| v.real().clone()).collect();
                     Expr::list(vec![shown(&power), shown(&spectrum.places())])
                 }
                 ("cpsd" | "mscohere" | "tfestimate", 2..=6) => {
-                    let (x, y) = (list(0)?, list(1)?);
+                    let (x, y) = (some(list(0)?)?, some(list(1)?)?);
                     if x.len() != y.len() {
                         return Err(format!("{name}: both signals have one length"));
                     }
@@ -1635,14 +1930,14 @@ impl Session {
                     Expr::list(vec![values, shown(&spectrum.places())])
                 }
                 ("spectrogram", 1..=4) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     let spectrum = Spectrum::welch(&a[1..], x.len(), who)?;
                     let nfft = spectrum.nfft.max(spectrum.win.len());
                     let columns = pieces(&x, &spectrum.win, spectrum.overlap, nfft);
                     Expr::list((0..=nfft / 2).map(|k| shown_c(&columns.iter().map(|c| c[k].clone()).collect::<Vec<_>>())).collect())
                 }
                 ("bandpower" | "rssq" | "peak2rms", 1) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     if x.is_empty() {
                         return Err(format!("{name} needs values"));
                     }
@@ -1675,7 +1970,7 @@ impl Session {
                     shown(&real_parts(&fft(&logs, true)))
                 }
                 ("goertzel", 2) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     let mut out = Vec::new();
                     for e in items(&a[1]) {
                         let bin = count(&e, "the place of a frequency", 1, x.len() as i64)? - 1;
@@ -1719,7 +2014,7 @@ impl Session {
                     Expr::list(rows)
                 }
                 ("cconv", 2 | 3) => {
-                    let (x, y) = (list(0)?, list(1)?);
+                    let (x, y) = (some(list(0)?)?, some(list(1)?)?);
                     let full = poly_mul(&x, &y);
                     let size = match a.get(2) {
                         Some(e) => count(e, "the length", 1, 1 << 20)?,
@@ -1732,7 +2027,7 @@ impl Session {
                     shown(&out)
                 }
                 ("hilbert", 1) | ("envelope", 1) => {
-                    let x = list(0)?;
+                    let x = some(list(0)?)?;
                     let size = x.len();
                     if size == 0 {
                         return Err(format!("{name} needs values"));
@@ -1950,7 +2245,7 @@ impl Session {
                 // ---- waveforms
                 ("sawtooth", 1 | 2) => {
                     let width = if n > 1 { number(1)? } else { int(1) };
-                    if width < 0 || width > 1 {
+                    if !(0..=1).contains(&width) {
                         return Err("sawtooth(t, width): the place of the top is from 0 to 1".into());
                     }
                     each(&a[0], who, &|t| {
@@ -2061,7 +2356,12 @@ mod tests {
             assert!(near(value, want));
         }
         // a Kaiser window of shape 0 is flat; every window is its own mirror
-        assert!(window("kaiser", 6, Some(&int(0))).unwrap().iter().all(|v| near(v, 1.0)));
+        assert!(
+            window("kaiser", 6, Some(&int(0)))
+                .unwrap()
+                .iter()
+                .all(|v| near(v, 1.0))
+        );
         for name in WINDOWS {
             let w = window(name, 9, None).unwrap();
             for k in 0..9 {
@@ -2081,7 +2381,10 @@ mod tests {
         let proto = ellipap(5, &int(1), &int(40));
         let (b, a) = proto.tf();
         let edge = Complex::with_val(bits(), (0, 1));
-        let gain = Complex::with_val(bits(), poly_at(&b, &edge) / poly_at(&a, &edge)).abs().real().to_f64();
+        let gain = Complex::with_val(bits(), poly_at(&b, &edge) / poly_at(&a, &edge))
+            .abs()
+            .real()
+            .to_f64();
         assert!((20.0 * gain.log10() + 1.0).abs() < 1e-9, "{gain}");
     }
 
@@ -2104,6 +2407,9 @@ mod tests {
         let r: Vec<Float> = (0..4).map(|k| fl(0.5f64.powi(k))).collect();
         let (coefficients, error, _) = levinson(&r, 3).unwrap();
         assert!(near(&coefficients[1], -0.5) && near(&coefficients[2], 0.0) && near(&error, 0.75));
-        assert_eq!(local_peaks(&[int(0), int(2), int(1), int(3), int(3), int(1)]), [1, 3]);
+        assert_eq!(
+            local_peaks(&[int(0), int(2), int(1), int(3), int(3), int(1)]),
+            [1, 3]
+        );
     }
 }

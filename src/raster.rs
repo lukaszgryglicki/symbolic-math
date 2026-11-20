@@ -1223,7 +1223,11 @@ mod tests {
         let mut seen = std::collections::HashSet::new();
         for pair in CUBE.windows(2) {
             let (a, b) = (whole(pair[0]), whole(pair[1]));
-            assert_eq!((0..3).map(|k| (a[k] - b[k]).abs()).sum::<i32>(), 1, "{a:?} {b:?}");
+            assert_eq!(
+                (0..3).map(|k| (a[k] - b[k]).abs()).sum::<i32>(),
+                1,
+                "{a:?} {b:?}"
+            );
             seen.insert(a);
         }
         seen.insert(whole(CUBE[511]));

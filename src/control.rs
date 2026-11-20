@@ -48,7 +48,12 @@ fn poly_expr(p: &[Expr], var: &Expr) -> Expr {
     tidy(add(p
         .iter()
         .enumerate()
-        .map(|(k, c)| mul(vec![c.clone(), pow(var.clone(), Expr::int((n - 1 - k) as i64))]))
+        .map(|(k, c)| {
+            mul(vec![
+                c.clone(),
+                pow(var.clone(), Expr::int((n - 1 - k) as i64)),
+            ])
+        })
         .collect()))
 }
 
@@ -70,15 +75,23 @@ fn poly_add(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
             None => Expr::zero(),
         }
     };
-    trimmed((0..n).map(|k| tidy(add(vec![at(a, k), at(b, k)]))).collect())
+    trimmed(
+        (0..n)
+            .map(|k| tidy(add(vec![at(a, k), at(b, k)])))
+            .collect(),
+    )
 }
 
 fn poly_scaled(a: &[Expr], by: &Expr) -> Vec<Expr> {
-    a.iter().map(|c| tidy(mul(vec![c.clone(), by.clone()]))).collect()
+    a.iter()
+        .map(|c| tidy(mul(vec![c.clone(), by.clone()])))
+        .collect()
 }
 
 fn poly_at(p: &[Expr], x: &Expr) -> Expr {
-    tidy(p.iter().fold(Expr::zero(), |s, c| add(vec![mul(vec![s, x.clone()]), c.clone()])))
+    tidy(p.iter().fold(Expr::zero(), |s, c| {
+        add(vec![mul(vec![s, x.clone()]), c.clone()])
+    }))
 }
 
 /// The slope of a polynomial.
@@ -101,7 +114,11 @@ fn along_axis(p: &[Expr]) -> (Vec<Expr>, Vec<Expr>) {
     let (mut real, mut imaginary) = (Vec::with_capacity(n), Vec::with_capacity(n));
     for (k, c) in p.iter().enumerate() {
         let power = n - 1 - k;
-        let signed = if (power / 2) % 2 == 1 { tidy(neg(c.clone())) } else { c.clone() };
+        let signed = if (power / 2) % 2 == 1 {
+            tidy(neg(c.clone()))
+        } else {
+            c.clone()
+        };
         match power % 2 {
             0 => {
                 real.push(signed);
@@ -162,7 +179,10 @@ fn state_space(e: &Expr) -> Option<([Rows; 4], Option<Expr>)> {
     let m = |k: usize| -> Rows {
         match args[k].as_list() {
             Some(items) if items.iter().all(|x| x.as_list().is_some()) && !items.is_empty() => {
-                items.iter().map(|r| r.as_list().unwrap_or_default().to_vec()).collect()
+                items
+                    .iter()
+                    .map(|r| r.as_list().unwrap_or_default().to_vec())
+                    .collect()
             }
             Some(items) if k == 1 => items.iter().map(|x| vec![x.clone()]).collect(),
             Some(items) => vec![items.to_vec()],
@@ -233,14 +253,21 @@ fn tf_to_ss(num: &[Expr], den: &[Expr]) -> Result<[Rows; 4], String> {
         return Err("a state space needs a transfer function whose numerator is of no higher degree than its denominator".into());
     }
     let lead = &den[0];
-    let a: Vec<Expr> = den[1..].iter().map(|c| tidy(div(c.clone(), lead.clone()))).collect();
+    let a: Vec<Expr> = den[1..]
+        .iter()
+        .map(|c| tidy(div(c.clone(), lead.clone())))
+        .collect();
     let mut b = vec![Expr::zero(); den.len() - num.len()];
     b.extend(num.iter().map(|c| tidy(div(c.clone(), lead.clone()))));
     let d = b[0].clone();
     let c: Vec<Expr> = (0..n)
         .map(|k| tidy(sub(b[k + 1].clone(), mul(vec![d.clone(), a[k].clone()]))))
         .collect();
-    let mut top = vec![a.iter().map(|x| tidy(neg(x.clone()))).collect::<Vec<Expr>>()];
+    let mut top = vec![
+        a.iter()
+            .map(|x| tidy(neg(x.clone())))
+            .collect::<Vec<Expr>>(),
+    ];
     for i in 1..n {
         top.push((0..n).map(|j| Expr::int(i64::from(j + 1 == i))).collect());
     }
@@ -299,8 +326,18 @@ fn dusted(p: Vec<Expr>) -> Vec<Expr> {
         return p;
     }
     let prec = crate::mfun::bits();
-    let sizes: Vec<Option<Float>> = p.iter().map(|c| complex_of(c, prec).ok().map(|z| Float::with_val(prec, z.abs_ref()))).collect();
-    let top = sizes.iter().flatten().fold(Float::new(prec), |m, s| m.max(s));
+    let sizes: Vec<Option<Float>> = p
+        .iter()
+        .map(|c| {
+            complex_of(c, prec)
+                .ok()
+                .map(|z| Float::with_val(prec, z.abs_ref()))
+        })
+        .collect();
+    let top = sizes
+        .iter()
+        .flatten()
+        .fold(Float::new(prec), |m, s| m.max(s));
     let least = top * Float::with_val(prec, Float::i_pow_u(10, numeric::digits() + 8)).recip();
     p.into_iter()
         .zip(sizes)
@@ -332,9 +369,9 @@ fn c_mul(a: &CMat, b: &CMat) -> CMat {
         .map(|row| {
             (0..b[0].len())
                 .map(|j| {
-                    row.iter()
-                        .zip(b)
-                        .fold(Complex::new(prec), |s, (x, r)| s + Complex::with_val(prec, x * &r[j]))
+                    row.iter().zip(b).fold(Complex::new(prec), |s, (x, r)| {
+                        s + Complex::with_val(prec, x * &r[j])
+                    })
                 })
                 .collect()
         })
@@ -364,15 +401,19 @@ fn c_turned(a: &CMat) -> CMat {
 
 fn c_unit(n: usize, prec: u32) -> CMat {
     (0..n)
-        .map(|i| (0..n).map(|j| Complex::with_val(prec, u32::from(i == j))).collect())
+        .map(|i| {
+            (0..n)
+                .map(|j| Complex::with_val(prec, u32::from(i == j)))
+                .collect()
+        })
         .collect()
 }
 
 fn c_size(a: &CMat) -> Float {
     let prec = a[0][0].prec().0;
-    a.iter()
-        .flatten()
-        .fold(Float::new(prec), |s, z| s.max(&Float::with_val(prec, z.abs_ref())))
+    a.iter().flatten().fold(Float::new(prec), |s, z| {
+        s.max(&Float::with_val(prec, z.abs_ref()))
+    })
 }
 
 /// The solution X of `A'*X + X*A - X*G*X + Q = 0` that makes `A - G*X` stable, by the sign
@@ -394,7 +435,9 @@ fn riccati(a: &CMat, g: &CMat, q: &CMat) -> Result<CMat, String> {
         })
         .collect();
     let unit = c_unit(2 * n, prec);
-    let none = || "the equation of Riccati has no stabilizing solution (a pole on the border of stability, or a system that cannot be steered)".to_string();
+    let none = || {
+        "the equation of Riccati has no stabilizing solution (a pole on the border of stability, or a system that cannot be steered)".to_string()
+    };
     let mut settled = false;
     for _ in 0..200 {
         let inverse = solved(&z, &unit).ok_or_else(none)?;
@@ -501,7 +544,9 @@ impl Session {
         if let Some(args) = e.fn_args("tf").filter(|a| a.len() == 2 || a.len() == 3) {
             let (num, den) = (trimmed(list_of(&args[0])), trimmed(list_of(&args[1])));
             if den.len() == 1 && den[0].is_zero() {
-                return Err(format!("{who}: the denominator of a transfer function is not zero"));
+                return Err(format!(
+                    "{who}: the denominator of a transfer function is not zero"
+                ));
             }
             return Ok(Sys {
                 num,
@@ -546,7 +591,10 @@ impl Session {
             return Ok(found);
         }
         let sys = self.sys_of(e, who)?;
-        Ok((tf_to_ss(&sys.num, &sys.den).map_err(|e| format!("{who}: {e}"))?, sys.ts))
+        Ok((
+            tf_to_ss(&sys.num, &sys.den).map_err(|e| format!("{who}: {e}"))?,
+            sys.ts,
+        ))
     }
 
     fn roots_of(&mut self, p: &[Expr]) -> Result<Vec<Expr>, String> {
@@ -583,7 +631,11 @@ impl Session {
         match &sys.ts {
             None => mul(vec![Expr::i(), w.clone()]),
             Some(ts) => {
-                let ts = if order_of(ts) == Some(std::cmp::Ordering::Greater) { ts.clone() } else { Expr::one() };
+                let ts = if order_of(ts) == Some(std::cmp::Ordering::Greater) {
+                    ts.clone()
+                } else {
+                    Expr::one()
+                };
                 pow(Expr::e(), mul(vec![Expr::i(), w.clone(), ts]))
             }
         }
@@ -593,12 +645,18 @@ impl Session {
     fn frequencies(&mut self, sys: &Sys, count: usize) -> Result<Vec<Expr>, String> {
         let prec = 64;
         let mut sizes: Vec<f64> = Vec::new();
-        for p in self.roots_of(&sys.den)?.iter().chain(self.roots_of(&sys.num)?.iter()) {
+        for p in self
+            .roots_of(&sys.den)?
+            .iter()
+            .chain(self.roots_of(&sys.num)?.iter())
+        {
             let z = complex_of(p, prec)?;
             let size = match &sys.ts {
                 None => Float::with_val(prec, z.abs_ref()).to_f64(),
                 // (the frequency of a point of the sampled plane: |ln z|)
-                Some(_) => Float::with_val(prec, Complex::with_val(prec, z.ln_ref()).abs_ref()).to_f64(),
+                Some(_) => {
+                    Float::with_val(prec, Complex::with_val(prec, z.ln_ref()).abs_ref()).to_f64()
+                }
             };
             if size.is_finite() && size > 1e-9 {
                 sizes.push(size);
@@ -657,7 +715,8 @@ impl Session {
         for w in ws {
             let h = complex_of(&sys.at(&Self::point(sys, w)), prec)?;
             gains.push(Float::with_val(prec, h.abs_ref()));
-            let mut phase = Float::with_val(prec, h.arg_ref()) * &half_turn / Float::with_val(prec, rug::float::Constant::Pi);
+            let mut phase = Float::with_val(prec, h.arg_ref()) * &half_turn
+                / Float::with_val(prec, rug::float::Constant::Pi);
             if let Some(b) = &before {
                 // (the nearest of the angles that differ by whole turns)
                 let turns = (Float::with_val(prec, b - &phase) / 360u32).round();
@@ -684,7 +743,9 @@ impl Session {
                 let gain = if a.ts.is_none() { a } else { b };
                 match gain.order() == 0 && gain.num.len() == 1 {
                     true => Ok(a.ts.clone().or_else(|| b.ts.clone())),
-                    false => Err(format!("{who}: a sampled system and one of running time do not go together")),
+                    false => Err(format!(
+                        "{who}: a sampled system and one of running time do not go together"
+                    )),
                 }
             }
             _ => Err(format!("{who}: the systems are sampled at different times")),
@@ -705,7 +766,9 @@ impl Session {
             }
             Some(_) => {
                 let count = match times {
-                    Some(n) => crate::arrays::whole(n, "the number of samples", 1, 100_000)? as usize,
+                    Some(n) => {
+                        crate::arrays::whole(n, "the number of samples", 1, 100_000)? as usize
+                    }
                     None => 20,
                 };
                 // the input as a ratio of polynomials in z, then long division
@@ -722,7 +785,10 @@ impl Session {
         for x in list_of(at) {
             let v = crate::canon::subst(answer, &t, &x);
             values.push(match numeric::evalf_digits(&v, numeric::digits() + 6) {
-                Ok(z) => numeric::to_float_expr(Complex::with_val(crate::mfun::bits(), z.real()), numeric::digits()),
+                Ok(z) => numeric::to_float_expr(
+                    Complex::with_val(crate::mfun::bits(), z.real()),
+                    numeric::digits(),
+                ),
                 Err(_) => self.eval(&v)?,
             });
         }
@@ -739,7 +805,12 @@ impl Session {
         let bits = crate::mfun::bits();
         let prec = bits + 64;
         let m = tf_to_ss(&sys.num, &sys.den)?;
-        let [a, b, c, d] = [to_cmat(&m[0], prec)?, to_cmat(&m[1], prec)?, to_cmat(&m[2], prec)?, to_cmat(&m[3], prec)?];
+        let [a, b, c, d] = [
+            to_cmat(&m[0], prec)?,
+            to_cmat(&m[1], prec)?,
+            to_cmat(&m[2], prec)?,
+            to_cmat(&m[3], prec)?,
+        ];
         let size = a.len();
         let u = crate::mfun::Numeric::new(&["t".to_string()], input, prec);
         let mut slopes = |t: &Float, x: &[Complex]| -> Option<Vec<Complex>> {
@@ -759,13 +830,25 @@ impl Session {
         let start = Float::new(prec);
         let mut values = Vec::new();
         for x in list_of(at) {
-            let end = self.real_of(&x).ok_or_else(|| format!("{who}: {x} is no time"))?;
+            let end = self
+                .real_of(&x)
+                .ok_or_else(|| format!("{who}: {x} is no time"))?;
             if end.is_sign_negative() && !end.is_zero() {
-                return Err(format!("{who}: the answer starts at the time 0, {x} is before it"));
+                return Err(format!(
+                    "{who}: the answer starts at the time 0, {x} is before it"
+                ));
             }
             let end = Float::with_val(prec, end);
-            let state = crate::odesys::integrate(&mut slopes, &start, &end, vec![Complex::new(prec); size], bits)?;
-            let drive = u.at(std::slice::from_ref(&end)).map_err(|e| format!("{who}: {e}"))?;
+            let state = crate::odesys::integrate(
+                &mut slopes,
+                &start,
+                &end,
+                vec![Complex::new(prec); size],
+                bits,
+            )?;
+            let drive = u
+                .at(std::slice::from_ref(&end))
+                .map_err(|e| format!("{who}: {e}"))?;
             let mut y = Complex::with_val(prec, &d[0][0] * &drive);
             for j in 0..size {
                 y += Complex::with_val(prec, &c[0][j] * &state[j]);
@@ -785,14 +868,20 @@ impl Session {
         match name {
             "series" if !(n == 2 && first_system && is_system(&a[1])) => return None,
             "norm" | "inv" if !first_system => return None,
-            "bandwidth" if a.first().is_some_and(|e| e.as_list().is_some()) => return None,
+            // (of a system or of a ratio in s or z; of anything else it is that of a matrix)
+            "bandwidth"
+                if !(first_system
+                    || a.first().is_some_and(|e| e.has_sym("s") || e.has_sym("z"))) =>
+            {
+                return None;
+            }
             "pade" if !(n == 2 && a[1].as_i64().is_some()) => return None,
             _ => {}
         }
         Some((|| -> Res {
             let who = name;
             Ok(match (name, n) {
-                ("tf", 1 | 2 | 3) => match (text_of(&a[0]), n) {
+                ("tf", 1..=3) => match (text_of(&a[0]), n) {
                     (Some(var @ ("s" | "z")), 1 | 2) => {
                         let ts = match (var, a.get(1)) {
                             ("z", Some(ts)) => Some(ts.clone()),
@@ -1216,7 +1305,9 @@ impl Session {
             return Ok(sys.object());
         }
         let mut scaled = |p: &[Expr]| -> Result<Vec<Expr>, String> {
-            p.iter().map(|c| self.call("simplify", &[div(c.clone(), lead.clone())])).collect()
+            p.iter()
+                .map(|c| self.call("simplify", &[div(c.clone(), lead.clone())]))
+                .collect()
         };
         let (num, den) = (scaled(&sys.num)?, scaled(&sys.den)?);
         Ok(sys.with(num, den).object())
@@ -1228,31 +1319,42 @@ impl Session {
         let usage = "lyap(A, Q), lyap(A, B, C) or dlyap(A, Q): square matrices";
         let m = matrix::rows(&a[0]).ok_or(usage)?;
         let (right, q) = match a.len() {
-            3 => (matrix::rows(&a[1]).ok_or(usage)?, matrix::rows(&a[2]).ok_or(usage)?),
+            3 => (
+                matrix::rows(&a[1]).ok_or(usage)?,
+                matrix::rows(&a[2]).ok_or(usage)?,
+            ),
             _ => (matrix::transpose(&m), matrix::rows(&a[1]).ok_or(usage)?),
         };
         let (rows, columns) = (m.len(), right.len());
-        if m.iter().any(|r| r.len() != rows) || right.iter().any(|r| r.len() != columns) || q.len() != rows || q.iter().any(|r| r.len() != columns) {
+        if m.iter().any(|r| r.len() != rows)
+            || right.iter().any(|r| r.len() != columns)
+            || q.len() != rows
+            || q.iter().any(|r| r.len() != columns)
+        {
             return Err(usage.into());
         }
         // the unknown X(i, j) has the place i*columns + j
         let size = rows * columns;
         let mut left = vec![vec![Expr::zero(); size]; size];
-        for i in 0..rows {
+        for (i, across) in m.iter().enumerate() {
             for j in 0..columns {
                 let row = i * columns + j;
-                for k in 0..rows {
-                    for l in 0..columns {
+                for (k, weight) in across.iter().enumerate() {
+                    for (l, down) in right.iter().enumerate() {
                         let column = k * columns + l;
                         let entry = match name {
                             // (A X A')(i, j) = sum A(i, k) X(k, l) A'(l, j)
                             "dlyap" => add(vec![
-                                mul(vec![m[i][k].clone(), right[l][j].clone()]),
+                                mul(vec![weight.clone(), down[j].clone()]),
                                 Expr::int(-i64::from(i == k && j == l)),
                             ]),
                             _ => add(vec![
-                                if l == j { m[i][k].clone() } else { Expr::zero() },
-                                if k == i { right[l][j].clone() } else { Expr::zero() },
+                                if l == j { weight.clone() } else { Expr::zero() },
+                                if k == i {
+                                    down[j].clone()
+                                } else {
+                                    Expr::zero()
+                                },
                             ]),
                         };
                         left[row][column] = tidy(entry);
@@ -1268,13 +1370,19 @@ impl Session {
         if flat.len() != size {
             return Err(format!("{name}: the equation has no one solution"));
         }
-        Ok(matrix::from_rows(flat.chunks(columns).map(|r| r.iter().cloned().map(tidy).collect()).collect()))
+        Ok(matrix::from_rows(
+            flat.chunks(columns)
+                .map(|r| r.iter().cloned().map(tidy).collect())
+                .collect(),
+        ))
     }
 
     /// The equations of Riccati and the gains that cost least: care, dare, lqr, dlqr, lqe.
     fn gains(&mut self, name: &str, a: &[Expr]) -> Res {
         let prec = crate::mfun::bits();
-        let usage = format!("{name}(A, B, Q, R): matrices that fit; Q and R symmetric, R positive definite");
+        let usage = format!(
+            "{name}(A, B, Q, R): matrices that fit; Q and R symmetric, R positive definite"
+        );
         let get = |k: usize| -> Result<CMat, String> {
             let rows = matrix::rows(&a[k]).unwrap_or_else(|| vec![vec![a[k].clone()]]);
             to_cmat(&rows, prec).map_err(|_| usage.clone())
@@ -1283,12 +1391,23 @@ impl Session {
             // lqe(A, G, C, Q, R): the gain of the watcher is that of the turned system
             "lqe" => {
                 let (m, g, c, q, r) = (get(0)?, get(1)?, get(2)?, get(3)?, get(4)?);
-                (c_turned(&m), c_turned(&c), c_mul(&c_mul(&g, &q), &c_turned(&g)), r)
+                (
+                    c_turned(&m),
+                    c_turned(&c),
+                    c_mul(&c_mul(&g, &q), &c_turned(&g)),
+                    r,
+                )
             }
             _ => (get(0)?, get(1)?, get(2)?, get(3)?),
         };
         let size = m.len();
-        if m.iter().any(|x| x.len() != size) || input.len() != size || q.len() != size || q.iter().any(|x| x.len() != size) || r.len() != input[0].len() || r.iter().any(|x| x.len() != r.len()) {
+        if m.iter().any(|x| x.len() != size)
+            || input.len() != size
+            || q.len() != size
+            || q.iter().any(|x| x.len() != size)
+            || r.len() != input[0].len()
+            || r.iter().any(|x| x.len() != r.len())
+        {
             return Err(usage);
         }
         let cross = match (name, a.get(4)) {
@@ -1303,7 +1422,10 @@ impl Session {
         let (m_used, q_used) = match &cross {
             Some(nn) => {
                 let shift = c_mul(&c_mul(&input, &r_inverse), &c_turned(nn));
-                (c_add(&m, &shift, -1), c_add(&q, &c_mul(&c_mul(nn, &r_inverse), &c_turned(nn)), -1))
+                (
+                    c_add(&m, &shift, -1),
+                    c_add(&q, &c_mul(&c_mul(nn, &r_inverse), &c_turned(nn)), -1),
+                )
             }
             None => (m.clone(), q.clone()),
         };
@@ -1329,7 +1451,9 @@ impl Session {
         Ok(match name {
             "lqr" | "dlqr" => Expr::list(vec![gain, x, poles]),
             "lqe" => {
-                let turned = matrix::rows(&gain).map(|g| matrix::from_rows(matrix::transpose(&g))).unwrap_or(gain);
+                let turned = matrix::rows(&gain)
+                    .map(|g| matrix::from_rows(matrix::transpose(&g)))
+                    .unwrap_or(gain);
                 Expr::list(vec![turned, x, poles])
             }
             _ => Expr::list(vec![x, gain, poles]),
@@ -1364,7 +1488,13 @@ impl Session {
         for mix in &mixes {
             let one: Rows = input
                 .iter()
-                .map(|r| vec![tidy(add(r.iter().zip(mix).map(|(x, g)| mul(vec![x.clone(), g.clone()])).collect()))])
+                .map(|r| {
+                    vec![tidy(add(r
+                        .iter()
+                        .zip(mix)
+                        .map(|(x, g)| mul(vec![x.clone(), g.clone()]))
+                        .collect()))]
+                })
                 .collect();
             // the matrix [b, A b, ..., A^(n-1) b]
             let mut columns = vec![one.clone()];
@@ -1383,7 +1513,10 @@ impl Session {
             for c in wanted_poly.iter().rev() {
                 for i in 0..size {
                     for j in 0..size {
-                        value[i][j] = add(vec![value[i][j].clone(), mul(vec![c.clone(), power[i][j].clone()])]);
+                        value[i][j] = add(vec![
+                            value[i][j].clone(),
+                            mul(vec![c.clone(), power[i][j].clone()]),
+                        ]);
                     }
                 }
                 power = matrix::matmul(&power, &m)?;
@@ -1393,14 +1526,20 @@ impl Session {
             // back to all inputs: K = mix * k
             let full: Rows = mix
                 .iter()
-                .map(|g| k[0].iter().map(|x| tidy(mul(vec![g.clone(), x.clone()]))).collect())
+                .map(|g| {
+                    k[0].iter()
+                        .map(|x| tidy(mul(vec![g.clone(), x.clone()])))
+                        .collect()
+                })
                 .collect();
             return Ok(match inputs {
                 1 => Expr::list(full.into_iter().next().unwrap_or_default()),
                 _ => matrix::from_rows(full),
             });
         }
-        Err(format!("{name}: the system cannot be steered everywhere (its matrix [B, A*B, ...] has no full rank)"))
+        Err(format!(
+            "{name}: the system cannot be steered everywhere (its matrix [B, A*B, ...] has no full rank)"
+        ))
     }
 
     /// Where the gain is one and where the phase is half a turn, and what is to spare there.
@@ -1415,7 +1554,10 @@ impl Session {
         };
         // N(jw)*conj(D(jw)) = (Nr*Dr + Ni*Di) + j*(Ni*Dr - Nr*Di), polynomials in w
         let ((nr, ni), (dr, di)) = (along_axis(&sys.num), along_axis(&sys.den));
-        let im = poly_add(&poly_mul(&ni, &dr), &poly_scaled(&poly_mul(&nr, &di), &Expr::int(-1)));
+        let im = poly_add(
+            &poly_mul(&ni, &dr),
+            &poly_scaled(&poly_mul(&nr, &di), &Expr::int(-1)),
+        );
         let positive = |s: &mut Session, coeffs: &[Expr]| -> Result<Vec<Float>, String> {
             let mut found = Vec::new();
             for r in s.roots_of(&trimmed(coeffs.to_vec()))? {
@@ -1426,7 +1568,10 @@ impl Session {
                 }
             }
             found.sort_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal));
-            found.dedup_by(|x, y| Float::with_val(prec, &*x - &*y).abs() <= Float::with_val(prec, y.abs_ref()) >> (prec / 2));
+            found.dedup_by(|x, y| {
+                Float::with_val(prec, &*x - &*y).abs()
+                    <= Float::with_val(prec, y.abs_ref()) >> (prec / 2)
+            });
             Ok(found)
         };
         let gain_at = |x: &Float| -> Result<Complex, String> {
@@ -1444,17 +1589,24 @@ impl Session {
         if ts.is_some() && !poly_at(&given.den, &Expr::int(-1)).is_zero() {
             let h = complex_of(&given.at(&Expr::int(-1)), prec)?;
             if h.real().is_sign_negative() && !h.real().is_zero() {
-                gain_margins.push((Float::with_val(prec, h.abs_ref()).recip(), rolled(&Float::with_val(prec, f64::INFINITY), &ts)));
+                gain_margins.push((
+                    Float::with_val(prec, h.abs_ref()).recip(),
+                    rolled(&Float::with_val(prec, f64::INFINITY), &ts),
+                ));
             }
         }
         // the gain is one where |N|^2 = |D|^2
         let size = |r: &[Expr], i: &[Expr]| poly_add(&poly_mul(r, r), &poly_mul(i, i));
-        let unit = poly_add(&size(&nr, &ni), &poly_scaled(&size(&dr, &di), &Expr::int(-1)));
+        let unit = poly_add(
+            &size(&nr, &ni),
+            &poly_scaled(&size(&dr, &di), &Expr::int(-1)),
+        );
         let mut phase_margins: Vec<(Float, Float)> = Vec::new();
         let half_turn = Float::with_val(prec, 180);
         for x in positive(self, &unit)? {
             let h = gain_at(&x)?;
-            let mut phase = Float::with_val(prec, h.arg_ref()) * &half_turn / Float::with_val(prec, rug::float::Constant::Pi);
+            let mut phase = Float::with_val(prec, h.arg_ref()) * &half_turn
+                / Float::with_val(prec, rug::float::Constant::Pi);
             // (the phase as it comes down from the low frequencies: between -360 and 0)
             if phase > 0 {
                 phase -= 360u32;
@@ -1463,23 +1615,43 @@ impl Session {
         }
         let shown = crate::mfun::value;
         if all {
-            let closed = self.sys_of_expr(&div(given.expr(), add(vec![Expr::one(), given.expr()])), given.ts.clone(), who)?;
+            let closed = self.sys_of_expr(
+                &div(given.expr(), add(vec![Expr::one(), given.expr()])),
+                given.ts.clone(),
+                who,
+            )?;
             let stable = self.stable(&closed)?;
             return Ok(crate::records::record(vec![
-                ("GainMargin", Expr::list(gain_margins.iter().map(|m| shown(&m.0)).collect())),
-                ("GMFrequency", Expr::list(gain_margins.iter().map(|m| shown(&m.1)).collect())),
-                ("PhaseMargin", Expr::list(phase_margins.iter().map(|m| shown(&m.0)).collect())),
-                ("PMFrequency", Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect())),
+                (
+                    "GainMargin",
+                    Expr::list(gain_margins.iter().map(|m| shown(&m.0)).collect()),
+                ),
+                (
+                    "GMFrequency",
+                    Expr::list(gain_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
+                (
+                    "PhaseMargin",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.0)).collect()),
+                ),
+                (
+                    "PMFrequency",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
                 ("Stable", Expr::Bool(stable)),
             ]));
         }
         // the margins that are nearest to losing stability
         let nearest_gain = gain_margins.iter().min_by(|x, y| {
             let far = |m: &Float| Float::with_val(prec, m.ln_ref()).abs();
-            far(&x.0).partial_cmp(&far(&y.0)).unwrap_or(std::cmp::Ordering::Equal)
+            far(&x.0)
+                .partial_cmp(&far(&y.0))
+                .unwrap_or(std::cmp::Ordering::Equal)
         });
         let nearest_phase = phase_margins.iter().min_by(|x, y| {
-            Float::with_val(prec, x.0.abs_ref()).partial_cmp(&Float::with_val(prec, y.0.abs_ref())).unwrap_or(std::cmp::Ordering::Equal)
+            Float::with_val(prec, x.0.abs_ref())
+                .partial_cmp(&Float::with_val(prec, y.0.abs_ref()))
+                .unwrap_or(std::cmp::Ordering::Equal)
         });
         let (gm, wcg) = match nearest_gain {
             Some((m, x)) => (shown(m), shown(x)),
@@ -1514,7 +1686,9 @@ impl Session {
         };
         let drop = match drop {
             Some(d) if order_of(d) == Some(std::cmp::Ordering::Less) => d.clone(),
-            Some(_) => return Err("bandwidth(system, drop): the drop in dB is below zero, as -3".into()),
+            Some(_) => {
+                return Err("bandwidth(system, drop): the drop in dB is below zero, as -3".into());
+            }
             None => Expr::int(-3),
         };
         let rest = sys.at(&Expr::zero());
@@ -1524,14 +1698,21 @@ impl Session {
         let (top, bottom) = Self::squared_gain(&sys);
         // |N|^2 - |D|^2 * dc^2 * 10^(drop/10) = 0
         let rest = complex_of(&rest, prec)?;
-        let share = Float::with_val(prec, 10).pow(self.real_of(&drop).ok_or("bandwidth: the drop is a number")? / 10u32);
+        let share = Float::with_val(prec, 10).pow(
+            self.real_of(&drop)
+                .ok_or("bandwidth: the drop is a number")?
+                / 10u32,
+        );
         let level = crate::mfun::value(&(Float::with_val(prec, rest.norm_ref()) * share));
         let p = poly_add(&top, &poly_scaled(&bottom, &neg(level)));
         let mut least: Option<Float> = None;
         for r in self.roots_of(&p)? {
             let z = complex_of(&r, prec)?;
             let small = Float::with_val(prec, z.abs_ref()) >> (prec / 2);
-            if Float::with_val(prec, z.imag().abs_ref()) <= small && *z.real() > small && least.as_ref().is_none_or(|l| z.real() < l) {
+            if Float::with_val(prec, z.imag().abs_ref()) <= small
+                && *z.real() > small
+                && least.as_ref().is_none_or(|l| z.real() < l)
+            {
                 least = Some(z.real().clone());
             }
         }
@@ -1584,14 +1765,19 @@ impl Session {
             let gain = Float::with_val(prec, far.abs_ref());
             if best.as_ref().is_none_or(|b| gain > b.0) {
                 let place = match ts {
-                    Some(_) => crate::mfun::value(&rolled(&Float::with_val(prec, f64::INFINITY), &ts)),
+                    Some(_) => {
+                        crate::mfun::value(&rolled(&Float::with_val(prec, f64::INFINITY), &ts))
+                    }
                     None => Expr::inf(),
                 };
                 return Ok(Expr::list(vec![crate::mfun::value(&gain), place]));
             }
         }
         let (gain, x) = best.ok_or("hinfnorm: the gain has no value")?;
-        Ok(Expr::list(vec![crate::mfun::value(&gain), crate::mfun::value(&rolled(&x, &ts))]))
+        Ok(Expr::list(vec![
+            crate::mfun::value(&gain),
+            crate::mfun::value(&rolled(&x, &ts)),
+        ]))
     }
 
     /// The root of the energy of the answer to a blow: of trace(C*W*C') with A*W + W*A' + B*B' = 0.
@@ -1600,7 +1786,10 @@ impl Session {
         let sys = self.sys_of(e, who)?;
         let sampled = sys.ts.is_some();
         // (a sampled system may answer at once: its samples are summed, not integrated)
-        if sys.num.len() > sys.den.len() || (!sampled && sys.num.len() == sys.den.len()) || !self.stable(&sys)? {
+        if sys.num.len() > sys.den.len()
+            || (!sampled && sys.num.len() == sys.den.len())
+            || !self.stable(&sys)?
+        {
             return Ok(Expr::inf());
         }
         let m = tf_to_ss(&sys.num, &sys.den)?;
@@ -1609,11 +1798,17 @@ impl Session {
         }
         let q = matrix::matmul(&m[1], &matrix::transpose(&m[1]))?;
         let name = if sampled { "dlyap" } else { "lyap" };
-        let w = self.lyapunov(name, &[matrix::from_rows(m[0].clone()), matrix::from_rows(q)])?;
+        let w = self.lyapunov(
+            name,
+            &[matrix::from_rows(m[0].clone()), matrix::from_rows(q)],
+        )?;
         let w = matrix::rows(&w).ok_or("h2norm: no solution")?;
         let through = matrix::matmul(&matrix::matmul(&m[2], &w)?, &matrix::transpose(&m[2]))?;
         let direct = pow(m[3][0][0].clone(), Expr::int(2));
-        self.call("simplify", &[pow(add(vec![through[0][0].clone(), direct]), Expr::half())])
+        self.call(
+            "simplify",
+            &[pow(add(vec![through[0][0].clone(), direct]), Expr::half())],
+        )
     }
 
     /// How the answer to a step rises, overshoots and settles.
@@ -1624,7 +1819,9 @@ impl Session {
             return Err("stepinfo takes systems of running time".into());
         }
         if !self.stable(&sys)? {
-            return Err("stepinfo: the system is not stable, its answer to a step settles nowhere".into());
+            return Err(
+                "stepinfo: the system is not stable, its answer to a step settles nowhere".into(),
+            );
         }
         let prec = crate::mfun::bits();
         let t = Expr::sym("t");
@@ -1642,38 +1839,50 @@ impl Session {
         let horizon = Float::with_val(prec, 40) / &slowest;
         let count = 4000u32;
         let at = |k: u32| Float::with_val(prec, &horizon * k) / count;
-        let value = |x: &Float| y.at(std::slice::from_ref(x)).map_err(|e| format!("{who}: {e}"));
+        let value = |x: &Float| {
+            y.at(std::slice::from_ref(x))
+                .map_err(|e| format!("{who}: {e}"))
+        };
         let mut values = Vec::with_capacity(count as usize + 1);
         for k in 0..=count {
             // (the answer at 0 is its limit from the right)
-            let x = if k == 0 { Float::with_val(prec, &horizon >> 60u32) } else { at(k) };
+            let x = if k == 0 {
+                Float::with_val(prec, &horizon >> 60u32)
+            } else {
+                at(k)
+            };
             values.push(value(&x)?);
         }
         // a place between two samples where a function changes its sign, by halving
-        let crossing = |f: &dyn Fn(&Float) -> Result<Float, String>, from: u32| -> Result<Float, String> {
-            let (mut lo, mut hi) = (at(from), at(from + 1));
-            let rising = f(&hi)?.is_sign_positive();
-            for _ in 0..prec + 8 {
-                let mid = Float::with_val(prec, &lo + &hi) / 2u32;
-                if f(&mid)?.is_sign_positive() == rising {
-                    hi = mid;
-                } else {
-                    lo = mid;
+        let crossing =
+            |f: &dyn Fn(&Float) -> Result<Float, String>, from: u32| -> Result<Float, String> {
+                let (mut lo, mut hi) = (at(from), at(from + 1));
+                let rising = f(&hi)?.is_sign_positive();
+                for _ in 0..prec + 8 {
+                    let mid = Float::with_val(prec, &lo + &hi) / 2u32;
+                    if f(&mid)?.is_sign_positive() == rising {
+                        hi = mid;
+                    } else {
+                        lo = mid;
+                    }
                 }
-            }
-            Ok(hi)
-        };
+                Ok(hi)
+            };
         let first_above = |tenths: u32| -> Result<Float, String> {
             let level = Float::with_val(prec, &last * tenths) / 10u32;
             let passed = |v: &Float| match last.is_sign_positive() {
                 true => *v >= level,
                 false => *v <= level,
             };
-            let k = (1..=count).find(|k| passed(&values[*k as usize])).unwrap_or(count);
-            let f = |x: &Float| value(x).map(|v| match last.is_sign_positive() {
-                true => v - &level,
-                false => Float::with_val(prec, &level - v),
-            });
+            let k = (1..=count)
+                .find(|k| passed(&values[*k as usize]))
+                .unwrap_or(count);
+            let f = |x: &Float| {
+                value(x).map(|v| match last.is_sign_positive() {
+                    true => v - &level,
+                    false => Float::with_val(prec, &level - v),
+                })
+            };
             crossing(&f, k - 1)
         };
         let rise = Float::with_val(prec, first_above(9)? - first_above(1)?);
@@ -1695,12 +1904,29 @@ impl Session {
         // the peak: the largest sample, made exact where the slope changes its sign
         let size = |v: &Float| Float::with_val(prec, v.abs_ref());
         let top = (0..=count)
-            .max_by(|i, j| size(&values[*i as usize]).partial_cmp(&size(&values[*j as usize])).unwrap_or(std::cmp::Ordering::Equal))
+            .max_by(|i, j| {
+                size(&values[*i as usize])
+                    .partial_cmp(&size(&values[*j as usize]))
+                    .unwrap_or(std::cmp::Ordering::Equal)
+            })
             .unwrap_or(count);
-        let slope_at = |x: &Float| dy.at(std::slice::from_ref(x)).map_err(|e| format!("{who}: {e}"));
-        let (peak_time, peak) = match top > 0 && top < count && slope_at(&at(top - 1))?.is_sign_positive() != slope_at(&at(top + 1))?.is_sign_positive() {
+        let slope_at = |x: &Float| {
+            dy.at(std::slice::from_ref(x))
+                .map_err(|e| format!("{who}: {e}"))
+        };
+        let (peak_time, peak) = match top > 0
+            && top < count
+            && slope_at(&at(top - 1))?.is_sign_positive()
+                != slope_at(&at(top + 1))?.is_sign_positive()
+        {
             true => {
-                let from = if slope_at(&at(top - 1))?.is_sign_positive() != slope_at(&at(top))?.is_sign_positive() { top - 1 } else { top };
+                let from = if slope_at(&at(top - 1))?.is_sign_positive()
+                    != slope_at(&at(top))?.is_sign_positive()
+                {
+                    top - 1
+                } else {
+                    top
+                };
                 let x = crossing(&slope_at, from)?;
                 let v = value(&x)?;
                 (x, v)
@@ -1710,12 +1936,19 @@ impl Session {
         };
         let over = match last.is_zero() {
             true => Float::new(prec),
-            false => (Float::with_val(prec, size(&peak) - size(&last)) / size(&last) * 100u32).max(&Float::new(prec)),
+            false => (Float::with_val(prec, size(&peak) - size(&last)) / size(&last) * 100u32)
+                .max(&Float::new(prec)),
         };
         // how far the answer goes the wrong way
         let wrong = values
             .iter()
-            .map(|v| if last.is_sign_positive() { Float::with_val(prec, -v) } else { v.clone() })
+            .map(|v| {
+                if last.is_sign_positive() {
+                    Float::with_val(prec, -v)
+                } else {
+                    v.clone()
+                }
+            })
             .fold(Float::new(prec), |m, v| m.max(&v));
         let under = match last.is_zero() {
             true => Float::new(prec),
@@ -1748,9 +1981,16 @@ impl Session {
             }
             // (a turn of the answer between samples: where the slope changes its sign)
             if let Some(k) = spot.filter(|k| *k > 0 && *k < count)
-                && slope_at(&at(k - 1))?.is_sign_positive() != slope_at(&at(k + 1))?.is_sign_positive()
+                && slope_at(&at(k - 1))?.is_sign_positive()
+                    != slope_at(&at(k + 1))?.is_sign_positive()
             {
-                let start = if slope_at(&at(k - 1))?.is_sign_positive() != slope_at(&at(k))?.is_sign_positive() { k - 1 } else { k };
+                let start = if slope_at(&at(k - 1))?.is_sign_positive()
+                    != slope_at(&at(k))?.is_sign_positive()
+                {
+                    k - 1
+                } else {
+                    k
+                };
                 let x = crossing(&slope_at, start)?;
                 if x >= risen {
                     best = value(&x)?;
@@ -1783,13 +2023,17 @@ impl Session {
         }
         let (s, z) = (Expr::sym("s"), Expr::sym("z"));
         let method = match method {
-            Some(m) => word(m).ok_or("c2d: the method is \"zoh\", \"tustin\", \"matched\" or \"impulse\"")?,
+            Some(m) => word(m)
+                .ok_or("c2d: the method is \"zoh\", \"tustin\", \"matched\" or \"impulse\"")?,
             None => "zoh".to_string(),
         };
         match method.as_str() {
             "tustin" | "bilinear" => {
                 // s = (2/Ts)*(z - 1)/(z + 1)
-                let map = mul(vec![div(Expr::int(2), ts.clone()), div(sub(z.clone(), Expr::one()), add(vec![z, Expr::one()]))]);
+                let map = mul(vec![
+                    div(Expr::int(2), ts.clone()),
+                    div(sub(z.clone(), Expr::one()), add(vec![z, Expr::one()])),
+                ]);
                 let e = crate::canon::subst(&sys.expr(), &s, &map);
                 let simpler = self.call("simplify", &[e])?;
                 self.combined(simpler, Some(ts.clone()), who)
@@ -1804,7 +2048,9 @@ impl Session {
                 while new_zeros.len() + 1 < new_poles.len() {
                     new_zeros.push(Expr::int(-1));
                 }
-                let shape = |roots: &[Expr], at: &Expr| mul(roots.iter().map(|r| sub(at.clone(), r.clone())).collect());
+                let shape = |roots: &[Expr], at: &Expr| {
+                    mul(roots.iter().map(|r| sub(at.clone(), r.clone())).collect())
+                };
                 let ratio = div(shape(&new_zeros, &z), shape(&new_poles, &z));
                 // match the gain at s = 0 and z = 1 (at a point beside them when a pole lies there)
                 let (at_s, at_z) = match poly_at(&sys.den, &Expr::zero()).is_zero() {
@@ -1830,12 +2076,19 @@ impl Session {
                 let m = tf_to_ss(&sys.num, &sys.den)?;
                 let size = m[0].len();
                 if size == 0 {
-                    return Ok(Sys { ts: Some(ts.clone()), ..sys }.object());
+                    return Ok(Sys {
+                        ts: Some(ts.clone()),
+                        ..sys
+                    }
+                    .object());
                 }
                 let mut joined: Rows = Vec::new();
-                for i in 0..size {
-                    let mut row: Vec<Expr> = m[0][i].iter().map(|x| tidy(mul(vec![x.clone(), ts.clone()]))).collect();
-                    row.push(tidy(mul(vec![m[1][i][0].clone(), ts.clone()])));
+                for (state, input) in m[0].iter().zip(&m[1]).take(size) {
+                    let mut row: Vec<Expr> = state
+                        .iter()
+                        .map(|x| tidy(mul(vec![x.clone(), ts.clone()])))
+                        .collect();
+                    row.push(tidy(mul(vec![input[0].clone(), ts.clone()])));
                     joined.push(row);
                 }
                 joined.push(vec![Expr::zero(); size + 1]);
@@ -1844,17 +2097,22 @@ impl Session {
                     || (size <= 2 && joined.iter().flatten().all(|x| x.as_rat().is_some()));
                 let joined = matrix::from_rows(joined);
                 let grown = match closed {
-                    true => self.call("matrixexp", std::slice::from_ref(&joined)).ok().filter(|g| matrix::rows(g).is_some() && !has_i(g)),
+                    true => self
+                        .call("matrixexp", std::slice::from_ref(&joined))
+                        .ok()
+                        .filter(|g| matrix::rows(g).is_some() && !has_i(g)),
                     false => None,
                 };
                 let grown = match grown {
                     Some(g) => g,
                     None => {
-                        let numbers = decomp::to_complex(&matrix::rows(&joined).unwrap_or_default())?;
+                        let numbers =
+                            decomp::to_complex(&matrix::rows(&joined).unwrap_or_default())?;
                         decomp::from_complex(&crate::matfun::exp(&numbers))
                     }
                 };
-                let grown = matrix::rows(&grown).ok_or("c2d: the exponential of the matrix has no value")?;
+                let grown = matrix::rows(&grown)
+                    .ok_or("c2d: the exponential of the matrix has no value")?;
                 let a: Rows = (0..size).map(|i| grown[i][..size].to_vec()).collect();
                 let b: Rows = (0..size).map(|i| vec![grown[i][size].clone()]).collect();
                 let (num, den) = ss_to_tf(&[a, b, m[2].clone(), m[3].clone()])?;
@@ -1862,9 +2120,17 @@ impl Session {
                     p.into_iter().map(|x| self.call("simplify", &[x])).collect()
                 };
                 let (num, den) = (clean(num)?, clean(den)?);
-                Ok(Sys { num: trimmed(dusted(num)), den: dusted(den), ts: Some(ts.clone()) }.object())
+                Ok(Sys {
+                    num: trimmed(dusted(num)),
+                    den: dusted(den),
+                    ts: Some(ts.clone()),
+                }
+                .object())
             }
-            _ => Err("c2d: the method is \"zoh\" (the usual), \"tustin\", \"matched\" or \"impulse\"".into()),
+            _ => Err(
+                "c2d: the method is \"zoh\" (the usual), \"tustin\", \"matched\" or \"impulse\""
+                    .into(),
+            ),
         }
     }
 
@@ -1874,7 +2140,11 @@ impl Session {
         let sys = self.sys_of(e, who)?;
         let ts = match &sys.ts {
             Some(ts) if order_of(ts) == Some(std::cmp::Ordering::Greater) => ts.clone(),
-            _ => return Err("d2c takes a sampled system with its time of a sample: tf(num, den, Ts)".into()),
+            _ => {
+                return Err(
+                    "d2c takes a sampled system with its time of a sample: tf(num, den, Ts)".into(),
+                );
+            }
         };
         let (s, z) = (Expr::sym("s"), Expr::sym("z"));
         let method = match method {
@@ -1895,9 +2165,9 @@ impl Session {
                 let m = tf_to_ss(&sys.num, &sys.den)?;
                 let size = m[0].len();
                 let mut joined: Rows = Vec::new();
-                for i in 0..size {
-                    let mut row = m[0][i].clone();
-                    row.push(m[1][i][0].clone());
+                for (state, input) in m[0].iter().zip(&m[1]).take(size) {
+                    let mut row = state.clone();
+                    row.push(input[0].clone());
                     joined.push(row);
                 }
                 let mut last = vec![Expr::zero(); size];
@@ -1907,25 +2177,37 @@ impl Session {
                     || (size <= 2 && joined.iter().flatten().all(|x| x.as_rat().is_some()));
                 let joined = matrix::from_rows(joined);
                 let log = match closed {
-                    true => self.call("matrixlog", std::slice::from_ref(&joined)).ok().filter(|g| matrix::rows(g).is_some() && !has_i(g)),
+                    true => self
+                        .call("matrixlog", std::slice::from_ref(&joined))
+                        .ok()
+                        .filter(|g| matrix::rows(g).is_some() && !has_i(g)),
                     false => None,
                 };
                 let log = match log {
                     Some(g) => g,
                     None => {
-                        let numbers = decomp::to_complex(&matrix::rows(&joined).unwrap_or_default())?;
+                        let numbers =
+                            decomp::to_complex(&matrix::rows(&joined).unwrap_or_default())?;
                         let log = crate::matfun::log(&numbers).ok_or(
                             "d2c: no system of running time gives this one when its input is held (a pole at zero or below zero)",
                         )?;
                         decomp::from_complex(&log)
                     }
                 };
-                let log = matrix::rows(&log).ok_or("d2c: the logarithm of the matrix has no value")?;
+                let log =
+                    matrix::rows(&log).ok_or("d2c: the logarithm of the matrix has no value")?;
                 let scaled = |x: &Expr| tidy(div(x.clone(), ts.clone()));
-                let a: Rows = (0..size).map(|i| (0..size).map(|j| scaled(&log[i][j])).collect()).collect();
+                let a: Rows = (0..size)
+                    .map(|i| (0..size).map(|j| scaled(&log[i][j])).collect())
+                    .collect();
                 let b: Rows = (0..size).map(|i| vec![scaled(&log[i][size])]).collect();
                 let (num, den) = ss_to_tf(&[a, b, m[2].clone(), m[3].clone()])?;
-                Ok(Sys { num: trimmed(dusted(num)), den: dusted(den), ts: None }.object())
+                Ok(Sys {
+                    num: trimmed(dusted(num)),
+                    den: dusted(den),
+                    ts: None,
+                }
+                .object())
             }
             _ => Err("d2c: the method is \"zoh\" (the usual) or \"tustin\"".into()),
         }
@@ -1950,7 +2232,10 @@ impl Session {
             let parts = crate::sigdesign::apart(name, a).transpose()?;
             // the filter b(1/z)/a(1/z) as a sampled system
             let filter = match parts.as_deref().unwrap_or(a) {
-                [b] => Expr::call("tf", vec![b.clone(), Expr::list(vec![Expr::one()]), Expr::one()]),
+                [b] => Expr::call(
+                    "tf",
+                    vec![b.clone(), Expr::list(vec![Expr::one()]), Expr::one()],
+                ),
                 [b, den] => {
                     // (both written in powers of 1/z: of one length as polynomials in z)
                     let (mut top, mut bottom) = (list_of(b), list_of(den));
@@ -2004,7 +2289,9 @@ impl Session {
                 // (the roots by numbers: fast for any degree)
                 let (prec, digits) = (crate::mfun::bits(), numeric::digits());
                 let numbers = |p: &[Expr]| -> Result<Vec<Expr>, String> {
-                    p.iter().map(|c| complex_of(c, prec).map(|z| numeric::to_float_expr(z, digits))).collect()
+                    p.iter()
+                        .map(|c| complex_of(c, prec).map(|z| numeric::to_float_expr(z, digits)))
+                        .collect()
                 };
                 let (num, den) = (numbers(&sys.num)?, numbers(&sys.den)?);
                 let mut all = Vec::new();
@@ -2025,7 +2312,11 @@ impl Session {
                 let step = name == "stepplot";
                 match &sys.ts {
                     None => {
-                        let drive = if step { pow(Expr::sym("s"), Expr::int(-1)) } else { Expr::one() };
+                        let drive = if step {
+                            pow(Expr::sym("s"), Expr::int(-1))
+                        } else {
+                            Expr::one()
+                        };
                         let answer = self.response(&sys, drive, None, who)?;
                         let prec = 96;
                         // as long as the slowest pole needs (ten times its time), or 10
@@ -2045,7 +2336,8 @@ impl Session {
                         let y = crate::mfun::Numeric::new(&["t".to_string()], &answer, prec);
                         let (mut ts, mut ys) = (Vec::new(), Vec::new());
                         for k in 0..=200u32 {
-                            let x = Float::with_val(prec, horizon * f64::from(k.max(1)) / 200.0) / if k == 0 { 1e6 } else { 1.0 };
+                            let x = Float::with_val(prec, horizon * f64::from(k.max(1)) / 200.0)
+                                / if k == 0 { 1e6 } else { 1.0 };
                             if let Ok(v) = y.at(std::slice::from_ref(&x)) {
                                 ts.push(if k == 0 { Float::new(prec) } else { x });
                                 ys.push(v);
@@ -2056,14 +2348,23 @@ impl Session {
                         let ahead = sys.den.len() + usize::from(step);
                         if let Some(first) = ys.first_mut() {
                             *first = match sys.num.len() + 1 == ahead {
-                                true => complex_of(&tidy(div(sys.num[0].clone(), sys.den[0].clone())), prec)?.real().clone(),
+                                true => complex_of(
+                                    &tidy(div(sys.num[0].clone(), sys.den[0].clone())),
+                                    prec,
+                                )?
+                                .real()
+                                .clone(),
                                 false => Float::new(prec),
                             };
                         }
                         // (what is left of rounding near the start is nothing)
-                        let top = ys.iter().fold(Float::new(prec), |m, v| m.max(&Float::with_val(prec, v.abs_ref())));
+                        let top = ys.iter().fold(Float::new(prec), |m, v| {
+                            m.max(&Float::with_val(prec, v.abs_ref()))
+                        });
                         for v in &mut ys {
-                            if Float::with_val(prec, v.abs_ref()) < Float::with_val(prec, &top >> 40u32) {
+                            if Float::with_val(prec, v.abs_ref())
+                                < Float::with_val(prec, &top >> 40u32)
+                            {
                                 *v = Float::new(prec);
                             }
                         }
@@ -2071,12 +2372,23 @@ impl Session {
                     }
                     Some(_) => {
                         let count = match a.get(1) {
-                            Some(n) => crate::arrays::whole(n, "the number of samples", 1, 5000)? as usize,
+                            Some(n) => {
+                                crate::arrays::whole(n, "the number of samples", 1, 5000)? as usize
+                            }
                             None => 40,
                         };
-                        let drive = if step { div(Expr::sym("z"), sub(Expr::sym("z"), Expr::one())) } else { Expr::one() };
-                        let values = self.response(&sys, drive, Some(&Expr::int(count as i64)), who)?;
-                        Ok(vec![Expr::list((0..count as i64).map(Expr::int).collect()), values, Expr::Bool(true)])
+                        let drive = if step {
+                            div(Expr::sym("z"), sub(Expr::sym("z"), Expr::one()))
+                        } else {
+                            Expr::one()
+                        };
+                        let values =
+                            self.response(&sys, drive, Some(&Expr::int(count as i64)), who)?;
+                        Ok(vec![
+                            Expr::list((0..count as i64).map(Expr::int).collect()),
+                            values,
+                            Expr::Bool(true),
+                        ])
                     }
                 }
             }
@@ -2149,7 +2461,15 @@ mod tests {
             ts: Some(Expr::one()),
         };
         let found = samples(&sys, 4).unwrap();
-        assert_eq!(found, Expr::list(vec![Expr::zero(), Expr::one(), Expr::rat(1, 2), Expr::rat(1, 4)]));
+        assert_eq!(
+            found,
+            Expr::list(vec![
+                Expr::zero(),
+                Expr::one(),
+                Expr::rat(1, 2),
+                Expr::rat(1, 4)
+            ])
+        );
     }
 
     #[test]

@@ -1,4 +1,3 @@
-	vecnorm()	error: vecnorm takes 1 to 3 argument(s), 0 given
 	orth()	error: orth takes 1 argument(s), 0 given
 	colspace()	error: colspace takes 1 argument(s), 0 given
 	lu()	error: lu takes 1 argument(s), 0 given
@@ -46,7 +45,7 @@
 	ifftshift()	error: ifftshift takes 1 argument(s), 0 given
 	dct()	error: dct takes 1 to 2 argument(s), 0 given
 	idct()	error: idct takes 1 to 2 argument(s), 0 given
-	lfilter()	error: lfilter takes 3 argument(s), 0 given
+	lfilter()	error: lfilter takes 2 to 3 argument(s), 0 given
 	conv2()	error: conv2 takes 2 to 3 argument(s), 0 given
 	xcorr()	error: xcorr takes 1 to 2 argument(s), 0 given
 	upsample()	error: upsample takes 2 argument(s), 0 given
@@ -347,7 +346,8 @@
 	surf()	error: surf takes at least 1 argument(s), 0 given
 	spy()	error: spy takes at least 1 argument(s), 0 given
 	boxplot()	error: boxplot takes at least 1 argument(s), 0 given
-	imread()	error: imread takes 1 argument(s), 0 given
+	imread()	error: imread takes 1 to 2 argument(s), 0 given
+	imframes()	error: imframes takes 1 argument(s), 0 given
 	imwrite()	error: imwrite takes 2 to 3 argument(s), 0 given
 	condest()	error: condest takes 1 argument(s), 0 given
 	normest()	error: normest takes 1 argument(s), 0 given
@@ -502,3 +502,199 @@
 	histcounts2()	error: histcounts2 takes 3 to 4 argument(s), 0 given
 	pcg()	error: pcg takes at least 2 argument(s), 0 given
 	lsqr()	error: lsqr takes at least 2 argument(s), 0 given
+	balance()	error: balance takes 1 argument(s), 0 given
+	qz()	error: qz takes 2 argument(s), 0 given
+	ordqz()	error: ordqz takes 5 argument(s), 0 given
+	gsvd()	error: gsvd takes 2 argument(s), 0 given
+	gsvddecomposition()	error: gsvddecomposition takes 2 argument(s), 0 given
+	ordschur()	error: ordschur takes 3 argument(s), 0 given
+	ordeig()	error: ordeig takes 1 to 2 argument(s), 0 given
+	rsf2csf()	error: rsf2csf takes 2 argument(s), 0 given
+	cdf2rdf()	error: cdf2rdf takes 2 argument(s), 0 given
+	runstest()	error: runstest takes 1 to 4 argument(s), 0 given
+	ansaribradley()	error: ansaribradley takes 2 to 3 argument(s), 0 given
+	lillietest()	error: lillietest takes 1 argument(s), 0 given
+	mvncdf()	error: mvncdf takes 1 to 4 argument(s), 0 given
+	cmdscale()	error: cmdscale takes 1 argument(s), 0 given
+	procrustes()	error: procrustes takes 2 to 6 argument(s), 0 given
+	canoncorr()	error: canoncorr takes 2 argument(s), 0 given
+	nnmf()	error: nnmf takes 2 argument(s), 0 given
+	poissfit()	error: poissfit takes 1 argument(s), 0 given
+	unifit()	error: unifit takes 1 argument(s), 0 given
+	raylfit()	error: raylfit takes 1 argument(s), 0 given
+	lognfit()	error: lognfit takes 1 argument(s), 0 given
+	binofit()	error: binofit takes 2 argument(s), 0 given
+	gamfit()	error: gamfit takes 1 argument(s), 0 given
+	wblfit()	error: wblfit takes 1 argument(s), 0 given
+	betafit()	error: betafit takes 1 argument(s), 0 given
+	nbinfit()	error: nbinfit takes 1 argument(s), 0 given
+	mle()	error: mle takes 1 to 5 argument(s), 0 given
+	fitdist()	error: fitdist takes 2 to 4 argument(s), 0 given
+	bvp4c()	error: bvp4c takes 3 to 5 argument(s), 0 given
+	bvpinit()	error: bvpinit takes 2 to 3 argument(s), 0 given
+	deval()	error: deval takes 2 to 3 argument(s), 0 given
+	dde23()	error: dde23 takes 4 argument(s), 0 given
+	pdepe()	error: pdepe takes 6 argument(s), 0 given
+	patternsearch()	error: patternsearch takes 2 to 8 argument(s), 0 given
+	particleswarm()	error: particleswarm takes 2 to 8 argument(s), 0 given
+	simulannealbnd()	error: simulannealbnd takes 2 to 8 argument(s), 0 given
+	ga()	error: ga takes 2 to 8 argument(s), 0 given
+	globalsearch()	error: globalsearch takes 2 to 8 argument(s), 0 given
+	fminimax()	error: fminimax takes 2 to 8 argument(s), 0 given
+	fgoalattain()	error: fgoalattain takes 4 to 10 argument(s), 0 given
+	pdeval()	error: pdeval takes 4 argument(s), 0 given
+	istable()	error: istable takes 1 argument(s), 0 given
+	timetable()	error: timetable takes at least 1 argument(s), 0 given
+	istimetable()	error: istimetable takes 1 argument(s), 0 given
+	height()	error: height takes 1 argument(s), 0 given
+	width()	error: width takes 1 argument(s), 0 given
+	head()	error: head takes 1 to 2 argument(s), 0 given
+	tail()	error: tail takes 1 to 2 argument(s), 0 given
+	varnames()	error: varnames takes 1 argument(s), 0 given
+	takerows()	error: takerows takes 2 argument(s), 0 given
+	takevars()	error: takevars takes 2 argument(s), 0 given
+	addvars()	error: addvars takes at least 3 argument(s), 0 given
+	removevars()	error: removevars takes 2 argument(s), 0 given
+	renamevars()	error: renamevars takes 3 argument(s), 0 given
+	movevars()	error: movevars takes 4 argument(s), 0 given
+	topkrows()	error: topkrows takes 2 to 4 argument(s), 0 given
+	table2array()	error: table2array takes 1 argument(s), 0 given
+	array2table()	error: array2table takes 1 to 3 argument(s), 0 given
+	struct2table()	error: struct2table takes 1 argument(s), 0 given
+	table2struct()	error: table2struct takes 1 to 3 argument(s), 0 given
+	timetable2table()	error: timetable2table takes 1 argument(s), 0 given
+	table2timetable()	error: table2timetable takes 1 to 3 argument(s), 0 given
+	innerjoin()	error: innerjoin takes 2 to 4 argument(s), 0 given
+	outerjoin()	error: outerjoin takes 2 to 6 argument(s), 0 given
+	varfun()	error: varfun takes 2 argument(s), 0 given
+	rowfun()	error: rowfun takes 2 argument(s), 0 given
+	groupsummary()	error: groupsummary takes 2 to 4 argument(s), 0 given
+	groupcounts()	error: groupcounts takes 2 argument(s), 0 given
+	summary()	error: summary takes 1 argument(s), 0 given
+	stack()	error: stack takes 2 argument(s), 0 given
+	unstack()	error: unstack takes 3 argument(s), 0 given
+	readtable()	error: readtable takes 1 argument(s), 0 given
+	writetable()	error: writetable takes 2 argument(s), 0 given
+	isregular()	error: isregular takes 1 argument(s), 0 given
+	lag()	error: lag takes 1 to 2 argument(s), 0 given
+	retime()	error: retime takes 2 to 5 argument(s), 0 given
+	synchronize()	error: synchronize takes 2 to 4 argument(s), 0 given
+	categorical()	error: categorical takes 1 to 5 argument(s), 0 given
+	iscategorical()	error: iscategorical takes 1 argument(s), 0 given
+	categories()	error: categories takes 1 argument(s), 0 given
+	countcats()	error: countcats takes 1 argument(s), 0 given
+	isundefined()	error: isundefined takes 1 argument(s), 0 given
+	isordinal()	error: isordinal takes 1 argument(s), 0 given
+	iscategory()	error: iscategory takes 2 argument(s), 0 given
+	addcats()	error: addcats takes 2 argument(s), 0 given
+	removecats()	error: removecats takes 1 to 2 argument(s), 0 given
+	renamecats()	error: renamecats takes 2 to 3 argument(s), 0 given
+	reordercats()	error: reordercats takes 1 to 2 argument(s), 0 given
+	mergecats()	error: mergecats takes 2 to 3 argument(s), 0 given
+	setcats()	error: setcats takes 2 argument(s), 0 given
+	grp2idx()	error: grp2idx takes 1 argument(s), 0 given
+	cellstr()	error: cellstr takes 1 argument(s), 0 given
+	bar3()	error: bar3 takes at least 1 argument(s), 0 given
+	histogram2()	error: histogram2 takes at least 2 argument(s), 0 given
+	surfc()	error: surfc takes at least 1 argument(s), 0 given
+	streamline()	error: streamline takes at least 7 argument(s), 0 given
+	polarhistogram()	error: polarhistogram takes at least 1 argument(s), 0 given
+	dendrogram()	error: dendrogram takes at least 1 argument(s), 0 given
+	bubblechart()	error: bubblechart takes at least 3 argument(s), 0 given
+	fimplicit3()	error: fimplicit3 takes at least 10 argument(s), 0 given
+	isosurface()	error: isosurface takes at least 2 argument(s), 0 given
+	triplot()	error: triplot takes at least 2 argument(s), 0 given
+	trisurf()	error: trisurf takes at least 4 argument(s), 0 given
+	pareto()	error: pareto takes at least 1 argument(s), 0 given
+	fill()	error: fill takes at least 1 argument(s), 0 given
+	ribbon()	error: ribbon takes at least 1 argument(s), 0 given
+	normplot()	error: normplot takes at least 1 argument(s), 0 given
+	parallelplot()	error: parallelplot takes at least 1 argument(s), 0 given
+	swarmchart()	error: swarmchart takes at least 1 argument(s), 0 given
+	violinplot()	error: violinplot takes at least 1 argument(s), 0 given
+	histfit()	error: histfit takes at least 1 argument(s), 0 given
+	gscatter()	error: gscatter takes at least 3 argument(s), 0 given
+	andrewsplot()	error: andrewsplot takes at least 1 argument(s), 0 given
+	bar3h()	error: bar3h takes at least 1 argument(s), 0 given
+	cdfplot()	error: cdfplot takes at least 1 argument(s), 0 given
+	plotmatrix()	error: plotmatrix takes at least 1 argument(s), 0 given
+	stackedplot()	error: stackedplot takes at least 1 argument(s), 0 given
+	biplot()	error: biplot takes at least 1 argument(s), 0 given
+	silhouette()	error: silhouette takes 2 to 3 argument(s), 0 given
+	ccode()	error: ccode takes 1 to 2 argument(s), 0 given
+	fortran()	error: fortran takes 1 to 2 argument(s), 0 given
+	matlabcode()	error: matlabcode takes 1 argument(s), 0 given
+	matlabfunction()	error: matlabfunction takes 1 to 3 argument(s), 0 given
+	subexpr()	error: subexpr takes 1 to 2 argument(s), 0 given
+	cse()	error: cse takes 1 argument(s), 0 given
+	pretty()	error: pretty takes 1 argument(s), 0 given
+	tf()	error: tf takes 1 to 3 argument(s), 0 given
+	zpk()	error: zpk takes 1 to 4 argument(s), 0 given
+	ss()	error: ss takes 1 to 5 argument(s), 0 given
+	tfdata()	error: tfdata takes 1 argument(s), 0 given
+	zpkdata()	error: zpkdata takes 1 argument(s), 0 given
+	ssdata()	error: ssdata takes 1 argument(s), 0 given
+	tf2sym()	error: tf2sym takes 1 argument(s), 0 given
+	tf2ss()	error: tf2ss takes 1 to 2 argument(s), 0 given
+	ss2tf()	error: ss2tf takes 4 argument(s), 0 given
+	tf2zp()	error: tf2zp takes 1 to 2 argument(s), 0 given
+	zp2tf()	error: zp2tf takes 1 to 3 argument(s), 0 given
+	ss2zp()	error: ss2zp takes 4 argument(s), 0 given
+	zp2ss()	error: zp2ss takes 1 to 3 argument(s), 0 given
+	isct()	error: isct takes 1 argument(s), 0 given
+	isdt()	error: isdt takes 1 argument(s), 0 given
+	isproper()	error: isproper takes 1 argument(s), 0 given
+	isstable()	error: isstable takes 1 argument(s), 0 given
+	pole()	error: pole takes 1 argument(s), 0 given
+	zero()	error: zero takes 1 argument(s), 0 given
+	dcgain()	error: dcgain takes 1 argument(s), 0 given
+	damp()	error: damp takes 1 argument(s), 0 given
+	parallel()	error: parallel takes 2 argument(s), 0 given
+	feedback()	error: feedback takes 2 to 3 argument(s), 0 given
+	minreal()	error: minreal takes 1 argument(s), 0 given
+	evalfr()	error: evalfr takes 2 argument(s), 0 given
+	freqresp()	error: freqresp takes 2 argument(s), 0 given
+	bode()	error: bode takes 1 to 2 argument(s), 0 given
+	nyquist()	error: nyquist takes 1 to 2 argument(s), 0 given
+	margin()	error: margin takes 1 argument(s), 0 given
+	allmargin()	error: allmargin takes 1 argument(s), 0 given
+	hinfnorm()	error: hinfnorm takes 1 argument(s), 0 given
+	h2norm()	error: h2norm takes 1 argument(s), 0 given
+	step()	error: step takes 1 to 2 argument(s), 0 given
+	impulse()	error: impulse takes 1 to 2 argument(s), 0 given
+	lsim()	error: lsim takes 2 to 3 argument(s), 0 given
+	stepinfo()	error: stepinfo takes 1 argument(s), 0 given
+	c2d()	error: c2d takes 2 to 3 argument(s), 0 given
+	d2c()	error: d2c takes 1 to 2 argument(s), 0 given
+	pid()	error: pid takes 1 to 4 argument(s), 0 given
+	rlocus()	error: rlocus takes 1 to 2 argument(s), 0 given
+	esort()	error: esort takes 1 argument(s), 0 given
+	dsort()	error: dsort takes 1 argument(s), 0 given
+	ctrb()	error: ctrb takes 2 argument(s), 0 given
+	obsv()	error: obsv takes 2 argument(s), 0 given
+	lyap()	error: lyap takes 2 to 3 argument(s), 0 given
+	dlyap()	error: dlyap takes 2 argument(s), 0 given
+	gram()	error: gram takes 2 to 3 argument(s), 0 given
+	care()	error: care takes 4 argument(s), 0 given
+	dare()	error: dare takes 4 argument(s), 0 given
+	lqr()	error: lqr takes 4 to 5 argument(s), 0 given
+	dlqr()	error: dlqr takes 4 to 5 argument(s), 0 given
+	lqe()	error: lqe takes 5 argument(s), 0 given
+	acker()	error: acker takes 3 argument(s), 0 given
+	place()	error: place takes 3 argument(s), 0 given
+	bodeplot()	error: bodeplot takes at least 1 argument(s), 0 given
+	nyquistplot()	error: nyquistplot takes at least 1 argument(s), 0 given
+	pzplot()	error: pzplot takes at least 1 argument(s), 0 given
+	rlocusplot()	error: rlocusplot takes at least 1 argument(s), 0 given
+	stepplot()	error: stepplot takes at least 1 argument(s), 0 given
+	impulseplot()	error: impulseplot takes at least 1 argument(s), 0 given
+	rectwin()	error: rectwin takes 1 to 2 argument(s), 0 given
+	hann()	error: hann takes 1 to 2 argument(s), 0 given
+	hanning()	error: hanning takes 1 to 2 argument(s), 0 given
+	hamming()	error: hamming takes 1 to 2 argument(s), 0 given
+	blackman()	error: blackman takes 1 to 2 argument(s), 0 given
+	blackmanharris()	error: blackmanharris takes 1 to 2 argument(s), 0 given
+	nuttallwin()	error: nuttallwin takes 1 to 2 argument(s), 0 given
+	flattopwin()	error: flattopwin takes 1 to 2 argument(s), 0 given
+	triang()	error: triang takes 1 to 2 argument(s), 0 given
+	bohmanwin()	error: bohmanwin takes 1 to 2 argument(s), 0 given

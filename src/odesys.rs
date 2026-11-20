@@ -201,10 +201,16 @@ pub(crate) fn integrate_by(
             if k >= 2 {
                 let (best, lower) = (&row[k], &row[k - 1]);
                 // each part to the bits asked for; parts far below the largest one to its size
-                let floor = best.iter().map(magnitude).max().unwrap_or(0) - 30;
+                let floor = best
+                    .iter()
+                    .map(magnitude)
+                    .max()
+                    .unwrap_or(0)
+                    .saturating_sub(30);
                 let close = best.iter().zip(lower).all(|(a, b)| {
                     let d = Complex::with_val(prec, a - b);
-                    d.is_zero() || magnitude(&d) <= magnitude(a).max(floor) - i64::from(bits)
+                    d.is_zero()
+                        || magnitude(&d) <= magnitude(a).max(floor).saturating_sub(i64::from(bits))
                 });
                 if close {
                     accepted = Some((k, best.clone()));

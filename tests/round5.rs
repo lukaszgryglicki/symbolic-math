@@ -736,7 +736,7 @@ const WALKS_ALONG_DIGITS: &[(&str, &str)] = &[
     ),
     (
         r"walk(pi, widht = 3)",
-        r"error: widht is nothing that is chosen for a picture: width, height, bits, channels, level, quality, distance, effort, frames, fps, turn, slices, thickness, margin, palette, color, colour, background, fog, azimuth, elevation, roll, zoom, scale, center, centre, viewpoint, perspective, stereo, title, xlabel, ylabel are chosen with name = value, gray, grey, alpha, lossless, depth, grow, axes, noaxes, grid, ascii, reverse, views, stereo with the word alone",
+        r"error: widht is nothing that is chosen for a picture: width, height, bits, channels, level, quality, distance, effort, frames, fps, turn, slices, thickness, margin, palette, color, colour, background, fog, azimuth, elevation, roll, zoom, scale, center, centre, viewpoint, perspective, stereo, title, xlabel, ylabel, arg_real, arg_imag, val_real, val_imag, colors, colours, fill, range_real, range_imag, rotate are chosen with name = value, gray, grey, alpha, lossless, depth, grow, axes, noaxes, grid, ascii, reverse, views, stereo, normalize with the word alone",
     ),
     (
         r"walk(pi, bits = 8)",
@@ -1247,7 +1247,7 @@ const PICTURES_THAT_ARE_SAVED: &[(&str, &str)] = &[
     ),
     (
         r#"save_png("heat.png", densityplot(x*y, x, -1, 1, y, -1, 1), width = 200, palette = heat)"#,
-        r"the colours of the palette run from the value -1 to 1|saved heat.png: PNG, 200 x 150 pixels, 8 bits, RGB, level 9, 4966 bytes",
+        r"the colours of the palette run from the value -1 to 1|saved heat.png: PNG, 200 x 150 pixels, 8 bits, RGB, level 9, 8191 bytes",
     ),
     (
         r#"save_png("saddle.png", plot3d(x^2 - y^2, x, -1, 1, y, -1, 1), width = 400, azimuth = 45, palette = plasma)"#,
@@ -1370,7 +1370,7 @@ const PICTURES_THAT_ARE_NOT_SAVED: &[(&str, &str)] = &[
     ),
     (
         r#"save_png("c2.png", walk(pi), widht = 3)"#,
-        r"error: widht is nothing that is chosen for a picture: width, height, bits, channels, level, quality, distance, effort, frames, fps, turn, slices, thickness, margin, palette, color, colour, background, fog, azimuth, elevation, roll, zoom, scale, center, centre, viewpoint, perspective, stereo, title, xlabel, ylabel are chosen with name = value, gray, grey, alpha, lossless, depth, grow, axes, noaxes, grid, ascii, reverse, views, stereo with the word alone",
+        r"error: widht is nothing that is chosen for a picture: width, height, bits, channels, level, quality, distance, effort, frames, fps, turn, slices, thickness, margin, palette, color, colour, background, fog, azimuth, elevation, roll, zoom, scale, center, centre, viewpoint, perspective, stereo, title, xlabel, ylabel, arg_real, arg_imag, val_real, val_imag, colors, colours, fill, range_real, range_imag, rotate are chosen with name = value, gray, grey, alpha, lossless, depth, grow, axes, noaxes, grid, ascii, reverse, views, stereo, normalize with the word alone",
     ),
     (
         r#"save_png("c2.png", walk(pi), 800)"#,
@@ -1378,19 +1378,19 @@ const PICTURES_THAT_ARE_NOT_SAVED: &[(&str, &str)] = &[
     ),
     (
         r#"save_png("c3.png", sin(x))"#,
-        r#"error: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter"#,
+        r#"error: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png(drawing) takes the name of the drawing for the file"#,
     ),
     (
         r#"save_png("c3.png", [1, 2, 3])"#,
-        r#"error: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter"#,
+        r#"error: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png(drawing) takes the name of the drawing for the file"#,
     ),
     (
         r"save_png(c4, walk(pi))",
-        r#"error: the name of the file is a text in quotes, not c4: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter"#,
+        r#"error: the name of the file is a text in quotes, not c4: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png(drawing) takes the name of the drawing for the file"#,
     ),
     (
         r#"save_png("c5.png")"#,
-        r"error: save_png takes at least 2 argument(s), 1 given",
+        r#"error: save_png("name", drawing, choices): save_png("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png(drawing) takes the name of the drawing for the file"#,
     ),
     (
         r#"save_png("", walk(pi))"#,
@@ -1418,11 +1418,11 @@ const PICTURES_THAT_ARE_NOT_SAVED: &[(&str, &str)] = &[
     ),
     (
         r#"save_png("c8.png", walk(pi), palette = mauve)"#,
-        r"error: the palette is one of rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, or a list of colours; not mauve",
+        r"error: the palette is one of rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube, or a list of colours; not mauve",
     ),
     (
         r#"save_png("c8.png", walk(pi), palette = [red])"#,
-        r"error: the palette is one of rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, or a list of colours; not [red]",
+        r"error: the palette is one of rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube, or a list of colours; not [red]",
     ),
     (
         r#"save_png("c8.png", walk(pi), background = [2, 0, 0])"#,

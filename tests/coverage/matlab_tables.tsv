@@ -1,0 +1,162 @@
+-e	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])
+-e	table([1, 2, 3], [4, 5, 6])	table("Var1", [1, 2, 3], "Var2", [4, 5, 6])
+-e	table([1, 2, 3], ["a", "b", "c"], "VariableNames", ["n", "s"])	table("n", [1, 2, 3], "s", ["a", "b", "c"])
+-e	table([1, 2, 3])	table("Var1", [1, 2, 3])
+-e	table()	table()
+-e	table(k^2, [k, 1, 4])	[1, 4, 9, 16]
+-e	table(k^2, k, 1, 4)	[1, 4, 9, 16]
+-e	table("x", 3)	["x", "x", "x"]
+-e	table("a", [1, 2], "b", [3])	error: table: the variables of a table have one length
+-e	table("a", [1, 2], "a", [3, 4])	error: table: the name "a" comes twice
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); t	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); [istable(t), istable(5), height(t), width(t), size(t), numel(t), class(t)]	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|[true, false, 3, 2, [3, 2], 6, "table"]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); varnames(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|["name", "age"]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); fieldnames(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|["name", "age"]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); getfield(t, "age")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|[31, 25, 40]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); mean(getfield(t, "age"))	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|32
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); getfield(t, "weight")	error: getfield: the table has no variable "weight" (it has name, age)
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); setfield(t, "age", [1, 2, 3])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "age", [1, 2, 3])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); setfield(t, "town", ["x", "y", "z"])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "age", [31, 25, 40], "town", ["x", "y", "z"])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); addvars(t, "town", ["x", "y", "z"])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "age", [31, 25, 40], "town", ["x", "y", "z"])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); addvars(t, [1, 2, 3], [4, 5, 6], "NewVariableNames", ["p", "q"], "Before", "age")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "p", [1, 2, 3], "q", [4, 5, 6], "age", [31, 25, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); removevars(t, "age")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); renamevars(t, "age", "years")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "years", [31, 25, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); movevars(t, "age", "Before", "name")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("age", [31, 25, 40], "name", ["ann", "bob", "cy"])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takerows(t, [3, 1])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["cy", "ann"], "age", [40, 31])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takerows(t, [true, false, true])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "cy"], "age", [31, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takerows(t, getfield(t, "age") > 30)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "cy"], "age", [31, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takevars(t, ["age", "name"])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("age", [31, 25, 40], "name", ["ann", "bob", "cy"])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); head(t, 2)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob"], "age", [31, 25])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); tail(t, 1)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["cy"], "age", [40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); sortrows(t, "age")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["bob", "ann", "cy"], "age", [25, 31, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); sortrows(t, "age", "descend")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["cy", "ann", "bob"], "age", [40, 31, 25])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); sortrows(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); topkrows(t, 2, "age")	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("name", ["cy", "ann"], "age", [40, 31])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); table2array(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|[["ann", 31], ["bob", 25], ["cy", 40]]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); table2struct(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|[struct("name", "ann", "age", 31), struct("name", "bob", "age", 25), struct("name", "cy", "age", 40)]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); table2struct(t, "ToScalar", true)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|struct("name", ["ann", "bob", "cy"], "age", [31, 25, 40])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); summary(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|table("Variable", ["name", "age"], "Type", ["text", "number"], "Min", [undefined, 25], "Median", [undefined, 31], "Max", [undefined, 40], "NumMissing", [0, 0])
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); disp(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|name  age| ann   31| bob   25|  cy   40
+-e	head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])	[1, 2, 3, 4, 5, 6, 7, 8]
+-e	tail([1, 2, 3, 4, 5], 2)	[4, 5]
+-e	height([[1, 2, 3], [4, 5, 6]])	2
+-e	width([[1, 2, 3], [4, 5, 6]])	3
+-e	array2table([[1, 2], [3, 4], [5, 6]])	table("Var1", [1, 3, 5], "Var2", [2, 4, 6])
+-e	array2table([[1, 2], [3, 4], [5, 6]], "VariableNames", ["x", "y"])	table("x", [1, 3, 5], "y", [2, 4, 6])
+-e	struct2table(struct("a", [1, 2], "b", ["u", "v"]))	table("a", [1, 2], "b", ["u", "v"])
+-e	struct2table([struct("a", 1, "b", "u"), struct("a", 2, "b", "v")])	table("a", [1, 2], "b", ["u", "v"])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); groupsummary(t, "g", "mean")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "GroupCount", [3, 2], "mean_x", [3, 3], "mean_y", [100/3, 30])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); groupsummary(t, "g", ["sum", "max"], "x")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "GroupCount", [3, 2], "sum_x", [9, 6], "max_x", [5, 4])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); groupsummary(t, "g")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "GroupCount", [3, 2])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); groupcounts(t, "g")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "GroupCount", [3, 2], "Percent", [60, 40])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); varfun(@(v) mean(v), removevars(t, "g"))	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("x", [3], "y", [32])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); varfun(mean, removevars(t, "g"))	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("x", [3], "y", [32])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); rowfun(@(g, x, y) x + y, t)	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("Var1", [11, 22, 33, 44, 65])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); unique(takevars(t, "g"))	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); stack(t, ["x", "y"])	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "a", "b", "b", "a", "a", "b", "b", "a", "a"], "x_y_Indicator", ["x", "y", "x", "y", "x", "y", "x", "y", "x", "y"], "x_y", [1, 10, 2, 20, 3, 30, 4, 40, 5, 60])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); unstack(stack(takerows(t, [1, 2]), ["x", "y"]), "x_y", "x_y_Indicator")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "x", [1, 2], "y", [10, 20])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c", "d"]); innerjoin(l, r)	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [2, 3, 4], "y", ["b", "c", "d"])|table("id", [2, 3], "x", [20, 30], "y", ["b", "c"])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c", "d"]); outerjoin(l, r)	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [2, 3, 4], "y", ["b", "c", "d"])|table("id", [1, 2, 3, 4], "x", [10, 20, 30, undefined], "y", [undefined, "b", "c", "d"])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c", "d"]); outerjoin(l, r, "Type", "left")	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [2, 3, 4], "y", ["b", "c", "d"])|table("id", [1, 2, 3], "x", [10, 20, 30], "y", [undefined, "b", "c"])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c", "d"]); join(l, r)	error: join: every row of the left table needs one row of the right table with its key (innerjoin and outerjoin take what there is)
+-e	l := table("id", [2, 3, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c", "d"]); join(l, r)	table("id", [2, 3, 3], "x", [10, 20, 30])|table("id", [2, 3, 4], "y", ["b", "c", "d"])|table("id", [2, 3, 3], "x", [10, 20, 30], "y", ["b", "c", "c"])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("key", [2, 3, 4], "x", [5, 6, 7]); innerjoin(l, r)	table("id", [1, 2, 3], "x", [10, 20, 30])|table("key", [2, 3, 4], "x", [5, 6, 7])|table("x", [], "id", [], "key", [])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "x", [5, 6, 7]); innerjoin(l, r, "Keys", "id")	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [2, 3, 4], "x", [5, 6, 7])|table("id", [2, 3], "x_left", [20, 30], "x_right", [5, 6])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); vertcat(l, l)	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [1, 2, 3, 1, 2, 3], "x", [10, 20, 30, 10, 20, 30])
+-e	l := table("id", [1, 2, 3], "x", [10, 20, 30]); horzcat(l, table("z", [7, 8, 9]))	table("id", [1, 2, 3], "x", [10, 20, 30])|table("id", [1, 2, 3], "x", [10, 20, 30], "z", [7, 8, 9])
+-e	l := table("id", [1, 2, 3], "x", [10, undefined, 30]); [ismissing(l), rmmissing(l)]	table("id", [1, 2, 3], "x", [10, undefined, 30])|[[[false, false], [false, true], [false, false]], table("id", [1, 3], "x", [10, 30])]
+-e	writetable(table("name", ["ann", "bob, jr", "cy"], "age", [31, 25, 1/2]), "/tmp/sm-table.csv")	saved /tmp/sm-table.csv: 3 row(s) of 2 variable(s), 36 bytes
+-e	readtable("/tmp/sm-table.csv")	table("name", ["ann", "bob, jr", "cy"], "age", [31, 25, 1/2])
+-e	readtable("/tmp/sm-nonesuch.csv")	error: readtable: /tmp/sm-nonesuch.csv: No such file or directory (os error 2)
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); tt	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); [istimetable(tt), istable(tt), height(tt), width(tt), varnames(tt), class(tt), isregular(tt)]	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|[true, false, 4, 1, ["v"], "timetable", true]
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3/2, 2, 5/2], "linear")	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 3/2, 2, 5/2], "v", [10, 15, 20, 30])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3/2, 2, 5/2], "previous")	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 3/2, 2, 5/2], "v", [10, 10, 20, 20])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3/2, 2, 5/2])	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 3/2, 2, 5/2], "v", [10, undefined, 20, undefined])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3], "sum")	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 3], "v", [30, 120])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, "regular", "linear", "TimeStep", 3/4)	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 7/4, 5/2, 13/4, 4], "v", [10, 35/2, 30, 50, 80])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); lag(tt)	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 2, 3, 4], "v", [undefined, 10, 20, 40])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); lag(tt, -2)	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 2, 3, 4], "v", [40, 80, undefined, undefined])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); synchronize(tt, timetable([2, 5], "w", [1, 2]))	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 2, 3, 4, 5], "v", [10, 20, 40, 80, undefined], "w", [undefined, 1, undefined, undefined, 2])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); synchronize(tt, timetable([2, 5], "w", [1, 2]), "intersection")	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [2], "v", [20], "w", [1])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); synchronize(tt, timetable([2, 5], "w", [1, 2]), "union", "linear")	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|timetable("Time", [1, 2, 3, 4, 5], "v", [10, 20, 40, 80, undefined], "w", [undefined, 1, 4/3, 5/3, 2])
+-e	tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); timetable2table(tt)	timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])|table("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])
+-e	table2timetable(table("when", [5, 6], "v", [1, 2]))	timetable("when", [5, 6], "v", [1, 2])
+-e	table2timetable(table("v", [1, 2]), "RowTimes", [7, 8])	timetable("Time", [7, 8], "v", [1, 2])
+-e	timetable([datetime(2024, 3, 5), datetime(2024, 3, 6)], [1, 2], "VariableNames", ["v"])	timetable("Time", [739316, 739317], "v", [1, 2])
+-e	isregular([1, 3, 5])	true
+-e	isregular([1, 3, 6])	false
+-e	t := table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60]); groupsummary(t, "g", ["median", "std", "var", "range", "min", "mode", "numunique", "nummissing"], "y")	table("g", ["a", "b", "a", "b", "a"], "x", [1, 2, 3, 4, 5], "y", [10, 20, 30, 40, 60])|table("g", ["a", "b"], "GroupCount", [3, 2], "median_y", [30, 30], "std_y", [10sqrt(57)/3, 10sqrt(2)], "var_y", [1900/3, 200], "range_y", [50, 20], "min_y", [10, 20], "mode_y", [10, 20], "numunique_y", [3, 2], "nummissing_y", [0, 0])
+-e	t := table("g", ["a", "b", "a", "b", "a"], "h", [1, 1, 2, 2, 2], "x", [1, 2, 3, 4, 5]); groupsummary(t, ["g", "h"], "sum")	table("g", ["a", "b", "a", "b", "a"], "h", [1, 1, 2, 2, 2], "x", [1, 2, 3, 4, 5])|table("g", ["a", "a", "b", "b"], "h", [1, 2, 1, 2], "GroupCount", [1, 2, 1, 1], "sum_x", [1, 8, 2, 4])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); c	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); [iscategorical(c), iscategorical(5), class(c), numel(c), size(c), isordinal(c)]	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[true, false, "categorical", 5, [1, 5], false]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); categories(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|["blue", "green", "red"]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); countcats(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[1, 1, 3]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); histcounts(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[1, 1, 3]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); summary(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|table("Category", ["blue", "green", "red"], "Count", [1, 1, 3])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); mode(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|"red"
+-e	c := categorical(["red", "blue", "red", "green", "red"]); double(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[3, 1, 3, 2, 3]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); string(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|"categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])"
+-e	c := categorical(["red", "blue", "red", "green", "red"]); cellstr(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|["red", "blue", "red", "green", "red"]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); grp2idx(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[[3, 1, 3, 2, 3], ["blue", "green", "red"]]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); ismember(c, ["red", "green"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[true, false, true, true, true]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); iscategory(c, ["red", "pink"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[true, false]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); unique(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["blue", "green", "red"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); sort(c)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["blue", "green", "red", "red", "red"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); sort(c, "descend")	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "red", "red", "green", "blue"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); addcats(c, ["pink"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red", "pink"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); removecats(c, ["red"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical([undefined, "blue", undefined, "green", undefined], ["blue", "green"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); isundefined(removecats(c, ["red"]))	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|[true, false, true, false, true]
+-e	c := categorical(["red", "blue", "red", "green", "red"]); removecats(addcats(c, ["pink"]))	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); renamecats(c, ["b", "g", "r"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["r", "b", "r", "g", "r"], ["b", "g", "r"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); renamecats(c, ["red"], ["crimson"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["crimson", "blue", "crimson", "green", "crimson"], ["blue", "green", "crimson"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); reordercats(c, ["red", "green", "blue"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue", "red", "green", "red"], ["red", "green", "blue"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); reordercats(reordercats(c, ["red", "green", "blue"]))	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); mergecats(c, ["red", "green"], "warm")	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["warm", "blue", "warm", "warm", "warm"], ["blue", "warm"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); setcats(c, ["red", "pink"])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", undefined, "red", undefined, "red"], ["red", "pink"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); takerows(c, [1, 2])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); head(c, 2)	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|categorical(["red", "blue"], ["blue", "green", "red"])
+-e	c := categorical(["red", "blue", "red", "green", "red"]); table("colour", c, "n", [1, 2, 3, 4, 5])	categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])|table("colour", ["red", "blue", "red", "green", "red"], "n", [1, 2, 3, 4, 5])
+-e	categorical([3, 1, 2, 3], [1, 2, 3], ["low", "mid", "high"], "ordinal")	categorical(["high", "low", "mid", "high"], ["low", "mid", "high"], "ordinal")
+-e	categorical(["a", "b", "z"], ["a", "b"])	categorical(["a", "b", undefined], ["a", "b"])
+-e	categorical([1, 2, 1], [1, 1])	error: categorical: the kind 1 comes twice
+-e	categorical(5)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	grp2idx(["b", "a", "b", "c"])	[[2, 1, 2, 3], ["a", "b", "c"]]
+-e	grp2idx([10, 30, 10])	[[1, 2, 1], [10, 30]]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); join(t, 5)	error: join needs a table made by table("name", [values], ...), 5 is none
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); vertcat(t, table("x", [1]))	error: vertcat: the tables have the same variables in the same order
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takerows(t, [4])	error: takerows: the number of a row must be a whole number from 1 to 3, not 4
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); removevars(t, "nonesuch")	error: removevars: the table has no variable "nonesuch" (it has name, age)
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); isfield(t, ["age", "x"])	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|[true, false]
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); isempty(t)	table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])|false
+-e	t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); varfun(t, mean)	error: varfun(f, table): the function comes first
+-e	size([[1, 2], [3, 4]])	[2, 2]
+-e	unique([3, 1, 3])	[3, 1]
+-e	sortrows([[3, 1], [1, 2]])	[[1, 2], [3, 1]]
+-e	x := [1, 2, 3]; y := ["a", "b", "c"]; table("x", x, "y", y)	[1, 2, 3]|["a", "b", "c"]|table("x", [1, 2, 3], "y", ["a", "b", "c"])
+-e	x := [1, 2, 3]; table("x", x)	[1, 2, 3]|table("x", [1, 2, 3])
+-e	x := [1, 2, 3]; y := ["a", "b", "c"]; table(x, y)	[1, 2, 3]|["a", "b", "c"]|table("Var1", [1, 2, 3], "Var2", ["a", "b", "c"])
+-e	x := [1, 2, 3]; table(x, 2)	[1, 2, 3]|[[1, 2, 3], [1, 2, 3]]
+-e	n := 3; table("x", n)	3|["x", "x", "x"]
+-e	table(1/k, [k, 1, 3])	[1, 1/2, 1/3]
+-e	table(k + m, [k, 1, 2], [m, 1, 2])	[[2, 3], [3, 4]]
+-e	table(5, 3)	[5, 5, 5]
+-e	table([1, 2], 2)	[[1, 2], [1, 2]]
+-e	histcounts([1, 2, 2, 3, 5], 2)	[3, 2]
+-e	disp(table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]))	name  age| ann   31| bob   25|  cy   40
+-e	disp(timetable([1, 2], "v", [10, 20]))	Time   v|   1  10|   2  20
+-e	t := table("a", [3, 1, 2, 1, 3, 2], "b", [1, 5, 4, 2, 9, 4]); sortrows(t, ["a", "b"], ["ascend", "descend"])	table("a", [3, 1, 2, 1, 3, 2], "b", [1, 5, 4, 2, 9, 4])|table("a", [1, 1, 2, 2, 3, 3], "b", [5, 2, 4, 4, 9, 1])
+-e	t := table("a", [3, 1, 2, 1, 3, 2], "b", [1, 5, 4, 2, 9, 4]); topkrows(t, 2, "b", "ascend")	table("a", [3, 1, 2, 1, 3, 2], "b", [1, 5, 4, 2, 9, 4])|table("a", [3, 1], "b", [1, 2])
+-e	t := table("a", [1, 2], "b", ["x", "y"]); table2cell(t)	table("a", [1, 2], "b", ["x", "y"])|[[1, "x"], [2, "y"]]
+-e	cell2table([[1, "x"], [2, "y"]], "VariableNames", ["n", "s"])	table("n", [1, 2], "s", ["x", "y"])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [1, 3, 5, 7], "next")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [1, 3, 5, 7], "v", [10, 40, 100, 100])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [1, 3, 5, 7], "nearest")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [1, 3, 5, 7], "v", [10, 40, 40, 100])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [0, 3, 6], "mean")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [0, 3, 6], "v", [15, 40, 100])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [0, 3, 6], "count")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [0, 3, 6], "v", [2, 1, 1])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [0, 3, 6], "firstvalue")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [0, 3, 6], "v", [10, 40, 100])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); retime(tt, [1, 2], "sideways")	error: retime: "sideways" is no method: sum mean median mode min max std var range prod count numunique nummissing firstvalue lastvalue, or the name of a function of a list
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); sortrows(tt, "v", "descend")	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [7, 4, 2, 1], "v", [100, 40, 20, 10])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); takerows(tt, getfield(tt, "Time") >= 2)	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|timetable("Time", [2, 4, 7], "v", [20, 40, 100])
+-e	tt := timetable([1, 2, 4, 7], "v", [10, 20, 40, 100]); isregular(tt)	timetable("Time", [1, 2, 4, 7], "v", [10, 20, 40, 100])|false
+-e	timetable([1, 2], "v", [10])	error: timetable: the variables of a table have one length
+-e	retime(table("a", [1]), [1])	error: retime needs a table with times, made by timetable([times], "name", [values], ...)

@@ -127,13 +127,20 @@ impl Lang {
 }
 
 fn wrap((code, level): (String, u8), least: u8) -> String {
-    if level < least { format!("({code})") } else { code }
+    if level < least {
+        format!("({code})")
+    } else {
+        code
+    }
 }
 
 /// A name of this program as a name of the language: letters, digits and `_`.
 fn plain_name(name: &str) -> String {
     let fits = name.chars().all(|c| c.is_ascii_alphanumeric() || c == '_')
-        && name.chars().next().is_some_and(|c| c.is_ascii_alphabetic() || c == '_');
+        && name
+            .chars()
+            .next()
+            .is_some_and(|c| c.is_ascii_alphabetic() || c == '_');
     match fits {
         true => name.to_string(),
         false => name
@@ -150,10 +157,15 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
     Ok(match e {
         Expr::Num(n) => {
             let part = |r: &crate::num::Rat| -> (String, u8) {
-                let (negative, top, bottom) = (r.is_negative(), r.numer().clone().abs(), r.denom().clone());
+                let (negative, top, bottom) =
+                    (r.is_negative(), r.numer().clone().abs(), r.denom().clone());
                 let body = match bottom == 1 {
                     true => lang.whole(&top.to_string()),
-                    false => format!("{}/{}", lang.whole(&top.to_string()), lang.whole(&bottom.to_string())),
+                    false => format!(
+                        "{}/{}",
+                        lang.whole(&top.to_string()),
+                        lang.whole(&bottom.to_string())
+                    ),
                 };
                 match (negative, bottom == 1) {
                     (true, _) => (format!("-{body}"), NEG.min(MUL)),
@@ -168,7 +180,10 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
             let size = crate::num::Rat::from(n.im.clone().abs());
             let (imaginary, level) = match size == 1 {
                 true => (lang.unit(), ATOM),
-                false => (format!("{}{}{}", wrap(part(&size), POW), lang.times(), lang.unit()), MUL),
+                false => (
+                    format!("{}{}{}", wrap(part(&size), POW), lang.times(), lang.unit()),
+                    MUL,
+                ),
             };
             match (n.re.is_zero(), n.im.is_negative()) {
                 (true, false) => (imaginary, level),
@@ -182,7 +197,12 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
             match f.v.imag().is_zero() {
                 true if written.starts_with('-') => (lang.decimal(&written), NEG.min(MUL)),
                 true => (lang.decimal(&written), ATOM),
-                false => return Err(format!("{}: a decimal number with an imaginary part is written as a + b*i", lang.who())),
+                false => {
+                    return Err(format!(
+                        "{}: a decimal number with an imaginary part is written as a + b*i",
+                        lang.who()
+                    ));
+                }
             }
         }
         Expr::Sym(name) => match &**name {
@@ -225,7 +245,10 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
                         }
                     }
                     Expr::Pow(base, power) if power.as_rat().is_some_and(|r| r.is_negative()) => {
-                        let turned = crate::canon::pow((**base).clone(), crate::canon::neg((**power).clone()));
+                        let turned = crate::canon::pow(
+                            (**base).clone(),
+                            crate::canon::neg((**power).clone()),
+                        );
                         bottom.push(wrap(code(&turned, lang)?, POW));
                     }
                     other => top.push(wrap(code(other, lang)?, POW)),
@@ -249,14 +272,32 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
             if **base == Expr::e() {
                 return Ok((format!("exp({})", code(power, lang)?.0), ATOM));
             }
-            let half = power.as_rat().is_some_and(|r| *r.numer() == 1 && *r.denom() == 2);
+            let half = power
+                .as_rat()
+                .is_some_and(|r| *r.numer() == 1 && *r.denom() == 2);
             let whole = power.as_i64();
             match (half, whole) {
                 (true, _) => (format!("sqrt({})", code(base, lang)?.0), ATOM),
-                (_, Some(-1)) => (format!("{}{}{}", lang.whole("1"), lang.over(), wrap(code(base, lang)?, POW)), MUL),
+                (_, Some(-1)) => (
+                    format!(
+                        "{}{}{}",
+                        lang.whole("1"),
+                        lang.over(),
+                        wrap(code(base, lang)?, POW)
+                    ),
+                    MUL,
+                ),
                 (_, Some(n)) if n < 0 => {
                     let turned = crate::canon::pow((**base).clone(), Expr::int(-n));
-                    (format!("{}{}{}", lang.whole("1"), lang.over(), wrap(code(&turned, lang)?, POW)), MUL)
+                    (
+                        format!(
+                            "{}{}{}",
+                            lang.whole("1"),
+                            lang.over(),
+                            wrap(code(&turned, lang)?, POW)
+                        ),
+                        MUL,
+                    )
                 }
                 (_, Some(2)) if lang == Lang::C => {
                     let b = wrap(code(base, lang)?, ATOM);
@@ -264,12 +305,32 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
                 }
                 (_, Some(n)) if lang != Lang::C => {
                     let operator = if lang == Lang::Matlab { ".^" } else { "**" };
-                    (format!("{}{operator}{n}", wrap(code(base, lang)?, ATOM)), POW)
+                    (
+                        format!("{}{operator}{n}", wrap(code(base, lang)?, ATOM)),
+                        POW,
+                    )
                 }
                 _ => match lang {
-                    Lang::C => (format!("pow({}, {})", code(base, lang)?.0, code(power, lang)?.0), ATOM),
-                    Lang::Fortran => (format!("{}**{}", wrap(code(base, lang)?, ATOM), wrap(code(power, lang)?, ATOM)), POW),
-                    Lang::Matlab => (format!("{}.^{}", wrap(code(base, lang)?, ATOM), wrap(code(power, lang)?, ATOM)), POW),
+                    Lang::C => (
+                        format!("pow({}, {})", code(base, lang)?.0, code(power, lang)?.0),
+                        ATOM,
+                    ),
+                    Lang::Fortran => (
+                        format!(
+                            "{}**{}",
+                            wrap(code(base, lang)?, ATOM),
+                            wrap(code(power, lang)?, ATOM)
+                        ),
+                        POW,
+                    ),
+                    Lang::Matlab => (
+                        format!(
+                            "{}.^{}",
+                            wrap(code(base, lang)?, ATOM),
+                            wrap(code(power, lang)?, ATOM)
+                        ),
+                        POW,
+                    ),
                 },
             }
         }
@@ -316,7 +377,14 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
                 (Rel::Gt, _) => ">",
                 (Rel::Ge, _) => ">=",
             };
-            (format!("{} {sign} {}", wrap(code(left, lang)?, ADD), wrap(code(right, lang)?, ADD)), 0)
+            (
+                format!(
+                    "{} {sign} {}",
+                    wrap(code(left, lang)?, ADD),
+                    wrap(code(right, lang)?, ADD)
+                ),
+                0,
+            )
         }
         Expr::Bool(truth) => match (lang, truth) {
             (Lang::Fortran, true) => (".true.".into(), ATOM),
@@ -326,7 +394,12 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
             (Lang::C, true) => ("1".into(), ATOM),
             (Lang::C, false) => ("0".into(), ATOM),
         },
-        Expr::List(_) => return Err(format!("{}: a list inside an expression has no code", lang.who())),
+        Expr::List(_) => {
+            return Err(format!(
+                "{}: a list inside an expression has no code",
+                lang.who()
+            ));
+        }
     })
 }
 
@@ -343,12 +416,23 @@ fn lines(e: &Expr, lang: Lang, name: &str) -> Result<String, String> {
     let at = |indices: &[usize]| -> String {
         match lang {
             Lang::C => indices.iter().map(|k| format!("[{k}]")).collect(),
-            _ => format!("({})", indices.iter().map(|k| (k + 1).to_string()).collect::<Vec<_>>().join(",")),
+            _ => format!(
+                "({})",
+                indices
+                    .iter()
+                    .map(|k| (k + 1).to_string())
+                    .collect::<Vec<_>>()
+                    .join(",")
+            ),
         }
     };
     let mut out = Vec::new();
     match (crate::matrix::rows(e), e.as_list()) {
-        (Some(rows), _) if rows.iter().all(|r| r.iter().all(|x| x.as_list().is_none())) && e.as_list().is_some_and(|l| l.iter().all(|r| r.as_list().is_some())) => {
+        (Some(rows), _)
+            if rows.iter().all(|r| r.iter().all(|x| x.as_list().is_none()))
+                && e.as_list()
+                    .is_some_and(|l| l.iter().all(|r| r.as_list().is_some())) =>
+        {
             for (i, row) in rows.iter().enumerate() {
                 for (j, value) in row.iter().enumerate() {
                     out.push(set(at(&[i, j]), value)?);
@@ -397,8 +481,12 @@ fn matlab(e: &Expr) -> Result<String, String> {
 
 fn count_parts(e: &Expr, counts: &mut HashMap<Expr, (usize, usize)>) -> usize {
     let inner: usize = match e {
-        Expr::Add(items) | Expr::Mul(items) | Expr::List(items) => items.iter().map(|x| count_parts(x, counts)).sum(),
-        Expr::Fn(name, args) if &**name != "string" => args.iter().map(|x| count_parts(x, counts)).sum(),
+        Expr::Add(items) | Expr::Mul(items) | Expr::List(items) => {
+            items.iter().map(|x| count_parts(x, counts)).sum()
+        }
+        Expr::Fn(name, args) if &**name != "string" => {
+            args.iter().map(|x| count_parts(x, counts)).sum()
+        }
         Expr::Pow(base, power) => count_parts(base, counts) + count_parts(power, counts),
         Expr::Rel(_, left, right) => count_parts(left, counts) + count_parts(right, counts),
         _ => return 1,
@@ -418,9 +506,17 @@ fn replace(e: &Expr, part: &Expr, with: &Expr) -> Expr {
         Expr::Add(items) => Expr::Add(items.iter().map(|x| replace(x, part, with)).collect()),
         Expr::Mul(items) => Expr::Mul(items.iter().map(|x| replace(x, part, with)).collect()),
         Expr::List(items) => Expr::list(items.iter().map(|x| replace(x, part, with)).collect()),
-        Expr::Fn(name, args) => Expr::Fn(name.clone(), args.iter().map(|x| replace(x, part, with)).collect()),
-        Expr::Pow(base, power) => Expr::Pow(replace(base, part, with).into(), replace(power, part, with).into()),
-        Expr::Rel(op, left, right) => Expr::rel(*op, replace(left, part, with), replace(right, part, with)),
+        Expr::Fn(name, args) => Expr::Fn(
+            name.clone(),
+            args.iter().map(|x| replace(x, part, with)).collect(),
+        ),
+        Expr::Pow(base, power) => Expr::Pow(
+            replace(base, part, with).into(),
+            replace(power, part, with).into(),
+        ),
+        Expr::Rel(op, left, right) => {
+            Expr::rel(*op, replace(left, part, with), replace(right, part, with))
+        }
         other => other.clone(),
     }
 }
@@ -514,7 +610,11 @@ impl Block {
             .iter()
             .map(|l| format!("{}{l}", " ".repeat(wide)))
             .collect();
-        lines.extend(self.lines.iter().map(|l| format!("{l}{}", " ".repeat(more))));
+        lines.extend(
+            self.lines
+                .iter()
+                .map(|l| format!("{l}{}", " ".repeat(more))),
+        );
         Block {
             lines,
             base: power.lines.len() + self.base,
@@ -526,10 +626,34 @@ impl Block {
         let tall = self.lines.len();
         let side = |k: usize, left: bool| -> &'static str {
             match (round, tall, k) {
-                (true, 1, _) => if left { "(" } else { ")" },
-                (false, 1, _) => if left { "[" } else { "]" },
-                (true, _, 0) => if left { "/" } else { "\\" },
-                (true, _, k) if k + 1 == tall => if left { "\\" } else { "/" },
+                (true, 1, _) => {
+                    if left {
+                        "("
+                    } else {
+                        ")"
+                    }
+                }
+                (false, 1, _) => {
+                    if left {
+                        "["
+                    } else {
+                        "]"
+                    }
+                }
+                (true, _, 0) => {
+                    if left {
+                        "/"
+                    } else {
+                        "\\"
+                    }
+                }
+                (true, _, k) if k + 1 == tall => {
+                    if left {
+                        "\\"
+                    } else {
+                        "/"
+                    }
+                }
                 _ => "|",
             }
         };
@@ -553,7 +677,10 @@ fn block(e: &Expr) -> (Block, u8) {
     match e {
         Expr::Num(n) if n.is_real() && *n.re.denom() != 1 => {
             let (top, bottom) = (n.re.numer().clone().abs(), n.re.denom().clone());
-            let fraction = Block::over(&Block::word(&top.to_string()), &Block::word(&bottom.to_string()));
+            let fraction = Block::over(
+                &Block::word(&top.to_string()),
+                &Block::word(&bottom.to_string()),
+            );
             match n.re.is_negative() {
                 true => (Block::beside(&[Block::word("- "), fraction]), ADD),
                 false => (fraction, ATOM),
@@ -563,10 +690,17 @@ fn block(e: &Expr) -> (Block, u8) {
             let mut parts = Vec::new();
             for (k, term) in crate::printer::ordered_terms(terms).iter().enumerate() {
                 let negative = match term {
-                    Expr::Mul(f) => f.first().and_then(Expr::as_rat).is_some_and(|r| r.is_negative()),
+                    Expr::Mul(f) => f
+                        .first()
+                        .and_then(Expr::as_rat)
+                        .is_some_and(|r| r.is_negative()),
                     other => other.as_rat().is_some_and(|r| r.is_negative()),
                 };
-                let shown = if negative { crate::canon::neg(term.clone()) } else { term.clone() };
+                let shown = if negative {
+                    crate::canon::neg(term.clone())
+                } else {
+                    term.clone()
+                };
                 parts.push(Block::word(match (k, negative) {
                     (0, true) => "- ",
                     (0, false) => "",
@@ -592,7 +726,10 @@ fn block(e: &Expr) -> (Block, u8) {
                         }
                     }
                     Expr::Pow(base, power) if power.as_rat().is_some_and(|r| r.is_negative()) => {
-                        bottom.push(crate::canon::pow((**base).clone(), crate::canon::neg((**power).clone())));
+                        bottom.push(crate::canon::pow(
+                            (**base).clone(),
+                            crate::canon::neg((**power).clone()),
+                        ));
                     }
                     other => top.push(other.clone()),
                 }
@@ -631,12 +768,19 @@ fn block(e: &Expr) -> (Block, u8) {
             }
         }
         Expr::Pow(base, power) => {
-            if power.as_rat().is_some_and(|r| *r.numer() == 1 && *r.denom() == 2) {
+            if power
+                .as_rat()
+                .is_some_and(|r| *r.numer() == 1 && *r.denom() == 2)
+            {
                 let inside = block(base).0;
-                return (Block::beside(&[Block::word("sqrt"), inside.bracketed(true)]), ATOM);
+                return (
+                    Block::beside(&[Block::word("sqrt"), inside.bracketed(true)]),
+                    ATOM,
+                );
             }
             if power.as_rat().is_some_and(|r| r.is_negative()) {
-                let turned = crate::canon::pow((**base).clone(), crate::canon::neg((**power).clone()));
+                let turned =
+                    crate::canon::pow((**base).clone(), crate::canon::neg((**power).clone()));
                 return (Block::over(&Block::word("1"), &block(&turned).0), MUL);
             }
             (wrapped(base, ATOM).raised(&block(power).0), POW)
@@ -653,13 +797,28 @@ fn block(e: &Expr) -> (Block, u8) {
                 true => Block::word(""),
                 false => Block::beside(&parts),
             };
-            (Block::beside(&[Block::word(name), inside.bracketed(true)]), ATOM)
+            (
+                Block::beside(&[Block::word(name), inside.bracketed(true)]),
+                ATOM,
+            )
         }
-        Expr::List(items) if !items.is_empty() && items.iter().all(|r| r.as_list().is_some_and(|l| l.len() == items[0].as_list().map_or(0, <[Expr]>::len))) => {
+        Expr::List(items)
+            if !items.is_empty()
+                && items.iter().all(|r| {
+                    r.as_list()
+                        .is_some_and(|l| l.len() == items[0].as_list().map_or(0, <[Expr]>::len))
+                }) =>
+        {
             // a matrix: the columns as wide as their widest entry, a free line between rows
             let cells: Vec<Vec<Block>> = items
                 .iter()
-                .map(|r| r.as_list().unwrap_or_default().iter().map(|x| block(x).0).collect())
+                .map(|r| {
+                    r.as_list()
+                        .unwrap_or_default()
+                        .iter()
+                        .map(|x| block(x).0)
+                        .collect()
+                })
                 .collect();
             let columns = cells[0].len();
             let widths: Vec<usize> = (0..columns)
@@ -710,7 +869,10 @@ fn block(e: &Expr) -> (Block, u8) {
                 Rel::Gt => " > ",
                 Rel::Ge => " >= ",
             };
-            (Block::beside(&[block(left).0, Block::word(sign), block(right).0]), 0)
+            (
+                Block::beside(&[block(left).0, Block::word(sign), block(right).0]),
+                0,
+            )
         }
         other => {
             let written = format!("{other}");
@@ -734,38 +896,46 @@ impl Session {
     pub(crate) fn code_call(&mut self, name: &str, a: &[Expr]) -> Option<Res> {
         Some(match (name, a.len()) {
             ("ccode" | "fortran", 1 | 2) => (|| {
-                let lang = if name == "ccode" { Lang::C } else { Lang::Fortran };
+                let lang = if name == "ccode" {
+                    Lang::C
+                } else {
+                    Lang::Fortran
+                };
                 let target = match a.get(1) {
                     Some(t) => text_of(t)
                         .or_else(|| t.sym_name())
                         .map(plain_name)
-                        .ok_or_else(|| format!("{name}(expression[, \"name\"]): the name that is set"))?,
+                        .ok_or_else(|| {
+                            format!("{name}(expression[, \"name\"]): the name that is set")
+                        })?,
                     None => "t0".to_string(),
                 };
                 Ok(text(&lines(&a[0], lang, &target)?))
             })(),
             ("matlabcode", 1) => matlab(&a[0]).map(|code| text(&code)),
-            ("matlabfunction", 1 | 3) => (|| {
-                let usage = "matlabfunction(expression[, \"Vars\", [x, y]]): the function of its variables";
-                let names: Vec<Expr> = match a.get(1) {
-                    Some(option) if crate::arrays::word(option).as_deref() == Some("vars") => {
-                        let given = match a[2].as_list() {
-                            Some(items) => items.to_vec(),
-                            None => vec![a[2].clone()],
-                        };
-                        match given.iter().all(|v| v.sym_name().is_some()) {
-                            true => given,
-                            false => return Err(usage.into()),
+            ("matlabfunction", 1 | 3) => {
+                (|| {
+                    let usage = "matlabfunction(expression[, \"Vars\", [x, y]]): the function of its variables";
+                    let names: Vec<Expr> = match a.get(1) {
+                        Some(option) if crate::arrays::word(option).as_deref() == Some("vars") => {
+                            let given = match a[2].as_list() {
+                                Some(items) => items.to_vec(),
+                                None => vec![a[2].clone()],
+                            };
+                            match given.iter().all(|v| v.sym_name().is_some()) {
+                                true => given,
+                                false => return Err(usage.into()),
+                            }
                         }
+                        Some(_) => return Err(usage.into()),
+                        None => a[0].free_syms().iter().map(|s| Expr::sym(s)).collect(),
+                    };
+                    if names.is_empty() {
+                        return Err("matlabfunction: the expression has no variable; \"Vars\", [x] names one".into());
                     }
-                    Some(_) => return Err(usage.into()),
-                    None => a[0].free_syms().iter().map(|s| Expr::sym(s)).collect(),
-                };
-                if names.is_empty() {
-                    return Err("matlabfunction: the expression has no variable; \"Vars\", [x] names one".into());
-                }
-                Ok(Expr::call("rule", vec![Expr::list(names), a[0].clone()]))
-            })(),
+                    Ok(Expr::call("rule", vec![Expr::list(names), a[0].clone()]))
+                })()
+            }
             ("subexpr", 1 | 2) | ("cse", 1) => (|| {
                 let given = match a.get(1) {
                     Some(n) => n
@@ -779,7 +949,10 @@ impl Session {
                     return Ok(match shared(&a[0]) {
                         Some(part) => {
                             let mark = Expr::sym(&given);
-                            Expr::list(vec![replace(&a[0], &part, &mark), Expr::rel(Rel::Eq, mark, part)])
+                            Expr::list(vec![
+                                replace(&a[0], &part, &mark),
+                                Expr::rel(Rel::Eq, mark, part),
+                            ])
                         }
                         None => Expr::list(vec![a[0].clone(), Expr::list(Vec::new())]),
                     });
@@ -799,7 +972,12 @@ impl Session {
                 // a part may use the parts named after it: those come first
                 named.reverse();
                 Ok(Expr::list(vec![
-                    Expr::list(named.into_iter().map(|(mark, value)| Expr::rel(Rel::Eq, mark, value)).collect()),
+                    Expr::list(
+                        named
+                            .into_iter()
+                            .map(|(mark, value)| Expr::rel(Rel::Eq, mark, value))
+                            .collect(),
+                    ),
                     rest,
                 ]))
             })(),
@@ -822,7 +1000,10 @@ mod tests {
         let e = parsed("x^2/3 + sqrt(y) - exp(-x)");
         let c = lines(&e, Lang::C, "t0").unwrap();
         assert!(c.starts_with("t0 = ") && c.ends_with(';'), "{c}");
-        assert!(c.contains("(x*x)/3.0") && c.contains("sqrt(y)") && c.contains("exp(-x)"), "{c}");
+        assert!(
+            c.contains("(x*x)/3.0") && c.contains("sqrt(y)") && c.contains("exp(-x)"),
+            "{c}"
+        );
         let f = lines(&e, Lang::Fortran, "t0").unwrap();
         assert!(f.contains("x**2/3.0D0"), "{f}");
         let m = matlab(&e).unwrap();
@@ -842,6 +1023,10 @@ mod tests {
     fn fractions_stand_on_bars() {
         let lines = pretty(&parsed("(x + 1)/(y^2 + 3)"));
         assert_eq!(lines.len(), 4);
-        assert!(lines.iter().any(|l| l.chars().all(|c| c == '-') && l.len() >= 5));
+        assert!(
+            lines
+                .iter()
+                .any(|l| l.chars().all(|c| c == '-') && l.len() >= 5)
+        );
     }
 }

@@ -1,0 +1,219 @@
+-e	relu([-2, 0, 3/2, x])	[0, 0, 3/2, x/2 + abs(x)/2]
+-e	relu(-0.5)	0
+-e	relu([[1, -1], [-2, 2]])	[[1, 0], [0, 2]]
+-e	poslin(-3)	0
+-e	leakyrelu([-2, 3])	[-1/50, 3]
+-e	leakyrelu([-2, 3], 1/4)	[-1/2, 3]
+-e	leakyrelu(x, a)	x*(a + 1)/2 + abs(x)*(1 - a)/2
+-e	clippedrelu([-1, 3, 9])	[0, 3, 6]
+-e	clippedrelu([-1, 3, 9], 4)	[0, 3, 4]
+-e	clippedrelu(x)	-abs(x - 6)/2 + abs(x)/2 + 3
+-e	elu([-1, 2])	[1/e - 1, 2]
+-e	elu(-1.0, 2)	-1.2642411176571153568089524596771
+-e	elu(x)	x/2 + abs(x)/2 + e^(x/2 - abs(x)/2) - 1
+-e	gelu(1)	1/2 + erf(sqrt(2)/2)/2
+-e	gelu([0, 0.5, -0.5])	[0, 0.34573123063700655181885230530417, -0.15426876936299344818114769469583]
+-e	swish(1)	e/(1 + e)
+-e	swish(x)	x/(e^(-x) + 1)
+-e	silu(0)	0
+-e	mish(1.0)	0.86509838826731034611623344925631
+-e	mish(x)	x*e^x*(e^x + 2)/(e^(2x) + 2e^x + 2)
+-e	softplus(0)	ln(2)
+-e	softplus(x)	ln(e^x + 1)
+-e	softsign([-3, 0, 1])	[-3/4, 0, 1/2]
+-e	elliotsig(x)	x/(abs(x) + 1)
+-e	sigmoid(0)	1/2
+-e	sigmoid(1)	e/(1 + e)
+-e	sigmoid(x)	e^x/(e^x + 1)
+-e	logsig(0.5)	0.62245933120185456463890056574551
+-e	logistic(-0.5)	0.37754066879814543536109943425449
+-e	tansig(1/2)	tanh(1/2)
+-e	tansig(0.5)	0.46211715726000975850231848364367
+-e	purelin(x + 1)	x + 1
+-e	satlin([-1, 1/2, 3])	[0, 1/2, 1]
+-e	satlin(x)	-abs(x - 1)/2 + abs(x)/2 + 1/2
+-e	satlins([-3, 1/2, 3])	[-1, 1/2, 1]
+-e	satlins(x)	abs(x + 1)/2 - abs(x - 1)/2
+-e	hardlim([-1, 0, 2])	[0, 1, 1]
+-e	hardlim(x)	hardlim(x)
+-e	hardlims([-1, 0, 2])	[-1, 1, 1]
+-e	radbas([0, 1, x])	[1, 1/e, e^(-x^2)]
+-e	tribas([-2, -1/2, 0, 1/4, 3])	[0, 1/2, 1, 3/4, 0]
+-e	tribas(x)	abs(1 - abs(x))/2 - abs(x)/2 + 1/2
+-e	netinv([2, -4, x])	[1/2, -1/4, 1/x]
+-e	diff(sigmoid(x), x)	e^x/(e^x + 1)^2
+-e	diff(relu(x), x)	sign(x)/2 + 1/2
+-e	diff(gelu(x), x)	sqrt(2)*x*e^(-x^2/2)/(2sqrt(pi)) + erf(sqrt(2)*x/2)/2 + 1/2
+-e	diff(softplus(x), x)	e^x/(e^x + 1)
+-e	integrate(sigmoid(x), x)	ln(e^x + 1)
+-e	limit(sigmoid(x), x, inf)	1
+-e	relu(i)	error: relu: i is not a real number
+-e	softmax([1, 2, 3])	[1/(1 + e + e^2), e/(1 + e + e^2), e^2/(1 + e + e^2)]
+-e	softmax([1.0, 2.0, 3.0])	[0.090030573170380457998022101484492, 0.24472847105479765247295961834076, 0.66524095577482188952901828017475]
+-e	softmax([[0, 0], [ln(3), 0]])	[[1/2, 1/2], [3/4, 1/4]]
+-e	softmax([a, b])	[e^a/(e^a + e^b), e^b/(e^a + e^b)]
+-e	softmax([])	[]
+-e	softmax([1000.0, 1000.5])	[0.37754066879814543536109943425449, 0.62245933120185456463890056574551]
+-e	compet([1, 5, 3, 5])	[0, 1, 0, 0]
+-e	compet([[1, 2], [4, 3]])	[[0, 1], [1, 0]]
+-e	mse([1, 2, 3], [1, 3, 5])	5/3
+-e	mse([[1, 2], [3, 4]], [[1, 1], [1, 1]])	7/2
+-e	mse([a, b], [1, 2])	(a - 1)^2/2 + (b - 2)^2/2
+-e	mse([1, 2], [1, 2, 3])	error: mse: the values and the targets must have the same shape
+-e	sse([1, 2, 3], [1, 3, 5])	5
+-e	mae([1, 2, 3], [1, 3, 5])	1
+-e	l2loss([[1, 2], [3, 4]], [[1, 1], [1, 1]])	7
+-e	l1loss([[1, 2], [3, 4]], [[1, 1], [1, 1]])	3
+-e	huber([0, 0, 0], [1/2, 1, 3])	25/24
+-e	huber([0, 0, 0], [1/2, 1, 3], 2)	37/24
+-e	crossentropy([1/2, 1/4, 1/4], [0, 1, 0])	2ln(2)
+-e	crossentropy([[1/2, 1/2], [1/4, 3/4]], [[1, 0], [0, 1]])	3ln(2)/2 - ln(3)/2
+-e	crossentropy([0.7, 0.2, 0.1], [1, 0, 0])	0.35667494393873237891263871124118
+-e	crossentropy([p, 1 - p], [1, 0])	-ln(p)
+-e	diff(mse([w*1, w*2, w*3], [2, 4, 6]), w)	28w/3 - 56/3
+-e	fullyconnect([1, 2], [[1, 0], [0, 1], [1, 1]], [10, 20, 30])	[11, 22, 33]
+-e	fullyconnect([[1, 2], [3, 4]], [[1, 1]], [0])	[[3], [7]]
+-e	fullyconnect([x, y], [[a, b]], [c])	[a*x + b*y + c]
+-e	fullyconnect([1, 2], [[1, 2, 3]])	error: fullyconnect: the weights take 3 values, not 2
+-e	dlconv([1, 2, 3, 4, 5], [1, 0, -1])	[-2, -2, -2]
+-e	dlconv([1, 2, 3, 4, 5], [1, 0, -1], 10)	[8, 8, 8]
+-e	dlconv([1, 2, 3, 4, 5], [1, 1], "stride", 2)	[3, 7]
+-e	dlconv([1, 2, 3, 4, 5], [1, 1, 1], "padding", 1)	[3, 6, 9, 12, 9]
+-e	dlconv([1, 2, 3, 4, 5], [1, 1, 1], "padding", "same")	[3, 6, 9, 12, 9]
+-e	dlconv([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 0], [0, -1]])	[[-4, -4], [-4, -4]]
+-e	dlconv([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 1], [1, 1]], 1/2, "stride", 2, "padding", 1)	[[3/2, 11/2], [23/2, 57/2]]
+-e	dlconv([x, y, z], [a, b])	[a*x + b*y, a*y + b*z]
+-e	dlconv([1, 2], [1, 2, 3])	error: dlconv: the window of 1 by 3 is larger than the data
+-e	dlconv([1, 2, 3], [1, 1], "colour", 2)	error: dlconv: "colour" is not a choice of this command: "stride", "padding"
+-e	maxpool([1, 3, 2, 5, 4], 2)	[3, 3, 5, 5]
+-e	maxpool([1, 3, 2, 5, 4], 2, "stride", 2)	[3, 5]
+-e	maxpool([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2)	[[5, 6], [8, 9]]
+-e	maxpool([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 3])	[[3], [6], [9]]
+-e	maxpool([1, 2], 3)	error: maxpool: the window of 1 by 3 is larger than the data
+-e	avgpool([1, 3, 2, 5, 4], 2)	[2, 5/2, 7/2, 9/2]
+-e	avgpool([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2)	[[3, 4], [6, 7]]
+-e	avgpool([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2, "padding", 1)	[[1/4, 3/4, 5/4, 3/4], [5/4, 3, 4, 9/4], [11/4, 6, 7, 15/4], [7/4, 15/4, 17/4, 9/4]]
+-e	avgpool([a, b, c], 2)	[a/2 + b/2, b/2 + c/2]
+-e	batchnorm([1, 2, 3, 4], 0, 1)	[-1.3416354199689269825652065777324, -0.44721180665630899418840219257747, 0.44721180665630899418840219257747, 1.3416354199689269825652065777324]
+-e	batchnorm([[1, 10], [3, 30]], [0, 0], [1, 1])	[[-0.99999500003749968750273435039085, -0.99999995000000374999968750002734], [0.99999500003749968750273435039085, 0.99999995000000374999968750002734]]
+-e	batchnorm([[1, 10], [3, 30]], [0, 1], [1, 2], [2, 20], [1, 100])	[[-0.99999500003749968750273435039085, -0.99999990000000749999937500005469], [0.99999500003749968750273435039085, 2.9999999000000074999993750000547]]
+-e	batchnorm([[1, 10], [3, 30]], [0, 0, 0], [1, 1])	error: batchnorm: 2 values in a row but 3 numbers for them
+-e	layernorm([1, 2, 3, 4], 0, 1)	[-1.3416354199689269825652065777324, -0.44721180665630899418840219257747, 0.44721180665630899418840219257747, 1.3416354199689269825652065777324]
+-e	layernorm([[1, 2, 3], [10, 20, 60]], [0, 0, 0], [1, 1, 1])	[[-1.2247356859083901689982862146382, 0, 1.2247356859083901689982862146382], [-0.92582008985305055199549402179776, -0.46291004492652527599774701089888, 1.3887301347795758279932410326966]]
+-e	embed(2, [[1, 2], [3, 4], [5, 6]])	[3, 4]
+-e	embed([3, 1, 3], [[1, 2], [3, 4], [5, 6]])	[[5, 6], [1, 2], [5, 6]]
+-e	embed(4, [[1, 2], [3, 4], [5, 6]])	error: the number of a row of the weights must be a whole number from 1 to 3, not 4
+-e	lstm([[1, 2], [3, 4]], [0], [0], [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]], [[0.1], [0.2], [0.3], [0.4]], [0, 0, 0, 0])	[[[0.47652589400256128171433864071064], [0.85829470758855485388364552900111]], [0.85829470758855485388364552900111], [1.3004363677158568594875549827798]]
+-e	lstm([[1], [2], [3]], [0, 0], [0, 0], [[1], [1], [1], [1], [1], [1], [1], [1]], zeros(8, 2), zeros(1, 8)[[1]])	[[[0.36960635293570577313928171092938, 0.36960635293570577313928171092938], [0.76766351101015861969484289667685, 0.76766351101015861969484289667685], [0.93053150322689559551272013021152, 0.93053150322689559551272013021152]], [0.93053150322689559551272013021152, 0.93053150322689559551272013021152], [2.2238498043269725224229914697254, 2.2238498043269725224229914697254]]
+-e	lstm([[1, 2]], [0], [0], [[1, 2]], [[1]], [0])	error: lstm: with 1 units and 2 values at a time the weights are 4 by 2, the weights of what was before 4 by 1, and there are 4 biases
+-e	gru([[1, 2], [3, 4]], [0], [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]], [[0.1], [0.2], [0.3]], [0, 0, 0])	[[[0.23360896251778712101668605463016], [0.2892314558955309864511719711392]], [0.2892314558955309864511719711392]]
+-e	gru([[1, 2]], [0], [[1, 2]], [[1]], [0])	error: gru: with 1 units and 2 values at a time the weights are 3 by 2, the weights of what was before 3 by 1, and there are 3 biases
+-e	onehotencode(["b", "a", "c", "a"])	[[0, 1, 0], [1, 0, 0], [0, 0, 1], [1, 0, 0]]
+-e	onehotencode([3, 1, 2], [1, 2, 3, 4])	[[0, 0, 1, 0], [1, 0, 0, 0], [0, 1, 0, 0]]
+-e	onehotencode("b", ["a", "b"])	[0, 1]
+-e	onehotencode(["z"], ["a", "b"])	error: onehotencode: "z" is none of the classes ["a", "b"]
+-e	onehotdecode([[0.1, 0.7, 0.2], [0.5, 0.2, 0.3]])	[2, 1]
+-e	onehotdecode([[0.1, 0.7, 0.2], [0.5, 0.2, 0.3]], ["cat", "dog", "bird"])	["dog", "cat"]
+-e	onehotdecode([0.1, 0.7, 0.2], ["cat", "dog", "bird"])	"dog"
+-e	onehotdecode([[1, 2]], ["a"])	error: onehotdecode: 2 scores in a row but 1 classes
+-e	onehotdecode(onehotencode(["b", "a", "c"]), ["a", "b", "c"])	["b", "a", "c"]
+-e	ind2vec([1, 3, 2, 3])	[[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 1]]
+-e	ind2vec([1, 3], 4)	[[1, 0], [0, 0], [0, 1], [0, 0]]
+-e	vec2ind([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 1]])	[1, 3, 2, 3]
+-e	vec2ind(ind2vec([2, 1, 3]))	[2, 1, 3]
+-e	confusionmat([1, 2, 2, 3, 3, 3], [1, 2, 3, 3, 3, 1])	[[1, 0, 0], [0, 1, 1], [1, 0, 2]]
+-e	confusionmat(["a", "b", "a"], ["a", "a", "a"])	[[2, 0], [1, 0]]
+-e	confusionmat(["a", "b", "a"], ["a", "a", "a"], ["b", "a"])	[[0, 1], [0, 2]]
+-e	confusionmat([1, 2], [1])	error: confusionmat: as many known classes as guessed ones, not 2 and 1
+-e	mapminmax([1, 2, 5])	[-1, -1/2, 1]
+-e	mapminmax([[1, 2, 5], [10, 10, 10]])	[[-1, -1/2, 1], [-1, -1, -1]]
+-e	mapminmax([1, 2, 5], 0, 1)	[0, 1/4, 1]
+-e	mapstd([1, 2, 3])	[-1, 0, 1]
+-e	mapstd([[2, 4, 6], [5, 5, 5]])	[[-1, 0, 1], [0, 0, 0]]
+-e	mapstd([1, 2, 3], 10, 2)	[8, 10, 12]
+-e	divideblock(10)	[[1, 2, 3, 4, 5, 6], [7, 8], [9, 10]]
+-e	divideblock(10, 0.6, 0.2, 0.2)	[[1, 2, 3, 4, 5, 6], [7, 8], [9, 10]]
+-e	divideblock(7, 1, 0, 0)	[[1, 2, 3, 4, 5, 6, 7], [], []]
+-e	divideblock(0)	error: the number of observations must be a whole number from 1 to 100000000, not 0
+-e	dlgradient(x^2*y, [x, y])	[2x*y, x^2]
+-e	dlgradient(x^2*y, x)	2x*y
+-e	dlgradient([x^2, sin(x)], x)	[2x, cos(x)]
+-e	dlgradient(mse([w*1 + b, w*2 + b], [3, 5]), [w, b])	[3b + 5w - 13, 2b + 3w - 8]
+-e	dlgradient(x^2, 3)	error: dlgradient: 3 is no name of a variable
+-e	sgdmupdate([1, 2], [1/2, -1/2], [0, 0])	[[199/200, 401/200], [-1/200, 1/200]]
+-e	sgdmupdate([1, 2], [1/2, -1/2], [])	[[199/200, 401/200], [-1/200, 1/200]]
+-e	sgdmupdate([[1, 2], [3, 4]], [[1, 1], [1, 1]], [[0, 0], [0, 0]], 1/10, 1/2)	[[[9/10, 19/10], [29/10, 39/10]], [[-1/10, -1/10], [-1/10, -1/10]]]
+-e	sgdmupdate(w, g, v, r, m)	[-g*r + m*v + w, m*v - g*r]
+-e	sgdmupdate([1, 2], [1], [0, 0])	error: sgdmupdate: the lists must have the same shape
+-e	adamupdate([1, 2], [1/2, -1/2], [], [], 1)	[[(1/2499999999999)(2497499999999 + 500sqrt(10)), (-2/2499999999999)(250sqrt(10) - 2501249999999)], [1/20, -1/20], [1/4000, 1/4000]]
+-e	adamupdate([1.0, 2.0], [0.5, -0.5], [0.05, -0.05], [0.00025, 0.00025], 2)	[[0.99900000044732524074262391900378, 2.0009999995526747592573760809962], [0.095, -0.095], [0.00049975, 0.00049975]]
+-e	adamupdate(w, g, m, v, 1)	[w - sqrt(10)*(g/10 + 9m/10)/(10000(sqrt(g^2/1000 + 999v/1000) + 1/100000000)), g/10 + 9m/10, g^2/1000 + 999v/1000]
+-e	adamupdate([1], [1], [], [], 0)	error: the number of the step must be a whole number from 1 to 1000000000, not 0
+-e	rmspropupdate([1, 2], [1/2, -1/2], [])	[[1 - 1/(2000(1/100000000 + sqrt(10)/20)), 2 + 1/(2000(1/100000000 + sqrt(10)/20))], [1/40, 1/40]]
+-e	rmspropupdate([1.0, 2.0], [0.5, -0.5], [0.025, 0.025], 0.01, 0.5, 0.001)	[[0.98655226858541577948073913730136, 2.0134477314145842205192608626986], [0.1375, 0.1375]]
+-e	feedforwardnet([2, 3, 1])	[[[[-0.621348, 0.834703], [0.241577, 0.829924], [-0.325736, -0.33175]], [0, 0, 0], "tanh"], [[[-1.223125, 0.955242, -1.099893]], [0], "purelin"]]
+-e	feedforwardnet([2, 3, 1], "relu")	[[[[-0.621348, 0.834703], [0.241577, 0.829924], [-0.325736, -0.33175]], [0, 0, 0], "relu"], [[[-1.223125, 0.955242, -1.099893]], [0], "purelin"]]
+-e	feedforwardnet([2, 3, 1], "relu", 7)	[[[[-0.730307, 0.129813], [0.993958, 0.461161], [-0.695036, 0.07257]], [0, 0, 0], "relu"], [[[1.120928, 0.976343, 0.695826]], [0], "purelin"]]
+-e	feedforwardnet([2, 2])	[[[[-0.694688, 0.933226], [0.270091, 0.927883]], [0, 0], "purelin"]]
+-e	fitnet([1, 2, 1])	[[[[-0.802156], [1.077597]], [0, 0], "tanh"], [[[0.311875, 1.071427]], [0], "purelin"]]
+-e	patternnet([2, 3, 2])	[[[[-0.621348, 0.834703], [0.241577, 0.829924], [-0.325736, -0.33175]], [0, 0, 0], "tanh"], [[[-1.093996, 0.854395, -0.983774], [-0.379732, -0.290269, -0.326285]], [0, 0], "softmax"]]
+-e	feedforwardnet([3])	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet([2, 3, 1], "softmax")	error: feedforwardnet: the function of the inner layers is one of relu (poslin), leakyrelu, clippedrelu, elu, gelu, swish, mish, softplus, softsign (elliotsig), sigmoid (logsig), tanh (tansig), purelin, satlin, satlins, hardlim, hardlims, radbas, tribas, netinv, softmax, compet; not "softmax"
+-e	feedforwardnet([2, 0, 1])	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
+-e	predict([[[[1, 2]], [0], "tanh"]], [x, y])	tanh(x + 2y)
+-e	predict([[[[1, 2], [3, 4]], [1, -1], "relu"], [[[1, 1]], [0], "purelin"]], [1, -1])	0
+-e	predict([[[[1, 2], [3, 4]], [1, -1], "relu"], [[[1, 1]], [0], "purelin"]], [[1, -1], [0, 0], [1/2, 1/3]])	[0, 1, 4]
+-e	predict([[[[1, 2]], [1/2], "purelin"]], [3, 4])	23/2
+-e	predict([[[[2]], [1], "purelin"]], [1, 2, 3])	[3, 5, 7]
+-e	predict([[[[1, 2]], [0], "sigmoid"]], [0.5, 0.25])	0.73105857863000487925115924182184
+-e	predict([[[[1, 0], [0, 1]], [0, 0], "softmax"]], [ln(2), 0])	[0.66666666666666666666666666666667, 0.33333333333333333333333333333333]
+-e	predict([[[[1, 0], [0, 1]], [0, 0], "compet"]], [3, 4])	[0, 1]
+-e	predict([[[[1, 2]], [0], "hardlim"]], [[1, -1], [1, 1]])	[0, 1]
+-e	predict([[[[1, 2]], [0], "leakyrelu", 1/2]], [-4, 1])	-1
+-e	predict(feedforwardnet([2, 3, 1]), [0.5, -0.25])	0.58879556413195607511512158135311
+-e	predict(feedforwardnet([2, 3, 1]), [1, 2, 3])	error: predict: observations of 2 value(s) in a row are needed
+-e	predict([[[[1, 2]], [0, 0], "tanh"]], [1, 2])	error: predict: a network is a list of layers [weights, biases, "function"] with a row of weights for every unit (feedforwardnet makes one); the functions are relu (poslin), leakyrelu, clippedrelu, elu, gelu, swish, mish, softplus, softsign (elliotsig), sigmoid (logsig), tanh (tansig), purelin, satlin, satlins, hardlim, hardlims, radbas, tribas, netinv, softmax, compet
+-e	predict([[[[1, 2]], [0], "wavelet"]], [1, 2])	error: predict: a network is a list of layers [weights, biases, "function"] with a row of weights for every unit (feedforwardnet makes one); the functions are relu (poslin), leakyrelu, clippedrelu, elu, gelu, swish, mish, softplus, softsign (elliotsig), sigmoid (logsig), tanh (tansig), purelin, satlin, satlins, hardlim, hardlims, radbas, tribas, netinv, softmax, compet
+-e	predict([[[[1, 2]], [0], "tanh"], [[[1, 1]], [0], "purelin"]], [1, 2])	error: predict: layer 1 has 1 units but layer 2 takes 2 values
+-e	forward([[[[1, 2]], [0], "tanh"]], [0, 0])	0
+-e	classify(patternnet([2, 3, 2]), [[0.5, -0.25], [-1, 1]])	[1, 2]
+-e	classify(patternnet([2, 3, 2]), [0.5, -0.25], ["no", "yes"])	"no"
+-e	classify([[[[1, 0], [0, 1]], [0, 0], "purelin"]], [[3, 4], [5, 1]], ["first", "second"])	["second", "first"]
+-e	classify([[[[1, 1]], [0], "sigmoid"]], [[3, 4], [-5, 1]], ["low", "high"])	["high", "low"]
+-e	classify(patternnet([2, 3, 2]), [0.5, -0.25], ["a", "b", "c"])	error: classify: 2 values go out but 3 classes are given
+-e	perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8])	1/3
+-e	perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8], "mae")	1/3
+-e	perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8], "sse")	1
+-e	perform([[[[1, 0], [0, 1]], [0, 0], "softmax"]], [[ln(3), 0], [0, 0]], [[1, 0], [0, 1]])	0.490414626505863118428225563726
+-e	perform([[[[1, 0], [0, 1]], [0, 0], "softmax"]], [[ln(3), 0], [0, 0]], [1, 2])	0.490414626505863118428225563726
+-e	perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8], "nothing")	error: perform: the loss is "mse", "sse", "mae" or "crossentropy", not "nothing"
+-e	trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0], "report")[[2 : 4]]	[2.9243389032069324014625445873047e-44, 30, 2.7988171529339639505546964416048e-22]
+-e	predict(trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0]), [[0, 0], [0, 1], [1, 0], [1, 1]])	[-6.143284952071892301390187465889e-23, 0.99999999999999999999969609747215, 0.99999999999999999999987162766187, -6.6055715083967000056425267005849e-23]
+-e	trainnet(feedforwardnet([1, 1]), [1, 2, 3, 4], [3, 5, 7, 9])	[[[[2]], [1], "purelin"]]
+-e	trainnet([1, 2, 3, 4], [3, 5, 7, 9], feedforwardnet([1, 1]))	[[[[2]], [1], "purelin"]]
+-e	train(feedforwardnet([1, 1]), [1, 2, 3, 4], [3, 5, 7, 9], "report")[[2 : 3]]	[1.3805751691337276543070096755879e-66, 6]
+-e	trainnet(feedforwardnet([1, 1]), [1, 2, 3, 4], [3, 5, 7, 9], "l2", 0.1, "report")[[2 : 3]]	[0.19230769230769230769230769230769, 6]
+-e	trainnet(feedforwardnet([1, 3, 1], "sigmoid", 1), [0, 0.25, 0.5, 0.75, 1], [0, 0.0625, 0.25, 0.5625, 1], "epochs", 5, "report")[[2 : 3]]	[0.099265284995792906738571491441701, 5]
+-e	classify(trainnet(patternnet([2, 3, 2]), [[0, 0], [0, 1], [1, 0], [1, 1]], [1, 2, 2, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]])	[1, 2, 2, 1]
+-e	trainnet(patternnet([2, 3, 2]), [[0, 0], [0, 1], [1, 0], [1, 1]], [[1, 0], [0, 1], [0, 1], [1, 0]], "report")[[2 : 3]]	[0.0059677688110939124536428170280806, 204]
+-e	trainnet(patternnet([2, 2]), [[0, 0], [0, 1], [1, 0], [1, 1]], [1, 1, 2, 2], "l2", 0.01, "tolerance", 0.000001, "report")[[2 : 3]]	[0.13742093895889424919758416978198, 20]
+-e	trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1]], [0, 1, 1])	error: trainnet: 2 observations but 3 targets
+-e	trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1]], [0, 1], "crossentropy")	error: trainnet: the entropy goes with a last layer of "softmax", and "softmax" with the entropy
+-e	trainnet(patternnet([2, 2]), [[0, 0], [0, 1]], [1, 2], "mse")	error: trainnet: the entropy goes with a last layer of "softmax", and "softmax" with the entropy
+-e	trainnet(feedforwardnet([2, 3, 1], "hardlim"), [[0, 0], [0, 1]], [0, 1])	error: trainnet: the function hardlim has no slope to learn by
+-e	trainnet(feedforwardnet([2, 1]), [[0, 0], [0, 1]], [0, 1], "fast")	error: trainnet: "fast" is not a choice of the training: "mse", "crossentropy", "epochs", n, "l2", x, "tolerance", x, "report"
+-e	trainnet(1, 2, 3)	error: trainnet: a network is a list of layers [weights, biases, "function"] with a row of weights for every unit (feedforwardnet makes one); the functions are relu (poslin), leakyrelu, clippedrelu, elu, gelu, swish, mish, softplus, softsign (elliotsig), sigmoid (logsig), tanh (tansig), purelin, satlin, satlins, hardlim, hardlims, radbas, tribas, netinv, softmax, compet
+-e	perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 0, 0, 1])	[[[[2, 1]], [-3], "hardlim"]]
+-e	perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 1])	[[[[1, 1]], [-1], "hardlim"]]
+-e	predict(perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]])	[0, 1, 1, 1]
+-e	perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0], 5)	[[[[-1, 0]], [0], "hardlim"]]
+-e	perceptron([[1, 2], [3, 4]], [[1, 0], [0, 1]])	[[[[-1, 0], [5, -2]], [1, -7], "hardlim"]]
+-e	perceptron([[1, 2], [3, 4]], [1])	error: perceptron: 2 observations but 1 targets
+-e	newlind([[1], [2], [3]], [2, 4, 7])	[[[[5/2]], [-2/3], "purelin"]]
+-e	newlind([[1, 0], [0, 1], [1, 1]], [[1, 2], [3, 4], [5, 7]])	[[[[2, 4], [3, 5]], [-1, -1], "purelin"]]
+-e	predict(newlind([[1], [2], [3]], [2, 4, 7]), [4])	[28/3]
+-e	newlind([[1], [2]], [1, 2, 3])	error: newlind: 2 observations but 3 targets
+-e	predict(newrbe([[0], [1], [2]], [1, 3, 2]), [[0], [1], [2], [1/2]])	[1, 3, 2, 2.1863306796596578118809262382064]
+-e	predict(newrbe([[0, 0], [1, 1]], [[1, 2], [3, 4]], 0.5), [[0, 0], [1, 1]])	[[1, 2], [3, 4]]
+-e	newrbe([[0], [0]], [1, 2])	error: newrbe: two observations are the same place
+-e	newrbe([[0], [1]], [1, 2], 0)	error: newrbe: the spread is more than 0

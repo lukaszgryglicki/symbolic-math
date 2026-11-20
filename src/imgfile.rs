@@ -143,7 +143,12 @@ pub fn frames(path: &str) -> Result<usize, String> {
     match format {
         Format::Png => png::Decoder::new(std::io::Cursor::new(&bytes))
             .read_info()
-            .map(|reader| reader.info().animation_control().map_or(1, |a| a.num_frames as usize))
+            .map(|reader| {
+                reader
+                    .info()
+                    .animation_control()
+                    .map_or(1, |a| a.num_frames as usize)
+            })
             .map_err(|e| e.to_string()),
         Format::Jxl => jxl_frames_of(&bytes),
     }
@@ -162,7 +167,10 @@ fn png_pixels(bytes: &[u8], frame: usize) -> Result<Pixels, String> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(bytes));
     decoder.set_transformations(png::Transformations::EXPAND);
     let mut reader = decoder.read_info().map_err(|e| e.to_string())?;
-    let count = reader.info().animation_control().map_or(1, |a| a.num_frames as usize);
+    let count = reader
+        .info()
+        .animation_control()
+        .map_or(1, |a| a.num_frames as usize);
     if frame >= count {
         return Err(no_frame(frame, count));
     }
@@ -219,8 +227,10 @@ fn jxl_frames_of(bytes: &[u8]) -> Result<usize, String> {
     unsafe {
         let decoder = Decoder(jxl::JxlDecoderCreate(ptr::null()));
         if decoder.0.is_null()
-            || jxl::JxlDecoderSubscribeEvents(decoder.0, Status::JXL_DEC_FRAME as i32) != Status::JXL_DEC_SUCCESS
-            || jxl::JxlDecoderSetInput(decoder.0, bytes.as_ptr(), bytes.len()) != Status::JXL_DEC_SUCCESS
+            || jxl::JxlDecoderSubscribeEvents(decoder.0, Status::JXL_DEC_FRAME as i32)
+                != Status::JXL_DEC_SUCCESS
+            || jxl::JxlDecoderSetInput(decoder.0, bytes.as_ptr(), bytes.len())
+                != Status::JXL_DEC_SUCCESS
         {
             return Err(failed());
         }
@@ -487,7 +497,12 @@ struct Stream {
 
 impl Stream {
     /// An encoder for frames like `first`; `moving`: of a picture with several frames.
-    unsafe fn open(first: &Image, e: &Encoding, moving: bool, threads: usize) -> Result<Stream, String> {
+    unsafe fn open(
+        first: &Image,
+        e: &Encoding,
+        moving: bool,
+        threads: usize,
+    ) -> Result<Stream, String> {
         let (width, height) = (
             u32::try_from(first.width).map_err(|_| "the picture is too wide")?,
             u32::try_from(first.height).map_err(|_| "the picture is too high")?,
@@ -695,7 +710,11 @@ fn encoders(count: usize, first: &Image, e: &Encoding, threads: usize) -> usize 
         return 1;
     }
     let each = first.width * first.height * if e.effort >= 8 { 512 } else { 256 };
-    let memory: usize = if crate::sandbox::active() { 1 << 29 } else { 1 << 31 };
+    let memory: usize = if crate::sandbox::active() {
+        1 << 29
+    } else {
+        1 << 31
+    };
     (memory / each.max(1)).clamp(1, threads + 1).min(count / 2)
 }
 
@@ -972,7 +991,13 @@ mod tests {
     #[test]
     fn several_encoders_give_the_bytes_of_one() {
         // frames that differ: a dot that moves, with alpha of one bit and without
-        for (alpha, effort, bits) in [(true, 4, 8), (true, 7, 8), (false, 5, 8), (true, 9, 3), (true, 4, 12)] {
+        for (alpha, effort, bits) in [
+            (true, 4, 8),
+            (true, 7, 8),
+            (false, 5, 8),
+            (true, 9, 3),
+            (true, 4, 12),
+        ] {
             let channels = 3 + usize::from(alpha);
             let frame = |k: usize| {
                 let mut data = vec![0.0f32; 24 * 16 * channels];
@@ -1000,7 +1025,10 @@ mod tests {
                 let together = jxl_frames(11, &mut |k| Ok(frame(k)), &e, &frame(0), encoders)
                     .expect("a file")
                     .expect("a bare stream");
-                assert_eq!(together, alone, "alpha {alpha}, effort {effort}, {encoders} encoders");
+                assert_eq!(
+                    together, alone,
+                    "alpha {alpha}, effort {effort}, {encoders} encoders"
+                );
             }
             let (_, read, _) = read_jxl(&alone);
             assert_eq!(read.len(), 11);
@@ -1015,11 +1043,20 @@ mod tests {
             data: vec![0.5; 16],
             depth: None,
         };
-        assert_eq!(jxl_frames(8, &mut |_| Ok(frame.clone()), &deep, &frame, 2), Ok(None));
+        assert_eq!(
+            jxl_frames(8, &mut |_| Ok(frame.clone()), &deep, &frame, 2),
+            Ok(None)
+        );
         // an encoder that fails says why
         let failed = jxl_frames(
             8,
-            &mut |k| if k == 5 { Err("no frame 5".to_string()) } else { Ok(frame.clone()) },
+            &mut |k| {
+                if k == 5 {
+                    Err("no frame 5".to_string())
+                } else {
+                    Ok(frame.clone())
+                }
+            },
             &encoding(Format::Jxl, 8),
             &frame,
             3,

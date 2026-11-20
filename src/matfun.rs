@@ -206,7 +206,11 @@ pub(crate) fn numeric(name: &str, m: &Rows, more: Option<&Expr>) -> Option<Res> 
         },
         _ => return None,
     };
-    if found.iter().flatten().any(|z| !z.real().is_finite() || !z.imag().is_finite()) {
+    if found
+        .iter()
+        .flatten()
+        .any(|z| !z.real().is_finite() || !z.imag().is_finite())
+    {
         return None;
     }
     Some(Ok(decomp::from_complex(&found)))
@@ -250,11 +254,20 @@ mod tests {
     #[test]
     fn powers_by_squaring() {
         let a = matrix(&[&[1.0, 1.0], &[0.0, 1.0]]);
-        assert!(near(&power(&a, 5).unwrap(), &matrix(&[&[1.0, 5.0], &[0.0, 1.0]])));
-        assert!(near(&power(&a, -2).unwrap(), &matrix(&[&[1.0, -2.0], &[0.0, 1.0]])));
+        assert!(near(
+            &power(&a, 5).unwrap(),
+            &matrix(&[&[1.0, 5.0], &[0.0, 1.0]])
+        ));
+        assert!(near(
+            &power(&a, -2).unwrap(),
+            &matrix(&[&[1.0, -2.0], &[0.0, 1.0]])
+        ));
         // a defective matrix has its exponential and its logarithm too
         let e = exp(&matrix(&[&[0.0, 1.0], &[0.0, 0.0]]));
         assert!(near(&e, &a));
-        assert!(near(&log(&a).unwrap(), &matrix(&[&[0.0, 1.0], &[0.0, 0.0]])));
+        assert!(near(
+            &log(&a).unwrap(),
+            &matrix(&[&[0.0, 1.0], &[0.0, 0.0]])
+        ));
     }
 }

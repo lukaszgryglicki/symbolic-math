@@ -241,7 +241,7 @@
 	line(1, 2, 3)	error: line takes 2 argument(s), 3 given
 	circle(1, 2, 3)	error: circle takes 2 argument(s), 3 given
 	sphere(1, 2, 3)	error: sphere takes 2 argument(s), 3 given
-	distance(1, 2, 3)	error: distance takes 2 argument(s), 3 given
+	distance(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: distance takes 2 to 8 argument(s), 9 given
 	angle(1, 2, 3, 4)	error: angle takes 1 to 3 argument(s), 4 given
 	projection(1, 2, 3)	error: projection takes 2 argument(s), 3 given
 	intersection(1, 2, 3)	error: intersection takes 2 argument(s), 3 given
@@ -468,7 +468,7 @@
 	ztransform(1, 2, 3, 4)	error: ztransform takes 3 argument(s), 4 given
 	invztransform(1, 2, 3, 4)	error: invztransform takes 3 argument(s), 4 given
 	residue(1, 2, 3, 4)	error: residue takes 2 to 3 argument(s), 4 given
-	pade(1, 2, 3, 4, 5, 6)	error: pade takes 4 to 5 argument(s), 6 given
+	pade(1, 2, 3, 4, 5, 6)	error: pade takes 2 to 5 argument(s), 6 given
 	seriescoeff(1, 2, 3, 4, 5)	error: seriescoeff takes 3 to 4 argument(s), 5 given
 	vertexlist(1, 2)	error: vertexlist takes 1 argument(s), 2 given
 	edgelist(1, 2)	error: edgelist takes 1 argument(s), 2 given
@@ -563,7 +563,7 @@
 	circshift(1, 2, 3, 4)	error: circshift takes 2 to 3 argument(s), 4 given
 	tril(1, 2, 3)	error: tril takes 1 to 2 argument(s), 3 given
 	triu(1, 2, 3)	error: triu takes 1 to 2 argument(s), 3 given
-	sortrows(1, 2, 3)	error: sortrows takes 1 to 2 argument(s), 3 given
+	sortrows(1, 2, 3, 4, 5)	error: sortrows takes 1 to 4 argument(s), 5 given
 	issorted(1, 2, 3)	error: issorted takes 1 to 2 argument(s), 3 given
 	setxor(1, 2, 3)	error: setxor takes 2 argument(s), 3 given
 	ismember(1, 2, 3)	error: ismember takes 2 argument(s), 3 given
@@ -579,7 +579,7 @@
 	isdiag(1, 2)	error: isdiag takes 1 argument(s), 2 given
 	istril(1, 2)	error: istril takes 1 argument(s), 2 given
 	istriu(1, 2)	error: istriu takes 1 argument(s), 2 given
-	bandwidth(1, 2)	error: bandwidth takes 1 argument(s), 2 given
+	bandwidth(1, 2, 3)	error: bandwidth takes 1 to 2 argument(s), 3 given
 	isbanded(1, 2, 3, 4)	error: isbanded takes 3 argument(s), 4 given
 	issymmetric(1, 2, 3)	error: issymmetric takes 1 to 2 argument(s), 3 given
 	ishermitian(1, 2, 3)	error: ishermitian takes 1 to 2 argument(s), 3 given
@@ -628,7 +628,7 @@
 	mad(1, 2, 3, 4)	error: mad takes 1 to 3 argument(s), 4 given
 	cov(1, 2, 3, 4)	error: cov takes 1 to 3 argument(s), 4 given
 	corrcoef(1, 2, 3, 4)	error: corrcoef takes 1 to 3 argument(s), 4 given
-	histcounts(1, 2, 3)	error: histcounts takes 2 argument(s), 3 given
+	histcounts(1, 2, 3)	error: histcounts takes 1 to 2 argument(s), 3 given
 	detrend(1, 2, 3)	error: detrend takes 1 to 2 argument(s), 3 given
 	unwrap(1, 2, 3)	error: unwrap takes 1 to 2 argument(s), 3 given
 	accumarray(1, 2, 3, 4)	error: accumarray takes 2 to 3 argument(s), 4 given
@@ -684,7 +684,7 @@
 	ifftshift(1, 2)	error: ifftshift takes 1 argument(s), 2 given
 	dct(1, 2, 3)	error: dct takes 1 to 2 argument(s), 3 given
 	idct(1, 2, 3)	error: idct takes 1 to 2 argument(s), 3 given
-	lfilter(1, 2, 3, 4)	error: lfilter takes 3 argument(s), 4 given
+	lfilter(1, 2, 3, 4)	error: lfilter takes 2 to 3 argument(s), 4 given
 	conv2(1, 2, 3, 4)	error: conv2 takes 2 to 3 argument(s), 4 given
 	xcorr(1, 2, 3)	error: xcorr takes 1 to 2 argument(s), 3 given
 	upsample(1, 2, 3)	error: upsample takes 2 argument(s), 3 given

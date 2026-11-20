@@ -459,14 +459,14 @@ fn lilliefors(x: &[Float]) -> Res {
 
 // ---- the normal law of several variables ----
 
-type Rule = Rc<Vec<(Float, Float)>>;
+pub(crate) type Rule = Rc<Vec<(Float, Float)>>;
 
 thread_local! {
     static RULES: RefCell<HashMap<(usize, u32), Rule>> = RefCell::new(HashMap::new());
 }
 
 /// The points and the weights of Gauss and Legendre on the stretch from 0 to 1.
-fn rule(count: usize, prec: u32) -> Rule {
+pub(crate) fn rule(count: usize, prec: u32) -> Rule {
     if let Some(known) = RULES.with(|r| r.borrow().get(&(count, prec)).cloned()) {
         return known;
     }
@@ -1745,14 +1745,20 @@ fn silhouette(a: &[Expr]) -> Res {
     let name = "silhouette";
     let usage = "silhouette(points, [groups][, \"euclidean\" | \"sqeuclidean\"]): a row for every point, a group for every row";
     let all = points(&a[0], name)?;
-    let marks = a[1].as_list().filter(|m| m.len() == all.len()).ok_or(usage)?;
+    let marks = a[1]
+        .as_list()
+        .filter(|m| m.len() == all.len())
+        .ok_or(usage)?;
     let squared = match a.get(2).and_then(crate::arrays::word).as_deref() {
         None | Some("sqeuclidean") => true,
         Some("euclidean") => false,
         Some(_) => return Err(usage.into()),
     };
     let apart = |p: &[Float], q: &[Float]| -> Float {
-        let sum = p.iter().zip(q).fold(fl(0), |s, (x, y)| s + fl(x - y).square());
+        let sum = p
+            .iter()
+            .zip(q)
+            .fold(fl(0), |s, (x, y)| s + fl(x - y).square());
         match squared {
             true => sum,
             false => sum.sqrt(),
@@ -1770,11 +1776,14 @@ fn silhouette(a: &[Expr]) -> Res {
         let mut own: Option<Float> = None;
         let mut nearest: Option<Float> = None;
         for kind in &kinds {
-            let others: Vec<usize> = (0..all.len()).filter(|j| *j != i && marks[*j] == **kind).collect();
+            let others: Vec<usize> = (0..all.len())
+                .filter(|j| *j != i && marks[*j] == **kind)
+                .collect();
             if others.is_empty() {
                 continue;
             }
-            let mean = others.iter().fold(fl(0), |s, j| s + apart(p, &all[*j])) / others.len() as u32;
+            let mean =
+                others.iter().fold(fl(0), |s, j| s + apart(p, &all[*j])) / others.len() as u32;
             if marks[i] == **kind {
                 own = Some(mean);
             } else if nearest.as_ref().is_none_or(|n| mean < *n) {

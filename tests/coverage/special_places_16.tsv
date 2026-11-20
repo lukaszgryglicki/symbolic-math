@@ -1,3 +1,75 @@
+-e	ecdf(-inf)	error: ecdf needs a list
+-e	ecdf(undefined)	error: ecdf needs a list
+-e	ecdf(10^20)	error: ecdf needs a list
+-e	ecdf(10^(-20))	error: ecdf needs a list
+-e	ecdf(x)	error: ecdf needs a list
+-e	ecdf([])	[[], []]
+-e	ecdf([1, 2])	[[1, 2], [1/2, 1]]
+-e	ecdf("text")	error: ecdf needs a list
+-e	ecdf(true)	error: ecdf needs a list
+-e	ecdf(-7/3)	error: ecdf needs a list
+-e	ecdf(0.5)	error: ecdf needs a list
+-e	cplxpair(0)	error: cplxpair needs a list
+-e	cplxpair(1)	error: cplxpair needs a list
+-e	cplxpair(-1)	error: cplxpair needs a list
+-e	cplxpair(1/2)	error: cplxpair needs a list
+-e	cplxpair(2)	error: cplxpair needs a list
+-e	cplxpair(i)	error: cplxpair needs a list
+-e	cplxpair(inf)	error: cplxpair needs a list
+-e	cplxpair(-inf)	error: cplxpair needs a list
+-e	cplxpair(undefined)	error: cplxpair needs a list
+-e	cplxpair(10^20)	error: cplxpair needs a list
+-e	cplxpair(10^(-20))	error: cplxpair needs a list
+-e	cplxpair(x)	error: cplxpair needs a list
+-e	cplxpair([])	[]
+-e	cplxpair([1, 2])	[1, 2]
+-e	cplxpair("text")	error: cplxpair needs a list
+-e	cplxpair(true)	error: cplxpair needs a list
+-e	cplxpair(-7/3)	error: cplxpair needs a list
+-e	cplxpair(0.5)	error: cplxpair needs a list
+-e	hascycles(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles([])	false
+-e	hascycles([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag([])	false
+-e	isdag([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	transclosure(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	transclosure(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	transclosure(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
@@ -626,75 +698,3 @@
 -e	plot3(-1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(1/2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(undefined)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(10^20)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(10^(-20))	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(x)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3([])	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3([1, 2])	error: plot3 needs lists of numbers, 1 is none
--e	plot3("text")	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(true)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(-7/3)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(0.5)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	scatter3(0)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(-1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(1/2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(i)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(-inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(undefined)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(10^20)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(10^(-20))	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(x)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3([])	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3([1, 2])	error: scatter3 needs lists of numbers, 1 is none
--e	scatter3("text")	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(true)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(-7/3)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	scatter3(0.5)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
--e	surf(0)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(-1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(1/2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(i)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(-inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(undefined)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(10^20)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(10^(-20))	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(x)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf([])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf([1, 2])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf("text")	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(true)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(-7/3)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	surf(0.5)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
--e	spy(0)	error: spy(matrix)
--e	spy(1)	error: spy(matrix)
--e	spy(-1)	error: spy(matrix)
--e	spy(1/2)	error: spy(matrix)
--e	spy(2)	error: spy(matrix)
--e	spy(i)	error: spy(matrix)
--e	spy(inf)	error: spy(matrix)
--e	spy(-inf)	error: spy(matrix)
--e	spy(undefined)	error: spy(matrix)
--e	spy(10^20)	error: spy(matrix)
--e	spy(10^(-20))	error: spy(matrix)
--e	spy(x)	error: spy(matrix)
--e	spy([])	error: spy(matrix)
--e	spy([1, 2])	error: spy(matrix)
--e	spy("text")	error: spy(matrix)
--e	spy(true)	error: spy(matrix)
--e	spy(-7/3)	error: spy(matrix)
--e	spy(0.5)	error: spy(matrix)
--e	boxplot(0)	error: boxplot([values]) or boxplot([[values], [values], ...])
--e	boxplot(1)	error: boxplot([values]) or boxplot([[values], [values], ...])
--e	boxplot(-1)	error: boxplot([values]) or boxplot([[values], [values], ...])
--e	boxplot(1/2)	error: boxplot([values]) or boxplot([[values], [values], ...])
--e	boxplot(2)	error: boxplot([values]) or boxplot([[values], [values], ...])

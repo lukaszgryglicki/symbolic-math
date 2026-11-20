@@ -1,3 +1,57 @@
+-e	rot90(0.5)	[0.5]
+-e	tril(0)	[0]
+-e	tril(1)	[1]
+-e	tril(-1)	[-1]
+-e	tril(1/2)	[1/2]
+-e	tril(2)	[2]
+-e	tril(i)	[i]
+-e	tril(inf)	[inf]
+-e	tril(-inf)	[-inf]
+-e	tril(undefined)	[undefined]
+-e	tril(10^20)	[100000000000000000000]
+-e	tril(10^(-20))	[1/100000000000000000000]
+-e	tril(x)	[x]
+-e	tril([])	[]
+-e	tril([1, 2])	[1, 0]
+-e	tril("text")	["text"]
+-e	tril(true)	[true]
+-e	tril(-7/3)	[-7/3]
+-e	tril(0.5)	[0.5]
+-e	triu(0)	[0]
+-e	triu(1)	[1]
+-e	triu(-1)	[-1]
+-e	triu(1/2)	[1/2]
+-e	triu(2)	[2]
+-e	triu(i)	[i]
+-e	triu(inf)	[inf]
+-e	triu(-inf)	[-inf]
+-e	triu(undefined)	[undefined]
+-e	triu(10^20)	[100000000000000000000]
+-e	triu(10^(-20))	[1/100000000000000000000]
+-e	triu(x)	[x]
+-e	triu([])	[]
+-e	triu([1, 2])	[1, 2]
+-e	triu("text")	["text"]
+-e	triu(true)	[true]
+-e	triu(-7/3)	[-7/3]
+-e	triu(0.5)	[0.5]
+-e	sortrows(0)	error: sortrows needs a matrix
+-e	sortrows(1)	error: sortrows needs a matrix
+-e	sortrows(-1)	error: sortrows needs a matrix
+-e	sortrows(1/2)	error: sortrows needs a matrix
+-e	sortrows(2)	error: sortrows needs a matrix
+-e	sortrows(i)	error: sortrows needs a matrix
+-e	sortrows(inf)	error: sortrows needs a matrix
+-e	sortrows(-inf)	error: sortrows needs a matrix
+-e	sortrows(undefined)	error: sortrows needs a matrix
+-e	sortrows(10^20)	error: sortrows needs a matrix
+-e	sortrows(10^(-20))	error: sortrows needs a matrix
+-e	sortrows(x)	error: sortrows needs a matrix
+-e	sortrows([])	error: sortrows needs a matrix
+-e	sortrows([1, 2])	error: sortrows needs a matrix
+-e	sortrows("text")	error: sortrows needs a matrix
+-e	sortrows(true)	error: sortrows needs a matrix
+-e	sortrows(-7/3)	error: sortrows needs a matrix
 -e	sortrows(0.5)	error: sortrows needs a matrix
 -e	issorted(0)	true
 -e	issorted(1)	true
@@ -644,57 +698,3 @@
 -e	bounds([])	[undefined, undefined]
 -e	bounds([1, 2])	[1, 2]
 -e	bounds("text")	["text", "text"]
--e	bounds(true)	[true, true]
--e	bounds(-7/3)	[-7/3, -7/3]
--e	bounds(0.5)	[0.5, 0.5]
--e	peak2peak(0)	0
--e	peak2peak(1)	0
--e	peak2peak(-1)	0
--e	peak2peak(1/2)	0
--e	peak2peak(2)	0
--e	peak2peak(i)	0
--e	peak2peak(inf)	undefined
--e	peak2peak(-inf)	undefined
--e	peak2peak(undefined)	undefined
--e	peak2peak(10^20)	0
--e	peak2peak(10^(-20))	0
--e	peak2peak(x)	0
--e	peak2peak([])	undefined
--e	peak2peak([1, 2])	1
--e	peak2peak("text")	0
--e	peak2peak(true)	0
--e	peak2peak(-7/3)	0
--e	peak2peak(0.5)	0
--e	trapz(0)	0
--e	trapz(1)	0
--e	trapz(-1)	0
--e	trapz(1/2)	0
--e	trapz(2)	0
--e	trapz(i)	0
--e	trapz(inf)	0
--e	trapz(-inf)	0
--e	trapz(undefined)	0
--e	trapz(10^20)	0
--e	trapz(10^(-20))	0
--e	trapz(x)	0
--e	trapz([])	0
--e	trapz([1, 2])	3/2
--e	trapz("text")	0
--e	trapz(true)	0
--e	trapz(-7/3)	0
--e	trapz(0.5)	0
--e	cumtrapz(0)	0
--e	cumtrapz(1)	0
--e	cumtrapz(-1)	0
--e	cumtrapz(1/2)	0
--e	cumtrapz(2)	0
--e	cumtrapz(i)	0
--e	cumtrapz(inf)	0
--e	cumtrapz(-inf)	0
--e	cumtrapz(undefined)	0
--e	cumtrapz(10^20)	0
--e	cumtrapz(10^(-20))	0
--e	cumtrapz(x)	0
--e	cumtrapz([])	[0]
--e	cumtrapz([1, 2])	[0, 3/2]
--e	cumtrapz("text")	0

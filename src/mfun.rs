@@ -242,7 +242,7 @@ pub(crate) fn real(e: &Expr, prec: u32, name: &str) -> Result<Float, String> {
 }
 
 /// The solution of a small system of linear equations with decimal numbers.
-fn linear(mut m: Vec<Vec<Float>>, mut b: Vec<Float>) -> Option<Vec<Float>> {
+pub(crate) fn linear(mut m: Vec<Vec<Float>>, mut b: Vec<Float>) -> Option<Vec<Float>> {
     let n = b.len();
     for col in 0..n {
         let best = (col..n).max_by(|i, j| {

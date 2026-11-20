@@ -841,6 +841,45 @@ pub fn sample_env(vars: &[Rc<str>], trial: u32, prec: u32) -> Env {
     env
 }
 
+/// The functions that are made of pieces: one of them may be zero on a whole stretch of
+/// its values without being zero everywhere.
+const PIECES: &[&str] = &[
+    "abs",
+    "sign",
+    "sgn",
+    "re",
+    "im",
+    "real",
+    "imag",
+    "conj",
+    "arg",
+    "angle",
+    "floor",
+    "ceil",
+    "round",
+    "fix",
+    "trunc",
+    "frac",
+    "mod",
+    "rem",
+    "max",
+    "min",
+    "heaviside",
+    "piecewise",
+    "dirac",
+    "boxcar",
+    "rectpuls",
+    "tripuls",
+    "sawtooth",
+    "square",
+    "gcd",
+    "lcm",
+    "hardlim",
+    "hardlims",
+    "unitstep",
+    "kroneckerdelta",
+];
+
 /// Probabilistic test of `e == 0` as an identity in its variables.
 pub fn is_zero_identity(e: &Expr) -> Option<bool> {
     if e.is_zero() {
@@ -849,6 +888,42 @@ pub fn is_zero_identity(e: &Expr) -> Option<bool> {
     let vars: Vec<Rc<str>> = e.free_syms().into_iter().collect();
     if vars.is_empty() {
         return is_zero_const(e);
+    }
+    let pieces = e.any(&|x| match x {
+        Expr::Fn(n, _) => PIECES.contains(&&**n),
+        Expr::Rel(..) | Expr::Bool(_) => true,
+        _ => false,
+    });
+    if pieces {
+        // values of many sizes, real ones of both signs among them: every one must agree
+        const SIZES: [f64; 8] = [1.0, 0.001, 30.0, 0.25, 1000.0, 0.03, 4.0, 0.5];
+        let mut hits = 0;
+        for trial in 0..48u32 {
+            let mut env = sample_env(&vars, trial, 512);
+            for (name, value) in env.iter_mut() {
+                if assume::is_integer_sym(name) {
+                    continue;
+                }
+                *value *= SIZES[(trial % 8) as usize];
+                match trial % 3 {
+                    1 => *value = Complex::with_val(512, value.real()),
+                    2 if !assume::is_positive_sym(name) => {
+                        *value =
+                            Complex::with_val(512, -Float::with_val(512, value.real().abs_ref()))
+                    }
+                    _ => {}
+                }
+            }
+            match zero_test(e, Some(&env)) {
+                Ok(true) => hits += 1,
+                Ok(false) => return Some(false),
+                Err(_) => continue,
+            }
+        }
+        return match hits >= 24 {
+            true => Some(true),
+            false => None,
+        };
     }
     let mut hits = 0;
     for trial in 0..12 {

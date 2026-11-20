@@ -262,7 +262,7 @@
 	plane()	error: plane takes at least 2 argument(s), 0 given
 	circle()	error: circle takes 2 argument(s), 0 given
 	sphere()	error: sphere takes 2 argument(s), 0 given
-	distance()	error: distance takes 2 argument(s), 0 given
+	distance()	error: distance takes 2 to 8 argument(s), 0 given
 	angle()	error: angle takes 1 to 3 argument(s), 0 given
 	projection()	error: projection takes 2 argument(s), 0 given
 	intersection()	error: intersection takes 2 argument(s), 0 given
@@ -377,7 +377,6 @@
 	multinomial()	error: multinomial takes at least 1 argument(s), 0 given
 	convergents()	error: convergents takes 1 to 2 argument(s), 0 given
 	range()	error: range takes 1 to 3 argument(s), 0 given
-	table()	error: table takes at least 2 argument(s), 0 given
 	length()	error: length takes 1 argument(s), 0 given
 	first()	error: first takes 1 argument(s), 0 given
 	last()	error: last takes 1 argument(s), 0 given
@@ -504,7 +503,7 @@
 	ztransform()	error: ztransform takes 3 argument(s), 0 given
 	invztransform()	error: invztransform takes 3 argument(s), 0 given
 	residue()	error: residue takes 2 to 3 argument(s), 0 given
-	pade()	error: pade takes 4 to 5 argument(s), 0 given
+	pade()	error: pade takes 2 to 5 argument(s), 0 given
 	seriescoeff()	error: seriescoeff takes 3 to 4 argument(s), 0 given
 	vertexlist()	error: vertexlist takes 1 argument(s), 0 given
 	edgelist()	error: edgelist takes 1 argument(s), 0 given
@@ -587,8 +586,8 @@
 	parametricplot3d()	error: parametricplot3d takes at least 4 argument(s), 0 given
 	graphplot()	error: graphplot takes at least 1 argument(s), 0 given
 	matrixplot()	error: matrixplot takes at least 1 argument(s), 0 given
-	save_png()	error: save_png takes at least 2 argument(s), 0 given
-	save_jxl()	error: save_jxl takes at least 2 argument(s), 0 given
+	save_png()	error: save_png takes at least 1 argument(s), 0 given
+	save_jxl()	error: save_jxl takes at least 1 argument(s), 0 given
 	save()	error: save takes at least 2 argument(s), 0 given
 	convert()	error: convert takes 2 argument(s), 0 given
 	siunits()	error: siunits takes 1 argument(s), 0 given
@@ -625,7 +624,7 @@
 	circshift()	error: circshift takes 2 to 3 argument(s), 0 given
 	tril()	error: tril takes 1 to 2 argument(s), 0 given
 	triu()	error: triu takes 1 to 2 argument(s), 0 given
-	sortrows()	error: sortrows takes 1 to 2 argument(s), 0 given
+	sortrows()	error: sortrows takes 1 to 4 argument(s), 0 given
 	issorted()	error: issorted takes 1 to 2 argument(s), 0 given
 	setxor()	error: setxor takes 2 argument(s), 0 given
 	ismember()	error: ismember takes 2 argument(s), 0 given
@@ -642,7 +641,7 @@
 	isdiag()	error: isdiag takes 1 argument(s), 0 given
 	istril()	error: istril takes 1 argument(s), 0 given
 	istriu()	error: istriu takes 1 argument(s), 0 given
-	bandwidth()	error: bandwidth takes 1 argument(s), 0 given
+	bandwidth()	error: bandwidth takes 1 to 2 argument(s), 0 given
 	isbanded()	error: isbanded takes 3 argument(s), 0 given
 	issymmetric()	error: issymmetric takes 1 to 2 argument(s), 0 given
 	ishermitian()	error: ishermitian takes 1 to 2 argument(s), 0 given
@@ -690,7 +689,7 @@
 	mad()	error: mad takes 1 to 3 argument(s), 0 given
 	cov()	error: cov takes 1 to 3 argument(s), 0 given
 	corrcoef()	error: corrcoef takes 1 to 3 argument(s), 0 given
-	histcounts()	error: histcounts takes 2 argument(s), 0 given
+	histcounts()	error: histcounts takes 1 to 2 argument(s), 0 given
 	detrend()	error: detrend takes 1 to 2 argument(s), 0 given
 	unwrap()	error: unwrap takes 1 to 2 argument(s), 0 given
 	accumarray()	error: accumarray takes 2 to 3 argument(s), 0 given
@@ -698,3 +697,4 @@
 	tiedrank()	error: tiedrank takes 1 argument(s), 0 given
 	cond()	error: cond takes 1 to 2 argument(s), 0 given
 	rcond()	error: rcond takes 1 argument(s), 0 given
+	vecnorm()	error: vecnorm takes 1 to 3 argument(s), 0 given

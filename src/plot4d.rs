@@ -25,7 +25,7 @@ pub enum Axis {
 const AXES: [Axis; 4] = [Axis::Width, Axis::Height, Axis::Frame, Axis::Color];
 
 /// The four numbers of the function, in the order of `arg_real`, `arg_imag`, `val_real`, `val_imag`.
-const PARTS: [&str; 4] = [
+pub(crate) const PARTS: [&str; 4] = [
     "the real part of z",
     "the imaginary part of z",
     "the real part of f(z)",
@@ -149,7 +149,8 @@ impl Turn {
             // (quarter turns are exact)
             let quarters = degrees / 90.0;
             match quarters.fract() == 0.0 {
-                true => [(0.0, 1.0), (1.0, 0.0), (0.0, -1.0), (-1.0, 0.0)][quarters.rem_euclid(4.0) as usize],
+                true => [(0.0, 1.0), (1.0, 0.0), (0.0, -1.0), (-1.0, 0.0)]
+                    [quarters.rem_euclid(4.0) as usize],
                 false => degrees.to_radians().sin_cos(),
             }
         });
@@ -185,24 +186,24 @@ impl Turn {
 /// first frame first, each with its colour.
 struct Columns {
     starts: Vec<u32>,
-    voxels: Vec<(u16, u16)>,
+    voxels: Vec<(u16, u16, Facing)>,
 }
 
 impl Columns {
     fn new(slices: &[Vec<Voxel>], pixels: usize) -> Columns {
         let mut starts = vec![0u32; pixels + 1];
-        for (pixel, _, _) in slices.iter().flatten() {
+        for (pixel, ..) in slices.iter().flatten() {
             starts[*pixel as usize + 1] += 1;
         }
         for pixel in 0..pixels {
             starts[pixel + 1] += starts[pixel];
         }
         let mut next = starts.clone();
-        let mut voxels = vec![(0, 0); starts[pixels] as usize];
+        let mut voxels = vec![(0, 0, [0; 3]); starts[pixels] as usize];
         for (frame, slice) in slices.iter().enumerate() {
-            for (pixel, _, level) in slice {
+            for (pixel, _, level, faces) in slice {
                 let at = &mut next[*pixel as usize];
-                voxels[*at as usize] = (frame as u16, *level);
+                voxels[*at as usize] = (frame as u16, *level, *faces);
                 *at += 1;
             }
         }
@@ -212,19 +213,41 @@ impl Columns {
     /// The colour of the body at a frame of a pixel: that of the nearest voxel of the
     /// surface that is not below the frame (the body below the surface), or not above it.
     fn at(&self, pixel: usize, frame: usize, fill: Fill) -> u16 {
+        self.seen(pixel, frame, fill, 0)
+            .map_or(EMPTY, |(level, _)| level)
+    }
+
+    /// The same with the direction that the surface faces, for a voxel that is no more
+    /// than `near` frames from the surface.
+    fn seen(&self, pixel: usize, frame: usize, fill: Fill, near: usize) -> Option<(u16, Facing)> {
         let column = &self.voxels[self.starts[pixel] as usize..self.starts[pixel + 1] as usize];
         let found = match fill {
-            Fill::Below => column.iter().find(|(f, _)| *f as usize >= frame),
-            _ => column.iter().rev().find(|(f, _)| *f as usize <= frame),
+            Fill::Below => column.iter().find(|(f, ..)| *f as usize >= frame),
+            _ => column.iter().rev().find(|(f, ..)| *f as usize <= frame),
         };
-        found.map_or(EMPTY, |(_, level)| *level)
+        found.map(|(f, level, faces)| match (*f as usize).abs_diff(frame) <= near {
+            true => (*level, *faces),
+            false => (*level, [0; 3]),
+        })
     }
 }
 
-const EMPTY: u16 = u16::MAX;
+pub(crate) const EMPTY: u16 = u16::MAX;
 /// A voxel of a frame: its pixel (rows from the top), how far from its middle the surface
-/// was met there, and its colour.
-type Voxel = (u32, u16, u16);
+/// was met there, its colour, and the direction that the surface faces there.
+type Voxel = (u32, u16, u16, Facing);
+/// A direction across the width, upwards and along the frames, each from -127 to 127; all
+/// zeros where none is known.
+pub type Facing = [i8; 3];
+
+/// The direction of a vector as small whole numbers.
+fn facing(v: [f64; 3]) -> Facing {
+    let length = (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt();
+    match length > 0.0 && length.is_finite() {
+        true => v.map(|part| (part / length * 127.0).round() as i8),
+        false => [0; 3],
+    }
+}
 /// The most places where a function is worked out, and the most voxels of a shape.
 const SAMPLES: usize = 1 << 24;
 const VOXELS: usize = 1 << 25;
@@ -247,7 +270,7 @@ pub struct Shape {
     /// Of a surface whose frames are stretched: the frames that became larger, and the
     /// frames that hold something.
     pub stretched: Option<(usize, usize)>,
-    fill: Fill,
+    pub(crate) fill: Fill,
     thickness: usize,
     /// The voxels of the surface.
     pub voxels: usize,
@@ -271,7 +294,10 @@ fn value(f: &Expr, var: &Rc<str>, env: &mut Env, x: f64, y: f64) -> [f64; 2] {
 /// The ends of a part of the values: those that are given, or the least and the greatest;
 /// when a few values lie far out (near a pole) the ends are those of all but a hundredth at
 /// each side.
-fn span(values: impl Iterator<Item = f64>, given: Option<(f64, f64)>) -> Option<((f64, f64), bool)> {
+fn span(
+    values: impl Iterator<Item = f64>,
+    given: Option<(f64, f64)>,
+) -> Option<((f64, f64), bool)> {
     if let Some(ends) = given {
         return Some((ends, false));
     }
@@ -429,14 +455,25 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
     let mut values = Vec::with_capacity((na + 1) * (nb + 1));
     for j in 0..=nb {
         for i in 0..=na {
-            values.push(value(&plan.f, &plan.var, &mut env, x_of(i as f64), y_of(j as f64)));
+            values.push(value(
+                &plan.f,
+                &plan.var,
+                &mut env,
+                x_of(i as f64),
+                y_of(j as f64),
+            ));
         }
     }
     let none = || "plot4d: the function has no value in this box".to_string();
-    let (real, narrow_real) = span(values.iter().map(|v| v[0]), plan.range_real).ok_or_else(none)?;
-    let (imag, narrow_imag) = span(values.iter().map(|v| v[1]), plan.range_imag).ok_or_else(none)?;
+    let (real, narrow_real) =
+        span(values.iter().map(|v| v[0]), plan.range_real).ok_or_else(none)?;
+    let (imag, narrow_imag) =
+        span(values.iter().map(|v| v[1]), plan.range_imag).ok_or_else(none)?;
     let ranges = [plan.re, plan.im, real, imag];
-    let turn = plan.rotate.filter(|angles| *angles != [0.0; 3]).map(Turn::new);
+    let turn = plan
+        .rotate
+        .filter(|angles| *angles != [0.0; 3])
+        .map(Turn::new);
     // where the four numbers of a place lie: across, down (from below), in the frames, in the colours
     let place = |q: [f64; 4]| -> [f64; 4] {
         let mut at = [0.0; 4];
@@ -462,9 +499,12 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
     let mut drawn = vec![false; na * nb];
     for j in 0..nb {
         for i in 0..na {
-            let (Some(p00), Some(p10), Some(p01), Some(p11)) =
-                (corner(i, j), corner(i + 1, j), corner(i, j + 1), corner(i + 1, j + 1))
-            else {
+            let (Some(p00), Some(p10), Some(p01), Some(p11)) = (
+                corner(i, j),
+                corner(i + 1, j),
+                corner(i, j + 1),
+                corner(i + 1, j + 1),
+            ) else {
                 continue;
             };
             let corners = [p00, p10, p01, p11];
@@ -473,7 +513,10 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
                 .filter(|part| side(*part) < 3)
                 .map(|part| {
                     let at: Vec<f64> = corners.iter().map(|c| c[side(part)]).collect();
-                    let (low, high) = (at.iter().cloned().fold(f64::MAX, f64::min), at.iter().cloned().fold(f64::MIN, f64::max));
+                    let (low, high) = (
+                        at.iter().cloned().fold(f64::MAX, f64::min),
+                        at.iter().cloned().fold(f64::MIN, f64::max),
+                    );
                     (part, high - low)
                 })
                 .filter(|(_, extent)| *extent > 8.0)
@@ -484,8 +527,13 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
                 if v[0].is_nan() {
                     continue;
                 }
-                let (middle, mean) = (place([x, y, v[0], v[1]]), half(half(p00, p11), half(p10, p01)));
-                if wide.iter().any(|(part, extent)| (middle[side(*part)] - mean[side(*part)]).abs() > 0.25 * extent) {
+                let (middle, mean) = (
+                    place([x, y, v[0], v[1]]),
+                    half(half(p00, p11), half(p10, p01)),
+                );
+                if wide.iter().any(|(part, extent)| {
+                    (middle[side(*part)] - mean[side(*part)]).abs() > 0.25 * extent
+                }) {
                     continue;
                 }
             }
@@ -496,7 +544,10 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
         (0..nb)
             .flat_map(|j| (0..na).map(move |i| (i, j)))
             .filter(|(i, j)| drawn[j * na + i])
-            .map(|(i, j)| [(i, j), (i + 1, j), (i, j + 1), (i + 1, j + 1)].map(|(i, j)| corner(i, j).expect("a value")))
+            .map(|(i, j)| {
+                [(i, j), (i + 1, j), (i, j + 1), (i + 1, j + 1)]
+                    .map(|(i, j)| corner(i, j).expect("a value"))
+            })
     };
     let mut stack = Vec::new();
     // every frame stretched on its own: where the surface lies in each frame, then the
@@ -504,36 +555,71 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
     let stretches = (plan.normalize && plan.fill == Fill::Surface).then(|| {
         let mut ends = vec![[(f64::MAX, f64::MIN); 3]; sizes[2]];
         for corners in cells() {
-            pieces(corners, &sizes, None, &mut stack, &mut |frame, middle, piece| {
-                // across and upwards as far as the pieces reach, the colours of their middles
-                for (end, axis) in ends[frame].iter_mut().zip([0, 1]) {
-                    for corner in piece {
-                        *end = (end.0.min(corner[axis]), end.1.max(corner[axis]));
+            pieces(
+                corners,
+                &sizes,
+                None,
+                &mut stack,
+                &mut |frame, middle, piece| {
+                    // across and upwards as far as the pieces reach, the colours of their middles
+                    for (end, axis) in ends[frame].iter_mut().zip([0, 1]) {
+                        for corner in piece {
+                            *end = (end.0.min(corner[axis]), end.1.max(corner[axis]));
+                        }
                     }
-                }
-                ends[frame][2] = (ends[frame][2].0.min(middle[3]), ends[frame][2].1.max(middle[3]));
-            });
+                    ends[frame][2] = (
+                        ends[frame][2].0.min(middle[3]),
+                        ends[frame][2].1.max(middle[3]),
+                    );
+                },
+            );
         }
-        ends.iter().map(|ends| Stretch::new(ends, &sizes)).collect::<Vec<_>>()
+        ends.iter()
+            .map(|ends| Stretch::new(ends, &sizes))
+            .collect::<Vec<_>>()
     });
     let mut slices: Vec<Vec<Voxel>> = vec![Vec::new(); sizes[2]];
     let (mut pushed, mut kept) = (0usize, 0usize);
     for corners in cells() {
-        pieces(corners, &sizes, stretches.as_deref(), &mut stack, &mut |frame, middle, _| {
-            let seen = match &stretches {
-                Some(stretches) => stretches[frame].apply(middle),
-                None => middle,
-            };
-            let cell = [0, 1, 2, 3].map(|axis| (seen[axis].max(0.0) as usize).min(sizes[axis] - 1));
-            let far: f64 = (0..3).map(|axis| (seen[axis] - cell[axis] as f64 - 0.5).powi(2)).sum();
-            let row = sizes[1] - 1 - cell[1];
-            slices[cell[2]].push((
-                (row * sizes[0] + cell[0]) as u32,
-                (far / 0.75 * 65535.0).min(65535.0) as u16,
-                cell[3] as u16,
-            ));
-            pushed += 1;
-        });
+        pieces(
+            corners,
+            &sizes,
+            stretches.as_deref(),
+            &mut stack,
+            &mut |frame, middle, piece| {
+                let seen = match &stretches {
+                    Some(stretches) => stretches[frame].apply(middle),
+                    None => middle,
+                };
+                // the direction that the piece faces: across both of its sides
+                let (u, v) = (
+                    [0, 1, 2].map(|axis| piece[1][axis] - piece[0][axis]),
+                    [0, 1, 2].map(|axis| piece[2][axis] - piece[0][axis]),
+                );
+                let larger = match &stretches {
+                    Some(stretches) => stretches[frame].scale,
+                    None => [1.0; 3],
+                };
+                let faces = facing([
+                    (u[1] * v[2] - u[2] * v[1]) * larger[1],
+                    (u[2] * v[0] - u[0] * v[2]) * larger[0],
+                    (u[0] * v[1] - u[1] * v[0]) * larger[0] * larger[1],
+                ]);
+                let cell =
+                    [0, 1, 2, 3].map(|axis| (seen[axis].max(0.0) as usize).min(sizes[axis] - 1));
+                let far: f64 = (0..3)
+                    .map(|axis| (seen[axis] - cell[axis] as f64 - 0.5).powi(2))
+                    .sum();
+                let row = sizes[1] - 1 - cell[1];
+                slices[cell[2]].push((
+                    (row * sizes[0] + cell[0]) as u32,
+                    (far / 0.75 * 65535.0).min(65535.0) as u16,
+                    cell[3] as u16,
+                    faces,
+                ));
+                pushed += 1;
+            },
+        );
         if pushed - kept > VOXELS / 2 {
             kept = sorted(&mut slices);
             pushed = kept;
@@ -554,7 +640,9 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
         let larger = stretches
             .iter()
             .zip(&slices)
-            .filter(|(stretch, slice)| !slice.is_empty() && (stretch.scale[0] > 1.02 || stretch.scale[1] > 1.02))
+            .filter(|(stretch, slice)| {
+                !slice.is_empty() && (stretch.scale[0] > 1.02 || stretch.scale[1] > 1.02)
+            })
             .count();
         (larger, held)
     });
@@ -580,6 +668,8 @@ pub struct Frames<'a> {
     /// The colour of every pixel of a frame; `EMPTY` where the shape is not.
     pub levels: Vec<u16>,
     spare: Vec<u16>,
+    /// The directions that the voxels of the frame face, when they are asked for.
+    pub facings: Option<Vec<Facing>>,
 }
 
 impl<'a> Frames<'a> {
@@ -588,6 +678,15 @@ impl<'a> Frames<'a> {
             shape,
             levels: vec![EMPTY; shape.sizes[0] * shape.sizes[1]],
             spare: Vec::new(),
+            facings: None,
+        }
+    }
+
+    /// The frames with the directions that their voxels face.
+    pub fn facing(shape: &'a Shape) -> Frames<'a> {
+        Frames {
+            facings: Some(vec![[0; 3]; shape.sizes[0] * shape.sizes[1]]),
+            ..Frames::new(shape)
         }
     }
 
@@ -596,7 +695,12 @@ impl<'a> Frames<'a> {
     fn stretch(&mut self) {
         let [width, height, _, colours] = self.shape.sizes;
         let (mut across, mut down, mut tones) = ((width, 0), (height, 0), (EMPTY, 0u16));
-        for (pixel, level) in self.levels.iter().enumerate().filter(|(_, level)| **level != EMPTY) {
+        for (pixel, level) in self
+            .levels
+            .iter()
+            .enumerate()
+            .filter(|(_, level)| **level != EMPTY)
+        {
             let (column, row) = (pixel % width, pixel / width);
             across = (across.0.min(column), across.1.max(column));
             down = (down.0.min(row), down.1.max(row));
@@ -606,19 +710,71 @@ impl<'a> Frames<'a> {
             return;
         }
         let (wide, high) = (across.1 + 1 - across.0, down.1 + 1 - down.0);
-        let tone = |level: u16| match tones.1 > tones.0 {
-            true => ((level - tones.0) as usize * (colours - 1) + (tones.1 - tones.0) as usize / 2) / (tones.1 - tones.0) as usize,
-            false => colours / 2,
+        let spread = (tones.1 - tones.0) as f64;
+        let tone = |level: f64| match spread > 0.0 {
+            true => ((level - tones.0 as f64) / spread * (colours - 1) as f64)
+                .round()
+                .clamp(0.0, (colours - 1) as f64),
+            false => (colours / 2) as f64,
         } as u16;
+        // a place between four pixels of the cut belongs to the body when most of what is
+        // around it does, and has the colour that lies between theirs
+        let levels = &self.levels;
+        let at = |column: f64, row: f64| -> u16 {
+            let (x, y) = (
+                column.clamp(across.0 as f64, across.1 as f64),
+                row.clamp(down.0 as f64, down.1 as f64),
+            );
+            let (x0, y0) = (
+                (x as usize).min(across.1.max(1) - 1).max(across.0),
+                (y as usize).min(down.1.max(1) - 1).max(down.0),
+            );
+            let (x1, y1) = ((x0 + 1).min(across.1), (y0 + 1).min(down.1));
+            let (fx, fy) = (
+                (x - x0 as f64).clamp(0.0, 1.0),
+                (y - y0 as f64).clamp(0.0, 1.0),
+            );
+            let (mut held, mut sum) = (0.0, 0.0);
+            for (px, py, weight) in [
+                (x0, y0, (1.0 - fx) * (1.0 - fy)),
+                (x1, y0, fx * (1.0 - fy)),
+                (x0, y1, (1.0 - fx) * fy),
+                (x1, y1, fx * fy),
+            ] {
+                let level = levels[py * width + px];
+                if level != EMPTY {
+                    held += weight;
+                    sum += weight * level as f64;
+                }
+            }
+            match held >= 0.5 {
+                true => tone(sum / held),
+                false => EMPTY,
+            }
+        };
         self.spare.clear();
         self.spare.extend((0..width * height).map(|pixel| {
             let (column, row) = (pixel % width, pixel / width);
-            let from = (down.0 + row * high / height) * width + across.0 + column * wide / width;
-            match self.levels[from] {
-                EMPTY => EMPTY,
-                level => tone(level),
-            }
+            at(
+                across.0 as f64 + (column as f64 + 0.5) * wide as f64 / width as f64 - 0.5,
+                down.0 as f64 + (row as f64 + 0.5) * high as f64 / height as f64 - 0.5,
+            )
         }));
+        // (the directions are those of the nearest places of the cut)
+        if let Some(facings) = &mut self.facings {
+            let nearest = |at: f64, ends: (usize, usize)| {
+                at.round().clamp(ends.0 as f64, ends.1 as f64) as usize
+            };
+            let moved: Vec<Facing> = (0..width * height)
+                .map(|pixel| {
+                    let (column, row) = (pixel % width, pixel / width);
+                    let x = across.0 as f64 + (column as f64 + 0.5) * wide as f64 / width as f64;
+                    let y = down.0 as f64 + (row as f64 + 0.5) * high as f64 / height as f64;
+                    facings[nearest(y - 0.5, down) * width + nearest(x - 0.5, across)]
+                })
+                .collect();
+            *facings = moved;
+        }
         std::mem::swap(&mut self.levels, &mut self.spare);
     }
 
@@ -630,16 +786,28 @@ impl<'a> Frames<'a> {
             (None, _) => {
                 self.levels.fill(EMPTY);
                 for slice in &shape.slices[(k + 1).saturating_sub(shape.thickness)..=k] {
-                    for (pixel, _, level) in slice {
+                    for (pixel, _, level, faces) in slice {
                         self.levels[*pixel as usize] = *level;
+                        if let Some(facings) = &mut self.facings {
+                            facings[*pixel as usize] = *faces;
+                        }
                     }
                 }
             }
-            (Some(columns), None) => {
-                for (pixel, level) in self.levels.iter_mut().enumerate() {
-                    *level = columns.at(pixel, k, shape.fill);
+            (Some(columns), None) => match &mut self.facings {
+                None => {
+                    for (pixel, level) in self.levels.iter_mut().enumerate() {
+                        *level = columns.at(pixel, k, shape.fill);
+                    }
                 }
-            }
+                Some(facings) => {
+                    for (pixel, level) in self.levels.iter_mut().enumerate() {
+                        (*level, facings[pixel]) = columns
+                            .seen(pixel, k, shape.fill, 0)
+                            .unwrap_or((EMPTY, [0; 3]));
+                    }
+                }
+            },
             // every place of the picture shows what the body has where the place comes from
             (Some(columns), Some(turn)) => {
                 for (pixel, level) in self.levels.iter_mut().enumerate() {
@@ -655,13 +823,20 @@ impl<'a> Frames<'a> {
                         && from[0] < width as f64
                         && from[1] < height as f64
                         && from[2] < frames as f64;
-                    *level = match inside {
-                        true => {
+                    let found = inside
+                        .then(|| {
                             let source = (height - 1 - from[1] as usize) * width + from[0] as usize;
-                            columns.at(source, from[2] as usize, shape.fill)
-                        }
-                        false => EMPTY,
-                    };
+                            columns.seen(source, from[2] as usize, shape.fill, 2)
+                        })
+                        .flatten();
+                    *level = found.map_or(EMPTY, |(level, _)| level);
+                    if let (Some(facings), Some((_, faces))) = (&mut self.facings, found) {
+                        facings[pixel] = facing([0, 1, 2].map(|i| {
+                            (0..3)
+                                .map(|j| turn.to[i][j] * f64::from(faces[j]))
+                                .sum::<f64>()
+                        }));
+                    }
                 }
             }
         }
@@ -675,7 +850,12 @@ impl<'a> Frames<'a> {
         self.take(k);
         let channels = tints.channels();
         let mut data = vec![0.0f32; self.levels.len() * channels];
-        for (pixel, level) in self.levels.iter().enumerate().filter(|(_, level)| **level != EMPTY) {
+        for (pixel, level) in self
+            .levels
+            .iter()
+            .enumerate()
+            .filter(|(_, level)| **level != EMPTY)
+        {
             let at = pixel * channels;
             match tints {
                 Tints::Gray(grays) => data[at] = grays[*level as usize],
@@ -720,14 +900,23 @@ impl Tints {
     fn different(&self, bits: u32) -> usize {
         let max = (1u32 << bits) - 1;
         let mut all: Vec<[u32; 3]> = match self {
-            Tints::Gray(grays) => grays.iter().map(|g| [imgfile::step(*g, max), 0, 0]).collect(),
-            Tints::Rgb(colours) => colours.iter().map(|c| c.map(|v| imgfile::step(v, max))).collect(),
+            Tints::Gray(grays) => grays
+                .iter()
+                .map(|g| [imgfile::step(*g, max), 0, 0])
+                .collect(),
+            Tints::Rgb(colours) => colours
+                .iter()
+                .map(|c| c.map(|v| imgfile::step(v, max)))
+                .collect(),
         };
         all.sort_unstable();
         all.dedup();
         all.len()
     }
 }
+
+/// The least and the greatest of a part of a number.
+pub(crate) type Ends = (f64, f64);
 
 /// The corners of the box of the arguments as numbers.
 fn corner(e: &Expr) -> Option<(f64, f64)> {
@@ -741,17 +930,129 @@ fn corner(e: &Expr) -> Option<(f64, f64)> {
 
 const USAGE: &str = "plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name";
 const OF_FILES: &[&str] = &[
-    "width", "height", "frames", "colors", "colours", "palette", "reverse", "bits", "gray", "grey", "alpha", "channels",
-    "lossless", "quality", "distance", "effort", "level", "fps", "thickness", "fill", "arg_real", "arg_imag", "val_real",
-    "val_imag", "range_real", "range_imag", "rotate", "normalize",
+    "width",
+    "height",
+    "frames",
+    "colors",
+    "colours",
+    "palette",
+    "reverse",
+    "bits",
+    "gray",
+    "grey",
+    "alpha",
+    "channels",
+    "lossless",
+    "quality",
+    "distance",
+    "effort",
+    "level",
+    "fps",
+    "thickness",
+    "fill",
+    "arg_real",
+    "arg_imag",
+    "val_real",
+    "val_imag",
+    "range_real",
+    "range_imag",
+    "rotate",
+    "normalize",
 ];
 const OF_CHARACTERS: &[&str] = &[
-    "width", "height", "frames", "ascii", "reverse", "thickness", "fill", "arg_real", "arg_imag", "val_real", "val_imag",
-    "range_real", "range_imag", "rotate", "normalize",
+    "width",
+    "height",
+    "frames",
+    "ascii",
+    "reverse",
+    "thickness",
+    "fill",
+    "arg_real",
+    "arg_imag",
+    "val_real",
+    "val_imag",
+    "range_real",
+    "range_imag",
+    "rotate",
+    "normalize",
 ];
 const MARKS: &[u8] = b".:-=+*#%@";
 
 impl Session {
+    /// The function of a command like plot4d, the name of its complex number and the box of
+    /// that number, from the arguments that are no choices.
+    pub(crate) fn function_in_a_box(
+        &mut self,
+        name: &str,
+        plain: &[Expr],
+    ) -> Result<(Expr, Rc<str>, Ends, Ends), String> {
+        let usage = || USAGE.replace("plot4d", name);
+        let mut args = self.eval_args(plain)?;
+        // a function may be written as a text
+        if let Some(text) = args.first().and_then(crate::radix::text_of) {
+            let parsed = {
+                let funcs = &self.funcs;
+                crate::parser::parse_with(text, &|name| funcs.contains_key(name))?
+            };
+            let [statement] = parsed.stmts.as_slice() else {
+                return Err(usage());
+            };
+            args[0] = self.eval(statement)?;
+        }
+        let Some(f) = args.first().cloned() else {
+            return Err(usage());
+        };
+        if f.as_list().is_some() || matches!(f, Expr::Rel(..) | Expr::Bool(_)) {
+            return Err(usage());
+        }
+        let (var, rest): (Rc<str>, &[Expr]) = match args.get(1) {
+            Some(Expr::Sym(name)) if !crate::expr::is_const_name(name) => {
+                (name.clone(), &args[2..])
+            }
+            _ => {
+                let names = f.free_syms();
+                let mut names = names.iter().filter(|n| !crate::expr::is_const_name(n));
+                match (names.next(), names.next()) {
+                    (Some(name), None) => (name.clone(), &args[1..]),
+                    (None, _) => {
+                        return Err(format!(
+                            "{name} draws a function of a complex number, and {f} has no name in it: {}",
+                            usage()
+                        ));
+                    }
+                    _ => {
+                        return Err(format!(
+                            "{f} has several names: {name}(f, z) says which one is the complex number"
+                        ));
+                    }
+                }
+            }
+        };
+        let (re, im) = match rest {
+            [] => ((-2.0, 2.0), (-2.0, 2.0)),
+            [r] => match crate::plot::number(r) {
+                Some(r) if r > 0.0 => ((-r, r), (-r, r)),
+                _ => return Err(usage()),
+            },
+            [a, b] => {
+                let (Some(a), Some(b)) = (corner(a), corner(b)) else {
+                    return Err(usage());
+                };
+                let ordered = |p: f64, q: f64| if p < q { (p, q) } else { (q, p) };
+                let (re, im) = (ordered(a.0, b.0), ordered(a.1, b.1));
+                if !(re.1 > re.0 && im.1 > im.0) {
+                    return Err(format!(
+                        "the corners of the box differ in their real and in their imaginary part: {}",
+                        usage()
+                    ));
+                }
+                (re, im)
+            }
+            _ => return Err(usage()),
+        };
+        Ok((f, var, re, im))
+    }
+
     /// `plot4d(f, z, a, b)`: as a picture of characters (the frame in the middle), or saved
     /// in a file whose frames are the third dimension and whose colours are the fourth.
     pub(crate) fn plot4d(
@@ -762,93 +1063,42 @@ impl Session {
     ) -> Result<Vec<String>, String> {
         let (plain, mut choices) = self.chosen("plot4d", raw, more)?;
         choices.fast = file.is_some_and(|(_, _, fast)| fast);
-        let mut args = self.eval_args(&plain)?;
-        // a function may be written as a text
-        if let Some(text) = args.first().and_then(crate::radix::text_of) {
-            let parsed = {
-                let funcs = &self.funcs;
-                crate::parser::parse_with(text, &|name| funcs.contains_key(name))?
-            };
-            let [statement] = parsed.stmts.as_slice() else {
-                return Err(USAGE.to_string());
-            };
-            args[0] = self.eval(statement)?;
-        }
-        let Some(f) = args.first().cloned() else {
-            return Err(USAGE.to_string());
+        let (f, var, re, im) = self.function_in_a_box("plot4d", &plain)?;
+        let allowed = if file.is_some() {
+            OF_FILES
+        } else {
+            OF_CHARACTERS
         };
-        if f.as_list().is_some() || matches!(f, Expr::Rel(..) | Expr::Bool(_)) {
-            return Err(USAGE.to_string());
-        }
-        let (var, rest): (Rc<str>, &[Expr]) = match args.get(1) {
-            Some(Expr::Sym(name)) if !crate::expr::is_const_name(name) => (name.clone(), &args[2..]),
-            _ => {
-                let names = f.free_syms();
-                let mut names = names.iter().filter(|n| !crate::expr::is_const_name(n));
-                match (names.next(), names.next()) {
-                    (Some(name), None) => (name.clone(), &args[1..]),
-                    (None, _) => return Err(format!("plot4d draws a function of a complex number, and {f} has no name in it: {USAGE}")),
-                    _ => return Err(format!("{f} has several names: plot4d(f, z) says which one is the complex number")),
-                }
-            }
-        };
-        let (re, im) = match rest {
-            [] => ((-2.0, 2.0), (-2.0, 2.0)),
-            [r] => match crate::plot::number(r) {
-                Some(r) if r > 0.0 => ((-r, r), (-r, r)),
-                _ => return Err(USAGE.to_string()),
-            },
-            [a, b] => {
-                let (Some(a), Some(b)) = (corner(a), corner(b)) else {
-                    return Err(USAGE.to_string());
-                };
-                let ordered = |p: f64, q: f64| if p < q { (p, q) } else { (q, p) };
-                let (re, im) = (ordered(a.0, b.0), ordered(a.1, b.1));
-                if !(re.1 > re.0 && im.1 > im.0) {
-                    return Err(format!("the corners of the box differ in their real and in their imaginary part: {USAGE}"));
-                }
-                (re, im)
-            }
-            _ => return Err(USAGE.to_string()),
-        };
-        let allowed = if file.is_some() { OF_FILES } else { OF_CHARACTERS };
-        if let Some(other) = choices.given.iter().find(|g| !allowed.contains(&g.as_str())) {
+        if let Some(other) = choices
+            .given
+            .iter()
+            .find(|g| !allowed.contains(&g.as_str()))
+        {
             return Err(match file {
                 None if OF_FILES.contains(&other.as_str()) => format!(
                     "{other} is chosen for the file of plot4d: save_jxl(\"plot4d.jxl\", plot4d(...), {other}{}); the picture of characters takes {}",
-                    if picture::WORDS.contains(&other.as_str()) { "" } else { " = ..." },
+                    if picture::WORDS.contains(&other.as_str()) {
+                        ""
+                    } else {
+                        " = ..."
+                    },
                     OF_CHARACTERS.join(", ")
                 ),
-                _ => format!("{other} does not belong to plot4d: its file takes {}", OF_FILES.join(", ")),
+                _ => format!(
+                    "{other} does not belong to plot4d: its file takes {}",
+                    OF_FILES.join(", ")
+                ),
             });
         }
         let given = |name: &str| choices.given.iter().any(|g| g == name);
         let frames = given("frames").then_some(choices.look.frames);
-        let thickness = match given("thickness") {
-            true if choices.look.thickness.fract() != 0.0 || choices.look.thickness < 1.0 => {
-                return Err("the thickness of plot4d is a whole number of frames, 1 or more".to_string());
-            }
-            true => choices.look.thickness as usize,
-            false => 1,
-        };
-        let mut plan = Plan {
-            f: f.clone(),
-            var: var.clone(),
-            re,
-            im,
-            axes: layout(&choices.axes)?,
-            sizes: [0; 4],
-            range_real: choices.range_real,
-            range_imag: choices.range_imag,
-            fill: choices.fill.unwrap_or_default(),
-            thickness,
-            rotate: choices.rotate,
-            normalize: choices.normalize,
-        };
         let function = format!("{f}");
+        let mut plan = plan_of("plot4d", f, var, (re, im), &choices)?;
         match file {
             None => self.plot4d_characters(&mut plan, &choices, frames, &function),
-            Some((path, format, _)) => plot4d_file(&mut plan, &choices, frames, &function, path, format),
+            Some((path, format, _)) => {
+                plot4d_file(&mut plan, &choices, frames, &function, path, format)
+            }
         }
     }
 
@@ -859,14 +1109,15 @@ impl Session {
         frames: Option<usize>,
         function: &str,
     ) -> Result<Vec<String>, String> {
-        let limited = |given: Option<usize>, name: &str, range: (usize, usize), usual: usize| match given {
-            None => Ok(usual),
-            Some(v) if (range.0..=range.1).contains(&v) => Ok(v),
-            Some(v) => Err(format!(
-                "the {name} of a picture of characters is from {} to {}, not {v}",
-                range.0, range.1
-            )),
-        };
+        let limited =
+            |given: Option<usize>, name: &str, range: (usize, usize), usual: usize| match given {
+                None => Ok(usual),
+                Some(v) if (range.0..=range.1).contains(&v) => Ok(v),
+                Some(v) => Err(format!(
+                    "the {name} of a picture of characters is from {} to {}, not {v}",
+                    range.0, range.1
+                )),
+            };
         plan.sizes = [
             limited(choices.width, "width", (8, 400), 64)?,
             limited(choices.height, "height", (2, 200), 24)?,
@@ -886,7 +1137,11 @@ impl Session {
                     .map(|level| match *level {
                         EMPTY => ' ',
                         level => {
-                            let level = if choices.reverse { MARKS.len() - 1 - level as usize } else { level as usize };
+                            let level = if choices.reverse {
+                                MARKS.len() - 1 - level as usize
+                            } else {
+                                level as usize
+                            };
                             MARKS[level] as char
                         }
                     })
@@ -894,7 +1149,11 @@ impl Session {
                 line.trim_end().to_string()
             })
             .collect();
-        let part = plan.axes.iter().position(|a| *a == Axis::Frame).unwrap_or(0);
+        let part = plan
+            .axes
+            .iter()
+            .position(|a| *a == Axis::Frame)
+            .unwrap_or(0);
         let (low, high) = shape.ranges[part];
         let cut = |k: usize| low + (high - low) * k as f64 / plan.sizes[2] as f64;
         lines.push(format!(
@@ -914,6 +1173,39 @@ impl Session {
     }
 }
 
+/// What is drawn of a function in a box, from what was chosen; the sizes are still to set.
+pub(crate) fn plan_of(
+    name: &str,
+    f: Expr,
+    var: Rc<str>,
+    (re, im): (Ends, Ends),
+    choices: &Choices,
+) -> Result<Plan, String> {
+    let thickness = match choices.given.iter().any(|g| g == "thickness") {
+        true if choices.look.thickness.fract() != 0.0 || choices.look.thickness < 1.0 => {
+            return Err(format!(
+                "the thickness of {name} is a whole number of frames, 1 or more"
+            ));
+        }
+        true => choices.look.thickness as usize,
+        false => 1,
+    };
+    Ok(Plan {
+        f,
+        var,
+        re,
+        im,
+        axes: layout(&choices.axes)?,
+        sizes: [0; 4],
+        range_real: choices.range_real,
+        range_imag: choices.range_imag,
+        fill: choices.fill.unwrap_or_default(),
+        thickness,
+        rotate: choices.rotate,
+        normalize: choices.normalize,
+    })
+}
+
 /// What the sides of the picture show, and how much of its box the shape takes.
 fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
     let mut told = Vec::new();
@@ -931,7 +1223,11 @@ fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
             PARTS[part],
             label(low),
             label(high),
-            if axis == Axis::Height { ", upwards" } else { "" }
+            if axis == Axis::Height {
+                ", upwards"
+            } else {
+                ""
+            }
         ));
     }
     let mut lines = vec![format!(
@@ -939,6 +1235,14 @@ fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
         told.join("; "),
         colours.map(|c| format!(" ({c})")).unwrap_or_default()
     )];
+    lines.extend(notes(shape));
+    lines
+}
+
+/// What is to tell about a shape besides its sides: values that are left out, its turn, its
+/// stretched frames, how much of its box it takes.
+pub(crate) fn notes(shape: &Shape) -> Vec<String> {
+    let mut lines = Vec::new();
     for (part, name) in [(2, "range_real"), (3, "range_imag")] {
         if shape.narrowed[part] {
             lines.push(format!(
@@ -963,7 +1267,11 @@ fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
         if let Some((larger, held)) = shape.stretched
             && larger < held
         {
-            let frames = shape.axes.iter().position(|a| *a == Axis::Frame).unwrap_or(0);
+            let frames = shape
+                .axes
+                .iter()
+                .position(|a| *a == Axis::Frame)
+                .unwrap_or(0);
             lines.push(format!(
                 "{larger} of {held} frames became larger; the others reach from edge to edge both ways as they are{}",
                 match frames >= 2 {
@@ -1012,7 +1320,9 @@ fn plot4d_file(
     };
     // lossless files are packed as tightly as the encoder can, unless an effort is chosen;
     // a quick look is small and packed fast
-    let lossy = !png && (choices.quality.is_some_and(|q| q < 100.0) || choices.distance.is_some_and(|d| d > 0.0));
+    let lossy = !png
+        && (choices.quality.is_some_and(|q| q < 100.0)
+            || choices.distance.is_some_and(|d| d > 0.0));
     let effort = match (choices.fast, lossy) {
         (true, _) => 3,
         (false, true) => 7,
@@ -1043,10 +1353,16 @@ fn plot4d_file(
     }
     let (name, mut stops) = match &choices.look.palette {
         Some(stops) => (
-            raster::PALETTES.iter().find(|(_, known)| *known == stops.as_slice()).map(|(name, _)| *name),
+            raster::PALETTES
+                .iter()
+                .find(|(_, known)| *known == stops.as_slice())
+                .map(|(name, _)| *name),
             stops.clone(),
         ),
-        None => (Some("rainbow"), crate::scene::palette("rainbow").unwrap_or_default()),
+        None => (
+            Some("rainbow"),
+            crate::scene::palette("rainbow").unwrap_or_default(),
+        ),
     };
     if choices.reverse {
         stops.reverse();
@@ -1064,7 +1380,11 @@ fn plot4d_file(
             (false, Some(name)) => format!("colours of the palette {name}"),
             (false, None) => "colours of the palette that is given".to_string(),
         },
-        if choices.reverse && !gray { " reversed" } else { "" },
+        if choices.reverse && !gray {
+            " reversed"
+        } else {
+            ""
+        },
         if different < colours {
             format!(
                 ", of which {different} differ with {} bit{} a sample",
@@ -1076,9 +1396,16 @@ fn plot4d_file(
         }
     );
     let mut lines = vec![format!("plot4d of {function}")];
-    lines.extend(facts(&shape, Some(&format!("{scale}, the least value first"))));
+    lines.extend(facts(
+        &shape,
+        Some(&format!("{scale}, the least value first")),
+    ));
     let (n, d) = encoding.rate;
-    let rate = if d == 1 { n.to_string() } else { label(f64::from(n) / f64::from(d)) };
+    let rate = if d == 1 {
+        n.to_string()
+    } else {
+        label(f64::from(n) / f64::from(d))
+    };
     let mut told = vec![
         if png { "PNG" } else { "JPEG XL" }.to_string(),
         format!("{width} x {height} pixels"),
@@ -1086,7 +1413,11 @@ fn plot4d_file(
             1 => "1 frame".to_string(),
             _ => format!("{count} frames, {rate} a second"),
         },
-        format!("{} bit{}", encoding.bits, if encoding.bits == 1 { "" } else { "s" }),
+        format!(
+            "{} bit{}",
+            encoding.bits,
+            if encoding.bits == 1 { "" } else { "s" }
+        ),
         format!(
             "{} + alpha{}",
             if gray { "gray" } else { "RGB" },
@@ -1098,7 +1429,10 @@ fn plot4d_file(
     } else {
         told.push(match encoding.distance {
             None => "lossless".to_string(),
-            Some(d) => format!("lossy at the distance {} (alpha stays exact)", label(f64::from(d))),
+            Some(d) => format!(
+                "lossy at the distance {} (alpha stays exact)",
+                label(f64::from(d))
+            ),
         });
         told.push(format!("effort {}", encoding.effort));
     }
@@ -1112,7 +1446,10 @@ mod tests {
     use super::*;
 
     fn plan(text: &str, sizes: [usize; 4]) -> Plan {
-        let f = crate::parser::parse(text).expect("an expression").stmts.remove(0);
+        let f = crate::parser::parse(text)
+            .expect("an expression")
+            .stmts
+            .remove(0);
         Plan {
             f,
             var: Rc::from("z"),
@@ -1165,7 +1502,11 @@ mod tests {
             let levels = frame(&shape, k);
             for (pixel, level) in levels.iter().enumerate() {
                 let (row, column) = (pixel / 8, pixel % 8);
-                assert_eq!(*level, if column == k { (7 - row) as u16 } else { EMPTY }, "frame {k} pixel {pixel}");
+                assert_eq!(
+                    *level,
+                    if column == k { (7 - row) as u16 } else { EMPTY },
+                    "frame {k} pixel {pixel}"
+                );
             }
         }
     }
@@ -1208,13 +1549,26 @@ mod tests {
         // quarter turns are exact: the sides change places
         let turn = Turn::new([90.0, 0.0, 0.0]);
         assert_eq!(turn.scale, 1.0);
-        assert_eq!(turn.to, [[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]);
-        assert_eq!(Turn::new([0.0, 0.0, 180.0]).to, [[-1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0]]);
-        assert_eq!(Turn::new([360.0, -720.0, 0.0]).to, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
+        assert_eq!(
+            turn.to,
+            [[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]
+        );
+        assert_eq!(
+            Turn::new([0.0, 0.0, 180.0]).to,
+            [[-1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0]]
+        );
+        assert_eq!(
+            Turn::new([360.0, -720.0, 0.0]).to,
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        );
         // an eighth of a turn about one axis: smaller by sqrt(2), and back is the inverse
         let eighth = Turn::new([45.0, 0.0, 0.0]);
         assert!((eighth.scale - 0.5f64.sqrt()).abs() < 1e-12);
-        for turn in [eighth, Turn::new([30.0, 20.0, 10.0]), Turn::new([-75.0, 130.0, 260.0])] {
+        for turn in [
+            eighth,
+            Turn::new([30.0, 20.0, 10.0]),
+            Turn::new([-75.0, 130.0, 260.0]),
+        ] {
             let sizes = [8, 6, 4, 2];
             let at = [1.5, 4.25, 3.0];
             let there = Turn::apply(&turn.to, at, &sizes);
@@ -1222,9 +1576,18 @@ mod tests {
             assert!((0..3).all(|k| (again[k] - at[k]).abs() < 1e-9), "{again:?}");
             // the corners of the box stay inside
             for corner in 0..8 {
-                let corner = [0, 1, 2].map(|k| if corner >> k & 1 == 1 { sizes[k] as f64 } else { 0.0 });
+                let corner = [0, 1, 2].map(|k| {
+                    if corner >> k & 1 == 1 {
+                        sizes[k] as f64
+                    } else {
+                        0.0
+                    }
+                });
                 let moved = Turn::apply(&turn.to, corner, &sizes);
-                assert!((0..3).all(|k| (-1e-9..=sizes[k] as f64 + 1e-9).contains(&moved[k])), "{moved:?}");
+                assert!(
+                    (0..3).all(|k| (-1e-9..=sizes[k] as f64 + 1e-9).contains(&moved[k])),
+                    "{moved:?}"
+                );
             }
         }
         // z itself is the plane frame = column; a quarter turn about the upright axis
@@ -1239,7 +1602,11 @@ mod tests {
                 let (row, column) = (pixel / 8, pixel % 8);
                 // (the half turn about the upright axis mirrors the width and the frames:
                 // the plane stays where it was)
-                assert_eq!(*level, if column == k { (7 - row) as u16 } else { EMPTY }, "frame {k} pixel {pixel}");
+                assert_eq!(
+                    *level,
+                    if column == k { (7 - row) as u16 } else { EMPTY },
+                    "frame {k} pixel {pixel}"
+                );
             }
         }
         turned.rotate = Some([0.0, 0.0, 90.0]);
@@ -1249,7 +1616,15 @@ mod tests {
             // a quarter roll: the width goes up, what was up goes to the left
             for (pixel, level) in frame(&rolled, k).iter().enumerate() {
                 let (row, column) = (pixel / 8, pixel % 8);
-                assert_eq!(*level, if 7 - row == k { (7 - column) as u16 } else { EMPTY }, "frame {k} pixel {pixel}");
+                assert_eq!(
+                    *level,
+                    if 7 - row == k {
+                        (7 - column) as u16
+                    } else {
+                        EMPTY
+                    },
+                    "frame {k} pixel {pixel}"
+                );
             }
         }
         // no turn at all is no turn
@@ -1263,20 +1638,25 @@ mod tests {
         let rolled = shape(&body).expect("a shape");
         for k in 0..8 {
             let (plain, turned) = (frame(&straight, k), frame(&rolled, k));
-            for pixel in 0..64 {
+            for (pixel, level) in turned.iter().enumerate() {
                 let (row, column) = (pixel / 8, pixel % 8);
                 // the place (column, 7 - row) of the turned picture comes from (7 - row, 7 - column)
-                let from = (7 - (7 - column)) * 8 + (7 - row);
-                assert_eq!(turned[pixel], plain[from], "frame {k} pixel {pixel}");
+                let from = column * 8 + (7 - row);
+                assert_eq!(*level, plain[from], "frame {k} pixel {pixel}");
             }
         }
         // a slanted body is the body made smaller: 288 voxels times the cube of the factor
         body.rotate = Some([30.0, 20.0, 10.0]);
         let slanted = shape(&body).expect("a shape");
-        let filled: usize = (0..8).map(|k| frame(&slanted, k).iter().filter(|l| **l != EMPTY).count()).sum();
+        let filled: usize = (0..8)
+            .map(|k| frame(&slanted, k).iter().filter(|l| **l != EMPTY).count())
+            .sum();
         let scale = slanted.turn.expect("a turn").scale;
         let expected = 288.0 * scale.powi(3);
-        assert!((filled as f64 - expected).abs() < 0.25 * expected, "{filled} for {expected}");
+        assert!(
+            (filled as f64 - expected).abs() < 0.25 * expected,
+            "{filled} for {expected}"
+        );
     }
 
     #[test]
@@ -1307,7 +1687,10 @@ mod tests {
         flat.range_imag = Some((-4.0, 4.0));
         let narrow = shape(&flat).expect("a shape");
         let levels = |shape: &Shape| -> Vec<u16> {
-            let mut all: Vec<u16> = frame(shape, 3).into_iter().filter(|l| *l != EMPTY).collect();
+            let mut all: Vec<u16> = frame(shape, 3)
+                .into_iter()
+                .filter(|l| *l != EMPTY)
+                .collect();
             all.sort_unstable();
             all.dedup();
             all
@@ -1352,7 +1735,10 @@ mod tests {
         }
         for (column, frames) in seen.iter().enumerate() {
             assert!(frames.len() >= 4, "column {column}: {frames:?}");
-            assert!(frames.windows(2).all(|w| w[1] == w[0] + 1), "column {column}: {frames:?}");
+            assert!(
+                frames.windows(2).all(|w| w[1] == w[0] + 1),
+                "column {column}: {frames:?}"
+            );
         }
         assert!(seen.windows(2).all(|w| w[1][0] <= w[0][w[0].len() - 1] + 1));
     }
@@ -1364,7 +1750,9 @@ mod tests {
         assert!(shape.ranges[2].1 < 10.0 && shape.ranges[2].0 > -10.0);
         // no wall through all the frames at the pole
         let middle = 32 * 64 + 32;
-        let through = (0..64).filter(|k| frame(&shape, *k)[middle] != EMPTY).count();
+        let through = (0..64)
+            .filter(|k| frame(&shape, *k)[middle] != EMPTY)
+            .count();
         assert!(through <= 4, "{through}");
         assert!(super::shape(&plan("1/0*z", [8, 8, 8, 8])).is_err());
     }
@@ -1392,7 +1780,16 @@ mod tests {
         let Tints::Rgb(colours) = Tints::new(5, Some(&stops)) else {
             panic!("colours");
         };
-        assert_eq!(colours, vec![[0.0; 3], [0.0, 0.0, 0.5], [0.0, 0.0, 1.0], [0.5, 0.5, 1.0], [1.0; 3]]);
+        assert_eq!(
+            colours,
+            vec![
+                [0.0; 3],
+                [0.0, 0.0, 0.5],
+                [0.0, 0.0, 1.0],
+                [0.5, 0.5, 1.0],
+                [1.0; 3]
+            ]
+        );
         assert_eq!(Tints::new(512, None).different(9), 512);
         assert_eq!(Tints::new(512, None).different(8), 256);
         let cube = crate::scene::palette("cube").expect("the cube");
@@ -1402,7 +1799,10 @@ mod tests {
         // a picture: colours and alpha
         let shape = shape(&plan("z", [4, 4, 4, 4])).expect("a shape");
         let image = Frames::new(&shape).image(1, &Tints::new(4, Some(&stops)));
-        assert_eq!((image.width, image.height, image.colors, image.alpha), (4, 4, 3, true));
+        assert_eq!(
+            (image.width, image.height, image.colors, image.alpha),
+            (4, 4, 3, true)
+        );
         let alpha: Vec<f32> = image.data.iter().skip(3).step_by(4).cloned().collect();
         assert_eq!(alpha, [0.0, 1.0, 0.0, 0.0].repeat(4));
         assert_eq!(image.data[4..8], [1.0, 1.0, 1.0, 1.0]);

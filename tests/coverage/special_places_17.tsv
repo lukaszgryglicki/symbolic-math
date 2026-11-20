@@ -1,3 +1,75 @@
+-e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(undefined)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(10^20)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(10^(-20))	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(x)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3([])	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3([1, 2])	error: plot3 needs lists of numbers, 1 is none
+-e	plot3("text")	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(true)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-7/3)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(0.5)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	scatter3(0)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(1/2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(i)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(undefined)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(10^20)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(10^(-20))	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(x)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3([])	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3([1, 2])	error: scatter3 needs lists of numbers, 1 is none
+-e	scatter3("text")	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(true)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-7/3)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(0.5)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	surf(0)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(1/2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(i)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(undefined)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(10^20)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(10^(-20))	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(x)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf([])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf([1, 2])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf("text")	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(true)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-7/3)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(0.5)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	spy(0)	error: spy(matrix)
+-e	spy(1)	error: spy(matrix)
+-e	spy(-1)	error: spy(matrix)
+-e	spy(1/2)	error: spy(matrix)
+-e	spy(2)	error: spy(matrix)
+-e	spy(i)	error: spy(matrix)
+-e	spy(inf)	error: spy(matrix)
+-e	spy(-inf)	error: spy(matrix)
+-e	spy(undefined)	error: spy(matrix)
+-e	spy(10^20)	error: spy(matrix)
+-e	spy(10^(-20))	error: spy(matrix)
+-e	spy(x)	error: spy(matrix)
+-e	spy([])	error: spy(matrix)
+-e	spy([1, 2])	error: spy(matrix)
+-e	spy("text")	error: spy(matrix)
+-e	spy(true)	error: spy(matrix)
+-e	spy(-7/3)	error: spy(matrix)
+-e	spy(0.5)	error: spy(matrix)
+-e	boxplot(0)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(1)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(-1)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(1/2)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(2)	error: boxplot([values]) or boxplot([[values], [values], ...])
 -e	boxplot(i)	error: boxplot([values]) or boxplot([[values], [values], ...])
 -e	boxplot(inf)	error: boxplot([values]) or boxplot([[values], [values], ...])
 -e	boxplot(-inf)	error: boxplot([values]) or boxplot([[values], [values], ...])
@@ -11,6 +83,24 @@
 -e	boxplot(true)	error: boxplot([values]) or boxplot([[values], [values], ...])
 -e	boxplot(-7/3)	error: boxplot([values]) or boxplot([[values], [values], ...])
 -e	boxplot(0.5)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	imframes(0)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(1)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(-1)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(1/2)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(2)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(i)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(inf)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(-inf)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(undefined)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(10^20)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(10^(-20))	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(x)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes([])	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes([1, 2])	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes("text")	error: imframes: text: No such file or directory (os error 2)
+-e	imframes(true)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(-7/3)	error: imframes("picture.jxl"): how many frames the picture has
+-e	imframes(0.5)	error: imframes("picture.jxl"): how many frames the picture has
 -e	condest(0)	error: cond needs a matrix
 -e	condest(1)	error: cond needs a matrix
 -e	condest(-1)	error: cond needs a matrix
@@ -608,93 +698,3 @@
 -e	contour3(0)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(-1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(1/2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(i)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(-inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(undefined)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(10^20)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(10^(-20))	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(x)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3([])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3([1, 2])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3("text")	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(true)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(-7/3)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(0.5)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	waterfall(0)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(-1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(1/2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(i)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(-inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(undefined)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(10^20)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(10^(-20))	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(x)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall([])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall([1, 2])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall("text")	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(true)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(-7/3)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	waterfall(0.5)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
--e	compass(0)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(1)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(-1)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(1/2)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(2)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(i)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(inf)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(-inf)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(undefined)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(10^20)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(10^(-20))	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(x)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass([])	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass([1, 2])	 2.31 │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │        ⢀|      │                                │   ⠐⠤⡀   ⠙⠢⢄⡀|    0 │────────────────────────────────⠉⠉⠉⠉⠩⠛⠉⠉⠉⠉⣩⠝⠋⠉──────────────────|      │                                │        ⠈|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|-2.31 │                                │|      └────────────────────────────────────────────────────────────────|       -4.62                                                       4.62|2 arrows from the origin
--e	compass("text")	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(true)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(-7/3)	error: compass([u values], [v values]) or compass([complex numbers])
--e	compass(0.5)	error: compass([u values], [v values]) or compass([complex numbers])
--e	feather(0)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(1)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(-1)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(1/2)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(2)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(i)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(inf)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(-inf)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(undefined)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(10^20)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(10^(-20))	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(x)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather([])	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather([1, 2])	 1 │  │|   │  │|   │  │|   │  │|   │  │|   │  │                                                 ⠠⣀|   │  │                        ⢀⡀                         ⠉⠒⢄⡀|   │  │                         ⠈⠑⠢⢄                         ⠈⠑⠢⢄| 0 │──┼──────────────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠁──|   │  │                        ⠈⠁                         ⣀⠤⠊⠁|   │  │                                                 ⠐⠉|   │  │|   │  │|   │  │|   │  │|-1 │  │|   └────────────────────────────────────────────────────────────────|    -0.16                                                       4.16|2 arrows from the places 1, 2, 3 ... on the x axis
--e	feather("text")	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(true)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(-7/3)	error: feather([u values], [v values]) or feather([complex numbers])
--e	feather(0.5)	error: feather([u values], [v values]) or feather([complex numbers])
--e	rgb2gray(0)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(-1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(1/2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(i)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(-inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(undefined)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(10^20)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(10^(-20))	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(x)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray([])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray([1, 2])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray("text")	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(true)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(-7/3)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	rgb2gray(0.5)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
--e	im2double(0)	0
--e	im2double(1)	1/255
--e	im2double(-1)	-1/255

@@ -731,12 +731,27 @@ impl Session {
         if raw.is_empty() || raw.iter().any(iterator) {
             return None;
         }
+        // table(body, k, from, to[, step]) is a loop: its body is not worked out before it runs
+        if (3..=5).contains(&raw.len())
+            && matches!(&raw[1], Expr::Sym(s) if !crate::expr::is_const_name(s))
+            && raw[2..].iter().all(|e| {
+                self.eval(e)
+                    .is_ok_and(|v| v.as_list().is_none() && text_of(&v).is_none())
+            })
+        {
+            return None;
+        }
         let paired =
             raw.len().is_multiple_of(2) && raw.iter().step_by(2).all(|n| text_of(n).is_some());
         if paired && raw.len() >= 4 {
             return Some(self.eval_args(raw));
         }
-        let values = self.eval_args(raw).ok()?;
+        // (what a trial of the arguments has to tell is told only when they are columns)
+        let told = self.notes.len();
+        let Ok(values) = self.eval_args(raw) else {
+            self.notes.truncate(told);
+            return None;
+        };
         let column = |e: &Expr| e.as_list().is_some() || e.fn_args(KINDS).is_some();
         let long = |e: &Expr| match read_kinds(e) {
             Some(kinds) => kinds.values.len(),
@@ -748,6 +763,9 @@ impl Session {
                 values.iter().all(column) && values.iter().all(|v| long(v) == long(&values[0]))
             }
         };
+        if !data {
+            self.notes.truncate(told);
+        }
         data.then_some(Ok(values))
     }
 

@@ -1,0 +1,257 @@
+	parzenwin()	error: parzenwin takes 1 to 2 argument(s), 0 given
+	gausswin()	error: gausswin takes 1 to 2 argument(s), 0 given
+	tukeywin()	error: tukeywin takes 1 to 2 argument(s), 0 given
+	kaiser()	error: kaiser takes 1 to 2 argument(s), 0 given
+	chebwin()	error: chebwin takes 1 to 2 argument(s), 0 given
+	barthannwin()	error: barthannwin takes 1 to 2 argument(s), 0 given
+	buttap()	error: buttap takes 1 argument(s), 0 given
+	cheb1ap()	error: cheb1ap takes 2 argument(s), 0 given
+	cheb2ap()	error: cheb2ap takes 2 argument(s), 0 given
+	ellipap()	error: ellipap takes 3 argument(s), 0 given
+	besselap()	error: besselap takes 1 argument(s), 0 given
+	butter()	error: butter takes 2 to 4 argument(s), 0 given
+	cheby1()	error: cheby1 takes 3 to 5 argument(s), 0 given
+	cheby2()	error: cheby2 takes 3 to 5 argument(s), 0 given
+	ellip()	error: ellip takes 4 to 6 argument(s), 0 given
+	besself()	error: besself takes 2 to 3 argument(s), 0 given
+	buttord()	error: buttord takes 4 to 5 argument(s), 0 given
+	cheb1ord()	error: cheb1ord takes 4 to 5 argument(s), 0 given
+	cheb2ord()	error: cheb2ord takes 4 to 5 argument(s), 0 given
+	ellipord()	error: ellipord takes 4 to 5 argument(s), 0 given
+	lp2lp()	error: lp2lp takes 2 to 3 argument(s), 0 given
+	lp2hp()	error: lp2hp takes 2 to 3 argument(s), 0 given
+	lp2bp()	error: lp2bp takes 3 to 4 argument(s), 0 given
+	lp2bs()	error: lp2bs takes 3 to 4 argument(s), 0 given
+	bilinear()	error: bilinear takes 2 to 3 argument(s), 0 given
+	iirnotch()	error: iirnotch takes 2 argument(s), 0 given
+	iirpeak()	error: iirpeak takes 2 argument(s), 0 given
+	fir1()	error: fir1 takes 2 to 5 argument(s), 0 given
+	kaiserord()	error: kaiserord takes 3 to 4 argument(s), 0 given
+	sgolay()	error: sgolay takes 2 argument(s), 0 given
+	sgolayfilt()	error: sgolayfilt takes 3 argument(s), 0 given
+	freqz()	error: freqz takes 1 to 3 argument(s), 0 given
+	freqs()	error: freqs takes 2 to 3 argument(s), 0 given
+	grpdelay()	error: grpdelay takes 1 to 3 argument(s), 0 given
+	impz()	error: impz takes 1 to 3 argument(s), 0 given
+	stepz()	error: stepz takes 1 to 3 argument(s), 0 given
+	filtfilt()	error: filtfilt takes 2 to 3 argument(s), 0 given
+	sosfilt()	error: sosfilt takes 2 argument(s), 0 given
+	sos2tf()	error: sos2tf takes 1 to 2 argument(s), 0 given
+	tf2sos()	error: tf2sos takes 1 to 2 argument(s), 0 given
+	zp2sos()	error: zp2sos takes 1 to 3 argument(s), 0 given
+	isminphase()	error: isminphase takes 1 to 2 argument(s), 0 given
+	ismaxphase()	error: ismaxphase takes 1 to 2 argument(s), 0 given
+	islinphase()	error: islinphase takes 1 to 2 argument(s), 0 given
+	firtype()	error: firtype takes 1 argument(s), 0 given
+	polystab()	error: polystab takes 1 argument(s), 0 given
+	periodogram()	error: periodogram takes 1 to 4 argument(s), 0 given
+	pwelch()	error: pwelch takes 1 to 5 argument(s), 0 given
+	cpsd()	error: cpsd takes 2 to 6 argument(s), 0 given
+	mscohere()	error: mscohere takes 2 to 6 argument(s), 0 given
+	tfestimate()	error: tfestimate takes 2 to 6 argument(s), 0 given
+	spectrogram()	error: spectrogram takes 1 to 4 argument(s), 0 given
+	bandpower()	error: bandpower takes 1 argument(s), 0 given
+	rssq()	error: rssq takes 1 argument(s), 0 given
+	peak2rms()	error: peak2rms takes 1 argument(s), 0 given
+	enbw()	error: enbw takes 1 to 2 argument(s), 0 given
+	mag2db()	error: mag2db takes 1 argument(s), 0 given
+	db2mag()	error: db2mag takes 1 argument(s), 0 given
+	pow2db()	error: pow2db takes 1 argument(s), 0 given
+	db2pow()	error: db2pow takes 1 argument(s), 0 given
+	rceps()	error: rceps takes 1 argument(s), 0 given
+	goertzel()	error: goertzel takes 2 argument(s), 0 given
+	czt()	error: czt takes 1 to 4 argument(s), 0 given
+	dftmtx()	error: dftmtx takes 1 argument(s), 0 given
+	cconv()	error: cconv takes 2 to 3 argument(s), 0 given
+	envelope()	error: envelope takes 1 argument(s), 0 given
+	findpeaks()	error: findpeaks takes at least 1 argument(s), 0 given
+	medfilt1()	error: medfilt1 takes 1 to 2 argument(s), 0 given
+	upfirdn()	error: upfirdn takes 2 to 4 argument(s), 0 given
+	decimate()	error: decimate takes 2 to 3 argument(s), 0 given
+	buffer()	error: buffer takes 2 to 3 argument(s), 0 given
+	xcov()	error: xcov takes 1 to 2 argument(s), 0 given
+	levinson()	error: levinson takes 1 to 2 argument(s), 0 given
+	aryule()	error: aryule takes 2 argument(s), 0 given
+	arburg()	error: arburg takes 2 argument(s), 0 given
+	lpc()	error: lpc takes 2 argument(s), 0 given
+	poly2rc()	error: poly2rc takes 1 argument(s), 0 given
+	rc2poly()	error: rc2poly takes 1 argument(s), 0 given
+	sawtooth()	error: sawtooth takes 1 to 2 argument(s), 0 given
+	rectpuls()	error: rectpuls takes 1 to 2 argument(s), 0 given
+	tripuls()	error: tripuls takes 1 to 3 argument(s), 0 given
+	gauspuls()	error: gauspuls takes 3 argument(s), 0 given
+	chirp()	error: chirp takes 4 to 5 argument(s), 0 given
+	diric()	error: diric takes 2 argument(s), 0 given
+	zplane()	error: zplane takes at least 1 argument(s), 0 given
+	plot4d()	error: plot4d takes at least 1 argument(s), 0 given
+	save_png_fast()	error: save_png_fast takes at least 1 argument(s), 0 given
+	save_jxl_fast()	error: save_jxl_fast takes at least 1 argument(s), 0 given
+	save_fast()	error: save_fast takes at least 2 argument(s), 0 given
+	azimuth()	error: azimuth takes 4 to 8 argument(s), 0 given
+	reckon()	error: reckon takes 4 to 8 argument(s), 0 given
+	haversine()	error: haversine takes 4 to 6 argument(s), 0 given
+	geoddistance()	error: geoddistance takes 4 to 6 argument(s), 0 given
+	geodreckon()	error: geodreckon takes 4 to 6 argument(s), 0 given
+	geodarea()	error: geodarea takes 2 to 4 argument(s), 0 given
+	areaint()	error: areaint takes 2 to 4 argument(s), 0 given
+	areaquad()	error: areaquad takes 4 to 6 argument(s), 0 given
+	departure()	error: departure takes 3 to 5 argument(s), 0 given
+	antipode()	error: antipode takes 2 to 3 argument(s), 0 given
+	meanm()	error: meanm takes 2 to 4 argument(s), 0 given
+	track2()	error: track2 takes 4 to 8 argument(s), 0 given
+	track1()	error: track1 takes 3 to 8 argument(s), 0 given
+	gcwaypts()	error: gcwaypts takes 4 to 5 argument(s), 0 given
+	scircle1()	error: scircle1 takes 3 to 8 argument(s), 0 given
+	scircle2()	error: scircle2 takes 4 to 9 argument(s), 0 given
+	legs()	error: legs takes 2 to 3 argument(s), 0 given
+	gc2sc()	error: gc2sc takes 3 to 4 argument(s), 0 given
+	gcxgc()	error: gcxgc takes 6 to 7 argument(s), 0 given
+	scxsc()	error: scxsc takes 6 to 7 argument(s), 0 given
+	gcxsc()	error: gcxsc takes 6 to 7 argument(s), 0 given
+	rhxrh()	error: rhxrh takes 6 to 7 argument(s), 0 given
+	interpm()	error: interpm takes 3 to 5 argument(s), 0 given
+	geodetic2ecef()	error: geodetic2ecef takes 3 to 5 argument(s), 0 given
+	ecef2geodetic()	error: ecef2geodetic takes 3 to 5 argument(s), 0 given
+	lla2ecef()	error: lla2ecef takes 1 to 2 argument(s), 0 given
+	ecef2lla()	error: ecef2lla takes 1 to 2 argument(s), 0 given
+	geodetic2enu()	error: geodetic2enu takes 6 to 8 argument(s), 0 given
+	enu2geodetic()	error: enu2geodetic takes 6 to 8 argument(s), 0 given
+	geodetic2ned()	error: geodetic2ned takes 6 to 8 argument(s), 0 given
+	ned2geodetic()	error: ned2geodetic takes 6 to 8 argument(s), 0 given
+	geodetic2aer()	error: geodetic2aer takes 6 to 8 argument(s), 0 given
+	aer2geodetic()	error: aer2geodetic takes 6 to 8 argument(s), 0 given
+	ecef2enu()	error: ecef2enu takes 6 to 8 argument(s), 0 given
+	enu2ecef()	error: enu2ecef takes 6 to 8 argument(s), 0 given
+	ecef2ned()	error: ecef2ned takes 6 to 8 argument(s), 0 given
+	ned2ecef()	error: ned2ecef takes 6 to 8 argument(s), 0 given
+	ecef2aer()	error: ecef2aer takes 6 to 8 argument(s), 0 given
+	aer2ecef()	error: aer2ecef takes 6 to 8 argument(s), 0 given
+	enu2aer()	error: enu2aer takes 3 to 4 argument(s), 0 given
+	aer2enu()	error: aer2enu takes 3 to 4 argument(s), 0 given
+	ned2aer()	error: ned2aer takes 3 to 4 argument(s), 0 given
+	aer2ned()	error: aer2ned takes 3 to 4 argument(s), 0 given
+	ecef2enuv()	error: ecef2enuv takes 5 to 6 argument(s), 0 given
+	enu2ecefv()	error: enu2ecefv takes 5 to 6 argument(s), 0 given
+	ecef2nedv()	error: ecef2nedv takes 5 to 6 argument(s), 0 given
+	ned2ecefv()	error: ned2ecefv takes 5 to 6 argument(s), 0 given
+	ecefoffset()	error: ecefoffset takes 6 to 8 argument(s), 0 given
+	elevation()	error: elevation takes 6 to 8 argument(s), 0 given
+	referenceellipsoid()	error: referenceellipsoid takes 1 to 2 argument(s), 0 given
+	referencesphere()	error: referencesphere takes 1 to 2 argument(s), 0 given
+	meridianarc()	error: meridianarc takes 2 to 4 argument(s), 0 given
+	meridianfwd()	error: meridianfwd takes 2 to 4 argument(s), 0 given
+	spheroid()	error: spheroid takes 1 to 2 argument(s), 0 given
+	axes2ecc()	error: axes2ecc takes 1 to 2 argument(s), 0 given
+	majaxis()	error: majaxis takes 1 to 2 argument(s), 0 given
+	minaxis()	error: minaxis takes 1 to 2 argument(s), 0 given
+	ecc2flat()	error: ecc2flat takes 1 argument(s), 0 given
+	flat2ecc()	error: flat2ecc takes 1 argument(s), 0 given
+	ecc2n()	error: ecc2n takes 1 argument(s), 0 given
+	n2ecc()	error: n2ecc takes 1 argument(s), 0 given
+	rcurve()	error: rcurve takes 2 to 4 argument(s), 0 given
+	rsphere()	error: rsphere takes 2 to 7 argument(s), 0 given
+	convertlat()	error: convertlat takes 4 to 5 argument(s), 0 given
+	geocentriclatitude()	error: geocentriclatitude takes 2 to 3 argument(s), 0 given
+	parametriclatitude()	error: parametriclatitude takes 2 to 3 argument(s), 0 given
+	geodeticlatitudefromgeocentric()	error: geodeticlatitudefromgeocentric takes 2 to 3 argument(s), 0 given
+	geodeticlatitudefromparametric()	error: geodeticlatitudefromparametric takes 2 to 3 argument(s), 0 given
+	km2nm()	error: km2nm takes 1 argument(s), 0 given
+	km2sm()	error: km2sm takes 1 argument(s), 0 given
+	nm2km()	error: nm2km takes 1 argument(s), 0 given
+	nm2sm()	error: nm2sm takes 1 argument(s), 0 given
+	sm2km()	error: sm2km takes 1 argument(s), 0 given
+	sm2nm()	error: sm2nm takes 1 argument(s), 0 given
+	deg2km()	error: deg2km takes 1 to 2 argument(s), 0 given
+	km2deg()	error: km2deg takes 1 to 2 argument(s), 0 given
+	deg2nm()	error: deg2nm takes 1 to 2 argument(s), 0 given
+	nm2deg()	error: nm2deg takes 1 to 2 argument(s), 0 given
+	deg2sm()	error: deg2sm takes 1 to 2 argument(s), 0 given
+	sm2deg()	error: sm2deg takes 1 to 2 argument(s), 0 given
+	rad2km()	error: rad2km takes 1 to 2 argument(s), 0 given
+	km2rad()	error: km2rad takes 1 to 2 argument(s), 0 given
+	rad2nm()	error: rad2nm takes 1 to 2 argument(s), 0 given
+	nm2rad()	error: nm2rad takes 1 to 2 argument(s), 0 given
+	rad2sm()	error: rad2sm takes 1 to 2 argument(s), 0 given
+	sm2rad()	error: sm2rad takes 1 to 2 argument(s), 0 given
+	unitsratio()	error: unitsratio takes 2 argument(s), 0 given
+	distdim()	error: distdim takes 3 to 4 argument(s), 0 given
+	angledim()	error: angledim takes 3 argument(s), 0 given
+	todegrees()	error: todegrees takes 2 argument(s), 0 given
+	toradians()	error: toradians takes 2 argument(s), 0 given
+	fromdegrees()	error: fromdegrees takes 2 argument(s), 0 given
+	fromradians()	error: fromradians takes 2 argument(s), 0 given
+	wrapto180()	error: wrapto180 takes 1 argument(s), 0 given
+	wrapto360()	error: wrapto360 takes 1 argument(s), 0 given
+	wraptopi()	error: wraptopi takes 1 argument(s), 0 given
+	wrapto2pi()	error: wrapto2pi takes 1 argument(s), 0 given
+	roundn()	error: roundn takes 1 to 2 argument(s), 0 given
+	dms2degrees()	error: dms2degrees takes 1 argument(s), 0 given
+	dm2degrees()	error: dm2degrees takes 1 argument(s), 0 given
+	degrees2dms()	error: degrees2dms takes 1 argument(s), 0 given
+	degrees2dm()	error: degrees2dm takes 1 argument(s), 0 given
+	angl2str()	error: angl2str takes 1 to 4 argument(s), 0 given
+	str2angle()	error: str2angle takes 1 argument(s), 0 given
+	timezone()	error: timezone takes 1 argument(s), 0 given
+	utmzone()	error: utmzone takes 1 to 2 argument(s), 0 given
+	projfwd()	error: projfwd takes at least 3 argument(s), 0 given
+	projinv()	error: projinv takes at least 3 argument(s), 0 given
+	deg2utm()	error: deg2utm takes 2 argument(s), 0 given
+	utm2deg()	error: utm2deg takes 3 argument(s), 0 given
+	relu()	error: relu takes 1 argument(s), 0 given
+	leakyrelu()	error: leakyrelu takes 1 to 2 argument(s), 0 given
+	clippedrelu()	error: clippedrelu takes 1 to 2 argument(s), 0 given
+	elu()	error: elu takes 1 to 2 argument(s), 0 given
+	gelu()	error: gelu takes 1 argument(s), 0 given
+	swish()	error: swish takes 1 argument(s), 0 given
+	mish()	error: mish takes 1 argument(s), 0 given
+	softplus()	error: softplus takes 1 argument(s), 0 given
+	softsign()	error: softsign takes 1 argument(s), 0 given
+	sigmoid()	error: sigmoid takes 1 argument(s), 0 given
+	tansig()	error: tansig takes 1 argument(s), 0 given
+	purelin()	error: purelin takes 1 argument(s), 0 given
+	satlin()	error: satlin takes 1 argument(s), 0 given
+	satlins()	error: satlins takes 1 argument(s), 0 given
+	hardlim()	error: hardlim takes 1 argument(s), 0 given
+	hardlims()	error: hardlims takes 1 argument(s), 0 given
+	radbas()	error: radbas takes 1 argument(s), 0 given
+	tribas()	error: tribas takes 1 argument(s), 0 given
+	netinv()	error: netinv takes 1 argument(s), 0 given
+	softmax()	error: softmax takes 1 argument(s), 0 given
+	compet()	error: compet takes 1 argument(s), 0 given
+	mse()	error: mse takes 2 argument(s), 0 given
+	sse()	error: sse takes 2 argument(s), 0 given
+	mae()	error: mae takes 2 argument(s), 0 given
+	l2loss()	error: l2loss takes 2 argument(s), 0 given
+	l1loss()	error: l1loss takes 2 argument(s), 0 given
+	huber()	error: huber takes 2 to 3 argument(s), 0 given
+	crossentropy()	error: crossentropy takes 2 argument(s), 0 given
+	fullyconnect()	error: fullyconnect takes 2 to 3 argument(s), 0 given
+	dlconv()	error: dlconv takes 2 to 7 argument(s), 0 given
+	maxpool()	error: maxpool takes 2 to 6 argument(s), 0 given
+	avgpool()	error: avgpool takes 2 to 6 argument(s), 0 given
+	batchnorm()	error: batchnorm takes 3 to 5 argument(s), 0 given
+	layernorm()	error: layernorm takes 3 argument(s), 0 given
+	embed()	error: embed takes 2 argument(s), 0 given
+	lstm()	error: lstm takes 6 argument(s), 0 given
+	gru()	error: gru takes 5 argument(s), 0 given
+	onehotencode()	error: onehotencode takes 1 to 2 argument(s), 0 given
+	onehotdecode()	error: onehotdecode takes 1 to 2 argument(s), 0 given
+	ind2vec()	error: ind2vec takes 1 to 2 argument(s), 0 given
+	vec2ind()	error: vec2ind takes 1 argument(s), 0 given
+	confusionmat()	error: confusionmat takes 2 to 3 argument(s), 0 given
+	mapminmax()	error: mapminmax takes 1 to 3 argument(s), 0 given
+	mapstd()	error: mapstd takes 1 to 3 argument(s), 0 given
+	divideblock()	error: divideblock takes 1 to 4 argument(s), 0 given
+	dlgradient()	error: dlgradient takes 2 argument(s), 0 given
+	sgdmupdate()	error: sgdmupdate takes 3 to 5 argument(s), 0 given
+	adamupdate()	error: adamupdate takes 5 to 9 argument(s), 0 given
+	rmspropupdate()	error: rmspropupdate takes 3 to 6 argument(s), 0 given
+	feedforwardnet()	error: feedforwardnet takes 1 to 3 argument(s), 0 given
+	patternnet()	error: patternnet takes 1 to 3 argument(s), 0 given
+	predict()	error: predict takes 2 argument(s), 0 given
+	classify()	error: classify takes 2 to 3 argument(s), 0 given
+	perform()	error: perform takes 3 to 4 argument(s), 0 given
+	trainnet()	error: trainnet takes at least 3 argument(s), 0 given
+	perceptron()	error: perceptron takes 2 to 3 argument(s), 0 given
+	newlind()	error: newlind takes 2 argument(s), 0 given
+	newrbe()	error: newrbe takes 2 to 3 argument(s), 0 given

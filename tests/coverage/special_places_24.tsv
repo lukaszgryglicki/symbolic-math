@@ -1,0 +1,700 @@
+-e	km2nm(10^20)	25000000000000000000000/463
+-e	km2nm(10^(-20))	1/185200000000000000000
+-e	km2nm(x)	250x/463
+-e	km2nm([])	[]
+-e	km2nm([1, 2])	[250/463, 500/463]
+-e	km2nm("text")	250*"text"/463
+-e	km2nm(true)	250true/463
+-e	km2nm(-7/3)	-1750/1389
+-e	km2nm(0.5)	0.26997840172786177105831533477322
+-e	km2sm(0)	0
+-e	km2sm(1)	3937/6336
+-e	km2sm(-1)	-3937/6336
+-e	km2sm(1/2)	3937/12672
+-e	km2sm(2)	3937/3168
+-e	km2sm(i)	3937i/6336
+-e	km2sm(inf)	inf
+-e	km2sm(-inf)	-inf
+-e	km2sm(undefined)	undefined
+-e	km2sm(10^20)	6151562500000000000000/99
+-e	km2sm(10^(-20))	3937/633600000000000000000000
+-e	km2sm(x)	3937x/6336
+-e	km2sm([])	[]
+-e	km2sm([1, 2])	[3937/6336, 3937/3168]
+-e	km2sm("text")	3937*"text"/6336
+-e	km2sm(true)	3937true/6336
+-e	km2sm(-7/3)	-27559/19008
+-e	km2sm(0.5)	0.31068497474747474747474747474747
+-e	nm2km(0)	0
+-e	nm2km(1)	463/250
+-e	nm2km(-1)	-463/250
+-e	nm2km(1/2)	463/500
+-e	nm2km(2)	463/125
+-e	nm2km(i)	463i/250
+-e	nm2km(inf)	inf
+-e	nm2km(-inf)	-inf
+-e	nm2km(undefined)	undefined
+-e	nm2km(10^20)	185200000000000000000
+-e	nm2km(10^(-20))	463/25000000000000000000000
+-e	nm2km(x)	463x/250
+-e	nm2km([])	[]
+-e	nm2km([1, 2])	[463/250, 463/125]
+-e	nm2km("text")	463*"text"/250
+-e	nm2km(true)	463true/250
+-e	nm2km(-7/3)	-3241/750
+-e	nm2km(0.5)	0.926
+-e	nm2sm(0)	0
+-e	nm2sm(1)	1822831/1584000
+-e	nm2sm(-1)	-1822831/1584000
+-e	nm2sm(1/2)	1822831/3168000
+-e	nm2sm(2)	1822831/792000
+-e	nm2sm(i)	1822831i/1584000
+-e	nm2sm(inf)	inf
+-e	nm2sm(-inf)	-inf
+-e	nm2sm(undefined)	undefined
+-e	nm2sm(10^20)	11392693750000000000000/99
+-e	nm2sm(10^(-20))	1822831/158400000000000000000000000
+-e	nm2sm(x)	1822831x/1584000
+-e	nm2sm([])	[]
+-e	nm2sm([1, 2])	[1822831/1584000, 1822831/792000]
+-e	nm2sm("text")	1822831*"text"/1584000
+-e	nm2sm(true)	1822831true/1584000
+-e	nm2sm(-7/3)	-12759817/4752000
+-e	nm2sm(0.5)	0.57538857323232323232323232323232
+-e	sm2km(0)	0
+-e	sm2km(1)	6336/3937
+-e	sm2km(-1)	-6336/3937
+-e	sm2km(1/2)	3168/3937
+-e	sm2km(2)	12672/3937
+-e	sm2km(i)	6336i/3937
+-e	sm2km(inf)	inf
+-e	sm2km(-inf)	-inf
+-e	sm2km(undefined)	undefined
+-e	sm2km(10^20)	633600000000000000000000/3937
+-e	sm2km(10^(-20))	99/6151562500000000000000
+-e	sm2km(x)	6336x/3937
+-e	sm2km([])	[]
+-e	sm2km([1, 2])	[6336/3937, 12672/3937]
+-e	sm2km("text")	6336*"text"/3937
+-e	sm2km(true)	6336true/3937
+-e	sm2km(-7/3)	-14784/3937
+-e	sm2km(0.5)	0.80467360934721869443738887477775
+-e	sm2nm(0)	0
+-e	sm2nm(1)	1584000/1822831
+-e	sm2nm(-1)	-1584000/1822831
+-e	sm2nm(1/2)	792000/1822831
+-e	sm2nm(2)	3168000/1822831
+-e	sm2nm(i)	1584000i/1822831
+-e	sm2nm(inf)	inf
+-e	sm2nm(-inf)	-inf
+-e	sm2nm(undefined)	undefined
+-e	sm2nm(10^20)	158400000000000000000000000/1822831
+-e	sm2nm(10^(-20))	99/11392693750000000000000
+-e	sm2nm(x)	1584000x/1822831
+-e	sm2nm([])	[]
+-e	sm2nm([1, 2])	[1584000/1822831, 3168000/1822831]
+-e	sm2nm("text")	1584000*"text"/1822831
+-e	sm2nm(true)	1584000true/1822831
+-e	sm2nm(-7/3)	-3696000/1822831
+-e	sm2nm(0.5)	0.4344889899283038306897348135949
+-e	deg2km(0)	0
+-e	deg2km(1)	6371pi/180
+-e	deg2km(-1)	-6371pi/180
+-e	deg2km(1/2)	6371pi/360
+-e	deg2km(2)	6371pi/90
+-e	deg2km(i)	6371i*pi/180
+-e	deg2km(inf)	inf
+-e	deg2km(-inf)	-inf
+-e	deg2km(undefined)	undefined
+-e	deg2km(10^20)	31855000000000000000000pi/9
+-e	deg2km(10^(-20))	6371pi/18000000000000000000000
+-e	deg2km(x)	6371pi*x/180
+-e	deg2km([])	[]
+-e	deg2km([1, 2])	[6371pi/180, 6371pi/90]
+-e	deg2km("text")	6371pi*"text"/180
+-e	deg2km(true)	6371pi*true/180
+-e	deg2km(-7/3)	-44597pi/540
+-e	deg2km(0.5)	55.597463322279368672904169430205
+-e	km2deg(0)	0
+-e	km2deg(1)	180/(6371pi)
+-e	km2deg(-1)	-180/(6371pi)
+-e	km2deg(1/2)	90/(6371pi)
+-e	km2deg(2)	360/(6371pi)
+-e	km2deg(i)	180i/(6371pi)
+-e	km2deg(inf)	inf
+-e	km2deg(-inf)	-inf
+-e	km2deg(undefined)	undefined
+-e	km2deg(10^20)	18000000000000000000000/(6371pi)
+-e	km2deg(10^(-20))	9/(31855000000000000000000pi)
+-e	km2deg(x)	180x/(6371pi)
+-e	km2deg([])	[]
+-e	km2deg([1, 2])	[180/(6371pi), 360/(6371pi)]
+-e	km2deg("text")	180*"text"/(6371pi)
+-e	km2deg(true)	180true/(6371pi)
+-e	km2deg(-7/3)	-420/(6371pi)
+-e	km2deg(0.5)	0.0044966080295936525566471633035713
+-e	deg2nm(0)	0
+-e	deg2nm(1)	159275pi/8334
+-e	deg2nm(-1)	-159275pi/8334
+-e	deg2nm(1/2)	159275pi/16668
+-e	deg2nm(2)	159275pi/4167
+-e	deg2nm(i)	159275i*pi/8334
+-e	deg2nm(inf)	inf
+-e	deg2nm(-inf)	-inf
+-e	deg2nm(undefined)	undefined
+-e	deg2nm(10^20)	7963750000000000000000000pi/4167
+-e	deg2nm(10^(-20))	6371pi/33336000000000000000000
+-e	deg2nm(x)	159275pi*x/8334
+-e	deg2nm([])	[]
+-e	deg2nm([1, 2])	[159275pi/8334, 159275pi/4167]
+-e	deg2nm("text")	159275pi*"text"/8334
+-e	deg2nm(true)	159275pi*true/8334
+-e	deg2nm(-7/3)	-1114925pi/25002
+-e	deg2nm(0.5)	30.020228575744799499408298828404
+-e	nm2deg(0)	0
+-e	nm2deg(1)	8334/(159275pi)
+-e	nm2deg(-1)	-8334/(159275pi)
+-e	nm2deg(1/2)	4167/(159275pi)
+-e	nm2deg(2)	16668/(159275pi)
+-e	nm2deg(i)	8334i/(159275pi)
+-e	nm2deg(inf)	inf
+-e	nm2deg(-inf)	-inf
+-e	nm2deg(undefined)	undefined
+-e	nm2deg(10^20)	33336000000000000000000/(6371pi)
+-e	nm2deg(10^(-20))	4167/(7963750000000000000000000pi)
+-e	nm2deg(x)	8334x/(159275pi)
+-e	nm2deg([])	[]
+-e	nm2deg([1, 2])	[8334/(159275pi), 16668/(159275pi)]
+-e	nm2deg("text")	8334*"text"/(159275pi)
+-e	nm2deg(true)	8334true/(159275pi)
+-e	nm2deg(-7/3)	-19446/(159275pi)
+-e	nm2deg(0.5)	0.008327718070807444534910546438214
+-e	deg2sm(0)	0
+-e	deg2sm(1)	25082627pi/1140480
+-e	deg2sm(-1)	-25082627pi/1140480
+-e	deg2sm(1/2)	25082627pi/2280960
+-e	deg2sm(2)	25082627pi/570240
+-e	deg2sm(i)	25082627i*pi/1140480
+-e	deg2sm(inf)	inf
+-e	deg2sm(-inf)	-inf
+-e	deg2sm(undefined)	undefined
+-e	deg2sm(10^20)	1959580234375000000000000pi/891
+-e	deg2sm(10^(-20))	25082627pi/114048000000000000000000000
+-e	deg2sm(x)	25082627pi*x/1140480
+-e	deg2sm([])	[]
+-e	deg2sm([1, 2])	[25082627pi/1140480, 25082627pi/570240]
+-e	deg2sm("text")	25082627pi*"text"/1140480
+-e	deg2sm(true)	25082627pi*true/1140480
+-e	deg2sm(-7/3)	-175578389pi/3421440
+-e	deg2sm(0.5)	34.546592976612038267869904521262
+-e	sm2deg(0)	0
+-e	sm2deg(1)	1140480/(25082627pi)
+-e	sm2deg(-1)	-1140480/(25082627pi)
+-e	sm2deg(1/2)	570240/(25082627pi)
+-e	sm2deg(2)	2280960/(25082627pi)
+-e	sm2deg(i)	1140480i/(25082627pi)
+-e	sm2deg(inf)	inf
+-e	sm2deg(-inf)	-inf
+-e	sm2deg(undefined)	undefined
+-e	sm2deg(10^20)	114048000000000000000000000/(25082627pi)
+-e	sm2deg(10^(-20))	891/(1959580234375000000000000pi)
+-e	sm2deg(x)	1140480x/(25082627pi)
+-e	sm2deg([])	[]
+-e	sm2deg([1, 2])	[1140480/(25082627pi), 2280960/(25082627pi)]
+-e	sm2deg("text")	1140480*"text"/(25082627pi)
+-e	sm2deg(true)	1140480true/(25082627pi)
+-e	sm2deg(-7/3)	-2661120/(25082627pi)
+-e	sm2deg(0.5)	0.0072366036259856191513630751057728
+-e	rad2km(0)	0
+-e	rad2km(1)	6371
+-e	rad2km(-1)	-6371
+-e	rad2km(1/2)	6371/2
+-e	rad2km(2)	12742
+-e	rad2km(i)	6371i
+-e	rad2km(inf)	inf
+-e	rad2km(-inf)	-inf
+-e	rad2km(undefined)	undefined
+-e	rad2km(10^20)	637100000000000000000000
+-e	rad2km(10^(-20))	6371/100000000000000000000
+-e	rad2km(x)	6371x
+-e	rad2km([])	[]
+-e	rad2km([1, 2])	[6371, 12742]
+-e	rad2km("text")	6371*"text"
+-e	rad2km(true)	6371true
+-e	rad2km(-7/3)	-44597/3
+-e	rad2km(0.5)	3185.5
+-e	km2rad(0)	0
+-e	km2rad(1)	1/6371
+-e	km2rad(-1)	-1/6371
+-e	km2rad(1/2)	1/12742
+-e	km2rad(2)	2/6371
+-e	km2rad(i)	i/6371
+-e	km2rad(inf)	inf
+-e	km2rad(-inf)	-inf
+-e	km2rad(undefined)	undefined
+-e	km2rad(10^20)	100000000000000000000/6371
+-e	km2rad(10^(-20))	1/637100000000000000000000
+-e	km2rad(x)	x/6371
+-e	km2rad([])	[]
+-e	km2rad([1, 2])	[1/6371, 2/6371]
+-e	km2rad("text")	"text"/6371
+-e	km2rad(true)	true/6371
+-e	km2rad(-7/3)	-7/19113
+-e	km2rad(0.5)	0.000078480615288023858107047559252865
+-e	rad2nm(0)	0
+-e	rad2nm(1)	1592750/463
+-e	rad2nm(-1)	-1592750/463
+-e	rad2nm(1/2)	796375/463
+-e	rad2nm(2)	3185500/463
+-e	rad2nm(i)	1592750i/463
+-e	rad2nm(inf)	inf
+-e	rad2nm(-inf)	-inf
+-e	rad2nm(undefined)	undefined
+-e	rad2nm(10^20)	159275000000000000000000000/463
+-e	rad2nm(10^(-20))	6371/185200000000000000000
+-e	rad2nm(x)	1592750x/463
+-e	rad2nm([])	[]
+-e	rad2nm([1, 2])	[1592750/463, 3185500/463]
+-e	rad2nm("text")	1592750*"text"/463
+-e	rad2nm(true)	1592750true/463
+-e	rad2nm(-7/3)	-11149250/1389
+-e	rad2nm(0.5)	1720.0323974082073434125269978402
+-e	nm2rad(0)	0
+-e	nm2rad(1)	463/1592750
+-e	nm2rad(-1)	-463/1592750
+-e	nm2rad(1/2)	463/3185500
+-e	nm2rad(2)	463/796375
+-e	nm2rad(i)	463i/1592750
+-e	nm2rad(inf)	inf
+-e	nm2rad(-inf)	-inf
+-e	nm2rad(undefined)	undefined
+-e	nm2rad(10^20)	185200000000000000000/6371
+-e	nm2rad(10^(-20))	463/159275000000000000000000000
+-e	nm2rad(x)	463x/1592750
+-e	nm2rad([])	[]
+-e	nm2rad([1, 2])	[463/1592750, 463/796375]
+-e	nm2rad("text")	463*"text"/1592750
+-e	nm2rad(true)	463true/1592750
+-e	nm2rad(-7/3)	-3241/4778250
+-e	nm2rad(0.5)	0.00014534609951342018521425207973631
+-e	rad2sm(0)	0
+-e	rad2sm(1)	25082627/6336
+-e	rad2sm(-1)	-25082627/6336
+-e	rad2sm(1/2)	25082627/12672
+-e	rad2sm(2)	25082627/3168
+-e	rad2sm(i)	25082627i/6336
+-e	rad2sm(inf)	inf
+-e	rad2sm(-inf)	-inf
+-e	rad2sm(undefined)	undefined
+-e	rad2sm(10^20)	39191604687500000000000000/99
+-e	rad2sm(10^(-20))	25082627/633600000000000000000000
+-e	rad2sm(x)	25082627x/6336
+-e	rad2sm([])	[]
+-e	rad2sm([1, 2])	[25082627/6336, 25082627/3168]
+-e	rad2sm("text")	25082627*"text"/6336
+-e	rad2sm(true)	25082627true/6336
+-e	rad2sm(-7/3)	-175578389/19008
+-e	rad2sm(0.5)	1979.3739741161616161616161616162
+-e	sm2rad(0)	0
+-e	sm2rad(1)	6336/25082627
+-e	sm2rad(-1)	-6336/25082627
+-e	sm2rad(1/2)	3168/25082627
+-e	sm2rad(2)	12672/25082627
+-e	sm2rad(i)	6336i/25082627
+-e	sm2rad(inf)	inf
+-e	sm2rad(-inf)	-inf
+-e	sm2rad(undefined)	undefined
+-e	sm2rad(10^20)	633600000000000000000000/25082627
+-e	sm2rad(10^(-20))	99/39191604687500000000000000
+-e	sm2rad(x)	6336x/25082627
+-e	sm2rad([])	[]
+-e	sm2rad([1, 2])	[6336/25082627, 12672/25082627]
+-e	sm2rad("text")	6336*"text"/25082627
+-e	sm2rad(true)	6336true/25082627
+-e	sm2rad(-7/3)	-14784/25082627
+-e	sm2rad(0.5)	0.00012630255993520933832010498740822
+-e	earthradius(0)	error: earthradius: 0 is not a unit
+-e	earthradius(1)	error: earthradius: 1 is not a unit
+-e	earthradius(-1)	error: earthradius: -1 is not a unit
+-e	earthradius(1/2)	error: earthradius: 1/2 is not a unit
+-e	earthradius(2)	error: earthradius: 2 is not a unit
+-e	earthradius(i)	error: earthradius: i is not a unit
+-e	earthradius(inf)	error: earthradius: inf is not a unit: degrees, radians, m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	earthradius(-inf)	error: earthradius: -inf is not a unit
+-e	earthradius(undefined)	error: earthradius: undefined is not a unit: degrees, radians, m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	earthradius(10^20)	error: earthradius: 100000000000000000000 is not a unit
+-e	earthradius(10^(-20))	error: earthradius: 1/100000000000000000000 is not a unit
+-e	earthradius(x)	error: earthradius: x is not a unit: degrees, radians, m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	earthradius([])	error: earthradius: [] is not a unit
+-e	earthradius([1, 2])	error: earthradius: [1, 2] is not a unit
+-e	earthradius("text")	error: earthradius: "text" is not a unit: degrees, radians, m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	earthradius(true)	error: earthradius: true is not a unit
+-e	earthradius(-7/3)	error: earthradius: -7/3 is not a unit
+-e	earthradius(0.5)	error: earthradius: 1/2 is not a unit
+-e	wrapto180(0)	0
+-e	wrapto180(1)	1
+-e	wrapto180(-1)	-1
+-e	wrapto180(1/2)	1/2
+-e	wrapto180(2)	2
+-e	wrapto180(i)	error: wrapto180: i is not a real number
+-e	wrapto180(inf)	error: wrapto180: inf is not a real number
+-e	wrapto180(-inf)	error: wrapto180: -inf is not a real number
+-e	wrapto180(undefined)	error: wrapto180: undefined is not a real number
+-e	wrapto180(10^20)	-80
+-e	wrapto180(10^(-20))	1/100000000000000000000
+-e	wrapto180(x)	error: wrapto180: x is not a real number
+-e	wrapto180([])	[]
+-e	wrapto180([1, 2])	[1, 2]
+-e	wrapto180("text")	error: wrapto180: "text" is not a real number
+-e	wrapto180(true)	error: wrapto180: true is not a real number
+-e	wrapto180(-7/3)	-7/3
+-e	wrapto180(0.5)	0.5
+-e	wrapto360(0)	0
+-e	wrapto360(1)	1
+-e	wrapto360(-1)	359
+-e	wrapto360(1/2)	1/2
+-e	wrapto360(2)	2
+-e	wrapto360(i)	error: wrapto360: i is not a real number
+-e	wrapto360(inf)	error: wrapto360: inf is not a real number
+-e	wrapto360(-inf)	error: wrapto360: -inf is not a real number
+-e	wrapto360(undefined)	error: wrapto360: undefined is not a real number
+-e	wrapto360(10^20)	280
+-e	wrapto360(10^(-20))	1/100000000000000000000
+-e	wrapto360(x)	error: wrapto360: x is not a real number
+-e	wrapto360([])	[]
+-e	wrapto360([1, 2])	[1, 2]
+-e	wrapto360("text")	error: wrapto360: "text" is not a real number
+-e	wrapto360(true)	error: wrapto360: true is not a real number
+-e	wrapto360(-7/3)	1073/3
+-e	wrapto360(0.5)	0.5
+-e	wraptopi(0)	0
+-e	wraptopi(1)	1
+-e	wraptopi(-1)	-1
+-e	wraptopi(1/2)	1/2
+-e	wraptopi(2)	2
+-e	wraptopi(i)	error: wraptopi: i is not a real number
+-e	wraptopi(inf)	error: wraptopi: inf is not a real number
+-e	wraptopi(-inf)	error: wraptopi: -inf is not a real number
+-e	wraptopi(undefined)	error: wraptopi: undefined is not a real number
+-e	wraptopi(10^20)	100000000000000000000 - 31830988618379067154pi
+-e	wraptopi(10^(-20))	1/100000000000000000000
+-e	wraptopi(x)	error: wraptopi: x is not a real number
+-e	wraptopi([])	[]
+-e	wraptopi([1, 2])	[1, 2]
+-e	wraptopi("text")	error: wraptopi: "text" is not a real number
+-e	wraptopi(true)	error: wraptopi: true is not a real number
+-e	wraptopi(-7/3)	-7/3
+-e	wraptopi(0.5)	0.5
+-e	wrapto2pi(0)	0
+-e	wrapto2pi(1)	1
+-e	wrapto2pi(-1)	2pi - 1
+-e	wrapto2pi(1/2)	1/2
+-e	wrapto2pi(2)	2
+-e	wrapto2pi(i)	error: wrapto2pi: i is not a real number
+-e	wrapto2pi(inf)	error: wrapto2pi: inf is not a real number
+-e	wrapto2pi(-inf)	error: wrapto2pi: -inf is not a real number
+-e	wrapto2pi(undefined)	error: wrapto2pi: undefined is not a real number
+-e	wrapto2pi(10^20)	100000000000000000000 - 31830988618379067152pi
+-e	wrapto2pi(10^(-20))	1/100000000000000000000
+-e	wrapto2pi(x)	error: wrapto2pi: x is not a real number
+-e	wrapto2pi([])	[]
+-e	wrapto2pi([1, 2])	[1, 2]
+-e	wrapto2pi("text")	error: wrapto2pi: "text" is not a real number
+-e	wrapto2pi(true)	error: wrapto2pi: true is not a real number
+-e	wrapto2pi(-7/3)	2pi - 7/3
+-e	wrapto2pi(0.5)	0.5
+-e	roundn(0)	0
+-e	roundn(1)	1
+-e	roundn(-1)	-1
+-e	roundn(1/2)	1/2
+-e	roundn(2)	2
+-e	roundn(i)	error: roundn: i is not a real number
+-e	roundn(inf)	error: roundn: inf is not a real number
+-e	roundn(-inf)	error: roundn: -inf is not a real number
+-e	roundn(undefined)	error: roundn: undefined is not a real number
+-e	roundn(10^20)	100000000000000000000
+-e	roundn(10^(-20))	0
+-e	roundn(x)	error: roundn: x is not a real number
+-e	roundn([])	[]
+-e	roundn([1, 2])	[1, 2]
+-e	roundn("text")	error: roundn: "text" is not a real number
+-e	roundn(true)	error: roundn: true is not a real number
+-e	roundn(-7/3)	-233/100
+-e	roundn(0.5)	0.5
+-e	dms2degrees(0)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(1)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(-1)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(1/2)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(2)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(i)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(inf)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(-inf)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(undefined)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(10^20)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(10^(-20))	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(x)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees([])	[]
+-e	dms2degrees([1, 2])	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees("text")	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(true)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(-7/3)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dms2degrees(0.5)	error: dms2degrees is written dms2degrees([degrees, minutes, seconds]) or rows of them
+-e	dm2degrees(0)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(1)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(-1)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(1/2)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(2)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(i)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(inf)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(-inf)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(undefined)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(10^20)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(10^(-20))	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(x)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees([])	[]
+-e	dm2degrees([1, 2])	31/30
+-e	dm2degrees("text")	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(true)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(-7/3)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	dm2degrees(0.5)	error: dm2degrees is written dm2degrees([degrees, minutes]) or rows of them
+-e	degrees2dms(0)	[0, 0, 0]
+-e	degrees2dms(1)	[1, 0, 0]
+-e	degrees2dms(-1)	[-1, 0, 0]
+-e	degrees2dms(1/2)	[0, 30, 0]
+-e	degrees2dms(2)	[2, 0, 0]
+-e	degrees2dms(i)	error: degrees2dms: i is not a real number
+-e	degrees2dms(inf)	error: degrees2dms: inf is not a real number
+-e	degrees2dms(-inf)	error: degrees2dms: -inf is not a real number
+-e	degrees2dms(undefined)	error: degrees2dms: undefined is not a real number
+-e	degrees2dms(10^20)	[100000000000000000000, 0, 0]
+-e	degrees2dms(10^(-20))	[0, 0, 9/250000000000000000]
+-e	degrees2dms(x)	error: degrees2dms: x is not a real number
+-e	degrees2dms([])	[]
+-e	degrees2dms([1, 2])	[[1, 0, 0], [2, 0, 0]]
+-e	degrees2dms("text")	error: degrees2dms: "text" is not a real number
+-e	degrees2dms(true)	error: degrees2dms: true is not a real number
+-e	degrees2dms(-7/3)	[-2, 20, 0]
+-e	degrees2dms(0.5)	[0, 30, 0]
+-e	degrees2dm(0)	[0, 0]
+-e	degrees2dm(1)	[1, 0]
+-e	degrees2dm(-1)	[-1, 0]
+-e	degrees2dm(1/2)	[0, 30]
+-e	degrees2dm(2)	[2, 0]
+-e	degrees2dm(i)	error: degrees2dm: i is not a real number
+-e	degrees2dm(inf)	error: degrees2dm: inf is not a real number
+-e	degrees2dm(-inf)	error: degrees2dm: -inf is not a real number
+-e	degrees2dm(undefined)	error: degrees2dm: undefined is not a real number
+-e	degrees2dm(10^20)	[100000000000000000000, 0]
+-e	degrees2dm(10^(-20))	[0, 3/5000000000000000000]
+-e	degrees2dm(x)	error: degrees2dm: x is not a real number
+-e	degrees2dm([])	[]
+-e	degrees2dm([1, 2])	[[1, 0], [2, 0]]
+-e	degrees2dm("text")	error: degrees2dm: "text" is not a real number
+-e	degrees2dm(true)	error: degrees2dm: true is not a real number
+-e	degrees2dm(-7/3)	[-2, 20]
+-e	degrees2dm(0.5)	[0, 30]
+-e	angl2str(0)	"0.00°"
+-e	angl2str(1)	"1.00°"
+-e	angl2str(-1)	"-1.00°"
+-e	angl2str(1/2)	"0.50°"
+-e	angl2str(2)	"2.00°"
+-e	angl2str(i)	error: angl2str: i is not a real number
+-e	angl2str(inf)	error: angl2str: inf is not a real number
+-e	angl2str(-inf)	error: angl2str: -inf is not a real number
+-e	angl2str(undefined)	error: angl2str: undefined is not a real number
+-e	angl2str(10^20)	"100000000000000000000.00°"
+-e	angl2str(10^(-20))	"0.00°"
+-e	angl2str(x)	error: angl2str: x is not a real number
+-e	angl2str([])	[]
+-e	angl2str([1, 2])	["1.00°", "2.00°"]
+-e	angl2str("text")	error: angl2str: "text" is not a real number
+-e	angl2str(true)	error: angl2str: true is not a real number
+-e	angl2str(-7/3)	"-2.33°"
+-e	angl2str(0.5)	"0.50°"
+-e	str2angle(0)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(1)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(-1)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(1/2)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(2)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(i)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(inf)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(-inf)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(undefined)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(10^20)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(10^(-20))	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(x)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle([])	[]
+-e	str2angle([1, 2])	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle("text")	error: str2angle: "text" is not an angle: degrees, minutes and seconds like 12°30'15''S, 12-30-15S, 12d30m15s, 123015S (the last four digits are minutes and seconds), or -12.5
+-e	str2angle(true)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(-7/3)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(0.5)	error: str2angle is written str2angle("12°30'15''S")
+-e	timezone(0)	[0, "Z"]
+-e	timezone(1)	[0, "Z"]
+-e	timezone(-1)	[0, "Z"]
+-e	timezone(1/2)	[0, "Z"]
+-e	timezone(2)	[0, "Z"]
+-e	timezone(i)	error: timezone: i is not a real number
+-e	timezone(inf)	error: timezone: inf is not a real number
+-e	timezone(-inf)	error: timezone: -inf is not a real number
+-e	timezone(undefined)	error: timezone: undefined is not a real number
+-e	timezone(10^20)	[5, "R"]
+-e	timezone(10^(-20))	[0, "Z"]
+-e	timezone(x)	error: timezone: x is not a real number
+-e	timezone([])	[]
+-e	timezone([1, 2])	[[0, "Z"], [0, "Z"]]
+-e	timezone("text")	error: timezone: "text" is not a real number
+-e	timezone(true)	error: timezone: true is not a real number
+-e	timezone(-7/3)	[0, "Z"]
+-e	timezone(0.5)	[0, "Z"]
+-e	utmzone(0)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 0
+-e	utmzone(1)	[[0, 8], [-180, -174]]
+-e	utmzone(-1)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -1
+-e	utmzone(1/2)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
+-e	utmzone(2)	[[0, 8], [-174, -168]]
+-e	utmzone(i)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not i
+-e	utmzone(inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not inf
+-e	utmzone(-inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -inf
+-e	utmzone(undefined)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not undefined
+-e	utmzone(10^20)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 100000000000000000000
+-e	utmzone(10^(-20))	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/100000000000000000000
+-e	utmzone(x)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not x
+-e	utmzone([])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not []
+-e	utmzone([1, 2])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not [1, 2]
+-e	utmzone("text")	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not "text"
+-e	utmzone(true)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not true
+-e	utmzone(-7/3)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -7/3
+-e	utmzone(0.5)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
+-e	relu(0)	0
+-e	relu(1)	1
+-e	relu(-1)	0
+-e	relu(1/2)	1/2
+-e	relu(2)	2
+-e	relu(i)	error: relu: i is not a real number
+-e	relu(inf)	error: relu: inf is not a real number
+-e	relu(-inf)	error: relu: -inf is not a real number
+-e	relu(undefined)	error: relu: undefined is not a real number
+-e	relu(10^20)	100000000000000000000
+-e	relu(10^(-20))	1/100000000000000000000
+-e	relu(x)	x/2 + abs(x)/2
+-e	relu([])	[]
+-e	relu([1, 2])	[1, 2]
+-e	relu("text")	"text"/2 + abs("text")/2
+-e	relu(true)	error: relu: true is not a real number
+-e	relu(-7/3)	0
+-e	relu(0.5)	0.5
+-e	leakyrelu(0)	0
+-e	leakyrelu(1)	1
+-e	leakyrelu(-1)	-1/100
+-e	leakyrelu(1/2)	1/2
+-e	leakyrelu(2)	2
+-e	leakyrelu(i)	error: leakyrelu: i is not a real number
+-e	leakyrelu(inf)	error: leakyrelu: inf is not a real number
+-e	leakyrelu(-inf)	error: leakyrelu: -inf is not a real number
+-e	leakyrelu(undefined)	error: leakyrelu: undefined is not a real number
+-e	leakyrelu(10^20)	100000000000000000000
+-e	leakyrelu(10^(-20))	1/100000000000000000000
+-e	leakyrelu(x)	101x/200 + 99abs(x)/200
+-e	leakyrelu([])	[]
+-e	leakyrelu([1, 2])	[1, 2]
+-e	leakyrelu("text")	101*"text"/200 + 99abs("text")/200
+-e	leakyrelu(true)	error: leakyrelu: true is not a real number
+-e	leakyrelu(-7/3)	-7/300
+-e	leakyrelu(0.5)	0.5
+-e	clippedrelu(0)	0
+-e	clippedrelu(1)	1
+-e	clippedrelu(-1)	0
+-e	clippedrelu(1/2)	1/2
+-e	clippedrelu(2)	2
+-e	clippedrelu(i)	error: clippedrelu: i is not a real number
+-e	clippedrelu(inf)	error: clippedrelu: inf is not a real number
+-e	clippedrelu(-inf)	error: clippedrelu: -inf is not a real number
+-e	clippedrelu(undefined)	error: clippedrelu: undefined is not a real number
+-e	clippedrelu(10^20)	6
+-e	clippedrelu(10^(-20))	1/100000000000000000000
+-e	clippedrelu(x)	-abs(x - 6)/2 + abs(x)/2 + 3
+-e	clippedrelu([])	[]
+-e	clippedrelu([1, 2])	[1, 2]
+-e	clippedrelu("text")	-abs("text" - 6)/2 + abs("text")/2 + 3
+-e	clippedrelu(true)	error: clippedrelu: true is not a real number
+-e	clippedrelu(-7/3)	0
+-e	clippedrelu(0.5)	0.5
+-e	elu(0)	0
+-e	elu(1)	1
+-e	elu(-1)	1/e - 1
+-e	elu(1/2)	1/2
+-e	elu(2)	2
+-e	elu(i)	error: elu: i is not a real number
+-e	elu(inf)	error: elu: inf is not a real number
+-e	elu(-inf)	error: elu: -inf is not a real number
+-e	elu(undefined)	error: elu: undefined is not a real number
+-e	elu(10^20)	100000000000000000000
+-e	elu(10^(-20))	1/100000000000000000000
+-e	elu(x)	x/2 + abs(x)/2 + e^(x/2 - abs(x)/2) - 1
+-e	elu([])	[]
+-e	elu([1, 2])	[1, 2]
+-e	elu("text")	"text"/2 + abs("text")/2 + e^("text"/2 - abs("text")/2) - 1
+-e	elu(true)	error: elu: true is not a real number
+-e	elu(-7/3)	1/e^(7/3) - 1
+-e	elu(0.5)	0.5
+-e	gelu(0)	0
+-e	gelu(1)	1/2 + erf(sqrt(2)/2)/2
+-e	gelu(-1)	erf(sqrt(2)/2)/2 - 1/2
+-e	gelu(1/2)	1/4 + erf(sqrt(2)/4)/4
+-e	gelu(2)	1 + erf(sqrt(2))
+-e	gelu(i)	i/2 + i*erf(i*sqrt(2)/2)/2
+-e	gelu(inf)	inf
+-e	gelu(-inf)	undefined
+-e	gelu(undefined)	undefined
+-e	gelu(10^20)	50000000000000000000(1 + erf(50000000000000000000sqrt(2)))
+-e	gelu(10^(-20))	(1/200000000000000000000)(1 + erf(sqrt(2)/200000000000000000000))
+-e	gelu(x)	x*(erf(sqrt(2)*x/2) + 1)/2
+-e	gelu([])	[]
+-e	gelu([1, 2])	[1/2 + erf(sqrt(2)/2)/2, 1 + erf(sqrt(2))]
+-e	gelu("text")	"text"*(erf(sqrt(2)*"text"/2) + 1)/2
+-e	gelu(true)	(1 + erf(sqrt(2)*true/2))*true/2
+-e	gelu(-7/3)	7erf(7sqrt(2)/6)/6 - 7/6
+-e	gelu(0.5)	0.34573123063700655181885230530417
+-e	swish(0)	0
+-e	swish(1)	e/(1 + e)
+-e	swish(-1)	-1/(1 + e)
+-e	swish(1/2)	1/(2(1 + 1/sqrt(e)))
+-e	swish(2)	2/(1 + 1/e^2)
+-e	swish(i)	i/(1 + e^(-i))
+-e	swish(inf)	inf
+-e	swish(-inf)	undefined
+-e	swish(undefined)	undefined
+-e	swish(10^20)	100000000000000000000/(1 + 1/e^100000000000000000000)
+-e	swish(10^(-20))	1/(100000000000000000000(1 + 1/e^(1/100000000000000000000)))
+-e	swish(x)	x/(e^(-x) + 1)
+-e	swish([])	[]
+-e	swish([1, 2])	[e/(1 + e), 2/(1 + 1/e^2)]
+-e	swish("text")	"text"/(e^(-"text") + 1)
+-e	swish(true)	true/(1 + e^(-true))
+-e	swish(-7/3)	-7/(3(1 + e^(7/3)))
+-e	swish(0.5)	0.31122966560092728231945028287275
+-e	mish(0)	0
+-e	mish(1)	e*(2 + e)/(2 + 2e + e^2)
+-e	mish(-1)	(-1 - 2e)/(1 + 2e + 2e^2)
+-e	mish(1/2)	(e/2 + sqrt(e))/(2 + e + 2sqrt(e))
+-e	mish(2)	(4e^2 + 2e^4)/(2 + 2e^2 + e^4)
+-e	mish(i)	i*e^i*(2 + e^i)/(2 + e^(2i) + 2e^i)
+-e	mish(inf)	inf
+-e	mish(-inf)	undefined
+-e	mish(undefined)	undefined
+-e	mish(10^20)	100000000000000000000((1 + e^100000000000000000000)^2 - 1)/(1 + (1 + e^100000000000000000000)^2)
+-e	mish(10^(-20))	((1 + e^(1/100000000000000000000))^2 - 1)/(100000000000000000000(1 + (1 + e^(1/100000000000000000000))^2))
+-e	mish(x)	x*e^x*(e^x + 2)/(e^(2x) + 2e^x + 2)
+-e	mish([])	[]
+-e	mish([1, 2])	[e*(2 + e)/(2 + 2e + e^2), (4e^2 + 2e^4)/(2 + 2e^2 + e^4)]
+-e	mish("text")	"text"*((e^"text" + 1)^2 - 1)/((e^"text" + 1)^2 + 1)
+-e	mish(true)	((1 + e^(true))^2 - 1)*true/(1 + (1 + e^(true))^2)
+-e	mish(-7/3)	-7(1 + 2e^(7/3))/(3(1 + 2e^(14/3) + 2e^(7/3)))
+-e	mish(0.5)	0.37524521130489510481856241339928
+-e	softplus(0)	ln(2)
+-e	softplus(1)	ln(1 + e)
+-e	softplus(-1)	ln(1 + 1/e)
+-e	softplus(1/2)	ln(1 + sqrt(e))
+-e	softplus(2)	ln(1 + e^2)
+-e	softplus(i)	ln(1 + e^i)
+-e	softplus(inf)	inf

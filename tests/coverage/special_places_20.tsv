@@ -1,0 +1,700 @@
+-e	table2array(0.5)	table2array(0.5)
+-e	array2table(0)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(1)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(-1)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(1/2)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(2)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(i)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(inf)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(-inf)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(undefined)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(10^20)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(10^(-20))	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(x)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table([])	error: array2table needs a matrix: a list of rows of one length
+-e	array2table([1, 2])	error: array2table needs a matrix: a list of rows of one length
+-e	array2table("text")	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(true)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(-7/3)	error: array2table needs a matrix: a list of rows of one length
+-e	array2table(0.5)	error: array2table needs a matrix: a list of rows of one length
+-e	struct2table(0)	error: fieldnames needs a record made by struct(name, value, ...), 0 is none
+-e	struct2table(1)	error: fieldnames needs a record made by struct(name, value, ...), 1 is none
+-e	struct2table(-1)	error: fieldnames needs a record made by struct(name, value, ...), -1 is none
+-e	struct2table(1/2)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	struct2table(2)	error: fieldnames needs a record made by struct(name, value, ...), 2 is none
+-e	struct2table(i)	error: fieldnames needs a record made by struct(name, value, ...), i is none
+-e	struct2table(inf)	error: fieldnames needs a record made by struct(name, value, ...), inf is none
+-e	struct2table(-inf)	error: fieldnames needs a record made by struct(name, value, ...), -inf is none
+-e	struct2table(undefined)	error: fieldnames needs a record made by struct(name, value, ...), undefined is none
+-e	struct2table(10^20)	error: fieldnames needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	struct2table(10^(-20))	error: fieldnames needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	struct2table(x)	error: fieldnames needs a record made by struct(name, value, ...), x is none
+-e	struct2table([])	error: fieldnames needs a record made by struct(name, value, ...), [] is none
+-e	struct2table([1, 2])	error: fieldnames needs a record made by struct(name, value, ...), 1 is none
+-e	struct2table("text")	error: fieldnames needs a record made by struct(name, value, ...), "text" is none
+-e	struct2table(true)	error: fieldnames needs a record made by struct(name, value, ...), true is none
+-e	struct2table(-7/3)	error: fieldnames needs a record made by struct(name, value, ...), -7/3 is none
+-e	struct2table(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	table2struct(0)	table2struct(0)
+-e	table2struct(1)	table2struct(1)
+-e	table2struct(-1)	table2struct(-1)
+-e	table2struct(1/2)	table2struct(1/2)
+-e	table2struct(2)	table2struct(2)
+-e	table2struct(i)	table2struct(i)
+-e	table2struct(inf)	table2struct(inf)
+-e	table2struct(-inf)	table2struct(-inf)
+-e	table2struct(undefined)	undefined
+-e	table2struct(10^20)	table2struct(100000000000000000000)
+-e	table2struct(10^(-20))	table2struct(1/100000000000000000000)
+-e	table2struct(x)	table2struct(x)
+-e	table2struct([])	[]
+-e	table2struct([1, 2])	[table2struct(1), table2struct(2)]
+-e	table2struct("text")	table2struct("text")
+-e	table2struct(true)	table2struct(true)
+-e	table2struct(-7/3)	table2struct(-7/3)
+-e	table2struct(0.5)	table2struct(0.5)
+-e	timetable2table(0)	timetable2table(0)
+-e	timetable2table(1)	timetable2table(1)
+-e	timetable2table(-1)	timetable2table(-1)
+-e	timetable2table(1/2)	timetable2table(1/2)
+-e	timetable2table(2)	timetable2table(2)
+-e	timetable2table(i)	timetable2table(i)
+-e	timetable2table(inf)	timetable2table(inf)
+-e	timetable2table(-inf)	timetable2table(-inf)
+-e	timetable2table(undefined)	undefined
+-e	timetable2table(10^20)	timetable2table(100000000000000000000)
+-e	timetable2table(10^(-20))	timetable2table(1/100000000000000000000)
+-e	timetable2table(x)	timetable2table(x)
+-e	timetable2table([])	[]
+-e	timetable2table([1, 2])	[timetable2table(1), timetable2table(2)]
+-e	timetable2table("text")	timetable2table("text")
+-e	timetable2table(true)	timetable2table(true)
+-e	timetable2table(-7/3)	timetable2table(-7/3)
+-e	timetable2table(0.5)	timetable2table(0.5)
+-e	table2timetable(0)	table2timetable(0)
+-e	table2timetable(1)	table2timetable(1)
+-e	table2timetable(-1)	table2timetable(-1)
+-e	table2timetable(1/2)	table2timetable(1/2)
+-e	table2timetable(2)	table2timetable(2)
+-e	table2timetable(i)	table2timetable(i)
+-e	table2timetable(inf)	table2timetable(inf)
+-e	table2timetable(-inf)	table2timetable(-inf)
+-e	table2timetable(undefined)	undefined
+-e	table2timetable(10^20)	table2timetable(100000000000000000000)
+-e	table2timetable(10^(-20))	table2timetable(1/100000000000000000000)
+-e	table2timetable(x)	table2timetable(x)
+-e	table2timetable([])	[]
+-e	table2timetable([1, 2])	[table2timetable(1), table2timetable(2)]
+-e	table2timetable("text")	table2timetable("text")
+-e	table2timetable(true)	table2timetable(true)
+-e	table2timetable(-7/3)	table2timetable(-7/3)
+-e	table2timetable(0.5)	table2timetable(0.5)
+-e	summary(0)	summary(0)
+-e	summary(1)	summary(1)
+-e	summary(-1)	summary(-1)
+-e	summary(1/2)	summary(1/2)
+-e	summary(2)	summary(2)
+-e	summary(i)	summary(i)
+-e	summary(inf)	summary(inf)
+-e	summary(-inf)	summary(-inf)
+-e	summary(undefined)	undefined
+-e	summary(10^20)	summary(100000000000000000000)
+-e	summary(10^(-20))	summary(1/100000000000000000000)
+-e	summary(x)	summary(x)
+-e	summary([])	[]
+-e	summary([1, 2])	[summary(1), summary(2)]
+-e	summary("text")	summary("text")
+-e	summary(true)	summary(true)
+-e	summary(-7/3)	summary(-7/3)
+-e	summary(0.5)	summary(0.5)
+-e	readtable(0)	error: readtable("file.csv")
+-e	readtable(1)	error: readtable("file.csv")
+-e	readtable(-1)	error: readtable("file.csv")
+-e	readtable(1/2)	error: readtable("file.csv")
+-e	readtable(2)	error: readtable("file.csv")
+-e	readtable(i)	error: readtable("file.csv")
+-e	readtable(inf)	error: readtable("file.csv")
+-e	readtable(-inf)	error: readtable("file.csv")
+-e	readtable(undefined)	error: readtable("file.csv")
+-e	readtable(10^20)	error: readtable("file.csv")
+-e	readtable(10^(-20))	error: readtable("file.csv")
+-e	readtable(x)	error: readtable("file.csv")
+-e	readtable([])	error: readtable("file.csv")
+-e	readtable([1, 2])	error: readtable("file.csv")
+-e	readtable("text")	error: readtable: text: No such file or directory (os error 2)
+-e	readtable(true)	error: readtable("file.csv")
+-e	readtable(-7/3)	error: readtable("file.csv")
+-e	readtable(0.5)	error: readtable("file.csv")
+-e	isregular(0)	true
+-e	isregular(1)	true
+-e	isregular(-1)	true
+-e	isregular(1/2)	true
+-e	isregular(2)	true
+-e	isregular(i)	true
+-e	isregular(inf)	true
+-e	isregular(-inf)	true
+-e	isregular(undefined)	true
+-e	isregular(10^20)	true
+-e	isregular(10^(-20))	true
+-e	isregular(x)	true
+-e	isregular([])	true
+-e	isregular([1, 2])	true
+-e	isregular("text")	true
+-e	isregular(true)	true
+-e	isregular(-7/3)	true
+-e	isregular(0.5)	true
+-e	lag(0)	lag(0)
+-e	lag(1)	lag(1)
+-e	lag(-1)	lag(-1)
+-e	lag(1/2)	lag(1/2)
+-e	lag(2)	lag(2)
+-e	lag(i)	lag(i)
+-e	lag(inf)	lag(inf)
+-e	lag(-inf)	lag(-inf)
+-e	lag(undefined)	undefined
+-e	lag(10^20)	lag(100000000000000000000)
+-e	lag(10^(-20))	lag(1/100000000000000000000)
+-e	lag(x)	lag(x)
+-e	lag([])	[]
+-e	lag([1, 2])	[lag(1), lag(2)]
+-e	lag("text")	lag("text")
+-e	lag(true)	lag(true)
+-e	lag(-7/3)	lag(-7/3)
+-e	lag(0.5)	lag(0.5)
+-e	categorical(0)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(1)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(-1)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(1/2)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(2)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(i)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(inf)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(-inf)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(undefined)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(10^20)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(10^(-20))	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(x)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical([])	categorical([], [])
+-e	categorical([1, 2])	categorical([1, 2], [1, 2])
+-e	categorical("text")	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(true)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(-7/3)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	categorical(0.5)	error: categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"])
+-e	iscategorical(0)	false
+-e	iscategorical(1)	false
+-e	iscategorical(-1)	false
+-e	iscategorical(1/2)	false
+-e	iscategorical(2)	false
+-e	iscategorical(i)	false
+-e	iscategorical(inf)	false
+-e	iscategorical(-inf)	false
+-e	iscategorical(undefined)	false
+-e	iscategorical(10^20)	false
+-e	iscategorical(10^(-20))	false
+-e	iscategorical(x)	false
+-e	iscategorical([])	false
+-e	iscategorical([1, 2])	false
+-e	iscategorical("text")	false
+-e	iscategorical(true)	false
+-e	iscategorical(-7/3)	false
+-e	iscategorical(0.5)	false
+-e	categories(0)	categories(0)
+-e	categories(1)	categories(1)
+-e	categories(-1)	categories(-1)
+-e	categories(1/2)	categories(1/2)
+-e	categories(2)	categories(2)
+-e	categories(i)	categories(i)
+-e	categories(inf)	categories(inf)
+-e	categories(-inf)	categories(-inf)
+-e	categories(undefined)	undefined
+-e	categories(10^20)	categories(100000000000000000000)
+-e	categories(10^(-20))	categories(1/100000000000000000000)
+-e	categories(x)	categories(x)
+-e	categories([])	[]
+-e	categories([1, 2])	[categories(1), categories(2)]
+-e	categories("text")	categories("text")
+-e	categories(true)	categories(true)
+-e	categories(-7/3)	categories(-7/3)
+-e	categories(0.5)	categories(0.5)
+-e	countcats(0)	countcats(0)
+-e	countcats(1)	countcats(1)
+-e	countcats(-1)	countcats(-1)
+-e	countcats(1/2)	countcats(1/2)
+-e	countcats(2)	countcats(2)
+-e	countcats(i)	countcats(i)
+-e	countcats(inf)	countcats(inf)
+-e	countcats(-inf)	countcats(-inf)
+-e	countcats(undefined)	undefined
+-e	countcats(10^20)	countcats(100000000000000000000)
+-e	countcats(10^(-20))	countcats(1/100000000000000000000)
+-e	countcats(x)	countcats(x)
+-e	countcats([])	[]
+-e	countcats([1, 2])	[countcats(1), countcats(2)]
+-e	countcats("text")	countcats("text")
+-e	countcats(true)	countcats(true)
+-e	countcats(-7/3)	countcats(-7/3)
+-e	countcats(0.5)	countcats(0.5)
+-e	isundefined(0)	isundefined(0)
+-e	isundefined(1)	isundefined(1)
+-e	isundefined(-1)	isundefined(-1)
+-e	isundefined(1/2)	isundefined(1/2)
+-e	isundefined(2)	isundefined(2)
+-e	isundefined(i)	isundefined(i)
+-e	isundefined(inf)	isundefined(inf)
+-e	isundefined(-inf)	isundefined(-inf)
+-e	isundefined(undefined)	undefined
+-e	isundefined(10^20)	isundefined(100000000000000000000)
+-e	isundefined(10^(-20))	isundefined(1/100000000000000000000)
+-e	isundefined(x)	isundefined(x)
+-e	isundefined([])	[]
+-e	isundefined([1, 2])	[isundefined(1), isundefined(2)]
+-e	isundefined("text")	isundefined("text")
+-e	isundefined(true)	isundefined(true)
+-e	isundefined(-7/3)	isundefined(-7/3)
+-e	isundefined(0.5)	isundefined(0.5)
+-e	isordinal(0)	isordinal(0)
+-e	isordinal(1)	isordinal(1)
+-e	isordinal(-1)	isordinal(-1)
+-e	isordinal(1/2)	isordinal(1/2)
+-e	isordinal(2)	isordinal(2)
+-e	isordinal(i)	isordinal(i)
+-e	isordinal(inf)	isordinal(inf)
+-e	isordinal(-inf)	isordinal(-inf)
+-e	isordinal(undefined)	undefined
+-e	isordinal(10^20)	isordinal(100000000000000000000)
+-e	isordinal(10^(-20))	isordinal(1/100000000000000000000)
+-e	isordinal(x)	isordinal(x)
+-e	isordinal([])	[]
+-e	isordinal([1, 2])	[isordinal(1), isordinal(2)]
+-e	isordinal("text")	isordinal("text")
+-e	isordinal(true)	isordinal(true)
+-e	isordinal(-7/3)	isordinal(-7/3)
+-e	isordinal(0.5)	isordinal(0.5)
+-e	removecats(0)	removecats(0)
+-e	removecats(1)	removecats(1)
+-e	removecats(-1)	removecats(-1)
+-e	removecats(1/2)	removecats(1/2)
+-e	removecats(2)	removecats(2)
+-e	removecats(i)	removecats(i)
+-e	removecats(inf)	removecats(inf)
+-e	removecats(-inf)	removecats(-inf)
+-e	removecats(undefined)	undefined
+-e	removecats(10^20)	removecats(100000000000000000000)
+-e	removecats(10^(-20))	removecats(1/100000000000000000000)
+-e	removecats(x)	removecats(x)
+-e	removecats([])	[]
+-e	removecats([1, 2])	[removecats(1), removecats(2)]
+-e	removecats("text")	removecats("text")
+-e	removecats(true)	removecats(true)
+-e	removecats(-7/3)	removecats(-7/3)
+-e	removecats(0.5)	removecats(0.5)
+-e	reordercats(0)	reordercats(0)
+-e	reordercats(1)	reordercats(1)
+-e	reordercats(-1)	reordercats(-1)
+-e	reordercats(1/2)	reordercats(1/2)
+-e	reordercats(2)	reordercats(2)
+-e	reordercats(i)	reordercats(i)
+-e	reordercats(inf)	reordercats(inf)
+-e	reordercats(-inf)	reordercats(-inf)
+-e	reordercats(undefined)	undefined
+-e	reordercats(10^20)	reordercats(100000000000000000000)
+-e	reordercats(10^(-20))	reordercats(1/100000000000000000000)
+-e	reordercats(x)	reordercats(x)
+-e	reordercats([])	[]
+-e	reordercats([1, 2])	[reordercats(1), reordercats(2)]
+-e	reordercats("text")	reordercats("text")
+-e	reordercats(true)	reordercats(true)
+-e	reordercats(-7/3)	reordercats(-7/3)
+-e	reordercats(0.5)	reordercats(0.5)
+-e	grp2idx(0)	error: grp2idx([values])
+-e	grp2idx(1)	error: grp2idx([values])
+-e	grp2idx(-1)	error: grp2idx([values])
+-e	grp2idx(1/2)	error: grp2idx([values])
+-e	grp2idx(2)	error: grp2idx([values])
+-e	grp2idx(i)	error: grp2idx([values])
+-e	grp2idx(inf)	error: grp2idx([values])
+-e	grp2idx(-inf)	error: grp2idx([values])
+-e	grp2idx(undefined)	error: grp2idx([values])
+-e	grp2idx(10^20)	error: grp2idx([values])
+-e	grp2idx(10^(-20))	error: grp2idx([values])
+-e	grp2idx(x)	error: grp2idx([values])
+-e	grp2idx([])	[[], []]
+-e	grp2idx([1, 2])	[[1, 2], [1, 2]]
+-e	grp2idx("text")	error: grp2idx([values])
+-e	grp2idx(true)	error: grp2idx([values])
+-e	grp2idx(-7/3)	error: grp2idx([values])
+-e	grp2idx(0.5)	error: grp2idx([values])
+-e	cellstr(0)	cellstr(0)
+-e	cellstr(1)	cellstr(1)
+-e	cellstr(-1)	cellstr(-1)
+-e	cellstr(1/2)	cellstr(1/2)
+-e	cellstr(2)	cellstr(2)
+-e	cellstr(i)	cellstr(i)
+-e	cellstr(inf)	cellstr(inf)
+-e	cellstr(-inf)	cellstr(-inf)
+-e	cellstr(undefined)	undefined
+-e	cellstr(10^20)	cellstr(100000000000000000000)
+-e	cellstr(10^(-20))	cellstr(1/100000000000000000000)
+-e	cellstr(x)	cellstr(x)
+-e	cellstr([])	[]
+-e	cellstr([1, 2])	[cellstr(1), cellstr(2)]
+-e	cellstr("text")	cellstr("text")
+-e	cellstr(true)	cellstr(true)
+-e	cellstr(-7/3)	cellstr(-7/3)
+-e	cellstr(0.5)	cellstr(0.5)
+-e	bar3(0)	error: bar3 needs a matrix of numbers
+-e	bar3(1)	error: bar3 needs a matrix of numbers
+-e	bar3(-1)	error: bar3 needs a matrix of numbers
+-e	bar3(1/2)	error: bar3 needs a matrix of numbers
+-e	bar3(2)	error: bar3 needs a matrix of numbers
+-e	bar3(i)	error: bar3 needs a matrix of numbers
+-e	bar3(inf)	error: bar3 needs a matrix of numbers
+-e	bar3(-inf)	error: bar3 needs a matrix of numbers
+-e	bar3(undefined)	error: bar3 needs a matrix of numbers
+-e	bar3(10^20)	error: bar3 needs a matrix of numbers
+-e	bar3(10^(-20))	error: bar3 needs a matrix of numbers
+-e	bar3(x)	error: bar3 needs a matrix of numbers
+-e	bar3([])	error: bar3 needs a matrix of numbers
+-e	bar3([1, 2])	error: bar3 needs a matrix of numbers
+-e	bar3("text")	error: bar3 needs a matrix of numbers
+-e	bar3(true)	error: bar3 needs a matrix of numbers
+-e	bar3(-7/3)	error: bar3 needs a matrix of numbers
+-e	bar3(0.5)	error: bar3 needs a matrix of numbers
+-e	surfc(0)	error: surfc needs a matrix of numbers
+-e	surfc(1)	error: surfc needs a matrix of numbers
+-e	surfc(-1)	error: surfc needs a matrix of numbers
+-e	surfc(1/2)	error: surfc needs a matrix of numbers
+-e	surfc(2)	error: surfc needs a matrix of numbers
+-e	surfc(i)	error: surfc needs a matrix of numbers
+-e	surfc(inf)	error: surfc needs a matrix of numbers
+-e	surfc(-inf)	error: surfc needs a matrix of numbers
+-e	surfc(undefined)	error: surfc needs a matrix of numbers
+-e	surfc(10^20)	error: surfc needs a matrix of numbers
+-e	surfc(10^(-20))	error: surfc needs a matrix of numbers
+-e	surfc(x)	error: surfc needs a matrix of numbers
+-e	surfc([])	error: surfc needs a matrix of numbers
+-e	surfc([1, 2])	error: surfc needs a matrix of numbers
+-e	surfc("text")	error: surfc needs a matrix of numbers
+-e	surfc(true)	error: surfc needs a matrix of numbers
+-e	surfc(-7/3)	error: surfc needs a matrix of numbers
+-e	surfc(0.5)	error: surfc needs a matrix of numbers
+-e	polarhistogram(0)	error: polarhistogram needs lists of numbers, 0 is none
+-e	polarhistogram(1)	error: polarhistogram needs lists of numbers, 1 is none
+-e	polarhistogram(-1)	error: polarhistogram needs lists of numbers, -1 is none
+-e	polarhistogram(1/2)	error: polarhistogram needs lists of numbers, 1/2 is none
+-e	polarhistogram(2)	error: polarhistogram needs lists of numbers, 2 is none
+-e	polarhistogram(i)	error: polarhistogram needs lists of numbers, i is none
+-e	polarhistogram(inf)	error: polarhistogram needs lists of numbers, inf is none
+-e	polarhistogram(-inf)	error: polarhistogram needs lists of numbers, -inf is none
+-e	polarhistogram(undefined)	error: polarhistogram needs lists of numbers, undefined is none
+-e	polarhistogram(10^20)	error: polarhistogram needs lists of numbers, 100000000000000000000 is none
+-e	polarhistogram(10^(-20))	error: polarhistogram needs lists of numbers, 1/100000000000000000000 is none
+-e	polarhistogram(x)	error: polarhistogram needs lists of numbers, x is none
+-e	polarhistogram([])	error: polarhistogram([angles in radians][, number of parts])
+-e	polarhistogram([1, 2])	 1.155 │|       │                           ⣿⣿⣿⣿⣿|       │                          ⣿⣿⣿⣿⣿⣿      ⣿⣿|       │                           ⣿⣿⣿⣿⣿     ⣿⣿⣿⣿⣿⣿|       │                            ⣿⣿⣿⣿    ⣿⣿⣿⣿⣿⣿⣿⣿|       │                             ⣿⣿⣿   ⣿⣿⣿⣿⣿⣿|       │                              ⣿⣿  ⣿⣿⣿|       │                               ⣿ ⣿|       │|       │|       │|       │|       │|       │|       │|-1.155 │|       └────────────────────────────────────────────────────────────────|        -2.31                                                       2.31|2 angles in 12 parts of the circle, against the clock from the x axis: 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+-e	polarhistogram("text")	error: polarhistogram needs lists of numbers, "text" is none
+-e	polarhistogram(true)	error: polarhistogram needs lists of numbers, true is none
+-e	polarhistogram(-7/3)	error: polarhistogram needs lists of numbers, -7/3 is none
+-e	polarhistogram(0.5)	error: polarhistogram needs lists of numbers, 1/2 is none
+-e	dendrogram(0)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(1)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(-1)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(1/2)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(2)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(i)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(inf)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(-inf)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(undefined)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(10^20)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(10^(-20))	error: dendrogram needs a matrix of numbers
+-e	dendrogram(x)	error: dendrogram needs a matrix of numbers
+-e	dendrogram([])	error: dendrogram needs a matrix of numbers
+-e	dendrogram([1, 2])	error: dendrogram needs a matrix of numbers
+-e	dendrogram("text")	error: dendrogram needs a matrix of numbers
+-e	dendrogram(true)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(-7/3)	error: dendrogram needs a matrix of numbers
+-e	dendrogram(0.5)	error: dendrogram needs a matrix of numbers
+-e	pareto(0)	error: pareto needs lists of numbers, 0 is none
+-e	pareto(1)	error: pareto needs lists of numbers, 1 is none
+-e	pareto(-1)	error: pareto needs lists of numbers, -1 is none
+-e	pareto(1/2)	error: pareto needs lists of numbers, 1/2 is none
+-e	pareto(2)	error: pareto needs lists of numbers, 2 is none
+-e	pareto(i)	error: pareto needs lists of numbers, i is none
+-e	pareto(inf)	error: pareto needs lists of numbers, inf is none
+-e	pareto(-inf)	error: pareto needs lists of numbers, -inf is none
+-e	pareto(undefined)	error: pareto needs lists of numbers, undefined is none
+-e	pareto(10^20)	error: pareto needs lists of numbers, 100000000000000000000 is none
+-e	pareto(10^(-20))	error: pareto needs lists of numbers, 1/100000000000000000000 is none
+-e	pareto(x)	error: pareto needs lists of numbers, x is none
+-e	pareto([])	error: pareto needs values that are not negative
+-e	pareto([1, 2])	 3.12 │                                            ⢀⣠⡦|      │                                      ⢀⣀⠤⠔⠒⠉⠁|      │                                ⢀⣀⠤⠔⠒⠉⠁|      │                           ⣀⡠⠤⠒⠊⠁|      │                     ⣀⡠⠤⠒⠊⠉|      │      ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣴⣶⣮⣭⣤⣤⣤⣤⣤⣤⣤⣤|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.12 │──────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉──────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉──────|      └────────────────────────────────────────────────────────────────|       0.4                                                          2.6|2 bars from the largest: the values number 2, 1; their sum is 3
+-e	pareto("text")	error: pareto needs lists of numbers, "text" is none
+-e	pareto(true)	error: pareto needs lists of numbers, true is none
+-e	pareto(-7/3)	error: pareto needs lists of numbers, -7/3 is none
+-e	pareto(0.5)	error: pareto needs lists of numbers, 1/2 is none
+-e	fill(0)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(1)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(-1)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(1/2)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(2)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(i)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(inf)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(-inf)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(undefined)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(10^20)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(10^(-20))	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(x)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill([])	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill([1, 2])	error: fill([x values], [y values]): three corners or more
+-e	fill("text")	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(true)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(-7/3)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	fill(0.5)	error: fill([y values]), fill([x values], [y values]) or fill([[x, y], ...])
+-e	ribbon(0)	error: ribbon needs a matrix of numbers
+-e	ribbon(1)	error: ribbon needs a matrix of numbers
+-e	ribbon(-1)	error: ribbon needs a matrix of numbers
+-e	ribbon(1/2)	error: ribbon needs a matrix of numbers
+-e	ribbon(2)	error: ribbon needs a matrix of numbers
+-e	ribbon(i)	error: ribbon needs a matrix of numbers
+-e	ribbon(inf)	error: ribbon needs a matrix of numbers
+-e	ribbon(-inf)	error: ribbon needs a matrix of numbers
+-e	ribbon(undefined)	error: ribbon needs a matrix of numbers
+-e	ribbon(10^20)	error: ribbon needs a matrix of numbers
+-e	ribbon(10^(-20))	error: ribbon needs a matrix of numbers
+-e	ribbon(x)	error: ribbon needs a matrix of numbers
+-e	ribbon([])	error: ribbon needs a matrix of numbers
+-e	ribbon([1, 2])	error: ribbon needs a matrix of numbers
+-e	ribbon("text")	error: ribbon needs a matrix of numbers
+-e	ribbon(true)	error: ribbon needs a matrix of numbers
+-e	ribbon(-7/3)	error: ribbon needs a matrix of numbers
+-e	ribbon(0.5)	error: ribbon needs a matrix of numbers
+-e	normplot(0)	error: normplot needs lists of numbers, 0 is none
+-e	normplot(1)	error: normplot needs lists of numbers, 1 is none
+-e	normplot(-1)	error: normplot needs lists of numbers, -1 is none
+-e	normplot(1/2)	error: normplot needs lists of numbers, 1/2 is none
+-e	normplot(2)	error: normplot needs lists of numbers, 2 is none
+-e	normplot(i)	error: normplot needs lists of numbers, i is none
+-e	normplot(inf)	error: normplot needs lists of numbers, inf is none
+-e	normplot(-inf)	error: normplot needs lists of numbers, -inf is none
+-e	normplot(undefined)	error: normplot needs lists of numbers, undefined is none
+-e	normplot(10^20)	error: normplot needs lists of numbers, 100000000000000000000 is none
+-e	normplot(10^(-20))	error: normplot needs lists of numbers, 1/100000000000000000000 is none
+-e	normplot(x)	error: normplot needs lists of numbers, x is none
+-e	normplot([])	error: normplot needs two values or more
+-e	normplot([1, 2])	 0.7284 │                                                            ⣠⡦|        │                                                        ⣀⠤⠒⠉|        │                                                    ⣀⠤⠒⠉|        │                                                ⣀⠤⠒⠉|        │                                            ⣀⠤⠒⠉|        │                                        ⣀⠤⠒⠉|        │                                    ⣀⠤⠒⠉|        │                                ⣀⠤⠒⠉|      0 │────────────────────────────⣀⠤⠒⠉⠁───────────────────────────────|        │                        ⣀⠤⠒⠉|        │                    ⣀⠤⠒⠉|        │                ⣀⠤⠒⠉|        │            ⣀⠤⠒⠉|        │        ⣀⠤⠒⠉|        │    ⣀⠤⠒⠉|-0.7284 │  ⠺⠋|        └────────────────────────────────────────────────────────────────|         0.96                                                        2.04|2 values against the standard normal places of their ranks; the line joins the quarters 1 and 2
+-e	normplot("text")	error: normplot needs lists of numbers, "text" is none
+-e	normplot(true)	error: normplot needs lists of numbers, true is none
+-e	normplot(-7/3)	error: normplot needs lists of numbers, -7/3 is none
+-e	normplot(0.5)	error: normplot needs lists of numbers, 1/2 is none
+-e	parallelplot(0)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(1)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(-1)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(1/2)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(2)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(i)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(inf)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(-inf)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(undefined)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(10^20)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(10^(-20))	error: parallelplot needs a matrix of numbers
+-e	parallelplot(x)	error: parallelplot needs a matrix of numbers
+-e	parallelplot([])	error: parallelplot needs a matrix of numbers
+-e	parallelplot([1, 2])	error: parallelplot needs a matrix of numbers
+-e	parallelplot("text")	error: parallelplot needs a matrix of numbers
+-e	parallelplot(true)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(-7/3)	error: parallelplot needs a matrix of numbers
+-e	parallelplot(0.5)	error: parallelplot needs a matrix of numbers
+-e	swarmchart(0)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(1)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(-1)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(1/2)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(2)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(i)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(inf)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(-inf)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(undefined)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(10^20)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(10^(-20))	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(x)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart([])	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart([1, 2])	2.04 │                               ⢴⠄|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|0.96 │                               ⠺⠂|     └────────────────────────────────────────────────────────────────|      0.4                                                          1.6|2 values in 1 groups, from 1 to 2
+-e	swarmchart("text")	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(true)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(-7/3)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	swarmchart(0.5)	error: swarmchart([values]) or swarmchart([[values], [values], ...])
+-e	violinplot(0)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(1)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(-1)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(1/2)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(2)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(i)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(inf)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(-inf)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(undefined)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(10^20)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(10^(-20))	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(x)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot([])	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot([1, 2])	  3.237 │|        │                            ⠶⠶⠶⠶⠶⠶⠶⠶|        │                         ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                    ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │             ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │           ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │           ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │           ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │           ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │             ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                    ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                         ⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶|        │                            ⠶⠶⠶⠶⠶⠶⠶⠶|-0.2367 │|        └────────────────────────────────────────────────────────────────|         0.4                                                          1.6|the densities of 1 groups; their medians: 1.5
+-e	violinplot("text")	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(true)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(-7/3)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	violinplot(0.5)	error: violinplot([values]) or violinplot([[values], [values], ...])
+-e	histfit(0)	error: histfit needs lists of numbers, 0 is none
+-e	histfit(1)	error: histfit needs lists of numbers, 1 is none
+-e	histfit(-1)	error: histfit needs lists of numbers, -1 is none
+-e	histfit(1/2)	error: histfit needs lists of numbers, 1/2 is none
+-e	histfit(2)	error: histfit needs lists of numbers, 2 is none
+-e	histfit(i)	error: histfit needs lists of numbers, i is none
+-e	histfit(inf)	error: histfit needs lists of numbers, inf is none
+-e	histfit(-inf)	error: histfit needs lists of numbers, -inf is none
+-e	histfit(undefined)	error: histfit needs lists of numbers, undefined is none
+-e	histfit(10^20)	error: histfit needs lists of numbers, 100000000000000000000 is none
+-e	histfit(10^(-20))	error: histfit needs lists of numbers, 1/100000000000000000000 is none
+-e	histfit(x)	error: histfit needs lists of numbers, x is none
+-e	histfit([])	error: histfit needs two values or more
+-e	histfit([1, 2])	 1.04 │                 ⢀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⡀|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                ⢀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⡀|      │            ⢀⡠⠔⠊⠁⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠈⠑⠢⢄⡀|      │        ⣀⠤⠒⠊⠁    ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇    ⠈⠑⠒⠤⣀|      │    ⣀⠤⠔⠊         ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇         ⠑⠢⠤⣀|      │  ⠐⠉             ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇             ⠉⠂|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │                 ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|-0.04 │─────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁─────────────────|      └────────────────────────────────────────────────────────────────|       0.42                                                        2.58|2 values in 2 bins: 1, 1; the normal law of the mean 1.5 and the spread 0.7071
+-e	histfit("text")	error: histfit needs lists of numbers, "text" is none
+-e	histfit(true)	error: histfit needs lists of numbers, true is none
+-e	histfit(-7/3)	error: histfit needs lists of numbers, -7/3 is none
+-e	histfit(0.5)	error: histfit needs lists of numbers, 1/2 is none
+-e	andrewsplot(0)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(1)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(-1)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(1/2)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(2)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(i)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(inf)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(-inf)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(undefined)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(10^20)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(10^(-20))	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(x)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot([])	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot([1, 2])	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot("text")	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(true)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(-7/3)	error: andrewsplot needs a matrix of numbers
+-e	andrewsplot(0.5)	error: andrewsplot needs a matrix of numbers
+-e	bar3h(0)	error: bar3h needs a matrix of numbers
+-e	bar3h(1)	error: bar3h needs a matrix of numbers
+-e	bar3h(-1)	error: bar3h needs a matrix of numbers
+-e	bar3h(1/2)	error: bar3h needs a matrix of numbers
+-e	bar3h(2)	error: bar3h needs a matrix of numbers
+-e	bar3h(i)	error: bar3h needs a matrix of numbers
+-e	bar3h(inf)	error: bar3h needs a matrix of numbers
+-e	bar3h(-inf)	error: bar3h needs a matrix of numbers
+-e	bar3h(undefined)	error: bar3h needs a matrix of numbers
+-e	bar3h(10^20)	error: bar3h needs a matrix of numbers
+-e	bar3h(10^(-20))	error: bar3h needs a matrix of numbers
+-e	bar3h(x)	error: bar3h needs a matrix of numbers
+-e	bar3h([])	error: bar3h needs a matrix of numbers
+-e	bar3h([1, 2])	error: bar3h needs a matrix of numbers
+-e	bar3h("text")	error: bar3h needs a matrix of numbers
+-e	bar3h(true)	error: bar3h needs a matrix of numbers
+-e	bar3h(-7/3)	error: bar3h needs a matrix of numbers
+-e	bar3h(0.5)	error: bar3h needs a matrix of numbers
+-e	cdfplot(0)	error: cdfplot needs lists of numbers, 0 is none
+-e	cdfplot(1)	error: cdfplot needs lists of numbers, 1 is none
+-e	cdfplot(-1)	error: cdfplot needs lists of numbers, -1 is none
+-e	cdfplot(1/2)	error: cdfplot needs lists of numbers, 1/2 is none
+-e	cdfplot(2)	error: cdfplot needs lists of numbers, 2 is none
+-e	cdfplot(i)	error: cdfplot needs lists of numbers, i is none
+-e	cdfplot(inf)	error: cdfplot needs lists of numbers, inf is none
+-e	cdfplot(-inf)	error: cdfplot needs lists of numbers, -inf is none
+-e	cdfplot(undefined)	error: cdfplot needs lists of numbers, undefined is none
+-e	cdfplot(10^20)	error: cdfplot needs lists of numbers, 100000000000000000000 is none
+-e	cdfplot(10^(-20))	error: cdfplot needs lists of numbers, 1/100000000000000000000 is none
+-e	cdfplot(x)	error: cdfplot needs lists of numbers, x is none
+-e	cdfplot([])	error: cdfplot needs values
+-e	cdfplot([1, 2])	 1.05 │                                                            ⢀⣀⣀⣀|      │                                                            ⢸|      │                                                            ⢸|      │                                                            ⢸|      │                                                            ⢸|      │                                                            ⢸|      │                                                            ⢸|      │                                                            ⢸|      │   ⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉|      │   ⡇|      │   ⡇|      │   ⡇|      │   ⡇|      │   ⡇|      │   ⡇|-0.05 │⠉⠉⠉⠁────────────────────────────────────────────────────────────|      └────────────────────────────────────────────────────────────────|       0.95                                                        2.05|the shares of 2 values from 1 to 2; half of them at or below 1.5
+-e	cdfplot("text")	error: cdfplot needs lists of numbers, "text" is none
+-e	cdfplot(true)	error: cdfplot needs lists of numbers, true is none
+-e	cdfplot(-7/3)	error: cdfplot needs lists of numbers, -7/3 is none
+-e	cdfplot(0.5)	error: cdfplot needs lists of numbers, 1/2 is none
+-e	plotmatrix(0)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(1)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(-1)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(1/2)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(2)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(i)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(inf)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(-inf)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(undefined)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(10^20)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(10^(-20))	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(x)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix([])	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix([1, 2])	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix("text")	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(true)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(-7/3)	error: plotmatrix needs a matrix of numbers
+-e	plotmatrix(0.5)	error: plotmatrix needs a matrix of numbers
+-e	stackedplot(0)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(1)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(-1)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(1/2)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(2)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(i)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(inf)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(-inf)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(undefined)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(10^20)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(10^(-20))	error: stackedplot needs a matrix of numbers
+-e	stackedplot(x)	error: stackedplot needs a matrix of numbers
+-e	stackedplot([])	error: stackedplot needs a matrix of numbers
+-e	stackedplot([1, 2])	error: stackedplot needs a matrix of numbers
+-e	stackedplot("text")	error: stackedplot needs a matrix of numbers
+-e	stackedplot(true)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(-7/3)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(0.5)	error: stackedplot needs a matrix of numbers
+-e	biplot(0)	error: biplot needs a matrix of numbers
+-e	biplot(1)	error: biplot needs a matrix of numbers
+-e	biplot(-1)	error: biplot needs a matrix of numbers
+-e	biplot(1/2)	error: biplot needs a matrix of numbers
+-e	biplot(2)	error: biplot needs a matrix of numbers
+-e	biplot(i)	error: biplot needs a matrix of numbers
+-e	biplot(inf)	error: biplot needs a matrix of numbers
+-e	biplot(-inf)	error: biplot needs a matrix of numbers
+-e	biplot(undefined)	error: biplot needs a matrix of numbers
+-e	biplot(10^20)	error: biplot needs a matrix of numbers
+-e	biplot(10^(-20))	error: biplot needs a matrix of numbers
+-e	biplot(x)	error: biplot needs a matrix of numbers
+-e	biplot([])	error: biplot needs a matrix of numbers
+-e	biplot([1, 2])	error: biplot needs a matrix of numbers
+-e	biplot("text")	error: biplot needs a matrix of numbers
+-e	biplot(true)	error: biplot needs a matrix of numbers
+-e	biplot(-7/3)	error: biplot needs a matrix of numbers
+-e	biplot(0.5)	error: biplot needs a matrix of numbers
+-e	ccode(0)	"t0 = 0.0;"
+-e	ccode(1)	"t0 = 1.0;"
+-e	ccode(-1)	"t0 = -1.0;"
+-e	ccode(1/2)	"t0 = 1.0/2.0;"
+-e	ccode(2)	"t0 = 2.0;"
+-e	ccode(i)	"t0 = I;"
+-e	ccode(inf)	"t0 = INFINITY;"
+-e	ccode(-inf)	"t0 = -INFINITY;"
+-e	ccode(undefined)	"t0 = NAN;"
+-e	ccode(10^20)	"t0 = 100000000000000000000.0;"
+-e	ccode(10^(-20))	"t0 = 1.0/100000000000000000000.0;"
+-e	ccode(x)	"t0 = x;"
+-e	ccode([])	""
+-e	ccode([1, 2])	"t0[0] = 1.0;|t0[1] = 2.0;"
+-e	ccode("text")	error: ccode: C has no function for string
+-e	ccode(true)	"t0 = 1;"
+-e	ccode(-7/3)	"t0 = -7.0/3.0;"
+-e	ccode(0.5)	"t0 = 1.0/2.0;"
+-e	fortran(0)	"      t0 = 0.0D0"
+-e	fortran(1)	"      t0 = 1.0D0"
+-e	fortran(-1)	"      t0 = -1.0D0"
+-e	fortran(1/2)	"      t0 = 1.0D0/2.0D0"
+-e	fortran(2)	"      t0 = 2.0D0"
+-e	fortran(i)	"      t0 = (0.0D0,1.0D0)"
+-e	fortran(inf)	"      t0 = huge(1.0D0)"
+-e	fortran(-inf)	"      t0 = -huge(1.0D0)"
+-e	fortran(undefined)	"      t0 = undDfinDd"
+-e	fortran(10^20)	"      t0 = 100000000000000000000.0D0"
+-e	fortran(10^(-20))	"      t0 = 1.0D0/100000000000000000000.0D0"
+-e	fortran(x)	"      t0 = x"
+-e	fortran([])	""
+-e	fortran([1, 2])	"      t0(1) = 1.0D0|      t0(2) = 2.0D0"
+-e	fortran("text")	error: fortran: Fortran has no function for string

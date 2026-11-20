@@ -1,0 +1,136 @@
+	geodetic2aer(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: geodetic2aer takes 6 to 8 argument(s), 9 given
+	aer2geodetic(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: aer2geodetic takes 6 to 8 argument(s), 9 given
+	ecef2enu(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ecef2enu takes 6 to 8 argument(s), 9 given
+	enu2ecef(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: enu2ecef takes 6 to 8 argument(s), 9 given
+	ecef2ned(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ecef2ned takes 6 to 8 argument(s), 9 given
+	ned2ecef(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ned2ecef takes 6 to 8 argument(s), 9 given
+	ecef2aer(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ecef2aer takes 6 to 8 argument(s), 9 given
+	aer2ecef(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: aer2ecef takes 6 to 8 argument(s), 9 given
+	enu2aer(1, 2, 3, 4, 5)	error: enu2aer takes 3 to 4 argument(s), 5 given
+	aer2enu(1, 2, 3, 4, 5)	error: aer2enu takes 3 to 4 argument(s), 5 given
+	ned2aer(1, 2, 3, 4, 5)	error: ned2aer takes 3 to 4 argument(s), 5 given
+	aer2ned(1, 2, 3, 4, 5)	error: aer2ned takes 3 to 4 argument(s), 5 given
+	ecef2enuv(1, 2, 3, 4, 5, 6, 7)	error: ecef2enuv takes 5 to 6 argument(s), 7 given
+	enu2ecefv(1, 2, 3, 4, 5, 6, 7)	error: enu2ecefv takes 5 to 6 argument(s), 7 given
+	ecef2nedv(1, 2, 3, 4, 5, 6, 7)	error: ecef2nedv takes 5 to 6 argument(s), 7 given
+	ned2ecefv(1, 2, 3, 4, 5, 6, 7)	error: ned2ecefv takes 5 to 6 argument(s), 7 given
+	ecefoffset(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ecefoffset takes 6 to 8 argument(s), 9 given
+	elevation(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: elevation takes 6 to 8 argument(s), 9 given
+	referenceellipsoid(1, 2, 3)	error: referenceellipsoid takes 1 to 2 argument(s), 3 given
+	wgs84ellipsoid(1, 2)	error: wgs84ellipsoid takes 0 to 1 argument(s), 2 given
+	referencesphere(1, 2, 3)	error: referencesphere takes 1 to 2 argument(s), 3 given
+	meridianarc(1, 2, 3, 4, 5)	error: meridianarc takes 2 to 4 argument(s), 5 given
+	meridianfwd(1, 2, 3, 4, 5)	error: meridianfwd takes 2 to 4 argument(s), 5 given
+	spheroid(1, 2, 3)	error: spheroid takes 1 to 2 argument(s), 3 given
+	axes2ecc(1, 2, 3)	error: axes2ecc takes 1 to 2 argument(s), 3 given
+	majaxis(1, 2, 3)	error: majaxis takes 1 to 2 argument(s), 3 given
+	minaxis(1, 2, 3)	error: minaxis takes 1 to 2 argument(s), 3 given
+	ecc2flat(1, 2)	error: ecc2flat takes 1 argument(s), 2 given
+	flat2ecc(1, 2)	error: flat2ecc takes 1 argument(s), 2 given
+	ecc2n(1, 2)	error: ecc2n takes 1 argument(s), 2 given
+	n2ecc(1, 2)	error: n2ecc takes 1 argument(s), 2 given
+	rcurve(1, 2, 3, 4, 5)	error: rcurve takes 2 to 4 argument(s), 5 given
+	rsphere(1, 2, 3, 4, 5, 6, 7, 8)	error: rsphere takes 2 to 7 argument(s), 8 given
+	convertlat(1, 2, 3, 4, 5, 6)	error: convertlat takes 4 to 5 argument(s), 6 given
+	geocentriclatitude(1, 2, 3, 4)	error: geocentriclatitude takes 2 to 3 argument(s), 4 given
+	parametriclatitude(1, 2, 3, 4)	error: parametriclatitude takes 2 to 3 argument(s), 4 given
+	geodeticlatitudefromgeocentric(1, 2, 3, 4)	error: geodeticlatitudefromgeocentric takes 2 to 3 argument(s), 4 given
+	geodeticlatitudefromparametric(1, 2, 3, 4)	error: geodeticlatitudefromparametric takes 2 to 3 argument(s), 4 given
+	km2nm(1, 2)	error: km2nm takes 1 argument(s), 2 given
+	km2sm(1, 2)	error: km2sm takes 1 argument(s), 2 given
+	nm2km(1, 2)	error: nm2km takes 1 argument(s), 2 given
+	nm2sm(1, 2)	error: nm2sm takes 1 argument(s), 2 given
+	sm2km(1, 2)	error: sm2km takes 1 argument(s), 2 given
+	sm2nm(1, 2)	error: sm2nm takes 1 argument(s), 2 given
+	deg2km(1, 2, 3)	error: deg2km takes 1 to 2 argument(s), 3 given
+	km2deg(1, 2, 3)	error: km2deg takes 1 to 2 argument(s), 3 given
+	deg2nm(1, 2, 3)	error: deg2nm takes 1 to 2 argument(s), 3 given
+	nm2deg(1, 2, 3)	error: nm2deg takes 1 to 2 argument(s), 3 given
+	deg2sm(1, 2, 3)	error: deg2sm takes 1 to 2 argument(s), 3 given
+	sm2deg(1, 2, 3)	error: sm2deg takes 1 to 2 argument(s), 3 given
+	rad2km(1, 2, 3)	error: rad2km takes 1 to 2 argument(s), 3 given
+	km2rad(1, 2, 3)	error: km2rad takes 1 to 2 argument(s), 3 given
+	rad2nm(1, 2, 3)	error: rad2nm takes 1 to 2 argument(s), 3 given
+	nm2rad(1, 2, 3)	error: nm2rad takes 1 to 2 argument(s), 3 given
+	rad2sm(1, 2, 3)	error: rad2sm takes 1 to 2 argument(s), 3 given
+	sm2rad(1, 2, 3)	error: sm2rad takes 1 to 2 argument(s), 3 given
+	unitsratio(1, 2, 3)	error: unitsratio takes 2 argument(s), 3 given
+	earthradius(1, 2)	error: earthradius takes 0 to 1 argument(s), 2 given
+	distdim(1, 2, 3, 4, 5)	error: distdim takes 3 to 4 argument(s), 5 given
+	angledim(1, 2, 3, 4)	error: angledim takes 3 argument(s), 4 given
+	todegrees(1, 2, 3)	error: todegrees takes 2 argument(s), 3 given
+	toradians(1, 2, 3)	error: toradians takes 2 argument(s), 3 given
+	fromdegrees(1, 2, 3)	error: fromdegrees takes 2 argument(s), 3 given
+	fromradians(1, 2, 3)	error: fromradians takes 2 argument(s), 3 given
+	wrapto180(1, 2)	error: wrapto180 takes 1 argument(s), 2 given
+	wrapto360(1, 2)	error: wrapto360 takes 1 argument(s), 2 given
+	wraptopi(1, 2)	error: wraptopi takes 1 argument(s), 2 given
+	wrapto2pi(1, 2)	error: wrapto2pi takes 1 argument(s), 2 given
+	roundn(1, 2, 3)	error: roundn takes 1 to 2 argument(s), 3 given
+	dms2degrees(1, 2)	error: dms2degrees takes 1 argument(s), 2 given
+	dm2degrees(1, 2)	error: dm2degrees takes 1 argument(s), 2 given
+	degrees2dms(1, 2)	error: degrees2dms takes 1 argument(s), 2 given
+	degrees2dm(1, 2)	error: degrees2dm takes 1 argument(s), 2 given
+	angl2str(1, 2, 3, 4, 5)	error: angl2str takes 1 to 4 argument(s), 5 given
+	str2angle(1, 2)	error: str2angle takes 1 argument(s), 2 given
+	timezone(1, 2)	error: timezone takes 1 argument(s), 2 given
+	utmzone(1, 2, 3)	error: utmzone takes 1 to 2 argument(s), 3 given
+	deg2utm(1, 2, 3)	error: deg2utm takes 2 argument(s), 3 given
+	utm2deg(1, 2, 3, 4)	error: utm2deg takes 3 argument(s), 4 given
+	relu(1, 2)	error: relu takes 1 argument(s), 2 given
+	leakyrelu(1, 2, 3)	error: leakyrelu takes 1 to 2 argument(s), 3 given
+	clippedrelu(1, 2, 3)	error: clippedrelu takes 1 to 2 argument(s), 3 given
+	elu(1, 2, 3)	error: elu takes 1 to 2 argument(s), 3 given
+	gelu(1, 2)	error: gelu takes 1 argument(s), 2 given
+	swish(1, 2)	error: swish takes 1 argument(s), 2 given
+	mish(1, 2)	error: mish takes 1 argument(s), 2 given
+	softplus(1, 2)	error: softplus takes 1 argument(s), 2 given
+	softsign(1, 2)	error: softsign takes 1 argument(s), 2 given
+	sigmoid(1, 2)	error: sigmoid takes 1 argument(s), 2 given
+	tansig(1, 2)	error: tansig takes 1 argument(s), 2 given
+	purelin(1, 2)	error: purelin takes 1 argument(s), 2 given
+	satlin(1, 2)	error: satlin takes 1 argument(s), 2 given
+	satlins(1, 2)	error: satlins takes 1 argument(s), 2 given
+	hardlim(1, 2)	error: hardlim takes 1 argument(s), 2 given
+	hardlims(1, 2)	error: hardlims takes 1 argument(s), 2 given
+	radbas(1, 2)	error: radbas takes 1 argument(s), 2 given
+	tribas(1, 2)	error: tribas takes 1 argument(s), 2 given
+	netinv(1, 2)	error: netinv takes 1 argument(s), 2 given
+	softmax(1, 2)	error: softmax takes 1 argument(s), 2 given
+	compet(1, 2)	error: compet takes 1 argument(s), 2 given
+	mse(1, 2, 3)	error: mse takes 2 argument(s), 3 given
+	sse(1, 2, 3)	error: sse takes 2 argument(s), 3 given
+	mae(1, 2, 3)	error: mae takes 2 argument(s), 3 given
+	l2loss(1, 2, 3)	error: l2loss takes 2 argument(s), 3 given
+	l1loss(1, 2, 3)	error: l1loss takes 2 argument(s), 3 given
+	huber(1, 2, 3, 4)	error: huber takes 2 to 3 argument(s), 4 given
+	crossentropy(1, 2, 3)	error: crossentropy takes 2 argument(s), 3 given
+	fullyconnect(1, 2, 3, 4)	error: fullyconnect takes 2 to 3 argument(s), 4 given
+	dlconv(1, 2, 3, 4, 5, 6, 7, 8)	error: dlconv takes 2 to 7 argument(s), 8 given
+	maxpool(1, 2, 3, 4, 5, 6, 7)	error: maxpool takes 2 to 6 argument(s), 7 given
+	avgpool(1, 2, 3, 4, 5, 6, 7)	error: avgpool takes 2 to 6 argument(s), 7 given
+	batchnorm(1, 2, 3, 4, 5, 6)	error: batchnorm takes 3 to 5 argument(s), 6 given
+	layernorm(1, 2, 3, 4)	error: layernorm takes 3 argument(s), 4 given
+	embed(1, 2, 3)	error: embed takes 2 argument(s), 3 given
+	lstm(1, 2, 3, 4, 5, 6, 7)	error: lstm takes 6 argument(s), 7 given
+	gru(1, 2, 3, 4, 5, 6)	error: gru takes 5 argument(s), 6 given
+	onehotencode(1, 2, 3)	error: onehotencode takes 1 to 2 argument(s), 3 given
+	onehotdecode(1, 2, 3)	error: onehotdecode takes 1 to 2 argument(s), 3 given
+	ind2vec(1, 2, 3)	error: ind2vec takes 1 to 2 argument(s), 3 given
+	vec2ind(1, 2)	error: vec2ind takes 1 argument(s), 2 given
+	confusionmat(1, 2, 3, 4)	error: confusionmat takes 2 to 3 argument(s), 4 given
+	mapminmax(1, 2, 3, 4)	error: mapminmax takes 1 to 3 argument(s), 4 given
+	mapstd(1, 2, 3, 4)	error: mapstd takes 1 to 3 argument(s), 4 given
+	divideblock(1, 2, 3, 4, 5)	error: divideblock takes 1 to 4 argument(s), 5 given
+	dlgradient(1, 2, 3)	error: dlgradient takes 2 argument(s), 3 given
+	sgdmupdate(1, 2, 3, 4, 5, 6)	error: sgdmupdate takes 3 to 5 argument(s), 6 given
+	adamupdate(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)	error: adamupdate takes 5 to 9 argument(s), 10 given
+	rmspropupdate(1, 2, 3, 4, 5, 6, 7)	error: rmspropupdate takes 3 to 6 argument(s), 7 given
+	feedforwardnet(1, 2, 3, 4)	error: feedforwardnet takes 1 to 3 argument(s), 4 given
+	patternnet(1, 2, 3, 4)	error: patternnet takes 1 to 3 argument(s), 4 given
+	predict(1, 2, 3)	error: predict takes 2 argument(s), 3 given
+	classify(1, 2, 3, 4)	error: classify takes 2 to 3 argument(s), 4 given
+	perform(1, 2, 3, 4, 5)	error: perform takes 3 to 4 argument(s), 5 given
+	perceptron(1, 2, 3, 4)	error: perceptron takes 2 to 3 argument(s), 4 given
+	newlind(1, 2, 3)	error: newlind takes 2 argument(s), 3 given
+	newrbe(1, 2, 3, 4)	error: newrbe takes 2 to 3 argument(s), 4 given

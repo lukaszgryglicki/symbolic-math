@@ -66,6 +66,9 @@ fn arguments(line: &str) -> Vec<String> {
 /// The example lines of the help text: those after the word `Examples` that start with two
 /// spaces and a quote or an option.
 fn examples(help: &str) -> Vec<Vec<String>> {
+    // (an input that is too long for a line is cut into pieces in quotes, with a backslash after
+    // all but the last: the shell joins them into one argument)
+    let help = help.replace("'\\\n'", "");
     help.lines()
         .skip_while(|l| !l.starts_with("Examples"))
         .filter(|l| l.starts_with("  ") && l[2..].starts_with(['\'', '"', '-']))

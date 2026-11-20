@@ -1547,19 +1547,40 @@ fn bar3h(a: &[Expr]) -> Result<Drawing, String> {
                 ]
             };
             for x in [from, to] {
-                quad(&mut points, [corner(0, x), corner(1, x), corner(2, x), corner(3, x)]);
+                quad(
+                    &mut points,
+                    [corner(0, x), corner(1, x), corner(2, x), corner(3, x)],
+                );
             }
             for c in 0..4 {
                 let d = (c + 1) % 4;
-                quad(&mut points, [corner(c, from), corner(d, from), corner(d, to), corner(c, to)]);
+                quad(
+                    &mut points,
+                    [
+                        corner(c, from),
+                        corner(d, from),
+                        corner(d, to),
+                        corner(c, to),
+                    ],
+                );
             }
         }
     }
     let all: Vec<f64> = z.iter().flatten().copied().collect();
     Ok(solid(
         vec![faces(points)],
-        [with_zero(span(&all)), (0.5, z[0].len() as f64 + 0.5), (0.5, z.len() as f64 + 0.5)],
-        format!("{} lying bars in {} rows; lengths from {} to {}", all.len(), z.len(), label(span(&all).0), label(span(&all).1)),
+        [
+            with_zero(span(&all)),
+            (0.5, z[0].len() as f64 + 0.5),
+            (0.5, z.len() as f64 + 0.5),
+        ],
+        format!(
+            "{} lying bars in {} rows; lengths from {} to {}",
+            all.len(),
+            z.len(),
+            label(span(&all).0),
+            label(span(&all).1)
+        ),
     ))
 }
 
@@ -1617,7 +1638,12 @@ fn frames(columns: usize, rows: usize) -> Item {
     for i in 0..columns {
         for j in 0..rows {
             let (x, y) = (i as f64 + 0.04, j as f64 + 0.04);
-            let corners = [flat(x, y), flat(x + 0.92, y), flat(x + 0.92, y + 0.92), flat(x, y + 0.92)];
+            let corners = [
+                flat(x, y),
+                flat(x + 0.92, y),
+                flat(x + 0.92, y + 0.92),
+                flat(x, y + 0.92),
+            ];
             for k in 0..4 {
                 pairs.push([corners[k], corners[(k + 1) % 4]]);
             }
@@ -1644,7 +1670,13 @@ fn plotmatrix(a: &[Expr]) -> Result<Drawing, String> {
     let ranges: Vec<(f64, f64)> = (0..n)
         .map(|j| span(&rows.iter().map(|r| r[j]).collect::<Vec<_>>()))
         .collect();
-    let share = |v: f64, (low, high): (f64, f64)| if high > low { (v - low) / (high - low) } else { 0.5 };
+    let share = |v: f64, (low, high): (f64, f64)| {
+        if high > low {
+            (v - low) / (high - low)
+        } else {
+            0.5
+        }
+    };
     let mut dots = Vec::new();
     let mut boxes = Vec::new();
     for i in 0..n {
@@ -1663,7 +1695,12 @@ fn plotmatrix(a: &[Expr]) -> Result<Drawing, String> {
                 }
             } else {
                 for r in &rows {
-                    dots.push(cell(j, i, n, (share(r[j], ranges[j]), share(r[i], ranges[i]))));
+                    dots.push(cell(
+                        j,
+                        i,
+                        n,
+                        (share(r[j], ranges[j]), share(r[i], ranges[i])),
+                    ));
                 }
             }
         }
@@ -1700,7 +1737,11 @@ fn plotmatrix(a: &[Expr]) -> Result<Drawing, String> {
     drawing.facts = vec![format!(
         "{n} columns of {} rows, each against each: the column of a chart runs along x, its row along y; from the least value to the largest: {}",
         rows.len(),
-        ranges.iter().map(|(low, high)| format!("{} to {}", label(*low), label(*high))).collect::<Vec<_>>().join("; ")
+        ranges
+            .iter()
+            .map(|(low, high)| format!("{} to {}", label(*low), label(*high)))
+            .collect::<Vec<_>>()
+            .join("; ")
     )];
     Ok(drawing)
 }
@@ -1719,7 +1760,13 @@ fn stackedplot(a: &[Expr]) -> Result<Drawing, String> {
     let ranges: Vec<(f64, f64)> = (0..n)
         .map(|j| span(&rows.iter().map(|r| r[j]).collect::<Vec<_>>()))
         .collect();
-    let share = |v: f64, (low, high): (f64, f64)| if high > low { (v - low) / (high - low) } else { 0.5 };
+    let share = |v: f64, (low, high): (f64, f64)| {
+        if high > low {
+            (v - low) / (high - low)
+        } else {
+            0.5
+        }
+    };
     let mut items = vec![frames(1, n)];
     for j in 0..n {
         items.push(Item::Line {
@@ -1727,7 +1774,12 @@ fn stackedplot(a: &[Expr]) -> Result<Drawing, String> {
                 .iter()
                 .enumerate()
                 .map(|(k, r)| {
-                    let p = cell(0, j, n, (k as f64 / (rows.len() - 1) as f64, share(r[j], ranges[j])));
+                    let p = cell(
+                        0,
+                        j,
+                        n,
+                        (k as f64 / (rows.len() - 1) as f64, share(r[j], ranges[j])),
+                    );
                     flat(p[0], p[1])
                 })
                 .collect(),
@@ -1747,7 +1799,11 @@ fn stackedplot(a: &[Expr]) -> Result<Drawing, String> {
     drawing.facts = vec![format!(
         "{n} columns of {} rows from the top, each from its least value to its largest: {}",
         rows.len(),
-        ranges.iter().map(|(low, high)| format!("{} to {}", label(*low), label(*high))).collect::<Vec<_>>().join("; ")
+        ranges
+            .iter()
+            .map(|(low, high)| format!("{} to {}", label(*low), label(*high)))
+            .collect::<Vec<_>>()
+            .join("; ")
     )];
     Ok(drawing)
 }
@@ -1764,11 +1820,17 @@ fn biplot(a: &[Expr]) -> Result<Drawing, String> {
     }
     let mut pairs = Vec::new();
     let mut items = Vec::new();
-    let reach = rows.iter().fold(0.0f64, |m, r| m.max(r[0].abs()).max(r[1].abs())).max(1e-12);
+    let reach = rows
+        .iter()
+        .fold(0.0f64, |m, r| m.max(r[0].abs()).max(r[1].abs()))
+        .max(1e-12);
     for (k, r) in rows.iter().enumerate() {
         pairs.push([flat(0.0, 0.0), flat(r[0], r[1])]);
         for side in [-1.0, 1.0] {
-            let back = [-0.12 * r[0] - side * 0.06 * r[1], -0.12 * r[1] + side * 0.06 * r[0]];
+            let back = [
+                -0.12 * r[0] - side * 0.06 * r[1],
+                -0.12 * r[1] + side * 0.06 * r[0],
+            ];
             pairs.push([flat(r[0], r[1]), flat(r[0] + back[0], r[1] + back[1])]);
         }
         items.push(Item::Label {
@@ -1793,7 +1855,11 @@ fn biplot(a: &[Expr]) -> Result<Drawing, String> {
         items,
     );
     drawing.aspect = Some(1.0);
-    drawing.facts = vec![format!("{} variables as arrows by their two weights; the longest reaches {}", rows.len(), label(reach))];
+    drawing.facts = vec![format!(
+        "{} variables as arrows by their two weights; the longest reaches {}",
+        rows.len(),
+        label(reach)
+    )];
     Ok(drawing)
 }
 
@@ -1802,7 +1868,13 @@ fn biplot(a: &[Expr]) -> Result<Drawing, String> {
 pub fn is_control_chart(name: &str) -> bool {
     matches!(
         name,
-        "bodeplot" | "nyquistplot" | "pzplot" | "rlocusplot" | "stepplot" | "impulseplot" | "zplane"
+        "bodeplot"
+            | "nyquistplot"
+            | "pzplot"
+            | "rlocusplot"
+            | "stepplot"
+            | "impulseplot"
+            | "zplane"
     )
 }
 
@@ -1837,7 +1909,11 @@ fn circles(at: &[(f64, f64)], radius: f64, paint: Paint, weight: f64, parts: u64
             .collect();
         pairs.extend(corners.windows(2).map(|w| [w[0], w[1]]));
     }
-    Item::Segments { pairs, paint, weight }
+    Item::Segments {
+        pairs,
+        paint,
+        weight,
+    }
 }
 
 fn pairs_of(re: &Expr, im: &Expr, name: &str) -> Result<Vec<(f64, f64)>, String> {
@@ -1871,7 +1947,10 @@ fn counted(count: usize, one: &str) -> String {
 
 fn cross_lines(x: (f64, f64), y: (f64, f64)) -> Item {
     Item::Segments {
-        pairs: vec![[flat(x.0, 0.0), flat(x.1, 0.0)], [flat(0.0, y.0), flat(0.0, y.1)]],
+        pairs: vec![
+            [flat(x.0, 0.0), flat(x.1, 0.0)],
+            [flat(0.0, y.0), flat(0.0, y.1)],
+        ],
         paint: Paint::Ink,
         weight: 0.5,
     }
@@ -1889,12 +1968,21 @@ fn bodeplot(a: &[Expr]) -> Result<Drawing, String> {
         return Err("bodeplot needs two frequencies or more, all above zero".into());
     }
     let xs: Vec<f64> = ws.iter().map(|w| log10_of(*w)).collect();
-    let decibels: Vec<Option<f64>> = gains.iter().map(|g| (*g > 0.0).then(|| 20.0 * log10_of(*g))).collect();
+    let decibels: Vec<Option<f64>> = gains
+        .iter()
+        .map(|g| (*g > 0.0).then(|| 20.0 * log10_of(*g)))
+        .collect();
     let known: Vec<f64> = decibels.iter().flatten().copied().collect();
     if known.is_empty() {
         return Err("bodeplot: the gain is zero at every frequency".into());
     }
-    let wide = |(low, high): (f64, f64)| if high > low { (low, high) } else { (low - 1.0, high + 1.0) };
+    let wide = |(low, high): (f64, f64)| {
+        if high > low {
+            (low, high)
+        } else {
+            (low - 1.0, high + 1.0)
+        }
+    };
     let (x_range, ranges) = (span(&xs), [wide(span(&known)), wide(span(&phases))]);
     let share = |v: f64, (low, high): (f64, f64)| (v - low) / (high - low);
     let place = |row: usize, x: f64, y: f64| {
@@ -1945,7 +2033,11 @@ fn bodeplot(a: &[Expr]) -> Result<Drawing, String> {
         });
     }
     items.push(Item::Line {
-        points: xs.iter().zip(&phases).map(|(x, v)| place(1, share(*x, x_range), share(*v, ranges[1]))).collect(),
+        points: xs
+            .iter()
+            .zip(&phases)
+            .map(|(x, v)| place(1, share(*x, x_range), share(*v, ranges[1])))
+            .collect(),
         paint: Paint::Curve(1),
         weight: 1.0,
     });
@@ -2004,7 +2096,12 @@ fn nyquistplot(a: &[Expr]) -> Result<Drawing, String> {
     };
     let mut drawing = Drawing::new(
         Space::Chart { x, y, equal: true },
-        vec![cross_lines(x, y), line(-1.0, Paint::Curve(2)), line(1.0, Paint::Curve(0)), crosses(&[(-1.0, 0.0)], arm)],
+        vec![
+            cross_lines(x, y),
+            line(-1.0, Paint::Curve(2)),
+            line(1.0, Paint::Curve(0)),
+            crosses(&[(-1.0, 0.0)], arm),
+        ],
     );
     drawing.aspect = Some(1.0);
     drawing.facts = vec![format!(
@@ -2022,7 +2119,10 @@ fn pzplot(a: &[Expr]) -> Result<Drawing, String> {
     let [pole_re, pole_im, zero_re, zero_im, sampled] = a else {
         return Err("pzplot(system)".into());
     };
-    let (poles, zeros) = (pairs_of(pole_re, pole_im, name)?, pairs_of(zero_re, zero_im, name)?);
+    let (poles, zeros) = (
+        pairs_of(pole_re, pole_im, name)?,
+        pairs_of(zero_re, zero_im, name)?,
+    );
     let sampled = *sampled == Expr::Bool(true);
     let mut all: Vec<(f64, f64)> = poles.iter().chain(&zeros).copied().collect();
     if sampled {
@@ -2041,7 +2141,10 @@ fn pzplot(a: &[Expr]) -> Result<Drawing, String> {
     let mut drawing = Drawing::new(Space::Chart { x, y, equal: true }, items);
     drawing.aspect = Some(1.0);
     let farthest = match sampled {
-        true => poles.iter().map(|(re, im)| (re * re + im * im).sqrt()).fold(0.0, f64::max),
+        true => poles
+            .iter()
+            .map(|(re, im)| (re * re + im * im).sqrt())
+            .fold(0.0, f64::max),
         false => poles.iter().map(|p| p.0).fold(f64::NEG_INFINITY, f64::max),
     };
     drawing.facts = vec![match (poles.is_empty(), sampled) {
@@ -2069,13 +2172,21 @@ fn rlocusplot(a: &[Expr]) -> Result<Drawing, String> {
     let [re, im, pole_re, pole_im, zero_re, zero_im, count] = a else {
         return Err("rlocusplot(system[, [gains]])".into());
     };
-    let (roots, poles, zeros) = (pairs_of(re, im, name)?, pairs_of(pole_re, pole_im, name)?, pairs_of(zero_re, zero_im, name)?);
+    let (roots, poles, zeros) = (
+        pairs_of(re, im, name)?,
+        pairs_of(pole_re, pole_im, name)?,
+        pairs_of(zero_re, zero_im, name)?,
+    );
     let gains = number(count).unwrap_or(0.0) as usize;
     // the picture holds the poles, the zeros and the roots that are not much farther away
     let near: Vec<(f64, f64)> = poles.iter().chain(&zeros).copied().collect();
     let (span_x, span_y, _) = plane_of(&near);
     let reach = 2.5 * (span_x.1 - span_x.0).max(span_y.1 - span_y.0);
-    let shown: Vec<(f64, f64)> = roots.iter().copied().filter(|(x, y)| x.abs() <= reach && y.abs() <= reach).collect();
+    let shown: Vec<(f64, f64)> = roots
+        .iter()
+        .copied()
+        .filter(|(x, y)| x.abs() <= reach && y.abs() <= reach)
+        .collect();
     let all: Vec<(f64, f64)> = near.iter().chain(&shown).copied().collect();
     let (x, y, arm) = plane_of(&all);
     let mut drawing = Drawing::new(
@@ -2130,7 +2241,11 @@ fn answerplot(name: &str, a: &[Expr]) -> Result<Drawing, String> {
     );
     drawing.facts = vec![format!(
         "the answer {} from {} to {}: values from {} to {}, at the end {}",
-        if sampled { "at the samples" } else { "at the times" },
+        if sampled {
+            "at the samples"
+        } else {
+            "at the times"
+        },
         label(ts[0]),
         label(ts[ts.len() - 1]),
         label(low),

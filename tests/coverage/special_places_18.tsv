@@ -1,3 +1,93 @@
+-e	contour3(1/2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(i)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(undefined)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(10^20)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(10^(-20))	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(x)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3([])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3([1, 2])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3("text")	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(true)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-7/3)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(0.5)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	waterfall(0)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(1/2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(i)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(undefined)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(10^20)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(10^(-20))	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(x)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall([])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall([1, 2])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall("text")	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(true)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-7/3)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(0.5)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	compass(0)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(1)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-1)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(1/2)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(2)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(i)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(inf)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-inf)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(undefined)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(10^20)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(10^(-20))	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(x)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass([])	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass([1, 2])	 2.31 │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │        ⢀|      │                                │   ⠐⠤⡀   ⠙⠢⢄⡀|    0 │────────────────────────────────⠉⠉⠉⠉⠩⠛⠉⠉⠉⠉⣩⠝⠋⠉──────────────────|      │                                │        ⠈|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|-2.31 │                                │|      └────────────────────────────────────────────────────────────────|       -4.62                                                       4.62|2 arrows from the origin
+-e	compass("text")	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(true)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-7/3)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(0.5)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	feather(0)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(1)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-1)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(1/2)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(2)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(i)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(inf)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-inf)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(undefined)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(10^20)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(10^(-20))	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(x)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather([])	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather([1, 2])	 1 │  │|   │  │|   │  │|   │  │|   │  │|   │  │                                                 ⠠⣀|   │  │                        ⢀⡀                         ⠉⠒⢄⡀|   │  │                         ⠈⠑⠢⢄                         ⠈⠑⠢⢄| 0 │──┼──────────────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠁──|   │  │                        ⠈⠁                         ⣀⠤⠊⠁|   │  │                                                 ⠐⠉|   │  │|   │  │|   │  │|   │  │|-1 │  │|   └────────────────────────────────────────────────────────────────|    -0.16                                                       4.16|2 arrows from the places 1, 2, 3 ... on the x axis
+-e	feather("text")	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(true)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-7/3)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(0.5)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	rgb2gray(0)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(1/2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(i)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(undefined)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(10^20)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(10^(-20))	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(x)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray([])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray([1, 2])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray("text")	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(true)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-7/3)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(0.5)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	im2double(0)	0
+-e	im2double(1)	1/255
+-e	im2double(-1)	-1/255
 -e	im2double(1/2)	1/510
 -e	im2double(2)	2/255
 -e	im2double(i)	i/255
@@ -409,11 +499,11 @@
 -e	friedman(true)	error: friedman needs a matrix of numbers
 -e	friedman(-7/3)	error: friedman needs a matrix of numbers
 -e	friedman(0.5)	error: friedman needs a matrix of numbers
--e	vartestn(0)	error: vartestn([[values of a group], [values of another], ...])
--e	vartestn(1)	error: vartestn([[values of a group], [values of another], ...])
--e	vartestn(-1)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(0)	[]
+-e	vartestn(1)	[1]
+-e	vartestn(-1)	error: the number of values must be a whole number from 0 to 1048576, not -1
 -e	vartestn(1/2)	error: vartestn([[values of a group], [values of another], ...])
--e	vartestn(2)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(2)	[0, 0]
 -e	vartestn(i)	error: vartestn([[values of a group], [values of another], ...])
 -e	vartestn(inf)	error: vartestn([[values of a group], [values of another], ...])
 -e	vartestn(-inf)	error: vartestn([[values of a group], [values of another], ...])
@@ -608,93 +698,3 @@
 -e	fieldnames(-7/3)	error: fieldnames needs a record made by struct(name, value, ...), -7/3 is none
 -e	fieldnames(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
 -e	numfields(0)	0
--e	numfields(1)	0
--e	numfields(-1)	0
--e	numfields(1/2)	0
--e	numfields(2)	0
--e	numfields(i)	0
--e	numfields(inf)	0
--e	numfields(-inf)	0
--e	numfields(undefined)	0
--e	numfields(10^20)	0
--e	numfields(10^(-20))	0
--e	numfields(x)	0
--e	numfields([])	0
--e	numfields([1, 2])	0
--e	numfields("text")	0
--e	numfields(true)	0
--e	numfields(-7/3)	0
--e	numfields(0.5)	0
--e	orderfields(0)	error: orderfields needs a record made by struct(name, value, ...), 0 is none
--e	orderfields(1)	error: orderfields needs a record made by struct(name, value, ...), 1 is none
--e	orderfields(-1)	error: orderfields needs a record made by struct(name, value, ...), -1 is none
--e	orderfields(1/2)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
--e	orderfields(2)	error: orderfields needs a record made by struct(name, value, ...), 2 is none
--e	orderfields(i)	error: orderfields needs a record made by struct(name, value, ...), i is none
--e	orderfields(inf)	error: orderfields needs a record made by struct(name, value, ...), inf is none
--e	orderfields(-inf)	error: orderfields needs a record made by struct(name, value, ...), -inf is none
--e	orderfields(undefined)	error: orderfields needs a record made by struct(name, value, ...), undefined is none
--e	orderfields(10^20)	error: orderfields needs a record made by struct(name, value, ...), 100000000000000000000 is none
--e	orderfields(10^(-20))	error: orderfields needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
--e	orderfields(x)	error: orderfields needs a record made by struct(name, value, ...), x is none
--e	orderfields([])	error: orderfields needs a record made by struct(name, value, ...), [] is none
--e	orderfields([1, 2])	error: orderfields needs a record made by struct(name, value, ...), [1, 2] is none
--e	orderfields("text")	error: orderfields needs a record made by struct(name, value, ...), "text" is none
--e	orderfields(true)	error: orderfields needs a record made by struct(name, value, ...), true is none
--e	orderfields(-7/3)	error: orderfields needs a record made by struct(name, value, ...), -7/3 is none
--e	orderfields(0.5)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
--e	struct2cell(0)	error: struct2cell needs a record made by struct(name, value, ...), 0 is none
--e	struct2cell(1)	error: struct2cell needs a record made by struct(name, value, ...), 1 is none
--e	struct2cell(-1)	error: struct2cell needs a record made by struct(name, value, ...), -1 is none
--e	struct2cell(1/2)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
--e	struct2cell(2)	error: struct2cell needs a record made by struct(name, value, ...), 2 is none
--e	struct2cell(i)	error: struct2cell needs a record made by struct(name, value, ...), i is none
--e	struct2cell(inf)	error: struct2cell needs a record made by struct(name, value, ...), inf is none
--e	struct2cell(-inf)	error: struct2cell needs a record made by struct(name, value, ...), -inf is none
--e	struct2cell(undefined)	error: struct2cell needs a record made by struct(name, value, ...), undefined is none
--e	struct2cell(10^20)	error: struct2cell needs a record made by struct(name, value, ...), 100000000000000000000 is none
--e	struct2cell(10^(-20))	error: struct2cell needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
--e	struct2cell(x)	error: struct2cell needs a record made by struct(name, value, ...), x is none
--e	struct2cell([])	error: struct2cell needs a record made by struct(name, value, ...), [] is none
--e	struct2cell([1, 2])	error: struct2cell needs a record made by struct(name, value, ...), [1, 2] is none
--e	struct2cell("text")	error: struct2cell needs a record made by struct(name, value, ...), "text" is none
--e	struct2cell(true)	error: struct2cell needs a record made by struct(name, value, ...), true is none
--e	struct2cell(-7/3)	error: struct2cell needs a record made by struct(name, value, ...), -7/3 is none
--e	struct2cell(0.5)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
--e	dictionary(0)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(-1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(1/2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(i)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(-inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(undefined)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(10^20)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(10^(-20))	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(x)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary([])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary([1, 2])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary("text")	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(true)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(-7/3)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	dictionary(0.5)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
--e	keys(0)	error: keys needs a table made by dictionary(keys, values), 0 is none
--e	keys(1)	error: keys needs a table made by dictionary(keys, values), 1 is none
--e	keys(-1)	error: keys needs a table made by dictionary(keys, values), -1 is none
--e	keys(1/2)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
--e	keys(2)	error: keys needs a table made by dictionary(keys, values), 2 is none
--e	keys(i)	error: keys needs a table made by dictionary(keys, values), i is none
--e	keys(inf)	error: keys needs a table made by dictionary(keys, values), inf is none
--e	keys(-inf)	error: keys needs a table made by dictionary(keys, values), -inf is none
--e	keys(undefined)	error: keys needs a table made by dictionary(keys, values), undefined is none
--e	keys(10^20)	error: keys needs a table made by dictionary(keys, values), 100000000000000000000 is none
--e	keys(10^(-20))	error: keys needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
--e	keys(x)	error: keys needs a table made by dictionary(keys, values), x is none
--e	keys([])	error: keys needs a table made by dictionary(keys, values), [] is none
--e	keys([1, 2])	error: keys needs a table made by dictionary(keys, values), [1, 2] is none
--e	keys("text")	error: keys needs a table made by dictionary(keys, values), "text" is none
--e	keys(true)	error: keys needs a table made by dictionary(keys, values), true is none
--e	keys(-7/3)	error: keys needs a table made by dictionary(keys, values), -7/3 is none
--e	keys(0.5)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
--e	values(0)	error: values needs a table made by dictionary(keys, values), 0 is none

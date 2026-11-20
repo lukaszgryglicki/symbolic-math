@@ -1,3 +1,93 @@
+-e	numfields(1)	0
+-e	numfields(-1)	0
+-e	numfields(1/2)	0
+-e	numfields(2)	0
+-e	numfields(i)	0
+-e	numfields(inf)	0
+-e	numfields(-inf)	0
+-e	numfields(undefined)	0
+-e	numfields(10^20)	0
+-e	numfields(10^(-20))	0
+-e	numfields(x)	0
+-e	numfields([])	0
+-e	numfields([1, 2])	0
+-e	numfields("text")	0
+-e	numfields(true)	0
+-e	numfields(-7/3)	0
+-e	numfields(0.5)	0
+-e	orderfields(0)	error: orderfields needs a record made by struct(name, value, ...), 0 is none
+-e	orderfields(1)	error: orderfields needs a record made by struct(name, value, ...), 1 is none
+-e	orderfields(-1)	error: orderfields needs a record made by struct(name, value, ...), -1 is none
+-e	orderfields(1/2)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
+-e	orderfields(2)	error: orderfields needs a record made by struct(name, value, ...), 2 is none
+-e	orderfields(i)	error: orderfields needs a record made by struct(name, value, ...), i is none
+-e	orderfields(inf)	error: orderfields needs a record made by struct(name, value, ...), inf is none
+-e	orderfields(-inf)	error: orderfields needs a record made by struct(name, value, ...), -inf is none
+-e	orderfields(undefined)	error: orderfields needs a record made by struct(name, value, ...), undefined is none
+-e	orderfields(10^20)	error: orderfields needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	orderfields(10^(-20))	error: orderfields needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	orderfields(x)	error: orderfields needs a record made by struct(name, value, ...), x is none
+-e	orderfields([])	error: orderfields needs a record made by struct(name, value, ...), [] is none
+-e	orderfields([1, 2])	error: orderfields needs a record made by struct(name, value, ...), [1, 2] is none
+-e	orderfields("text")	error: orderfields needs a record made by struct(name, value, ...), "text" is none
+-e	orderfields(true)	error: orderfields needs a record made by struct(name, value, ...), true is none
+-e	orderfields(-7/3)	error: orderfields needs a record made by struct(name, value, ...), -7/3 is none
+-e	orderfields(0.5)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
+-e	struct2cell(0)	error: struct2cell needs a record made by struct(name, value, ...), 0 is none
+-e	struct2cell(1)	error: struct2cell needs a record made by struct(name, value, ...), 1 is none
+-e	struct2cell(-1)	error: struct2cell needs a record made by struct(name, value, ...), -1 is none
+-e	struct2cell(1/2)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
+-e	struct2cell(2)	error: struct2cell needs a record made by struct(name, value, ...), 2 is none
+-e	struct2cell(i)	error: struct2cell needs a record made by struct(name, value, ...), i is none
+-e	struct2cell(inf)	error: struct2cell needs a record made by struct(name, value, ...), inf is none
+-e	struct2cell(-inf)	error: struct2cell needs a record made by struct(name, value, ...), -inf is none
+-e	struct2cell(undefined)	error: struct2cell needs a record made by struct(name, value, ...), undefined is none
+-e	struct2cell(10^20)	error: struct2cell needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	struct2cell(10^(-20))	error: struct2cell needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	struct2cell(x)	error: struct2cell needs a record made by struct(name, value, ...), x is none
+-e	struct2cell([])	error: struct2cell needs a record made by struct(name, value, ...), [] is none
+-e	struct2cell([1, 2])	error: struct2cell needs a record made by struct(name, value, ...), [1, 2] is none
+-e	struct2cell("text")	error: struct2cell needs a record made by struct(name, value, ...), "text" is none
+-e	struct2cell(true)	error: struct2cell needs a record made by struct(name, value, ...), true is none
+-e	struct2cell(-7/3)	error: struct2cell needs a record made by struct(name, value, ...), -7/3 is none
+-e	struct2cell(0.5)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
+-e	dictionary(0)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(1/2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(i)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(undefined)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(10^20)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(10^(-20))	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(x)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary([])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary([1, 2])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary("text")	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(true)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-7/3)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(0.5)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	keys(0)	error: keys needs a table made by dictionary(keys, values), 0 is none
+-e	keys(1)	error: keys needs a table made by dictionary(keys, values), 1 is none
+-e	keys(-1)	error: keys needs a table made by dictionary(keys, values), -1 is none
+-e	keys(1/2)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
+-e	keys(2)	error: keys needs a table made by dictionary(keys, values), 2 is none
+-e	keys(i)	error: keys needs a table made by dictionary(keys, values), i is none
+-e	keys(inf)	error: keys needs a table made by dictionary(keys, values), inf is none
+-e	keys(-inf)	error: keys needs a table made by dictionary(keys, values), -inf is none
+-e	keys(undefined)	error: keys needs a table made by dictionary(keys, values), undefined is none
+-e	keys(10^20)	error: keys needs a table made by dictionary(keys, values), 100000000000000000000 is none
+-e	keys(10^(-20))	error: keys needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
+-e	keys(x)	error: keys needs a table made by dictionary(keys, values), x is none
+-e	keys([])	error: keys needs a table made by dictionary(keys, values), [] is none
+-e	keys([1, 2])	error: keys needs a table made by dictionary(keys, values), [1, 2] is none
+-e	keys("text")	error: keys needs a table made by dictionary(keys, values), "text" is none
+-e	keys(true)	error: keys needs a table made by dictionary(keys, values), true is none
+-e	keys(-7/3)	error: keys needs a table made by dictionary(keys, values), -7/3 is none
+-e	keys(0.5)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
+-e	values(0)	error: values needs a table made by dictionary(keys, values), 0 is none
 -e	values(1)	error: values needs a table made by dictionary(keys, values), 1 is none
 -e	values(-1)	error: values needs a table made by dictionary(keys, values), -1 is none
 -e	values(1/2)	error: values needs a table made by dictionary(keys, values), 1/2 is none
@@ -165,15 +255,446 @@
 -e	colormap(1/2)	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap(2)	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap(i)	error: colormap(name, count) needs the name of a palette in quotes
--e	colormap(inf)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(inf)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube
 -e	colormap(-inf)	error: colormap(name, count) needs the name of a palette in quotes
--e	colormap(undefined)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(undefined)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube
 -e	colormap(10^20)	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap(10^(-20))	error: colormap(name, count) needs the name of a palette in quotes
--e	colormap(x)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(x)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube
 -e	colormap([])	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap([1, 2])	error: colormap(name, count) needs the name of a palette in quotes
--e	colormap("text")	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap("text")	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, thermal, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm, magma, inferno, cividis, twilight, coolwarm, earth, spectrum, cube
 -e	colormap(true)	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap(-7/3)	error: colormap(name, count) needs the name of a palette in quotes
 -e	colormap(0.5)	error: colormap(name, count) needs the name of a palette in quotes
+-e	balance(0)	error: balance needs matrices
+-e	balance(1)	error: balance needs matrices
+-e	balance(-1)	error: balance needs matrices
+-e	balance(1/2)	error: balance needs matrices
+-e	balance(2)	error: balance needs matrices
+-e	balance(i)	error: balance needs matrices
+-e	balance(inf)	error: balance needs matrices
+-e	balance(-inf)	error: balance needs matrices
+-e	balance(undefined)	error: balance needs matrices
+-e	balance(10^20)	error: balance needs matrices
+-e	balance(10^(-20))	error: balance needs matrices
+-e	balance(x)	error: balance needs matrices
+-e	balance([])	error: balance needs matrices
+-e	balance([1, 2])	error: balance needs matrices
+-e	balance("text")	error: balance needs matrices
+-e	balance(true)	error: balance needs matrices
+-e	balance(-7/3)	error: balance needs matrices
+-e	balance(0.5)	error: balance needs matrices
+-e	ordeig(0)	error: ordeig needs matrices
+-e	ordeig(1)	error: ordeig needs matrices
+-e	ordeig(-1)	error: ordeig needs matrices
+-e	ordeig(1/2)	error: ordeig needs matrices
+-e	ordeig(2)	error: ordeig needs matrices
+-e	ordeig(i)	error: ordeig needs matrices
+-e	ordeig(inf)	error: ordeig needs matrices
+-e	ordeig(-inf)	error: ordeig needs matrices
+-e	ordeig(undefined)	error: ordeig needs matrices
+-e	ordeig(10^20)	error: ordeig needs matrices
+-e	ordeig(10^(-20))	error: ordeig needs matrices
+-e	ordeig(x)	error: ordeig needs matrices
+-e	ordeig([])	error: ordeig needs matrices
+-e	ordeig([1, 2])	error: ordeig needs matrices
+-e	ordeig("text")	error: ordeig needs matrices
+-e	ordeig(true)	error: ordeig needs matrices
+-e	ordeig(-7/3)	error: ordeig needs matrices
+-e	ordeig(0.5)	error: ordeig needs matrices
+-e	runstest(0)	error: runstest needs a list of numbers
+-e	runstest(1)	error: runstest needs a list of numbers
+-e	runstest(-1)	error: runstest needs a list of numbers
+-e	runstest(1/2)	error: runstest needs a list of numbers
+-e	runstest(2)	error: runstest needs a list of numbers
+-e	runstest(i)	error: runstest needs a list of numbers
+-e	runstest(inf)	error: runstest needs a list of numbers
+-e	runstest(-inf)	error: runstest needs a list of numbers
+-e	runstest(undefined)	error: runstest needs a list of numbers
+-e	runstest(10^20)	error: runstest needs a list of numbers
+-e	runstest(10^(-20))	error: runstest needs a list of numbers
+-e	runstest(x)	error: runstest needs a list of numbers
+-e	runstest([])	error: runstest needs a list of numbers
+-e	runstest([1, 2])	[0, 1, 2]
+-e	runstest("text")	error: runstest needs a list of numbers
+-e	runstest(true)	error: runstest needs a list of numbers
+-e	runstest(-7/3)	error: runstest needs a list of numbers
+-e	runstest(0.5)	error: runstest needs a list of numbers
+-e	lillietest(0)	error: lillietest needs a list of numbers
+-e	lillietest(1)	error: lillietest needs a list of numbers
+-e	lillietest(-1)	error: lillietest needs a list of numbers
+-e	lillietest(1/2)	error: lillietest needs a list of numbers
+-e	lillietest(2)	error: lillietest needs a list of numbers
+-e	lillietest(i)	error: lillietest needs a list of numbers
+-e	lillietest(inf)	error: lillietest needs a list of numbers
+-e	lillietest(-inf)	error: lillietest needs a list of numbers
+-e	lillietest(undefined)	error: lillietest needs a list of numbers
+-e	lillietest(10^20)	error: lillietest needs a list of numbers
+-e	lillietest(10^(-20))	error: lillietest needs a list of numbers
+-e	lillietest(x)	error: lillietest needs a list of numbers
+-e	lillietest([])	error: lillietest needs a list of numbers
+-e	lillietest([1, 2])	error: lillietest needs four values or more
+-e	lillietest("text")	error: lillietest needs a list of numbers
+-e	lillietest(true)	error: lillietest needs a list of numbers
+-e	lillietest(-7/3)	error: lillietest needs a list of numbers
+-e	lillietest(0.5)	error: lillietest needs a list of numbers
+-e	mvncdf(0)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(1)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(-1)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(1/2)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(2)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(i)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(inf)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(-inf)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(undefined)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(10^20)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(10^(-20))	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(x)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf([])	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf([1, 2])	0.82220404208157626721639807540964
+-e	mvncdf("text")	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(true)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(-7/3)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	mvncdf(0.5)	error: mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma) or mvncdf(lower, upper, mu, sigma): points in lists or in the rows of a matrix
+-e	cmdscale(0)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(1)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(-1)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(1/2)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(2)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(i)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(inf)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(-inf)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(undefined)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(10^20)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(10^(-20))	error: cmdscale needs a matrix of numbers
+-e	cmdscale(x)	error: cmdscale needs a matrix of numbers
+-e	cmdscale([])	error: cmdscale needs a matrix of numbers
+-e	cmdscale([1, 2])	error: cmdscale needs the distances of points: a symmetric matrix or the list that pdist gives
+-e	cmdscale("text")	error: cmdscale needs a matrix of numbers
+-e	cmdscale(true)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(-7/3)	error: cmdscale needs a matrix of numbers
+-e	cmdscale(0.5)	error: cmdscale needs a matrix of numbers
+-e	poissfit(0)	error: poissfit needs a list of numbers
+-e	poissfit(1)	error: poissfit needs a list of numbers
+-e	poissfit(-1)	error: poissfit needs a list of numbers
+-e	poissfit(1/2)	error: poissfit needs a list of numbers
+-e	poissfit(2)	error: poissfit needs a list of numbers
+-e	poissfit(i)	error: poissfit needs a list of numbers
+-e	poissfit(inf)	error: poissfit needs a list of numbers
+-e	poissfit(-inf)	error: poissfit needs a list of numbers
+-e	poissfit(undefined)	error: poissfit needs a list of numbers
+-e	poissfit(10^20)	error: poissfit needs a list of numbers
+-e	poissfit(10^(-20))	error: poissfit needs a list of numbers
+-e	poissfit(x)	error: poissfit needs a list of numbers
+-e	poissfit([])	error: poissfit needs a list of numbers
+-e	poissfit([1, 2])	3/2
+-e	poissfit("text")	error: poissfit needs a list of numbers
+-e	poissfit(true)	error: poissfit needs a list of numbers
+-e	poissfit(-7/3)	error: poissfit needs a list of numbers
+-e	poissfit(0.5)	error: poissfit needs a list of numbers
+-e	unifit(0)	error: unifit needs a list of numbers
+-e	unifit(1)	error: unifit needs a list of numbers
+-e	unifit(-1)	error: unifit needs a list of numbers
+-e	unifit(1/2)	error: unifit needs a list of numbers
+-e	unifit(2)	error: unifit needs a list of numbers
+-e	unifit(i)	error: unifit needs a list of numbers
+-e	unifit(inf)	error: unifit needs a list of numbers
+-e	unifit(-inf)	error: unifit needs a list of numbers
+-e	unifit(undefined)	error: unifit needs a list of numbers
+-e	unifit(10^20)	error: unifit needs a list of numbers
+-e	unifit(10^(-20))	error: unifit needs a list of numbers
+-e	unifit(x)	error: unifit needs a list of numbers
+-e	unifit([])	error: unifit needs a list of numbers
+-e	unifit([1, 2])	[1, 2]
+-e	unifit("text")	error: unifit needs a list of numbers
+-e	unifit(true)	error: unifit needs a list of numbers
+-e	unifit(-7/3)	error: unifit needs a list of numbers
+-e	unifit(0.5)	error: unifit needs a list of numbers
+-e	raylfit(0)	error: raylfit needs a list of numbers
+-e	raylfit(1)	error: raylfit needs a list of numbers
+-e	raylfit(-1)	error: raylfit needs a list of numbers
+-e	raylfit(1/2)	error: raylfit needs a list of numbers
+-e	raylfit(2)	error: raylfit needs a list of numbers
+-e	raylfit(i)	error: raylfit needs a list of numbers
+-e	raylfit(inf)	error: raylfit needs a list of numbers
+-e	raylfit(-inf)	error: raylfit needs a list of numbers
+-e	raylfit(undefined)	error: raylfit needs a list of numbers
+-e	raylfit(10^20)	error: raylfit needs a list of numbers
+-e	raylfit(10^(-20))	error: raylfit needs a list of numbers
+-e	raylfit(x)	error: raylfit needs a list of numbers
+-e	raylfit([])	error: raylfit needs a list of numbers
+-e	raylfit([1, 2])	sqrt(5)/2
+-e	raylfit("text")	error: raylfit needs a list of numbers
+-e	raylfit(true)	error: raylfit needs a list of numbers
+-e	raylfit(-7/3)	error: raylfit needs a list of numbers
+-e	raylfit(0.5)	error: raylfit needs a list of numbers
+-e	lognfit(0)	error: lognfit needs a list of numbers
+-e	lognfit(1)	error: lognfit needs a list of numbers
+-e	lognfit(-1)	error: lognfit needs a list of numbers
+-e	lognfit(1/2)	error: lognfit needs a list of numbers
+-e	lognfit(2)	error: lognfit needs a list of numbers
+-e	lognfit(i)	error: lognfit needs a list of numbers
+-e	lognfit(inf)	error: lognfit needs a list of numbers
+-e	lognfit(-inf)	error: lognfit needs a list of numbers
+-e	lognfit(undefined)	error: lognfit needs a list of numbers
+-e	lognfit(10^20)	error: lognfit needs a list of numbers
+-e	lognfit(10^(-20))	error: lognfit needs a list of numbers
+-e	lognfit(x)	error: lognfit needs a list of numbers
+-e	lognfit([])	error: lognfit needs a list of numbers
+-e	lognfit([1, 2])	[0.34657359027997265470861606072909, 0.49012907173427359585695086181762]
+-e	lognfit("text")	error: lognfit needs a list of numbers
+-e	lognfit(true)	error: lognfit needs a list of numbers
+-e	lognfit(-7/3)	error: lognfit needs a list of numbers
+-e	lognfit(0.5)	error: lognfit needs a list of numbers
+-e	gamfit(0)	error: gamfit needs a list of numbers
+-e	gamfit(1)	error: gamfit needs a list of numbers
+-e	gamfit(-1)	error: gamfit needs a list of numbers
+-e	gamfit(1/2)	error: gamfit needs a list of numbers
+-e	gamfit(2)	error: gamfit needs a list of numbers
+-e	gamfit(i)	error: gamfit needs a list of numbers
+-e	gamfit(inf)	error: gamfit needs a list of numbers
+-e	gamfit(-inf)	error: gamfit needs a list of numbers
+-e	gamfit(undefined)	error: gamfit needs a list of numbers
+-e	gamfit(10^20)	error: gamfit needs a list of numbers
+-e	gamfit(10^(-20))	error: gamfit needs a list of numbers
+-e	gamfit(x)	error: gamfit needs a list of numbers
+-e	gamfit([])	error: gamfit needs a list of numbers
+-e	gamfit([1, 2])	[8.6534914315278638727684624459361, 0.17334043858123511265809277132665]
+-e	gamfit("text")	error: gamfit needs a list of numbers
+-e	gamfit(true)	error: gamfit needs a list of numbers
+-e	gamfit(-7/3)	error: gamfit needs a list of numbers
+-e	gamfit(0.5)	error: gamfit needs a list of numbers
+-e	wblfit(0)	error: wblfit needs a list of numbers
+-e	wblfit(1)	error: wblfit needs a list of numbers
+-e	wblfit(-1)	error: wblfit needs a list of numbers
+-e	wblfit(1/2)	error: wblfit needs a list of numbers
+-e	wblfit(2)	error: wblfit needs a list of numbers
+-e	wblfit(i)	error: wblfit needs a list of numbers
+-e	wblfit(inf)	error: wblfit needs a list of numbers
+-e	wblfit(-inf)	error: wblfit needs a list of numbers
+-e	wblfit(undefined)	error: wblfit needs a list of numbers
+-e	wblfit(10^20)	error: wblfit needs a list of numbers
+-e	wblfit(10^(-20))	error: wblfit needs a list of numbers
+-e	wblfit(x)	error: wblfit needs a list of numbers
+-e	wblfit([])	error: wblfit needs a list of numbers
+-e	wblfit([1, 2])	[1.6786774138155320709324947807361, 3.4615408499204946712235338688743]
+-e	wblfit("text")	error: wblfit needs a list of numbers
+-e	wblfit(true)	error: wblfit needs a list of numbers
+-e	wblfit(-7/3)	error: wblfit needs a list of numbers
+-e	wblfit(0.5)	error: wblfit needs a list of numbers
+-e	betafit(0)	error: betafit needs a list of numbers
+-e	betafit(1)	error: betafit needs a list of numbers
+-e	betafit(-1)	error: betafit needs a list of numbers
+-e	betafit(1/2)	error: betafit needs a list of numbers
+-e	betafit(2)	error: betafit needs a list of numbers
+-e	betafit(i)	error: betafit needs a list of numbers
+-e	betafit(inf)	error: betafit needs a list of numbers
+-e	betafit(-inf)	error: betafit needs a list of numbers
+-e	betafit(undefined)	error: betafit needs a list of numbers
+-e	betafit(10^20)	error: betafit needs a list of numbers
+-e	betafit(10^(-20))	error: betafit needs a list of numbers
+-e	betafit(x)	error: betafit needs a list of numbers
+-e	betafit([])	error: betafit needs a list of numbers
+-e	betafit([1, 2])	error: betafit needs numbers between 0 and 1
+-e	betafit("text")	error: betafit needs a list of numbers
+-e	betafit(true)	error: betafit needs a list of numbers
+-e	betafit(-7/3)	error: betafit needs a list of numbers
+-e	betafit(0.5)	error: betafit needs a list of numbers
+-e	nbinfit(0)	error: nbinfit needs a list of numbers
+-e	nbinfit(1)	error: nbinfit needs a list of numbers
+-e	nbinfit(-1)	error: nbinfit needs a list of numbers
+-e	nbinfit(1/2)	error: nbinfit needs a list of numbers
+-e	nbinfit(2)	error: nbinfit needs a list of numbers
+-e	nbinfit(i)	error: nbinfit needs a list of numbers
+-e	nbinfit(inf)	error: nbinfit needs a list of numbers
+-e	nbinfit(-inf)	error: nbinfit needs a list of numbers
+-e	nbinfit(undefined)	error: nbinfit needs a list of numbers
+-e	nbinfit(10^20)	error: nbinfit needs a list of numbers
+-e	nbinfit(10^(-20))	error: nbinfit needs a list of numbers
+-e	nbinfit(x)	error: nbinfit needs a list of numbers
+-e	nbinfit([])	error: nbinfit needs a list of numbers
+-e	nbinfit([1, 2])	error: nbinfit: the data spreads no more than its mean, no negative binomial law is the likeliest
+-e	nbinfit("text")	error: nbinfit needs a list of numbers
+-e	nbinfit(true)	error: nbinfit needs a list of numbers
+-e	nbinfit(-7/3)	error: nbinfit needs a list of numbers
+-e	nbinfit(0.5)	error: nbinfit needs a list of numbers
+-e	mle(0)	error: mle needs a list of numbers
+-e	mle(1)	error: mle needs a list of numbers
+-e	mle(-1)	error: mle needs a list of numbers
+-e	mle(1/2)	error: mle needs a list of numbers
+-e	mle(2)	error: mle needs a list of numbers
+-e	mle(i)	error: mle needs a list of numbers
+-e	mle(inf)	error: mle needs a list of numbers
+-e	mle(-inf)	error: mle needs a list of numbers
+-e	mle(undefined)	error: mle needs a list of numbers
+-e	mle(10^20)	error: mle needs a list of numbers
+-e	mle(10^(-20))	error: mle needs a list of numbers
+-e	mle(x)	error: mle needs a list of numbers
+-e	mle([])	error: mle needs a list of numbers
+-e	mle([1, 2])	[3/2, 1/2]
+-e	mle("text")	error: mle needs a list of numbers
+-e	mle(true)	error: mle needs a list of numbers
+-e	mle(-7/3)	error: mle needs a list of numbers
+-e	mle(0.5)	error: mle needs a list of numbers
+-e	istable(0)	false
+-e	istable(1)	false
+-e	istable(-1)	false
+-e	istable(1/2)	false
+-e	istable(2)	false
+-e	istable(i)	false
+-e	istable(inf)	false
+-e	istable(-inf)	false
+-e	istable(undefined)	false
+-e	istable(10^20)	false
+-e	istable(10^(-20))	false
+-e	istable(x)	false
+-e	istable([])	false
+-e	istable([1, 2])	false
+-e	istable("text")	false
+-e	istable(true)	false
+-e	istable(-7/3)	false
+-e	istable(0.5)	false
+-e	timetable(0)	error: timetable: a variable is a list of values, 0 is none
+-e	timetable(1)	error: timetable: a variable is a list of values, 1 is none
+-e	timetable(-1)	error: timetable: a variable is a list of values, -1 is none
+-e	timetable(1/2)	error: timetable: a variable is a list of values, 1/2 is none
+-e	timetable(2)	error: timetable: a variable is a list of values, 2 is none
+-e	timetable(i)	error: timetable: a variable is a list of values, i is none
+-e	timetable(inf)	error: timetable: a variable is a list of values, inf is none
+-e	timetable(-inf)	error: timetable: a variable is a list of values, -inf is none
+-e	timetable(undefined)	error: timetable: a variable is a list of values, undefined is none
+-e	timetable(10^20)	error: timetable: a variable is a list of values, 100000000000000000000 is none
+-e	timetable(10^(-20))	error: timetable: a variable is a list of values, 1/100000000000000000000 is none
+-e	timetable(x)	error: timetable: a variable is a list of values, x is none
+-e	timetable([])	timetable("Time", [])
+-e	timetable([1, 2])	timetable("Time", [1, 2])
+-e	timetable("text")	error: timetable: a variable is a list of values, "text" is none
+-e	timetable(true)	error: timetable: a variable is a list of values, true is none
+-e	timetable(-7/3)	error: timetable: a variable is a list of values, -7/3 is none
+-e	timetable(0.5)	error: timetable: a variable is a list of values, 1/2 is none
+-e	istimetable(0)	false
+-e	istimetable(1)	false
+-e	istimetable(-1)	false
+-e	istimetable(1/2)	false
+-e	istimetable(2)	false
+-e	istimetable(i)	false
+-e	istimetable(inf)	false
+-e	istimetable(-inf)	false
+-e	istimetable(undefined)	false
+-e	istimetable(10^20)	false
+-e	istimetable(10^(-20))	false
+-e	istimetable(x)	false
+-e	istimetable([])	false
+-e	istimetable([1, 2])	false
+-e	istimetable("text")	false
+-e	istimetable(true)	false
+-e	istimetable(-7/3)	false
+-e	istimetable(0.5)	false
+-e	height(0)	1
+-e	height(1)	1
+-e	height(-1)	1
+-e	height(1/2)	1
+-e	height(2)	1
+-e	height(i)	1
+-e	height(inf)	1
+-e	height(-inf)	1
+-e	height(undefined)	1
+-e	height(10^20)	1
+-e	height(10^(-20))	1
+-e	height(x)	1
+-e	height([])	1
+-e	height([1, 2])	1
+-e	height("text")	1
+-e	height(true)	1
+-e	height(-7/3)	1
+-e	height(0.5)	1
+-e	width(0)	1
+-e	width(1)	1
+-e	width(-1)	1
+-e	width(1/2)	1
+-e	width(2)	1
+-e	width(i)	1
+-e	width(inf)	1
+-e	width(-inf)	1
+-e	width(undefined)	1
+-e	width(10^20)	1
+-e	width(10^(-20))	1
+-e	width(x)	1
+-e	width([])	0
+-e	width([1, 2])	2
+-e	width("text")	1
+-e	width(true)	1
+-e	width(-7/3)	1
+-e	width(0.5)	1
+-e	head(0)	error: head(list or table[, how many])
+-e	head(1)	error: head(list or table[, how many])
+-e	head(-1)	error: head(list or table[, how many])
+-e	head(1/2)	error: head(list or table[, how many])
+-e	head(2)	error: head(list or table[, how many])
+-e	head(i)	error: head(list or table[, how many])
+-e	head(inf)	error: head(list or table[, how many])
+-e	head(-inf)	error: head(list or table[, how many])
+-e	head(undefined)	error: head(list or table[, how many])
+-e	head(10^20)	error: head(list or table[, how many])
+-e	head(10^(-20))	error: head(list or table[, how many])
+-e	head(x)	error: head(list or table[, how many])
+-e	head([])	[]
+-e	head([1, 2])	[1, 2]
+-e	head("text")	error: head(list or table[, how many])
+-e	head(true)	error: head(list or table[, how many])
+-e	head(-7/3)	error: head(list or table[, how many])
+-e	head(0.5)	error: head(list or table[, how many])
+-e	tail(0)	error: tail(list or table[, how many])
+-e	tail(1)	error: tail(list or table[, how many])
+-e	tail(-1)	error: tail(list or table[, how many])
+-e	tail(1/2)	error: tail(list or table[, how many])
+-e	tail(2)	error: tail(list or table[, how many])
+-e	tail(i)	error: tail(list or table[, how many])
+-e	tail(inf)	error: tail(list or table[, how many])
+-e	tail(-inf)	error: tail(list or table[, how many])
+-e	tail(undefined)	error: tail(list or table[, how many])
+-e	tail(10^20)	error: tail(list or table[, how many])
+-e	tail(10^(-20))	error: tail(list or table[, how many])
+-e	tail(x)	error: tail(list or table[, how many])
+-e	tail([])	[]
+-e	tail([1, 2])	[1, 2]
+-e	tail("text")	error: tail(list or table[, how many])
+-e	tail(true)	error: tail(list or table[, how many])
+-e	tail(-7/3)	error: tail(list or table[, how many])
+-e	tail(0.5)	error: tail(list or table[, how many])
+-e	varnames(0)	varnames(0)
+-e	varnames(1)	varnames(1)
+-e	varnames(-1)	varnames(-1)
+-e	varnames(1/2)	varnames(1/2)
+-e	varnames(2)	varnames(2)
+-e	varnames(i)	varnames(i)
+-e	varnames(inf)	varnames(inf)
+-e	varnames(-inf)	varnames(-inf)
+-e	varnames(undefined)	undefined
+-e	varnames(10^20)	varnames(100000000000000000000)
+-e	varnames(10^(-20))	varnames(1/100000000000000000000)
+-e	varnames(x)	varnames(x)
+-e	varnames([])	[]
+-e	varnames([1, 2])	[varnames(1), varnames(2)]
+-e	varnames("text")	varnames("text")
+-e	varnames(true)	varnames(true)
+-e	varnames(-7/3)	varnames(-7/3)
+-e	varnames(0.5)	varnames(0.5)
+-e	table2array(0)	table2array(0)
+-e	table2array(1)	table2array(1)
+-e	table2array(-1)	table2array(-1)
+-e	table2array(1/2)	table2array(1/2)
+-e	table2array(2)	table2array(2)
+-e	table2array(i)	table2array(i)
+-e	table2array(inf)	table2array(inf)
+-e	table2array(-inf)	table2array(-inf)
+-e	table2array(undefined)	undefined
+-e	table2array(10^20)	table2array(100000000000000000000)
+-e	table2array(10^(-20))	table2array(1/100000000000000000000)
+-e	table2array(x)	table2array(x)
+-e	table2array([])	[]
+-e	table2array([1, 2])	[table2array(1), table2array(2)]
+-e	table2array("text")	table2array("text")
+-e	table2array(true)	table2array(true)
+-e	table2array(-7/3)	table2array(-7/3)

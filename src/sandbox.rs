@@ -25,7 +25,12 @@ pub fn active() -> bool {
 fn megabytes(value: &str) -> Option<u64> {
     match value.trim() {
         "" => None,
-        text => Some(text.parse().ok().filter(|m| (1..=4096).contains(m)).unwrap_or(32)),
+        text => Some(
+            text.parse()
+                .ok()
+                .filter(|m| (1..=4096).contains(m))
+                .unwrap_or(32),
+        ),
     }
 }
 
@@ -34,7 +39,9 @@ fn megabytes(value: &str) -> Option<u64> {
 fn plain(name: &str) -> bool {
     (1..=96).contains(&name.len())
         && !name.starts_with('.')
-        && name.bytes().all(|b| b.is_ascii_alphanumeric() || b"-_.".contains(&b))
+        && name
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || b"-_.".contains(&b))
 }
 
 /// Whether the file may be read or written: always without a sandbox, in one only a plain
@@ -78,8 +85,20 @@ mod tests {
             assert!(plain(name), "{name}");
         }
         for name in [
-            "", ".", "..", ".hidden", "../x.png", "/tmp/x.png", "dir/x.png", "a b.png", "x\\y", "~x",
-            "x;y", "x\ny", "ż.png", "a/../b",
+            "",
+            ".",
+            "..",
+            ".hidden",
+            "../x.png",
+            "/tmp/x.png",
+            "dir/x.png",
+            "a b.png",
+            "x\\y",
+            "~x",
+            "x;y",
+            "x\ny",
+            "ż.png",
+            "a/../b",
         ] {
             assert!(!plain(name), "{name}");
         }

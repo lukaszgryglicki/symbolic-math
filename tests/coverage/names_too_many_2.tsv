@@ -274,7 +274,8 @@
 	disp(1, 2)	error: disp takes 1 argument(s), 2 given
 	readmatrix(1, 2)	error: readmatrix takes 1 argument(s), 2 given
 	writematrix(1, 2, 3)	error: writematrix takes 2 argument(s), 3 given
-	imread(1, 2)	error: imread takes 1 argument(s), 2 given
+	imread(1, 2, 3)	error: imread takes 1 to 2 argument(s), 3 given
+	imframes(1, 2)	error: imframes takes 1 argument(s), 2 given
 	imwrite(1, 2, 3, 4)	error: imwrite takes 2 to 3 argument(s), 4 given
 	condest(1, 2)	error: condest takes 1 argument(s), 2 given
 	normest(1, 2)	error: normest takes 1 argument(s), 2 given
@@ -421,3 +422,279 @@
 	peaks(1, 2, 3)	error: peaks takes 0 to 2 argument(s), 3 given
 	colormap(1, 2, 3)	error: colormap takes 1 to 2 argument(s), 3 given
 	histcounts2(1, 2, 3, 4, 5)	error: histcounts2 takes 3 to 4 argument(s), 5 given
+	balance(1, 2)	error: balance takes 1 argument(s), 2 given
+	qz(1, 2, 3)	error: qz takes 2 argument(s), 3 given
+	ordqz(1, 2, 3, 4, 5, 6)	error: ordqz takes 5 argument(s), 6 given
+	gsvd(1, 2, 3)	error: gsvd takes 2 argument(s), 3 given
+	gsvddecomposition(1, 2, 3)	error: gsvddecomposition takes 2 argument(s), 3 given
+	ordschur(1, 2, 3, 4)	error: ordschur takes 3 argument(s), 4 given
+	ordeig(1, 2, 3)	error: ordeig takes 1 to 2 argument(s), 3 given
+	rsf2csf(1, 2, 3)	error: rsf2csf takes 2 argument(s), 3 given
+	cdf2rdf(1, 2, 3)	error: cdf2rdf takes 2 argument(s), 3 given
+	runstest(1, 2, 3, 4, 5)	error: runstest takes 1 to 4 argument(s), 5 given
+	ansaribradley(1, 2, 3, 4)	error: ansaribradley takes 2 to 3 argument(s), 4 given
+	lillietest(1, 2)	error: lillietest takes 1 argument(s), 2 given
+	mvncdf(1, 2, 3, 4, 5)	error: mvncdf takes 1 to 4 argument(s), 5 given
+	cmdscale(1, 2)	error: cmdscale takes 1 argument(s), 2 given
+	procrustes(1, 2, 3, 4, 5, 6, 7)	error: procrustes takes 2 to 6 argument(s), 7 given
+	canoncorr(1, 2, 3)	error: canoncorr takes 2 argument(s), 3 given
+	nnmf(1, 2, 3)	error: nnmf takes 2 argument(s), 3 given
+	poissfit(1, 2)	error: poissfit takes 1 argument(s), 2 given
+	unifit(1, 2)	error: unifit takes 1 argument(s), 2 given
+	raylfit(1, 2)	error: raylfit takes 1 argument(s), 2 given
+	lognfit(1, 2)	error: lognfit takes 1 argument(s), 2 given
+	binofit(1, 2, 3)	error: binofit takes 2 argument(s), 3 given
+	gamfit(1, 2)	error: gamfit takes 1 argument(s), 2 given
+	wblfit(1, 2)	error: wblfit takes 1 argument(s), 2 given
+	betafit(1, 2)	error: betafit takes 1 argument(s), 2 given
+	nbinfit(1, 2)	error: nbinfit takes 1 argument(s), 2 given
+	mle(1, 2, 3, 4, 5, 6)	error: mle takes 1 to 5 argument(s), 6 given
+	fitdist(1, 2, 3, 4, 5)	error: fitdist takes 2 to 4 argument(s), 5 given
+	bvp4c(1, 2, 3, 4, 5, 6)	error: bvp4c takes 3 to 5 argument(s), 6 given
+	bvpinit(1, 2, 3, 4)	error: bvpinit takes 2 to 3 argument(s), 4 given
+	deval(1, 2, 3, 4)	error: deval takes 2 to 3 argument(s), 4 given
+	dde23(1, 2, 3, 4, 5)	error: dde23 takes 4 argument(s), 5 given
+	pdepe(1, 2, 3, 4, 5, 6, 7)	error: pdepe takes 6 argument(s), 7 given
+	patternsearch(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: patternsearch takes 2 to 8 argument(s), 9 given
+	particleswarm(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: particleswarm takes 2 to 8 argument(s), 9 given
+	simulannealbnd(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: simulannealbnd takes 2 to 8 argument(s), 9 given
+	ga(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ga takes 2 to 8 argument(s), 9 given
+	globalsearch(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: globalsearch takes 2 to 8 argument(s), 9 given
+	fminimax(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: fminimax takes 2 to 8 argument(s), 9 given
+	fgoalattain(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)	error: fgoalattain takes 4 to 10 argument(s), 11 given
+	pdeval(1, 2, 3, 4, 5)	error: pdeval takes 4 argument(s), 5 given
+	istable(1, 2)	error: istable takes 1 argument(s), 2 given
+	istimetable(1, 2)	error: istimetable takes 1 argument(s), 2 given
+	height(1, 2)	error: height takes 1 argument(s), 2 given
+	width(1, 2)	error: width takes 1 argument(s), 2 given
+	head(1, 2, 3)	error: head takes 1 to 2 argument(s), 3 given
+	tail(1, 2, 3)	error: tail takes 1 to 2 argument(s), 3 given
+	varnames(1, 2)	error: varnames takes 1 argument(s), 2 given
+	takerows(1, 2, 3)	error: takerows takes 2 argument(s), 3 given
+	takevars(1, 2, 3)	error: takevars takes 2 argument(s), 3 given
+	removevars(1, 2, 3)	error: removevars takes 2 argument(s), 3 given
+	renamevars(1, 2, 3, 4)	error: renamevars takes 3 argument(s), 4 given
+	movevars(1, 2, 3, 4, 5)	error: movevars takes 4 argument(s), 5 given
+	topkrows(1, 2, 3, 4, 5)	error: topkrows takes 2 to 4 argument(s), 5 given
+	table2array(1, 2)	error: table2array takes 1 argument(s), 2 given
+	array2table(1, 2, 3, 4)	error: array2table takes 1 to 3 argument(s), 4 given
+	struct2table(1, 2)	error: struct2table takes 1 argument(s), 2 given
+	table2struct(1, 2, 3, 4)	error: table2struct takes 1 to 3 argument(s), 4 given
+	timetable2table(1, 2)	error: timetable2table takes 1 argument(s), 2 given
+	table2timetable(1, 2, 3, 4)	error: table2timetable takes 1 to 3 argument(s), 4 given
+	innerjoin(1, 2, 3, 4, 5)	error: innerjoin takes 2 to 4 argument(s), 5 given
+	outerjoin(1, 2, 3, 4, 5, 6, 7)	error: outerjoin takes 2 to 6 argument(s), 7 given
+	varfun(1, 2, 3)	error: varfun takes 2 argument(s), 3 given
+	rowfun(1, 2, 3)	error: rowfun takes 2 argument(s), 3 given
+	groupsummary(1, 2, 3, 4, 5)	error: groupsummary takes 2 to 4 argument(s), 5 given
+	groupcounts(1, 2, 3)	error: groupcounts takes 2 argument(s), 3 given
+	summary(1, 2)	error: summary takes 1 argument(s), 2 given
+	stack(1, 2, 3)	error: stack takes 2 argument(s), 3 given
+	unstack(1, 2, 3, 4)	error: unstack takes 3 argument(s), 4 given
+	readtable(1, 2)	error: readtable takes 1 argument(s), 2 given
+	writetable(1, 2, 3)	error: writetable takes 2 argument(s), 3 given
+	isregular(1, 2)	error: isregular takes 1 argument(s), 2 given
+	lag(1, 2, 3)	error: lag takes 1 to 2 argument(s), 3 given
+	retime(1, 2, 3, 4, 5, 6)	error: retime takes 2 to 5 argument(s), 6 given
+	synchronize(1, 2, 3, 4, 5)	error: synchronize takes 2 to 4 argument(s), 5 given
+	categorical(1, 2, 3, 4, 5, 6)	error: categorical takes 1 to 5 argument(s), 6 given
+	iscategorical(1, 2)	error: iscategorical takes 1 argument(s), 2 given
+	categories(1, 2)	error: categories takes 1 argument(s), 2 given
+	countcats(1, 2)	error: countcats takes 1 argument(s), 2 given
+	isundefined(1, 2)	error: isundefined takes 1 argument(s), 2 given
+	isordinal(1, 2)	error: isordinal takes 1 argument(s), 2 given
+	iscategory(1, 2, 3)	error: iscategory takes 2 argument(s), 3 given
+	addcats(1, 2, 3)	error: addcats takes 2 argument(s), 3 given
+	removecats(1, 2, 3)	error: removecats takes 1 to 2 argument(s), 3 given
+	renamecats(1, 2, 3, 4)	error: renamecats takes 2 to 3 argument(s), 4 given
+	reordercats(1, 2, 3)	error: reordercats takes 1 to 2 argument(s), 3 given
+	mergecats(1, 2, 3, 4)	error: mergecats takes 2 to 3 argument(s), 4 given
+	setcats(1, 2, 3)	error: setcats takes 2 argument(s), 3 given
+	grp2idx(1, 2)	error: grp2idx takes 1 argument(s), 2 given
+	cellstr(1, 2)	error: cellstr takes 1 argument(s), 2 given
+	silhouette(1, 2, 3, 4)	error: silhouette takes 2 to 3 argument(s), 4 given
+	ccode(1, 2, 3)	error: ccode takes 1 to 2 argument(s), 3 given
+	fortran(1, 2, 3)	error: fortran takes 1 to 2 argument(s), 3 given
+	matlabcode(1, 2)	error: matlabcode takes 1 argument(s), 2 given
+	matlabfunction(1, 2, 3, 4)	error: matlabfunction takes 1 to 3 argument(s), 4 given
+	subexpr(1, 2, 3)	error: subexpr takes 1 to 2 argument(s), 3 given
+	cse(1, 2)	error: cse takes 1 argument(s), 2 given
+	pretty(1, 2)	error: pretty takes 1 argument(s), 2 given
+	tf(1, 2, 3, 4)	error: tf takes 1 to 3 argument(s), 4 given
+	zpk(1, 2, 3, 4, 5)	error: zpk takes 1 to 4 argument(s), 5 given
+	ss(1, 2, 3, 4, 5, 6)	error: ss takes 1 to 5 argument(s), 6 given
+	tfdata(1, 2)	error: tfdata takes 1 argument(s), 2 given
+	zpkdata(1, 2)	error: zpkdata takes 1 argument(s), 2 given
+	ssdata(1, 2)	error: ssdata takes 1 argument(s), 2 given
+	tf2sym(1, 2)	error: tf2sym takes 1 argument(s), 2 given
+	tf2ss(1, 2, 3)	error: tf2ss takes 1 to 2 argument(s), 3 given
+	ss2tf(1, 2, 3, 4, 5)	error: ss2tf takes 4 argument(s), 5 given
+	tf2zp(1, 2, 3)	error: tf2zp takes 1 to 2 argument(s), 3 given
+	zp2tf(1, 2, 3, 4)	error: zp2tf takes 1 to 3 argument(s), 4 given
+	ss2zp(1, 2, 3, 4, 5)	error: ss2zp takes 4 argument(s), 5 given
+	zp2ss(1, 2, 3, 4)	error: zp2ss takes 1 to 3 argument(s), 4 given
+	isct(1, 2)	error: isct takes 1 argument(s), 2 given
+	isdt(1, 2)	error: isdt takes 1 argument(s), 2 given
+	isproper(1, 2)	error: isproper takes 1 argument(s), 2 given
+	isstable(1, 2)	error: isstable takes 1 argument(s), 2 given
+	pole(1, 2)	error: pole takes 1 argument(s), 2 given
+	zero(1, 2)	error: zero takes 1 argument(s), 2 given
+	dcgain(1, 2)	error: dcgain takes 1 argument(s), 2 given
+	damp(1, 2)	error: damp takes 1 argument(s), 2 given
+	parallel(1, 2, 3)	error: parallel takes 2 argument(s), 3 given
+	feedback(1, 2, 3, 4)	error: feedback takes 2 to 3 argument(s), 4 given
+	minreal(1, 2)	error: minreal takes 1 argument(s), 2 given
+	evalfr(1, 2, 3)	error: evalfr takes 2 argument(s), 3 given
+	freqresp(1, 2, 3)	error: freqresp takes 2 argument(s), 3 given
+	bode(1, 2, 3)	error: bode takes 1 to 2 argument(s), 3 given
+	nyquist(1, 2, 3)	error: nyquist takes 1 to 2 argument(s), 3 given
+	margin(1, 2)	error: margin takes 1 argument(s), 2 given
+	allmargin(1, 2)	error: allmargin takes 1 argument(s), 2 given
+	hinfnorm(1, 2)	error: hinfnorm takes 1 argument(s), 2 given
+	h2norm(1, 2)	error: h2norm takes 1 argument(s), 2 given
+	step(1, 2, 3)	error: step takes 1 to 2 argument(s), 3 given
+	impulse(1, 2, 3)	error: impulse takes 1 to 2 argument(s), 3 given
+	lsim(1, 2, 3, 4)	error: lsim takes 2 to 3 argument(s), 4 given
+	stepinfo(1, 2)	error: stepinfo takes 1 argument(s), 2 given
+	c2d(1, 2, 3, 4)	error: c2d takes 2 to 3 argument(s), 4 given
+	d2c(1, 2, 3)	error: d2c takes 1 to 2 argument(s), 3 given
+	pid(1, 2, 3, 4, 5)	error: pid takes 1 to 4 argument(s), 5 given
+	rlocus(1, 2, 3)	error: rlocus takes 1 to 2 argument(s), 3 given
+	esort(1, 2)	error: esort takes 1 argument(s), 2 given
+	dsort(1, 2)	error: dsort takes 1 argument(s), 2 given
+	ctrb(1, 2, 3)	error: ctrb takes 2 argument(s), 3 given
+	obsv(1, 2, 3)	error: obsv takes 2 argument(s), 3 given
+	lyap(1, 2, 3, 4)	error: lyap takes 2 to 3 argument(s), 4 given
+	dlyap(1, 2, 3)	error: dlyap takes 2 argument(s), 3 given
+	gram(1, 2, 3, 4)	error: gram takes 2 to 3 argument(s), 4 given
+	care(1, 2, 3, 4, 5)	error: care takes 4 argument(s), 5 given
+	dare(1, 2, 3, 4, 5)	error: dare takes 4 argument(s), 5 given
+	lqr(1, 2, 3, 4, 5, 6)	error: lqr takes 4 to 5 argument(s), 6 given
+	dlqr(1, 2, 3, 4, 5, 6)	error: dlqr takes 4 to 5 argument(s), 6 given
+	lqe(1, 2, 3, 4, 5, 6)	error: lqe takes 5 argument(s), 6 given
+	acker(1, 2, 3, 4)	error: acker takes 3 argument(s), 4 given
+	place(1, 2, 3, 4)	error: place takes 3 argument(s), 4 given
+	rectwin(1, 2, 3)	error: rectwin takes 1 to 2 argument(s), 3 given
+	hann(1, 2, 3)	error: hann takes 1 to 2 argument(s), 3 given
+	hanning(1, 2, 3)	error: hanning takes 1 to 2 argument(s), 3 given
+	hamming(1, 2, 3)	error: hamming takes 1 to 2 argument(s), 3 given
+	blackman(1, 2, 3)	error: blackman takes 1 to 2 argument(s), 3 given
+	blackmanharris(1, 2, 3)	error: blackmanharris takes 1 to 2 argument(s), 3 given
+	nuttallwin(1, 2, 3)	error: nuttallwin takes 1 to 2 argument(s), 3 given
+	flattopwin(1, 2, 3)	error: flattopwin takes 1 to 2 argument(s), 3 given
+	triang(1, 2, 3)	error: triang takes 1 to 2 argument(s), 3 given
+	bohmanwin(1, 2, 3)	error: bohmanwin takes 1 to 2 argument(s), 3 given
+	parzenwin(1, 2, 3)	error: parzenwin takes 1 to 2 argument(s), 3 given
+	gausswin(1, 2, 3)	error: gausswin takes 1 to 2 argument(s), 3 given
+	tukeywin(1, 2, 3)	error: tukeywin takes 1 to 2 argument(s), 3 given
+	kaiser(1, 2, 3)	error: kaiser takes 1 to 2 argument(s), 3 given
+	chebwin(1, 2, 3)	error: chebwin takes 1 to 2 argument(s), 3 given
+	barthannwin(1, 2, 3)	error: barthannwin takes 1 to 2 argument(s), 3 given
+	buttap(1, 2)	error: buttap takes 1 argument(s), 2 given
+	cheb1ap(1, 2, 3)	error: cheb1ap takes 2 argument(s), 3 given
+	cheb2ap(1, 2, 3)	error: cheb2ap takes 2 argument(s), 3 given
+	ellipap(1, 2, 3, 4)	error: ellipap takes 3 argument(s), 4 given
+	besselap(1, 2)	error: besselap takes 1 argument(s), 2 given
+	butter(1, 2, 3, 4, 5)	error: butter takes 2 to 4 argument(s), 5 given
+	cheby1(1, 2, 3, 4, 5, 6)	error: cheby1 takes 3 to 5 argument(s), 6 given
+	cheby2(1, 2, 3, 4, 5, 6)	error: cheby2 takes 3 to 5 argument(s), 6 given
+	ellip(1, 2, 3, 4, 5, 6, 7)	error: ellip takes 4 to 6 argument(s), 7 given
+	besself(1, 2, 3, 4)	error: besself takes 2 to 3 argument(s), 4 given
+	buttord(1, 2, 3, 4, 5, 6)	error: buttord takes 4 to 5 argument(s), 6 given
+	cheb1ord(1, 2, 3, 4, 5, 6)	error: cheb1ord takes 4 to 5 argument(s), 6 given
+	cheb2ord(1, 2, 3, 4, 5, 6)	error: cheb2ord takes 4 to 5 argument(s), 6 given
+	ellipord(1, 2, 3, 4, 5, 6)	error: ellipord takes 4 to 5 argument(s), 6 given
+	lp2lp(1, 2, 3, 4)	error: lp2lp takes 2 to 3 argument(s), 4 given
+	lp2hp(1, 2, 3, 4)	error: lp2hp takes 2 to 3 argument(s), 4 given
+	lp2bp(1, 2, 3, 4, 5)	error: lp2bp takes 3 to 4 argument(s), 5 given
+	lp2bs(1, 2, 3, 4, 5)	error: lp2bs takes 3 to 4 argument(s), 5 given
+	bilinear(1, 2, 3, 4)	error: bilinear takes 2 to 3 argument(s), 4 given
+	iirnotch(1, 2, 3)	error: iirnotch takes 2 argument(s), 3 given
+	iirpeak(1, 2, 3)	error: iirpeak takes 2 argument(s), 3 given
+	fir1(1, 2, 3, 4, 5, 6)	error: fir1 takes 2 to 5 argument(s), 6 given
+	kaiserord(1, 2, 3, 4, 5)	error: kaiserord takes 3 to 4 argument(s), 5 given
+	sgolay(1, 2, 3)	error: sgolay takes 2 argument(s), 3 given
+	sgolayfilt(1, 2, 3, 4)	error: sgolayfilt takes 3 argument(s), 4 given
+	freqz(1, 2, 3, 4)	error: freqz takes 1 to 3 argument(s), 4 given
+	freqs(1, 2, 3, 4)	error: freqs takes 2 to 3 argument(s), 4 given
+	grpdelay(1, 2, 3, 4)	error: grpdelay takes 1 to 3 argument(s), 4 given
+	impz(1, 2, 3, 4)	error: impz takes 1 to 3 argument(s), 4 given
+	stepz(1, 2, 3, 4)	error: stepz takes 1 to 3 argument(s), 4 given
+	filtfilt(1, 2, 3, 4)	error: filtfilt takes 2 to 3 argument(s), 4 given
+	sosfilt(1, 2, 3)	error: sosfilt takes 2 argument(s), 3 given
+	sos2tf(1, 2, 3)	error: sos2tf takes 1 to 2 argument(s), 3 given
+	tf2sos(1, 2, 3)	error: tf2sos takes 1 to 2 argument(s), 3 given
+	zp2sos(1, 2, 3, 4)	error: zp2sos takes 1 to 3 argument(s), 4 given
+	isminphase(1, 2, 3)	error: isminphase takes 1 to 2 argument(s), 3 given
+	ismaxphase(1, 2, 3)	error: ismaxphase takes 1 to 2 argument(s), 3 given
+	islinphase(1, 2, 3)	error: islinphase takes 1 to 2 argument(s), 3 given
+	firtype(1, 2)	error: firtype takes 1 argument(s), 2 given
+	polystab(1, 2)	error: polystab takes 1 argument(s), 2 given
+	periodogram(1, 2, 3, 4, 5)	error: periodogram takes 1 to 4 argument(s), 5 given
+	pwelch(1, 2, 3, 4, 5, 6)	error: pwelch takes 1 to 5 argument(s), 6 given
+	cpsd(1, 2, 3, 4, 5, 6, 7)	error: cpsd takes 2 to 6 argument(s), 7 given
+	mscohere(1, 2, 3, 4, 5, 6, 7)	error: mscohere takes 2 to 6 argument(s), 7 given
+	tfestimate(1, 2, 3, 4, 5, 6, 7)	error: tfestimate takes 2 to 6 argument(s), 7 given
+	spectrogram(1, 2, 3, 4, 5)	error: spectrogram takes 1 to 4 argument(s), 5 given
+	bandpower(1, 2)	error: bandpower takes 1 argument(s), 2 given
+	rssq(1, 2)	error: rssq takes 1 argument(s), 2 given
+	peak2rms(1, 2)	error: peak2rms takes 1 argument(s), 2 given
+	enbw(1, 2, 3)	error: enbw takes 1 to 2 argument(s), 3 given
+	mag2db(1, 2)	error: mag2db takes 1 argument(s), 2 given
+	db2mag(1, 2)	error: db2mag takes 1 argument(s), 2 given
+	pow2db(1, 2)	error: pow2db takes 1 argument(s), 2 given
+	db2pow(1, 2)	error: db2pow takes 1 argument(s), 2 given
+	rceps(1, 2)	error: rceps takes 1 argument(s), 2 given
+	goertzel(1, 2, 3)	error: goertzel takes 2 argument(s), 3 given
+	czt(1, 2, 3, 4, 5)	error: czt takes 1 to 4 argument(s), 5 given
+	dftmtx(1, 2)	error: dftmtx takes 1 argument(s), 2 given
+	cconv(1, 2, 3, 4)	error: cconv takes 2 to 3 argument(s), 4 given
+	envelope(1, 2)	error: envelope takes 1 argument(s), 2 given
+	medfilt1(1, 2, 3)	error: medfilt1 takes 1 to 2 argument(s), 3 given
+	upfirdn(1, 2, 3, 4, 5)	error: upfirdn takes 2 to 4 argument(s), 5 given
+	decimate(1, 2, 3, 4)	error: decimate takes 2 to 3 argument(s), 4 given
+	buffer(1, 2, 3, 4)	error: buffer takes 2 to 3 argument(s), 4 given
+	xcov(1, 2, 3)	error: xcov takes 1 to 2 argument(s), 3 given
+	levinson(1, 2, 3)	error: levinson takes 1 to 2 argument(s), 3 given
+	aryule(1, 2, 3)	error: aryule takes 2 argument(s), 3 given
+	arburg(1, 2, 3)	error: arburg takes 2 argument(s), 3 given
+	lpc(1, 2, 3)	error: lpc takes 2 argument(s), 3 given
+	poly2rc(1, 2)	error: poly2rc takes 1 argument(s), 2 given
+	rc2poly(1, 2)	error: rc2poly takes 1 argument(s), 2 given
+	sawtooth(1, 2, 3)	error: sawtooth takes 1 to 2 argument(s), 3 given
+	rectpuls(1, 2, 3)	error: rectpuls takes 1 to 2 argument(s), 3 given
+	tripuls(1, 2, 3, 4)	error: tripuls takes 1 to 3 argument(s), 4 given
+	gauspuls(1, 2, 3, 4)	error: gauspuls takes 3 argument(s), 4 given
+	chirp(1, 2, 3, 4, 5, 6)	error: chirp takes 4 to 5 argument(s), 6 given
+	diric(1, 2, 3)	error: diric takes 2 argument(s), 3 given
+	azimuth(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: azimuth takes 4 to 8 argument(s), 9 given
+	reckon(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: reckon takes 4 to 8 argument(s), 9 given
+	haversine(1, 2, 3, 4, 5, 6, 7)	error: haversine takes 4 to 6 argument(s), 7 given
+	geoddistance(1, 2, 3, 4, 5, 6, 7)	error: geoddistance takes 4 to 6 argument(s), 7 given
+	geodreckon(1, 2, 3, 4, 5, 6, 7)	error: geodreckon takes 4 to 6 argument(s), 7 given
+	geodarea(1, 2, 3, 4, 5)	error: geodarea takes 2 to 4 argument(s), 5 given
+	areaint(1, 2, 3, 4, 5)	error: areaint takes 2 to 4 argument(s), 5 given
+	areaquad(1, 2, 3, 4, 5, 6, 7)	error: areaquad takes 4 to 6 argument(s), 7 given
+	departure(1, 2, 3, 4, 5, 6)	error: departure takes 3 to 5 argument(s), 6 given
+	antipode(1, 2, 3, 4)	error: antipode takes 2 to 3 argument(s), 4 given
+	meanm(1, 2, 3, 4, 5)	error: meanm takes 2 to 4 argument(s), 5 given
+	track2(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: track2 takes 4 to 8 argument(s), 9 given
+	track1(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: track1 takes 3 to 8 argument(s), 9 given
+	gcwaypts(1, 2, 3, 4, 5, 6)	error: gcwaypts takes 4 to 5 argument(s), 6 given
+	scircle1(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: scircle1 takes 3 to 8 argument(s), 9 given
+	scircle2(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)	error: scircle2 takes 4 to 9 argument(s), 10 given
+	legs(1, 2, 3, 4)	error: legs takes 2 to 3 argument(s), 4 given
+	gc2sc(1, 2, 3, 4, 5)	error: gc2sc takes 3 to 4 argument(s), 5 given
+	gcxgc(1, 2, 3, 4, 5, 6, 7, 8)	error: gcxgc takes 6 to 7 argument(s), 8 given
+	scxsc(1, 2, 3, 4, 5, 6, 7, 8)	error: scxsc takes 6 to 7 argument(s), 8 given
+	gcxsc(1, 2, 3, 4, 5, 6, 7, 8)	error: gcxsc takes 6 to 7 argument(s), 8 given
+	rhxrh(1, 2, 3, 4, 5, 6, 7, 8)	error: rhxrh takes 6 to 7 argument(s), 8 given
+	interpm(1, 2, 3, 4, 5, 6)	error: interpm takes 3 to 5 argument(s), 6 given
+	geodetic2ecef(1, 2, 3, 4, 5, 6)	error: geodetic2ecef takes 3 to 5 argument(s), 6 given
+	ecef2geodetic(1, 2, 3, 4, 5, 6)	error: ecef2geodetic takes 3 to 5 argument(s), 6 given
+	lla2ecef(1, 2, 3)	error: lla2ecef takes 1 to 2 argument(s), 3 given
+	ecef2lla(1, 2, 3)	error: ecef2lla takes 1 to 2 argument(s), 3 given
+	geodetic2enu(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: geodetic2enu takes 6 to 8 argument(s), 9 given
+	enu2geodetic(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: enu2geodetic takes 6 to 8 argument(s), 9 given
+	geodetic2ned(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: geodetic2ned takes 6 to 8 argument(s), 9 given
+	ned2geodetic(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ned2geodetic takes 6 to 8 argument(s), 9 given

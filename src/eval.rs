@@ -229,6 +229,9 @@ impl Session {
             Expr::Fn(n, a) if &**n == "plot4d" => {
                 return Ok((Expr::Bool(true), self.plot4d(a, &[], None)?));
             }
+            Expr::Fn(n, a) if &**n == "view4d" => {
+                return Ok((Expr::Bool(true), self.view4d_shown(a)?));
+            }
             Expr::Fn(n, a) if crate::picture::is_drawing(n) => {
                 let (drawing, choices) = self.drawing(n, a, &[], false, false)?;
                 let lines = crate::picture::show(n, &drawing, &choices)?;
@@ -1601,7 +1604,7 @@ impl Session {
             if let Expr::Fn(f, angles) = arg
                 && &**f == "rotate"
                 && (1..=3).contains(&angles.len())
-                && (k >= raw.len() || name == "plot4d")
+                && (k >= raw.len() || matches!(name, "plot4d" | "view4d"))
             {
                 let angles = self.eval_all(angles)?;
                 if angles.iter().all(|v| crate::plot::number(v).is_some()) {
@@ -1609,7 +1612,9 @@ impl Session {
                     continue;
                 }
             }
-            if matches!(arg, Expr::Fn(f, _) if &**f == "rotate") && (k >= raw.len() || name == "plot4d") {
+            if matches!(arg, Expr::Fn(f, _) if &**f == "rotate")
+                && (k >= raw.len() || matches!(name, "plot4d" | "view4d"))
+            {
                 return Err(format!(
                     "rotate(yaw, pitch, roll) takes one to three numbers: the degrees that the body of plot4d is turned about its upright axis, about its width and about its frames; not {arg}"
                 ));
@@ -1629,7 +1634,7 @@ impl Session {
                 }
                 None => {
                     // (a name that is no choice is a slip of the pen where no equation stands)
-                    if (crate::walks::is_walk(name) || name == "plot4d")
+                    if (crate::walks::is_walk(name) || matches!(name, "plot4d" | "view4d"))
                         && matches!(arg, Expr::Rel(crate::expr::Rel::Eq, l, _) if l.sym_name().is_some())
                         && let Some(why) = crate::picture::stray(arg)
                     {
@@ -1677,8 +1682,12 @@ impl Session {
     fn save(&mut self, name: &str, raw: &[Expr]) -> Result<Vec<String>, String> {
         let usage = || {
             format!(
-                "{name}(\"name\", drawing, choices): {name}(\"walk.{}\", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; {name}(drawing) takes the name of the drawing for the file",
-                if name.starts_with("save_jxl") { "jxl" } else { "png" }
+                "{name}(\"name\", drawing, choices): {name}(\"walk.{}\", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d, view4d; {name}(drawing) takes the name of the drawing for the file",
+                if name.starts_with("save_jxl") {
+                    "jxl"
+                } else {
+                    "png"
+                }
             )
         };
         let fast = name.ends_with("_fast");
@@ -1688,8 +1697,14 @@ impl Session {
         };
         let (path, drawn, more) = match raw {
             // a drawing without a name is saved under its own
-            [drawn @ Expr::Fn(command, _), more @ ..] if known(drawn) && !name.starts_with("save_fast") && name != "save" => {
-                let end = if name.starts_with("save_jxl") { "jxl" } else { "png" };
+            [drawn @ Expr::Fn(command, _), more @ ..]
+                if known(drawn) && !name.starts_with("save_fast") && name != "save" =>
+            {
+                let end = if name.starts_with("save_jxl") {
+                    "jxl"
+                } else {
+                    "png"
+                };
                 (crate::texts::text(&format!("{command}.{end}")), drawn, more)
             }
             [path, drawn, more @ ..] => (self.eval(path)?, drawn, more),
@@ -1712,6 +1727,10 @@ impl Session {
         }
         if &**command == "plot4d" {
             return self.plot4d(args, more, Some((&path, format, fast)));
+        }
+        if &**command == "view4d" {
+            let (drawing, choices) = self.view4d(args, more, true, fast)?;
+            return crate::picture::save(&path, format, &drawing, &choices);
         }
         let (drawing, choices) = self.drawing(command, args, more, true, fast)?;
         crate::picture::save(&path, format, &drawing, &choices)
@@ -2059,6 +2078,12 @@ impl Session {
             return r;
         }
         if let Some(r) = self.sigdesign(name, &a) {
+            return r;
+        }
+        if let Some(r) = crate::geodesy::call(name, &a) {
+            return r;
+        }
+        if let Some(r) = crate::neural::call(name, &a) {
             return r;
         }
         if let Some(r) = self.table_function(name, &a) {
@@ -2678,7 +2703,11 @@ impl Session {
                 if let Some(found) = crate::matfun::numeric(name, &m, a.get(1)) {
                     return found;
                 }
-                matrix_out(matrix::function_of(&m, &pow(Expr::sym("#w"), a[1].clone()), "#w"))
+                matrix_out(matrix::function_of(
+                    &m,
+                    &pow(Expr::sym("#w"), a[1].clone()),
+                    "#w",
+                ))
             })(),
             ("matrixsqrt" | "matrixlog", 1) => (|| {
                 if let Some(found) = crate::matfun::numeric(name, &rows(&a[0], name)?, None) {

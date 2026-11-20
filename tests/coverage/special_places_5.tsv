@@ -450,8 +450,8 @@
 -e	hilbert(10^20)	error: hilbert(n) needs a size from 1 to 200
 -e	hilbert(10^(-20))	error: hilbert(n) needs a size from 1 to 200
 -e	hilbert(x)	error: hilbert(n) needs a size from 1 to 200
--e	hilbert([])	error: hilbert(n) needs a size from 1 to 200
--e	hilbert([1, 2])	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert([])	error: hilbert needs values
+-e	hilbert([1, 2])	[1, 2]
 -e	hilbert("text")	error: hilbert(n) needs a size from 1 to 200
 -e	hilbert(true)	error: hilbert(n) needs a size from 1 to 200
 -e	hilbert(-7/3)	error: hilbert(n) needs a size from 1 to 200

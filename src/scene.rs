@@ -85,6 +85,39 @@ pub enum Item {
         at: Point,
         text: String,
     },
+    /// A body of small cubes with colours.
+    Body(Body),
+}
+
+/// A side of a cube of a body that lies open: the cube (across, upwards, along the frames),
+/// which of its six sides (the lower and the upper one across, upwards, along the frames),
+/// its colour as a place in the colours of the body, and the direction that the surface
+/// faces there (all zeros: that of the side).
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Face {
+    pub at: [u16; 3],
+    pub side: u8,
+    pub level: u16,
+    pub facing: [i8; 3],
+}
+
+/// A body of cubes in a box: only the sides that can be seen from outside.
+pub struct Body {
+    /// Cubes across, upwards and along the third side.
+    pub size: [usize; 3],
+    /// The ends of the box along its three sides.
+    pub ends: [(f64, f64); 3],
+    pub faces: Vec<Face>,
+    pub tints: Vec<Rgb>,
+}
+
+/// The colours of a fourth number: its name, its least and its greatest value, and the
+/// colours from the least value on.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Legend {
+    pub name: String,
+    pub ends: (f64, f64),
+    pub colors: Vec<Rgb>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -127,6 +160,14 @@ pub struct Drawing {
     /// The x and the y axis of a chart hold logarithms to base 10: their numbers are the
     /// powers of ten.
     pub logs: [bool; 2],
+    /// The sides of the box that a stretched drawing of space fills, the longest being 1.
+    pub sides: [f64; 3],
+    /// The names of the three axes of a drawing of space, instead of x, y and z.
+    pub axis_names: Option<[String; 3]>,
+    pub legend: Option<Legend>,
+    /// Edges of areas that would show the steps of the pixels: the picture is drawn twice
+    /// as large and made smaller.
+    pub smooth: bool,
 }
 
 impl Drawing {
@@ -144,6 +185,10 @@ impl Drawing {
             aspect: None,
             fog: if space == Space::Solid { 0.5 } else { 0.0 },
             logs: [false; 2],
+            sides: [1.0, 1.0, 0.7],
+            axis_names: None,
+            legend: None,
+            smooth: false,
         }
     }
 
@@ -190,6 +235,14 @@ impl Drawing {
                 Item::Mesh { points, .. } => points.iter().flatten().for_each(|p| see(*p)),
                 Item::Label { at, .. } => see(*at),
                 Item::Field(_) => {}
+                Item::Body(body) => {
+                    for k in 0..8usize {
+                        see([0, 1, 2].map(|axis| match k >> axis & 1 {
+                            1 => body.ends[axis].1,
+                            _ => body.ends[axis].0,
+                        }));
+                    }
+                }
             }
         }
     }
@@ -291,6 +344,9 @@ pub struct Look {
     pub title: Option<String>,
     pub xlabel: Option<String>,
     pub ylabel: Option<String>,
+    /// The picture is drawn so many times as wide and as high as it will be (its pixels
+    /// are the means of as many squares of pixels): lines and letters are as much larger.
+    pub fine: usize,
 }
 
 impl Default for Look {
@@ -323,6 +379,7 @@ impl Default for Look {
             title: None,
             xlabel: None,
             ylabel: None,
+            fine: 1,
         }
     }
 }
@@ -492,7 +549,7 @@ const SEVERAL_EYES: &str = "views and stereo show a drawing of space from severa
 /// The directions of a picture in space: to the right, up, and toward the eye, which stands
 /// `azimuth` degrees around the upright axis and `elevation` degrees above the plane; the
 /// picture is turned by `roll` degrees.
-fn directions(azimuth: f64, elevation: f64, roll: f64) -> [Point; 3] {
+pub(crate) fn directions(azimuth: f64, elevation: f64, roll: f64) -> [Point; 3] {
     let (sa, ca) = sincos(azimuth - 90.0);
     let (se, ce) = sincos(elevation);
     seen_along([ce * ca, ce * sa, se], azimuth, roll)
@@ -535,6 +592,11 @@ impl<'a> Shot<'a> {
         if look.thickness <= 0.0 {
             look.thickness = if chart && least >= 600.0 { 2.0 } else { 1.0 };
         }
+        let fine = look.fine.max(1);
+        if fine > 1 {
+            look.thickness *= fine as f64;
+            look.scale = look.scale.map(|s| s * fine as f64);
+        }
         let background = look
             .background
             .unwrap_or(if drawing.dark { [0.0; 3] } else { [1.0; 3] });
@@ -557,7 +619,7 @@ impl<'a> Shot<'a> {
             .or_else(|| palette(drawing.palette))
             .unwrap_or_else(|| vec![[1.0; 3]]);
         let axes = look.axes.unwrap_or(drawing.axes);
-        let letters = (((least + 250.0) / 500.0) as usize).max(1);
+        let letters = (((least / fine as f64 + 250.0) / 500.0) as usize).max(1) * fine;
         let pad = (look.margin * least).round() + look.thickness;
         let mut view = View {
             origin: [0.0; 3],
@@ -656,8 +718,11 @@ impl<'a> Shot<'a> {
             for (k, (low, high)) in ranges.into_iter().enumerate() {
                 let half = (high - low) / 2.0;
                 view.origin[k] = (low + high) / 2.0;
-                let flat = if k == 2 { 0.7 } else { 1.0 };
-                view.factor[k] = if half > 0.0 { flat / half } else { 1.0 };
+                view.factor[k] = if half > 0.0 {
+                    drawing.sides[k] / half
+                } else {
+                    1.0
+                };
             }
         }
         let (origin, factor) = (view.origin, view.factor);
@@ -682,8 +747,15 @@ impl<'a> Shot<'a> {
             corners.iter().for_each(|c| see(*c));
         };
         // (room for the names of the axes, and above for their ranges)
+        // (the ends of named axes stand under a title, and the colours under them)
+        let lines = if drawing.legend.is_some() { 5.25 } else { 4.0 }
+            + if drawing.axis_names.is_some() && look.title.is_some() {
+                1.5
+            } else {
+                0.0
+            };
         let (pad, band) = if axes {
-            (pad + 2.0 * 8.0 * letters as f64, 4.0 * 8.0 * letters as f64)
+            (pad + 2.0 * 8.0 * letters as f64, lines * 8.0 * letters as f64)
         } else {
             (pad, 0.0)
         };
@@ -1033,6 +1105,7 @@ impl<'a> Shot<'a> {
                     points,
                     wires,
                 } => self.mesh(view, *columns, points, *wires, on),
+                Item::Body(body) => self.body(view, body, on),
                 Item::Label { at, text } => {
                     if let Some(p) = view.place(*at) {
                         let size = self.letters;
@@ -1352,13 +1425,20 @@ impl<'a> Shot<'a> {
             return;
         };
         let (w, h) = (self.look.width as f64, self.look.height as f64);
-        let mut line = 0.0;
+        let mut line = if self.drawing.axis_names.is_some() && self.look.title.is_some() {
+            1.2
+        } else {
+            0.0
+        };
         for axis in 0..3usize {
             let span = ends[axis].1 - ends[axis].0;
             if span.is_nan() || span <= 0.0 {
                 continue;
             }
-            let name = ["x", "y", "z"][axis];
+            let name = match &self.drawing.axis_names {
+                Some(names) => names[axis].as_str(),
+                None => ["x", "y", "z"][axis],
+            };
             let text = format!(
                 "{name} from {} to {}",
                 plot::label(ends[axis].0),
@@ -1386,7 +1466,12 @@ impl<'a> Shot<'a> {
                     p[1] + q[1]
                 };
                 if best.as_ref().is_none_or(|b| rank > b.0) {
-                    best = Some((rank, q));
+                    // (names of several letters stand at the middles of their edges, where
+                    // they do not meet)
+                    best = Some(match self.drawing.axis_names {
+                        Some(_) => (rank, [(p[0] + q[0]) / 2.0, (p[1] + q[1]) / 2.0, q[2]]),
+                        None => (rank, q),
+                    });
                 }
             }
             let Some((_, end)) = best else { continue };
@@ -1398,11 +1483,123 @@ impl<'a> Shot<'a> {
             } else {
                 [0.0, 1.0]
             };
-            let x =
-                (end[0] + away[0] * 1.2 * letter - letter / 2.0).clamp(0.0, (w - letter).max(0.0));
+            let wide = letter * name.chars().count() as f64;
+            let x = (end[0] + away[0] * (0.7 * letter + wide / 2.0) - wide / 2.0)
+                .clamp(0.0, (w - wide).max(0.0));
             let y =
                 (end[1] + away[1] * 1.2 * letter - letter / 2.0).clamp(0.0, (h - letter).max(0.0));
             on.text([x, y], size, name, self.ink);
+        }
+        // the colours of a fourth number in a row after its ends, the least value first
+        if let Some(legend) = &self.drawing.legend {
+            let text = format!(
+                "{} from {} to {}",
+                legend.name,
+                plot::label(legend.ends.0),
+                plot::label(legend.ends.1)
+            );
+            let top = letter / 2.0 + line * 1.25 * letter;
+            on.text([letter / 2.0, top], size, &text, self.ink);
+            let left = letter / 2.0 + letter * (text.chars().count() + 1) as f64;
+            let room = w - left - letter / 2.0;
+            let count = if room > 12.0 * letter {
+                (12.0 * letter) as usize
+            } else if room >= 1.0 {
+                room as usize
+            } else {
+                0
+            };
+            for k in 0..count {
+                let color = along(&legend.colors, k as f64 / (count.max(2) - 1) as f64);
+                let x = left + k as f64;
+                on.rect([x, top], [x + 1.0, top + letter], -1e9, color);
+            }
+        }
+    }
+
+    /// A body of small cubes: the sides that lie open toward the eye, each in the colour of
+    /// its cube, lighter where the surface faces the light.
+    fn body<S: Surface>(&self, view: &View, body: &Body, on: &mut S) {
+        let step =
+            [0, 1, 2].map(|k| (body.ends[k].1 - body.ends[k].0) / body.size[k].max(1) as f64);
+        // how long a cube is along each side in the space of the picture
+        let grow = [0, 1, 2].map(|k| step[k] * view.factor[k]);
+        let light = unit([-0.4, 0.5, 0.75]).unwrap_or([0.0, 0.0, 1.0]);
+        let eye = view
+            .eye
+            .map(|d| [0, 1, 2].map(|k| view.center[k] + view.toward[k] * d));
+        let point = |at: [f64; 3]| [0, 1, 2].map(|k| body.ends[k].0 + step[k] * at[k]);
+        for face in &body.faces {
+            let axis = usize::from(face.side / 2).min(2);
+            let upper = face.side % 2 == 1;
+            let sign = if upper { 1.0 } else { -1.0 };
+            let low = face.at.map(f64::from);
+            let plane = low[axis] + if upper { 1.0 } else { 0.0 };
+            // a side that faces away from the eye is not seen
+            let seen = match eye {
+                None => view.toward[axis] * grow[axis] * sign > 0.0,
+                Some(eye) => {
+                    let at = (body.ends[axis].0 + step[axis] * plane - view.origin[axis])
+                        * view.factor[axis];
+                    (eye[axis] - at) * grow[axis] * sign > 0.0
+                }
+            };
+            if !seen {
+                continue;
+            }
+            let (b, c) = ((axis + 1) % 3, (axis + 2) % 3);
+            let corner = |db: f64, dc: f64| {
+                let mut at = low;
+                at[axis] = plane;
+                at[b] += db;
+                at[c] += dc;
+                view.place(point(at))
+            };
+            let (Some(p), Some(q), Some(r), Some(s)) = (
+                corner(0.0, 0.0),
+                corner(1.0, 0.0),
+                corner(1.0, 1.0),
+                corner(0.0, 1.0),
+            ) else {
+                continue;
+            };
+            // the direction that the surface faces, as the picture sees it
+            let facing = match face.facing {
+                [0, 0, 0] => {
+                    let mut d = [0.0; 3];
+                    d[axis] = sign;
+                    d
+                }
+                given => given.map(f64::from),
+            };
+            let across = [0, 1, 2].map(|k| {
+                if grow[k] != 0.0 {
+                    facing[k] / grow[k]
+                } else {
+                    0.0
+                }
+            });
+            let turned = [
+                dot(across, view.right),
+                dot(across, view.up),
+                dot(across, view.toward),
+            ];
+            let lit = unit(turned).map_or(1.0, |n| {
+                // (the side that is seen is the one toward the eye)
+                let n = if n[2] < 0.0 { n.map(|v| -v) } else { n };
+                let facing = dot(n, light);
+                if facing > 0.0 { facing } else { 0.0 }
+            });
+            let bright = (0.35 + 0.65 * lit) as f32;
+            let base = self.look.color.unwrap_or_else(|| {
+                body.tints
+                    .get(usize::from(face.level))
+                    .copied()
+                    .unwrap_or([1.0; 3])
+            });
+            let color = self.faded(base.map(|v| v * bright), p[2]);
+            on.triangle([p, q, r], [color; 3]);
+            on.triangle([p, r, s], [color; 3]);
         }
     }
 }
@@ -1721,6 +1918,75 @@ pub fn text(
             Ok(dotted.canvas.bare())
         }
     }
+}
+
+/// A body of space as lines of characters, `width` by `height` of them, seen as `look`
+/// says: more dots (or heavier marks with `ascii`) where it is lighter.
+pub fn lights(
+    drawing: &Drawing,
+    look: &Look,
+    width: usize,
+    height: usize,
+    ascii: bool,
+) -> Result<Vec<String>, String> {
+    let look = Look {
+        width: 2 * width,
+        height: 4 * height,
+        margin: 0.0,
+        thickness: 1.0,
+        axes: Some(false),
+        color: Some([1.0; 3]),
+        background: Some([0.0; 3]),
+        palette: None,
+        grid: false,
+        frames: 1,
+        turn: None,
+        grow: false,
+        slices: 0,
+        views: false,
+        stereo: None,
+        title: None,
+        xlabel: None,
+        ylabel: None,
+        ..look.clone()
+    };
+    let shot = Shot::new(drawing, &look)?;
+    let raster = shot.raster(0);
+    let options = plot::Options {
+        width,
+        height,
+        sized: true,
+        ascii,
+        range: None,
+    };
+    let mut canvas = Canvas::new(&options, (0.0, 1.0), (0.0, 1.0));
+    let marks = if ascii { MARKS.len() } else { DOTS.len() };
+    for r in 0..height {
+        for c in 0..width {
+            let (mut light, mut covered) = (0.0f32, false);
+            for j in 0..4 {
+                for i in 0..2 {
+                    let (x, y) = (2 * c + i, 4 * r + j);
+                    let cover = raster.cover(x, y).clamp(0.0, 1.0);
+                    if cover > 0.0 {
+                        covered = true;
+                        light += cover * luma(raster.color(x, y));
+                    }
+                }
+            }
+            if !covered {
+                continue;
+            }
+            let light = f64::from(light / 8.0).clamp(0.0, 1.0);
+            let k = ((light * (marks - 1) as f64 + 0.5) as usize).clamp(1, marks - 1);
+            canvas.cells[r * width + c] = if ascii {
+                u32::from(MARKS[k])
+            } else {
+                DOTS[k]
+            };
+        }
+    }
+    Ok(canvas.bare())
 }
 
 #[cfg(test)]

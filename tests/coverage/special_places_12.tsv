@@ -1,3 +1,57 @@
+-e	bounds(true)	[true, true]
+-e	bounds(-7/3)	[-7/3, -7/3]
+-e	bounds(0.5)	[0.5, 0.5]
+-e	peak2peak(0)	0
+-e	peak2peak(1)	0
+-e	peak2peak(-1)	0
+-e	peak2peak(1/2)	0
+-e	peak2peak(2)	0
+-e	peak2peak(i)	0
+-e	peak2peak(inf)	undefined
+-e	peak2peak(-inf)	undefined
+-e	peak2peak(undefined)	undefined
+-e	peak2peak(10^20)	0
+-e	peak2peak(10^(-20))	0
+-e	peak2peak(x)	0
+-e	peak2peak([])	undefined
+-e	peak2peak([1, 2])	1
+-e	peak2peak("text")	0
+-e	peak2peak(true)	0
+-e	peak2peak(-7/3)	0
+-e	peak2peak(0.5)	0
+-e	trapz(0)	0
+-e	trapz(1)	0
+-e	trapz(-1)	0
+-e	trapz(1/2)	0
+-e	trapz(2)	0
+-e	trapz(i)	0
+-e	trapz(inf)	0
+-e	trapz(-inf)	0
+-e	trapz(undefined)	0
+-e	trapz(10^20)	0
+-e	trapz(10^(-20))	0
+-e	trapz(x)	0
+-e	trapz([])	0
+-e	trapz([1, 2])	3/2
+-e	trapz("text")	0
+-e	trapz(true)	0
+-e	trapz(-7/3)	0
+-e	trapz(0.5)	0
+-e	cumtrapz(0)	0
+-e	cumtrapz(1)	0
+-e	cumtrapz(-1)	0
+-e	cumtrapz(1/2)	0
+-e	cumtrapz(2)	0
+-e	cumtrapz(i)	0
+-e	cumtrapz(inf)	0
+-e	cumtrapz(-inf)	0
+-e	cumtrapz(undefined)	0
+-e	cumtrapz(10^20)	0
+-e	cumtrapz(10^(-20))	0
+-e	cumtrapz(x)	0
+-e	cumtrapz([])	[0]
+-e	cumtrapz([1, 2])	[0, 3/2]
+-e	cumtrapz("text")	0
 -e	cumtrapz(true)	0
 -e	cumtrapz(-7/3)	0
 -e	cumtrapz(0.5)	0
@@ -91,6 +145,24 @@
 -e	corrcoef(true)	1
 -e	corrcoef(-7/3)	1
 -e	corrcoef(0.5)	1
+-e	histcounts(0)	histcounts(0)
+-e	histcounts(1)	histcounts(1)
+-e	histcounts(-1)	histcounts(-1)
+-e	histcounts(1/2)	histcounts(1/2)
+-e	histcounts(2)	histcounts(2)
+-e	histcounts(i)	histcounts(i)
+-e	histcounts(inf)	histcounts(inf)
+-e	histcounts(-inf)	histcounts(-inf)
+-e	histcounts(undefined)	undefined
+-e	histcounts(10^20)	histcounts(100000000000000000000)
+-e	histcounts(10^(-20))	histcounts(1/100000000000000000000)
+-e	histcounts(x)	histcounts(x)
+-e	histcounts([])	[]
+-e	histcounts([1, 2])	[histcounts(1), histcounts(2)]
+-e	histcounts("text")	histcounts("text")
+-e	histcounts(true)	histcounts(true)
+-e	histcounts(-7/3)	histcounts(-7/3)
+-e	histcounts(0.5)	histcounts(0.5)
 -e	detrend(0)	0
 -e	detrend(1)	0
 -e	detrend(-1)	0
@@ -626,75 +698,3 @@
 -e	coeffs(10^(-20))	[1/100000000000000000000]
 -e	coeffs(x)	[1]
 -e	coeffs([])	[[]]
--e	coeffs([1, 2])	[[1, 2]]
--e	coeffs("text")	error: coeffs: "text" is no polynomial in text
--e	coeffs(true)	[true]
--e	coeffs(-7/3)	[-7/3]
--e	coeffs(0.5)	[0.5]
--e	horner(0)	0
--e	horner(1)	1
--e	horner(-1)	-1
--e	horner(1/2)	1/2
--e	horner(2)	2
--e	horner(i)	i
--e	horner(inf)	inf
--e	horner(-inf)	-inf
--e	horner(undefined)	undefined
--e	horner(10^20)	100000000000000000000
--e	horner(10^(-20))	1/100000000000000000000
--e	horner(x)	x
--e	horner([])	[]
--e	horner([1, 2])	[1, 2]
--e	horner("text")	error: horner: "text" is no polynomial in text
--e	horner(true)	true
--e	horner(-7/3)	-7/3
--e	horner(0.5)	0.5
--e	numden(0)	[0, 1]
--e	numden(1)	[1, 1]
--e	numden(-1)	[-1, 1]
--e	numden(1/2)	[1, 2]
--e	numden(2)	[2, 1]
--e	numden(i)	[i, 1]
--e	numden(inf)	[inf, 1]
--e	numden(-inf)	[-inf, 1]
--e	numden(undefined)	[undefined, 1]
--e	numden(10^20)	[100000000000000000000, 1]
--e	numden(10^(-20))	[1, 100000000000000000000]
--e	numden(x)	[x, 1]
--e	numden([])	[[], 1]
--e	numden([1, 2])	[[1, 2], 1]
--e	numden("text")	["text", 1]
--e	numden(true)	[true, 1]
--e	numden(-7/3)	[-7, 3]
--e	numden(0.5)	[1, 2]
--e	gbasis(0)	error: gbasis([polynomials], [variables])
--e	gbasis(1)	error: gbasis([polynomials], [variables])
--e	gbasis(-1)	error: gbasis([polynomials], [variables])
--e	gbasis(1/2)	error: gbasis([polynomials], [variables])
--e	gbasis(2)	error: gbasis([polynomials], [variables])
--e	gbasis(i)	error: gbasis([polynomials], [variables])
--e	gbasis(inf)	error: gbasis([polynomials], [variables])
--e	gbasis(-inf)	error: gbasis([polynomials], [variables])
--e	gbasis(undefined)	error: gbasis([polynomials], [variables])
--e	gbasis(10^20)	error: gbasis([polynomials], [variables])
--e	gbasis(10^(-20))	error: gbasis([polynomials], [variables])
--e	gbasis(x)	error: gbasis([polynomials], [variables])
--e	gbasis([])	[]
--e	gbasis([1, 2])	[1]
--e	gbasis("text")	error: gbasis([polynomials], [variables])
--e	gbasis(true)	error: gbasis([polynomials], [variables])
--e	gbasis(-7/3)	error: gbasis([polynomials], [variables])
--e	gbasis(0.5)	error: gbasis([polynomials], [variables])
--e	fft(0)	[0]
--e	fft(1)	[1]
--e	fft(-1)	[-1]
--e	fft(1/2)	[1/2]
--e	fft(2)	[2]
--e	fft(i)	[i]
--e	fft(inf)	[inf]
--e	fft(-inf)	[-inf]
--e	fft(undefined)	[undefined]
--e	fft(10^20)	[100000000000000000000]
--e	fft(10^(-20))	[1/100000000000000000000]
--e	fft(x)	[x]
--e	fft([])	[]

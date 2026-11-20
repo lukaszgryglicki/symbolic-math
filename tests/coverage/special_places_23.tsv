@@ -1,0 +1,700 @@
+-e	spectrogram(x)	error: spectrogram: x is not a real number
+-e	spectrogram([])	error: spectrogram needs values
+-e	spectrogram([1, 2])	[[1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2]]
+-e	spectrogram("text")	error: spectrogram: "text" is not a real number
+-e	spectrogram(true)	error: spectrogram: true is not a real number
+-e	spectrogram(-7/3)	[[-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333]]
+-e	spectrogram(0.5)	[[0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5], [0.5]]
+-e	bandpower(0)	0
+-e	bandpower(1)	1
+-e	bandpower(-1)	1
+-e	bandpower(1/2)	0.25
+-e	bandpower(2)	4
+-e	bandpower(i)	error: bandpower: i is not a real number
+-e	bandpower(inf)	error: bandpower: inf is not a real number
+-e	bandpower(-inf)	error: bandpower: -inf is not a real number
+-e	bandpower(undefined)	error: bandpower: undefined is not a real number
+-e	bandpower(10^20)	1e40
+-e	bandpower(10^(-20))	1e-40
+-e	bandpower(x)	error: bandpower: x is not a real number
+-e	bandpower([])	error: bandpower needs values
+-e	bandpower([1, 2])	2.5
+-e	bandpower("text")	error: bandpower: "text" is not a real number
+-e	bandpower(true)	error: bandpower: true is not a real number
+-e	bandpower(-7/3)	5.4444444444444444444444444444444
+-e	bandpower(0.5)	0.25
+-e	rssq(0)	0
+-e	rssq(1)	1
+-e	rssq(-1)	1
+-e	rssq(1/2)	0.5
+-e	rssq(2)	2
+-e	rssq(i)	error: rssq: i is not a real number
+-e	rssq(inf)	error: rssq: inf is not a real number
+-e	rssq(-inf)	error: rssq: -inf is not a real number
+-e	rssq(undefined)	error: rssq: undefined is not a real number
+-e	rssq(10^20)	100000000000000000000
+-e	rssq(10^(-20))	1e-20
+-e	rssq(x)	error: rssq: x is not a real number
+-e	rssq([])	error: rssq needs values
+-e	rssq([1, 2])	2.2360679774997896964091736687313
+-e	rssq("text")	error: rssq: "text" is not a real number
+-e	rssq(true)	error: rssq: true is not a real number
+-e	rssq(-7/3)	2.3333333333333333333333333333333
+-e	rssq(0.5)	0.5
+-e	peak2rms(0)	undefined
+-e	peak2rms(1)	1
+-e	peak2rms(-1)	1
+-e	peak2rms(1/2)	1
+-e	peak2rms(2)	1
+-e	peak2rms(i)	error: peak2rms: i is not a real number
+-e	peak2rms(inf)	error: peak2rms: inf is not a real number
+-e	peak2rms(-inf)	error: peak2rms: -inf is not a real number
+-e	peak2rms(undefined)	error: peak2rms: undefined is not a real number
+-e	peak2rms(10^20)	1
+-e	peak2rms(10^(-20))	1
+-e	peak2rms(x)	error: peak2rms: x is not a real number
+-e	peak2rms([])	error: peak2rms needs values
+-e	peak2rms([1, 2])	1.2649110640673517327995574177731
+-e	peak2rms("text")	error: peak2rms: "text" is not a real number
+-e	peak2rms(true)	error: peak2rms: true is not a real number
+-e	peak2rms(-7/3)	1
+-e	peak2rms(0.5)	1
+-e	enbw(0)	undefined
+-e	enbw(1)	1
+-e	enbw(-1)	1
+-e	enbw(1/2)	1
+-e	enbw(2)	1
+-e	enbw(i)	error: enbw: i is not a real number
+-e	enbw(inf)	error: enbw: inf is not a real number
+-e	enbw(-inf)	error: enbw: -inf is not a real number
+-e	enbw(undefined)	error: enbw: undefined is not a real number
+-e	enbw(10^20)	1
+-e	enbw(10^(-20))	1
+-e	enbw(x)	error: enbw: x is not a real number
+-e	enbw([])	undefined
+-e	enbw([1, 2])	1.1111111111111111111111111111111
+-e	enbw("text")	error: enbw: "text" is not a real number
+-e	enbw(true)	error: enbw: true is not a real number
+-e	enbw(-7/3)	1
+-e	enbw(0.5)	1
+-e	mag2db(0)	-inf
+-e	mag2db(1)	0
+-e	mag2db(-1)	0
+-e	mag2db(1/2)	-6.0205999132796239042747778944899
+-e	mag2db(2)	6.0205999132796239042747778944899
+-e	mag2db(i)	error: mag2db: i is not a real number
+-e	mag2db(inf)	error: mag2db: inf is not a real number
+-e	mag2db(-inf)	error: mag2db: -inf is not a real number
+-e	mag2db(undefined)	error: mag2db: undefined is not a real number
+-e	mag2db(10^20)	400
+-e	mag2db(10^(-20))	-400
+-e	mag2db(x)	error: mag2db: x is not a real number
+-e	mag2db([])	[]
+-e	mag2db([1, 2])	[0, 6.0205999132796239042747778944899]
+-e	mag2db("text")	error: mag2db: "text" is not a real number
+-e	mag2db(true)	error: mag2db: true is not a real number
+-e	mag2db(-7/3)	7.3595357058918878683437671067504
+-e	mag2db(0.5)	-6.0205999132796239042747778944899
+-e	db2mag(0)	1
+-e	db2mag(1)	1.1220184543019634355910389464779
+-e	db2mag(-1)	0.8912509381337455299531086810783
+-e	db2mag(1/2)	1.0592537251772888788092803732781
+-e	db2mag(2)	1.2589254117941672104239541063958
+-e	db2mag(i)	error: db2mag: i is not a real number
+-e	db2mag(inf)	error: db2mag: inf is not a real number
+-e	db2mag(-inf)	error: db2mag: -inf is not a real number
+-e	db2mag(undefined)	error: db2mag: undefined is not a real number
+-e	db2mag(10^20)	inf
+-e	db2mag(10^(-20))	1.0000000000000000000011512925465
+-e	db2mag(x)	error: db2mag: x is not a real number
+-e	db2mag([])	[]
+-e	db2mag([1, 2])	[1.1220184543019634355910389464779, 1.2589254117941672104239541063958]
+-e	db2mag("text")	error: db2mag: "text" is not a real number
+-e	db2mag(true)	error: db2mag: true is not a real number
+-e	db2mag(-7/3)	0.76442227425260025175997466802451
+-e	db2mag(0.5)	1.0592537251772888788092803732781
+-e	pow2db(0)	-inf
+-e	pow2db(1)	0
+-e	pow2db(-1)	undefined
+-e	pow2db(1/2)	-3.0102999566398119521373889472449
+-e	pow2db(2)	3.0102999566398119521373889472449
+-e	pow2db(i)	error: pow2db: i is not a real number
+-e	pow2db(inf)	error: pow2db: inf is not a real number
+-e	pow2db(-inf)	error: pow2db: -inf is not a real number
+-e	pow2db(undefined)	error: pow2db: undefined is not a real number
+-e	pow2db(10^20)	200
+-e	pow2db(10^(-20))	-200
+-e	pow2db(x)	error: pow2db: x is not a real number
+-e	pow2db([])	[]
+-e	pow2db([1, 2])	[0, 3.0102999566398119521373889472449]
+-e	pow2db("text")	error: pow2db: "text" is not a real number
+-e	pow2db(true)	error: pow2db: true is not a real number
+-e	pow2db(-7/3)	undefined
+-e	pow2db(0.5)	-3.0102999566398119521373889472449
+-e	db2pow(0)	1
+-e	db2pow(1)	1.2589254117941672104239541063958
+-e	db2pow(-1)	0.79432823472428150206591828283639
+-e	db2pow(1/2)	1.1220184543019634355910389464779
+-e	db2pow(2)	1.5848931924611134852021013733915
+-e	db2pow(i)	error: db2pow: i is not a real number
+-e	db2pow(inf)	error: db2pow: inf is not a real number
+-e	db2pow(-inf)	error: db2pow: -inf is not a real number
+-e	db2pow(undefined)	error: db2pow: undefined is not a real number
+-e	db2pow(10^20)	inf
+-e	db2pow(10^(-20))	1.000000000000000000002302585093
+-e	db2pow(x)	error: db2pow: x is not a real number
+-e	db2pow([])	[]
+-e	db2pow([1, 2])	[1.2589254117941672104239541063958, 1.5848931924611134852021013733915]
+-e	db2pow("text")	error: db2pow: "text" is not a real number
+-e	db2pow(true)	error: db2pow: true is not a real number
+-e	db2pow(-7/3)	0.58434141337351759379047156301659
+-e	db2pow(0.5)	1.1220184543019634355910389464779
+-e	rceps(0)	[0]
+-e	rceps(1)	[0]
+-e	rceps(-1)	[0]
+-e	rceps(1/2)	[-0.69314718055994530941723212145818]
+-e	rceps(2)	[0.69314718055994530941723212145818]
+-e	rceps(i)	error: rceps: i is not a real number
+-e	rceps(inf)	error: rceps: inf is not a real number
+-e	rceps(-inf)	error: rceps: -inf is not a real number
+-e	rceps(undefined)	error: rceps: undefined is not a real number
+-e	rceps(10^20)	[46.051701859880913680359829093687]
+-e	rceps(10^(-20))	[-46.051701859880913680359829093687]
+-e	rceps(x)	error: rceps: x is not a real number
+-e	rceps([])	[]
+-e	rceps([1, 2])	[0.54930614433405484569762261846126, 0.54930614433405484569762261846126]
+-e	rceps("text")	error: rceps: "text" is not a real number
+-e	rceps(true)	error: rceps: true is not a real number
+-e	rceps(-7/3)	[0.84729786038720361371010750652065]
+-e	rceps(0.5)	[-0.69314718055994530941723212145818]
+-e	czt(0)	[0]
+-e	czt(1)	[1]
+-e	czt(-1)	[-1]
+-e	czt(1/2)	[0.5]
+-e	czt(2)	[2]
+-e	czt(i)	[i]
+-e	czt(inf)	error: czt: inf is no number
+-e	czt(-inf)	error: czt: -inf is no number
+-e	czt(undefined)	error: czt: undefined is no number
+-e	czt(10^20)	[100000000000000000000]
+-e	czt(10^(-20))	[1e-20]
+-e	czt(x)	error: czt: x is no number
+-e	czt([])	[]
+-e	czt([1, 2])	[3, -1]
+-e	czt("text")	error: czt: "text" is no number
+-e	czt(true)	error: czt: true is no number
+-e	czt(-7/3)	[-2.3333333333333333333333333333333]
+-e	czt(0.5)	[0.5]
+-e	dftmtx(0)	error: the size must be a whole number from 1 to 256, not 0
+-e	dftmtx(1)	[[1]]
+-e	dftmtx(-1)	error: the size must be a whole number from 1 to 256, not -1
+-e	dftmtx(1/2)	error: the size must be a whole number from 1 to 256, not 1/2
+-e	dftmtx(2)	[[1, 1], [1, -1]]
+-e	dftmtx(i)	error: the size must be a whole number from 1 to 256, not i
+-e	dftmtx(inf)	error: the size must be a whole number from 1 to 256, not inf
+-e	dftmtx(-inf)	error: the size must be a whole number from 1 to 256, not -inf
+-e	dftmtx(undefined)	error: the size must be a whole number from 1 to 256, not undefined
+-e	dftmtx(10^20)	error: the size must be a whole number from 1 to 256, not 100000000000000000000
+-e	dftmtx(10^(-20))	error: the size must be a whole number from 1 to 256, not 1/100000000000000000000
+-e	dftmtx(x)	error: the size must be a whole number from 1 to 256, not x
+-e	dftmtx([])	error: the size must be a whole number from 1 to 256, not []
+-e	dftmtx([1, 2])	error: the size must be a whole number from 1 to 256, not [1, 2]
+-e	dftmtx("text")	error: the size must be a whole number from 1 to 256, not "text"
+-e	dftmtx(true)	error: the size must be a whole number from 1 to 256, not true
+-e	dftmtx(-7/3)	error: the size must be a whole number from 1 to 256, not -7/3
+-e	dftmtx(0.5)	error: the size must be a whole number from 1 to 256, not 1/2
+-e	envelope(0)	[[0], [0]]
+-e	envelope(1)	[[1], [1]]
+-e	envelope(-1)	[[-1], [-1]]
+-e	envelope(1/2)	[[0.5], [0.5]]
+-e	envelope(2)	[[2], [2]]
+-e	envelope(i)	error: envelope: i is not a real number
+-e	envelope(inf)	error: envelope: inf is not a real number
+-e	envelope(-inf)	error: envelope: -inf is not a real number
+-e	envelope(undefined)	error: envelope: undefined is not a real number
+-e	envelope(10^20)	[[100000000000000000000], [100000000000000000000]]
+-e	envelope(10^(-20))	[[1e-20], [1e-20]]
+-e	envelope(x)	error: envelope: x is not a real number
+-e	envelope([])	error: envelope needs values
+-e	envelope([1, 2])	[[2, 2], [1, 1]]
+-e	envelope("text")	error: envelope: "text" is not a real number
+-e	envelope(true)	error: envelope: true is not a real number
+-e	envelope(-7/3)	[[-2.3333333333333333333333333333333], [-2.3333333333333333333333333333333]]
+-e	envelope(0.5)	[[0.5], [0.5]]
+-e	findpeaks(0)	[[], []]
+-e	findpeaks(1)	[[], []]
+-e	findpeaks(-1)	[[], []]
+-e	findpeaks(1/2)	[[], []]
+-e	findpeaks(2)	[[], []]
+-e	findpeaks(i)	error: findpeaks: i is not a real number
+-e	findpeaks(inf)	error: findpeaks: inf is not a real number
+-e	findpeaks(-inf)	error: findpeaks: -inf is not a real number
+-e	findpeaks(undefined)	error: findpeaks: undefined is not a real number
+-e	findpeaks(10^20)	[[], []]
+-e	findpeaks(10^(-20))	[[], []]
+-e	findpeaks(x)	error: findpeaks: x is not a real number
+-e	findpeaks([])	[[], []]
+-e	findpeaks([1, 2])	[[], []]
+-e	findpeaks("text")	error: findpeaks: "text" is not a real number
+-e	findpeaks(true)	error: findpeaks: true is not a real number
+-e	findpeaks(-7/3)	[[], []]
+-e	findpeaks(0.5)	[[], []]
+-e	medfilt1(0)	[0]
+-e	medfilt1(1)	[0]
+-e	medfilt1(-1)	[0]
+-e	medfilt1(1/2)	[0]
+-e	medfilt1(2)	[0]
+-e	medfilt1(i)	error: medfilt1: i is not a real number
+-e	medfilt1(inf)	error: medfilt1: inf is not a real number
+-e	medfilt1(-inf)	error: medfilt1: -inf is not a real number
+-e	medfilt1(undefined)	error: medfilt1: undefined is not a real number
+-e	medfilt1(10^20)	[0]
+-e	medfilt1(10^(-20))	[0]
+-e	medfilt1(x)	error: medfilt1: x is not a real number
+-e	medfilt1([])	[]
+-e	medfilt1([1, 2])	[1, 1]
+-e	medfilt1("text")	error: medfilt1: "text" is not a real number
+-e	medfilt1(true)	error: medfilt1: true is not a real number
+-e	medfilt1(-7/3)	[0]
+-e	medfilt1(0.5)	[0]
+-e	xcov(0)	[0]
+-e	xcov(1)	[0]
+-e	xcov(-1)	[0]
+-e	xcov(1/2)	[0]
+-e	xcov(2)	[0]
+-e	xcov(i)	error: xcov: i is not a real number
+-e	xcov(inf)	error: xcov: inf is not a real number
+-e	xcov(-inf)	error: xcov: -inf is not a real number
+-e	xcov(undefined)	error: xcov: undefined is not a real number
+-e	xcov(10^20)	[0]
+-e	xcov(10^(-20))	[0]
+-e	xcov(x)	error: xcov: x is not a real number
+-e	xcov([])	[]
+-e	xcov([1, 2])	[-0.25, 0.5, -0.25]
+-e	xcov("text")	error: xcov: "text" is not a real number
+-e	xcov(true)	error: xcov: true is not a real number
+-e	xcov(-7/3)	[0]
+-e	xcov(0.5)	[0]
+-e	levinson(0)	error: levinson: the autocorrelations r(0), ..., r(p) are needed, and r(0) is not zero
+-e	levinson(1)	[[1], 1, []]
+-e	levinson(-1)	[[1], -1, []]
+-e	levinson(1/2)	[[1], 0.5, []]
+-e	levinson(2)	[[1], 2, []]
+-e	levinson(i)	error: levinson: i is not a real number
+-e	levinson(inf)	error: levinson: inf is not a real number
+-e	levinson(-inf)	error: levinson: -inf is not a real number
+-e	levinson(undefined)	error: levinson: undefined is not a real number
+-e	levinson(10^20)	[[1], 100000000000000000000, []]
+-e	levinson(10^(-20))	[[1], 1e-20, []]
+-e	levinson(x)	error: levinson: x is not a real number
+-e	levinson([])	error: levinson: the autocorrelations r(0), ..., r(p) are needed, and r(0) is not zero
+-e	levinson([1, 2])	[[1, -2], -3, [-2]]
+-e	levinson("text")	error: levinson: "text" is not a real number
+-e	levinson(true)	error: levinson: true is not a real number
+-e	levinson(-7/3)	[[1], -2.3333333333333333333333333333333, []]
+-e	levinson(0.5)	[[1], 0.5, []]
+-e	poly2rc(0)	[]
+-e	poly2rc(1)	[]
+-e	poly2rc(-1)	[]
+-e	poly2rc(1/2)	[]
+-e	poly2rc(2)	[]
+-e	poly2rc(i)	error: poly2rc: i is not a real number
+-e	poly2rc(inf)	error: poly2rc: inf is not a real number
+-e	poly2rc(-inf)	error: poly2rc: -inf is not a real number
+-e	poly2rc(undefined)	error: poly2rc: undefined is not a real number
+-e	poly2rc(10^20)	[]
+-e	poly2rc(10^(-20))	[]
+-e	poly2rc(x)	error: poly2rc: x is not a real number
+-e	poly2rc([])	[]
+-e	poly2rc([1, 2])	[2]
+-e	poly2rc("text")	error: poly2rc: "text" is not a real number
+-e	poly2rc(true)	error: poly2rc: true is not a real number
+-e	poly2rc(-7/3)	[]
+-e	poly2rc(0.5)	[]
+-e	rc2poly(0)	[1, 0]
+-e	rc2poly(1)	[1, 1]
+-e	rc2poly(-1)	[1, -1]
+-e	rc2poly(1/2)	[1, 0.5]
+-e	rc2poly(2)	[1, 2]
+-e	rc2poly(i)	error: rc2poly: i is not a real number
+-e	rc2poly(inf)	error: rc2poly: inf is not a real number
+-e	rc2poly(-inf)	error: rc2poly: -inf is not a real number
+-e	rc2poly(undefined)	error: rc2poly: undefined is not a real number
+-e	rc2poly(10^20)	[1, 100000000000000000000]
+-e	rc2poly(10^(-20))	[1, 1e-20]
+-e	rc2poly(x)	error: rc2poly: x is not a real number
+-e	rc2poly([])	[1]
+-e	rc2poly([1, 2])	[1, 3, 2]
+-e	rc2poly("text")	error: rc2poly: "text" is not a real number
+-e	rc2poly(true)	error: rc2poly: true is not a real number
+-e	rc2poly(-7/3)	[1, -2.3333333333333333333333333333333]
+-e	rc2poly(0.5)	[1, 0.5]
+-e	sawtooth(0)	-1
+-e	sawtooth(1)	-0.68169011381620932846223247325497
+-e	sawtooth(-1)	0.68169011381620932846223247325497
+-e	sawtooth(1/2)	-0.84084505690810466423111623662749
+-e	sawtooth(2)	-0.36338022763241865692446494650994
+-e	sawtooth(i)	error: sawtooth: i is not a real number
+-e	sawtooth(inf)	error: sawtooth: inf is not a real number
+-e	sawtooth(-inf)	error: sawtooth: -inf is not a real number
+-e	sawtooth(undefined)	error: sawtooth: undefined is not a real number
+-e	sawtooth(10^20)	0.77675267450287240689192914809129
+-e	sawtooth(10^(-20))	-0.99999999999999999999681690113816
+-e	sawtooth(x)	error: sawtooth: x is not a real number
+-e	sawtooth([])	[]
+-e	sawtooth([1, 2])	[-0.68169011381620932846223247325497, -0.36338022763241865692446494650994]
+-e	sawtooth("text")	error: sawtooth: "text" is not a real number
+-e	sawtooth(true)	error: sawtooth: true is not a real number
+-e	sawtooth(-7/3)	0.25727693223782176641187577092827
+-e	sawtooth(0.5)	-0.84084505690810466423111623662749
+-e	rectpuls(0)	1
+-e	rectpuls(1)	0
+-e	rectpuls(-1)	0
+-e	rectpuls(1/2)	0
+-e	rectpuls(2)	0
+-e	rectpuls(i)	error: rectpuls: i is not a real number
+-e	rectpuls(inf)	error: rectpuls: inf is not a real number
+-e	rectpuls(-inf)	error: rectpuls: -inf is not a real number
+-e	rectpuls(undefined)	error: rectpuls: undefined is not a real number
+-e	rectpuls(10^20)	0
+-e	rectpuls(10^(-20))	1
+-e	rectpuls(x)	error: rectpuls: x is not a real number
+-e	rectpuls([])	[]
+-e	rectpuls([1, 2])	[0, 0]
+-e	rectpuls("text")	error: rectpuls: "text" is not a real number
+-e	rectpuls(true)	error: rectpuls: true is not a real number
+-e	rectpuls(-7/3)	0
+-e	rectpuls(0.5)	0
+-e	tripuls(0)	1
+-e	tripuls(1)	0
+-e	tripuls(-1)	0
+-e	tripuls(1/2)	0
+-e	tripuls(2)	0
+-e	tripuls(i)	error: tripuls: i is not a real number
+-e	tripuls(inf)	error: tripuls: inf is not a real number
+-e	tripuls(-inf)	error: tripuls: -inf is not a real number
+-e	tripuls(undefined)	error: tripuls: undefined is not a real number
+-e	tripuls(10^20)	0
+-e	tripuls(10^(-20))	0.99999999999999999998
+-e	tripuls(x)	error: tripuls: x is not a real number
+-e	tripuls([])	[]
+-e	tripuls([1, 2])	[0, 0]
+-e	tripuls("text")	error: tripuls: "text" is not a real number
+-e	tripuls(true)	error: tripuls: true is not a real number
+-e	tripuls(-7/3)	0
+-e	tripuls(0.5)	0
+-e	zplane(0)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(1)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(-1)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(1/2)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(2)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(i)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(inf)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(-inf)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(undefined)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(10^20)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(10^(-20))	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(x)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane([])	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane([1, 2])	 1.827 │                                    ⡄|       │                                    ⡇|       │                                    ⡇|       │                                 ⣀⣠⠤⡧⢤⣀⡀|       │                              ⣠⠖⠋⠁  ⡇  ⠈⠑⠦⡀|       │                            ⢠⠞⠁     ⡇     ⠈⢢|       │                           ⢀⡏       ⡇       ⢣|       │                  ⢀⡀       ⢸        ⠇       ⠸⡄|     0 │────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⢹⠋⠉⠁────────────────|       │                           ⠈⣇       ⡇       ⡜|       │                            ⠘⢦⡀     ⡇     ⢀⠜|       │                              ⠙⠦⣄⡀  ⡇  ⢀⡠⠖⠁|       │                                 ⠉⠙⠒⡗⠚⠉⠁|       │                                    ⡇|       │                                    ⡇|-1.827 │                                    ⠇|       └────────────────────────────────────────────────────────────────|        -4.154                                                     3.154|no poles and 1 zero (circles)
+-e	zplane("text")	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(true)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(-7/3)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	zplane(0.5)	 1.218 │                                ⡄|       │                           ⣀⣠⠤⠤⠤⡧⠤⠤⣄⣀|       │                       ⢀⡠⠒⠉⠁    ⡇   ⠈⠉⠒⢄⡀|       │                     ⢀⡴⠋        ⡇       ⠙⢦⡀|       │                    ⢠⠋          ⡇         ⠙⡄|       │                   ⢠⠃           ⡇          ⠘⡄|       │                   ⡎            ⡇           ⢱|       │                  ⢠⠃            ⠇           ⠘⡄|     0 │────────────────⠈⠉⠙⡍⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢩⠋⠉⠁────────────────|       │                   ⢇            ⡇           ⡸|       │                   ⠘⡄           ⡇          ⢠⠃|       │                    ⠘⣄          ⡇         ⣠⠃|       │                     ⠈⠳⣄        ⡇       ⣠⠞⠁|       │                       ⠈⠑⠤⣀⡀    ⡇   ⢀⣀⠤⠊⠁|       │                           ⠉⠙⠒⠒⠒⡗⠒⠒⠋⠉|-1.218 │                                ⠇|       └────────────────────────────────────────────────────────────────|        -2.436                                                     2.436|no poles and 0 zeros (circles)
+-e	plot4d(0)	error: plot4d draws a function of a complex number, and 0 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(1)	error: plot4d draws a function of a complex number, and 1 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(-1)	error: plot4d draws a function of a complex number, and -1 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(1/2)	error: plot4d draws a function of a complex number, and 1/2 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(2)	error: plot4d draws a function of a complex number, and 2 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(i)	error: plot4d draws a function of a complex number, and i has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(inf)	error: plot4d draws a function of a complex number, and inf has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(-inf)	error: plot4d draws a function of a complex number, and -inf has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(undefined)	error: plot4d draws a function of a complex number, and undefined has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(10^20)	error: plot4d draws a function of a complex number, and 100000000000000000000 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(10^(-20))	error: plot4d draws a function of a complex number, and 1/100000000000000000000 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(x)	                                @@@@|                                @@@@|                                @@@@|                                %%%%|                                %%%%|                                ####|                                ####|                                ####|                                ****|                                ****|                                ****|                                ++++|                                ++++|                                ====|                                ====|                                ====|                                ----|                                ----|                                ----|                                ::::|                                ::::|                                ....|                                ....|                                ....|plot4d of x: frame 9 of 16, where the real part of f(z) is from 0 to 0.25; the characters .:-=+*#%@ are the colours, the least value first|the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real part of f(z) from -2 to 2; the colours: the imaginary part of f(z) from -2 to 2|1536 voxels of the box of 64 x 24 x 16 belong to the surface (6.25 %)|save_jxl("plot4d.jxl", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is
+-e	plot4d([])	error: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d([1, 2])	error: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d("text")	                                @@@@|                                @@@@|                                @@@@|                                %%%%|                                %%%%|                                ####|                                ####|                                ####|                                ****|                                ****|                                ****|                                ++++|                                ++++|                                ====|                                ====|                                ====|                                ----|                                ----|                                ----|                                ::::|                                ::::|                                ....|                                ....|                                ....|plot4d of text: frame 9 of 16, where the real part of f(z) is from 0 to 0.25; the characters .:-=+*#%@ are the colours, the least value first|the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real part of f(z) from -2 to 2; the colours: the imaginary part of f(z) from -2 to 2|1536 voxels of the box of 64 x 24 x 16 belong to the surface (6.25 %)|save_jxl("plot4d.jxl", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is
+-e	plot4d(true)	error: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(-7/3)	error: plot4d draws a function of a complex number, and -7/3 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	plot4d(0.5)	error: plot4d draws a function of a complex number, and 1/2 has no name in it: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
+-e	save_png_fast(0)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(1)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(-1)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(1/2)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(2)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(i)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(inf)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(-inf)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(undefined)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(10^20)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(10^(-20))	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(x)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast([])	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast([1, 2])	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast("text")	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(true)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(-7/3)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_png_fast(0.5)	error: save_png_fast("name", drawing, choices): save_png_fast("walk.png", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_png_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(0)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(1)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(-1)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(1/2)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(2)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(i)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(inf)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(-inf)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(undefined)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(10^20)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(10^(-20))	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(x)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast([])	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast([1, 2])	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast("text")	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(true)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(-7/3)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	save_jxl_fast(0.5)	error: save_jxl_fast("name", drawing, choices): save_jxl_fast("walk.jxl", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot, zplane, plot4d; save_jxl_fast(drawing) takes the name of the drawing for the file
+-e	lla2ecef(0)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(1)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(-1)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(1/2)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(2)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(i)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(inf)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(-inf)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(undefined)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(10^20)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(10^(-20))	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(x)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef([])	[]
+-e	lla2ecef([1, 2])	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef("text")	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(true)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(-7/3)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	lla2ecef(0.5)	error: lla2ecef is written lla2ecef([lat, lon, height][, ellipsoid]) or rows of them
+-e	ecef2lla(0)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(1)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(-1)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(1/2)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(2)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(i)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(inf)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(-inf)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(undefined)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(10^20)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(10^(-20))	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(x)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla([])	[]
+-e	ecef2lla([1, 2])	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla("text")	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(true)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(-7/3)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	ecef2lla(0.5)	error: ecef2lla is written ecef2lla([x, y, z][, ellipsoid]) or rows of them
+-e	referenceellipsoid(0)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 0
+-e	referenceellipsoid(1)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 1
+-e	referenceellipsoid(-1)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -1
+-e	referenceellipsoid(1/2)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 1/2
+-e	referenceellipsoid(2)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 2
+-e	referenceellipsoid(i)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not i
+-e	referenceellipsoid(inf)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not inf
+-e	referenceellipsoid(-inf)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -inf
+-e	referenceellipsoid(undefined)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not undefined
+-e	referenceellipsoid(10^20)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 100000000000000000000
+-e	referenceellipsoid(10^(-20))	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 1/100000000000000000000
+-e	referenceellipsoid(x)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not x
+-e	referenceellipsoid([])	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not []
+-e	referenceellipsoid([1, 2])	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not [1, 2]
+-e	referenceellipsoid("text")	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not "text"
+-e	referenceellipsoid(true)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not true
+-e	referenceellipsoid(-7/3)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -7/3
+-e	referenceellipsoid(0.5)	error: referenceellipsoid: the names are wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 1/2
+-e	wgs84ellipsoid(0)	error: wgs84ellipsoid: 0 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(1)	error: wgs84ellipsoid: 1 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(-1)	error: wgs84ellipsoid: -1 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(1/2)	error: wgs84ellipsoid: 1/2 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(2)	error: wgs84ellipsoid: 2 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(i)	error: wgs84ellipsoid: i is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(inf)	error: wgs84ellipsoid: inf is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(-inf)	error: wgs84ellipsoid: -inf is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(undefined)	error: wgs84ellipsoid: undefined is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(10^20)	error: wgs84ellipsoid: 100000000000000000000 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(10^(-20))	error: wgs84ellipsoid: 1/100000000000000000000 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(x)	error: wgs84ellipsoid: x is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid([])	error: wgs84ellipsoid: [] is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid([1, 2])	error: wgs84ellipsoid: [1, 2] is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid("text")	error: wgs84ellipsoid: "text" is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(true)	error: wgs84ellipsoid: true is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(-7/3)	error: wgs84ellipsoid: -7/3 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(0.5)	error: wgs84ellipsoid: 1/2 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	referencesphere(0)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(1)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-1)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(1/2)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(2)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(i)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(inf)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-inf)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(undefined)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(10^20)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(10^(-20))	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(x)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere([])	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere([1, 2])	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere("text")	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(true)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-7/3)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(0.5)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	spheroid(0)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 0
+-e	spheroid(1)	[["semimajoraxis", 1], ["semiminoraxis", 1], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 1], ["surfacearea", 12.566370614359172953850573533118], ["volume", 4.1887902047863909846168578443727]]
+-e	spheroid(-1)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -1
+-e	spheroid(1/2)	[["semimajoraxis", 0.5], ["semiminoraxis", 0.5], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 0.5], ["surfacearea", 3.1415926535897932384626433832795], ["volume", 0.52359877559829887307710723054658]]
+-e	spheroid(2)	[["semimajoraxis", 2], ["semiminoraxis", 2], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 2], ["surfacearea", 50.265482457436691815402294132472], ["volume", 33.510321638291127876934862754981]]
+-e	spheroid(i)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not i
+-e	spheroid(inf)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not inf
+-e	spheroid(-inf)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -inf
+-e	spheroid(undefined)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not undefined
+-e	spheroid(10^20)	[["semimajoraxis", 100000000000000000000], ["semiminoraxis", 100000000000000000000], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 100000000000000000000], ["surfacearea", 1.2566370614359172953850573533118e41], ["volume", 4.1887902047863909846168578443727e60]]
+-e	spheroid(10^(-20))	[["semimajoraxis", 1e-20], ["semiminoraxis", 1e-20], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 1e-20], ["surfacearea", 1.2566370614359172953850573533118e-39], ["volume", 4.1887902047863909846168578443727e-60]]
+-e	spheroid(x)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not x
+-e	spheroid([])	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not []
+-e	spheroid([1, 2])	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not [1, 2]
+-e	spheroid("text")	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not "text"
+-e	spheroid(true)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not true
+-e	spheroid(-7/3)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -7/3
+-e	spheroid(0.5)	[["semimajoraxis", 0.5], ["semiminoraxis", 0.5], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 0.5], ["surfacearea", 3.1415926535897932384626433832795], ["volume", 0.52359877559829887307710723054658]]
+-e	axes2ecc(0)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(1)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-1)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(1/2)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(2)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(i)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(inf)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-inf)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(undefined)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(10^20)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(10^(-20))	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(x)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc([])	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc([1, 2])	i*sqrt(3)
+-e	axes2ecc("text")	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(true)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-7/3)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(0.5)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	majaxis(0)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(1)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-1)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(1/2)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(2)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(i)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(inf)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-inf)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(undefined)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(10^20)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(10^(-20))	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(x)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis([])	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis([1, 2])	-i*sqrt(3)/3
+-e	majaxis("text")	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(true)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-7/3)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(0.5)	error: majaxis is written majaxis(b, eccentricity)
+-e	minaxis(0)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(1)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-1)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(1/2)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(2)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(i)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(inf)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-inf)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(undefined)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(10^20)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(10^(-20))	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(x)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis([])	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis([1, 2])	i*sqrt(3)
+-e	minaxis("text")	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(true)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-7/3)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(0.5)	error: minaxis is written minaxis(a, eccentricity)
+-e	ecc2flat(0)	0
+-e	ecc2flat(1)	1
+-e	ecc2flat(-1)	1
+-e	ecc2flat(1/2)	1 - sqrt(3)/2
+-e	ecc2flat(2)	1 - i*sqrt(3)
+-e	ecc2flat(i)	1 - sqrt(2)
+-e	ecc2flat(inf)	-i*inf
+-e	ecc2flat(-inf)	-i*inf
+-e	ecc2flat(undefined)	undefined
+-e	ecc2flat(10^20)	1 - 3i*sqrt(1111111111111111111111111111111111111111)
+-e	ecc2flat(10^(-20))	1 - 3sqrt(1111111111111111111111111111111111111111)/100000000000000000000
+-e	ecc2flat(x)	1 - sqrt(1 - x^2)
+-e	ecc2flat([])	1 - sqrt(1 - ([])^2)
+-e	ecc2flat([1, 2])	1 - i*sqrt(3)
+-e	ecc2flat("text")	1 - sqrt(1 - "text"^2)
+-e	ecc2flat(true)	1 - sqrt(1 - (true)^2)
+-e	ecc2flat(-7/3)	1 - 2i*sqrt(10)/3
+-e	ecc2flat(0.5)	0.13397459621556135323627682924706
+-e	flat2ecc(0)	0
+-e	flat2ecc(1)	1
+-e	flat2ecc(-1)	i*sqrt(3)
+-e	flat2ecc(1/2)	sqrt(3)/2
+-e	flat2ecc(2)	0
+-e	flat2ecc(i)	sqrt(1 + 2i)
+-e	flat2ecc(inf)	undefined
+-e	flat2ecc(-inf)	i*inf
+-e	flat2ecc(undefined)	undefined
+-e	flat2ecc(10^20)	10000000000i*sqrt(99999999999999999998)
+-e	flat2ecc(10^(-20))	sqrt(199999999999999999999)/100000000000000000000
+-e	flat2ecc(x)	sqrt(2x - x^2)
+-e	flat2ecc([])	sqrt(2*[] - ([])^2)
+-e	flat2ecc([1, 2])	sqrt(2*[1, 2] - ([1, 2])^2)
+-e	flat2ecc("text")	sqrt(2*"text" - "text"^2)
+-e	flat2ecc(true)	sqrt(2true - (true)^2)
+-e	flat2ecc(-7/3)	i*sqrt(91)/3
+-e	flat2ecc(0.5)	0.86602540378443864676372317075294
+-e	ecc2n(0)	0
+-e	ecc2n(1)	1
+-e	ecc2n(-1)	1
+-e	ecc2n(1/2)	7 - 4sqrt(3)
+-e	ecc2n(2)	-1/2 - i*sqrt(3)/2
+-e	ecc2n(i)	2sqrt(2) - 3
+-e	ecc2n(inf)	-i*inf/(i*inf)
+-e	ecc2n(-inf)	-i*inf/(i*inf)
+-e	ecc2n(undefined)	undefined
+-e	ecc2n(10^20)	(1 - 3i*sqrt(1111111111111111111111111111111111111111))/(1 + 3i*sqrt(1111111111111111111111111111111111111111))
+-e	ecc2n(10^(-20))	19999999999999999999999999999999999999999 - 600000000000000000000sqrt(1111111111111111111111111111111111111111)
+-e	ecc2n(x)	2/x^2 - 2sqrt(1 - x^2)/x^2 - 1
+-e	ecc2n([])	(1 - sqrt(1 - ([])^2))/(1 + sqrt(1 - ([])^2))
+-e	ecc2n([1, 2])	-1/2 - i*sqrt(3)/2
+-e	ecc2n("text")	2/"text"^2 - 2sqrt(1 - "text"^2)/"text"^2 - 1
+-e	ecc2n(true)	(1 - sqrt(1 - (true)^2))/(1 + sqrt(1 - (true)^2))
+-e	ecc2n(-7/3)	-31/49 - 12i*sqrt(10)/49
+-e	ecc2n(0.5)	0.071796769724490825890214633976511
+-e	n2ecc(0)	0
+-e	n2ecc(1)	1
+-e	n2ecc(-1)	ComplexInfinity
+-e	n2ecc(1/2)	2sqrt(2)/3
+-e	n2ecc(2)	2sqrt(2)/3
+-e	n2ecc(i)	(-1)^(1/4) - i*(-1)^(1/4)
+-e	n2ecc(inf)	undefined
+-e	n2ecc(-inf)	undefined
+-e	n2ecc(undefined)	undefined
+-e	n2ecc(10^20)	20000000000/100000000000000000001
+-e	n2ecc(10^(-20))	20000000000/100000000000000000001
+-e	n2ecc(x)	2sqrt(x)/(x + 1)
+-e	n2ecc([])	2sqrt([])/(1 + [])
+-e	n2ecc([1, 2])	2sqrt([1, 2])/(1 + [1, 2])
+-e	n2ecc("text")	2sqrt("text")/("text" + 1)
+-e	n2ecc(true)	2sqrt(true)/(1 + true)
+-e	n2ecc(-7/3)	-i*sqrt(21)/2
+-e	n2ecc(0.5)	0.94280904158206336586779248280647
+-e	km2nm(0)	0
+-e	km2nm(1)	250/463
+-e	km2nm(-1)	-250/463
+-e	km2nm(1/2)	125/463
+-e	km2nm(2)	500/463
+-e	km2nm(i)	250i/463
+-e	km2nm(inf)	inf
+-e	km2nm(-inf)	-inf
+-e	km2nm(undefined)	undefined

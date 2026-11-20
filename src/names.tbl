@@ -1070,7 +1070,188 @@ diric||2|2|diric(x, n): Dirichlet's kernel sin(n*x/2)/(n*sin(x/2))
 zplane||1|*|zplane(b, a): the zeros (circles) and the poles (crosses) of a sampled filter, with the unit circle
 # a function of a complex number as a shape of four dimensions: frames are the third, colours the fourth
 plot4d||1|*|plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b as a shape of four dimensions: the real and the imaginary part of z and of f(z) lie on the width, the height, the frames and the colours of a picture (arg_real = width, arg_imag = height, val_real = frame, val_imag = color unless chosen otherwise: any of the four on any side); save_jxl("name.jxl", plot4d(sin(z))) saves the frames, whose alpha says where the shape is; plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i, the name z may be left out, f may be a text; chosen with name = value: width, height, frames, colors (512 each), palette (a name or colours), range_real = [least, greatest], range_imag, fill = surface | below | above, thickness, rotate = [yaw, pitch, roll] or rotate(yaw, pitch, roll) (degrees that the body is turned), bits, effort, quality, distance, fps (16), and the words gray, reverse and normalize (every frame stretched on its own: what it holds fills the picture and takes the whole palette); as a statement: the frame in the middle as characters
+view4d|plot4dview look4d snapshot4d|1|*|view4d(f, z, a, b): the shape of plot4d seen from outside as one picture, as an eye in space sees its box of voxels: what is hidden is left out, the surface is lighter where it faces the light, the frames of plot4d stand upright; with the usual sides the real part of f(z) stands as heights over the plane of z in the colours of the imaginary part. save_png("name.png", view4d(sin(z))) saves it (frames = n: the eye goes around). The eye is found by the program unless azimuth, elevation or viewpoint say where it stands (roll, zoom, perspective, fog, views, stereo as for the drawings of space); voxels = n or [across, upwards, frames] sets the cubes of the body, and every choice of the shape of plot4d is taken: arg_real, arg_imag, val_real, val_imag, fill, thickness, range_real, range_imag, rotate, normalize, colors, palette; as a statement it is a picture of characters
 # quick looks: the commands that save, with small pictures that are packed fast
 save_png_fast|savepngfast|1|*|save_png_fast("name.png", drawing, choices): save_png for a quick look: 256 pixels wide unless a width is chosen (plot4d: 256 x 256 pixels, 256 frames, 256 colours) and packed fast (level = 1); every choice of save_png may be given
 save_jxl_fast|savejxlfast|1|*|save_jxl_fast("name.jxl", drawing, choices): save_jxl for a quick look: 256 pixels wide (plot4d: 256 x 256 pixels, 256 frames, 256 colours), lossy at the distance 1 unless lossless, quality or distance is chosen (alpha stays exact), effort = 3; every choice of save_jxl may be given
 save_fast|savefast|2|*|save_fast("name.png", drawing, choices) or save_fast("name.jxl", ...): save_png_fast or save_jxl_fast by the end of the name
+# the earth: ways on a sphere and on an ellipsoid. Angles are degrees unless "radians" is said last; an ellipsoid is [half axis, eccentricity], the radius of a sphere or a name like "wgs84" (metres); without one, lengths are arcs of the sphere in degrees
+!distance|2|8|distance(p, q): the distance of two points; distance(lat1, lon1, lat2, lon2[, ellipsoid][, "radians"]): the length of the shortest way between two places of the earth, as an arc of the sphere in degrees, or with an ellipsoid ([half axis, eccentricity], a radius, or a name like "wgs84") along its geodesic in the unit of the half axis; distance("rh", ...): along the line of one course
+azimuth||4|8|azimuth(lat1, lon1, lat2, lon2[, ellipsoid][, "radians"]): the course at the first place of the shortest way to the second one, from north over east, from 0 to 360 without 360; azimuth("rh", ...): the one course that leads there; at a pole it is counted from the meridian of the longitude given
+reckon||4|8|reckon(lat, lon, length, course[, ellipsoid][, "radians"]): [lat, lon] of the place a length away along a course on the shortest way (a great circle, on an ellipsoid a geodesic); reckon("rh", ...): with the course kept
+haversine||4|6|haversine(lat1, lon1, lat2, lon2[, radius][, "radians"]): the length of the great circle between two places on a sphere, in km on the earth of 6371 km unless a radius is given
+geoddistance||4|6|geoddistance(lat1, lon1, lat2, lon2[, ellipsoid]): [length, course at the first place, course at the second place] of the geodesic between two places, on WGS84 in metres unless an ellipsoid is given
+geodreckon||4|6|geodreckon(lat, lon, length, course[, ellipsoid]): [lat, lon, course there] a length along the geodesic that starts with a course, on WGS84 in metres unless an ellipsoid is given
+geodarea||2|4|geodarea([latitudes], [longitudes][, ellipsoid]): [area, length of the sides] of the polygon whose sides are geodesics, on WGS84 in metres unless an ellipsoid is given; the area is that of the part which is not more than half of the surface
+areaint||2|4|areaint([latitudes], [longitudes][, ellipsoid][, "radians"]): the area inside a polygon whose sides are shortest ways, as a share of the whole surface; with an ellipsoid in the square of its unit
+areaquad||4|6|areaquad(lat1, lon1, lat2, lon2[, ellipsoid][, "radians"]): the area between two parallels and two meridians, as a share of the whole surface; with an ellipsoid in the square of its unit
+departure||3|5|departure(lon1, lon2, lat[, ellipsoid][, "radians"]): the length along the parallel of a latitude between two meridians, by the difference of the longitudes as they are given
+antipode||2|3|antipode(lat, lon[, "radians"]): [lat, lon] of the place on the other side of the earth
+meanm||2|4|meanm([latitudes], [longitudes][, ellipsoid][, "radians"]): [lat, lon] of the middle of places: the direction of the sum of their directions from the middle of the earth
+track2||4|8|track2(lat1, lon1, lat2, lon2[, ellipsoid][, "radians"][, places]): [[latitudes], [longitudes]] of places in equal steps along the shortest way between two places, 100 unless given after "degrees" or "radians"; track2("rh", ...): along the line of one course
+track1||3|8|track1(lat, lon, course[, length or [from, to]][, ellipsoid][, "radians"][, places]): [[latitudes], [longitudes]] along the way that starts with a course, once round the sphere unless a length is given; track1("rh", lat, lon, course, length): with the course kept
+gcwaypts||4|5|gcwaypts(lat1, lon1, lat2, lon2[, legs]): [[latitudes], [longitudes]] of the ends of equal legs of the great circle between two places (10 legs unless given)
+scircle1||3|8|scircle1(lat, lon, radius[, [course1, course2]][, ellipsoid][, "radians"][, places]): [[latitudes], [longitudes]] of the circle of places that are a radius away from a middle (100 places; an arc between two courses)
+scircle2||4|9|scircle2(lat, lon, lat2, lon2[, [course1, course2]][, ellipsoid][, "radians"][, places]): the circle around the first place through the second one
+legs||2|3|legs([latitudes], [longitudes][, "rh" | "gc"]): [[courses], [lengths in nautical miles]] of the legs between places, along lines of one course unless "gc" is said
+gc2sc||3|4|gc2sc(lat, lon, course[, "radians"]): [lat, lon, 90]: the great circle through a place with a course as the circle of 90 degrees around its pole
+gcxgc||6|7|gcxgc(lat1, lon1, course1, lat2, lon2, course2[, "radians"]): [[lat, lat], [lon, lon]]: the two places where two great circles meet
+scxsc||6|7|scxsc(lat1, lon1, radius1, lat2, lon2, radius2[, "radians"]): [[lat, lat], [lon, lon]]: the two places where two circles on the sphere meet
+gcxsc||6|7|gcxsc(lat, lon, course, lat0, lon0, radius[, "radians"]): [[lat, lat], [lon, lon]]: where a great circle meets the circle of a radius around a place
+rhxrh||6|7|rhxrh(lat1, lon1, course1, lat2, lon2, course2[, "radians"]): [lat, lon] where two lines of one course meet
+interpm||3|5|interpm([latitudes], [longitudes], step[, "gc" | "rh"][, "radians"]): [[latitudes], [longitudes]] with places put in between so that no step of latitude or longitude is larger than given; in between along straight lines of latitude and longitude, great circles ("gc") or lines of one course ("rh")
+# the earth: places in space. geodetic = latitude, longitude and height above the ellipsoid (WGS84 in metres unless given); ecef = x, y, z from the middle of the earth; enu = east, north, up and ned = north, east, down at a place; aer = course, elevation and distance as seen from a place
+geodetic2ecef||3|5|geodetic2ecef(lat, lon, height[, ellipsoid][, "radians"]): [x, y, z] from the middle of the earth, on WGS84 in metres unless an ellipsoid is given
+ecef2geodetic||3|5|ecef2geodetic(x, y, z[, ellipsoid][, "radians"]): [lat, lon, height] above the ellipsoid
+lla2ecef||1|2|lla2ecef([lat, lon, height][, ellipsoid]): [x, y, z]; rows of places give rows
+ecef2lla||1|2|ecef2lla([x, y, z][, ellipsoid]): [lat, lon, height]; rows of places give rows
+geodetic2enu||6|8|geodetic2enu(lat, lon, height, lat0, lon0, height0[, ellipsoid][, "radians"]): [east, north, up] of a place as seen from the place lat0, lon0, height0
+enu2geodetic||6|8|enu2geodetic(east, north, up, lat0, lon0, height0[, ellipsoid][, "radians"]): [lat, lon, height]
+geodetic2ned||6|8|geodetic2ned(lat, lon, height, lat0, lon0, height0[, ellipsoid][, "radians"]): [north, east, down]
+ned2geodetic||6|8|ned2geodetic(north, east, down, lat0, lon0, height0[, ellipsoid][, "radians"]): [lat, lon, height]
+geodetic2aer||6|8|geodetic2aer(lat, lon, height, lat0, lon0, height0[, ellipsoid][, "radians"]): [course, elevation, distance] of a place as seen from another
+aer2geodetic||6|8|aer2geodetic(course, elevation, distance, lat0, lon0, height0[, ellipsoid][, "radians"]): [lat, lon, height]
+ecef2enu||6|8|ecef2enu(x, y, z, lat0, lon0, height0[, ellipsoid][, "radians"]): [east, north, up]
+enu2ecef||6|8|enu2ecef(east, north, up, lat0, lon0, height0[, ellipsoid][, "radians"]): [x, y, z]
+ecef2ned||6|8|ecef2ned(x, y, z, lat0, lon0, height0[, ellipsoid][, "radians"]): [north, east, down]
+ned2ecef||6|8|ned2ecef(north, east, down, lat0, lon0, height0[, ellipsoid][, "radians"]): [x, y, z]
+ecef2aer||6|8|ecef2aer(x, y, z, lat0, lon0, height0[, ellipsoid][, "radians"]): [course, elevation, distance]
+aer2ecef||6|8|aer2ecef(course, elevation, distance, lat0, lon0, height0[, ellipsoid][, "radians"]): [x, y, z]
+enu2aer||3|4|enu2aer(east, north, up[, "radians"]): [course, elevation, distance]
+aer2enu||3|4|aer2enu(course, elevation, distance[, "radians"]): [east, north, up]
+ned2aer||3|4|ned2aer(north, east, down[, "radians"]): [course, elevation, distance]
+aer2ned||3|4|aer2ned(course, elevation, distance[, "radians"]): [north, east, down]
+ecef2enuv||5|6|ecef2enuv(u, v, w, lat0, lon0[, "radians"]): a step in space as [east, north, up] at a place (turned, not moved)
+enu2ecefv||5|6|enu2ecefv(east, north, up, lat0, lon0[, "radians"]): a step east, north and up at a place as a step in space
+ecef2nedv||5|6|ecef2nedv(u, v, w, lat0, lon0[, "radians"]): a step in space as [north, east, down] at a place
+ned2ecefv||5|6|ned2ecefv(north, east, down, lat0, lon0[, "radians"]): a step north, east and down at a place as a step in space
+ecefoffset||6|8|ecefoffset(lat1, lon1, height1, lat2, lon2, height2[, ellipsoid][, "radians"]): [dx, dy, dz] in space from the first place to the second one
+elevation||6|8|elevation(lat1, lon1, height1, lat2, lon2, height2[, ellipsoid][, "radians"]): [elevation, distance, course] of the second place as seen from the first one, on GRS80 in metres unless an ellipsoid is given
+# the earth: ellipsoids, their radii and latitudes of other kinds
+referenceellipsoid||1|2|referenceellipsoid("name"[, "unit"]): [half axis, eccentricity] of an ellipsoid with a name, in metres or in the unit said: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth (WGS84), unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto
+wgs84ellipsoid||0|1|wgs84ellipsoid(["unit"]): [half axis, eccentricity] of WGS84, in metres or in the unit said
+referencesphere||1|2|referencesphere("name"[, "unit"]): the radius of a body that is taken as a sphere: earth (6371000 m), moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere
+meridianarc||2|4|meridianarc(lat1, lat2[, ellipsoid][, "radians"]): the length of the meridian from one latitude to another, on WGS84 in metres unless an ellipsoid is given
+meridianfwd||2|4|meridianfwd(lat, length[, ellipsoid][, "radians"]): the latitude a length to the north along the meridian
+spheroid||1|2|spheroid(ellipsoid): the facts of an ellipsoid as rows [name, value]: the half axes, the inverse of the flattening, the eccentricity, the flattening, the third flattening, the mean radius, the area and the volume; spheroid(ellipsoid, "name"): one of them
+axes2ecc||1|2|axes2ecc(a, b): the eccentricity sqrt(a^2 - b^2)/a of an ellipse with the half axes a and b
+majaxis||1|2|majaxis(b, e): the larger half axis for the smaller one and the eccentricity
+minaxis||1|2|minaxis(a, e): the smaller half axis for the larger one and the eccentricity
+ecc2flat||1|1|ecc2flat(e): the flattening 1 - sqrt(1 - e^2) for an eccentricity
+flat2ecc||1|1|flat2ecc(f): the eccentricity sqrt(2*f - f^2) for a flattening
+ecc2n||1|1|ecc2n(e): the third flattening (a - b)/(a + b) for an eccentricity
+n2ecc||1|1|n2ecc(n): the eccentricity for the third flattening
+rcurve||2|4|rcurve("parallel" | "meridian" | "transverse", ellipsoid, latitude[, "radians"]): the radius of the parallel of a latitude, of the meridian there, or of the surface across the meridian
+rsphere||2|7|rsphere(kind, ellipsoid): the radius of a sphere for an ellipsoid: "biaxial" (the mean of the half axes; "norm" last: their geometric mean), "triaxial" ((2a + b)/3), "eqavol" (the same volume), "authalic" (the same area), "rectifying" (the same length of the meridian), "curve" (the mean radius of the surface at a latitude, 45 degrees unless given); rsphere("euler", lat1, lon1, lat2, lon2, ellipsoid): the radius of the surface along the way between two places
+convertlat||4|5|convertlat(ellipsoid, latitude, "from", "to"[, "radians"]): a latitude as one of another kind: geodetic, geocentric, parametric, authalic, conformal, rectifying, isometric (the height on Mercator's map, a number without a unit)
+geocentriclatitude||2|3|geocentriclatitude(latitude, flattening[, "radians"]): the angle at the middle of the earth for a latitude
+parametriclatitude||2|3|parametriclatitude(latitude, flattening[, "radians"]): the parametric (reduced) latitude
+geodeticlatitudefromgeocentric||2|3|geodeticlatitudefromgeocentric(latitude, flattening[, "radians"]): the latitude for the angle at the middle of the earth
+geodeticlatitudefromparametric||2|3|geodeticlatitudefromparametric(latitude, flattening[, "radians"]): the latitude for a parametric one
+# the earth: units of lengths and angles (exact), angles as texts, zones
+km2nm||1|1|km2nm(x): kilometres as nautical miles of 1852 m
+km2sm||1|1|km2sm(x): kilometres as statute miles (survey miles of 6336000/3937 m)
+nm2km||1|1|nm2km(x): nautical miles as kilometres
+nm2sm||1|1|nm2sm(x): nautical miles as statute miles
+sm2km||1|1|sm2km(x): statute miles as kilometres
+sm2nm||1|1|sm2nm(x): statute miles as nautical miles
+deg2km||1|2|deg2km(x[, radius or "body"]): degrees of arc as kilometres on the earth of 6371 km, or on a sphere with a radius in km or a name (moon, mars, ...)
+km2deg||1|2|km2deg(x[, radius or "body"]): kilometres as degrees of arc
+deg2nm||1|2|deg2nm(x[, radius or "body"]): degrees of arc as nautical miles (a radius in nautical miles)
+nm2deg||1|2|nm2deg(x[, radius or "body"]): nautical miles as degrees of arc
+deg2sm||1|2|deg2sm(x[, radius or "body"]): degrees of arc as statute miles (a radius in statute miles)
+sm2deg||1|2|sm2deg(x[, radius or "body"]): statute miles as degrees of arc
+rad2km||1|2|rad2km(x[, radius or "body"]): radians of arc as kilometres
+km2rad||1|2|km2rad(x[, radius or "body"]): kilometres as radians of arc
+rad2nm||1|2|rad2nm(x[, radius or "body"]): radians of arc as nautical miles
+nm2rad||1|2|nm2rad(x[, radius or "body"]): nautical miles as radians of arc
+rad2sm||1|2|rad2sm(x[, radius or "body"]): radians of arc as statute miles
+sm2rad||1|2|sm2rad(x[, radius or "body"]): statute miles as radians of arc
+unitsratio||2|2|unitsratio("to", "from"): the number that turns a length of one unit into another (m, km, cm, mm, micron, nm, ft, in, yd, mi, sm, sf), or an angle (degrees, radians): unitsratio("cm", "in") is 127/50
+earthradius||0|1|earthradius(["unit"]): the mean radius of the earth, 6371000 m, in the unit said
+distdim||3|4|distdim(x, "from", "to"[, radius or "body"]): a length or an arc in another unit; between a length and an arc with the radius of the sphere (the earth unless given, in the unit of the length)
+angledim||3|3|angledim(x, "from", "to"): an angle in another unit: degrees, radians
+todegrees||2|2|todegrees("unit", x): an angle of a unit in degrees
+toradians||2|2|toradians("unit", x): an angle of a unit in radians
+fromdegrees||2|2|fromdegrees("unit", x): degrees in a unit
+fromradians||2|2|fromradians("unit", x): radians in a unit
+wrapto180|npi2pi|1|1|wrapto180(x): degrees brought between -180 and 180 by whole turns
+wrapto360|zero22pi|1|1|wrapto360(x): degrees brought between 0 and 360; a positive multiple of 360 gives 360
+wraptopi||1|1|wraptopi(x): radians brought between -pi and pi by whole turns
+wrapto2pi||1|1|wrapto2pi(x): radians brought between 0 and 2*pi; a positive multiple of 2*pi gives 2*pi
+roundn||1|2|roundn(x, n): x rounded to the nearest multiple of 10^n (n = -2, hundredths, unless given)
+dms2degrees||1|1|dms2degrees([degrees, minutes, seconds]): the degrees; the first part that is not 0 carries the sign; rows give a list
+dm2degrees||1|1|dm2degrees([degrees, minutes]): the degrees
+degrees2dms||1|1|degrees2dms(x): [degrees, minutes, seconds]; a list gives rows
+degrees2dm||1|1|degrees2dm(x): [degrees, minutes]
+angl2str||1|4|angl2str(x, "ns" | "ew" | "pm" | "none", "degrees" | "degrees2dm" | "degrees2dms" | "radians", n): an angle as a text, with N or S, E or W, a sign, or the sign only when negative; the last digit is at 10^n (n = -2 unless given)
+str2angle||1|1|str2angle("12°30'15''S"): the degrees of a text with degrees, minutes and seconds, negative with S or W (also 12-30-15S, 12d30m15s, 123015S, -12.5)
+timezone||1|1|timezone(lon): [hours, letter] of the zone of the sea at a longitude: the hours to add for the time of Greenwich, and its letter (Z at Greenwich, A to M to the east, N to Y to the west)
+utmzone||1|2|utmzone(lat, lon): the zone of UTM of a place, like "31U"; utmzone("31U"): [[south, north], [west, east]] of a zone in degrees
+# the earth: maps. projfwd("map", lat, lon, choices) gives [x, y], projinv("map", x, y, choices) gives [lat, lon]
+projfwd|mfwdtran|3|*|projfwd("map", lat, lon[, choices]): [x, y] of a place on a map: mercator, webmercator, equirectangular (pcarree), sinusoidal, cylindricalequalarea (eqacylin), mollweide, stereographic, gnomonic, orthographic, azimuthalequidistant (eqdazim), azimuthalequalarea (eqaazim), transversemercator (tranmerc), utm, lambertconformal (lambert), albers (eqaconic), equidistantconic (eqdconic); choices: "origin", [lat, lon]; "parallels", [lat1, lat2]; "scale", k; "ellipsoid", e (the unit sphere unless given; utm and webmercator: WGS84); "zone", "31U"; "falseeasting", x; "falsenorthing", y; "radians"
+projinv|minvtran|3|*|projinv("map", x, y[, choices]): [lat, lon] of a point of a map, with the choices of projfwd (utm needs "zone", "31U")
+deg2utm||2|2|deg2utm(lat, lon): [x, y, zone] of a place in UTM on WGS84, in metres
+utm2deg||3|3|utm2deg(x, y, "zone"): [lat, lon] of a point of a zone of UTM
+# networks of neurons: the functions of their units (exact; of a name a formula that has a slope), for a number or every entry of a list
+relu|poslin|1|1|relu(x): x where it is positive, else 0; of a name (x + abs(x))/2
+leakyrelu||1|2|leakyrelu(x, a): x where it is positive, else a*x (a = 1/100 unless given)
+clippedrelu||1|2|clippedrelu(x, c): 0 below 0, x up to c, then c (c = 6 unless given)
+elu||1|2|elu(x, a): x where it is positive, else a*(e^x - 1) (a = 1 unless given)
+gelu||1|1|gelu(x): x/2*(1 + erf(x/sqrt(2))): x times the chance that a normal number is below x
+swish|silu|1|1|swish(x): x/(1 + e^(-x))
+mish||1|1|mish(x): x*tanh(ln(1 + e^x))
+softplus||1|1|softplus(x): ln(1 + e^x)
+softsign|elliotsig|1|1|softsign(x): x/(1 + abs(x))
+sigmoid|logsig logistic|1|1|sigmoid(x): 1/(1 + e^(-x)), from 0 to 1
+tansig||1|1|tansig(x): tanh(x), from -1 to 1
+purelin||1|1|purelin(x): x itself
+satlin||1|1|satlin(x): 0 below 0, x up to 1, then 1
+satlins||1|1|satlins(x): -1 below -1, x up to 1, then 1
+hardlim||1|1|hardlim(x): 1 from 0 on, else 0
+hardlims||1|1|hardlims(x): 1 from 0 on, else -1
+radbas||1|1|radbas(x): e^(-x^2)
+tribas||1|1|tribas(x): 1 - abs(x) between -1 and 1, else 0
+netinv||1|1|netinv(x): 1/x
+softmax||1|1|softmax(list): e^x over the sum of all e^x: chances that add up to 1; of a matrix for every row
+compet||1|1|compet(list): 1 at the largest entry (the first of them), 0 elsewhere; of a matrix for every row
+# networks of neurons: losses (exact; rows are observations, a flat list holds one number of every observation)
+mse||2|2|mse(y, t): the mean of the squares of y - t over all entries
+sse||2|2|sse(y, t): the sum of the squares of y - t
+mae||2|2|mae(y, t): the mean of abs(y - t) over all entries
+l2loss||2|2|l2loss(y, t): the sum of the squares of y - t over the number of observations (rows)
+l1loss||2|2|l1loss(y, t): the sum of abs(y - t) over the number of observations
+huber||2|3|huber(y, t, d): the loss of Huber: (y - t)^2/2 up to the distance d, then d*(abs(y - t) - d/2), summed, over the number of observations (d = 1 unless given)
+crossentropy||2|2|crossentropy(y, t): -sum(t*ln(y)) over the number of observations: the chances y of the classes against the targets t (a flat list is one observation)
+# networks of neurons: the operations of layers
+fullyconnect||2|3|fullyconnect(x, W, b): W*x + b for a list x; for rows of observations a row of answers each
+dlconv||2|7|dlconv(x, w, bias, "stride", s, "padding", p): the window w moved over the list or matrix x, at every place the sum of the products (no turning round, as layers of networks do); "padding", "same" keeps the size
+maxpool||2|6|maxpool(x, size, "stride", s, "padding", p): the largest value under a window of the size moved over a list or a matrix (size [down, across] or one number; stride 1 unless given)
+avgpool||2|6|avgpool(x, size, "stride", s, "padding", p): the mean under a window moved over a list or a matrix
+batchnorm||3|5|batchnorm(x, offset, scale): every column of the rows x brought to the mean 0 and the variance 1 (plus 1/100000 under the root), then times scale plus offset; batchnorm(x, offset, scale, mean, variance): with a mean and a variance that are given
+layernorm||3|3|layernorm(x, offset, scale): every row brought to the mean 0 and the variance 1, then times scale plus offset
+embed||2|2|embed(k, W): row k of the matrix W; for a list of numbers the rows
+lstm||6|6|lstm(X, h0, c0, W, R, b): a layer with long and short memory over the rows X of a sequence: [the hidden values after every row, the last hidden values, the last cell values]; W is 4h by d, R is 4h by h, b has 4h entries, for the gates in, forget, new and out
+gru||5|5|gru(X, h0, W, R, b): a layer of gated units over the rows X of a sequence: [the hidden values after every row, the last ones]; W is 3h by d, R is 3h by h, b has 3h entries, for the gates reset, update and new
+onehotencode||1|2|onehotencode(labels, classes): for every label a row with 1 at its class and 0 elsewhere (the classes are the labels in rising order unless given)
+onehotdecode||1|2|onehotdecode(scores, classes): for every row of scores the class of its largest one (the numbers 1, 2, ... unless classes are given)
+ind2vec||1|2|ind2vec([indices], n): the matrix with a column for every index, 1 in the row of the index and 0 elsewhere
+vec2ind||1|1|vec2ind(M): for every column the row of its largest entry
+confusionmat||2|3|confusionmat(known, guessed, classes): the matrix that counts in row i and column j the observations of class i that were taken for class j
+mapminmax||1|3|mapminmax(x, a, b): every row of x brought between a and b (-1 and 1 unless given) by its least and largest entry
+mapstd||1|3|mapstd(x, m, s): every row of x brought to the mean m and the deviation s (0 and 1 unless given)
+divideblock||1|4|divideblock(n, a, b, c): [train, check, test]: the numbers 1 to n cut into three blocks with the shares a, b and c (0.7, 0.15 and 0.15 unless given)
+dlgradient||2|2|dlgradient(y, [names]): the slopes of y by the names; of a list of values a list for every name
+sgdmupdate||3|5|sgdmupdate(w, slopes, v, rate, momentum): [w + v', v'] with v' = momentum*v - rate*slopes (rate 1/100, momentum 9/10 unless given; v = [] at first)
+adamupdate||5|9|adamupdate(w, slopes, m, v, t, rate, b1, b2, eps): [w', m', v']: a step of Adam with the means m and v of the slopes and of their squares and the number t of the step (rate 1/1000, b1 = 9/10, b2 = 999/1000, eps = 1/10^8 unless given; m = v = [] at first)
+rmspropupdate||3|6|rmspropupdate(w, slopes, v, rate, decay, eps): [w', v'] with v' = decay*v + (1 - decay)*slopes^2 and w' = w - rate*slopes/(sqrt(v') + eps) (rate 1/1000, decay 9/10, eps = 1/10^8 unless given)
+# networks of neurons: a network is a list of layers [weights, biases, "function"], a row of the weights for every unit
+feedforwardnet|fitnet|1|3|feedforwardnet([inputs, units, ..., outputs], "function", seed): a network of dense layers with small weights that are the same on every machine (another seed gives others): the inner layers apply the function ("tanh" unless given), the last one "purelin"
+patternnet||1|3|patternnet([inputs, units, ..., classes], "function", seed): the same with "softmax" in the last layer: the chances of classes
+predict|forward|2|2|predict(net, x): what a network gives for an observation x or for the rows of observations; exact with names and fractions where its functions keep them
+classify||2|3|classify(net, x, classes): the class with the largest value that goes out, for every observation (the numbers 1, 2, ... unless classes are given)
+perform||3|4|perform(net, x, t, "mse" | "sse" | "mae" | "crossentropy"): the loss of a network on observations with their targets (the entropy for a last layer of "softmax", else the mean of the squares)
+trainnet|train|3|*|trainnet(net, x, t): the network with the weights and biases that make its loss on the observations x with the targets t least (the mean of the squares, or with a last layer of "softmax" the entropy, where t may hold the numbers of the classes); choices: "epochs", n (1000 steps at most), "l2", x (a part x/2 times the sum of the squares of the weights; 1/10000 with the entropy), "tolerance", x, "report" (then [net, loss, steps, largest slope left])
+perceptron||2|3|perceptron(x, t, rounds): one layer of "hardlim" units taught by the rule of the perceptron: for every wrong answer the weights move by the observation (100 rounds at most); exact
+newlind||2|2|newlind(x, t): one layer of "purelin" units with the weights of least squares; exact
+newrbe||2|3|newrbe(x, t, spread): a network that goes through every target: a unit of radbas around every observation (half its height at the distance spread, 1 unless given) and a "purelin" layer

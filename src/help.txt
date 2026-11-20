@@ -22,6 +22,11 @@ Options:
   -h, --help        this text
   -V, --version     the version
 
+Environment:
+  SYMBOLIC_MATH_SANDBOX=N  for a service that runs the program for strangers: files are read and
+                    written only under plain names in the current directory, 64 files and
+                    N megabytes at most (32 megabytes when N is no number from 1 to 4096)
+
 Numbers are exact (integers, fractions, decimals, complex with i) or have the digits asked for.
 An input with a decimal point is answered in decimals. Names have ASCII and Unicode spellings:
 pi or π, sqrt(2) or √2, inf or ∞, x^2 or x², <= or ≤. A line `  ~ ...` of the output is the
@@ -1110,6 +1115,859 @@ More special functions, functionals, least values under conditions, matrices wit
   'lsqr([[1, 0], [0, 1], [1, 1]], [1, 2, 4])'  # A*x = b; the least |A*x - b|
   'pie3([3, 1, 2])' 'comet([1, 4, 9, 16])' 'comet3([1, 2, 3], [1, 4, 9], [1, 8, 27])'
       # the pictures that pie, a line and plot3 draw
+
+Functions of a complex number as shapes of four dimensions (frames the third, colours the fourth):
+  'plot4d(sin(z))' 'plot4d(z^2, z, 1)' 'plot4d(1/z, z, -1 - i, 1 + i, width = 40, height = 16)'
+      # as a statement: the frame in the middle as characters
+  'plot4d(sin(z), width = 40, height = 14, frames = 8, fill = below, rotate(20, 10), normalize)'
+      # with the choices of the shape
+  'save_jxl("sin.jxl", plot4d(sin(z)), width = 64, height = 64, frames = 64)'
+      # Re z across, Im z upwards, Re f(z) the frames, Im f(z) the colours; alpha says where the
+      # shape is
+  'save_jxl_fast("quick.jxl", plot4d(sin(z)), frames = 32)'
+      # without sizes: 512 x 512 pixels, 512 frames, 512 colours, lossless, effort 10 (a minute or
+      # more); _fast: 256 each, lossy, effort 3
+  'save_png("sin.png", plot4d(sin(z)), width = 64, height = 64, frames = 16)'
+  'save_jxl(plot4d("sin(z)"), width = 32, height = 32, frames = 8)'
+      # a moving PNG too; without a name the file is plot4d.jxl
+  'save_jxl("box.jxl", plot4d(sin(z), z, -pi - i, pi + i), width = 64, height = 32, frames = 16)'
+  'save_jxl("r.jxl", plot4d(sin(z), z, 3), width = 32, height = 32, frames = 8)'
+      # the box of z: two corners, or a radius
+  'save_jxl("a1.jxl", plot4d(z^2), arg_real = width, arg_imag = height, val_real = frame,'\
+'      val_imag = color, width = 32, height = 32, frames = 8)'
+      # the usual sides
+  'save_jxl("a2.jxl", plot4d(z^2), arg_real = width, arg_imag = frame, val_real = height,'\
+'      val_imag = color, width = 32, height = 32, frames = 8)'
+      # any part of z and f(z) on any side:
+  'save_jxl("a3.jxl", plot4d(z^2), arg_real = color, arg_imag = frame, val_real = width,'\
+'      val_imag = height, width = 32, height = 32, frames = 8)'
+      # a frame is the picture of a line of the plane
+  'save_jxl("a4.jxl", plot4d(z^2), arg_real = frame, arg_imag = color, val_real = height,'\
+'      val_imag = width, width = 32, height = 32, frames = 8)'
+  'save_jxl("a5.jxl", plot4d(z^2), arg_real = height, arg_imag = width, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("a6.jxl", plot4d(z^2), val_real = color, val_imag = frame, width = 32, height = 32,'\
+'      frames = 8)'
+      # the sides that are not said keep their order
+  'save_jxl("a7.jxl", plot4d(z^2), val_real = frames, val_imag = colour, width = 32, height = 32,'\
+'      frames = 8)'
+      # frames = frame; colour, colors, colours = color
+  'save_jxl("c1.jxl", plot4d(exp(z)), colors = 64, width = 32, height = 32, frames = 8)'
+  'save_jxl("c2.jxl", plot4d(exp(z)), colours = 2, width = 32, height = 32, frames = 8)'
+      # how many colours (512 unless said)
+  'save_jxl("p1.jxl", plot4d(exp(z)), palette = heat, width = 32, height = 32, frames = 8)'
+      # heat: black, brown, red, orange, yellow, white, bluish
+  'save_jxl("p2.jxl", plot4d(exp(z)), palette = {(0,0,0),(0,0,1),(0,1,0),(1,0,0),(1,1,1)},'\
+'      width = 32, height = 32, frames = 8)'
+      # from the least value: black, blue, green, red, white
+  'save_jxl("p3.jxl", plot4d(exp(z)), palette = [black, "#ff8000", [1, 1, 0], white], reverse,'\
+'      width = 32, height = 32, frames = 8)'
+      # names, codes, numbers; reverse turns a palette round
+  'save_jxl("p4.jxl", plot4d(exp(z)), palette = thermal, width = 32, height = 32, frames = 8)'
+  'save_jxl("p5.jxl", plot4d(exp(z)), palette = magma, width = 32, height = 32, frames = 8)'
+      # more palettes:
+  'save_jxl("p6.jxl", plot4d(exp(z)), palette = inferno, width = 32, height = 32, frames = 8)'
+  'save_jxl("p7.jxl", plot4d(exp(z)), palette = cividis, width = 32, height = 32, frames = 8)'
+      # thermal, magma, inferno, cividis,
+  'save_jxl("p8.jxl", plot4d(exp(z)), palette = twilight, width = 32, height = 32, frames = 8)'
+  'save_jxl("p9.jxl", plot4d(exp(z)), palette = coolwarm, width = 32, height = 32, frames = 8)'
+      # twilight, coolwarm,
+  'save_jxl("p10.jxl", plot4d(exp(z)), palette = earth, width = 32, height = 32, frames = 8)'
+  'save_jxl("p11.jxl", plot4d(exp(z)), palette = spectrum, width = 32, height = 32, frames = 8)'
+      # earth, spectrum,
+  'save_jxl("p12.jxl", plot4d(exp(z)), palette = cube, bits = 3, width = 32, height = 32,'\
+'      frames = 8)'
+      # cube: all 512 colours of 3 bits a sample, each next to the one before
+  'save_jxl_fast(plot4d(z^2), palette = rainbow, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = fire, frames = 4)'
+      # the palettes of the other drawings too (without a name: plot4d.jxl):
+  'save_jxl_fast(plot4d(z^2), palette = ice, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = viridis, frames = 4)'  # ice, viridis,
+  'save_jxl_fast(plot4d(z^2), palette = plasma, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = ocean, frames = 4)'  # plasma, ocean,
+  'save_jxl_fast(plot4d(z^2), palette = sunset, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = parula, frames = 4)'  # sunset, parula,
+  'save_jxl_fast(plot4d(z^2), palette = turbo, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = jet, frames = 4)'  # turbo, jet,
+  'save_jxl_fast(plot4d(z^2), palette = hot, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = hsv, frames = 4)'  # hot, hsv,
+  'save_jxl_fast(plot4d(z^2), palette = bone, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = copper, frames = 4)'  # bone, copper,
+  'save_jxl_fast(plot4d(z^2), palette = pink, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = spring, frames = 4)'  # pink, spring,
+  'save_jxl_fast(plot4d(z^2), palette = summer, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = autumn, frames = 4)'  # summer, autumn,
+  'save_jxl_fast(plot4d(z^2), palette = winter, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = gray, frames = 4)'  # winter, gray,
+  'save_jxl_fast(plot4d(z^2), palette = grey, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = ink, frames = 4)'  # grey, ink,
+  'save_jxl_fast(plot4d(z^2), palette = cool, frames = 4)'
+  'save_jxl_fast(plot4d(z^2), palette = warm, frames = 4)'  # cool, warm
+  'save_jxl("b1.jxl", plot4d(sin(z)), bits = 8, width = 32, height = 32, frames = 8)'
+  'save_jxl("b2.jxl", plot4d(sin(z)), bits = 16, width = 32, height = 32, frames = 8)'
+  'save_jxl("b3.jxl", plot4d(sin(z)), bits = 1, width = 32, height = 32, frames = 8)'
+      # 1 to 16 bits a sample
+  'save_jxl("g1.jxl", plot4d(sin(z)), gray, bits = 9, width = 32, height = 32, frames = 8)'
+  'save_jxl("g2.jxl", plot4d(sin(z)), grey, width = 32, height = 32, frames = 8)'
+      # one channel: the levels of the fourth number (512 with 9 bits)
+  'save_jxl("g3.jxl", plot4d(sin(z)), channels = 2, width = 32, height = 32, frames = 8)'
+  'save_jxl("g4.jxl", plot4d(sin(z)), channels = 4, alpha, width = 32, height = 32, frames = 8)'
+      # gray + alpha, RGB + alpha: alpha is always there
+  'save_jxl("f1.jxl", plot4d(sin(z)), fill = surface, width = 32, height = 32, frames = 8)'
+  'save_jxl("f2.jxl", plot4d(sin(z)), fill = below, width = 32, height = 32, frames = 8)'
+  'save_jxl("f3.jxl", plot4d(sin(z)), fill = above, width = 32, height = 32, frames = 8)'
+      # the surface, or a body
+  'save_jxl("f4.jxl", plot4d(sin(z)), fill = under, width = 32, height = 32, frames = 8)'
+  'save_jxl("f5.jxl", plot4d(sin(z)), fill = over, width = 32, height = 32, frames = 8)'
+  'save_jxl("f6.jxl", plot4d(sin(z)), fill = none, width = 32, height = 32, frames = 8)'
+      # other words: under = below, over = above, none = surface
+  'save_jxl("t1.jxl", plot4d(sin(z)), thickness = 3, width = 32, height = 32, frames = 8)'
+      # a surface that is three frames thick
+  'save_jxl("v1.jxl", plot4d(1/z), range_real = [-2, 2], range_imag = [-3, 3], width = 32,'\
+'      height = 32, frames = 8)'
+      # the values that are drawn (those near a pole are left out without it too)
+  'save_jxl("o1.jxl", plot4d(sin(z)), rotate(30), width = 32, height = 32, frames = 8)'
+  'save_jxl("o2.jxl", plot4d(sin(z)), rotate(30, 20), width = 32, height = 32, frames = 8)'
+      # the body turned: yaw (about the upright axis),
+  'save_jxl("o3.jxl", plot4d(sin(z)), rotate(30, 20, 10), width = 32, height = 32, frames = 8)'
+  'save_jxl("o4.jxl", plot4d(sin(z)), rotate = [90, 0, 0], fill = below, width = 32, height = 32,'\
+'      frames = 8)'
+      # pitch (about the width), roll (about the frames)
+  'save_jxl("n1.jxl", plot4d(sin(z)), normalize, width = 32, height = 32, frames = 8)'
+      # every frame stretched on its own to the whole picture and the whole palette
+  'save_jxl("l1.jxl", plot4d(sin(z)), lossless, width = 32, height = 32, frames = 8)'
+  'save_jxl("l2.jxl", plot4d(sin(z)), quality = 80, width = 32, height = 32, frames = 8)'
+  'save_jxl("l3.jxl", plot4d(sin(z)), distance = 2, width = 32, height = 32, frames = 8)'
+      # lossless (usual), or lossy: alpha stays exact
+  'save_jxl("e1.jxl", plot4d(sin(z)), effort = 1, width = 32, height = 32, frames = 8)'
+  'save_jxl("e2.jxl", plot4d(sin(z)), effort = 7, width = 32, height = 32, frames = 8)'
+      # how hard it is packed: 1 to 10 (10 unless said, 7 for a lossy file)
+  'save_jxl("s1.jxl", plot4d(sin(z)), fps = 30, width = 32, height = 32, frames = 8)'
+  'save_jxl("s2.jxl", plot4d(sin(z)), fps = 2.5, width = 32, height = 32, frames = 8)'
+      # frames a second (16 unless said)
+  'save_png("z1.png", plot4d(sin(z)), level = 3, bits = 16, width = 32, height = 32, frames = 8)'
+  'save("z2.jxl", plot4d(sin(z)), width = 32, height = 32, frames = 8)'
+  'save("z3.png", plot4d(sin(z)), width = 32, height = 32, frames = 8)'
+      # PNG: level, 8 or 16 bits; save by the end of the name
+  'save_png_fast("q1.png", plot4d(sin(z)), frames = 16, width = 96, height = 96)'
+  'save_fast("q2.jxl", plot4d(sin(z)), frames = 16, width = 96, height = 96)'
+  'save_jxl_fast("q3.jxl", plot4d(sin(z)), lossless, frames = 16, width = 64, height = 64)'
+      # quick looks: small, packed fast
+  'save_png("s.png", plot4d(z), width = 8, height = 8,'\
+'      frames = 4); imframes("s.png"); imread("s.png", 3)'
+      # the frames of a file, and one of them as numbers
+  'colormap("heat", 7)' 'colormap("cube", 8)' 'colormap("magma", 3)'  # the colours of a palette
+
+Rich shapes that fill their frames: bodies of functions, pictures of lines, turned and stretched:
+  'save_jxl_fast("gamma.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat,'\
+'      frames = 48, width = 96, height = 96)'
+      # the body below Re gamma: poles and saddles in the colours of heat
+  'save_jxl("gamma2.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat,'\
+'      normalize, width = 96, height = 96, frames = 48)'
+      # every cut as large as the picture
+  'save_jxl("tan.jxl", plot4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3],'\
+'      fill = below, width = 96, height = 96, frames = 48)'
+      # the poles of the tangent
+  'save_jxl("three.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma,'\
+'      width = 96, height = 96, frames = 48)'
+      # three zeros, three poles
+  'save_jxl("three2.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma,'\
+'      normalize, rotate(20, 15), width = 96, height = 96, frames = 48)'
+  'save_jxl("cube.jxl", plot4d(z^3 - 1, z, 1.5), fill = below, palette = cube, normalize,'\
+'      width = 96, height = 96, frames = 48)'
+      # bands of all colours
+  'save_jxl("four.jxl", plot4d(1/(z^4 + 1), z, 2), fill = below, range_real = [-2, 2],'\
+'      range_imag = [-2, 2], palette = turbo, width = 96, height = 96, frames = 48)'
+      # four poles
+  'save_jxl("erf.jxl", plot4d(erf(z), z, 3), fill = below, range_real = [-3, 3],'\
+'      range_imag = [-3, 3], palette = plasma, width = 96, height = 96, frames = 48)'
+  'save_jxl("zeta.jxl", plot4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno,'\
+'      range_real = [-3, 3], range_imag = [-3, 3], width = 64, height = 64, frames = 32)'
+  'save_jxl("waves.jxl", plot4d(sin(z)*cos(z), z, pi), fill = below, palette = twilight,'\
+'      range_real = [-2, 2], range_imag = [-2, 2], width = 96, height = 96, frames = 48)'
+  'save_jxl("ribbons.jxl", plot4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, normalize, thickness = 2, width = 96, height = 96,'\
+'      frames = 48)'
+      # the pictures of lines Im z = c:
+  'save_jxl("rings.jxl", plot4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, normalize, thickness = 2, width = 96, height = 96,'\
+'      frames = 48)'
+      # ribbons, rings,
+  'save_jxl("circles.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i), arg_real = frame,'\
+'      arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 3,'\
+'      width = 96, height = 96, frames = 48)'
+      # circles,
+  'save_jxl("ovals.jxl", plot4d(sin(z), z, pi), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, normalize, thickness = 2, width = 96, height = 96,'\
+'      frames = 48)'
+      # ellipses,
+  'save_jxl("bows.jxl", plot4d(z^2, z, 2), arg_real = frame, arg_imag = color, val_real = width,'\
+'      val_imag = height, normalize, thickness = 2, palette = spectrum, width = 96, height = 96,'\
+'      frames = 48)'
+      # parabolas
+  'save_jxl("moebius.jxl", plot4d((z - 1)/(z + 1), z, 3), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, range_real = [-3, 5], range_imag = [-4, 4],'\
+'      thickness = 2, width = 96, height = 96, frames = 48)'
+  'save_jxl("curves.jxl", plot4d(sin(z)*cos(z)), arg_imag = frame, val_real = height, normalize,'\
+'      thickness = 3, width = 96, height = 96, frames = 48)'
+      # the curve of Re f along every line Im z = c, as high as the picture
+  'save_jxl("turned.jxl", plot4d(z^4 - 1, z, 1.3), fill = above, palette = heat, rotate(25, 20,'\
+'      0), width = 96, height = 96, frames = 48)'
+      # a body seen from another side
+  'save_jxl("sheet.jxl", plot4d(sin(z), z, pi), rotate(35, 25, 10), thickness = 2,'\
+'      palette = turbo, width = 96, height = 96, frames = 48)'
+  'save_png_fast("gamma.png", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat,'\
+'      frames = 48, width = 128, height = 128)'
+      # the same as a moving PNG that every browser shows
+
+More shapes as JPEG XL files, each as it is and with every frame stretched (normalize):
+  'save_jxl("s1.jxl", plot4d(sin(z)), width = 48, height = 48, frames = 16)'
+  'save_jxl("s2.jxl", plot4d(sin(z)), normalize, width = 48, height = 48, frames = 16)'
+  'save_jxl("e1.jxl", plot4d(exp(z), z, 3), width = 32, height = 32, frames = 8)'
+  'save_jxl("e2.jxl", plot4d(exp(z), z, 3), normalize, width = 32, height = 32, frames = 8)'
+  'save_jxl("p1.jxl", plot4d(1/z), width = 32, height = 32, frames = 8)'
+  'save_jxl("p2.jxl", plot4d(1/z), normalize, width = 32, height = 32, frames = 8)'
+      # a pole: the far values are left out
+  'save_jxl("q1.jxl", plot4d(sqrt(z)), width = 32, height = 32, frames = 8)'
+  'save_jxl("q2.jxl", plot4d(sqrt(z)), normalize, width = 32, height = 32, frames = 8)'
+      # a cut of a branch
+  'save_jxl("n1.jxl", plot4d(ln(z)), val_real = color, val_imag = frame, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("n2.jxl", plot4d(ln(z)), val_real = color, val_imag = frame, normalize, width = 32,'\
+'      height = 32, frames = 8)'
+  'save_jxl("w1.jxl", plot4d(z^3 - 1), arg_real = width, arg_imag = frame, val_real = height,'\
+'      val_imag = color, width = 32, height = 32, frames = 8)'
+  'save_jxl("w2.jxl", plot4d(z^3 - 1), arg_real = width, arg_imag = frame, val_real = height,'\
+'      val_imag = color, normalize, width = 32, height = 32, frames = 8)'
+  'save_jxl("b1.jxl", plot4d(sin(z)), fill = below, width = 32, height = 32, frames = 8)'
+  'save_jxl("b2.jxl", plot4d(sin(z)), fill = below, normalize, width = 32, height = 32, frames = 8)'
+  'save_jxl("b3.jxl", plot4d(sin(z)), fill = above, rotate(30, 20, 10), width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("b4.jxl", plot4d(sin(z)), fill = above, rotate(30, 20, 10), normalize, width = 32,'\
+'      height = 32, frames = 8)'
+  'save_jxl("r1.jxl", plot4d(sin(z)), rotate(45), palette = magma, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("r2.jxl", plot4d(sin(z)), rotate(45), palette = magma, normalize, width = 32,'\
+'      height = 32, frames = 8)'
+  'save_jxl("c1.jxl", plot4d(z^2), palette = twilight, colors = 32, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("c2.jxl", plot4d(z^2), palette = twilight, colors = 32, normalize, width = 32,'\
+'      height = 32, frames = 8)'
+  'save_jxl("l1.jxl", plot4d(cos(z)), distance = 2, width = 32, height = 32, frames = 8)'
+  'save_jxl("l2.jxl", plot4d(cos(z)), distance = 2, normalize, width = 32, height = 32, frames = 8)'
+  'save_jxl("x1.jxl", plot4d(sinh(z)), gray, bits = 9, width = 32, height = 32, frames = 8)'
+  'save_jxl("x2.jxl", plot4d(sinh(z)), gray, bits = 9, normalize, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("y1.jxl", plot4d(z + 1/z), thickness = 2, fps = 8, width = 32, height = 32, frames = 8)'
+  'save_jxl("y2.jxl", plot4d(z + 1/z), thickness = 2, fps = 8, normalize, width = 32,'\
+'      height = 32, frames = 8)'
+  'save_jxl_fast("f1.jxl", plot4d(e^(i*z), z, pi), frames = 16, width = 64, height = 64)'
+  'save_jxl_fast("f2.jxl", plot4d(e^(i*z), z, pi), normalize, frames = 16, width = 64, height = 64)'
+
+save_jxl: every choice with an example (the drawings of space, charts and plots take them too):
+  'save_jxl("j1.jxl", walk(pi), width = 300, height = 200)'
+  'save_jxl("j2.jxl", walk(pi), bits = 12, gray, width = 200)'
+  'save_jxl("j3.jxl", walk(pi), channels = 4, width = 200)'  # size, bits, channels
+  'save_jxl("j4.jxl", walk(pi), alpha, width = 200)'
+  'save_jxl("j5.jxl", walk(pi), grey, alpha, width = 200)'
+      # an alpha channel: nothing behind the drawing
+  'save_jxl("j6.jxl", walk(pi), lossless, effort = 9, width = 200)'
+  'save_jxl("j7.jxl", walk(pi), quality = 70, width = 200)'
+  'save_jxl("j8.jxl", walk(pi), distance = 1.5, effort = 2, width = 200)'
+      # lossless or lossy, effort
+  'save_jxl("j9.jxl", walk3d(e + pi*i, 12, 2000), frames = 12, fps = 6, turn = 180, width = 200)'
+      # frames while the eye goes around, frames a second
+  'save_jxl("j10.jxl", walk(pi), frames = 8, grow, width = 200)'
+  'save_jxl("j11.jxl", walk3d(e + pi*i, 12, 2000), slices = 12, width = 200)'
+      # a walk that grows; space cut into slabs
+  'save_jxl("j12.jxl", walk3d(e + pi*i, 12, 2000), depth, width = 200)'
+  'save_jxl("j13.jxl", walk3d(e + pi*i, 12, 2000), views, width = 200)'
+      # a channel of depth; three views as frames
+  'save_jxl("j14.jxl", walk3d(e + pi*i, 12, 2000), stereo, width = 200)'
+  'save_jxl("j15.jxl", walk3d(e + pi*i, 12, 2000), stereo = 6, width = 200)'
+      # for glasses of red and cyan
+  'save_jxl("j16.jxl", walk(pi), thickness = 3, margin = 0.2, width = 200)'
+  'save_jxl("j17.jxl", walk(pi), palette = fire, reverse, width = 200)'
+      # lines, the free rim, palettes
+  'save_jxl("j18.jxl", walk(pi), color = gold, background = navy, width = 200)'
+  'save_jxl("j19.jxl", walk(pi), colour = "#00ff80", background = [0, 0, 0], width = 200)'
+      # one colour, the ground
+  'save_jxl("j20.jxl", walk3d(e + pi*i, 12, 2000), azimuth = 60, elevation = 20, roll = 10,'\
+'      width = 200)'
+      # where the eye stands, the picture turned
+  'save_jxl("j21.jxl", walk3d(e + pi*i, 12, 2000), viewpoint = [100, -80, 60], fog = 0.8,'\
+'      width = 200)'
+  'save_jxl("j22.jxl", walk3d(e + pi*i, 12, 2000), perspective = 3, zoom = 1.5, width = 200)'
+      # an eye that is near
+  'save_jxl("j23.jxl", walk3d(e + pi*i, 12, 2000), center = [0, 0, 0], scale = 8, width = 200)'
+  'save_jxl("j24.jxl", walk(pi), centre = [0, 0], scale = 4, width = 200)'
+      # the middle and pixels for a unit
+  'save_jxl("j25.jxl", walk(pi), axes, grid, width = 300)'
+  'save_jxl("j26.jxl", plot(sin(x), x, 0, 2pi), noaxes, width = 300)'  # with and without axes
+  'save_jxl("j27.jxl", plot(sin(x), x, 0, 2pi), title = "a sine", xlabel = "x",'\
+'      ylabel = "sin(x)", width = 300)'
+      # words on a chart
+  'save_jxl("j28.jxl", complexplot(z^3 - 1, z), width = 200)'
+  'save_jxl("j29.jxl", plot3d(x^2 - y^2, x, -1, 1, y, -1, 1), width = 200, azimuth = 30)'
+  'save_jxl("j30.jxl", bar([3, 1, 4]), width = 200)'  # every drawing
+  'save_jxl(walk(pi), width = 100)' 'save_jxl_fast(walk3d(e + pi*i, 12, 2000))'
+      # without a name: walk.jxl, walk3d.jxl
+
+Pairs of matrices, and Schur forms in another order:
+  'balance([[1, 1000000], [1/1000000, 1]])'
+      # [T, B] with B = T^-1*A*T: rows and columns scaled by powers of two until they are alike
+  'qz([[1, 2], [3, 4]], [[1, 1], [1, 1]])'
+      # [AA, BB, Q, Z]: Q*A*Z = AA and Q*B*Z = BB, zero below their diagonals
+  'A := [[1, 2], [3, 4]]; B := [[5, 6], [7, 9]]; r := qz(A, B); ordeig(r[[1]], r[[2]])'
+      # the eigenvalues of the pair
+  'r := qz([[1, 2], [3, 4]], [[5, 6], [7, 9]]); s := ordqz(r[[1]], r[[2]], r[[3]], r[[4]], [0,'\
+'      1]); ordeig(s[[1]], s[[2]])'
+      # chosen eigenvalues first
+  'gsvd([[1, 2], [3, 4], [5, 6]], [[1, 1]])'  # the generalized singular values of two matrices
+  'r := gsvddecomposition([[1, 2, 3], [4, 5, 6]], [[1, 0, 1], [0, 1, 1], [1, 1, 0]]); r[[4]]'
+      # [U, V, X, C, S] with A = U*C*X^H, B = V*S*X^H
+  'r := schurdecomposition([[-1, 2], [0, 3]]); ordeig(ordschur(r[[1]], r[[2]], "rhp")[[2]])'
+      # a Schur form with the right half plane first
+  'ordeig([[1, 2, 3], [0, 4, 5], [0, 0, 6]])'  # the eigenvalues in the order of the diagonal
+  'rsf2csf([[1, 0], [0, 1]], [[1, 2], [-2, 1]])'
+      # the complex Schur form from a real one with a block of two
+  'cdf2rdf([[i, -i], [1, 1]], [[-i, 0], [0, i]])'
+      # real vectors and a real block for a pair of conjugate eigenvalues
+
+Runs and spreads of samples, the normal law of several variables, laws fitted to data:
+  'runstest([1, 10, 2, 9, 3, 8, 4, 7, 5, 6])' 'runstest([1, 2, 2, 2], "ud")'
+      # [h, p, runs]: are the values in a random order?
+  'ansaribradley([1, 2, 2, 5, 7], [0, 2, 3, 3, 9, 11])'  # [h, p, W]: do two samples spread alike?
+  'lillietest([2.1, 3.4, 1.9, 5.6, 4.4, 3.8, 2.7, 4.1, 3.3, 3.0, 2.2, 4.9])'
+      # [h, p, D]: a normal law with fitted mean and spread?
+  'mvncdf([0, 0])' 'mvncdf([1, 1], [0, 0], [[1, 1/2], [1/2, 1]])'
+  'mvncdf([-1, -1], [1, 1], [0, 0], [[1, 0], [0, 1]])'  # normal laws of several variables
+  'cmdscale([[0, 3, 4], [3, 0, 5], [4, 5, 0]])'
+      # [Y, e]: points whose distances are those of a matrix
+  'procrustes([[0, 0], [1, 0], [1, 1], [0, 1]], [[0, 0], [0, 2], [-2, 2], [-2, 0]])'
+      # [d, Z, how]: a shape turned, scaled and moved onto another
+  'canoncorr([[1, 2], [2, 1], [3, 5], [4, 3], [5, 6], [6, 4]], [[2, 1], [1, 3], [4, 4], [3, 6],'\
+'      [6, 5], [5, 8]])'
+      # [A, B, r, U, V]: sums of columns that go together best
+  'nnmf([[1, 2], [2, 4], [3, 6]], 1)'  # [W, H, D] with W*H near A and no negative entry
+  'poissfit([2, 3, 1, 0, 4, 2])' 'unifit([2, 3, 1, 0, 4, 2])' 'raylfit([1, 2, 3])' 'binofit(7, 20)'
+      # the parameters that make data likeliest
+  'lognfit([1, 2, 3, 4, 10])' 'gamfit([1, 2, 3, 4, 10])'
+  'wblfit([1, 2, 3, 4, 10])' 'betafit([1/10, 1/5, 1/2, 7/10, 9/10])'
+  'nbinfit([0, 1, 3, 7, 2, 12, 0, 5])' 'mle([1, 2, 3, 4, 10])'
+  'mle([1, 2, 3, 4, 10], "distribution", "weibull")'  # by the name of a law
+  'd := fitdist([1, 2, 3, 4, 10], "gamma"); [mean(d), cdf(d, 4)]'  # a fitted law as a distribution
+
+Values at both ends, equations that look back, heat in one dimension, least values without slopes:
+  'bvp4c(@(x, y, z) [z, -exp(y)], @(ya, za, yb, zb) [ya, yb], [0, 1/2, 1], [0, 0])'
+      # y'' = -e^y with y(0) = y(1) = 0: rows [x, y, y']
+  'bvp5c(@(x, y) y, @(ya, yb) ya + yb - 1, [0, 1], [1])' 'bvpinit([0, 1], [1, 0])'
+      # the same solver, the start as a struct
+  'deval(ode45(@(t, y) -y, [0, 1, 2], 1), 1/2)'  # a solution between its rows
+  'dde23(@(t, y, z) -z, [1], 1, [0, 1, 2, 3])'
+      # y'(t) = -y(t - 1) with y = 1 before 0: z is the value one lag back
+  'pdepe(0, @(x, t, u, ux) [1, ux, 0], @(x) 1, @(xl, ul, xr, ur, t) [ul - t, 0, ur, 0],'\
+'      linspace(0, 1, 5), [0, 1/10, 1])'
+      # the heat equation: a row for every time
+  'pdeval(0, [0, 1/2, 1], [0, 1, 4], 1/4)'  # [u, ux] between the points of the mesh
+  'patternsearch(@(x, y) abs(x - 1) + abs(y + 2), [0, 0])'
+      # a least point by steps along the axes, no slopes needed
+  'particleswarm(@(x, y) (x - 1)^2 + (y + 2)^2, 2, [-5, -5], [5, 5])'
+  'simulannealbnd(@(x) x^4 - 3x^2 + x, 2)'  # a swarm, a cooling walk
+  'ga(@(x, y) x^2 + y^2, 2, [1, 1], [2, 3])' 'globalsearch(@(x) x*sin(x) + x*cos(2x), 0, [0], [10])'
+      # generations of points; many starts
+  'multistart(@(x) x*sin(x) + x*cos(2x), 0, [0], [10])'
+  'fminimax(@(x, y) [x^2 + y^2, (x - 2)^2 + y^2], [3, 3])'
+      # where the largest of several functions is least
+  'fgoalattain(@(x) [2 + (x - 3)^2, 5 + x^2/4], 1, [3, 6], [1, 1])'
+      # as near to goals as weights allow
+
+Tables of named columns, tables with times, values of a few kinds:
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); t'  # a table: names and columns
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); [istable(t), height(t),'\
+'      width(t), varnames(t)]'
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); head(t, 2)'
+  'tail([1, 2, 3, 4, 5], 2)'  # first and last rows
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takerows(t, [3, 1])'
+      # rows by numbers or truths
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); takevars(t, ["age", "name"])'
+      # variables by names
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); addvars(t, "town", ["x", "y",'\
+'      "z"])'
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); removevars(t, "age")'
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); renamevars(t, "age", "years")'
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); movevars(t, "age", "Before",'\
+'      "name")'
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); sortrows(t, "age")'
+      # the rows by a variable
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); topkrows(t, 2, "age")'
+      # the two rows with the largest ages
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); summary(t)'
+      # kind, least, middle and largest value of every variable
+  't := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); table2array(t)'
+  'array2table([[1, 2], [3, 4]], "VariableNames", ["x", "y"])'
+  'struct2table(struct("a", [1, 2], "b", ["u", "v"]))'
+  't := table("a", [1, 2], "b", ["u", "v"]); table2struct(t)'
+  'l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c",'\
+'      "d"]); innerjoin(l, r)'
+      # rows with the same key side by side
+  'l := table("id", [1, 2, 3], "x", [10, 20, 30]); r := table("id", [2, 3, 4], "y", ["b", "c",'\
+'      "d"]); outerjoin(l, r)'
+      # and those without a partner
+  't := table("g", ["a", "b", "a"], "x", [1, 2, 3], "y", [10, 20, 30]); varfun(mean,'\
+'      removevars(t, "g"))'
+      # a function of every variable
+  't := table("g", ["a", "b", "a"], "x", [1, 2, 3], "y", [10, 20, 30]); rowfun(@(g, x, y) x + y, t)'
+      # a function of every row
+  't := table("g", ["a", "b", "a"], "x", [1, 2, 3], "y", [10, 20, 30]); groupsummary(t, "g",'\
+'      "mean")'
+      # a row for every group
+  't := table("g", ["a", "b", "a"], "x", [1, 2, 3], "y", [10, 20, 30]); groupcounts(t, "g")'
+  't := table("g", ["a", "b"], "x", [1, 2], "y", [10, 20]); stack(t, ["x", "y"])'
+      # variables one under another
+  't := table("g", ["a", "b"], "x", [1, 2], "y", [10, 20]); unstack(stack(t, ["x", "y"]), "x_y",'\
+'      "x_y_Indicator")'
+      # and back
+  'writetable(table("name", ["ann", "bob"], "age", [31, 25]),'\
+'      "people.csv"); readtable("people.csv")'
+      # a table in a file
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); tt'  # a table with a time for every row
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); [istimetable(tt), isregular(tt)]'
+  'isregular([1, 3, 6])'
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); lag(tt)'  # the values one row later
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3], "sum")'
+      # at other times: sums, means, lines between
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); synchronize(tt, timetable([2, 5], "w",'\
+'      [1, 2]))'
+      # two tables at the times of both
+  'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); timetable2table(tt)'
+  'table2timetable(table("when", [5, 6], "v", [1, 2]))'
+  'c := categorical(["red", "blue", "red", "green", "red"]); c'  # values of a few kinds
+  'c := categorical(["red", "blue", "red", "green", "red"]); [iscategorical(c), isordinal(c)]'
+  'c := categorical(["red", "blue", "red", "green", "red"]); categories(c)'
+  'categorical([3, 1, 2, 3], [1, 2, 3], ["low", "mid", "high"], "ordinal")'
+  'c := categorical(["red", "blue", "red", "green", "red"]); countcats(c)'  # how many of every kind
+  'c := categorical(["red", "blue", "red", "green", "red"]); iscategory(c, ["red", "pink"])'
+  'c := categorical(["red", "blue", "red", "green", "red"]); addcats(c, ["pink"])'  # more kinds
+  'c := categorical(["red", "blue", "red", "green", "red"]); isundefined(removecats(c, ["red"]))'
+      # a kind taken away: its values are of no kind
+  'c := categorical(["red", "blue", "red", "green", "red"]); renamecats(c, ["red"], ["crimson"])'
+  'c := categorical(["red", "blue", "red", "green", "red"]); reordercats(c, ["red", "green",'\
+'      "blue"])'
+  'c := categorical(["red", "blue", "red", "green", "red"]); mergecats(c, ["red", "green"], "warm")'
+      # kinds that become one
+  'c := categorical(["red", "blue", "red", "green", "red"]); setcats(c, ["red", "pink"])'
+      # exactly these kinds
+  'c := categorical(["red", "blue", "red", "green", "red"]); cellstr(c)'
+  'grp2idx(["b", "a", "b", "c"])'  # as texts; as numbers of groups
+
+More charts of data (drawn with characters; save_png and save_jxl save them as pictures):
+  'bar3([[1, 2, 3], [2, 4, 1]], width = 50, height = 14)'
+  'bar3h([[1, 2, 3], [2, 4, 1]], width = 44, height = 12)'  # bars of space
+  'histogram2([1, 2, 2, 3, 3, 3, 4], [1, 1, 2, 2, 3, 3, 4], 3, width = 50, height = 14)'
+      # how many pairs fall into every cell
+  'surfc(peaks(12), width = 50, height = 16)' 'meshc(peaks(8), width = 30, height = 8)'
+      # a surface with its lines of equal height below
+  'streamline([-y, x], x, -1, 1, y, -1, 1, width = 50, height = 16)'
+      # the lines that follow a field
+  'polarhistogram([0.1, 0.2, 1, 1.1, 1.2, 3, 4, 4.1, 6], 8, width = 44, height = 16)'
+  'rose([1, 2, 3], width = 30, height = 8)'  # angles in parts of the circle
+  'dendrogram(linkage([[0, 0], [1, 0], [5, 0], [6, 1], [10, 10]]), width = 50, height = 12)'
+      # the tree of a clustering
+  'bubblechart([1, 2, 3, 4], [2, 1, 4, 3], [1, 5, 2, 9], width = 44, height = 10)'
+      # dots whose widths show a third value
+  'fimplicit3(x^2 + y^2 + z^2 = 1, x, -1.2, 1.2, y, -1.2, 1.2, z, -1.2, 1.2, width = 44,'\
+'      height = 16)'
+      # where a function of space is zero
+  'isosurface([[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 5, 0], [0, 0, 0]], [[0, 0, 0],'\
+'      [0, 0, 0], [0, 0, 0]]], 1, width = 44, height = 12)'
+  'triplot([[1, 2, 3], [2, 3, 4]], [0, 1, 0, 1], [0, 0, 1, 1], width = 40, height = 10)'
+      # the sides of triangles
+  'trisurf([[1, 2, 3], [2, 3, 4]], [0, 1, 0, 1], [0, 0, 1, 1], [0, 1, 1, 3], width = 44,'\
+'      height = 12)'
+  'trimesh([[1, 2, 3]], [0, 1, 0], [0, 0, 1], [0, 1, 2], width = 30, height = 8)'
+  'pareto([3, 10, 1, 6], width = 44, height = 10)'  # bars from the largest, and their running sum
+  'fill([0, 4, 4, 2, 0], [0, 0, 3, 5, 3], width = 44, height = 10)'
+  'patch([[0, 0], [2, 0], [2, 2]], width = 30, height = 8)'  # a filled shape
+  'ribbon([[1, 2], [2, 3], [4, 1], [3, 3]], width = 44, height = 12)'
+      # the columns as strips of space
+  'normplot([2.1, 3.4, 1.9, 5.6, 4.4, 3.8, 2.7, 4.1, 3.3, 3.0], width = 44, height = 10)'
+      # on a line when the values are normal
+  'parallelplot([[1, 10, 3], [2, 30, 1], [3, 20, 2]], width = 44, height = 10)'
+      # every row as a line across an axis for every column
+  'swarmchart([[1, 1, 1, 2, 2, 3], [2, 2, 2, 2, 5]], width = 44, height = 10)'
+      # the values of every group as dots that step aside
+  'violinplot([[1, 2, 2, 3, 3, 3, 4, 4, 5], [2, 4, 4, 5, 5, 5, 6, 8]], width = 44, height = 12)'
+      # the smooth density of every group
+  'histfit([1, 2, 2, 3, 3, 3, 4, 4, 5, 6], 5, width = 44, height = 10)'
+      # counts in bins with the normal law of the data
+  'gscatter([1, 2, 3, 4], [1, 3, 2, 4], ["a", "b", "a", "b"], width = 44, height = 10)'
+      # dots in the colour of their group
+  'andrewsplot([[1, 2, 3], [3, 1, 2]], width = 44, height = 10)'
+      # every row as a curve of sines and cosines
+  'cdfplot([3, 1, 2, 2, 5], width = 40, height = 8)'
+      # the share of the values at or below every value
+  'plotmatrix([[1, 2, 3], [2, 1, 4], [3, 5, 1], [4, 3, 2]], width = 44, height = 16)'
+      # every column against every other
+  'stackedplot([[1, 5], [2, 3], [4, 4], [3, 9]], width = 40, height = 10)'
+      # the columns as lines, one chart above the other
+  'biplot([[1, 0.2], [0.3, 0.9], [-0.5, 0.5]], width = 40, height = 14)'
+      # an arrow for every variable
+  'silhouette([[0, 0], [0, 1], [5, 5], [5, 6], [9, 0]], [1, 1, 2, 2, 3])'
+      # how well every point sits in its group, from -1 to 1
+  'image([[1, 2, 3], [4, 5, 6]], width = 24, height = 6)'
+  'surfl(peaks(10), width = 40, height = 12)'
+  'boxchart([[1, 2, 3, 9], [2, 4, 4, 5]], width = 40, height = 10)'
+  'save_png("tree.png", dendrogram(linkage([[0, 0], [1, 0], [5, 0], [6, 1], [10, 10]])),'\
+'      width = 240)'
+      # every chart as a picture
+  'save_jxl("bars.jxl", bar3([[1, 2], [3, 4]]), width = 200)'
+  'save_png("flow.png", streamline([-y, x], x, -1, 1, y, -1, 1), width = 240)'
+
+Expressions as code, their shared parts, and as a picture of text:
+  'ccode(x^2 + sin(y)/3)' 'ccode([x^2, x*y, 1/2], "out")'
+      # a line of C: numbers as doubles, pow, sin
+  'fortran(x^2 + sin(y)/3)' 'matlabcode(x^2 + sin(y)/3)'
+      # Fortran; MATLAB and Octave, entry by entry
+  'f := matlabfunction(x^2 + y); f(3, 4)' 'fzero(matlabfunction(x^2 - 2), 1)'
+      # an expression as a function of its variables
+  'subexpr(sin(x + y)^2 + cos(x + y) + 1/(x + y))'
+      # [the expression with sigma for a part that comes again, sigma = the part]
+  'cse([sin(x)*cos(x), sin(x) + cos(x), cos(x)^2])'
+      # every part that comes again, as sigma1, sigma2, ...
+  'pretty((x^2 + 1)/(x - 1) + sqrt(x))'  # in several lines, as on paper
+
+Systems of control: one input, one output, a ratio of polynomials in s or (sampled) in z:
+  'tf([1, 2], [1, 3, 5])' 'tf([1], [1, -1/2], 0.1)' 's := tf("s"); 1/(s^2 + 2s + 5)'
+      # by numerator and denominator; sampled every 0.1; with s
+  'zpk([-1], [-2, -3], 4)' 'ss([[0, 1], [-2, -3]], [0, 1], [1, 0], 0)' 'pid(2, 3, 4)'
+      # by zeros, poles and gain; by states; a controller
+  'tfdata(tf([1, 2], [1, 3, 5]))' 'zpkdata(tf([2, 2], [1, 5, 6]))'
+  'ssdata(tf([1, 2], [1, 3, 5]))' 'tf2sym(tf([1, 2], [1, 3, 5]))'  # the parts of a system
+  'tf2ss([1, 2], [1, 3, 5])' 'ss2tf([[-3, -5], [1, 0]], [[1], [0]], [[1, 2]], [[0]])'
+  'tf2zp([2, 2], [1, 5, 6])' 'zp2tf([-1], [-2, -3], 2)'
+  'ss2zp([[0, 1], [-2, -3]], [[0], [1]], [[1, 0]], [[0]])' 'zp2ss([-1], [-2, -3], 2)'
+      # one form into another
+  'isct(tf([1], [1, 1]))' 'isdt(tf([1], [1, 1], 0.1))'
+  'isproper(tf([1, 0, 0], [1, 1]))' 'isstable(tf([1], [1, -1]))'  # what kind of system
+  'pole(tf([1], [1, 3, 2]))' 'zero(tf([1, 0, 4], [1, 3, 2]))'
+  'dcgain(tf([1, 5], [1, 3, 2]))' 'damp(tf([1], [1, 2, 5]))'  # poles, zeros, gain at rest, damping
+  'tf([1], [1, 1])*tf([1], [1, 2])' 'series(tf([1], [1, 1]), tf([1], [1, 2]))'
+  'parallel(tf([1], [1, 1]), tf([1], [1, 2]))'  # one after the other; side by side
+  'feedback(tf([1], [1, 1]), 1)' 'minreal(tf([1, 3, 2], [1, 6, 11, 6]))'
+      # a loop closed; what cancels taken out
+  'evalfr(tf([1], [1, 1]), i)' 'freqresp(tf([1], [1, 1]), [0, 1, 10])'
+  'bode(tf([1], [1, 1]), [0.1, 1, 10])' 'nyquist(tf([1], [1, 1]), [0, 1, 10])'
+      # the response at frequencies
+  'margin(tf([4], [1, 3, 3, 1]))' 'allmargin(tf([4], [1, 3, 3, 1]))'
+      # how far the closed loop is from losing its hold
+  'hinfnorm(tf([1, 2], [1, 1]))' 'h2norm(tf([1], [1, 1]))'
+      # the largest gain; the energy of the impulse response
+  'step(tf([1], [1, 3, 2]))' 'impulse(tf([1], [1, 2, 5]))' 'lsim(tf([1], [1, 1]), sin(t))'
+      # the answers to a step, an impulse, an input: exact, in t
+  'stepinfo(tf([1], [1, 0.4, 1]))'  # rise time, settling time, overshoot, peak
+  'c2d(tf([1], [1, 1]), 1/10)' 'd2c(c2d(tf([1], [1, 1]), 1/10))'
+  'c2d(tf([1], [1, 1]), 1/10, "tustin")'  # sampled and back
+  'rlocus(tf([1], [1, 3, 2]), 4)' 'esort([-1, -3 + i, 2, -3 - i])' 'dsort([0.5, -0.9, 0.1 + 0.2i])'
+      # the poles of the closed loop; poles in order
+  'ctrb([[0, 1], [-2, -3]], [[0], [1]])'
+  'obsv([[0, 1], [-2, -3]], [[1, 0]])' 'gram(tf([1], [1, 3, 2]), "c")'
+      # can the input reach, can the output show every state
+  'lyap([[0, 1], [-2, -3]], [[1, 0], [0, 1]])' 'dlyap([[1/2, 0], [0, 1/3]], [[1, 0], [0, 1]])'
+      # the equations of Lyapunov
+  'care([[0, 1], [0, 0]], [[0], [1]], [[1, 0], [0, 1]], [[1]])'
+  'dare([[1, 1], [0, 1]], [[0], [1]], [[1, 0], [0, 1]], [[1]])'
+      # the equations of Riccati: [X, K, poles]
+  'lqr([[0, 1], [0, 0]], [[0], [1]], [[1, 0], [0, 1]], [[1]])'
+  'dlqr([[1, 1], [0, 1]], [[0], [1]], [[1, 0], [0, 1]], [[1]])'  # the best feedback
+  'lqe([[0, 1], [0, 0]], [[0], [1]], [[1, 0]], [[1]], [[1]])'
+      # the gain of the watcher (Kalman's filter)
+  'acker([[0, 1], [-2, -3]], [[0], [1]], [-5, -6])'
+  'place([[0, 1], [0, 0]], [[0], [1]], [-1 + i, -1 - i])'
+      # the gain that puts the poles where they are wanted
+  'bodeplot(tf([1], [1, 0.4, 1]), width = 40, height = 12)'
+  'nyquistplot(tf([4], [1, 3, 3, 1]), width = 36, height = 12)'  # charts of the response
+  'pzplot(tf([1, 2], [1, 2, 5]), width = 44, height = 16)'
+  'rlocusplot(tf([1, 2], [1, 3, 5, 0]), width = 44, height = 16)'  # poles and zeros; the root locus
+  'stepplot(tf([1], [1, 0.4, 1]), width = 60, height = 12)'
+  'impulseplot(tf([1], [1, 2, 5]), width = 50, height = 12)'
+  'save_png("bode.png", bodeplot(tf([1], [1, 0.4, 1])), width = 160)'  # as a picture
+
+Filters and spectra of signals (a filter is its pair [b, a]; Wn: a share of half the sampling rate):
+  'rectwin(4)' 'hann(5)' 'hanning(4)' 'hamming(5)' 'hann(4, "periodic")'
+      # windows: n values that fall off towards both ends
+  'blackman(5)' 'blackmanharris(5)' 'nuttallwin(5)' 'flattopwin(5)' 'bartlett(5)' 'triang(4)'
+      # sums of cosines; triangles
+  'bohmanwin(5)' 'parzenwin(5)' 'barthannwin(5)' 'gausswin(5, 3)'
+  'tukeywin(7, 0.25)' 'kaiser(5, 4)' 'chebwin(6, 60)'  # with a shape
+  'buttap(3)' 'cheb1ap(3, 1)' 'cheb2ap(3, 40)' 'ellipap(3, 1, 40)' 'besselap(3)'
+      # [zeros, poles, gain] of lowpass filters with the edge 1
+  'butter(2, 0.3)' 'butter(2, [0.2, 0.5])' 'butter(3, 0.4, "high")' 'butter(2, 10, "s")'
+      # Butterworth: lowpass, bandpass, highpass, of running time
+  'cheby1(3, 1, 0.3)' 'cheby2(3, 40, 0.3)' 'ellip(3, 1, 40, 0.3)' 'besself(3, 10)'
+      # Chebyshev (ripple 1 dB, or 40 dB down), Cauer, Bessel
+  'buttord(0.2, 0.3, 1, 40)' 'cheb1ord(0.2, 0.3, 1, 40)'
+  'cheb2ord(0.2, 0.3, 1, 40)' 'ellipord(0.2, 0.3, 1, 40)'  # the least order for the job
+  'lp2lp([1], [1, 1], 5)' 'lp2hp([1], [1, 1], 5)'
+  'lp2bp([1], [1, 1], 5, 2)' 'lp2bs([1], [1, 1], 5, 2)'  # a lowpass of edge 1 moved or turned
+  'bilinear([1], [1, 1], 10)' 'iirnotch(0.25, 0.05)' 'iirpeak(0.25, 0.05)'
+      # a sampled filter for one of running time; one frequency out or alone
+  'fir1(4, 0.5)' 'fir1(5, [0.3, 0.6])' 'fir1(4, 0.5, "hann")'
+  'kaiserord([1000, 1500], [1, 0], [0.05, 0.01], 8000)'  # filters by windows
+  'sgolay(2, 5)' 'sgolayfilt([1, 2, 4, 8, 16, 32, 64], 2, 5)'
+      # smoothing by polynomials fitted to the values around
+  'freqz([1, 1], [1, -1/2], 4)' 'freqz(butter(3, 0.4), 3)'
+  'freqs([1], [1, 1], [0, 1, 10])' 'grpdelay([1, 1], [1, -1/2], [0, 1])'
+      # the response [H, w]; the delay
+  'impz([1, 1], [1, -1/2], 5)' 'stepz([1, 1], [1, -1/2], 5)'  # the answers to one 1 and to ones
+  'filter(butter(2, 0.3), [1, 2, 3, 4, 5, 6])'
+  'filtfilt(butter(2, 0.3), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])'
+      # through a filter; both ways: no shift
+  'tf2sos(butter(4, 0.3))' 'zp2sos(buttap(4))'
+  'sos2tf([[1, 1, 0, 1, -0.5, 0], [1, 0, 0, 1, 0.25, 0]], 2)'  # sections of second order
+  'sosfilt([[1, 1, 0, 1, -0.5, 0], [1, 0, 0, 1, 0.25, 0]], [1, 0, 0, 0, 0])'
+  'isminphase(butter(6, 0.3))' 'ismaxphase([1, 3], [1, -0.5])'
+  'islinphase([1, 2, 1])' 'firtype([1, 0, -1])' 'polystab([1, -3, 2])'  # where the zeros are
+  'periodogram([1, 2, 3, 4, 3, 2, 1, 0], [], 8)'
+  'pwelch([1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0], 8, 4, 8)'
+      # [Pxx, f]: the power over the frequencies
+  'cpsd([1, 2, 3, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 3, 2, 1], 4, 2, 4)'
+  'mscohere([1, 2, 3, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 3, 2, 1], 4, 2, 4)'  # two signals
+  'tfestimate([1, 2, 3, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 3, 2, 1], 4, 2, 4)'
+  'spectrogram([1, 2, 3, 4, 3, 2, 1, 0], 4, 2, 4)'
+  'bandpower([1, 2, 3])' 'rssq([3, 4])' 'peak2rms([1, -2, 1])' 'enbw(hann(8))'
+      # sizes of a signal; the noise width of a window
+  'mag2db(10)' 'db2mag(20)' 'pow2db(100)' 'db2pow(20)' 'db(10)'  # decibels
+  'rceps([1, 2, 3, 4])' 'goertzel([1, 2, 3, 4], 2)'
+  'czt([1, 2, 3, 4])' 'dftmtx(4)' 'cconv([1, 2, 3], [1, 1], 3)'  # cepstrum, single bins, transforms
+  'envelope([1, 2, 3, 4, 3, 2, 1, 2])' 'findpeaks([1, 3, 2, 5, 4, 6, 1])'
+  'findpeaks([1, 3, 2, 5, 4, 6, 1], "MinPeakHeight", 4)'  # [values, places] of peaks
+  'medfilt1([1, 9, 2, 8, 3])' 'upfirdn([1, 2, 3], [1, 1], 2, 1)'
+  'buffer([1, 2, 3, 4, 5, 6, 7], 3, 1)' 'xcov([1, 2, 3], [1, 0, 2])'
+  'decimate([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, 9,'\
+'      10], 2)'
+      # every second value after a lowpass
+  'levinson([1, 0.5, 0.25, 0.125])' 'aryule([1, 2, 3, 2, 1, 2, 3, 2, 1], 2)'
+  'arburg([1, 2, 3, 2, 1, 2, 3, 2, 1], 2)'  # models that predict a signal
+  'lpc([1, 2, 3, 2, 1, 2, 3, 2, 1], 2)' 'poly2rc([1, -0.9, 0.2])' 'rc2poly(poly2rc([1, -0.9, 0.2]))'
+  'sawtooth([0, pi/2, pi, 3pi/2])' 'rectpuls([-1, 0, 0.49, 0.5])'
+  'tripuls([-1, -0.25, 0, 0.25], 1)' 'diric([0, 1, 2pi], 4)'  # waves and pulses
+  'gauspuls([0, 0.001], 1000, 0.5)' 'chirp([0, 0.5, 1], 0, 1, 10)'
+  'zplane([1, -1], [1, -0.5, 0.25], width = 40, height = 16)' 'hilbert([1, 2, 3, 4])'
+      # zeros and poles; the analytic signal
+
+The earth: ways on a sphere and on an ellipsoid (degrees unless "radians" is said last):
+  'distance(52.2297, 21.0122, 40.7128, -74.006)' 'azimuth(52.2297, 21.0122, 40.7128, -74.006)'
+      # Warsaw to New York: degrees of arc, the course at the start
+  'distance(52.2297, 21.0122, 40.7128, -74.006, 6371)'
+  'haversine(52.2297, 21.0122, 40.7128, -74.006)'  # in km on a sphere of 6371 km
+  'distance(52.2297, 21.0122, 40.7128, -74.006, "wgs84")'
+      # along the geodesic of an ellipsoid, in metres
+  'distance(52.2297, 21.0122, 40.7128, -74.006, referenceellipsoid("wgs84", "km"))'
+  'distance(10, 20, -30, 140, [6378.137, 0.0818191908426215])'
+  'distance("rh", 52.2297, 21.0122, 40.7128, -74.006, "wgs84")'
+  'azimuth("rh", 52.2297, 21.0122, 40.7128, -74.006)'  # along the line of one course
+  'distance([0, 10, 20], 0, [5, 15, 25], 10)' 'distance(0.1, 0.2, 0.3, 0.4, "radians")'
+      # lists of places; radians
+  'reckon(52.2297, 21.0122, 6872969.752, 300.9366, "wgs84")'
+  'reckon(10, 20, 30, 40)' 'reckon("rh", 10, 20, 30, 40)'  # [lat, lon] a length away along a course
+  'geoddistance(0, 0, 0.5, 179.7)' 'geoddistance(52.2297, 21.0122, 40.7128, -74.006, "grs80")'
+      # [length, course at the start, course at the end]
+  'geodreckon(40, 5, 12345678, 77)'  # [lat, lon, course there] on WGS84
+  'geodarea([0, 0, 10, 10], [0, 10, 10, 0])' 'areaint([0, 90, 0], [0, 0, 90])'
+  'areaint([0, 0, 10, 10], [0, 10, 10, 0], "wgs84")'  # polygons of geodesics
+  'areaquad(0, 0, 90, 90)' 'areaquad(0, 0, 10, 10, "wgs84")' 'departure(0, 10, 60)'
+      # between parallels and meridians; along a parallel
+  'antipode(10, 20)' 'meanm([10, 20, 30], [40, 50, 60])'
+      # the other side of the earth; the middle of places
+  'track2(0, 0, 10, 10, "degrees", 5)'
+  'track2("rh", 0, 0, 10, 10, "degrees", 5)' 'gcwaypts(0, 0, 60, 60, 4)'
+      # [[lats], [lons]] of places along a way
+  'track1(0, 0, 45, 90, "degrees", 4)' 'track1("rh", 0, 0, 45, 30, "degrees", 3)'
+      # along a course from a place
+  'scircle1(0, 0, 10, [], "degrees", 5)' 'scircle2(0, 0, 0, 10, [], "degrees", 5)'
+      # the circle of a radius around a place; through a place
+  'legs([0, 10, 20], [0, 10, 30])' 'legs([0, 10, 20], [0, 10, 30], "gc")'
+      # [[courses], [nautical miles]] of the legs between places
+  'gc2sc(0, 0, 45)' 'gcxgc(10, 13, 78, 51, -16, 131)'
+  'scxsc(0, 0, 30, 0, 40, 30)' 'gcxsc(0, 0, 90, 10, 20, 30)'  # where circles on the sphere meet
+  'rhxrh(10, -20, 30, 12, 40, 290)' 'interpm([0, 10], [0, 20], 5)'
+  'interpm([0, 10], [0, 20], 5, "gc")'  # where lines of one course meet; places in between
+
+The earth: places in space, ellipsoids, latitudes of other kinds:
+  'geodetic2ecef(48.8562, 2.3508, 67.4)' 'ecef2geodetic(4200952.53, 172458.5, 4780052.13)'
+      # [x, y, z] from the middle of the earth and back (WGS84, metres)
+  'lla2ecef([48.8562, 2.3508, 67.4])' 'ecef2lla([[6378137, 0, 0], [0, 6378137, 0]])'
+  'geodetic2ecef(48.8562, 2.3508, 67.4, "grs80")'
+  'geodetic2enu(45.9132, 36.7484, 1877753.2, 46.017, 7.75, 1673)'
+  'enu2geodetic(100, 200, 300, 46.017, 7.75, 1673)'  # east, north, up as seen from a place
+  'geodetic2ned(45.9132, 36.7484, 1877753.2, 46.017, 7.75, 1673)'
+  'ned2geodetic(200, 100, -300, 46.017, 7.75, 1673)'  # north, east, down
+  'geodetic2aer(45.977, 7.658, 4531, 46.017, 7.75, 1673)'
+  'aer2geodetic(238.08, 18.744, 8876.8, 46.017, 7.75, 1673)'  # course, elevation, distance
+  'ecef2enu(4200952.53, 172458.5, 4780052.13, 48, 2, 0)' 'enu2ecef(100, 200, 300, 48, 2, 0)'
+  'ecef2ned(4200952.53, 172458.5, 4780052.13, 48, 2, 0)'
+  'ned2ecef(200, 100, -300, 48, 2, 0)'
+  'ecef2aer(4200952.53, 172458.5, 4780052.13, 48, 2, 0)' 'aer2ecef(45, 30, 10000, 48, 2, 0)'
+  'enu2aer(186.28, 286.84, 939.69)' 'aer2enu(33, 70, 1000)'
+  'ned2aer(286.84, 186.28, -939.69)' 'aer2ned(33, 70, 1000)'  # at one place
+  'ecef2enuv(-200000, 400000, 80000, 28, 139)' 'enu2ecefv(186.28, 286.84, 939.69, 28, 139)'
+      # steps that are turned, not moved
+  'ecef2nedv(-200000, 400000, 80000, 28, 139)' 'ned2ecefv(286.84, 186.28, -939.69, 28, 139)'
+  'ecefoffset(48, 2, 0, 48.001, 2.001, 10)' 'elevation(46.017, 7.75, 1673, 45.977, 7.658, 4531)'
+      # [dx, dy, dz]; [elevation, distance, course]
+  'referenceellipsoid("wgs84")' 'referenceellipsoid("moon", "km")'
+  'wgs84ellipsoid("km")' 'referencesphere("earth", "km")'  # [half axis, eccentricity]; a radius
+  'spheroid("wgs84")' 'spheroid("wgs84", "surfacearea")'  # the facts of an ellipsoid
+  'axes2ecc(5, 3)' 'majaxis(3, 4/5)' 'minaxis(5, 4/5)'
+  'ecc2flat(4/5)' 'flat2ecc(1/5)' 'ecc2n(4/5)' 'n2ecc(1/4)'  # exact: axes, eccentricity, flattening
+  'rcurve("parallel", "wgs84", 45)' 'rcurve("meridian", "wgs84", 45)'
+  'rcurve("transverse", "wgs84", 45)'  # radii of the surface
+  'rsphere("authalic", "wgs84")' 'rsphere("rectifying", "wgs84")'
+  'rsphere("eqavol", "wgs84")' 'rsphere("curve", "wgs84", 30)'  # spheres for an ellipsoid
+  'rsphere("biaxial", "wgs84")' 'rsphere("triaxial", "wgs84", "norm")'
+  'rsphere("euler", 42, 82, 44, 100, "wgs84")'
+  'convertlat("wgs84", 45, "geodetic", "geocentric")'
+  'convertlat("wgs84", 45, "geodetic", "authalic")'  # a latitude as one of another kind
+  'convertlat("wgs84", 45, "conformal", "geodetic")'
+  'convertlat("wgs84", 45, "geodetic", "rectifying")'
+  'convertlat("wgs84", 45, "geodetic", "isometric")'
+  'geocentriclatitude(45, 1/298.257223563)' 'parametriclatitude(45, 1/298.257223563)'
+  'geodeticlatitudefromgeocentric(45, 1/298.257223563)'
+  'geodeticlatitudefromparametric(45, 1/298.257223563)'
+  'meridianarc(0, 90)' 'meridianfwd(0, 1000000)'
+      # the length of the meridian from the equator to the pole; the latitude a length north
+
+The earth: units of lengths and angles (exact), angles as texts, zones, maps:
+  'km2nm(1.852)' 'km2sm(1)' 'nm2km(1)' 'nm2sm(1)' 'sm2km(1)' 'sm2nm(1)'
+      # kilometres, nautical miles of 1852 m, statute miles of 6336000/3937 m
+  'deg2km(1)' 'km2deg(100)' 'deg2nm(1)' 'nm2deg(60)' 'deg2sm(1)' 'sm2deg(69)' 'deg2km(1, "moon")'
+      # arcs of the earth of 6371 km as lengths
+  'rad2km(1)' 'km2rad(6371)' 'rad2nm(1)' 'nm2rad(100)' 'rad2sm(1)' 'sm2rad(100)' 'deg2km(1, 3390)'
+      # in radians; on a sphere of another radius
+  'unitsratio("cm", "in")' 'unitsratio("km", "nm")'
+  'unitsratio("deg", "rad")' 'earthradius("km")' 'earthradius()'  # what turns one unit into another
+  'distdim(100, "km", "nm")' 'distdim(1, "deg", "km")' 'angledim(180, "degrees", "radians")'
+  'todegrees("radians", pi)' 'toradians("degrees", 90)'
+  'fromdegrees("radians", 180)' 'fromradians("degrees", pi/6)'
+  'wrapto180([-190, 181, 360, 540])' 'wrapto360([-190, 360, 361, 720])'
+  'wraptopi([-4, 3pi, 5pi/2])' 'wrapto2pi([-4, 4pi, 5pi/2])'  # whole turns taken off
+  'npi2pi(270)' 'zero22pi(-90)' 'roundn(pi, -3)' 'roundn(1234.5678, 2)'
+      # the old names; rounded to a power of ten
+  'dms2degrees([12, 30, 36])' 'dm2degrees([12, 30.5])' 'degrees2dms(-12.51)' 'degrees2dm(12.51)'
+      # degrees, minutes and seconds
+  'angl2str(-12.5, "ns")' 'angl2str(-12.5125, "ew", "degrees2dms", -4)'
+  'angl2str(12.345678, "pm", "degrees2dm", -3)'  # an angle as a text
+  'str2angle("12-30-15-S")' 'str2angle("123d30m00sW")' 'str2angle("1233000S")'
+  'str2angle(angl2str(-12.5125, "ns", "degrees2dms", -4))'  # and back
+  'timezone(21)' 'timezone([139.7, -122.4])' 'utmzone(52.52, 13.405)' 'utmzone("31U")'
+      # [hours, letter] of a zone of time; the zones of UTM
+  'projfwd("mercator", 45, 10)' 'projinv("mercator", 0.1, 0.5)'
+      # [x, y] on a map of the unit sphere, and [lat, lon] back
+  'projfwd("mercator", 45, 10, "ellipsoid", "wgs84", "parallels", 30, "origin", [0, 5])'
+      # an ellipsoid, a parallel of true length, a middle
+  'projfwd("webmercator", 52.2297, 21.0122)' 'projfwd("equirectangular", 45, 10, "radius", 6371)'
+  'projfwd("sinusoidal", 45, 10, "ellipsoid", "wgs84")'
+  'projfwd("eqacylin", 45, 10, "parallels", 30)'
+  'projfwd("mollweide", 45, 10)' 'projinv("mollweide", 0.1, 0.9)'  # maps that keep areas
+  'projfwd("stereographic", 80, 10, "origin", [90, 0], "ellipsoid", "wgs84", "scale", 0.994)'
+  'projfwd("gnomonic", 45, 10, "origin", [40, 0])'
+  'projfwd("orthographic", 45, 10, "origin", [40, 0])'
+  'projfwd("eqdazim", 45, 10, "origin", [40, 0], "ellipsoid", "wgs84")'  # maps around a place
+  'projfwd("eqaazim", 45, 10, "origin", [90, 0], "ellipsoid", "wgs84")'
+  'projfwd("tranmerc", 45, 10, "origin", [0, 9], "ellipsoid", "wgs84", "scale", 0.9996)'
+  'projfwd("utm", 52.52, 13.405)'  # transverse Mercator; UTM
+  'projinv("utm", 391779.5, 5820072.6, "zone", "33U")'
+  'deg2utm(52.52, 13.405)' 'utm2deg(391779.5, 5820072.6, "33U")'
+  'projfwd("lambert", 45, 10, "parallels", [33, 45], "origin", [23, -96], "ellipsoid", "wgs84")'
+      # cones: Lambert (angles stay),
+  'projfwd("albers", 45, 10, "parallels", [29.5, 45.5], "origin", [23, -96], "ellipsoid", "wgs84")'
+      # Albers (areas stay),
+  'projfwd("eqdconic", 45, 10, "parallels", [20, 60], "origin", [40, -96], "ellipsoid", "wgs84")'
+      # and with true lengths along the meridians
+  'mfwdtran("mercator", 45, 10)' 'minvtran("mercator", 0.1, 0.5)'
+  'projfwd("mercator", [0, 30, 60], [0, 10, 20])' 'projfwd("mercator", 0.5, 0.2, "radians")'
+
+Networks of neurons: functions of units, losses, layers:
+  'relu([-2, 0, 3/2, x])' 'leakyrelu([-2, 3], 1/4)'
+  'clippedrelu([-1, 3, 9], 4)' 'elu([-1, 2])' 'poslin(-3)'
+      # exact; of a name a formula with a slope
+  'sigmoid(1)' 'sigmoid(x)' 'logsig(0.5)' 'tansig(1/2)' 'softplus(0)'
+  'softsign([-3, 0, 1])' 'gelu(1.0)' 'swish(1)' 'mish(1.0)'
+  'purelin(x + 1)' 'satlin([-1, 1/2, 3])' 'satlins([-3, 1/2, 3])' 'hardlim([-1, 0, 2])'
+  'hardlims([-1, 0, 2])' 'radbas([0, 1, x])' 'tribas([-2, -1/2, 1/4])'
+  'netinv([2, -4, x])' 'diff(sigmoid(x), x)' 'diff(relu(x), x)' 'integrate(sigmoid(x), x)'
+      # they are expressions: slopes and integrals
+  'softmax([1, 2, 3])' 'softmax([1.0, 2.0, 3.0])'
+  'softmax([[0, 0], [ln(3), 0]])' 'compet([1, 5, 3, 5])'  # chances that add up to 1; the winner
+  'mse([1, 2, 3], [1, 3, 5])' 'sse([1, 2, 3], [1, 3, 5])'
+  'mae([1, 2, 3], [1, 3, 5])' 'mse([a, b], [1, 2])'  # losses: exact, with names too
+  'l2loss([[1, 2], [3, 4]], [[1, 1], [1, 1]])'
+  'l1loss([[1, 2], [3, 4]], [[1, 1], [1, 1]])' 'huber([0, 0, 0], [1/2, 1, 3])'
+      # rows are observations
+  'crossentropy([1/2, 1/4, 1/4], [0, 1, 0])'
+  'crossentropy([[1/2, 1/2], [1/4, 3/4]], [[1, 0], [0, 1]])' 'crossentropy([p, 1 - p], [1, 0])'
+  'fullyconnect([1, 2], [[1, 0], [0, 1], [1, 1]], [10, 20, 30])'
+  'fullyconnect([x, y], [[a, b]], [c])'  # W*x + b
+  'dlconv([1, 2, 3, 4, 5], [1, 0, -1])' 'dlconv([1, 2, 3, 4, 5], [1, 1, 1], "padding", "same")'
+  'dlconv([1, 2, 3, 4, 5], [1, 1], "stride", 2)'  # a window moved over data
+  'dlconv([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 0], [0, -1]])'
+  'dlconv([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 1], [1, 1]], 1/2, "stride", 2, "padding", 1)'
+  'maxpool([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2)'
+  'maxpool([1, 3, 2, 5, 4], 2, "stride", 2)' 'avgpool([1, 3, 2, 5, 4], 2)'
+      # the largest, the mean under a window
+  'batchnorm([[1, 10], [3, 30]], [0, 0], [1, 1])' 'layernorm([1, 2, 3, 4], 0, 1)'
+      # columns, rows brought to the mean 0 and the variance 1
+  'embed([3, 1, 3], [[1, 2], [3, 4], [5, 6]])' 'onehotencode(["b", "a", "c", "a"])'
+  'onehotdecode([[0.1, 0.7, 0.2], [0.5, 0.2, 0.3]], ["cat", "dog", "bird"])'
+  'ind2vec([1, 3, 2, 3])' 'vec2ind(ind2vec([2, 1, 3]))'
+  'confusionmat([1, 2, 2, 3, 3, 3], [1, 2, 3, 3, 3, 1])'
+      # classes as columns of 0 and 1; who was taken for whom
+  'lstm([[1, 2], [3, 4]], [0], [0], [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]], [[0.1],'\
+'      [0.2], [0.3], [0.4]], [0, 0, 0, 0])'
+      # long and short memory
+  'gru([[1, 2], [3, 4]], [0], [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]], [[0.1], [0.2], [0.3]], [0, 0,'\
+'      0])'
+      # gated units: [values after every row, the last]
+  'mapminmax([1, 2, 5])' 'mapstd([1, 2, 3], 10, 2)' 'divideblock(10)'
+      # data between -1 and 1; to a mean and a spread; cut for training, checking, testing
+  'dlgradient(mse([w*1 + b, w*2 + b], [3, 5]), [w, b])' 'dlgradient(x^2*y, [x, y])'
+      # the slopes of a loss by its weights
+  'sgdmupdate([1, 2], [1/2, -1/2], [])' 'adamupdate([1.0, 2.0], [0.5, -0.5], [], [], 1)'
+  'rmspropupdate([1.0, 2.0], [0.5, -0.5], [])'  # one step of training
+
+Networks of neurons: a network is a list of layers [weights, biases, "function"]:
+  'feedforwardnet([2, 3, 1])' 'feedforwardnet([2, 3, 1], "relu", 7)'
+  'patternnet([2, 3, 2])' 'fitnet([1, 2, 1])'  # 2 inputs, 3 units, 1 output; a seed; classes
+  'predict([[[[1, 2]], [0], "tanh"]], [x, y])'
+  'predict([[[[1, 2], [3, 4]], [1, -1], "relu"], [[[1, 1]], [0], "purelin"]], [[1, -1], [1/2,'\
+'      1/3]])'
+      # exact where it can be
+  'predict(feedforwardnet([2, 3, 1]), [0.5, -0.25])' 'forward([[[[1, 2]], [0], "tanh"]], [0, 0])'
+  'n := trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1,'\
+'      0]); predict(n, [[0, 0], [0, 1], [1, 0], [1, 1]])'
+      # XOR learned
+  'trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0],'\
+'      "report")[[2 : 4]]'
+      # [loss, steps, largest slope left]
+  'trainnet(feedforwardnet([1, 1]), [1, 2, 3, 4], [3, 5, 7, 9])'
+  'train(feedforwardnet([1, 1]), [1, 2, 3, 4], [3, 5, 7, 9], "l2", 0.1, "report")[[2]]'
+      # a line; with a price on large weights
+  'n := trainnet(patternnet([2, 3, 2]), [[0, 0], [0, 1], [1, 0], [1, 1]], [1, 2, 2,'\
+'      1]); classify(n, [[0, 0], [0, 1], [1, 0], [1, 1]])'
+      # classes by their numbers
+  'classify(patternnet([2, 3, 2]), [0.5, -0.25], ["no", "yes"])'
+  'trainnet(feedforwardnet([1, 3, 1], "sigmoid", 1), [0, 0.5, 1], [0, 0.25, 1], "epochs", 5,'\
+'      "report")[[2 : 3]]'
+  'perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8])'
+  'perform([[[[2]], [1], "purelin"]], [1, 2, 3], [3, 5, 8], "mae")'  # the loss of a network on data
+  'perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 0, 0, 1])'
+  'predict(perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 1]), [[0, 0], [1, 1]])'
+      # the rule of the perceptron, exact
+  'newlind([[1], [2], [3]], [2, 4, 7])' 'predict(newlind([[1], [2], [3]], [2, 4, 7]), [4])'
+      # a line of least squares, exact
+  'predict(newrbe([[0], [1], [2]], [1, 3, 2]), [[0], [1], [2], [1/2]])'
+      # radial units through every target
 
 Real numbers only, quaternions, digits and forms of the output:
   -r 'x^3 = -8'  # real numbers only: x = -2

@@ -45,6 +45,24 @@
 -e	range(true)	error: the ends and the step of a range must be real numbers
 -e	range(-7/3)	[]
 -e	range(0.5)	[]
+-e	table(0)	error: table: a variable is a list of values, 0 is none
+-e	table(1)	error: table: a variable is a list of values, 1 is none
+-e	table(-1)	error: table: a variable is a list of values, -1 is none
+-e	table(1/2)	error: table: a variable is a list of values, 1/2 is none
+-e	table(2)	error: table: a variable is a list of values, 2 is none
+-e	table(i)	error: table: a variable is a list of values, i is none
+-e	table(inf)	error: table: a variable is a list of values, inf is none
+-e	table(-inf)	error: table: a variable is a list of values, -inf is none
+-e	table(undefined)	error: table: a variable is a list of values, undefined is none
+-e	table(10^20)	error: table: a variable is a list of values, 100000000000000000000 is none
+-e	table(10^(-20))	error: table: a variable is a list of values, 1/100000000000000000000 is none
+-e	table(x)	error: table: a variable is a list of values, x is none
+-e	table([])	table("Var1", [])
+-e	table([1, 2])	table("Var1", [1, 2])
+-e	table("text")	error: table: a variable is a list of values, "text" is none
+-e	table(true)	error: table: a variable is a list of values, true is none
+-e	table(-7/3)	error: table: a variable is a list of values, -7/3 is none
+-e	table(0.5)	error: table: a variable is a list of values, 1/2 is none
 -e	length(0)	error: length needs a list, 0 is none
 -e	length(1)	error: length needs a list, 1 is none
 -e	length(-1)	error: length needs a list, -1 is none
@@ -680,21 +698,3 @@
 -e	isnonnegative(-1)	false
 -e	isnonnegative(1/2)	true
 -e	isnonnegative(2)	true
--e	isnonnegative(i)	false
--e	isnonnegative(inf)	false
--e	isnonnegative(-inf)	false
--e	isnonnegative(undefined)	false
--e	isnonnegative(10^20)	true
--e	isnonnegative(10^(-20))	true
--e	isnonnegative(x)	isnonnegative(x)
--e	isnonnegative([])	false
--e	isnonnegative([1, 2])	false
--e	isnonnegative("text")	isnonnegative("text")
--e	isnonnegative(true)	false
--e	isnonnegative(-7/3)	false
--e	isnonnegative(0.5)	true
--e	median(0)	error: median needs a list of values that is not empty
--e	median(1)	error: median needs a list of values that is not empty
--e	median(-1)	error: median needs a list of values that is not empty
--e	median(1/2)	error: median needs a list of values that is not empty
--e	median(2)	error: median needs a list of values that is not empty

@@ -1,0 +1,700 @@
+-e	fortran(true)	"      t0 = .true."
+-e	fortran(-7/3)	"      t0 = -7.0D0/3.0D0"
+-e	fortran(0.5)	"      t0 = 1.0D0/2.0D0"
+-e	matlabcode(0)	"0"
+-e	matlabcode(1)	"1"
+-e	matlabcode(-1)	"-1"
+-e	matlabcode(1/2)	"1/2"
+-e	matlabcode(2)	"2"
+-e	matlabcode(i)	"1i"
+-e	matlabcode(inf)	"Inf"
+-e	matlabcode(-inf)	"-Inf"
+-e	matlabcode(undefined)	"NaN"
+-e	matlabcode(10^20)	"100000000000000000000"
+-e	matlabcode(10^(-20))	"1/100000000000000000000"
+-e	matlabcode(x)	"x"
+-e	matlabcode([])	"[]"
+-e	matlabcode([1, 2])	"[1, 2]"
+-e	matlabcode("text")	error: matlabcode: MATLAB has no function for string
+-e	matlabcode(true)	"true"
+-e	matlabcode(-7/3)	"-7/3"
+-e	matlabcode(0.5)	"1/2"
+-e	matlabfunction(0)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(1)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(-1)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(1/2)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(2)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(i)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(inf)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(-inf)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(undefined)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(10^20)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(10^(-20))	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(x)	[x] -> x
+-e	matlabfunction([])	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction([1, 2])	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction("text")	[text] -> "text"
+-e	matlabfunction(true)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(-7/3)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	matlabfunction(0.5)	error: matlabfunction: the expression has no variable; "Vars", [x] names one
+-e	subexpr(0)	[0, []]
+-e	subexpr(1)	[1, []]
+-e	subexpr(-1)	[-1, []]
+-e	subexpr(1/2)	[1/2, []]
+-e	subexpr(2)	[2, []]
+-e	subexpr(i)	[i, []]
+-e	subexpr(inf)	[inf, []]
+-e	subexpr(-inf)	[-inf, []]
+-e	subexpr(undefined)	[undefined, []]
+-e	subexpr(10^20)	[100000000000000000000, []]
+-e	subexpr(10^(-20))	[1/100000000000000000000, []]
+-e	subexpr(x)	[x, []]
+-e	subexpr([])	[[], []]
+-e	subexpr([1, 2])	[[1, 2], []]
+-e	subexpr("text")	["text", []]
+-e	subexpr(true)	[true, []]
+-e	subexpr(-7/3)	[-7/3, []]
+-e	subexpr(0.5)	[0.5, []]
+-e	cse(0)	[[], 0]
+-e	cse(1)	[[], 1]
+-e	cse(-1)	[[], -1]
+-e	cse(1/2)	[[], 1/2]
+-e	cse(2)	[[], 2]
+-e	cse(i)	[[], i]
+-e	cse(inf)	[[], inf]
+-e	cse(-inf)	[[], -inf]
+-e	cse(undefined)	[[], undefined]
+-e	cse(10^20)	[[], 100000000000000000000]
+-e	cse(10^(-20))	[[], 1/100000000000000000000]
+-e	cse(x)	[[], x]
+-e	cse([])	[[], []]
+-e	cse([1, 2])	[[], [1, 2]]
+-e	cse("text")	[[], "text"]
+-e	cse(true)	[[], true]
+-e	cse(-7/3)	[[], -7/3]
+-e	cse(0.5)	[[], 0.5]
+-e	pretty(0)	0
+-e	pretty(1)	1
+-e	pretty(-1)	-1
+-e	pretty(1/2)	1|-|2
+-e	pretty(2)	2
+-e	pretty(i)	i
+-e	pretty(inf)	inf
+-e	pretty(-inf)	- inf
+-e	pretty(undefined)	undefined
+-e	pretty(10^20)	100000000000000000000
+-e	pretty(10^(-20))	          1|---------------------|100000000000000000000
+-e	pretty(x)	x
+-e	pretty([])	[]
+-e	pretty([1, 2])	[1, 2]
+-e	pretty("text")	"text"
+-e	pretty(true)	true
+-e	pretty(-7/3)	  7|- -|  3
+-e	pretty(0.5)	1|-|2
+-e	tf(0)	tf([0], [1])
+-e	tf(1)	tf([1], [1])
+-e	tf(-1)	tf([-1], [1])
+-e	tf(1/2)	tf([1], [2])
+-e	tf(2)	tf([2], [1])
+-e	tf(i)	tf([i], [1])
+-e	tf(inf)	tf([inf], [1])
+-e	tf(-inf)	tf([-inf], [1])
+-e	tf(undefined)	tf([undefined], [1])
+-e	tf(10^20)	tf([100000000000000000000], [1])
+-e	tf(10^(-20))	tf([1], [100000000000000000000])
+-e	tf(x)	tf([x], [1])
+-e	tf([])	error: tf needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tf([1, 2])	error: tf needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tf("text")	error: tf([numerator], [denominator][, Ts]), tf("s"), tf(system)
+-e	tf(true)	tf([true], [1])
+-e	tf(-7/3)	tf([-7], [3])
+-e	tf(0.5)	tf([1], [2])
+-e	zpk(0)	zpk([], [], 0)
+-e	zpk(1)	zpk([], [], 1)
+-e	zpk(-1)	zpk([], [], -1)
+-e	zpk(1/2)	zpk([], [], 1/2)
+-e	zpk(2)	zpk([], [], 2)
+-e	zpk(i)	zpk([], [], i)
+-e	zpk(inf)	zpk([], [], inf)
+-e	zpk(-inf)	zpk([], [], -inf)
+-e	zpk(undefined)	undefined
+-e	zpk(10^20)	zpk([], [], 100000000000000000000)
+-e	zpk(10^(-20))	zpk([], [], 1/100000000000000000000)
+-e	zpk(x)	zpk([], [], x)
+-e	zpk([])	error: zpk needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpk([1, 2])	error: zpk needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpk("text")	error: zpk needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpk(true)	zpk([], [], true)
+-e	zpk(-7/3)	zpk([], [], -7/3)
+-e	zpk(0.5)	zpk([], [], 0.5)
+-e	ss(0)	ss([[]], [], [[]], [[0]])
+-e	ss(1)	ss([[]], [], [[]], [[1]])
+-e	ss(-1)	ss([[]], [], [[]], [[-1]])
+-e	ss(1/2)	ss([[]], [], [[]], [[1/2]])
+-e	ss(2)	ss([[]], [], [[]], [[2]])
+-e	ss(i)	ss([[]], [], [[]], [[i]])
+-e	ss(inf)	ss([[]], [], [[]], [[inf]])
+-e	ss(-inf)	ss([[]], [], [[]], [[-inf]])
+-e	ss(undefined)	ss([[]], [], [[]], [[undefined]])
+-e	ss(10^20)	ss([[]], [], [[]], [[100000000000000000000]])
+-e	ss(10^(-20))	ss([[]], [], [[]], [[1/100000000000000000000]])
+-e	ss(x)	ss([[]], [], [[]], [[x]])
+-e	ss([])	error: ss needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ss([1, 2])	error: ss needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ss("text")	error: ss needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ss(true)	ss([[]], [], [[]], [[true]])
+-e	ss(-7/3)	ss([[]], [], [[]], [[-7/3]])
+-e	ss(0.5)	ss([[]], [], [[]], [[0.5]])
+-e	tfdata(0)	[[0], [1]]
+-e	tfdata(1)	[[1], [1]]
+-e	tfdata(-1)	[[-1], [1]]
+-e	tfdata(1/2)	[[1], [2]]
+-e	tfdata(2)	[[2], [1]]
+-e	tfdata(i)	[[i], [1]]
+-e	tfdata(inf)	[[inf], [1]]
+-e	tfdata(-inf)	[[-inf], [1]]
+-e	tfdata(undefined)	[[undefined], [1]]
+-e	tfdata(10^20)	[[100000000000000000000], [1]]
+-e	tfdata(10^(-20))	[[1], [100000000000000000000]]
+-e	tfdata(x)	[[x], [1]]
+-e	tfdata([])	error: tfdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tfdata([1, 2])	error: tfdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tfdata("text")	error: tfdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tfdata(true)	[[true], [1]]
+-e	tfdata(-7/3)	[[-7], [3]]
+-e	tfdata(0.5)	[[1], [2]]
+-e	zpkdata(0)	[[], [], 0]
+-e	zpkdata(1)	[[], [], 1]
+-e	zpkdata(-1)	[[], [], -1]
+-e	zpkdata(1/2)	[[], [], 1/2]
+-e	zpkdata(2)	[[], [], 2]
+-e	zpkdata(i)	[[], [], i]
+-e	zpkdata(inf)	[[], [], inf]
+-e	zpkdata(-inf)	[[], [], -inf]
+-e	zpkdata(undefined)	[[], [], undefined]
+-e	zpkdata(10^20)	[[], [], 100000000000000000000]
+-e	zpkdata(10^(-20))	[[], [], 1/100000000000000000000]
+-e	zpkdata(x)	[[], [], x]
+-e	zpkdata([])	error: zpkdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpkdata([1, 2])	error: zpkdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpkdata("text")	error: zpkdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zpkdata(true)	[[], [], true]
+-e	zpkdata(-7/3)	[[], [], -7/3]
+-e	zpkdata(0.5)	[[], [], 0.5]
+-e	ssdata(0)	[[[]], [], [[]], [[0]]]
+-e	ssdata(1)	[[[]], [], [[]], [[1]]]
+-e	ssdata(-1)	[[[]], [], [[]], [[-1]]]
+-e	ssdata(1/2)	[[[]], [], [[]], [[1/2]]]
+-e	ssdata(2)	[[[]], [], [[]], [[2]]]
+-e	ssdata(i)	[[[]], [], [[]], [[i]]]
+-e	ssdata(inf)	[[[]], [], [[]], [[inf]]]
+-e	ssdata(-inf)	[[[]], [], [[]], [[-inf]]]
+-e	ssdata(undefined)	[[[]], [], [[]], [[undefined]]]
+-e	ssdata(10^20)	[[[]], [], [[]], [[100000000000000000000]]]
+-e	ssdata(10^(-20))	[[[]], [], [[]], [[1/100000000000000000000]]]
+-e	ssdata(x)	[[[]], [], [[]], [[x]]]
+-e	ssdata([])	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ssdata([1, 2])	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ssdata("text")	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	ssdata(true)	[[[]], [], [[]], [[true]]]
+-e	ssdata(-7/3)	[[[]], [], [[]], [[-7/3]]]
+-e	ssdata(0.5)	[[[]], [], [[]], [[0.5]]]
+-e	tf2sym(0)	0
+-e	tf2sym(1)	1
+-e	tf2sym(-1)	-1
+-e	tf2sym(1/2)	1/2
+-e	tf2sym(2)	2
+-e	tf2sym(i)	i
+-e	tf2sym(inf)	inf
+-e	tf2sym(-inf)	-inf
+-e	tf2sym(undefined)	undefined
+-e	tf2sym(10^20)	100000000000000000000
+-e	tf2sym(10^(-20))	1/100000000000000000000
+-e	tf2sym(x)	x
+-e	tf2sym([])	error: tf2sym needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tf2sym([1, 2])	error: tf2sym needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tf2sym("text")	error: tf2sym needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	tf2sym(true)	true
+-e	tf2sym(-7/3)	-7/3
+-e	tf2sym(0.5)	0.5
+-e	tf2ss(0)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(1)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(-1)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(1/2)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(2)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(i)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(inf)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(-inf)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(undefined)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(10^20)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(10^(-20))	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(x)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss([])	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss([1, 2])	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss("text")	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(true)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(-7/3)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2ss(0.5)	error: tf2ss takes 2 argument(s), 1 given
+-e	tf2zp(0)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(1)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(-1)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(1/2)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(2)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(i)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(inf)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(-inf)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(undefined)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(10^20)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(10^(-20))	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(x)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp([])	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp([1, 2])	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp("text")	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(true)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(-7/3)	error: tf2zp takes 2 argument(s), 1 given
+-e	tf2zp(0.5)	error: tf2zp takes 2 argument(s), 1 given
+-e	zp2tf(0)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(1)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(-1)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(1/2)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(2)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(i)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(inf)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(-inf)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(undefined)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(10^20)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(10^(-20))	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(x)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf([])	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf([1, 2])	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf("text")	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(true)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(-7/3)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2tf(0.5)	error: zp2tf takes 3 argument(s), 1 given
+-e	zp2ss(0)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(1)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(-1)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(1/2)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(2)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(i)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(inf)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(-inf)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(undefined)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(10^20)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(10^(-20))	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(x)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss([])	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss([1, 2])	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss("text")	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(true)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(-7/3)	error: zp2ss takes 3 argument(s), 1 given
+-e	zp2ss(0.5)	error: zp2ss takes 3 argument(s), 1 given
+-e	isct(0)	true
+-e	isct(1)	true
+-e	isct(-1)	true
+-e	isct(1/2)	true
+-e	isct(2)	true
+-e	isct(i)	true
+-e	isct(inf)	true
+-e	isct(-inf)	true
+-e	isct(undefined)	true
+-e	isct(10^20)	true
+-e	isct(10^(-20))	true
+-e	isct(x)	true
+-e	isct([])	error: isct needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isct([1, 2])	error: isct needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isct("text")	error: isct needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isct(true)	true
+-e	isct(-7/3)	true
+-e	isct(0.5)	true
+-e	isdt(0)	false
+-e	isdt(1)	false
+-e	isdt(-1)	false
+-e	isdt(1/2)	false
+-e	isdt(2)	false
+-e	isdt(i)	false
+-e	isdt(inf)	false
+-e	isdt(-inf)	false
+-e	isdt(undefined)	false
+-e	isdt(10^20)	false
+-e	isdt(10^(-20))	false
+-e	isdt(x)	false
+-e	isdt([])	error: isdt needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isdt([1, 2])	error: isdt needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isdt("text")	error: isdt needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isdt(true)	false
+-e	isdt(-7/3)	false
+-e	isdt(0.5)	false
+-e	isproper(0)	true
+-e	isproper(1)	true
+-e	isproper(-1)	true
+-e	isproper(1/2)	true
+-e	isproper(2)	true
+-e	isproper(i)	true
+-e	isproper(inf)	true
+-e	isproper(-inf)	true
+-e	isproper(undefined)	true
+-e	isproper(10^20)	true
+-e	isproper(10^(-20))	true
+-e	isproper(x)	true
+-e	isproper([])	error: isproper needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isproper([1, 2])	error: isproper needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isproper("text")	error: isproper needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isproper(true)	true
+-e	isproper(-7/3)	true
+-e	isproper(0.5)	true
+-e	isstable(0)	true
+-e	isstable(1)	true
+-e	isstable(-1)	true
+-e	isstable(1/2)	true
+-e	isstable(2)	true
+-e	isstable(i)	true
+-e	isstable(inf)	true
+-e	isstable(-inf)	true
+-e	isstable(undefined)	true
+-e	isstable(10^20)	true
+-e	isstable(10^(-20))	true
+-e	isstable(x)	true
+-e	isstable([])	error: isstable needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isstable([1, 2])	error: isstable needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isstable("text")	error: isstable needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	isstable(true)	true
+-e	isstable(-7/3)	true
+-e	isstable(0.5)	true
+-e	pole(0)	[]
+-e	pole(1)	[]
+-e	pole(-1)	[]
+-e	pole(1/2)	[]
+-e	pole(2)	[]
+-e	pole(i)	[]
+-e	pole(inf)	[]
+-e	pole(-inf)	[]
+-e	pole(undefined)	[]
+-e	pole(10^20)	[]
+-e	pole(10^(-20))	[]
+-e	pole(x)	[]
+-e	pole([])	error: pole needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	pole([1, 2])	error: pole needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	pole("text")	error: pole needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	pole(true)	[]
+-e	pole(-7/3)	[]
+-e	pole(0.5)	[]
+-e	zero(0)	[]
+-e	zero(1)	[]
+-e	zero(-1)	[]
+-e	zero(1/2)	[]
+-e	zero(2)	[]
+-e	zero(i)	[]
+-e	zero(inf)	[]
+-e	zero(-inf)	[]
+-e	zero(undefined)	[]
+-e	zero(10^20)	[]
+-e	zero(10^(-20))	[]
+-e	zero(x)	[]
+-e	zero([])	error: zero needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zero([1, 2])	error: zero needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zero("text")	error: zero needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	zero(true)	[]
+-e	zero(-7/3)	[]
+-e	zero(0.5)	[]
+-e	dcgain(0)	0
+-e	dcgain(1)	1
+-e	dcgain(-1)	-1
+-e	dcgain(1/2)	1/2
+-e	dcgain(2)	2
+-e	dcgain(i)	i
+-e	dcgain(inf)	inf
+-e	dcgain(-inf)	-inf
+-e	dcgain(undefined)	undefined
+-e	dcgain(10^20)	100000000000000000000
+-e	dcgain(10^(-20))	1/100000000000000000000
+-e	dcgain(x)	x
+-e	dcgain([])	error: dcgain needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	dcgain([1, 2])	error: dcgain needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	dcgain("text")	error: dcgain needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	dcgain(true)	true
+-e	dcgain(-7/3)	-7/3
+-e	dcgain(0.5)	0.5
+-e	damp(0)	[[], [], []]
+-e	damp(1)	[[], [], []]
+-e	damp(-1)	[[], [], []]
+-e	damp(1/2)	[[], [], []]
+-e	damp(2)	[[], [], []]
+-e	damp(i)	[[], [], []]
+-e	damp(inf)	[[], [], []]
+-e	damp(-inf)	[[], [], []]
+-e	damp(undefined)	[[], [], []]
+-e	damp(10^20)	[[], [], []]
+-e	damp(10^(-20))	[[], [], []]
+-e	damp(x)	[[], [], []]
+-e	damp([])	error: damp needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	damp([1, 2])	error: damp needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	damp("text")	error: damp needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	damp(true)	[[], [], []]
+-e	damp(-7/3)	[[], [], []]
+-e	damp(0.5)	[[], [], []]
+-e	minreal(0)	tf([0], [1])
+-e	minreal(1)	tf([1], [1])
+-e	minreal(-1)	tf([-1], [1])
+-e	minreal(1/2)	tf([1], [2])
+-e	minreal(2)	tf([2], [1])
+-e	minreal(i)	tf([i], [1])
+-e	minreal(inf)	tf([inf], [1])
+-e	minreal(-inf)	tf([-inf], [1])
+-e	minreal(undefined)	tf([undefined], [1])
+-e	minreal(10^20)	tf([100000000000000000000], [1])
+-e	minreal(10^(-20))	tf([1], [100000000000000000000])
+-e	minreal(x)	tf([x], [1])
+-e	minreal([])	error: minreal needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	minreal([1, 2])	error: minreal needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	minreal("text")	error: minreal needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	minreal(true)	tf([true], [1])
+-e	minreal(-7/3)	tf([-7], [3])
+-e	minreal(0.5)	tf([1], [2])
+-e	bode(0)	[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(1)	[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(-1)	[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(1/2)	[[0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(2)	[[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(i)	[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(inf)	error: inf is no number
+-e	bode(-inf)	error: -inf is no number
+-e	bode(undefined)	error: undefined is no number
+-e	bode(10^20)	[[100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(10^(-20))	[[1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(x)	error: x is no number
+-e	bode([])	error: bode needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	bode([1, 2])	error: bode needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	bode("text")	error: bode needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	bode(true)	error: true is no number
+-e	bode(-7/3)	[[2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333, 2.3333333333333333333333333333333], [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	bode(0.5)	[[0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0.10797751623277096551891970537805, 0.11659144011798317361491523968958, 0.12589254117941672104239541063958, 0.13593563908785256228985975802953, 0.14677992676220695409205171148169, 0.15848931924611134852021013733915, 0.17113283041617807937976208369161, 0.18478497974222909393036851557153, 0.19952623149688796013524553967395, 0.21544346900318837217592935665194, 0.23263050671536260802257973851684, 0.25118864315095801110850320677993, 0.27122725793320282053432456364546, 0.29286445646252365189650853973912, 0.31622776601683793319988935444327, 0.34145488738336016621128375100989, 0.3686945064519575429822029099764, 0.39810717055349725077025230508775, 0.42986623470822768720743725435799, 0.46415888336127788924100763509194, 0.50118723362727228500155418688495, 0.54116952654646367467288428949908, 0.58434141337351759379047156301659, 0.63095734448019324943436013662234, 0.68129206905796128549798817963002, 0.73564225445964132347243755743779, 0.79432823472428150206591828283639, 0.85769589859089411613536812143783, 0.92611872812879349315932436124845, 1, 1.0797751623277096551891970537805, 1.1659144011798317361491523968958, 1.2589254117941672104239541063958, 1.3593563908785256228985975802953, 1.4677992676220695409205171148169, 1.5848931924611134852021013733915, 1.7113283041617807937976208369161, 1.8478497974222909393036851557153, 1.9952623149688796013524553967395, 2.1544346900318837217592935665194, 2.3263050671536260802257973851684, 2.5118864315095801110850320677993, 2.7122725793320282053432456364546, 2.9286445646252365189650853973912, 3.1622776601683793319988935444327, 3.4145488738336016621128375100989, 3.686945064519575429822029099764, 3.9810717055349725077025230508775, 4.2986623470822768720743725435799, 4.6415888336127788924100763509194, 5.0118723362727228500155418688495, 5.4116952654646367467288428949908, 5.8434141337351759379047156301659, 6.3095734448019324943436013662234, 6.8129206905796128549798817963002, 7.3564225445964132347243755743779, 7.9432823472428150206591828283639, 8.5769589859089411613536812143783, 9.2611872812879349315932436124845, 10]]
+-e	nyquist(0)	[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(1)	[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(-1)	[[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(1/2)	[[0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(2)	[[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(i)	[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(inf)	error: inf is no number
+-e	nyquist(-inf)	error: -inf is no number
+-e	nyquist(undefined)	error: undefined is no number
+-e	nyquist(10^20)	[[100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000, 100000000000000000000], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(10^(-20))	[[1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20, 1e-20], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(x)	error: x is no number
+-e	nyquist([])	error: nyquist needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	nyquist([1, 2])	error: nyquist needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	nyquist("text")	error: nyquist needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	nyquist(true)	error: true is no number
+-e	nyquist(-7/3)	[[-2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333, -2.3333333333333333333333333333333], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1/10, 10^(1/30)/10, 10^(1/15)/10, 10^(1/10)/10, 10^(2/15)/10, 10^(1/6)/10, 10^(1/5)/10, 10^(7/30)/10, 10^(4/15)/10, 10^(3/10)/10, 10^(1/3)/10, 10^(11/30)/10, 10^(2/5)/10, 10^(13/30)/10, 10^(7/15)/10, sqrt(10)/10, 10^(8/15)/10, 10^(17/30)/10, 10^(3/5)/10, 10^(19/30)/10, 10^(2/3)/10, 10^(7/10)/10, 10^(11/15)/10, 10^(23/30)/10, 10^(4/5)/10, 10^(5/6)/10, 10^(13/15)/10, 10^(9/10)/10, 10^(14/15)/10, 10^(29/30)/10, 1, 10^(1/30), 10^(1/15), 10^(1/10), 10^(2/15), 10^(1/6), 10^(1/5), 10^(7/30), 10^(4/15), 10^(3/10), 10^(1/3), 10^(11/30), 10^(2/5), 10^(13/30), 10^(7/15), sqrt(10), 10^(8/15), 10^(17/30), 10^(3/5), 10^(19/30), 10^(2/3), 10^(7/10), 10^(11/15), 10^(23/30), 10^(4/5), 10^(5/6), 10^(13/15), 10^(9/10), 10^(14/15), 10^(29/30), 10]]
+-e	nyquist(0.5)	[[0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0.10797751623277096551891970537805, 0.11659144011798317361491523968958, 0.12589254117941672104239541063958, 0.13593563908785256228985975802953, 0.14677992676220695409205171148169, 0.15848931924611134852021013733915, 0.17113283041617807937976208369161, 0.18478497974222909393036851557153, 0.19952623149688796013524553967395, 0.21544346900318837217592935665194, 0.23263050671536260802257973851684, 0.25118864315095801110850320677993, 0.27122725793320282053432456364546, 0.29286445646252365189650853973912, 0.31622776601683793319988935444327, 0.34145488738336016621128375100989, 0.3686945064519575429822029099764, 0.39810717055349725077025230508775, 0.42986623470822768720743725435799, 0.46415888336127788924100763509194, 0.50118723362727228500155418688495, 0.54116952654646367467288428949908, 0.58434141337351759379047156301659, 0.63095734448019324943436013662234, 0.68129206905796128549798817963002, 0.73564225445964132347243755743779, 0.79432823472428150206591828283639, 0.85769589859089411613536812143783, 0.92611872812879349315932436124845, 1, 1.0797751623277096551891970537805, 1.1659144011798317361491523968958, 1.2589254117941672104239541063958, 1.3593563908785256228985975802953, 1.4677992676220695409205171148169, 1.5848931924611134852021013733915, 1.7113283041617807937976208369161, 1.8478497974222909393036851557153, 1.9952623149688796013524553967395, 2.1544346900318837217592935665194, 2.3263050671536260802257973851684, 2.5118864315095801110850320677993, 2.7122725793320282053432456364546, 2.9286445646252365189650853973912, 3.1622776601683793319988935444327, 3.4145488738336016621128375100989, 3.686945064519575429822029099764, 3.9810717055349725077025230508775, 4.2986623470822768720743725435799, 4.6415888336127788924100763509194, 5.0118723362727228500155418688495, 5.4116952654646367467288428949908, 5.8434141337351759379047156301659, 6.3095734448019324943436013662234, 6.8129206905796128549798817963002, 7.3564225445964132347243755743779, 7.9432823472428150206591828283639, 8.5769589859089411613536812143783, 9.2611872812879349315932436124845, 10]]
+-e	margin(0)	[inf, inf, undefined, undefined]
+-e	margin(1)	[inf, inf, undefined, undefined]
+-e	margin(-1)	[inf, inf, undefined, undefined]
+-e	margin(1/2)	[inf, inf, undefined, undefined]
+-e	margin(2)	[inf, inf, undefined, undefined]
+-e	margin(i)	[inf, inf, undefined, undefined]
+-e	margin(inf)	[inf, inf, undefined, undefined]
+-e	margin(-inf)	[inf, inf, undefined, undefined]
+-e	margin(undefined)	[inf, inf, undefined, undefined]
+-e	margin(10^20)	[inf, inf, undefined, undefined]
+-e	margin(10^(-20))	[inf, inf, undefined, undefined]
+-e	margin(x)	[inf, inf, undefined, undefined]
+-e	margin([])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	margin([1, 2])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	margin("text")	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	margin(true)	[inf, inf, undefined, undefined]
+-e	margin(-7/3)	[inf, inf, undefined, undefined]
+-e	margin(0.5)	[inf, inf, undefined, undefined]
+-e	allmargin(0)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(-1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(1/2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(i)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(-inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(undefined)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(10^20)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(10^(-20))	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(x)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin([])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	allmargin([1, 2])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	allmargin("text")	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	allmargin(true)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(-7/3)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(0.5)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	hinfnorm(0)	[0, 0]
+-e	hinfnorm(1)	[1, 0]
+-e	hinfnorm(-1)	[1, 0]
+-e	hinfnorm(1/2)	[0.5, 0]
+-e	hinfnorm(2)	[2, 0]
+-e	hinfnorm(i)	[1, 0]
+-e	hinfnorm(inf)	error: inf is no number
+-e	hinfnorm(-inf)	error: -inf is no number
+-e	hinfnorm(undefined)	error: undefined is no number
+-e	hinfnorm(10^20)	[100000000000000000000, 0]
+-e	hinfnorm(10^(-20))	[1e-20, 0]
+-e	hinfnorm(x)	error: x is no number
+-e	hinfnorm([])	error: hinfnorm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	hinfnorm([1, 2])	error: hinfnorm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	hinfnorm("text")	error: hinfnorm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	hinfnorm(true)	error: true is no number
+-e	hinfnorm(-7/3)	[2.3333333333333333333333333333333, 0]
+-e	hinfnorm(0.5)	[0.5, 0]
+-e	h2norm(0)	inf
+-e	h2norm(1)	inf
+-e	h2norm(-1)	inf
+-e	h2norm(1/2)	inf
+-e	h2norm(2)	inf
+-e	h2norm(i)	inf
+-e	h2norm(inf)	inf
+-e	h2norm(-inf)	inf
+-e	h2norm(undefined)	inf
+-e	h2norm(10^20)	inf
+-e	h2norm(10^(-20))	inf
+-e	h2norm(x)	inf
+-e	h2norm([])	error: h2norm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	h2norm([1, 2])	error: h2norm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	h2norm("text")	error: h2norm needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	h2norm(true)	inf
+-e	h2norm(-7/3)	inf
+-e	h2norm(0.5)	inf
+-e	step(0)	0
+-e	step(1)	1
+-e	step(-1)	-1
+-e	step(1/2)	1/2
+-e	step(2)	2
+-e	step(i)	i
+-e	step(inf)	inf
+-e	step(-inf)	-inf
+-e	step(undefined)	undefined
+-e	step(10^20)	100000000000000000000
+-e	step(10^(-20))	1/100000000000000000000
+-e	step(x)	x
+-e	step([])	error: step needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	step([1, 2])	error: step needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	step("text")	error: step needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	step(true)	true
+-e	step(-7/3)	-7/3
+-e	step(0.5)	0.5
+-e	impulse(0)	0
+-e	impulse(1)	diracdelta(t)
+-e	impulse(-1)	-diracdelta(t)
+-e	impulse(1/2)	diracdelta(t)/2
+-e	impulse(2)	2diracdelta(t)
+-e	impulse(i)	i*diracdelta(t)
+-e	impulse(inf)	inf*diracdelta(t)
+-e	impulse(-inf)	-inf*diracdelta(t)
+-e	impulse(undefined)	undefined
+-e	impulse(10^20)	100000000000000000000diracdelta(t)
+-e	impulse(10^(-20))	diracdelta(t)/100000000000000000000
+-e	impulse(x)	x*diracdelta(t)
+-e	impulse([])	error: impulse needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	impulse([1, 2])	error: impulse needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	impulse("text")	error: impulse needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	impulse(true)	diracdelta(t)*true
+-e	impulse(-7/3)	-7diracdelta(t)/3
+-e	impulse(0.5)	0.5diracdelta(t)
+-e	stepinfo(0)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0, "SettlingMax", 0, "Overshoot", 0, "Undershoot", 0, "Peak", 0, "PeakTime", inf)
+-e	stepinfo(1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.9, "SettlingMax", 1, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", inf)
+-e	stepinfo(-1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -1, "SettlingMax", -0.9, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", inf)
+-e	stepinfo(1/2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.45, "SettlingMax", 0.5, "Overshoot", 0, "Undershoot", 0, "Peak", 0.5, "PeakTime", inf)
+-e	stepinfo(2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 1.8, "SettlingMax", 2, "Overshoot", 0, "Undershoot", 0, "Peak", 2, "PeakTime", inf)
+-e	stepinfo(i)	error: stepinfo: the function has a value that is not real there
+-e	stepinfo(inf)	error: inf is no number
+-e	stepinfo(-inf)	error: -inf is no number
+-e	stepinfo(undefined)	error: undefined is no number
+-e	stepinfo(10^20)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 90000000000000000000, "SettlingMax", 100000000000000000000, "Overshoot", 0, "Undershoot", 0, "Peak", 100000000000000000000, "PeakTime", inf)
+-e	stepinfo(10^(-20))	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 9e-21, "SettlingMax", 1e-20, "Overshoot", 0, "Undershoot", 0, "Peak", 1e-20, "PeakTime", inf)
+-e	stepinfo(x)	error: x is no number
+-e	stepinfo([])	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	stepinfo([1, 2])	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	stepinfo("text")	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	stepinfo(true)	error: true is no number
+-e	stepinfo(-7/3)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -2.3333333333333333333333333333333, "SettlingMax", -2.1, "Overshoot", 0, "Undershoot", 0, "Peak", 2.3333333333333333333333333333333, "PeakTime", inf)
+-e	stepinfo(0.5)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.45, "SettlingMax", 0.5, "Overshoot", 0, "Undershoot", 0, "Peak", 0.5, "PeakTime", inf)
+-e	d2c(0)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(1)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(-1)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(1/2)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(2)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(i)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(inf)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(-inf)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(undefined)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(10^20)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(10^(-20))	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(x)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c([])	error: d2c needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	d2c([1, 2])	error: d2c needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	d2c("text")	error: d2c needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	d2c(true)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(-7/3)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	d2c(0.5)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
+-e	pid(0)	tf([0], [1])
+-e	pid(1)	tf([1], [1])
+-e	pid(-1)	tf([-1], [1])
+-e	pid(1/2)	tf([1], [2])
+-e	pid(2)	tf([2], [1])
+-e	pid(i)	tf([i], [1])
+-e	pid(inf)	tf([inf], [1])
+-e	pid(-inf)	tf([-inf], [1])
+-e	pid(undefined)	tf([undefined], [1])
+-e	pid(10^20)	tf([100000000000000000000], [1])
+-e	pid(10^(-20))	tf([1], [100000000000000000000])
+-e	pid(x)	tf([x], [1])
+-e	pid([])	tf([[]], [1])
+-e	pid([1, 2])	tf([[1, 2]], [1])
+-e	pid("text")	tf(["text"], [1])
+-e	pid(true)	tf([true], [1])
+-e	pid(-7/3)	tf([-7], [3])
+-e	pid(0.5)	tf([1], [2])
+-e	rlocus(0)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(1)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(-1)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(1/2)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(2)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(i)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(inf)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(-inf)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(undefined)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(10^20)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(10^(-20))	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(x)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus([])	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	rlocus([1, 2])	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	rlocus("text")	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
+-e	rlocus(true)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(-7/3)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
+-e	rlocus(0.5)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100]]
+-e	esort(0)	[0]
+-e	esort(1)	[1]
+-e	esort(-1)	[-1]
+-e	esort(1/2)	[1/2]
+-e	esort(2)	[2]
+-e	esort(i)	[i]
+-e	esort(inf)	error: inf is no number
+-e	esort(-inf)	error: -inf is no number
+-e	esort(undefined)	error: undefined is no number
+-e	esort(10^20)	[100000000000000000000]
+-e	esort(10^(-20))	[1/100000000000000000000]
+-e	esort(x)	error: x is no number
+-e	esort([])	[]
+-e	esort([1, 2])	[2, 1]
+-e	esort("text")	error: "text" is no number
+-e	esort(true)	error: true is no number
+-e	esort(-7/3)	[-7/3]
+-e	esort(0.5)	[0.5]
+-e	dsort(0)	[0]
+-e	dsort(1)	[1]
+-e	dsort(-1)	[-1]
+-e	dsort(1/2)	[1/2]
+-e	dsort(2)	[2]
+-e	dsort(i)	[i]
+-e	dsort(inf)	error: inf is no number
+-e	dsort(-inf)	error: -inf is no number
+-e	dsort(undefined)	error: undefined is no number
+-e	dsort(10^20)	[100000000000000000000]
+-e	dsort(10^(-20))	[1/100000000000000000000]
+-e	dsort(x)	error: x is no number
+-e	dsort([])	[]
