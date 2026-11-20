@@ -166,6 +166,128 @@ fn every_example_runs() {
     tidy();
 }
 
+/// The pictures of the repository as the help text lists them after the word `Pictures`:
+/// the name of every file on a line of its own, the input that made it on the lines after it.
+fn pictures(help: &str) -> Vec<(String, String)> {
+    let mut found: Vec<(String, String)> = Vec::new();
+    for line in help
+        .lines()
+        .skip_while(|l| !l.starts_with("Pictures:"))
+        .skip(1)
+        .take_while(|l| !l.trim().is_empty())
+    {
+        if let Some(name) = line.strip_prefix("    ").filter(|l| !l.starts_with(' ')) {
+            found.push((name.to_string(), String::new()));
+        } else if line.starts_with("        ")
+            && let Some((_, input)) = found.last_mut()
+        {
+            if !input.is_empty() {
+                input.push(' ');
+            }
+            input.push_str(line.trim());
+        }
+    }
+    found
+}
+
+/// The arguments of a call `name(a, b, ...)`, apart at the commas outside of its brackets
+/// and quotes.
+fn arguments_of(call: &str) -> Vec<String> {
+    let inner = &call[call.find('(').map_or(0, |at| at + 1)..call.len() - 1];
+    let (mut depth, mut quoted) = (0, false);
+    let (mut all, mut one) = (Vec::new(), String::new());
+    for c in inner.chars() {
+        match c {
+            '"' => quoted = !quoted,
+            '(' | '[' | '{' if !quoted => depth += 1,
+            ')' | ']' | '}' if !quoted => depth -= 1,
+            ',' if !quoted && depth == 0 => {
+                all.push(one.trim().to_string());
+                one.clear();
+                continue;
+            }
+            _ => {}
+        }
+        one.push(c);
+    }
+    all.push(one.trim().to_string());
+    all
+}
+
+/// Every picture of the directory `jxls` stands in the help text with the input that made
+/// it. The inputs take minutes each as they are; with small sizes every one of them runs.
+#[test]
+fn the_pictures_of_the_repository_have_their_inputs() {
+    let (help, _, _) = output(&["--help"]);
+    let listed = pictures(&help);
+    assert!(listed.len() >= 80, "only {} pictures", listed.len());
+    let names: std::collections::BTreeSet<&str> =
+        listed.iter().map(|(name, _)| name.as_str()).collect();
+    assert_eq!(names.len(), listed.len(), "a name stands twice");
+    // the files of the directory are these, when the directory came with its pictures
+    let there: std::collections::BTreeSet<String> =
+        std::fs::read_dir(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("jxls"))
+            .map(|entries| {
+                entries
+                    .flatten()
+                    .filter_map(|e| e.file_name().into_string().ok())
+                    .filter(|name| name.ends_with(".jxl"))
+                    .collect()
+            })
+            .unwrap_or_default();
+    if !there.is_empty() {
+        let missing: Vec<&&str> = names.iter().filter(|n| !there.contains(**n)).collect();
+        let unlisted: Vec<&String> = there.iter().filter(|n| !names.contains(n.as_str())).collect();
+        assert!(
+            missing.is_empty() && unlisted.is_empty(),
+            "not in jxls: {missing:?}; not in the help text: {unlisted:?}"
+        );
+    }
+    let sizes = ["width", "height", "frames", "effort", "fps", "slices", "voxels"];
+    for (name, input) in &listed {
+        assert!(
+            input.starts_with(&format!("save_jxl(\"{name}\", ")) && input.ends_with(')'),
+            "{name}: {input}"
+        );
+        let all = arguments_of(input);
+        let chosen = |choice: &str| all.iter().any(|a| a.starts_with(&format!("{choice} = ")));
+        // (the values of tetration come from the program tet, which is not asked here)
+        let drawing = &all[1];
+        if ["^^", "slog(", "ssrt(", "tet("].iter().any(|t| drawing.contains(t)) {
+            continue;
+        }
+        let mut small: Vec<String> = all
+            .iter()
+            .filter(|a| !sizes.iter().any(|s| a.starts_with(&format!("{s} = "))))
+            .cloned()
+            .collect();
+        let more: &[&str] = if drawing.starts_with("plot4d(") {
+            &["width = 10", "height = 10", "frames = 3"]
+        } else if drawing.starts_with("view4d(") {
+            &["width = 24", "voxels = 8"]
+        } else {
+            &["width = 48", "height = 27"]
+        };
+        small.extend(more.iter().map(|m| m.to_string()));
+        small.push("effort = 1".to_string());
+        if chosen("frames") && !drawing.starts_with("plot4d(") {
+            small.push("frames = 2".to_string());
+        }
+        if chosen("slices") {
+            small.push("slices = 2".to_string());
+        }
+        let small = format!("save_jxl({})", small.join(", "));
+        let (out, err, ok) = output(&[&small]);
+        assert!(ok && err.is_empty(), "{small}: {err}");
+        let last = out.lines().last().unwrap_or_default();
+        assert!(
+            last.starts_with(&format!("saved {name}: JPEG XL, ")),
+            "{small}: {last}"
+        );
+    }
+    tidy();
+}
+
 #[test]
 fn every_function_and_constant_has_an_example() {
     let (help, _, _) = output(&["--help"]);

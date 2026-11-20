@@ -1484,7 +1484,7 @@ fn build_call(f: &names::Func, mut a: Vec<Expr>) -> Res {
         ("gamma", 2 | 3) => call("uppergamma", a),
         ("beta", 3) => call("betainc", a),
         ("lambertw", 2) => call("lambertw", a),
-        ("select", 3) => call("lfilter", a),
+        ("select", 3 | 4) => call("lfilter", a),
         ("inv", 3) => crate::mstats::rewrite("finv", a)?,
         (name, _) if crate::mstats::is_name(name) => crate::mstats::rewrite(name, a)?,
         ("pdf" | "cdf" | "quantile" | "random", 2..)

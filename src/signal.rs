@@ -357,6 +357,39 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             };
             along(&a[0], size, &|v| cosine(v, name == "idct"))?
         }
+        ("lfilter", 4) => {
+            // from a state: the transposed direct form, as filtic gives the state
+            let (b, den, x, mut state) = (flat(0)?, flat(1)?, flat(2)?, flat(3)?);
+            let lead = den
+                .first()
+                .filter(|d| !crate::simplify::is_zero(d))
+                .ok_or("filter(b, a, x, zi): the first coefficient of a must not be zero")?;
+            if state.len() + 1 != b.len().max(den.len()) {
+                return Err(format!(
+                    "filter(b, a, x, zi): the state zi has {} value(s) for these coefficients, not {}",
+                    b.len().max(den.len()) - 1,
+                    state.len()
+                ));
+            }
+            let scaled = |v: &[Expr]| -> Vec<Expr> {
+                v.iter().map(|c| tidy(div(c.clone(), lead.clone()))).collect()
+            };
+            let (b, den) = (scaled(&b), scaled(&den));
+            let at = |v: &[Expr], k: usize| v.get(k).cloned().unwrap_or_else(Expr::zero);
+            let mut y: Vec<Expr> = Vec::with_capacity(x.len());
+            for value in &x {
+                let out = tidy(add(vec![mul(vec![at(&b, 0), value.clone()]), at(&state, 0)]));
+                for i in 0..state.len() {
+                    state[i] = tidy(add(vec![
+                        mul(vec![at(&b, i + 1), value.clone()]),
+                        at(&state, i + 1),
+                        mul(vec![Expr::minus_one(), at(&den, i + 1), out.clone()]),
+                    ]));
+                }
+                y.push(out);
+            }
+            Expr::list(y)
+        }
         ("lfilter", 3) => {
             let (b, den, x) = (flat(0)?, flat(1)?, flat(2)?);
             let lead = den

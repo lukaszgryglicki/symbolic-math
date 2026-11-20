@@ -175,7 +175,7 @@ interp2||5|6|interp2(x, y, Z, xq, yq): the value between the points of a grid, s
 gbasis|groebnerbasis|1|2|gbasis([polynomials], [variables]): a reduced Groebner basis in the lexicographic order of the variables
 
 # signals
-!select|2|3|select(list, f): the entries for which f is true; filter(b, a, x) with three lists: the filter of lfilter
+!select|2|4|select(list, f): the entries for which f is true; filter(b, a, x) with three lists: the filter of lfilter; filter(b, a, x, zi): from the state zi
 fft||1|2|the discrete Fourier transform of a list: entry k is the sum of x[j]*e^(-2 pi i j k/n); fft(x, n): of n points; of a matrix column by column
 ifft||1|2|the inverse of fft
 fft2||1|1|the Fourier transform of a matrix in both directions
@@ -184,7 +184,7 @@ fftshift||1|1|the halves of a list swapped, so that the middle of a transform co
 ifftshift||1|1|the inverse of fftshift
 dct||1|2|the discrete cosine transform (the second kind, with orthonormal waves)
 idct||1|2|the inverse of dct
-lfilter||2|3|lfilter(b, a, x): the output y of the filter a[1]*y[n] = b[1]*x[n] + b[2]*x[n-1] + ... - a[2]*y[n-1] - ...; lfilter(butter(2, 0.3), x): b and a as the pair that a function that makes filters gives
+lfilter||2|4|lfilter(b, a, x): the output y of the filter a[1]*y[n] = b[1]*x[n] + b[2]*x[n-1] + ... - a[2]*y[n-1] - ...; lfilter(butter(2, 0.3), x): b and a as the pair that a function that makes filters gives; lfilter(b, a, x, zi): from the state zi that filtic makes of earlier outputs and inputs
 conv2||2|3|conv2(A, B): the convolution of two matrices; conv2(A, B, "same"), conv2(A, B, "valid")
 xcorr||1|2|xcorr(x, y): the correlation of two lists at every shift, 2n - 1 values; xcorr(x): of x with itself
 upsample||2|2|upsample(x, n): n - 1 zeros after every entry
@@ -937,7 +937,7 @@ feedback||2|3|feedback(G, H[, sign]): G with H from its output back to its input
 minreal||1|1|minreal(system): the same system without the zeros and poles that cancel
 evalfr||2|2|evalfr(system, s): the transfer function at that complex place
 freqresp||2|2|freqresp(system, w or [w]): the transfer function at the frequency w: at s = i*w, or at z = e^(i*w*Ts) for a sampled system
-bode||1|2|bode(system, [w]): [gains, phases in degrees] at those frequencies, the phase without jumps of 360; bode(system): [gains, phases, frequencies] at frequencies that it chooses
+bode|nichols|1|2|bode(system, [w]): [gains, phases in degrees] at those frequencies, the phase without jumps of 360; bode(system): [gains, phases, frequencies] at frequencies that it chooses
 nyquist||1|2|nyquist(system, [w]): [real parts, imaginary parts] of the response at those frequencies; without them [real, imaginary, frequencies]
 margin||1|1|margin(system): [gain margin, phase margin in degrees, frequency where the phase crosses -180, frequency where the gain crosses 1] of the loop; inf where nothing crosses
 allmargin||1|1|allmargin(system): the record of every gain margin and phase margin with their frequencies, the delay margins, and whether the closed loop is stable
@@ -965,12 +965,30 @@ dlqr||4|5|dlqr(A, B, Q, R[, N]): [K, X, poles]: the same for a sampled system an
 lqe||5|5|lqe(A, G, C, Q, R): [L, P, poles]: the gain of the watcher (Kalman's filter) for x' = A*x + G*w, y = C*x + v with the spreads Q of w and R of v
 acker||3|3|acker(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places, for one input (the formula of Ackermann)
 place||3|3|place(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places
+hsvd||1|1|hsvd(system): the singular values of Hankel of a stable system, the largest first: how much every state of its balanced form carries from the input to the output
+balreal||1|1|balreal(system): [the balanced system as ss(A, B, C, D), the singular values of Hankel]: its Gramians of steering and of watching are equal and diagonal
+balred||2|3|balred(system, order[, "matchdc" | "truncate"]): the system with that many states that stays nearest: the weakest states of the balanced form are put at rest, so that the gain at frequency 0 stays ("matchdc", the usual), or cut off ("truncate")
+covar||2|2|covar(system, W): [the spread of the output, the covariance of the states] when white noise of the intensity W drives the system
+dlqe||5|5|dlqe(A, G, C, Q, R): [M, P, Z, poles]: the gain M of Kalman's filter for the sampled system x[n+1] = A*x[n] + G*w[n], y = C*x + v, the covariance P of the error before a sample is seen and Z after it
+lyapchol||2|2|lyapchol(A, B): the upper triangle R with R'*R = X, where A*X + X*A' + B*B' = 0
+dlyapchol||2|2|dlyapchol(A, B): the upper triangle R with R'*R = X, where A*X*A' - X + B*B' = 0
+initial||2|3|initial(system, x0): the output of the system left alone from the state x0, an expression in t (the first samples of a sampled system); initial(system, x0, t or [t]): its values at those times
+gensig||2|4|gensig("sine" | "square" | "pulse", period[, duration[, step]]): [values, times] of that signal; 5 periods and 64 steps a period unless said
+lqi||3|6|lqi(system, Q, R) or lqi(A, B, C, D, Q, R): [K, X, poles]: the feedback u = -K*[x; xi] with the integral xi of the error r - y as a state more, so that the output follows r
+ss2ss||2|2|ss2ss(system, T): the same system with the states T*x: ss(T*A*inv(T), T*B, C*inv(T), D)
+ord2||2|2|ord2(wn, zeta): the system 1/(s^2 + 2*zeta*wn*s + wn^2) of the second order with the natural frequency wn and the damping zeta
+d2d||2|2|d2d(sampled system, Ts): the same system sampled with another time Ts between samples (the input held between them)
+reg||3|3|reg(system, K, L): the controller made of the gain K of the states and the gain L of the watcher, ss(A - B*K - L*C + L*D*K, L, -K, 0); it is fed back with the sign +1
+filt||1|3|filt([numerator], [denominator][, Ts]): the sampled system with polynomials in 1/z, as the filters of signals are written
+!sigma|1|2|sigma(n): the sum of the divisors of n, sigma(n, k) of their k-th powers; sigma(system, [w]): the gains of a system at those frequencies (its one singular value), without them [gains, frequencies]
 bodeplot||1|*|bodeplot(system[, [frequencies]]): the gain in decibels above and the phase in degrees below, along the frequency by powers of ten
 nyquistplot||1|*|nyquistplot(system[, [frequencies]]): the response in the plane as the frequency grows, with its mirror for the frequencies below zero and a cross at -1
 pzplot|pzmap|1|*|pzplot(system): a cross at every pole and a circle at every zero; with the unit circle for a sampled system
 rlocusplot||1|*|rlocusplot(system[, [gains]]): where the poles of the closed loop go as the gain grows from 0: from the poles (crosses) to the zeros (circles) or away without end
 stepplot||1|*|stepplot(system[, the last time]): the answer to a step along the time (for a sampled system: the number of samples)
 impulseplot||1|*|impulseplot(system[, the last time]): the answer to an impulse along the time (for a sampled system: the number of samples)
+initialplot||2|*|initialplot(system, x0[, the last time]): the output of the system left alone from the state x0 along the time (for a sampled system: the number of samples)
+nicholsplot||1|*|nicholsplot(system[, [frequencies]]): the gain in decibels against the phase in degrees as the frequency grows, with a cross at -180 degrees and 0 dB
 # filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction
 rectwin|boxcar|1|2|rectwin(n): the window of n ones
 hann||1|2|hann(n): the window 0.5 - 0.5*cos(2*pi*k/(n - 1)), zero at both ends; hann(n, "periodic"): the first n values of the window of n + 1
@@ -1068,6 +1086,22 @@ chirp||4|5|chirp(t, f0, t1, f1[, "linear" | "quadratic" | "logarithmic"]): a cos
 diric||2|2|diric(x, n): Dirichlet's kernel sin(n*x/2)/(n*sin(x/2))
 !hilbert|1|1|hilbert(n): the Hilbert matrix; hilbert([x]): the analytic signal of a list, whose imaginary part is its Hilbert transform
 zplane||1|*|zplane(b, a): the zeros (circles) and the poles (crosses) of a sampled filter, with the unit circle
+# more of the design of filters: least squares, samples of the response, equal ripples, another rate, lattices, phases, delays
+firls||3|4|firls(n, f, a[, w]): the filter of the order n (n + 1 taps that read the same from both ends) with the least square error against the gains a at the edges f of the bands (pairs of frequencies from 0 to 1, 1 is half the sampling rate), a weight w for every band; an odd order with a gain at 1 takes one more
+firpm|remez|3|4|firpm(n, f, a[, w]): the filter of Parks and McClellan: the same bands as firls, the greatest weighted error as small as it can be (ripples of one size), by the exchange of Remez with the greatest errors sought on the whole bands
+fir2||3|6|fir2(n, f, m[, points of the grid[, points of a slope]][, window]): the filter whose response goes through the gains m at the frequencies f (from 0 to 1; two equal ones are a jump): the response on a grid, back to taps, times a window (Hamming unless given)
+resample||3|3|resample(x, p, q): the values at p/q times the rate: p - 1 zeros after every value, a lowpass of sinc with Kaiser's window, every q-th value
+phasez||1|3|phasez(b, a, n): [phases, w]: the phase of the response of a sampled filter at n frequencies from 0 up to pi (512 unless given), without jumps of 2 pi
+phasedelay||1|3|phasedelay(b, a, n): [delays, w]: the phase turned round, over the frequency: the delay of a wave in samples
+zerophase||1|3|zerophase(b, 1, n): [values, w]: the real response of a filter of linear phase (taps that read the same from both ends, or the same with the other sign) without the delay of half its length
+finddelay||2|2|finddelay(x, y): by how many places y comes after x: the shift at which their correlation is greatest (of equal ones the nearest to 0)
+dtw||2|3|dtw(x, y): [distance, places of x, places of y]: the two lists laid along each other with places that may stand again, so that the sum of the distances of the pairs is least; dtw(x, y, "squared") with squares
+residuez||2|2|residuez(b, a): [residues, poles, polynomial part] of the ratio b/a of polynomials in 1/z: sum of r/(1 - p/z) (the next power for a pole that stands again) and k[1] + k[2]/z + ...
+tf2latc||1|2|tf2latc(b): the reflections of the lattice of a filter b; tf2latc(b, a): [reflections of a, ladder] of the filter b/a (tf2latc([1], a) for a filter of poles alone)
+latc2tf||1|2|latc2tf(k): the filter of a lattice with the reflections k; latc2tf(k, "allpole"): [[1], a]; latc2tf(k, v): [b, a] of a lattice with the ladder v
+latcfilt||2|3|latcfilt(k, x): values through the lattice with the reflections k; latcfilt(k, v, x): through a lattice with a ladder; latcfilt(k, [1], x): poles alone
+fftfilt||2|2|fftfilt(b, x): the values x through the filter with the taps b
+filtic||3|4|filtic(b, a, y[, x]): the state of the filter b/a that has had the outputs y and the inputs x before (the latest first), as lfilter takes it
 # a function of a complex number as a shape of four dimensions: frames are the third, colours the fourth
 plot4d||1|*|plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b as a shape of four dimensions: the real and the imaginary part of z and of f(z) lie on the width, the height, the frames and the colours of a picture (arg_real = width, arg_imag = height, val_real = frame, val_imag = color unless chosen otherwise: any of the four on any side); save_jxl("name.jxl", plot4d(sin(z))) saves the frames, whose alpha says where the shape is; plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i, the name z may be left out, f may be a text; chosen with name = value: width, height, frames, colors (512 each), palette (a name or colours), range_real = [least, greatest], range_imag, fill = surface | below | above, thickness, rotate = [yaw, pitch, roll] or rotate(yaw, pitch, roll) (degrees that the body is turned), bits, effort, quality, distance, fps (16), and the words gray, reverse and normalize (every frame stretched on its own: what it holds fills the picture and takes the whole palette); as a statement: the frame in the middle as characters
 view4d|plot4dview look4d snapshot4d|1|*|view4d(f, z, a, b): the shape of plot4d seen from outside as one picture, as an eye in space sees its box of voxels: what is hidden is left out, the surface is lighter where it faces the light, the frames of plot4d stand upright; with the usual sides the real part of f(z) stands as heights over the plane of z in the colours of the imaginary part. save_png("name.png", view4d(sin(z))) saves it (frames = n: the eye goes around). The eye is found by the program unless azimuth, elevation or viewpoint say where it stands (roll, zoom, perspective, fog, views, stereo as for the drawings of space); voxels = n or [across, upwards, frames] sets the cubes of the body, and every choice of the shape of plot4d is taken: arg_real, arg_imag, val_real, val_imag, fill, thickness, range_real, range_imag, rotate, normalize, colors, palette; as a statement it is a picture of characters

@@ -84,6 +84,7 @@ pub mod sandbox;
 pub mod scene;
 pub mod series;
 pub mod sigdesign;
+pub mod sigmore;
 pub mod signal;
 pub mod simplify;
 pub mod solve;

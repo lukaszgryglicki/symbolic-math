@@ -116,7 +116,7 @@ fn bessel_i0(x: &Float) -> Float {
 }
 
 /// The windows by their names: `n` values that fall towards both ends.
-fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, String> {
+pub(crate) fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<Float>, String> {
     if n == 0 {
         return Ok(Vec::new());
     }

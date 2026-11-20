@@ -1874,6 +1874,8 @@ pub fn is_control_chart(name: &str) -> bool {
             | "rlocusplot"
             | "stepplot"
             | "impulseplot"
+            | "initialplot"
+            | "nicholsplot"
             | "zplane"
     )
 }
@@ -2112,6 +2114,62 @@ fn nyquistplot(a: &[Expr]) -> Result<Drawing, String> {
     Ok(drawing)
 }
 
+/// `nicholsplot(system)`: the gain in decibels against the phase in degrees as the frequency
+/// grows, and a cross where the phase is -180 degrees and the gain 1.
+fn nicholsplot(a: &[Expr]) -> Result<Drawing, String> {
+    let name = "nicholsplot";
+    let [_, gains, phases] = a else {
+        return Err("nicholsplot(system[, [frequencies]])".into());
+    };
+    let (gains, phases) = (reals(gains, name)?, reals(phases, name)?);
+    let points: Vec<(f64, f64)> = phases
+        .iter()
+        .zip(&gains)
+        .filter(|(_, gain)| **gain > 0.0)
+        .map(|(phase, gain)| (*phase, 20.0 * log10_of(*gain)))
+        .collect();
+    if points.len() < 2 {
+        return Err("nicholsplot needs two frequencies or more where the gain is not zero".into());
+    }
+    let wide = |(low, high): (f64, f64)| {
+        if high > low {
+            (low, high)
+        } else {
+            (low - 1.0, high + 1.0)
+        }
+    };
+    let phase_span = wide(span(&points.iter().map(|p| p.0).chain([-180.0]).collect::<Vec<_>>()));
+    let gain_span = wide(span(&points.iter().map(|p| p.1).chain([0.0]).collect::<Vec<_>>()));
+    let (across, upwards) = ((phase_span.1 - phase_span.0) / 90.0, (gain_span.1 - gain_span.0) / 50.0);
+    let mut drawing = Drawing::new(
+        chart(phase_span, gain_span),
+        vec![
+            Item::Line {
+                points: points.iter().map(|(phase, gain)| flat(*phase, *gain)).collect(),
+                paint: Paint::Curve(0),
+                weight: 1.0,
+            },
+            Item::Segments {
+                pairs: vec![
+                    [flat(-180.0 - across, -upwards), flat(-180.0 + across, upwards)],
+                    [flat(-180.0 - across, upwards), flat(-180.0 + across, -upwards)],
+                ],
+                paint: Paint::Curve(1),
+                weight: 1.5,
+            },
+        ],
+    );
+    drawing.facts = vec![format!(
+        "the gain from {} dB to {} dB against the phase from {} to {} degrees at {} frequencies; a cross at -180 degrees and 0 dB",
+        label(gain_span.0),
+        label(gain_span.1),
+        label(phase_span.0),
+        label(phase_span.1),
+        points.len()
+    )];
+    Ok(drawing)
+}
+
 /// `pzplot(system)`: a cross at every pole, a circle at every zero; for a sampled system
 /// the unit circle too.
 fn pzplot(a: &[Expr]) -> Result<Drawing, String> {
@@ -2212,11 +2270,14 @@ fn rlocusplot(a: &[Expr]) -> Result<Drawing, String> {
     Ok(drawing)
 }
 
-/// `stepplot(system)`, `impulseplot(system)`: the answer along the time; in steps for a
-/// sampled system.
+/// `stepplot(system)`, `impulseplot(system)`, `initialplot(system, x0)`: the answer along the
+/// time; in steps for a sampled system.
 fn answerplot(name: &str, a: &[Expr]) -> Result<Drawing, String> {
     let [ts, ys, sampled] = a else {
-        return Err(format!("{name}(system[, the last time])"));
+        return Err(match name {
+            "initialplot" => "initialplot(system, x0[, the last time])".to_string(),
+            _ => format!("{name}(system[, the last time])"),
+        });
     };
     let (ts, ys) = (reals(ts, name)?, reals(ys, name)?);
     if ts.len() < 2 || ts.len() != ys.len() {
@@ -2261,7 +2322,8 @@ pub fn build(name: &str, a: &[Expr], detail: usize) -> Result<Drawing, String> {
         "nyquistplot" => nyquistplot(a),
         "pzplot" | "zplane" => pzplot(a),
         "rlocusplot" => rlocusplot(a),
-        "stepplot" | "impulseplot" => answerplot(name, a),
+        "stepplot" | "impulseplot" | "initialplot" => answerplot(name, a),
+        "nicholsplot" => nicholsplot(a),
         "bar3" => bar3(a),
         "histogram2" => histogram2(a),
         "surfc" => surfc(a),

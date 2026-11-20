@@ -1849,25 +1849,16 @@ impl Session {
             // (systems of control are joined by the operations as numbers are)
             Expr::Add(a) => {
                 let items = self.eval_all(a)?;
-                match items.iter().any(crate::control::is_system) {
-                    true => self.systems_joined(true, &items),
-                    false => matrix::add(items),
-                }
+                self.joined(true, items)
             }
             Expr::Mul(a) => {
                 let items = self.eval_all(a)?;
-                match items.iter().any(crate::control::is_system) {
-                    true => self.systems_joined(false, &items),
-                    false => matrix::mul(items),
-                }
+                self.joined(false, items)
             }
             Expr::Pow(b, x) => {
                 let base = crate::radix::plain(self.eval(b)?);
                 let exponent = crate::radix::plain(self.eval(x)?);
-                match crate::control::is_system(&base) {
-                    true => self.system_power(&base, &exponent),
-                    false => matrix::pow(base, exponent),
-                }
+                self.raised(base, exponent)
             }
             Expr::List(a) => Ok(Expr::list(
                 a.iter().map(|x| self.eval(x)).collect::<Result<_, _>>()?,
@@ -1876,7 +1867,11 @@ impl Session {
                 let left = crate::radix::plain(self.eval(a)?);
                 Ok(Expr::rel(*op, left, crate::radix::plain(self.eval(b)?)))
             }
-            Expr::Fn(name, args) => self.call(name, args),
+            // (what a function makes of systems in a list, as sum does, is joined too)
+            Expr::Fn(name, args) => match self.call(name, args)? {
+                out if crate::control::joins_a_system(&out) => self.eval(&out),
+                out => Ok(out),
+            },
         }
     }
 
@@ -2095,6 +2090,9 @@ impl Session {
             return r;
         }
         if let Some(r) = self.sigdesign(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.sigmore(name, &a) {
             return r;
         }
         if let Some(r) = crate::geodesy::call(name, &a) {

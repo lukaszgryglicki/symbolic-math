@@ -418,6 +418,64 @@ fn c_size(a: &CMat) -> Float {
 
 /// The solution X of `A'*X + X*A - X*G*X + Q = 0` that makes `A - G*X` stable, by the sign
 /// of the matrix [[A, -G], [-Q, -A']]: steps of Newton towards the matrix of signs.
+/// The singular values of Hankel from their squares, the largest first: one that is as
+/// small against the largest as the rounding of the Gramians is no value, it is 0.
+fn weights(squares: Vec<Float>, prec: u32) -> Vec<Float> {
+    let roots: Vec<Float> = squares
+        .into_iter()
+        .map(|x| if x > 0 { x.sqrt() } else { Float::new(prec) })
+        .collect();
+    let least = roots.first().map_or_else(|| Float::new(prec), |top| top.clone() >> (prec / 2 - 12));
+    roots
+        .into_iter()
+        .map(|x| if x > least { x } else { Float::new(prec) })
+        .collect()
+}
+
+/// Whether a list holds a system, in the lists inside it too.
+fn lists_a_system(e: &Expr) -> bool {
+    e.as_list()
+        .is_some_and(|items| items.iter().any(|x| is_system(x) || lists_a_system(x)))
+}
+
+/// Whether a sum, a product or a power holds a system to be joined.
+pub(crate) fn joins_a_system(e: &Expr) -> bool {
+    match e {
+        Expr::Add(parts) | Expr::Mul(parts) => {
+            parts.iter().any(|x| is_system(x) || joins_a_system(x))
+        }
+        Expr::Pow(base, _) => is_system(base) || joins_a_system(base),
+        _ => false,
+    }
+}
+
+/// The lower triangle L with L*L' = M for a symmetric matrix of positive values.
+fn cholesky(m: &CMat) -> Option<CMat> {
+    let size = m.len();
+    let prec = crate::mfun::bits();
+    let mut lower: CMat = vec![vec![Complex::new(prec); size]; size];
+    let top = m.iter().flatten().fold(Float::new(prec), |most, x| most.max(&Float::with_val(prec, x.abs_ref())));
+    let least = top * (Float::with_val(prec, 1) >> (prec / 2));
+    for i in 0..size {
+        for j in 0..=i {
+            let mut sum = m[i][j].clone();
+            for k in 0..j {
+                sum -= Complex::with_val(prec, &lower[i][k] * Complex::with_val(prec, lower[j][k].conj_ref()));
+            }
+            if i == j {
+                let own = sum.real().clone();
+                if own <= least {
+                    return None;
+                }
+                lower[i][i] = Complex::with_val(prec, own.sqrt());
+            } else {
+                lower[i][j] = Complex::with_val(prec, &sum / &lower[j][j]);
+            }
+        }
+    }
+    Some(lower)
+}
+
 fn riccati(a: &CMat, g: &CMat, q: &CMat) -> Result<CMat, String> {
     let n = a.len();
     let prec = a[0][0].prec().0;
@@ -512,6 +570,104 @@ fn riccati_sampled(a: &CMat, g: &CMat, q: &CMat) -> Result<CMat, String> {
 
 impl Session {
     /// The coefficients of a polynomial in a variable, from the highest power.
+    /// The matrices of a stable system and its Gramians of steering and of watching.
+    fn gramians(&mut self, e: &Expr, who: &str) -> Result<([Rows; 4], Option<Expr>, CMat, CMat), String> {
+        let prec = crate::mfun::bits();
+        let (m, ts) = self.with_states(e, who)?;
+        let numbers = decomp::to_complex(&m[0]).map_err(|_| format!("{who}: a system of numbers"))?;
+        let (_, triangle) = decomp::schur(&numbers)?;
+        let stable = (0..triangle.len()).all(|k| match &ts {
+            None => triangle[k][k].real().is_sign_negative() && !triangle[k][k].real().is_zero(),
+            Some(_) => Float::with_val(prec, triangle[k][k].abs_ref()) < 1,
+        });
+        if !stable {
+            return Err(format!("{who}: the system is not stable, its Gramians have no values"));
+        }
+        let name = if ts.is_some() { "dlyap" } else { "lyap" };
+        let steering = matrix::matmul(&m[1], &matrix::transpose(&m[1]))?;
+        let watching = matrix::matmul(&matrix::transpose(&m[2]), &m[2])?;
+        let wc = self.lyapunov(name, &[matrix::from_rows(m[0].clone()), matrix::from_rows(steering)])?;
+        let wo = self.lyapunov(
+            name,
+            &[matrix::from_rows(matrix::transpose(&m[0])), matrix::from_rows(watching)],
+        )?;
+        let numbers = |e: &Expr| -> Result<CMat, String> {
+            to_cmat(&matrix::rows(e).unwrap_or_default(), prec)
+                .map_err(|_| format!("{who}: a system of numbers"))
+        };
+        let (wc, wo) = (numbers(&wc)?, numbers(&wo)?);
+        Ok((m, ts, wc, wo))
+    }
+
+    /// The balanced form of a stable system that can be steered: [A, B, C, D], the time
+    /// between samples, and the values of Hankel (both Gramians are the diagonal of them).
+    fn balanced(&mut self, e: &Expr, who: &str) -> Result<([CMat; 4], Option<Expr>, Vec<Float>), String> {
+        let prec = crate::mfun::bits();
+        let (m, ts, wc, wo) = self.gramians(e, who)?;
+        let size = wc.len();
+        let lower = cholesky(&wc)
+            .ok_or_else(|| format!("{who}: the system cannot be steered in every direction (it has more states than it needs: minreal)"))?;
+        let inner = c_mul(&c_mul(&c_turned(&lower), &wo), &lower);
+        let (u, t) = decomp::schur(&inner)?;
+        let mut order: Vec<usize> = (0..size).collect();
+        order.sort_by(|i, j| {
+            t[*j][*j].real().partial_cmp(t[*i][*i].real()).unwrap_or(std::cmp::Ordering::Equal)
+        });
+        let values = weights(order.iter().map(|k| t[*k][*k].real().clone()).collect(), prec);
+        if values.iter().any(|v| v.is_zero()) {
+            return Err(format!("{who}: a state of the system is not seen at the output (minreal takes it out)"));
+        }
+        let unit = c_unit(size, prec);
+        let lower_inverse = solved(&lower, &unit).ok_or_else(|| format!("{who}: the Gramian has no inverse"))?;
+        let spread = c_mul(&lower, &u);
+        let gathered = c_mul(&c_turned(&u), &lower_inverse);
+        // T = Lc U S^(-1/2) and its inverse S^(1/2) U' Lc^-1, the states in the order of their values
+        let mut to: CMat = vec![vec![Complex::new(prec); size]; size];
+        let mut back = to.clone();
+        for (place, k) in order.iter().enumerate() {
+            let root = values[place].clone().sqrt();
+            // (the sign of a state is free: its largest part in T counts as positive)
+            let largest = (0..size)
+                .max_by(|i, j| {
+                    let (x, y) = (Float::with_val(prec, spread[*i][*k].abs_ref()), Float::with_val(prec, spread[*j][*k].abs_ref()));
+                    x.partial_cmp(&y).unwrap_or(std::cmp::Ordering::Equal)
+                })
+                .unwrap_or(0);
+            let sign = if spread[largest][*k].real().is_sign_negative() { -1 } else { 1 };
+            for i in 0..size {
+                to[i][place] = Complex::with_val(prec, &spread[i][*k] / &root) * sign;
+                back[place][i] = Complex::with_val(prec, &gathered[*k][i] * &root) * sign;
+            }
+        }
+        let numbers = |rows: &Rows| to_cmat(rows, prec).map_err(|_| format!("{who}: a system of numbers"));
+        let (a, b, c, d) = (numbers(&m[0])?, numbers(&m[1])?, numbers(&m[2])?, numbers(&m[3])?);
+        Ok((
+            [c_mul(&c_mul(&back, &a), &to), c_mul(&back, &b), c_mul(&c, &to), d],
+            ts,
+            values,
+        ))
+    }
+
+    /// The system whose answer to an impulse is the output of a system left alone from the
+    /// state x0: C*inv(s*I - A)*x0, and z times that for a sampled one.
+    fn left_alone(&mut self, system: &Expr, x0: &Expr, who: &str) -> Result<Sys, String> {
+        let (m, ts) = self.with_states(system, who)?;
+        let start: Vec<Expr> = list_of(x0).iter().flat_map(list_of).collect();
+        if start.len() != m[0].len() {
+            return Err(format!(
+                "{who}(system, x0, ...): x0 has the {} states of the system",
+                m[0].len()
+            ));
+        }
+        let column: Rows = start.into_iter().map(|x| vec![x]).collect();
+        let (mut num, den) =
+            ss_to_tf(&[m[0].clone(), column, m[2].clone(), vec![vec![Expr::zero()]]])?;
+        if ts.is_some() {
+            num.push(Expr::zero());
+        }
+        Ok(Sys { num: trimmed(num), den, ts })
+    }
+
     fn poly_of(&mut self, p: &Expr, var: &Expr, who: &str) -> Result<Vec<Expr>, String> {
         if !p.has(var) {
             return Ok(vec![p.clone()]);
@@ -583,6 +739,15 @@ impl Session {
             ));
         }
         self.sys_of_expr(e, None, who)
+    }
+
+    /// The matrices of a system that has states (a gain alone has none).
+    fn with_states(&mut self, e: &Expr, who: &str) -> Result<([Rows; 4], Option<Expr>), String> {
+        let (m, ts) = self.matrices(e, who)?;
+        if m[0].first().is_none_or(|row| row.is_empty()) {
+            return Err(format!("{who}: the system has no states, it is a gain alone"));
+        }
+        Ok((m, ts))
     }
 
     /// The matrices of a system: of ss(...) as they are, else the companion form.
@@ -875,6 +1040,42 @@ impl Session {
 
     /// Systems that are added (`sum`) or multiplied, with numbers and ratios of polynomials
     /// in s or z among them: one system.
+    /// A sum or a product of values: systems among them are joined, entry by entry where
+    /// lists stand among them.
+    pub(crate) fn joined(&mut self, sum: bool, items: Vec<Expr>) -> Res {
+        let listed = items.iter().any(|e| e.as_list().is_some());
+        if !listed && items.iter().any(is_system) {
+            return self.systems_joined(sum, &items);
+        }
+        let systems = listed && items.iter().any(|e| is_system(e) || lists_a_system(e));
+        let all = if sum { matrix::add(items)? } else { matrix::mul(items)? };
+        if systems { self.systems_in_lists(all) } else { Ok(all) }
+    }
+
+    /// A power of values: of a system, or of a list that holds systems.
+    pub(crate) fn raised(&mut self, base: Expr, exponent: Expr) -> Res {
+        if is_system(&base) {
+            return self.system_power(&base, &exponent);
+        }
+        let systems = lists_a_system(&base);
+        let all = matrix::pow(base, exponent)?;
+        if systems { self.systems_in_lists(all) } else { Ok(all) }
+    }
+
+    /// The entries of lists worked out again where systems wait in sums, products and powers.
+    fn systems_in_lists(&mut self, e: Expr) -> Res {
+        match &e {
+            Expr::List(items) => Ok(Expr::list(
+                items
+                    .iter()
+                    .map(|x| self.systems_in_lists(x.clone()))
+                    .collect::<Result<_, _>>()?,
+            )),
+            _ if joins_a_system(&e) => self.eval(&e),
+            _ => Ok(e),
+        }
+    }
+
     pub(crate) fn systems_joined(&mut self, sum: bool, items: &[Expr]) -> Res {
         let who = if sum {
             "a sum with a system"
@@ -884,13 +1085,19 @@ impl Session {
         self.without_names(|session| {
             let mut all: Option<Sys> = None;
             for item in items {
+                let other = || {
+                    format!(
+                        "{who}: {item} is no system, no number and no ratio of polynomials in s or z"
+                    )
+                };
                 let next = match is_system(item) {
                     true => session.sys_of(item, who)?,
-                    false => session.sys_of_expr(item, None, who).map_err(|_| {
-                        format!(
-                            "{who}: {item} is no system, no number and no ratio of polynomials in s or z"
-                        )
-                    })?,
+                    false if item.as_list().is_some() || matches!(item, Expr::Rel(..)) => {
+                        return Err(other());
+                    }
+                    false => session
+                        .sys_of_expr(item, None, who)
+                        .map_err(|_| other())?,
                 };
                 all = Some(match all {
                     None => next,
@@ -932,9 +1139,43 @@ impl Session {
         let n = a.len();
         // names that other values have too
         let first_system = a.first().is_some_and(is_system);
+        // the operations by their names join systems as the signs do
+        if a.iter().any(is_system) {
+            let negated = |session: &mut Session, e: &Expr| {
+                session.systems_joined(false, &[Expr::int(-1), e.clone()])
+            };
+            let joined = match (name, n) {
+                ("plus", 2..) => Some(self.systems_joined(true, a)),
+                ("times" | "mtimes", 2..) => Some(self.systems_joined(false, a)),
+                ("minus", 2) => Some(
+                    negated(self, &a[1])
+                        .and_then(|less| self.systems_joined(true, &[a[0].clone(), less])),
+                ),
+                ("uminus", 1) => Some(negated(self, &a[0])),
+                ("uplus", 1) => Some(Ok(a[0].clone())),
+                ("rdivide" | "mrdivide", 2) | ("ldivide" | "mldivide", 2) => {
+                    let (over, under) = match name.starts_with('l') || name == "mldivide" {
+                        true => (&a[1], &a[0]),
+                        false => (&a[0], &a[1]),
+                    };
+                    let turned = match is_system(under) {
+                        true => self.system_power(under, &Expr::int(-1)),
+                        false => Ok(pow(under.clone(), Expr::int(-1))),
+                    };
+                    Some(turned.and_then(|t| self.systems_joined(false, &[over.clone(), t])))
+                }
+                ("power" | "mpower", 2) if is_system(&a[0]) => {
+                    Some(self.system_power(&a[0], &a[1]))
+                }
+                _ => None,
+            };
+            if joined.is_some() {
+                return joined;
+            }
+        }
         match name {
             "series" if !(n == 2 && first_system && is_system(&a[1])) => return None,
-            "norm" | "inv" if !first_system => return None,
+            "norm" | "inv" | "sigma" if !first_system => return None,
             // (of a system or of a ratio in s or z; of anything else it is that of a matrix)
             "bandwidth"
                 if !(first_system
@@ -1358,6 +1599,281 @@ impl Session {
                 }
                 ("care" | "dare" | "icare" | "idare", 4) | ("lqr" | "dlqr", 4 | 5) | ("lqe", 5) => self.gains(name, a)?,
                 ("acker" | "place", 3) => self.placed(name, a)?,
+                ("hsvd", 1) => {
+                    let prec = crate::mfun::bits();
+                    let (_, _, wc, wo) = self.gramians(&a[0], who)?;
+                    let (_, triangle) = decomp::schur(&c_mul(&wc, &wo))?;
+                    let mut squares: Vec<Float> =
+                        (0..triangle.len()).map(|k| triangle[k][k].real().clone()).collect();
+                    squares.sort_by(|x, y| y.partial_cmp(x).unwrap_or(std::cmp::Ordering::Equal));
+                    Expr::list(weights(squares, prec).iter().map(crate::mfun::value).collect())
+                }
+                ("balreal", 1) | ("balred", 2 | 3) => {
+                    let prec = crate::mfun::bits();
+                    let ([m, b, c, d], ts, values) = self.balanced(&a[0], who)?;
+                    let object = |parts: [&CMat; 4], ts: &Option<Expr>| {
+                        let mut args: Vec<Expr> = parts.iter().map(|p| decomp::from_complex(p)).collect();
+                        if let Some(ts) = ts {
+                            args.push(ts.clone());
+                        }
+                        Expr::call("ss", args)
+                    };
+                    if name == "balreal" {
+                        return Ok(Expr::list(vec![
+                            object([&m, &b, &c, &d], &ts),
+                            Expr::list(values.iter().map(crate::mfun::value).collect()),
+                        ]));
+                    }
+                    let size = m.len();
+                    let kept = crate::arrays::whole(&a[1], "the order", 1, size as i64)? as usize;
+                    let cut = match a.get(2).and_then(word).as_deref() {
+                        None | Some("matchdc") => false,
+                        Some("truncate") => true,
+                        Some(_) => return Err("balred(system, order[, \"matchdc\" or \"truncate\"])".into()),
+                    };
+                    let block = |x: &CMat, rows: std::ops::Range<usize>, columns: std::ops::Range<usize>| -> CMat {
+                        rows.map(|i| x[i][columns.clone()].to_vec()).collect()
+                    };
+                    let (a11, b1, c1) = (block(&m, 0..kept, 0..kept), block(&b, 0..kept, 0..1), block(&c, 0..1, 0..kept));
+                    if cut || kept == size {
+                        return Ok(object([&a11, &b1, &c1, &d], &ts));
+                    }
+                    // the states that go are at rest: their part of the gain at the frequency 0 stays
+                    let (a12, a21, a22) = (block(&m, 0..kept, kept..size), block(&m, kept..size, 0..kept), block(&m, kept..size, kept..size));
+                    let (b2, c2) = (block(&b, kept..size, 0..1), block(&c, 0..1, kept..size));
+                    let (inner, sign) = match &ts {
+                        None => (a22, -1),
+                        Some(_) => (c_add(&c_unit(size - kept, prec), &a22, -1), 1),
+                    };
+                    let unit = c_unit(size - kept, prec);
+                    let inverse = solved(&inner, &unit).ok_or("balred: the states that go cannot be at rest")?;
+                    let through = |left: &CMat, right: &CMat| c_mul(&c_mul(left, &inverse), right);
+                    object(
+                        [
+                            &c_add(&a11, &through(&a12, &a21), sign),
+                            &c_add(&b1, &through(&a12, &b2), sign),
+                            &c_add(&c1, &through(&c2, &a21), sign),
+                            &c_add(&d, &through(&c2, &b2), sign),
+                        ],
+                        &ts,
+                    )
+                }
+                ("covar", 2) => {
+                    let (m, ts, _, _) = self.gramians(&a[0], who)?;
+                    let spread = poly_scaled(&matrix::matmul(&m[1], &matrix::transpose(&m[1]))?.concat(), &a[1]);
+                    let size = m[0].len();
+                    let noise: Rows = spread.chunks(size).map(|r| r.to_vec()).collect();
+                    let lyap = if ts.is_some() { "dlyap" } else { "lyap" };
+                    let states = self.lyapunov(lyap, &[matrix::from_rows(m[0].clone()), matrix::from_rows(noise)])?;
+                    let p = matrix::rows(&states).ok_or("covar: the spread of the states was not found")?;
+                    let through = matrix::matmul(&matrix::matmul(&m[2], &p)?, &matrix::transpose(&m[2]))?[0][0].clone();
+                    let direct = m[3][0][0].clone();
+                    let output = match (&ts, direct.is_zero()) {
+                        (_, true) => tidy(through),
+                        // (noise that goes straight to the output of a system of running time has no bound)
+                        (None, false) => Expr::inf(),
+                        (Some(_), false) => tidy(add(vec![through, mul(vec![direct.clone(), direct, a[1].clone()])])),
+                    };
+                    Expr::list(vec![output, states])
+                }
+                ("dlqe", 5) => {
+                    let prec = crate::mfun::bits();
+                    let usage = "dlqe(A, G, C, Q, R): matrices that fit; Q and R symmetric, R positive definite";
+                    let get = |k: usize| -> Result<CMat, String> {
+                        let rows = matrix::rows(&a[k]).unwrap_or_else(|| vec![vec![a[k].clone()]]);
+                        to_cmat(&rows, prec).map_err(|_| usage.to_string())
+                    };
+                    let (m, g, c, q, r) = (get(0)?, get(1)?, get(2)?, get(3)?, get(4)?);
+                    let size = m.len();
+                    if m.iter().any(|x| x.len() != size) || g.len() != size || c.iter().any(|x| x.len() != size)
+                        || q.len() != g[0].len() || r.len() != c.len()
+                    {
+                        return Err(usage.into());
+                    }
+                    let noise = c_mul(&c_mul(&g, &q), &c_turned(&g));
+                    let ct = c_turned(&c);
+                    let unit = c_unit(r.len(), prec);
+                    let r_inverse = solved(&r, &unit).ok_or(usage)?;
+                    let x = riccati_sampled(&c_turned(&m), &c_mul(&c_mul(&ct, &r_inverse), &c), &noise)?;
+                    let seen = c_add(&c_mul(&c_mul(&c, &x), &ct), &r, 1);
+                    let inverse = solved(&seen, &unit).ok_or(usage)?;
+                    let gain = c_mul(&c_mul(&x, &ct), &inverse);
+                    let after = c_mul(&c_add(&c_unit(size, prec), &c_mul(&gain, &c), -1), &x);
+                    let closed = c_add(&m, &c_mul(&c_mul(&m, &gain), &c), -1);
+                    let poles = self.call("eigenvalues", &[decomp::from_complex(&closed)])?;
+                    Expr::list(vec![
+                        decomp::from_complex(&gain),
+                        decomp::from_complex(&x),
+                        decomp::from_complex(&after),
+                        poles,
+                    ])
+                }
+                ("lyapchol" | "dlyapchol", 2) => {
+                    let prec = crate::mfun::bits();
+                    let usage = format!("{name}(A, B): a stable square matrix A and a matrix B with its rows");
+                    let (m, b) = (matrix::rows(&a[0]).ok_or(usage.clone())?, matrix::rows(&a[1]).ok_or(usage.clone())?);
+                    if b.len() != m.len() {
+                        return Err(usage);
+                    }
+                    let spread = matrix::matmul(&b, &matrix::transpose(&b))?;
+                    let lyap = if name == "lyapchol" { "lyap" } else { "dlyap" };
+                    let x = self.lyapunov(lyap, &[a[0].clone(), matrix::from_rows(spread)])?;
+                    let numbers = to_cmat(&matrix::rows(&x).unwrap_or_default(), prec).map_err(|_| usage.clone())?;
+                    let lower = cholesky(&numbers)
+                        .ok_or_else(|| format!("{name}: the solution is not positive definite (A is not stable, or B does not reach every state)"))?;
+                    decomp::from_complex(&c_turned(&lower))
+                }
+                ("initial", 2 | 3) => {
+                    let sys = self.left_alone(&a[0], &a[1], who)?;
+                    self.response(&sys, Expr::one(), a.get(2), who)?
+                }
+                ("gensig", 2..=4) => {
+                    let kind = word(&a[0]).ok_or("gensig(\"sine\" | \"square\" | \"pulse\", period[, duration[, step]])")?;
+                    let period = a[1].clone();
+                    let duration = a.get(2).cloned().unwrap_or_else(|| mul(vec![Expr::int(5), period.clone()]));
+                    let step = a.get(3).cloned().unwrap_or_else(|| div(period.clone(), Expr::int(64)));
+                    let positive = |e: &Expr| numeric::real_value(e, 20).is_some_and(|v| v > 0);
+                    if !positive(&period) || !positive(&duration) || !positive(&step) {
+                        return Err("gensig(kind, period[, duration[, step]]): positive numbers".into());
+                    }
+                    let steps = numeric::real_value(&div(duration, step.clone()), 30)
+                        .map(|v| v.floor().to_f64())
+                        .filter(|v| *v <= 100_000.0)
+                        .ok_or("gensig: 100000 steps at most")? as i64;
+                    let (mut values, mut times) = (Vec::new(), Vec::new());
+                    for k in 0..=steps {
+                        let t = tidy(mul(vec![Expr::int(k), step.clone()]));
+                        let turns = tidy(div(t.clone(), period.clone()));
+                        let whole = self.call("floor", std::slice::from_ref(&turns))?;
+                        let part = numeric::real_value(&sub(turns.clone(), whole), 30).map_or(0.0, |v| v.to_f64());
+                        let width = numeric::real_value(&div(step.clone(), period.clone()), 30).map_or(0.0, |v| v.to_f64());
+                        values.push(match kind.as_str() {
+                            "sine" | "sin" => self.eval(&Expr::call("sin", vec![mul(vec![Expr::int(2), Expr::pi(), turns])]))?,
+                            "square" => Expr::int(i64::from(part >= 0.5)),
+                            "pulse" => Expr::int(i64::from(part < width * (1.0 - 1e-9))),
+                            _ => return Err("gensig: the kinds are \"sine\", \"square\" and \"pulse\"".into()),
+                        });
+                        times.push(t);
+                    }
+                    Expr::list(vec![Expr::list(values), Expr::list(times)])
+                }
+                ("lqi", 3 | 6) => {
+                    let usage = "lqi(system, Q, R) or lqi(A, B, C, D, Q, R): weights Q for the states and the integrals of the outputs, R for the inputs";
+                    let rows = |k: usize| matrix::rows(&a[k]).unwrap_or_else(|| vec![vec![a[k].clone()]]);
+                    let ([m, b, c, d], ts) = match n {
+                        3 => self.with_states(&a[0], who)?,
+                        _ => ([rows(0), rows(1), rows(2), rows(3)], None),
+                    };
+                    let (states, outputs) = (m.len(), c.len());
+                    if b.len() != states || c.iter().any(|r| r.len() != states) || d.len() != outputs {
+                        return Err(usage.into());
+                    }
+                    // the integral of the error is a state more for every output (a sum over the
+                    // samples of a sampled system, with the time between them)
+                    let step = ts.clone().unwrap_or_else(Expr::one);
+                    let more = |i: usize, j: usize| match (i == j, &ts) {
+                        (true, Some(_)) => Expr::one(),
+                        _ => Expr::zero(),
+                    };
+                    let mut wide: Rows = m
+                        .iter()
+                        .map(|r| r.iter().cloned().chain(std::iter::repeat_n(Expr::zero(), outputs)).collect())
+                        .collect();
+                    wide.extend(c.iter().enumerate().map(|(i, r)| {
+                        r.iter()
+                            .map(|x| tidy(neg(mul(vec![x.clone(), step.clone()]))))
+                            .chain((0..outputs).map(|j| more(i, j)))
+                            .collect::<Vec<_>>()
+                    }));
+                    let mut inputs: Rows = b.clone();
+                    inputs.extend(d.iter().map(|r| {
+                        r.iter().map(|x| tidy(neg(mul(vec![x.clone(), step.clone()])))).collect::<Vec<_>>()
+                    }));
+                    let solver = if ts.is_some() { "dlqr" } else { "lqr" };
+                    self.call(solver, &[matrix::from_rows(wide), matrix::from_rows(inputs), a[n - 2].clone(), a[n - 1].clone()])?
+                }
+                ("filt", 1..=3) => {
+                    // polynomials in 1/z: both as long as the longer one, then they are in z
+                    let (mut num, mut den) = (list_of(&a[0]), a.get(1).map_or_else(|| vec![Expr::one()], list_of));
+                    let length = num.len().max(den.len());
+                    num.resize(length, Expr::zero());
+                    den.resize(length, Expr::zero());
+                    let ts = a.get(2).cloned().unwrap_or_else(|| Expr::int(-1));
+                    self.call("tf", &[Expr::list(num), Expr::list(den), ts])?
+                }
+                ("ss2ss", 2) => {
+                    let (m, ts) = self.with_states(&a[0], who)?;
+                    let to = matrix::rows(&a[1]).ok_or("ss2ss(system, T): a square matrix T with an inverse")?;
+                    if to.len() != m[0].len() || to.iter().any(|r| r.len() != to.len()) {
+                        return Err(format!("ss2ss(system, T): T has the {} states of the system", m[0].len()));
+                    }
+                    let back = self.call("inv", std::slice::from_ref(&a[1]))?;
+                    let back = matrix::rows(&back).ok_or("ss2ss: T has no inverse")?;
+                    let clean = |rows: Rows| matrix::from_rows(rows.into_iter().map(|r| r.into_iter().map(tidy).collect()).collect());
+                    let mut args = vec![
+                        clean(matrix::matmul(&matrix::matmul(&to, &m[0])?, &back)?),
+                        clean(matrix::matmul(&to, &m[1])?),
+                        clean(matrix::matmul(&m[2], &back)?),
+                        matrix::from_rows(m[3].clone()),
+                    ];
+                    args.extend(ts);
+                    Expr::call("ss", args)
+                }
+                ("sigma", 1 | 2) => {
+                    // (one input and one output: the one singular value is the gain)
+                    let both = self.call("bode", a)?;
+                    let parts = list_of(&both);
+                    match parts.len() {
+                        3 => Expr::list(vec![parts[0].clone(), parts[2].clone()]),
+                        _ => parts[0].clone(),
+                    }
+                }
+                ("ord2", 2) => {
+                    let (rate, damping) = (a[0].clone(), a[1].clone());
+                    Sys {
+                        num: vec![Expr::one()],
+                        den: vec![Expr::one(), tidy(mul(vec![Expr::int(2), damping, rate.clone()])), tidy(pow(rate, Expr::int(2)))],
+                        ts: None,
+                    }
+                    .object()
+                }
+                ("d2d", 2) => {
+                    let running = self.running(&a[0], None)?;
+                    self.sampled(&running, &a[1], None)?
+                }
+                ("reg", 3) => {
+                    let (m, ts) = self.with_states(&a[0], who)?;
+                    let size = m[0].len();
+                    let gain: Vec<Expr> = list_of(&a[1]).iter().flat_map(list_of).collect();
+                    let watcher: Vec<Expr> = list_of(&a[2]).iter().flat_map(list_of).collect();
+                    if gain.len() != size || watcher.len() != size {
+                        return Err(format!("reg(system, K, L): the gain K of the states and the gain L of the watcher have the {size} states of the system"));
+                    }
+                    let direct = m[3][0][0].clone();
+                    // x' = (A - B K - L C + L D K) x + L y, u = -K x
+                    let own: Rows = (0..size)
+                        .map(|i| {
+                            (0..size)
+                                .map(|j| {
+                                    tidy(add(vec![
+                                        m[0][i][j].clone(),
+                                        neg(mul(vec![m[1][i][0].clone(), gain[j].clone()])),
+                                        neg(mul(vec![watcher[i].clone(), m[2][0][j].clone()])),
+                                        mul(vec![watcher[i].clone(), direct.clone(), gain[j].clone()]),
+                                    ]))
+                                })
+                                .collect()
+                        })
+                        .collect();
+                    let mut args = vec![
+                        matrix::from_rows(own),
+                        matrix::from_rows(watcher.into_iter().map(|x| vec![x]).collect()),
+                        matrix::from_rows(vec![gain.into_iter().map(neg).map(tidy).collect()]),
+                        matrix::from_rows(vec![vec![Expr::zero()]]),
+                    ];
+                    args.extend(ts);
+                    Expr::call("ss", args)
+                }
                 _ => return Err(String::new()),
             })
         })())
@@ -2322,6 +2838,14 @@ impl Session {
             };
             return self.control_chart("pzplot", &[filter]);
         }
+        if name == "initialplot" {
+            let [system, x0, rest @ ..] = a else {
+                return Err("initialplot(system, x0[, the last time])".into());
+            };
+            let mut args = vec![self.left_alone(system, x0, who)?.object()];
+            args.extend(rest.iter().cloned());
+            return self.control_chart_of("impulseplot", &args);
+        }
         let first = a.first().ok_or_else(|| format!("{name}(system)"))?;
         if a.len() > 2 {
             return Err(format!("{name}(system) or {name}(system, one thing more)"));
@@ -2329,12 +2853,12 @@ impl Session {
         let sys = self.sys_of(first, who)?;
         let shown = |v: &[Float]| Expr::list(v.iter().map(crate::mfun::value).collect());
         match name {
-            "bodeplot" | "nyquistplot" => {
+            "bodeplot" | "nyquistplot" | "nicholsplot" => {
                 let ws = match a.get(1) {
                     Some(w) => list_of(w),
                     None => self.frequencies(&sys, 241)?,
                 };
-                if name == "bodeplot" {
+                if name != "nyquistplot" {
                     let (gains, phases) = self.bode_data(&sys, &ws)?;
                     return Ok(vec![Expr::list(ws), shown(&gains), shown(&phases)]);
                 }
