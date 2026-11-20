@@ -1,4 +1,3 @@
--e	vertexcount(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcount(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcount(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcount(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
@@ -698,3 +697,4 @@
 -e	independencenumber(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	independencenumber(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcover(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcover(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]

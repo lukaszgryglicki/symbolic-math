@@ -1,4 +1,3 @@
--e	coeffs([1, 2])	[[1, 2]]
 -e	coeffs("text")	error: coeffs: "text" is no polynomial in text
 -e	coeffs(true)	[true]
 -e	coeffs(-7/3)	[-7/3]
@@ -184,6 +183,7 @@
 -e	dct(-7/3)	[-7/3]
 -e	dct(0.5)	[0.5]
 -e	idct(0)	[0]
+-e	idct(1)	[1]
 -e	idct(-1)	[-1]
 -e	idct(1/2)	[1/2]
 -e	idct(2)	[2]

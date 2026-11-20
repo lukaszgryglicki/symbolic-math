@@ -1,3 +1,162 @@
+-e	str2angle([])	[]
+-e	str2angle([1, 2])	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle("text")	error: str2angle: "text" is not an angle: degrees, minutes and seconds like 12°30'15''S, 12-30-15S, 12d30m15s, 123015S (the last four digits are minutes and seconds), or -12.5
+-e	str2angle(true)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(-7/3)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(0.5)	error: str2angle is written str2angle("12°30'15''S")
+-e	timezone(0)	[0, "Z"]
+-e	timezone(1)	[0, "Z"]
+-e	timezone(-1)	[0, "Z"]
+-e	timezone(1/2)	[0, "Z"]
+-e	timezone(2)	[0, "Z"]
+-e	timezone(i)	error: timezone: i is not a real number
+-e	timezone(inf)	error: timezone: inf is not a real number
+-e	timezone(-inf)	error: timezone: -inf is not a real number
+-e	timezone(undefined)	error: timezone: undefined is not a real number
+-e	timezone(10^20)	[5, "R"]
+-e	timezone(10^(-20))	[0, "Z"]
+-e	timezone(x)	error: timezone: x is not a real number
+-e	timezone([])	[]
+-e	timezone([1, 2])	[[0, "Z"], [0, "Z"]]
+-e	timezone("text")	error: timezone: "text" is not a real number
+-e	timezone(true)	error: timezone: true is not a real number
+-e	timezone(-7/3)	[0, "Z"]
+-e	timezone(0.5)	[0, "Z"]
+-e	utmzone(0)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 0
+-e	utmzone(1)	[[0, 8], [-180, -174]]
+-e	utmzone(-1)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -1
+-e	utmzone(1/2)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
+-e	utmzone(2)	[[0, 8], [-174, -168]]
+-e	utmzone(i)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not i
+-e	utmzone(inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not inf
+-e	utmzone(-inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -inf
+-e	utmzone(undefined)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not undefined
+-e	utmzone(10^20)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 100000000000000000000
+-e	utmzone(10^(-20))	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/100000000000000000000
+-e	utmzone(x)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not x
+-e	utmzone([])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not []
+-e	utmzone([1, 2])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not [1, 2]
+-e	utmzone("text")	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not "text"
+-e	utmzone(true)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not true
+-e	utmzone(-7/3)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -7/3
+-e	utmzone(0.5)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
+-e	relu(0)	0
+-e	relu(1)	1
+-e	relu(-1)	0
+-e	relu(1/2)	1/2
+-e	relu(2)	2
+-e	relu(i)	error: relu: i is not a real number
+-e	relu(inf)	error: relu: inf is not a real number
+-e	relu(-inf)	error: relu: -inf is not a real number
+-e	relu(undefined)	error: relu: undefined is not a real number
+-e	relu(10^20)	100000000000000000000
+-e	relu(10^(-20))	1/100000000000000000000
+-e	relu(x)	x/2 + abs(x)/2
+-e	relu([])	[]
+-e	relu([1, 2])	[1, 2]
+-e	relu("text")	"text"/2 + abs("text")/2
+-e	relu(true)	error: relu: true is not a real number
+-e	relu(-7/3)	0
+-e	relu(0.5)	0.5
+-e	leakyrelu(0)	0
+-e	leakyrelu(1)	1
+-e	leakyrelu(-1)	-1/100
+-e	leakyrelu(1/2)	1/2
+-e	leakyrelu(2)	2
+-e	leakyrelu(i)	error: leakyrelu: i is not a real number
+-e	leakyrelu(inf)	error: leakyrelu: inf is not a real number
+-e	leakyrelu(-inf)	error: leakyrelu: -inf is not a real number
+-e	leakyrelu(undefined)	error: leakyrelu: undefined is not a real number
+-e	leakyrelu(10^20)	100000000000000000000
+-e	leakyrelu(10^(-20))	1/100000000000000000000
+-e	leakyrelu(x)	101x/200 + 99abs(x)/200
+-e	leakyrelu([])	[]
+-e	leakyrelu([1, 2])	[1, 2]
+-e	leakyrelu("text")	101*"text"/200 + 99abs("text")/200
+-e	leakyrelu(true)	error: leakyrelu: true is not a real number
+-e	leakyrelu(-7/3)	-7/300
+-e	leakyrelu(0.5)	0.5
+-e	clippedrelu(0)	0
+-e	clippedrelu(1)	1
+-e	clippedrelu(-1)	0
+-e	clippedrelu(1/2)	1/2
+-e	clippedrelu(2)	2
+-e	clippedrelu(i)	error: clippedrelu: i is not a real number
+-e	clippedrelu(inf)	error: clippedrelu: inf is not a real number
+-e	clippedrelu(-inf)	error: clippedrelu: -inf is not a real number
+-e	clippedrelu(undefined)	error: clippedrelu: undefined is not a real number
+-e	clippedrelu(10^20)	6
+-e	clippedrelu(10^(-20))	1/100000000000000000000
+-e	clippedrelu(x)	-abs(x - 6)/2 + abs(x)/2 + 3
+-e	clippedrelu([])	[]
+-e	clippedrelu([1, 2])	[1, 2]
+-e	clippedrelu("text")	-abs("text" - 6)/2 + abs("text")/2 + 3
+-e	clippedrelu(true)	error: clippedrelu: true is not a real number
+-e	clippedrelu(-7/3)	0
+-e	clippedrelu(0.5)	0.5
+-e	elu(0)	0
+-e	elu(1)	1
+-e	elu(-1)	1/e - 1
+-e	elu(1/2)	1/2
+-e	elu(2)	2
+-e	elu(i)	error: elu: i is not a real number
+-e	elu(inf)	error: elu: inf is not a real number
+-e	elu(-inf)	error: elu: -inf is not a real number
+-e	elu(undefined)	error: elu: undefined is not a real number
+-e	elu(10^20)	100000000000000000000
+-e	elu(10^(-20))	1/100000000000000000000
+-e	elu(x)	x/2 + abs(x)/2 + e^(x/2 - abs(x)/2) - 1
+-e	elu([])	[]
+-e	elu([1, 2])	[1, 2]
+-e	elu("text")	"text"/2 + abs("text")/2 + e^("text"/2 - abs("text")/2) - 1
+-e	elu(true)	error: elu: true is not a real number
+-e	elu(-7/3)	1/e^(7/3) - 1
+-e	elu(0.5)	0.5
+-e	gelu(0)	0
+-e	gelu(1)	1/2 + erf(sqrt(2)/2)/2
+-e	gelu(-1)	erf(sqrt(2)/2)/2 - 1/2
+-e	gelu(1/2)	1/4 + erf(sqrt(2)/4)/4
+-e	gelu(2)	1 + erf(sqrt(2))
+-e	gelu(i)	i/2 + i*erf(i*sqrt(2)/2)/2
+-e	gelu(inf)	inf
+-e	gelu(-inf)	undefined
+-e	gelu(undefined)	undefined
+-e	gelu(10^20)	50000000000000000000(1 + erf(50000000000000000000sqrt(2)))
+-e	gelu(10^(-20))	(1/200000000000000000000)(1 + erf(sqrt(2)/200000000000000000000))
+-e	gelu(x)	x*(erf(sqrt(2)*x/2) + 1)/2
+-e	gelu([])	[]
+-e	gelu([1, 2])	[1/2 + erf(sqrt(2)/2)/2, 1 + erf(sqrt(2))]
+-e	gelu("text")	"text"*(erf(sqrt(2)*"text"/2) + 1)/2
+-e	gelu(true)	(1 + erf(sqrt(2)*true/2))*true/2
+-e	gelu(-7/3)	7erf(7sqrt(2)/6)/6 - 7/6
+-e	gelu(0.5)	0.34573123063700655181885230530417
+-e	swish(0)	0
+-e	swish(1)	e/(1 + e)
+-e	swish(-1)	-1/(1 + e)
+-e	swish(1/2)	1/(2(1 + 1/sqrt(e)))
+-e	swish(2)	2/(1 + 1/e^2)
+-e	swish(i)	i/(1 + e^(-i))
+-e	swish(inf)	inf
+-e	swish(-inf)	undefined
+-e	swish(undefined)	undefined
+-e	swish(10^20)	100000000000000000000/(1 + 1/e^100000000000000000000)
+-e	swish(10^(-20))	1/(100000000000000000000(1 + 1/e^(1/100000000000000000000)))
+-e	swish(x)	x/(e^(-x) + 1)
+-e	swish([])	[]
+-e	swish([1, 2])	[e/(1 + e), 2/(1 + 1/e^2)]
+-e	swish("text")	"text"/(e^(-"text") + 1)
+-e	swish(true)	true/(1 + e^(-true))
+-e	swish(-7/3)	-7/(3(1 + e^(7/3)))
+-e	swish(0.5)	0.31122966560092728231945028287275
+-e	mish(0)	0
+-e	mish(1)	e*(2 + e)/(2 + 2e + e^2)
+-e	mish(-1)	(-1 - 2e)/(1 + 2e + 2e^2)
+-e	mish(1/2)	(e/2 + sqrt(e))/(2 + e + 2sqrt(e))
+-e	mish(2)	(4e^2 + 2e^4)/(2 + 2e^2 + e^4)
+-e	mish(i)	i*e^i*(2 + e^i)/(2 + e^(2i) + 2e^i)
+-e	mish(inf)	inf
+-e	mish(-inf)	undefined
+-e	mish(undefined)	undefined
 -e	mish(10^20)	100000000000000000000((1 + e^100000000000000000000)^2 - 1)/(1 + (1 + e^100000000000000000000)^2)
 -e	mish(10^(-20))	((1 + e^(1/100000000000000000000))^2 - 1)/(100000000000000000000(1 + (1 + e^(1/100000000000000000000))^2))
 -e	mish(x)	x*e^x*(e^x + 2)/(e^(2x) + 2e^x + 2)

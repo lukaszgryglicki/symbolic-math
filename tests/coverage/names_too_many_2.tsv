@@ -574,6 +574,21 @@
 	lqe(1, 2, 3, 4, 5, 6)	error: lqe takes 5 argument(s), 6 given
 	acker(1, 2, 3, 4)	error: acker takes 3 argument(s), 4 given
 	place(1, 2, 3, 4)	error: place takes 3 argument(s), 4 given
+	hsvd(1, 2)	error: hsvd takes 1 argument(s), 2 given
+	balreal(1, 2)	error: balreal takes 1 argument(s), 2 given
+	balred(1, 2, 3, 4)	error: balred takes 2 to 3 argument(s), 4 given
+	covar(1, 2, 3)	error: covar takes 2 argument(s), 3 given
+	dlqe(1, 2, 3, 4, 5, 6)	error: dlqe takes 5 argument(s), 6 given
+	lyapchol(1, 2, 3)	error: lyapchol takes 2 argument(s), 3 given
+	dlyapchol(1, 2, 3)	error: dlyapchol takes 2 argument(s), 3 given
+	initial(1, 2, 3, 4)	error: initial takes 2 to 3 argument(s), 4 given
+	gensig(1, 2, 3, 4, 5)	error: gensig takes 2 to 4 argument(s), 5 given
+	lqi(1, 2, 3, 4, 5, 6, 7)	error: lqi takes 3 to 6 argument(s), 7 given
+	ss2ss(1, 2, 3)	error: ss2ss takes 2 argument(s), 3 given
+	ord2(1, 2, 3)	error: ord2 takes 2 argument(s), 3 given
+	d2d(1, 2, 3)	error: d2d takes 2 argument(s), 3 given
+	reg(1, 2, 3, 4)	error: reg takes 3 argument(s), 4 given
+	filt(1, 2, 3, 4)	error: filt takes 1 to 3 argument(s), 4 given
 	rectwin(1, 2, 3)	error: rectwin takes 1 to 2 argument(s), 3 given
 	hann(1, 2, 3)	error: hann takes 1 to 2 argument(s), 3 given
 	hanning(1, 2, 3)	error: hanning takes 1 to 2 argument(s), 3 given
@@ -667,34 +682,19 @@
 	gauspuls(1, 2, 3, 4)	error: gauspuls takes 3 argument(s), 4 given
 	chirp(1, 2, 3, 4, 5, 6)	error: chirp takes 4 to 5 argument(s), 6 given
 	diric(1, 2, 3)	error: diric takes 2 argument(s), 3 given
+	firls(1, 2, 3, 4, 5)	error: firls takes 3 to 4 argument(s), 5 given
+	firpm(1, 2, 3, 4, 5)	error: firpm takes 3 to 4 argument(s), 5 given
+	fir2(1, 2, 3, 4, 5, 6, 7)	error: fir2 takes 3 to 6 argument(s), 7 given
+	resample(1, 2, 3, 4)	error: resample takes 3 argument(s), 4 given
+	phasez(1, 2, 3, 4)	error: phasez takes 1 to 3 argument(s), 4 given
+	phasedelay(1, 2, 3, 4)	error: phasedelay takes 1 to 3 argument(s), 4 given
+	zerophase(1, 2, 3, 4)	error: zerophase takes 1 to 3 argument(s), 4 given
+	finddelay(1, 2, 3)	error: finddelay takes 2 argument(s), 3 given
+	dtw(1, 2, 3, 4)	error: dtw takes 2 to 3 argument(s), 4 given
+	residuez(1, 2, 3)	error: residuez takes 2 argument(s), 3 given
+	tf2latc(1, 2, 3)	error: tf2latc takes 1 to 2 argument(s), 3 given
+	latc2tf(1, 2, 3)	error: latc2tf takes 1 to 2 argument(s), 3 given
+	latcfilt(1, 2, 3, 4)	error: latcfilt takes 2 to 3 argument(s), 4 given
+	fftfilt(1, 2, 3)	error: fftfilt takes 2 argument(s), 3 given
+	filtic(1, 2, 3, 4, 5)	error: filtic takes 3 to 4 argument(s), 5 given
 	azimuth(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: azimuth takes 4 to 8 argument(s), 9 given
-	reckon(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: reckon takes 4 to 8 argument(s), 9 given
-	haversine(1, 2, 3, 4, 5, 6, 7)	error: haversine takes 4 to 6 argument(s), 7 given
-	geoddistance(1, 2, 3, 4, 5, 6, 7)	error: geoddistance takes 4 to 6 argument(s), 7 given
-	geodreckon(1, 2, 3, 4, 5, 6, 7)	error: geodreckon takes 4 to 6 argument(s), 7 given
-	geodarea(1, 2, 3, 4, 5)	error: geodarea takes 2 to 4 argument(s), 5 given
-	areaint(1, 2, 3, 4, 5)	error: areaint takes 2 to 4 argument(s), 5 given
-	areaquad(1, 2, 3, 4, 5, 6, 7)	error: areaquad takes 4 to 6 argument(s), 7 given
-	departure(1, 2, 3, 4, 5, 6)	error: departure takes 3 to 5 argument(s), 6 given
-	antipode(1, 2, 3, 4)	error: antipode takes 2 to 3 argument(s), 4 given
-	meanm(1, 2, 3, 4, 5)	error: meanm takes 2 to 4 argument(s), 5 given
-	track2(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: track2 takes 4 to 8 argument(s), 9 given
-	track1(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: track1 takes 3 to 8 argument(s), 9 given
-	gcwaypts(1, 2, 3, 4, 5, 6)	error: gcwaypts takes 4 to 5 argument(s), 6 given
-	scircle1(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: scircle1 takes 3 to 8 argument(s), 9 given
-	scircle2(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)	error: scircle2 takes 4 to 9 argument(s), 10 given
-	legs(1, 2, 3, 4)	error: legs takes 2 to 3 argument(s), 4 given
-	gc2sc(1, 2, 3, 4, 5)	error: gc2sc takes 3 to 4 argument(s), 5 given
-	gcxgc(1, 2, 3, 4, 5, 6, 7, 8)	error: gcxgc takes 6 to 7 argument(s), 8 given
-	scxsc(1, 2, 3, 4, 5, 6, 7, 8)	error: scxsc takes 6 to 7 argument(s), 8 given
-	gcxsc(1, 2, 3, 4, 5, 6, 7, 8)	error: gcxsc takes 6 to 7 argument(s), 8 given
-	rhxrh(1, 2, 3, 4, 5, 6, 7, 8)	error: rhxrh takes 6 to 7 argument(s), 8 given
-	interpm(1, 2, 3, 4, 5, 6)	error: interpm takes 3 to 5 argument(s), 6 given
-	geodetic2ecef(1, 2, 3, 4, 5, 6)	error: geodetic2ecef takes 3 to 5 argument(s), 6 given
-	ecef2geodetic(1, 2, 3, 4, 5, 6)	error: ecef2geodetic takes 3 to 5 argument(s), 6 given
-	lla2ecef(1, 2, 3)	error: lla2ecef takes 1 to 2 argument(s), 3 given
-	ecef2lla(1, 2, 3)	error: ecef2lla takes 1 to 2 argument(s), 3 given
-	geodetic2enu(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: geodetic2enu takes 6 to 8 argument(s), 9 given
-	enu2geodetic(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: enu2geodetic takes 6 to 8 argument(s), 9 given
-	geodetic2ned(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: geodetic2ned takes 6 to 8 argument(s), 9 given
-	ned2geodetic(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: ned2geodetic takes 6 to 8 argument(s), 9 given

@@ -1,3 +1,20 @@
+	nyquistplot()	error: nyquistplot takes at least 1 argument(s), 0 given
+	pzplot()	error: pzplot takes at least 1 argument(s), 0 given
+	rlocusplot()	error: rlocusplot takes at least 1 argument(s), 0 given
+	stepplot()	error: stepplot takes at least 1 argument(s), 0 given
+	impulseplot()	error: impulseplot takes at least 1 argument(s), 0 given
+	initialplot()	error: initialplot takes at least 2 argument(s), 0 given
+	nicholsplot()	error: nicholsplot takes at least 1 argument(s), 0 given
+	rectwin()	error: rectwin takes 1 to 2 argument(s), 0 given
+	hann()	error: hann takes 1 to 2 argument(s), 0 given
+	hanning()	error: hanning takes 1 to 2 argument(s), 0 given
+	hamming()	error: hamming takes 1 to 2 argument(s), 0 given
+	blackman()	error: blackman takes 1 to 2 argument(s), 0 given
+	blackmanharris()	error: blackmanharris takes 1 to 2 argument(s), 0 given
+	nuttallwin()	error: nuttallwin takes 1 to 2 argument(s), 0 given
+	flattopwin()	error: flattopwin takes 1 to 2 argument(s), 0 given
+	triang()	error: triang takes 1 to 2 argument(s), 0 given
+	bohmanwin()	error: bohmanwin takes 1 to 2 argument(s), 0 given
 	parzenwin()	error: parzenwin takes 1 to 2 argument(s), 0 given
 	gausswin()	error: gausswin takes 1 to 2 argument(s), 0 given
 	tukeywin()	error: tukeywin takes 1 to 2 argument(s), 0 given
@@ -83,6 +100,21 @@
 	chirp()	error: chirp takes 4 to 5 argument(s), 0 given
 	diric()	error: diric takes 2 argument(s), 0 given
 	zplane()	error: zplane takes at least 1 argument(s), 0 given
+	firls()	error: firls takes 3 to 4 argument(s), 0 given
+	firpm()	error: firpm takes 3 to 4 argument(s), 0 given
+	fir2()	error: fir2 takes 3 to 6 argument(s), 0 given
+	resample()	error: resample takes 3 argument(s), 0 given
+	phasez()	error: phasez takes 1 to 3 argument(s), 0 given
+	phasedelay()	error: phasedelay takes 1 to 3 argument(s), 0 given
+	zerophase()	error: zerophase takes 1 to 3 argument(s), 0 given
+	finddelay()	error: finddelay takes 2 argument(s), 0 given
+	dtw()	error: dtw takes 2 to 3 argument(s), 0 given
+	residuez()	error: residuez takes 2 argument(s), 0 given
+	tf2latc()	error: tf2latc takes 1 to 2 argument(s), 0 given
+	latc2tf()	error: latc2tf takes 1 to 2 argument(s), 0 given
+	latcfilt()	error: latcfilt takes 2 to 3 argument(s), 0 given
+	fftfilt()	error: fftfilt takes 2 argument(s), 0 given
+	filtic()	error: filtic takes 3 to 4 argument(s), 0 given
 	plot4d()	error: plot4d takes at least 1 argument(s), 0 given
 	view4d()	error: view4d takes at least 1 argument(s), 0 given
 	save_png_fast()	error: save_png_fast takes at least 1 argument(s), 0 given

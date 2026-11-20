@@ -413,7 +413,7 @@
 	cartesianproduct()	error: cartesianproduct takes at least 1 argument(s), 0 given
 	partition()	error: partition takes 2 argument(s), 0 given
 	map()	error: map takes at least 2 argument(s), 0 given
-	select()	error: select takes 2 to 3 argument(s), 0 given
+	select()	error: select takes 2 to 4 argument(s), 0 given
 	reject()	error: reject takes 2 argument(s), 0 given
 	countif()	error: countif takes 2 argument(s), 0 given
 	anytrue()	error: anytrue takes 2 argument(s), 0 given

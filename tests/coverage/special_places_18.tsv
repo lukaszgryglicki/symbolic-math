@@ -1,5 +1,3 @@
--e	contour3(2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(i)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(-inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(undefined)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
@@ -117,7 +115,6 @@
 -e	im2uint8([])	[]
 -e	im2uint8([1, 2])	[255, 255]
 -e	im2uint8("text")	error: im2uint8: "text" is not a real number
--e	im2uint8(true)	error: im2uint8: true is not a real number
 -e	im2uint8(-7/3)	0
 -e	im2uint8(0.5)	128
 -e	im2uint16(0)	0
@@ -698,3 +695,6 @@
 -e	fieldnames(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
 -e	numfields(0)	0
 -e	numfields(1)	0
+-e	numfields(-1)	0
+-e	numfields(1/2)	0
+-e	numfields(2)	0

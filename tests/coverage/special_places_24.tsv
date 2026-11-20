@@ -1,3 +1,162 @@
+-e	wgs84ellipsoid("text")	error: wgs84ellipsoid: "text" is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(true)	error: wgs84ellipsoid: true is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(-7/3)	error: wgs84ellipsoid: -7/3 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	wgs84ellipsoid(0.5)	error: wgs84ellipsoid: 1/2 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
+-e	referencesphere(0)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(1)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-1)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(1/2)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(2)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(i)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(inf)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-inf)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(undefined)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(10^20)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(10^(-20))	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(x)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere([])	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere([1, 2])	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere("text")	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(true)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(-7/3)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	referencesphere(0.5)	error: referencesphere: the bodies that are taken as spheres are earth, moon, sun, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, unitsphere, unit
+-e	spheroid(0)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not 0
+-e	spheroid(1)	[["semimajoraxis", 1], ["semiminoraxis", 1], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 1], ["surfacearea", 12.566370614359172953850573533118], ["volume", 4.1887902047863909846168578443727]]
+-e	spheroid(-1)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -1
+-e	spheroid(1/2)	[["semimajoraxis", 0.5], ["semiminoraxis", 0.5], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 0.5], ["surfacearea", 3.1415926535897932384626433832795], ["volume", 0.52359877559829887307710723054658]]
+-e	spheroid(2)	[["semimajoraxis", 2], ["semiminoraxis", 2], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 2], ["surfacearea", 50.265482457436691815402294132472], ["volume", 33.510321638291127876934862754981]]
+-e	spheroid(i)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not i
+-e	spheroid(inf)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not inf
+-e	spheroid(-inf)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -inf
+-e	spheroid(undefined)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not undefined
+-e	spheroid(10^20)	[["semimajoraxis", 100000000000000000000], ["semiminoraxis", 100000000000000000000], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 100000000000000000000], ["surfacearea", 1.2566370614359172953850573533118e41], ["volume", 4.1887902047863909846168578443727e60]]
+-e	spheroid(10^(-20))	[["semimajoraxis", 1e-20], ["semiminoraxis", 1e-20], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 1e-20], ["surfacearea", 1.2566370614359172953850573533118e-39], ["volume", 4.1887902047863909846168578443727e-60]]
+-e	spheroid(x)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not x
+-e	spheroid([])	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not []
+-e	spheroid([1, 2])	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not [1, 2]
+-e	spheroid("text")	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not "text"
+-e	spheroid(true)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not true
+-e	spheroid(-7/3)	error: spheroid: an ellipsoid is [half axis, eccentricity], the radius of a sphere, or a name: wgs84, grs80, grs67, wgs72, wgs66, wgs60, clarke66, clarke80, airy1830, airy1849, bessel, everest, international, hayford, krasovsky, iau65, iau68, pz90, earth, unitsphere, sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto; not -7/3
+-e	spheroid(0.5)	[["semimajoraxis", 0.5], ["semiminoraxis", 0.5], ["inverseflattening", inf], ["eccentricity", 0], ["flattening", 0], ["thirdflattening", 0], ["meanradius", 0.5], ["surfacearea", 3.1415926535897932384626433832795], ["volume", 0.52359877559829887307710723054658]]
+-e	axes2ecc(0)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(1)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-1)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(1/2)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(2)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(i)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(inf)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-inf)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(undefined)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(10^20)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(10^(-20))	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(x)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc([])	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc([1, 2])	i*sqrt(3)
+-e	axes2ecc("text")	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(true)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(-7/3)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	axes2ecc(0.5)	error: axes2ecc is written axes2ecc(a, b) or axes2ecc([a, b])
+-e	majaxis(0)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(1)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-1)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(1/2)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(2)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(i)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(inf)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-inf)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(undefined)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(10^20)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(10^(-20))	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(x)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis([])	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis([1, 2])	-i*sqrt(3)/3
+-e	majaxis("text")	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(true)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(-7/3)	error: majaxis is written majaxis(b, eccentricity)
+-e	majaxis(0.5)	error: majaxis is written majaxis(b, eccentricity)
+-e	minaxis(0)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(1)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-1)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(1/2)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(2)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(i)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(inf)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-inf)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(undefined)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(10^20)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(10^(-20))	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(x)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis([])	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis([1, 2])	i*sqrt(3)
+-e	minaxis("text")	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(true)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(-7/3)	error: minaxis is written minaxis(a, eccentricity)
+-e	minaxis(0.5)	error: minaxis is written minaxis(a, eccentricity)
+-e	ecc2flat(0)	0
+-e	ecc2flat(1)	1
+-e	ecc2flat(-1)	1
+-e	ecc2flat(1/2)	1 - sqrt(3)/2
+-e	ecc2flat(2)	1 - i*sqrt(3)
+-e	ecc2flat(i)	1 - sqrt(2)
+-e	ecc2flat(inf)	-i*inf
+-e	ecc2flat(-inf)	-i*inf
+-e	ecc2flat(undefined)	undefined
+-e	ecc2flat(10^20)	1 - 3i*sqrt(1111111111111111111111111111111111111111)
+-e	ecc2flat(10^(-20))	1 - 3sqrt(1111111111111111111111111111111111111111)/100000000000000000000
+-e	ecc2flat(x)	1 - sqrt(1 - x^2)
+-e	ecc2flat([])	1 - sqrt(1 - ([])^2)
+-e	ecc2flat([1, 2])	1 - i*sqrt(3)
+-e	ecc2flat("text")	1 - sqrt(1 - "text"^2)
+-e	ecc2flat(true)	1 - sqrt(1 - (true)^2)
+-e	ecc2flat(-7/3)	1 - 2i*sqrt(10)/3
+-e	ecc2flat(0.5)	0.13397459621556135323627682924706
+-e	flat2ecc(0)	0
+-e	flat2ecc(1)	1
+-e	flat2ecc(-1)	i*sqrt(3)
+-e	flat2ecc(1/2)	sqrt(3)/2
+-e	flat2ecc(2)	0
+-e	flat2ecc(i)	sqrt(1 + 2i)
+-e	flat2ecc(inf)	undefined
+-e	flat2ecc(-inf)	i*inf
+-e	flat2ecc(undefined)	undefined
+-e	flat2ecc(10^20)	10000000000i*sqrt(99999999999999999998)
+-e	flat2ecc(10^(-20))	sqrt(199999999999999999999)/100000000000000000000
+-e	flat2ecc(x)	sqrt(2x - x^2)
+-e	flat2ecc([])	sqrt(2*[] - ([])^2)
+-e	flat2ecc([1, 2])	sqrt(2*[1, 2] - ([1, 2])^2)
+-e	flat2ecc("text")	sqrt(2*"text" - "text"^2)
+-e	flat2ecc(true)	sqrt(2true - (true)^2)
+-e	flat2ecc(-7/3)	i*sqrt(91)/3
+-e	flat2ecc(0.5)	0.86602540378443864676372317075294
+-e	ecc2n(0)	0
+-e	ecc2n(1)	1
+-e	ecc2n(-1)	1
+-e	ecc2n(1/2)	7 - 4sqrt(3)
+-e	ecc2n(2)	-1/2 - i*sqrt(3)/2
+-e	ecc2n(i)	2sqrt(2) - 3
+-e	ecc2n(inf)	-i*inf/(i*inf)
+-e	ecc2n(-inf)	-i*inf/(i*inf)
+-e	ecc2n(undefined)	undefined
+-e	ecc2n(10^20)	(1 - 3i*sqrt(1111111111111111111111111111111111111111))/(1 + 3i*sqrt(1111111111111111111111111111111111111111))
+-e	ecc2n(10^(-20))	19999999999999999999999999999999999999999 - 600000000000000000000sqrt(1111111111111111111111111111111111111111)
+-e	ecc2n(x)	2/x^2 - 2sqrt(1 - x^2)/x^2 - 1
+-e	ecc2n([])	(1 - sqrt(1 - ([])^2))/(1 + sqrt(1 - ([])^2))
+-e	ecc2n([1, 2])	-1/2 - i*sqrt(3)/2
+-e	ecc2n("text")	2/"text"^2 - 2sqrt(1 - "text"^2)/"text"^2 - 1
+-e	ecc2n(true)	(1 - sqrt(1 - (true)^2))/(1 + sqrt(1 - (true)^2))
+-e	ecc2n(-7/3)	-31/49 - 12i*sqrt(10)/49
+-e	ecc2n(0.5)	0.071796769724490825890214633976511
+-e	n2ecc(0)	0
+-e	n2ecc(1)	1
+-e	n2ecc(-1)	ComplexInfinity
+-e	n2ecc(1/2)	2sqrt(2)/3
+-e	n2ecc(2)	2sqrt(2)/3
+-e	n2ecc(i)	(-1)^(1/4) - i*(-1)^(1/4)
+-e	n2ecc(inf)	undefined
+-e	n2ecc(-inf)	undefined
+-e	n2ecc(undefined)	undefined
+-e	n2ecc(10^20)	20000000000/100000000000000000001
+-e	n2ecc(10^(-20))	20000000000/100000000000000000001
 -e	n2ecc(x)	2sqrt(x)/(x + 1)
 -e	n2ecc([])	2sqrt([])/(1 + [])
 -e	n2ecc([1, 2])	2sqrt([1, 2])/(1 + [1, 2])
@@ -539,162 +698,3 @@
 -e	str2angle(10^20)	error: str2angle is written str2angle("12°30'15''S")
 -e	str2angle(10^(-20))	error: str2angle is written str2angle("12°30'15''S")
 -e	str2angle(x)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle([])	[]
--e	str2angle([1, 2])	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle("text")	error: str2angle: "text" is not an angle: degrees, minutes and seconds like 12°30'15''S, 12-30-15S, 12d30m15s, 123015S (the last four digits are minutes and seconds), or -12.5
--e	str2angle(true)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(-7/3)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(0.5)	error: str2angle is written str2angle("12°30'15''S")
--e	timezone(0)	[0, "Z"]
--e	timezone(1)	[0, "Z"]
--e	timezone(-1)	[0, "Z"]
--e	timezone(1/2)	[0, "Z"]
--e	timezone(2)	[0, "Z"]
--e	timezone(i)	error: timezone: i is not a real number
--e	timezone(inf)	error: timezone: inf is not a real number
--e	timezone(-inf)	error: timezone: -inf is not a real number
--e	timezone(undefined)	error: timezone: undefined is not a real number
--e	timezone(10^20)	[5, "R"]
--e	timezone(10^(-20))	[0, "Z"]
--e	timezone(x)	error: timezone: x is not a real number
--e	timezone([])	[]
--e	timezone([1, 2])	[[0, "Z"], [0, "Z"]]
--e	timezone("text")	error: timezone: "text" is not a real number
--e	timezone(true)	error: timezone: true is not a real number
--e	timezone(-7/3)	[0, "Z"]
--e	timezone(0.5)	[0, "Z"]
--e	utmzone(0)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 0
--e	utmzone(1)	[[0, 8], [-180, -174]]
--e	utmzone(-1)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -1
--e	utmzone(1/2)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
--e	utmzone(2)	[[0, 8], [-174, -168]]
--e	utmzone(i)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not i
--e	utmzone(inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not inf
--e	utmzone(-inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -inf
--e	utmzone(undefined)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not undefined
--e	utmzone(10^20)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 100000000000000000000
--e	utmzone(10^(-20))	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/100000000000000000000
--e	utmzone(x)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not x
--e	utmzone([])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not []
--e	utmzone([1, 2])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not [1, 2]
--e	utmzone("text")	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not "text"
--e	utmzone(true)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not true
--e	utmzone(-7/3)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -7/3
--e	utmzone(0.5)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
--e	relu(0)	0
--e	relu(1)	1
--e	relu(-1)	0
--e	relu(1/2)	1/2
--e	relu(2)	2
--e	relu(i)	error: relu: i is not a real number
--e	relu(inf)	error: relu: inf is not a real number
--e	relu(-inf)	error: relu: -inf is not a real number
--e	relu(undefined)	error: relu: undefined is not a real number
--e	relu(10^20)	100000000000000000000
--e	relu(10^(-20))	1/100000000000000000000
--e	relu(x)	x/2 + abs(x)/2
--e	relu([])	[]
--e	relu([1, 2])	[1, 2]
--e	relu("text")	"text"/2 + abs("text")/2
--e	relu(true)	error: relu: true is not a real number
--e	relu(-7/3)	0
--e	relu(0.5)	0.5
--e	leakyrelu(0)	0
--e	leakyrelu(1)	1
--e	leakyrelu(-1)	-1/100
--e	leakyrelu(1/2)	1/2
--e	leakyrelu(2)	2
--e	leakyrelu(i)	error: leakyrelu: i is not a real number
--e	leakyrelu(inf)	error: leakyrelu: inf is not a real number
--e	leakyrelu(-inf)	error: leakyrelu: -inf is not a real number
--e	leakyrelu(undefined)	error: leakyrelu: undefined is not a real number
--e	leakyrelu(10^20)	100000000000000000000
--e	leakyrelu(10^(-20))	1/100000000000000000000
--e	leakyrelu(x)	101x/200 + 99abs(x)/200
--e	leakyrelu([])	[]
--e	leakyrelu([1, 2])	[1, 2]
--e	leakyrelu("text")	101*"text"/200 + 99abs("text")/200
--e	leakyrelu(true)	error: leakyrelu: true is not a real number
--e	leakyrelu(-7/3)	-7/300
--e	leakyrelu(0.5)	0.5
--e	clippedrelu(0)	0
--e	clippedrelu(1)	1
--e	clippedrelu(-1)	0
--e	clippedrelu(1/2)	1/2
--e	clippedrelu(2)	2
--e	clippedrelu(i)	error: clippedrelu: i is not a real number
--e	clippedrelu(inf)	error: clippedrelu: inf is not a real number
--e	clippedrelu(-inf)	error: clippedrelu: -inf is not a real number
--e	clippedrelu(undefined)	error: clippedrelu: undefined is not a real number
--e	clippedrelu(10^20)	6
--e	clippedrelu(10^(-20))	1/100000000000000000000
--e	clippedrelu(x)	-abs(x - 6)/2 + abs(x)/2 + 3
--e	clippedrelu([])	[]
--e	clippedrelu([1, 2])	[1, 2]
--e	clippedrelu("text")	-abs("text" - 6)/2 + abs("text")/2 + 3
--e	clippedrelu(true)	error: clippedrelu: true is not a real number
--e	clippedrelu(-7/3)	0
--e	clippedrelu(0.5)	0.5
--e	elu(0)	0
--e	elu(1)	1
--e	elu(-1)	1/e - 1
--e	elu(1/2)	1/2
--e	elu(2)	2
--e	elu(i)	error: elu: i is not a real number
--e	elu(inf)	error: elu: inf is not a real number
--e	elu(-inf)	error: elu: -inf is not a real number
--e	elu(undefined)	error: elu: undefined is not a real number
--e	elu(10^20)	100000000000000000000
--e	elu(10^(-20))	1/100000000000000000000
--e	elu(x)	x/2 + abs(x)/2 + e^(x/2 - abs(x)/2) - 1
--e	elu([])	[]
--e	elu([1, 2])	[1, 2]
--e	elu("text")	"text"/2 + abs("text")/2 + e^("text"/2 - abs("text")/2) - 1
--e	elu(true)	error: elu: true is not a real number
--e	elu(-7/3)	1/e^(7/3) - 1
--e	elu(0.5)	0.5
--e	gelu(0)	0
--e	gelu(1)	1/2 + erf(sqrt(2)/2)/2
--e	gelu(-1)	erf(sqrt(2)/2)/2 - 1/2
--e	gelu(1/2)	1/4 + erf(sqrt(2)/4)/4
--e	gelu(2)	1 + erf(sqrt(2))
--e	gelu(i)	i/2 + i*erf(i*sqrt(2)/2)/2
--e	gelu(inf)	inf
--e	gelu(-inf)	undefined
--e	gelu(undefined)	undefined
--e	gelu(10^20)	50000000000000000000(1 + erf(50000000000000000000sqrt(2)))
--e	gelu(10^(-20))	(1/200000000000000000000)(1 + erf(sqrt(2)/200000000000000000000))
--e	gelu(x)	x*(erf(sqrt(2)*x/2) + 1)/2
--e	gelu([])	[]
--e	gelu([1, 2])	[1/2 + erf(sqrt(2)/2)/2, 1 + erf(sqrt(2))]
--e	gelu("text")	"text"*(erf(sqrt(2)*"text"/2) + 1)/2
--e	gelu(true)	(1 + erf(sqrt(2)*true/2))*true/2
--e	gelu(-7/3)	7erf(7sqrt(2)/6)/6 - 7/6
--e	gelu(0.5)	0.34573123063700655181885230530417
--e	swish(0)	0
--e	swish(1)	e/(1 + e)
--e	swish(-1)	-1/(1 + e)
--e	swish(1/2)	1/(2(1 + 1/sqrt(e)))
--e	swish(2)	2/(1 + 1/e^2)
--e	swish(i)	i/(1 + e^(-i))
--e	swish(inf)	inf
--e	swish(-inf)	undefined
--e	swish(undefined)	undefined
--e	swish(10^20)	100000000000000000000/(1 + 1/e^100000000000000000000)
--e	swish(10^(-20))	1/(100000000000000000000(1 + 1/e^(1/100000000000000000000)))
--e	swish(x)	x/(e^(-x) + 1)
--e	swish([])	[]
--e	swish([1, 2])	[e/(1 + e), 2/(1 + 1/e^2)]
--e	swish("text")	"text"/(e^(-"text") + 1)
--e	swish(true)	true/(1 + e^(-true))
--e	swish(-7/3)	-7/(3(1 + e^(7/3)))
--e	swish(0.5)	0.31122966560092728231945028287275
--e	mish(0)	0
--e	mish(1)	e*(2 + e)/(2 + 2e + e^2)
--e	mish(-1)	(-1 - 2e)/(1 + 2e + 2e^2)
--e	mish(1/2)	(e/2 + sqrt(e))/(2 + e + 2sqrt(e))
--e	mish(2)	(4e^2 + 2e^4)/(2 + 2e^2 + e^4)
--e	mish(i)	i*e^i*(2 + e^i)/(2 + e^(2i) + 2e^i)
--e	mish(inf)	inf
--e	mish(-inf)	undefined
--e	mish(undefined)	undefined

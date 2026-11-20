@@ -381,7 +381,7 @@
 	subsets(1, 2, 3)	error: subsets takes 1 to 2 argument(s), 3 given
 	tuples(1, 2, 3)	error: tuples takes 2 argument(s), 3 given
 	partition(1, 2, 3)	error: partition takes 2 argument(s), 3 given
-	select(1, 2, 3, 4)	error: select takes 2 to 3 argument(s), 4 given
+	select(1, 2, 3, 4, 5)	error: select takes 2 to 4 argument(s), 5 given
 	reject(1, 2, 3)	error: reject takes 2 argument(s), 3 given
 	countif(1, 2, 3)	error: countif takes 2 argument(s), 3 given
 	anytrue(1, 2, 3)	error: anytrue takes 2 argument(s), 3 given
@@ -684,7 +684,7 @@
 	ifftshift(1, 2)	error: ifftshift takes 1 argument(s), 2 given
 	dct(1, 2, 3)	error: dct takes 1 to 2 argument(s), 3 given
 	idct(1, 2, 3)	error: idct takes 1 to 2 argument(s), 3 given
-	lfilter(1, 2, 3, 4)	error: lfilter takes 2 to 3 argument(s), 4 given
+	lfilter(1, 2, 3, 4, 5)	error: lfilter takes 2 to 4 argument(s), 5 given
 	conv2(1, 2, 3, 4)	error: conv2 takes 2 to 3 argument(s), 4 given
 	xcorr(1, 2, 3)	error: xcorr takes 1 to 2 argument(s), 3 given
 	upsample(1, 2, 3)	error: upsample takes 2 argument(s), 3 given

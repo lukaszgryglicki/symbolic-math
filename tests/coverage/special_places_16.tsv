@@ -1,5 +1,3 @@
--e	ecdf(undefined)	error: ecdf needs a list
--e	ecdf(10^20)	error: ecdf needs a list
 -e	ecdf(10^(-20))	error: ecdf needs a list
 -e	ecdf(x)	error: ecdf needs a list
 -e	ecdf([])	[[], []]
@@ -698,3 +696,5 @@
 -e	plot3(1/2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])

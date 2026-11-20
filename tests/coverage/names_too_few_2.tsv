@@ -45,7 +45,7 @@
 	ifftshift()	error: ifftshift takes 1 argument(s), 0 given
 	dct()	error: dct takes 1 to 2 argument(s), 0 given
 	idct()	error: idct takes 1 to 2 argument(s), 0 given
-	lfilter()	error: lfilter takes 2 to 3 argument(s), 0 given
+	lfilter()	error: lfilter takes 2 to 4 argument(s), 0 given
 	conv2()	error: conv2 takes 2 to 3 argument(s), 0 given
 	xcorr()	error: xcorr takes 1 to 2 argument(s), 0 given
 	upsample()	error: upsample takes 2 argument(s), 0 given
@@ -682,19 +682,19 @@
 	lqe()	error: lqe takes 5 argument(s), 0 given
 	acker()	error: acker takes 3 argument(s), 0 given
 	place()	error: place takes 3 argument(s), 0 given
+	hsvd()	error: hsvd takes 1 argument(s), 0 given
+	balreal()	error: balreal takes 1 argument(s), 0 given
+	balred()	error: balred takes 2 to 3 argument(s), 0 given
+	covar()	error: covar takes 2 argument(s), 0 given
+	dlqe()	error: dlqe takes 5 argument(s), 0 given
+	lyapchol()	error: lyapchol takes 2 argument(s), 0 given
+	dlyapchol()	error: dlyapchol takes 2 argument(s), 0 given
+	initial()	error: initial takes 2 to 3 argument(s), 0 given
+	gensig()	error: gensig takes 2 to 4 argument(s), 0 given
+	lqi()	error: lqi takes 3 to 6 argument(s), 0 given
+	ss2ss()	error: ss2ss takes 2 argument(s), 0 given
+	ord2()	error: ord2 takes 2 argument(s), 0 given
+	d2d()	error: d2d takes 2 argument(s), 0 given
+	reg()	error: reg takes 3 argument(s), 0 given
+	filt()	error: filt takes 1 to 3 argument(s), 0 given
 	bodeplot()	error: bodeplot takes at least 1 argument(s), 0 given
-	nyquistplot()	error: nyquistplot takes at least 1 argument(s), 0 given
-	pzplot()	error: pzplot takes at least 1 argument(s), 0 given
-	rlocusplot()	error: rlocusplot takes at least 1 argument(s), 0 given
-	stepplot()	error: stepplot takes at least 1 argument(s), 0 given
-	impulseplot()	error: impulseplot takes at least 1 argument(s), 0 given
-	rectwin()	error: rectwin takes 1 to 2 argument(s), 0 given
-	hann()	error: hann takes 1 to 2 argument(s), 0 given
-	hanning()	error: hanning takes 1 to 2 argument(s), 0 given
-	hamming()	error: hamming takes 1 to 2 argument(s), 0 given
-	blackman()	error: blackman takes 1 to 2 argument(s), 0 given
-	blackmanharris()	error: blackmanharris takes 1 to 2 argument(s), 0 given
-	nuttallwin()	error: nuttallwin takes 1 to 2 argument(s), 0 given
-	flattopwin()	error: flattopwin takes 1 to 2 argument(s), 0 given
-	triang()	error: triang takes 1 to 2 argument(s), 0 given
-	bohmanwin()	error: bohmanwin takes 1 to 2 argument(s), 0 given
