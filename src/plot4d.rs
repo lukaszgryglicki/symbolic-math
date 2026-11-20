@@ -225,10 +225,12 @@ impl Columns {
             Fill::Below => column.iter().find(|(f, ..)| *f as usize >= frame),
             _ => column.iter().rev().find(|(f, ..)| *f as usize <= frame),
         };
-        found.map(|(f, level, faces)| match (*f as usize).abs_diff(frame) <= near {
-            true => (*level, *faces),
-            false => (*level, [0; 3]),
-        })
+        found.map(
+            |(f, level, faces)| match (*f as usize).abs_diff(frame) <= near {
+                true => (*level, *faces),
+                false => (*level, [0; 3]),
+            },
+        )
     }
 }
 
@@ -452,6 +454,19 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
     let mut env = Env::new();
     let x_of = |i: f64| plan.re.0 + (plan.re.1 - plan.re.0) * i / na as f64;
     let y_of = |j: f64| plan.im.0 + (plan.im.1 - plan.im.0) * j / nb as f64;
+    let at = |i: usize, j: usize| {
+        let mut env = Env::new();
+        env.insert(
+            plan.var.clone(),
+            Complex::with_val(64, (x_of(i as f64), y_of(j as f64))),
+        );
+        env
+    };
+    crate::tetration::fetch(
+        &plan.f,
+        64,
+        (0..=nb).flat_map(|j| (0..=na).map(move |i| (i, j))).map(|(i, j)| at(i, j)),
+    );
     let mut values = Vec::with_capacity((na + 1) * (nb + 1));
     for j in 0..=nb {
         for i in 0..=na {
@@ -760,20 +775,9 @@ impl<'a> Frames<'a> {
                 down.0 as f64 + (row as f64 + 0.5) * high as f64 / height as f64 - 0.5,
             )
         }));
-        // (the directions are those of the nearest places of the cut)
+        // (a cut that is stretched faces as the sides of its cubes do)
         if let Some(facings) = &mut self.facings {
-            let nearest = |at: f64, ends: (usize, usize)| {
-                at.round().clamp(ends.0 as f64, ends.1 as f64) as usize
-            };
-            let moved: Vec<Facing> = (0..width * height)
-                .map(|pixel| {
-                    let (column, row) = (pixel % width, pixel / width);
-                    let x = across.0 as f64 + (column as f64 + 0.5) * wide as f64 / width as f64;
-                    let y = down.0 as f64 + (row as f64 + 0.5) * high as f64 / height as f64;
-                    facings[nearest(y - 0.5, down) * width + nearest(x - 0.5, across)]
-                })
-                .collect();
-            *facings = moved;
+            facings.fill([0; 3]);
         }
         std::mem::swap(&mut self.levels, &mut self.spare);
     }

@@ -168,7 +168,7 @@ impl Sys {
     }
 }
 
-fn is_system(e: &Expr) -> bool {
+pub(crate) fn is_system(e: &Expr) -> bool {
     ["tf", "zpk", "ss"].iter().any(|k| e.fn_args(k).is_some())
 }
 
@@ -861,7 +861,74 @@ impl Session {
         })
     }
 
+    /// The names that the transforms use (s, z, t) are no values of the one who asks while
+    /// a system is worked on: `s := tf("s")` is a usual way to write systems.
+    fn without_names<T>(&mut self, work: impl FnOnce(&mut Session) -> T) -> T {
+        let hidden: Vec<(String, Expr)> = ["s", "z", "t", "_k"]
+            .iter()
+            .filter_map(|name| self.vars.remove(*name).map(|v| (name.to_string(), v)))
+            .collect();
+        let out = work(self);
+        self.vars.extend(hidden);
+        out
+    }
+
+    /// Systems that are added (`sum`) or multiplied, with numbers and ratios of polynomials
+    /// in s or z among them: one system.
+    pub(crate) fn systems_joined(&mut self, sum: bool, items: &[Expr]) -> Res {
+        let who = if sum {
+            "a sum with a system"
+        } else {
+            "a product with a system"
+        };
+        self.without_names(|session| {
+            let mut all: Option<Sys> = None;
+            for item in items {
+                let next = match is_system(item) {
+                    true => session.sys_of(item, who)?,
+                    false => session.sys_of_expr(item, None, who).map_err(|_| {
+                        format!(
+                            "{who}: {item} is no system, no number and no ratio of polynomials in s or z"
+                        )
+                    })?,
+                };
+                all = Some(match all {
+                    None => next,
+                    Some(so_far) => {
+                        let ts = Self::shared_ts(&so_far, &next, who)?;
+                        let parts = vec![so_far.expr(), next.expr()];
+                        let e = if sum { add(parts) } else { mul(parts) };
+                        session.sys_of_expr(&e, ts, who)?
+                    }
+                });
+            }
+            Ok(all.map_or_else(Expr::zero, |sys| sys.object()))
+        })
+    }
+
+    /// A whole power of a system; the power -1 turns it upside down.
+    pub(crate) fn system_power(&mut self, base: &Expr, exponent: &Expr) -> Res {
+        let who = "a power of a system";
+        if exponent.as_i64().is_none() {
+            return Err(format!(
+                "{who} is a whole one, as G^2 or G^-1: not {exponent}"
+            ));
+        }
+        self.without_names(|session| {
+            let sys = session.sys_of(base, who)?;
+            if exponent.as_i64().is_some_and(|k| k < 0) && sys.num.iter().all(Expr::is_zero) {
+                return Err(format!("{who}: a system that is zero has no inverse"));
+            }
+            let e = pow(sys.expr(), exponent.clone());
+            session.combined(e, sys.ts.clone(), who)
+        })
+    }
+
     pub(crate) fn control(&mut self, name: &str, a: &[Expr]) -> Option<Res> {
+        self.without_names(|session| session.control_of(name, a))
+    }
+
+    fn control_of(&mut self, name: &str, a: &[Expr]) -> Option<Res> {
         let n = a.len();
         // names that other values have too
         let first_system = a.first().is_some_and(is_system);
@@ -2113,6 +2180,9 @@ impl Session {
                 };
                 let grown = matrix::rows(&grown)
                     .ok_or("c2d: the exponential of the matrix has no value")?;
+                if grown.len() < size || grown.iter().any(|row| row.len() <= size) {
+                    return Err("c2d: the exponential of the matrix has no value".into());
+                }
                 let a: Rows = (0..size).map(|i| grown[i][..size].to_vec()).collect();
                 let b: Rows = (0..size).map(|i| vec![grown[i][size].clone()]).collect();
                 let (num, den) = ss_to_tf(&[a, b, m[2].clone(), m[3].clone()])?;
@@ -2227,6 +2297,10 @@ impl Session {
 
     /// What the chart of a system draws, as lists of real numbers.
     pub(crate) fn control_chart(&mut self, name: &str, a: &[Expr]) -> Result<Vec<Expr>, String> {
+        self.without_names(|session| session.control_chart_of(name, a))
+    }
+
+    fn control_chart_of(&mut self, name: &str, a: &[Expr]) -> Result<Vec<Expr>, String> {
         let who = name;
         if name == "zplane" {
             let parts = crate::sigdesign::apart(name, a).transpose()?;

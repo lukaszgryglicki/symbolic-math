@@ -97,6 +97,10 @@ Results go to the standard output; a line that starts with `  ~` is the numeric 
 line above, a line that starts with `note:` is a remark. Errors go to the standard error and
 make the exit status 1.
 
+Where the program runs for strangers, as behind a web page, the environment variable
+`SYMBOLIC_MATH_SANDBOX=N` keeps the files that it reads and writes under plain names in the
+current directory, 64 files and `N` megabytes at most.
+
 `symbolic-math --help` prints, after the options, an example of every kind of operation: every
 function and every constant of the program is in at least one of its lines, each line can be
 pasted after `symbolic-math`, and the tests run them all.
@@ -1608,8 +1612,8 @@ drawing is any of the walks, spirals, plots and pictures above: `walk`, `walk3d`
 `primewalk3d`, `primemodwalk`, `primemodwalk3d`, `ulamspiral`, `sacksspiral`, `plot`,
 `parametricplot`, `polarplot`, `listplot`, `histogram`, `implicitplot`, `complexplot`,
 `densityplot`, `plot3d`, `parametricplot3d`, `graphplot`, `matrixplot`, and the charts of data
-(`bar`, `pie`, `scatter`, `surf`, ...; see [What MATLAB has](#what-matlab-has)). The answer
-tells what was saved.
+(`bar`, `pie`, `scatter`, `surf`, ...; see [What MATLAB has](#what-matlab-has)), and the shapes
+of four dimensions `plot4d` and `view4d` (below). The answer tells what was saved.
 
 ```
 $ symbolic-math 'save_png("walk.png", walk(pi, 10, 10000))'
@@ -1669,7 +1673,7 @@ What is chosen follows the drawing as `name = value` or as a word, in any order:
 | `views` | three frames with one scale: the drawing from above, from the front and from the right |
 | `stereo`, `stereo = degrees` | a picture for glasses with a red (left) and a cyan (right) glass: two eyes that stand 4 degrees (or as many as given) apart |
 | `thickness = 1`, `margin = 0.04` | the width of a line in pixels; the free rim as a part of the smaller side |
-| `palette = name` | the colours along a walk or of the values: `rainbow`, `fire`, `ice`, `viridis`, `plasma`, `heat`, `ocean`, `sunset`, `gray`, `ink`, `cool`, `warm`, those of MATLAB (`parula`, `turbo`, `jet`, `hot`, `hsv`, `bone`, `copper`, `pink`, `spring`, `summer`, `autumn`, `winter`), or a list of colours; `reverse` turns it around |
+| `palette = name` | the colours along a walk or of the values: `rainbow`, `fire`, `ice`, `viridis`, `plasma`, `magma`, `inferno`, `cividis`, `heat` (black, brown, red, orange, yellow, white, bluish), `thermal`, `ocean`, `sunset`, `twilight`, `coolwarm`, `earth`, `spectrum`, `cube` (all 512 colours of 3 bits a sample, each next to the one before), `gray`, `ink`, `cool`, `warm`, those of MATLAB (`parula`, `turbo`, `jet`, `hot`, `hsv`, `bone`, `copper`, `pink`, `spring`, `summer`, `autumn`, `winter`), or a list of colours, also written `{(0,0,0),(0,0,1),(1,1,1)}`; `reverse` turns it around |
 | `color = c`, `background = c` | one colour for what is drawn; the ground. A colour is a name (`black`, `white`, `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `orange`, `purple`, `brown`, `pink`, `gray`, `navy`, `lime`, `gold`, `silver`), `"#rrggbb"`, or `[red, green, blue]` with numbers from 0 to 1 |
 | `title = "text"`, `xlabel`, `ylabel` | a title above any picture; names of the axes of a chart of data |
 | `axes`, `noaxes`, `grid` | axes with numbers (the usual for plots; a box with the ranges in space), none, faint lines at the numbers |
@@ -1684,6 +1688,268 @@ sines and cosines of the arbitrary-precision library, so that a PNG file is the 
 system; a JPEG XL file without loss holds the same pixels, and the size of one with loss may
 differ by a few bytes between kinds of processors. A picture of a complex function, of a
 density or of a surface works the function out once for every pixel or cell, with 64 bits.
+
+### Functions of a complex number as shapes of four dimensions
+
+`plot4d(f, z, a, b)` draws a function of a complex number in the box with the corners `a` and
+`b` (`plot4d(f, z, r)`: the square of the radius `r`; `plot4d(f)`: from `-2 - 2i` to `2 + 2i`)
+as a shape of four dimensions. A file of pixels has a width and a height, frames are the third
+dimension and colours the fourth: the real and the imaginary part of `z` and of `f(z)` lie on
+these four sides, and the alpha channel says which voxels belong to the shape. As a statement
+`plot4d` shows the frame in the middle with characters; `save_jxl` and `save_png` save the whole
+body as a moving JPEG XL or PNG picture.
+
+```
+$ symbolic-math 'plot4d(sin(z), width = 40, height = 12)'
+                    @@
+                    %%
+                    ###
+                    ****
+                    ****+
+                    +++++
+                    +++++
+                    ====+
+                    ====
+                    ---
+                    ::
+                    ..
+plot4d of sin(z): frame 9 of 16, where the real part of f(z) is from 0 to 0.4701; the characters .:-=+*#%@ are the colours, the least value first
+the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real part of f(z) from -3.761 to 3.761; the colours: the imaginary part of f(z) from -3.627 to 3.627
+750 voxels of the box of 40 x 12 x 16 belong to the surface (9.766 %)
+save_jxl("plot4d.jxl", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is
+$ symbolic-math 'save_jxl("sin.jxl", plot4d(sin(z)), width = 64, height = 64, frames = 64)'
+plot4d of sin(z)
+the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real part of f(z) from -3.762 to 3.762; the colours: the imaginary part of f(z) from -3.627 to 3.627 (512 colours of the palette rainbow, the least value first)
+6592 voxels of the box of 64 x 64 x 64 belong to the surface (2.515 %)
+saved sin.jxl: JPEG XL, 64 x 64 pixels, 64 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossless, effort 10, 21736 bytes
+$ symbolic-math 'save_png("turned.png", plot4d(z^3 - 1, z, 1.5), fill = below, palette = cube, rotate(30, 20), width = 64, height = 64, frames = 32)'
+plot4d of z^3 - 1
+the width: the real part of z from -1.5 to 1.5; the height: the imaginary part of z from -1.5 to 1.5, upwards; the frames: the real part of f(z) from -7.75 to 5.75; the colours: the imaginary part of f(z) from -6.75 to 6.75 (512 colours of the palette cube, the least value first)
+after that the body is turned and made smaller by the factor 0.6211, so that its box stays in the picture: about the middle of its box, first about the frames (roll), then about the width (pitch), then about the upright axis (yaw)
+5436 voxels of the box of 64 x 64 x 32 belong to the surface (4.147 %); the body below it is filled
+saved turned.png: PNG, 64 x 64 pixels, 32 frames, 16 a second, 8 bits, RGB + alpha, level 9, 35205 bytes
+$ symbolic-math 'save_jxl("rings.jxl", plot4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, width = 64, height = 64, frames = 32)'
+plot4d of z*sin(z)
+the width: the real part of f(z) from -1652 to 1331; the height: the imaginary part of f(z) from -1471 to 1471, upwards; the frames: the imaginary part of z from -6 to 6; the colours: the real part of z from -6 to 6 (512 colours of the palette rainbow, the least value first)
+every frame is stretched on its own (normalize): what it holds fills the picture and takes the whole palette, so the frames together are no body of one scale any more
+30 of 32 frames became larger; the others reach from edge to edge both ways as they are
+61012 voxels of the box of 64 x 64 x 32 belong to the surface (46.55 %)
+saved rings.jxl: JPEG XL, 64 x 64 pixels, 32 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossless, effort 10, 56098 bytes
+$ symbolic-math 'save_jxl_fast("quick.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat, width = 64, height = 64, frames = 32)'
+plot4d of gamma(z)
+the width: the real part of z from -4 to 4; the height: the imaginary part of z from -3 to 3, upwards; the frames: the real part of f(z) from -8.717 to 7.749; the colours: the imaginary part of f(z) from -3.298 to 3.298 (256 colours of the palette heat, the least value first)
+the imaginary part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_imag = [least, greatest] sets other ends
+4818 voxels of the box of 64 x 64 x 32 belong to the surface (3.676 %); the body below it is filled
+saved quick.jxl: JPEG XL, 64 x 64 pixels, 32 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossy at the distance 1 (alpha stays exact), effort 3, 32971 bytes
+$ symbolic-math 'imframes("sin.jxl"); nnz(last(imread("sin.jxl", 32)))'
+64
+96
+```
+
+| Choice | Meaning |
+| --- | --- |
+| `arg_real`, `arg_imag`, `val_real`, `val_imag` `= width`, `height`, `frame` or `color` | which part of `z` and of `f(z)` lies on which side; the usual ones are `arg_real = width, arg_imag = height, val_real = frame, val_imag = color`, and parts that are not said take the sides that are left |
+| `width`, `height`, `frames`, `colors` | the sizes of the four sides: 512 each unless said |
+| `palette = name` or a list of colours | the colours from the least value to the largest (`rainbow` unless said) |
+| `bits`, `gray`, `channels` | RGB with 8 bits and one bit of alpha unless said; `bits = 3` holds 512 colours, `gray, bits = 9` 512 levels in one channel |
+| `fill = surface`, `below`, `above` | the surface alone, or the body between it and the least (largest) value of the side of the frames |
+| `thickness = n` | a surface of `n` voxels |
+| `range_real = [a, b]`, `range_imag = [a, b]` | the values of `f(z)` that are drawn; without them the values near a pole are left out by themselves |
+| `rotate(yaw, pitch, roll)` | the body turned by these degrees before it is saved (made smaller so that it stays in its box) |
+| `normalize` | every frame is stretched on its own to the whole picture and the whole palette: more to see in every frame, and a body like a tunnel instead of a box |
+| `fps = 16`, `lossless`, `quality`, `distance`, `effort`, `level` | as for every picture: without loss and with the hardest packing unless said |
+
+The body of `512 x 512 x 512` voxels that is saved without sizes takes a minute or more with
+the hardest packing. `save_png_fast`, `save_jxl_fast` and `save_fast` are the same commands
+for a quick look: 256 pixels wide (a shape of four dimensions: 256 on every side), a PNG file
+packed at `level = 1`, a JPEG XL file with loss at the distance 1 and `effort = 3`; every
+choice may still be given. `imread("file", k)` reads frame `k` of a moving picture and
+`imframes("file")` counts its frames.
+
+### The shape seen from outside
+
+`view4d(f, z, a, b)` takes the same body of voxels and draws one picture of it as an eye in
+space sees it from outside: what is hidden is left out, and the surface is lighter where it
+faces the light. The frames of `plot4d` stand upright, so that with the usual sides the real
+part of `f(z)` stands as heights over the plane of `z` in the colours of the imaginary part -
+mountains over a carpet. The program finds a place for the eye that shows much of the shape;
+`azimuth`, `elevation`, `viewpoint`, `perspective`, `roll` and `zoom` put it elsewhere, as for
+every drawing of space, and with `frames = n` the eye goes around the body. Every choice of the
+shape of `plot4d` is taken (`fill`, `thickness`, the sides, `range_real`, `range_imag`, `rotate`,
+`normalize`, `colors`, `palette`), and `voxels = n` or `voxels = [across, upwards, frames]` says
+of how many cubes the body is made: half as many along a side as the picture has pixels across
+unless said, 512 at most. As a statement `view4d` is a picture of characters.
+
+```
+$ symbolic-math 'view4d(z^2, width = 40, height = 12)'
+
+                   ⠄⠶⣶⣶⣶⣶⠴⠄
+                 ⠄⠴⣶⣶⣶⣶⣶⣶⣶⣶⠶
+             ⠄⠄⠄⠄⠶⣶⣶⣶⣾⣾⣾⣶⣶⣶⣶⠶
+           ⠄⠤⠴⠴⠴⠴⠶⡶⣶⣾⣾⣾⣶⣶⣶⣶⣶⡶⡶⠄
+          ⠄⠴⠴⠴⠴⠴⠴⠴⠴⠶⡶⣾⣶⣶⣶⣶⣶⡶⡶⡶⠴
+         ⠄⠴⠴⠴⠤⠤⠤⠴⠄⠄⠄⠴⡶⡶⣶⡶⡶⡶⡶⡶⡶⠄
+         ⠄⠤⠤⠤⠤⠤⠄     ⠴⠶⠶⡶⡶⡶⡶⡶⠴
+          ⠄⠤⠤⠤⠄       ⠤⠴⠶⠶⠶⡶⠶
+                       ⠤⠴⠴⠶⠶⠄
+                        ⠄⠄⠄⠄
+
+view4d of z^2: the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of z from -2 to 2; y is the imaginary part of z from -2 to 2; z, upright, is the real part of f(z) from -4 to 4; the colours are the imaginary part of f(z) from -8 to 8
+3774 voxels of the box of 40 x 40 x 40 belong to the surface (5.897 %)
+the body has 3774 cubes, of which 9796 sides lie open
+the eye stands at azimuth = 120, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+save_png("view4d.png", view4d(...)) saves the picture in colours: 1024 x 1024 pixels of a body of 512 x 512 x 512 voxels
+$ symbolic-math 'save_png("sin.png", view4d(sin(z)), width = 160)'
+view4d of sin(z): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of z from -2 to 2; y is the imaginary part of z from -2 to 2; z, upright, is the real part of f(z) from -3.761 to 3.761; the colours are the imaginary part of f(z) from -3.627 to 3.627 (512 colours of the palette rainbow, the least value first)
+10457 voxels of the box of 80 x 80 x 80 belong to the surface (2.042 %)
+the body has 10457 cubes, of which 26586 sides lie open
+the eye stands at azimuth = 240, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+saved sin.png: PNG, 160 x 160 pixels, 8 bits, RGB, level 9, 7438 bytes
+$ symbolic-math 'save_png("gamma.png", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat, azimuth = 60, elevation = 35, perspective = 3, width = 160)'
+view4d of gamma(z): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of z from -4 to 4; y is the imaginary part of z from -3 to 3; z, upright, is the real part of f(z) from -2.9 to 3.863; the colours are the imaginary part of f(z) from -3.196 to 3.196 (512 colours of the palette heat, the least value first)
+the real part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_real = [least, greatest] sets other ends
+the imaginary part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_imag = [least, greatest] sets other ends
+12679 voxels of the box of 80 x 80 x 80 belong to the surface (2.476 %); the body below it is filled
+the body has 230503 cubes, of which 34796 sides lie open
+saved gamma.png: PNG, 160 x 160 pixels, 8 bits, RGB, level 9, 7219 bytes
+$ symbolic-math 'save_jxl("around.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, frames = 8, width = 96)'
+view4d of (z^3 - 1)/(z^3 + 1): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of z from -2 to 2; y is the imaginary part of z from -2 to 2; z, upright, is the real part of f(z) from -2.295 to 2.853; the colours are the imaginary part of f(z) from -2.362 to 2.362 (512 colours of the palette magma, the least value first)
+the real part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_real = [least, greatest] sets other ends
+the imaginary part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_imag = [least, greatest] sets other ends
+4651 voxels of the box of 48 x 48 x 48 belong to the surface (4.206 %); the body below it is filled
+the body has 63508 cubes, of which 15566 sides lie open
+the eye stands at azimuth = 30, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+saved around.jxl: JPEG XL, 96 x 96 pixels, 8 bits, RGB, 8 frames, 12 a second, lossless, effort 7, 5757 bytes
+$ symbolic-math 'save_png_fast("rings.png", view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2)'
+view4d of z*sin(z): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of f(z) from -1652 to 1331; y is the imaginary part of f(z) from -1471 to 1471; z, upright, is the imaginary part of z from -6 to 6; the colours are the real part of z from -6 to 6 (256 colours of the palette rainbow, the least value first)
+every frame is stretched on its own (normalize): what it holds fills the picture and takes the whole palette, so the frames together are no body of one scale any more
+126 of 128 frames became larger; the others reach from edge to edge both ways as they are
+473076 voxels of the box of 128 x 128 x 128 belong to the surface (22.56 %)
+the body has 517864 cubes, of which 258542 sides lie open
+the eye stands at azimuth = 30, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+saved rings.png: PNG, 256 x 256 pixels, 8 bits, RGB, level 1, 29509 bytes
+```
+
+### Pictures made with it
+
+The directory [jxls](jxls) holds pictures that the program made, all without loss and packed
+as hard as the encoder can (`effort = 10`); `sh jxls/make.sh` makes them again (a file that is
+there is left as it is). They are JPEG XL files: a viewer that knows the format shows them,
+the moving ones with their frames.
+
+<!-- pictures -->
+**Shapes of four dimensions.** `plot4d`: 512 x 512 pixels, 512 frames, 512 colours; alpha says where the shape is. `save_jxl("name.jxl", drawing)`.
+
+| File | Drawing |
+| --- | --- |
+| [plot4d_sin.jxl](jxls/plot4d_sin.jxl) | `plot4d(sin(z))` |
+| [plot4d_gamma_body.jxl](jxls/plot4d_gamma_body.jxl) | `plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
+| [plot4d_three_poles_body.jxl](jxls/plot4d_three_poles_body.jxl) | `plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma` |
+| [plot4d_tan.jxl](jxls/plot4d_tan.jxl) | `plot4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo` |
+| [plot4d_zeta_body.jxl](jxls/plot4d_zeta_body.jxl) | `plot4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3]` |
+| [plot4d_waves_body.jxl](jxls/plot4d_waves_body.jxl) | `plot4d(sin(z)*cos(z), z, pi), fill = below, palette = twilight, range_real = [-2, 2], range_imag = [-2, 2]` |
+| [plot4d_ribbons.jxl](jxls/plot4d_ribbons.jxl) | `plot4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
+| [plot4d_rings.jxl](jxls/plot4d_rings.jxl) | `plot4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
+| [plot4d_circles.jxl](jxls/plot4d_circles.jxl) | `plot4d(e^z, z, -2 - pi*i, 2 + pi*i), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 3` |
+| [plot4d_bows.jxl](jxls/plot4d_bows.jxl) | `plot4d(z^2, z, 2), arg_real = frame, arg_imag = color, val_real = width, val_imag = height, normalize, thickness = 2, palette = spectrum` |
+| [plot4d_moebius.jxl](jxls/plot4d_moebius.jxl) | `plot4d((z - 1)/(z + 1), z, 3), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, range_real = [-3, 5], range_imag = [-4, 4], thickness = 2` |
+| [plot4d_cube_bands.jxl](jxls/plot4d_cube_bands.jxl) | `plot4d(z^3 - 1, z, 1.5), fill = below, palette = cube, normalize` |
+| [plot4d_turned_sheet.jxl](jxls/plot4d_turned_sheet.jxl) | `plot4d(sin(z), z, pi), rotate(35, 25, 10), thickness = 2, palette = turbo` |
+| [plot4d_curves.jxl](jxls/plot4d_curves.jxl) | `plot4d(sin(z)*cos(z)), arg_imag = frame, val_real = height, normalize, thickness = 3` |
+| [plot4d_gray9.jxl](jxls/plot4d_gray9.jxl) | `plot4d(z + 1/z), gray, bits = 9, range_real = [-4, 4], range_imag = [-4, 4]` |
+| [plot4d_cube3.jxl](jxls/plot4d_cube3.jxl) | `plot4d(exp(z), z, 3), palette = cube, bits = 3, fill = below` |
+
+**The shapes seen from outside.** `view4d`: one picture of the body of 512 x 512 x 512 voxels. `save_jxl("name.jxl", drawing, width = 1920, height = 1080, effort = 10)`.
+
+| File | Drawing |
+| --- | --- |
+| [view4d_sin.jxl](jxls/view4d_sin.jxl) | `view4d(sin(z))` |
+| [view4d_gamma.jxl](jxls/view4d_gamma.jxl) | `view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
+| [view4d_three_poles.jxl](jxls/view4d_three_poles.jxl) | `view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3], perspective = 3` |
+| [view4d_tan.jxl](jxls/view4d_tan.jxl) | `view4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3], palette = turbo` |
+| [view4d_zeta.jxl](jxls/view4d_zeta.jxl) | `view4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno, range_real = [-3, 3], range_imag = [-3, 3], voxels = [256, 512, 256]` |
+| [view4d_carpet.jxl](jxls/view4d_carpet.jxl) | `view4d(z + 1/z), range_real = [-4, 4], range_imag = [-4, 4], palette = turbo, azimuth = 30, elevation = 60` |
+| [view4d_waves.jxl](jxls/view4d_waves.jxl) | `view4d(sin(z)*cos(z), z, pi), palette = twilight, range_real = [-2, 2], range_imag = [-2, 2]` |
+| [view4d_ribbons.jxl](jxls/view4d_ribbons.jxl) | `view4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, thickness = 2` |
+| [view4d_rings.jxl](jxls/view4d_rings.jxl) | `view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2` |
+| [view4d_root.jxl](jxls/view4d_root.jxl) | `view4d(sqrt(z)), val_real = color, val_imag = frame, background = white` |
+| [view4d_hang.jxl](jxls/view4d_hang.jxl) | `view4d(z^4 - 1, z, 1.3), fill = above, palette = plasma` |
+| [view4d_two_poles_stereo.jxl](jxls/view4d_two_poles_stereo.jxl) | `view4d(1/(z^2 + 1), z, 2), range_real = [-2, 2], range_imag = [-2, 2], stereo = 5` |
+| [view4d_erf_turned.jxl](jxls/view4d_erf_turned.jxl) | `view4d(erf(z), z, 2), fill = below, rotate(25, 20, 0), palette = coolwarm, range_real = [-3, 3], range_imag = [-3, 3]` |
+| [view4d_exp.jxl](jxls/view4d_exp.jxl) | `view4d(e^z, z, -2 - pi*i, 2 + pi*i), title = "the exponential function"` |
+
+**Walks of digits and of primes, spirals.** `save_jxl("name.jxl", drawing, width = 1920, height = 1080, effort = 10)`.
+
+| File | Drawing |
+| --- | --- |
+| [walk_pi.jxl](jxls/walk_pi.jxl) | `walk(pi, 10, 200000)` |
+| [walk_e_base4.jxl](jxls/walk_e_base4.jxl) | `walk(e, 4, 300000), palette = fire` |
+| [walk_sqrt2_base6.jxl](jxls/walk_sqrt2_base6.jxl) | `walk(sqrt(2), 6, 200000), palette = viridis` |
+| [primewalk.jxl](jxls/primewalk.jxl) | `primewalk(200000)` |
+| [primemodwalk.jxl](jxls/primemodwalk.jxl) | `primemodwalk(300000, 12)` |
+| [ulamspiral.jxl](jxls/ulamspiral.jxl) | `ulamspiral(500000)` |
+| [sacksspiral.jxl](jxls/sacksspiral.jxl) | `sacksspiral(200000)` |
+| [walk3d_near.jxl](jxls/walk3d_near.jxl) | `walk3d(e + pi*i, 12, 100000), perspective = 3, fog = 0.8` |
+| [walk3d_stereo.jxl](jxls/walk3d_stereo.jxl) | `walk3d(sqrt(2) + sqrt(3)*i, 12, 60000), stereo` |
+| [walk3d_depth.jxl](jxls/walk3d_depth.jxl) | `walk3d(e + pi*i, 12, 100000), depth, azimuth = 300, elevation = 35` |
+| [primewalk3d.jxl](jxls/primewalk3d.jxl) | `primewalk3d(100000), axes` |
+| [primemodwalk3d.jxl](jxls/primemodwalk3d.jxl) | `primemodwalk3d(100000)` |
+| [primes3d_xyz.jxl](jxls/primes3d_xyz.jxl) | `primes3d_xyz(20000, 4)` |
+
+**Surfaces and curves of space.** The same sizes.
+
+| File | Drawing |
+| --- | --- |
+| [plot3d_ripples.jxl](jxls/plot3d_ripples.jxl) | `plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo, perspective = 3` |
+| [plot3d_saddle.jxl](jxls/plot3d_saddle.jxl) | `plot3d(x^2 - y^2, x, -2, 2, y, -2, 2), palette = turbo` |
+| [surf_peaks.jxl](jxls/surf_peaks.jxl) | `surf(peaks(80)), palette = turbo, azimuth = 50, elevation = 30` |
+| [surfc_peaks.jxl](jxls/surfc_peaks.jxl) | `surfc(peaks(60)), palette = jet` |
+| [waterfall_peaks.jxl](jxls/waterfall_peaks.jxl) | `waterfall(peaks(40))` |
+| [hyperboloid.jxl](jxls/hyperboloid.jxl) | `fimplicit3(x^2 + y^2 - z^2 = 1, x, -2, 2, y, -2, 2, z, -2, 2)` |
+| [contour3_cells.jxl](jxls/contour3_cells.jxl) | `contour3(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)` |
+| [bar3_magic.jxl](jxls/bar3_magic.jxl) | `bar3(magic(6))` |
+| [helix.jxl](jxls/helix.jxl) | `scatter3(cos((0:400)/10), sin((0:400)/10), (0:400)/40)` |
+| [knot.jxl](jxls/knot.jxl) | `parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3, perspective = 4` |
+
+**Functions of a complex number in colours, charts.** The same sizes.
+
+| File | Drawing |
+| --- | --- |
+| [complexplot_cubic.jxl](jxls/complexplot_cubic.jxl) | `complexplot(z^3 - 1, z, -2.4 - 1.35i, 2.4 + 1.35i)` |
+| [complexplot_gamma.jxl](jxls/complexplot_gamma.jxl) | `complexplot(gamma(z), z, -6.4 - 3.6i, 6.4 + 3.6i)` |
+| [complexplot_zeta.jxl](jxls/complexplot_zeta.jxl) | `complexplot(zeta(z), z, -16 - 9i, 16 + 9i)` |
+| [complexplot_essential.jxl](jxls/complexplot_essential.jxl) | `complexplot(sin(1/z), z, -0.8 - 0.45i, 0.8 + 0.45i)` |
+| [complexplot_blaschke.jxl](jxls/complexplot_blaschke.jxl) | `complexplot((z^2 - 1)/(z^2 + 1), z, -3.2 - 1.8i, 3.2 + 1.8i)` |
+| [densityplot_waves.jxl](jxls/densityplot_waves.jxl) | `densityplot(sin(x)*cos(y) + sin(x*y/3), x, -8, 8, y, -4.5, 4.5), palette = twilight` |
+| [contour_cells.jxl](jxls/contour_cells.jxl) | `contour(sin(x)*cos(y), x, -2pi, 2pi, y, -pi, pi)` |
+| [implicitplot_heart.jxl](jxls/implicitplot_heart.jxl) | `implicitplot((x^2 + y^2 - 1)^3 = x^2*y^3, x, -2.4, 2.4, y, -1.2, 1.5)` |
+| [streamline_spiral.jxl](jxls/streamline_spiral.jxl) | `streamline([-y, x + y/2], x, -2, 2, y, -1.2, 1.2)` |
+| [plot_four_curves.jxl](jxls/plot_four_curves.jxl) | `plot([sin(x), cos(x), sin(2x)/2, x*cos(3x)/6], x, -2pi, 2pi), grid, title = "four curves"` |
+| [parametricplot_lissajous.jxl](jxls/parametricplot_lissajous.jxl) | `parametricplot([sin(3t), sin(4t)], t, 0, 2pi)` |
+| [polarplot_rose.jxl](jxls/polarplot_rose.jxl) | `polarplot(cos(7t/4), t, 0, 8pi)` |
+| [bodeplot.jxl](jxls/bodeplot.jxl) | `bodeplot(tf([1], [1, 0.4, 1]))` |
+| [nyquistplot.jxl](jxls/nyquistplot.jxl) | `nyquistplot(tf([4], [1, 3, 3, 1]))` |
+| [rlocusplot.jxl](jxls/rlocusplot.jxl) | `rlocusplot(tf([1, 2], [1, 3, 5, 0]))` |
+| [graphplot_petersen.jxl](jxls/graphplot_petersen.jxl) | `graphplot(petersengraph())` |
+
+**Moving pictures.** 512 frames of 512 x 512 pixels: the eye goes once around the drawing, a walk grows, or space is cut into 512 slabs. `save_jxl("name.jxl", drawing, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` (`slices = 512` instead of `frames` for the slabs).
+
+| File | Drawing |
+| --- | --- |
+| [view4d_around_sin.jxl](jxls/view4d_around_sin.jxl) | `view4d(sin(z))` |
+| [view4d_around_gamma.jxl](jxls/view4d_around_gamma.jxl) | `view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat` |
+| [view4d_around_poles.jxl](jxls/view4d_around_poles.jxl) | `view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3]` |
+| [walk_pi_grows.jxl](jxls/walk_pi_grows.jxl) | `walk(pi, 10, 100000), grow` |
+| [walk3d_around.jxl](jxls/walk3d_around.jxl) | `walk3d(e + pi*i, 12, 50000)` |
+| [walk3d_slices.jxl](jxls/walk3d_slices.jxl) | `walk3d(e + pi*i, 12, 100000)` |
+| [plot3d_around.jxl](jxls/plot3d_around.jxl) | `plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), x, -12, 12, y, -12, 12), palette = turbo` |
+| [knot_around.jxl](jxls/knot_around.jxl) | `parametricplot3d([(2 + cos(3t))*cos(2t), (2 + cos(3t))*sin(2t), sin(3t)], t, 0, 2pi), thickness = 3` |
+<!-- /pictures -->
 
 ## What MATLAB has
 
@@ -1935,6 +2201,198 @@ $ symbolic-math 'rgb2gray([[[255, 0]], [[0, 255]], [[0, 0]]])'
 'rewrite(sin(x)^2, "cos")'                    1 - cos(x)^2
 ```
 
+### Pairs of matrices, more statistics, solvers without slopes
+
+`balance`, `qz`, `ordqz`, `gsvd`, `ordschur`, `ordeig`, `rsf2csf` and `cdf2rdf` take pairs of
+matrices and Schur forms apart; `runstest`, `ansaribradley`, `lillietest`, `mvncdf`, `cmdscale`,
+`procrustes`, `canoncorr`, `nnmf` and the fits of laws to data (`poissfit`, `gamfit`, `wblfit`,
+`betafit`, `mle`, `fitdist`, ...) add to the statistics; `bvp4c`, `dde23` and `pdepe` solve
+problems with values at both ends, equations that look back and the heat equation, and
+`patternsearch`, `particleswarm`, `simulannealbnd`, `ga`, `globalsearch`, `fminimax` and
+`fgoalattain` find least values without slopes.
+
+```
+'A := [[1, 2], [3, 4]]; B := [[5, 6], [7, 9]]; r := qz(A, B); ordeig(r[[1]], r[[2]])'
+                                              [[1, 2], [3, 4]]
+                                              [[5, 6], [7, 9]]
+                                              [[[-0.43488716303224179073838374858023, 2.9429655768591232259913757393031], [0, 4.598894081064709236796488328344]], [[0.29839376577929616750329705686448, 9.4779468545880752330734853349381], [0, 10.053829349165822280042973847347]], [[-0.9879094023700189160834515073146, -0.15503229569645178814084957963601], [0.15503229569645178814084957963601, -0.9879094023700189160834515073146]], [[-0.79183667940534439563673904642093, -0.61073289836745968326415112182654], [0.61073289836745968326415112182654, -0.79183667940534439563673904642093]]]
+                                              [-1.4574271077563381099751019113698, 0.45742710775633810997510191136982]
+'lillietest([2.1, 3.4, 1.9, 5.6, 4.4, 3.8, 2.7, 4.1, 3.3, 3.0, 2.2, 4.9])'
+                                              [0, 0.9555, 0.10981074145421267330444417253253]
+'mvncdf([1, 1], [0, 0], [[1, 1/2], [1/2, 1]])'
+                                              0.74520358684674973096290605097485
+'gamfit([1, 2, 3, 4, 10])'                    [1.8726098439573354967813211301859, 2.1360562708283689763846163631734]
+'bvp4c(@(x, y, z) [z, -y], @(ya, za, yb, zb) [ya, yb - 1], [0, pi/4, pi/2], [0, 0])'
+                                              [[0, 0, 1], [pi/4, 0.70710678118654752440084436210485, 0.70710678118654752440084436210485], [pi/2, 1, 0]]
+'dde23(@(t, y, z) -z, [1], 1, [0, 1, 2])'     [[0, 1], [1, 0], [2, -0.5]]
+'patternsearch(@(x, y) abs(x - 1) + abs(y + 2), [0, 0])'
+                                              [1, -2]
+```
+
+### Tables, tables with times, values of a few kinds
+
+`table("name", [values], ...)` is a table of named columns, `timetable` one with a time for
+every row, `categorical` a list of values of a few kinds. They are shown as tables; the
+functions give new ones.
+
+```
+'t := table("name", ["ann", "bob", "cy"], "age", [31, 25, 40]); sortrows(t, "age")'
+                                              table("name", ["ann", "bob", "cy"], "age", [31, 25, 40])
+                                              table("name", ["bob", "ann", "cy"], "age", [25, 31, 40])
+'t := table("g", ["a", "b", "a"], "x", [1, 2, 3]); groupsummary(t, "g", "mean")'
+                                              table("g", ["a", "b", "a"], "x", [1, 2, 3])
+                                              table("g", ["a", "b"], "GroupCount", [2, 1], "mean_x", [2, 2])
+'l := table("id", [1, 2], "x", [10, 20]); r := table("id", [2, 3], "y", ["b", "c"]); outerjoin(l, r)'
+                                              table("id", [1, 2], "x", [10, 20])
+                                              table("id", [2, 3], "y", ["b", "c"])
+                                              table("id", [1, 2, 3], "x", [10, 20, undefined], "y", [undefined, "b", "c"])
+'tt := timetable([1, 2, 3, 4], "v", [10, 20, 40, 80]); retime(tt, [1, 3], "sum")'
+                                              timetable("Time", [1, 2, 3, 4], "v", [10, 20, 40, 80])
+                                              timetable("Time", [1, 3], "v", [30, 120])
+'c := categorical(["red", "blue", "red", "green", "red"]); countcats(c)'
+                                              categorical(["red", "blue", "red", "green", "red"], ["blue", "green", "red"])
+                                              [1, 1, 3]
+```
+
+### More charts, expressions as code
+
+`bar3`, `histogram2`, `surfc`, `meshc`, `streamline`, `polarhistogram`, `dendrogram`,
+`bubblechart`, `fimplicit3`, `isosurface`, `triplot`, `trisurf`, `pareto`, `fill`, `ribbon`,
+`normplot`, `parallelplot`, `swarmchart`, `violinplot`, `histfit`, `gscatter`, `andrewsplot`,
+`cdfplot`, `plotmatrix`, `stackedplot`, `biplot` are drawn with characters and saved as
+pictures like the other charts. `ccode`, `fortran` and `matlabcode` write an expression as code,
+`matlabfunction` makes a function of it, `subexpr` and `cse` find its shared parts and `pretty`
+shows it as on paper.
+
+```
+$ symbolic-math 'dendrogram(linkage([[0, 0], [1, 0], [5, 0], [6, 1], [10, 10]]), width = 50, height = 10)'
+  10.34 │     ⢠⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⢤
+        │     ⢸                       ⢸
+        │     ⢸                       ⢸
+        │     ⢸                       ⢸
+        │     ⢸                       ⢸
+        │     ⢸              ⡤⠤⠤⠤⠤⠤⠤⠤⠤⠼⠤⠤⠤⠤⠤⠤⠤⠤⠤⡄
+        │     ⢸              ⡇                  ⡇
+        │     ⢸              ⡇             ⢀⣀⣀⣀⣀⣇⣀⣀⣀⣀⡀
+        │     ⢸         ⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⡇        ⢸         ⡇
+-0.9849 │─────⠈─────────⠁─────────⠁────────⠈─────────⠁─────
+        └──────────────────────────────────────────────────
+         0.4                                            5.6
+the tree of 5 leaves, from the left: 5, 1, 2, 3, 4; the last joining at the height 9.849
+$ symbolic-math 'ccode(x^2 + sin(y)/3)' 'fortran(x^2 + sin(y)/3)' 'cse([sin(x)*cos(x), sin(x) + cos(x), cos(x)^2])'
+"t0 = x*x + sin(y)/3.0;"
+"      t0 = x**2 + sin(y)/3.0D0"
+[[sigma2 = sin(x), sigma1 = cos(x)], [sigma1*sigma2, sigma1 + sigma2, sigma1^2]]
+$ symbolic-math 'pretty((x^2 + 1)/(x - 1) + sqrt(x))'
+           2
+          x  + 1
+sqrt(x) + ------
+          x - 1
+```
+
+### Systems of control
+
+A system with one input and one output is the ratio of two polynomials in `s` (in `z` when it
+is sampled): `tf`, `zpk`, `ss` and `pid` make one, the four operations, `series`, `parallel`
+and `feedback` join them. Answers are exact where the input is: `step`, `impulse` and `lsim`
+give expressions in `t`. There are `pole`, `zero`, `dcgain`, `damp`, `bode`, `nyquist`, `margin`,
+`allmargin`, `hinfnorm`, `h2norm`, `stepinfo`, `c2d`, `d2c`, `rlocus`, `ctrb`, `obsv`, `gram`,
+`lyap`, `dlyap`, `care`, `dare`, `lqr`, `dlqr`, `lqe`, `acker`, `place`, and the charts
+`bodeplot`, `nyquistplot`, `pzplot`, `rlocusplot`, `stepplot`, `impulseplot`.
+
+```
+'s := tf("s"); g := 1/(s^2 + 3s + 2); step(g)'
+                                              error: invlaplace(f, x, y): tf([1, 0], [1]) is not a variable
+'feedback(tf([1], [1, 1]), 1)'                tf([1], [1, 2])
+'margin(tf([4], [1, 3, 3, 1]))'               [2, 27.141630595376226979139373587665, 1.7320508075688772935274463415059, 1.2328187619393802564187234770704]
+'c2d(tf([1], [1, 1]), 1/10)'                  tf([1 - 1/e^(1/10)], [1, -1/e^(1/10)], 1/10)
+'lqr([[0, 1], [0, 0]], [[0], [1]], [[1, 0], [0, 1]], [[1]])'
+                                              [[[1, 1.7320508075688772935274463415059]], [[1.7320508075688772935274463415059, 1], [1, 1.7320508075688772935274463415059]], [-0.86602540378443864676372317075294 - 0.5i, -0.86602540378443864676372317075294 + 0.5i]]
+'place([[0, 1], [0, 0]], [[0], [1]], [-1 + i, -1 - i])'
+                                              [2, 2]
+```
+
+### Filters and spectra
+
+Windows (`hann`, `hamming`, `blackman`, `kaiser`, `chebwin`, ...), the lowpass prototypes and
+the filters of Butterworth, Chebyshev, Cauer and Bessel (`butter`, `cheby1`, `cheby2`, `ellip`,
+`besself` with their orders `buttord`, ...), filters by windows (`fir1`, `kaiserord`), `sgolay`,
+the responses (`freqz`, `freqs`, `grpdelay`, `impz`, `stepz`), `filtfilt`, sections of second
+order, spectra (`periodogram`, `pwelch`, `cpsd`, `mscohere`, `tfestimate`, `spectrogram`),
+`findpeaks`, `envelope`, linear prediction (`levinson`, `aryule`, `arburg`, `lpc`) and
+waveforms. A filter is its pair `[b, a]`, which every command takes as one value.
+
+```
+'butter(2, 0.3)'                              [[0.13110643991662595261757758343356, 0.26221287983325190523515516686712, 0.13110643991662595261757758343356], [1, -0.74778917825850341013599412216864, 0.27221493792500722060630445590287]]
+'freqz(butter(3, 0.4), 3)'                    [[1, -0.21005729606506965947802060512306 - 0.86874640169822398370743979245151i, -0.056166563213096094569655954231284 + 0.047574864502733976185738788522147i], [0, 1.0471975511965977461542144610932, 2.0943951023931954923084289221863]]
+'filtfilt(butter(2, 0.3), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])'
+                                              [1.0063625254535161969171634115367, 2.00516952495721321678757610403, 3.00234167168594773687911336378, 4.0007282808866946751750414760592, 5.0001993519080990591169947487595, 5.999341269108394711220813597023, 6.9967052832026297237267613257207, 7.9924062890931669964367006107933, 8.9907279576137653315456385413321, 10.00230214168777727040206240452]
+'buttord(0.2, 0.3, 1, 40)'                    [12, 0.21270871824929540864901253127966]
+'findpeaks([1, 3, 2, 5, 4, 6, 1])'            [[3, 5, 6], [2, 4, 6]]
+```
+
+### The earth
+
+Ways on a sphere and on an ellipsoid, with 32 digits or more: `distance`, `azimuth` and
+`reckon` along great circles, along the geodesics of an ellipsoid (`"wgs84"`, `"grs80"`, ...,
+`[half axis, eccentricity]` or the radius of a sphere) and along lines of one course (`"rh"`);
+`geoddistance`, `geodreckon`, `geodarea` and `areaint` (polygons whose sides are geodesics);
+tracks, circles and their meeting points; the frames of space (`geodetic2ecef`, `ecef2enu`,
+`geodetic2aer`, ...); latitudes of other kinds, radii, ellipsoids; exact units of lengths and
+angles; and maps (`projfwd`, `projinv`: Mercator, transverse Mercator and UTM, Lambert's and
+Albers' cones, stereographic, azimuthal, Mollweide, ...). Angles are degrees unless `"radians"`
+is said.
+
+```
+'distance(52.2297, 21.0122, 40.7128, -74.006, "wgs84")'
+                                              6872969.7520297344477883147344393
+'azimuth(52.2297, 21.0122, 40.7128, -74.006, "wgs84")'
+                                              300.93658201393419650653583771645
+'geoddistance(0, 0, 0.5, 179.7)'              [19944127.420750460182045203151119, 15.556882793489957368987002286525, 164.44251389085553264795970647389]
+'reckon(52.2297, 21.0122, 6872969.752, 300.9366, "wgs84")'
+                                              [40.712811019967953920762765847693, -74.006015042114613044316679499629]
+'areaint([0, 90, 0], [0, 0, 90])'             0.125
+'geodetic2ecef(48.8562, 2.3508, 67.4)'        [4200996.7895534321572836309914208, 172460.32153737180955873582614375, 4780102.8308752110502429869903845]
+'deg2km(1)' 'nm2sm(1)' 'wrapto180(1000sqrt(2))'
+                                              6371pi/180
+                                                ~ 111.19492664455873734580833886041
+                                              1822831/1584000
+                                                ~ 1.1507771464646464646464646464646
+                                              1000sqrt(2) - 1440
+                                                ~ -25.786437626904951198311275790302
+'projfwd("utm", 52.52, 13.405)' 'deg2utm(52.52, 13.405)'
+                                              [391779.25925274886473760192753298, 5820072.1592110269712351471238236]
+                                              [391779.25925274886473760192753298, 5820072.1592110269712351471238236, "33U"]
+```
+
+### Networks of neurons
+
+The functions of units (`relu`, `sigmoid`, `gelu`, `softmax`, ...) and the losses (`mse`,
+`crossentropy`, `huber`, ...) are exact and take names, so that they have slopes and
+integrals; the operations of layers are `fullyconnect`, `dlconv`, `maxpool`, `avgpool`,
+`batchnorm`, `layernorm`, `embed`, `lstm`, `gru`. A network of dense layers is a plain value, a
+list of layers `[weights, biases, "function"]`: `feedforwardnet` and `patternnet` make one with
+weights that are the same on every machine, `predict` and `classify` use it, `trainnet` finds
+the weights that make the loss least, and `perceptron`, `newlind` and `newrbe` teach one layer
+exactly.
+
+```
+'sigmoid(x)' 'diff(sigmoid(x), x)' 'relu([-2, 3/2, x])'
+                                              e^x/(e^x + 1)
+                                              e^x/(e^x + 1)^2
+                                              [0, 3/2, x/2 + abs(x)/2]
+'crossentropy([1/2, 1/4, 1/4], [0, 1, 0])'    2ln(2)
+                                                ~ 1.3862943611198906188344642429164
+'dlconv([1, 2, 3, 4, 5], [1, 0, -1])'         [-2, -2, -2]
+'predict([[[[1, 2]], [0], "tanh"]], [x, y])'
+                                              tanh(x + 2y)
+'n := trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0]); predict(n, [[0, 0], [0, 1], [1, 0], [1, 1]])'
+                                              [[[[-1.5593111976748562181481237054619, 2.3123583995979380205359152887447], [1.8737670968965111728250142469164, 1.4359779290051702595716891081343], [1.0925094885194510464567038796402, -0.43961668273364131771864803575]], [1.4400756727768834308185805004257, 0.39882989693949209307197343570631, -0.280099398568542311014202295086], "tanh"], [[[-1.2604978439472344973318994107689, 1.3066141023723713593881953271341, -1.1231219191572280603582219984132]], [0.32477633327879649507530303038942], "purelin"]]
+                                              [-6.143284952071892301390187465889e-23, 0.99999999999999999999969609747215, 0.99999999999999999999987162766187, -6.6055715083967000056425267005849e-23]
+'perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 0, 0, 1])'
+                                              [[[[2, 1]], [-3], "hardlim"]]
+```
+
 ### For users of MATLAB
 
 What is the same thing under another form, and what differs on purpose:
@@ -1970,17 +2428,23 @@ What is the same thing under another form, and what differs on purpose:
 - `imresize` is bilinear or `"nearest"` without smoothing first; `imrotate` is exact for
   quarter turns.
 - `sparse` and `full` keep every entry: matrices are not stored by their places.
+- `distance` of two points is their distance in space; with four numbers it is the way between
+  two places of the earth, and `azimuth` gives its course (MATLAB: two outputs of `distance`).
+  At a pole a course is counted from the meridian of the longitude that is given, so that
+  `reckon` leads back; `departure` takes the longitudes as they are given; a statute mile is
+  the survey mile of 6336000/3937 m. `areaint` is the exact area of the polygon of geodesics.
+- A network is a list of layers, rows of data are observations, and `feedforwardnet` takes
+  the numbers of inputs and outputs too: `feedforwardnet([2, 3, 1])`. `trainnet` goes down to a
+  least value with every digit of the session (BFGS); it does not stop early.
 
 ### What is not there
 
-The toolboxes for control, signal design, images beyond the above, maps, deep learning and
-Simulink; tables, timetables and categorical arrays; cell arrays as a type of their own (a
-list holds unlike things); `qz`, `gsvd`, `balance`, `ordschur`, `cdf2rdf`, `rsf2csf`; `bvp4c`,
-`dde23`, `pdepe` and the global searches (`ga`, `patternsearch`, `particleswarm`, ...);
-`lillietest`, `runstest`, `mvncdf`, `cmdscale`, `procrustes`, `canoncorr`, `nnmf`; the charts
-`bar3`, `histogram2`, `surfc`, `streamline`, `polarhistogram`, `fimplicit3`, `dendrogram`;
-`matlabFunction`, `ccode`, `fortran`, `latex`; MATLAB's streams of `randn` and `randperm`;
-graphical user interfaces, objects and files of MATLAB's own formats.
+Of the toolboxes for control, signal design, maps and deep learning their cores are here, not
+all of them: systems with several inputs and outputs, `firpm` and resampling, raster maps and
+geoids, convolutional networks that are trained and stochastic training are missing. There is
+no Simulink, no image processing beyond the functions above, no cell array as a type of its own
+(a list holds unlike things), no `latex`, no `newUnit`, no MATLAB streams of `randn` and
+`randperm`, and no graphical user interface, object or file of MATLAB's own formats.
 
 ## Tetration
 
@@ -2087,7 +2551,7 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **Transforms residues and approximants**: `laplace` (`laplacetransform`), `invlaplace` (`inverselaplace`, `ilaplace`, `inverselaplacetransform`), `fourier` (`fouriertransform`), `invfourier` (`inversefourier`, `ifourier`, `inversefouriertransform`), `fourierseries`, `ztransform` (`ztrans`), `invztransform` (`inverseztransform`, `iztransform`, `iztrans`), `residue`, `pade` (`padeapproximant`), `seriescoeff` (`seriescoefficient`).
 - **Graphs**: `vertexlist` (`vertices`), `edgelist`, `vertexcount` (`numnodes`), `edgecount` (`numedges`), `adjacencymatrix` (`adjacency`), `weightmatrix` (`weightedadjacencymatrix`), `incidencematrix` (`incidence`), `laplacianmatrix` (`kirchhoffmatrix`), `adjacencygraph`, `degrees` (`degreesequence`, `vertexdegrees`), `indegrees` (`indegree`), `outdegrees` (`outdegree`), `vertexdegree`, `neighbors` (`neighbours`, `adjacentvertices`), `components` (`connectedcomponents`, `conncomp`), `strongcomponents` (`stronglyconnectedcomponents`), `isconnected` (`connectedq`), `shortestpath` (`findshortestpath`), `graphdistance`, `distancematrix` (`graphdistancematrix`, `distances`), `eccentricity` (`vertexeccentricity`), `diameter` (`graphdiameter`), `graphradius`, `graphcenter` (`graphcentre`), `girth`, `spanningtree` (`minimumspanningtree`, `mst`, `minspantree`), `spanningtreecount` (`treecount`), `isbipartite` (`bipartiteq`), `bipartition`, `istree` (`treeq`), `isacyclic` (`acyclicq`), `findcycle`, `topologicalsort` (`toposort`), `chromaticpolynomial`, `chromaticnumber`, `graphcoloring` (`vertexcoloring`), `iseulerian` (`eulerianq`), `eulerianpath` (`euleriancycle`, `eulertour`), `ishamiltonian` (`hamiltonianq`), `hamiltoniancycle` (`findhamiltoniancycle`), `hamiltonianpath`, `maxflow` (`maximumflow`), `maxmatching` (`maximummatching`), `maxclique` (`findclique`), `cliquenumber`, `maxindependentset` (`independentset`), `independencenumber`, `vertexcover` (`minvertexcover`), `complementgraph` (`graphcomplement`), `linegraph`, `subgraph` (`inducedsubgraph`), `isisomorphic` (`isomorphicq`, `graphisomorphic`), `pagerank`, `completegraph`, `cyclegraph`, `pathgraph`, `stargraph`, `wheelgraph`, `gridgraph`, `hypercubegraph`, `petersengraph`, `completebipartite` (`completebipartitegraph`).
 - **Plots**: `plot` (`fplot`, `ezplot`), `parametricplot`, `polarplot`, `listplot` (`pointplot`, `scatterplot`), `histogram` (`hist`), `implicitplot` (`contourplot`, `fimplicit`).
-- **Pictures**: `walk` (`digitwalk`, `numberwalk`), `walk3d` (`digitwalk3d`, `numberwalk3d`), `primewalk` (`primes_walk`, `prime_walk`, `primeswalk`), `primewalk3d` (`primes_walk3d`, `prime_walk3d`, `primeswalk3d`, `primes3d_xyz`, `primes3d`), `primemodwalk` (`primes_modwalk`, `prime_modwalk`, `primesmodwalk`, `primeresiduewalk`), `primemodwalk3d` (`primes_modwalk3d`, `prime_modwalk3d`, `primesmodwalk3d`, `primeresiduewalk3d`), `ulamspiral` (`ulam`, `primespiral`), `sacksspiral` (`sacks`), `complexplot` (`domainplot`, `domaincoloring`), `densityplot` (`heatmap`, `contourf`), `plot3d` (`surfaceplot`, `fsurf`, `fmesh`, `ezsurf`), `parametricplot3d` (`spacecurve`, `fplot3`), `graphplot` (`drawgraph`), `matrixplot` (`arrayplot`, `imagesc`, `imshow`, `pcolor`), `save_png` (`savepng`), `save_jxl` (`savejxl`), `save` (`saveimage`, `export`).
+- **Pictures**: `walk` (`digitwalk`, `numberwalk`), `walk3d` (`digitwalk3d`, `numberwalk3d`), `primewalk` (`primes_walk`, `prime_walk`, `primeswalk`), `primewalk3d` (`primes_walk3d`, `prime_walk3d`, `primeswalk3d`, `primes3d_xyz`, `primes3d`), `primemodwalk` (`primes_modwalk`, `prime_modwalk`, `primesmodwalk`, `primeresiduewalk`), `primemodwalk3d` (`primes_modwalk3d`, `prime_modwalk3d`, `primesmodwalk3d`, `primeresiduewalk3d`), `ulamspiral` (`ulam`, `primespiral`), `sacksspiral` (`sacks`), `complexplot` (`domainplot`, `domaincoloring`), `densityplot` (`heatmap`, `contourf`), `plot3d` (`surfaceplot`, `fsurf`, `fmesh`, `ezsurf`), `parametricplot3d` (`spacecurve`, `fplot3`), `graphplot` (`drawgraph`), `matrixplot` (`arrayplot`, `imagesc`, `imshow`, `pcolor`, `image`), `save_png` (`savepng`), `save_jxl` (`savejxl`), `save` (`saveimage`, `export`).
 - **Units**: `convert` (`unitconvert`), `siunits` (`tosi`, `baseunits`), `dimension` (`unitdimension`), `quantity`.
 - **Session**: `assume` (`assumealso`), `forget`.
 - **Operators by their names**: `times`, `rdivide`, `ldivide`, `power`, `plus`, `minus`, `uminus`, `uplus`, `mtimes`, `mpower`, `mldivide`, `mrdivide`, `colon`.
@@ -2106,7 +2570,7 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **More on graphs**: `bfsearch`, `dfsearch`, `successors`, `predecessors`, `nearest`, `allpaths`, `hascycles`, `isdag`, `transclosure`, `transreduction`, `biconncomp`, `cutvertices` (`articulationvertices`), `bridges`, `centrality`, `addedge`, `rmedge`, `addnode`, `rmnode`, `findedge`, `flipedge`.
 - **Geometry of points**: `polyarea`, `inpolygon`, `convhull`, `convexhull`, `delaunay`, `voronoi`, `rectint`, `dsearchn`, `rotx`, `roty`, `rotz`.
 - **Kinds of whole numbers, values of the largest size, the session**: `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `eigs`, `svds`, `disp`, `fprintf`, `readmatrix` (`csvread`, `dlmread`), `writematrix` (`csvwrite`, `dlmwrite`), `tic`, `toc`, `who`, `clear`.
-- **Charts of data (they take what is chosen for a picture, and save_png / save_jxl save them)**: `lineplot` (`dataplot`, `comet`), `scatter`, `bar`, `barh`, `stairs`, `stem`, `errorbar`, `pie` (`pie3`), `loglog`, `semilogx`, `semilogy`, `contour` (`fcontour`), `quiver`, `plot3` (`comet3`), `scatter3`, `surf` (`mesh`), `spy`, `boxplot`, `imread`, `imwrite`.
+- **Charts of data (they take what is chosen for a picture, and save_png / save_jxl save them)**: `lineplot` (`dataplot`, `comet`), `scatter`, `bar`, `barh`, `stairs`, `stem`, `errorbar`, `pie` (`pie3`), `loglog`, `semilogx`, `semilogy`, `contour` (`fcontour`), `quiver`, `plot3` (`comet3`), `scatter3`, `surf` (`mesh`, `surfl`), `spy`, `boxplot` (`boxchart`), `imread`, `imframes`, `imwrite`.
 - **More of MATLAB: arrays of more sizes, matrices by the places of their entries, data with gaps**: `condest`, `normest`, `filter2`, `newline`, `meanabs`, `nansum`, `nanmean`, `nanmax`, `nanmin`, `nanstd`, `nanvar`, `nanmedian`, `single`, `cast`, `class`, `isa`, `sparse`, `full`, `issparse`, `nzmax`, `spones`, `speye`, `spdiags`, `squeeze`, `permute`, `ipermute`, `num2cell`, `cell2mat`, `signim`, `padecoef`, `crosstab`, `pdist`, `squareform`, `normfit`, `expfit`, `partialcorr`, `del2`, `interpft`, `datasample`, `quadprog`, `lsqlin`, `lsqnonlin`, `mellin`, `anova1`, `polyeig`, `pca`, `mkpp`, `unmkpp`, `ppval`, `polynomialreduce`, `griddata`, `tsearchn`, `erase`, `extractbefore`, `extractafter`, `extractbetween`, `insertafter`, `insertbefore`, `pad`, `isstrprop`.
 - **More charts, and pictures as matrices**: `stem3`, `quiver3`, `contour3`, `waterfall`, `compass`, `feather`, `polarscatter`, `rgb2gray`, `im2double`, `im2uint8`, `im2uint16`, `imcomplement`, `imcrop`, `imresize`, `imrotate`, `imfilter`, `imhist`, `imbinarize`, `htrans`, `ihtrans`.
 - **The calendar**: `datenum` (`datetime`), `datevec`, `datestr`, `weekday`, `eomday`, `calendar`, `addtodate`, `etime`, `juliandate`, `mjuliandate` (`modifiedjuliandate`), `posixtime`, `dayofyear`, `isweekend`, `leapyear` (`isleapyear`, `is_leap_year`), `yeardays`, `now`, `clock`, `date` (`today`), `cputime`.
@@ -2117,6 +2581,25 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **Expressions in an unknown function and its derivatives**: `functionalderivative` (`eulerlagrange`), `odetovectorfield`.
 - **The least value under conditions**: `fmincon`.
 - **Matrices with names, a surface, colours, counts of pairs**: `gallery`, `peaks`, `colormap`, `histcounts2`, `pcg` (`gmres`, `bicg`, `bicgstab`, `cgs`, `minres`, `qmr`, `symmlq`, `tfqmr`), `lsqr`.
+- **Pairs of matrices, forms in another order**: `balance`, `qz`, `ordqz`, `gsvd`, `gsvddecomposition`, `ordschur`, `ordeig`, `rsf2csf`, `cdf2rdf`.
+- **Runs and spreads of samples, the normal law of several variables, laws fitted to data**: `runstest`, `ansaribradley`, `lillietest`, `mvncdf`, `cmdscale`, `procrustes`, `canoncorr`, `nnmf`, `poissfit`, `unifit`, `raylfit`, `lognfit`, `binofit`, `gamfit`, `wblfit`, `betafit`, `nbinfit`, `mle`, `fitdist`.
+- **Values at both ends, equations that look back, heat in one dimension, least values without slopes**: `bvp4c` (`bvp5c`), `bvpinit`, `deval`, `dde23`, `pdepe`, `patternsearch`, `particleswarm`, `simulannealbnd`, `ga`, `globalsearch` (`multistart`), `fminimax`, `fgoalattain`, `pdeval`.
+- **Tables of named columns, tables with times, values of a few kinds**: `istable`, `timetable`, `istimetable`, `height`, `width`, `head`, `tail`, `varnames`, `takerows`, `takevars`, `addvars`, `removevars`, `renamevars`, `movevars`, `topkrows`, `table2array` (`table2cell`), `array2table` (`cell2table`), `struct2table`, `table2struct`, `timetable2table`, `table2timetable`, `innerjoin`, `outerjoin`, `varfun`, `rowfun`, `groupsummary`, `groupcounts`, `summary`, `stack`, `unstack`, `readtable`, `writetable`, `isregular`, `lag`, `retime`, `synchronize`, `categorical`, `iscategorical`, `categories`, `countcats`, `isundefined`, `isordinal`, `iscategory`, `addcats`, `removecats`, `renamecats`, `reordercats`, `mergecats`, `setcats`, `grp2idx`, `cellstr`.
+- **More charts of data**: `bar3`, `histogram2`, `surfc` (`meshc`), `streamline`, `polarhistogram` (`rose`), `dendrogram`, `bubblechart`, `fimplicit3`, `isosurface`, `triplot`, `trisurf` (`trimesh`), `pareto`, `fill` (`patch`), `ribbon`, `normplot` (`qqplot`, `probplot`), `parallelplot`, `swarmchart`, `violinplot`, `histfit`, `gscatter`, `andrewsplot`, `bar3h`, `cdfplot`, `plotmatrix`, `stackedplot`, `biplot`, `silhouette`.
+- **Expressions as code, their shared parts, and as a picture of text**: `ccode`, `fortran`, `matlabcode` (`octavecode`), `matlabfunction`, `subexpr`, `cse`, `pretty`.
+- **Systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)**: `tf`, `zpk`, `ss`, `tfdata`, `zpkdata`, `ssdata`, `tf2sym`, `tf2ss`, `ss2tf`, `tf2zp` (`tf2zpk`), `zp2tf`, `ss2zp`, `zp2ss`, `isct`, `isdt`, `isproper`, `isstable`, `pole`, `zero` (`tzero`), `dcgain`, `damp`, `parallel`, `feedback`, `minreal`, `evalfr`, `freqresp`, `bode`, `nyquist`, `margin`, `allmargin`, `hinfnorm` (`getpeakgain`), `h2norm`, `step`, `impulse`, `lsim`, `stepinfo`, `c2d`, `d2c`, `pid`, `rlocus`, `esort`, `dsort`, `ctrb`, `obsv`, `lyap`, `dlyap`, `gram`, `care` (`icare`), `dare` (`idare`), `lqr`, `dlqr`, `lqe`, `acker`, `place`, `bodeplot`, `nyquistplot`, `pzplot` (`pzmap`), `rlocusplot`, `stepplot`, `impulseplot`.
+- **Filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction**: `rectwin` (`boxcar`), `hann`, `hanning`, `hamming`, `blackman`, `blackmanharris`, `nuttallwin`, `flattopwin`, `triang`, `bohmanwin`, `parzenwin`, `gausswin`, `tukeywin`, `kaiser`, `chebwin`, `barthannwin`, `buttap`, `cheb1ap`, `cheb2ap`, `ellipap`, `besselap`, `butter`, `cheby1`, `cheby2`, `ellip`, `besself`, `buttord`, `cheb1ord`, `cheb2ord`, `ellipord`, `lp2lp`, `lp2hp`, `lp2bp`, `lp2bs`, `bilinear`, `iirnotch`, `iirpeak`, `fir1`, `kaiserord`, `sgolay`, `sgolayfilt`, `freqz`, `freqs`, `grpdelay`, `impz`, `stepz`, `filtfilt`, `sosfilt`, `sos2tf`, `tf2sos`, `zp2sos`, `isminphase`, `ismaxphase`, `islinphase`, `firtype`, `polystab`, `periodogram`, `pwelch`, `cpsd`, `mscohere`, `tfestimate`, `spectrogram`, `bandpower`, `rssq`, `peak2rms`, `enbw`, `mag2db` (`db`), `db2mag`, `pow2db`, `db2pow`, `rceps`, `goertzel`, `czt`, `dftmtx`, `cconv`, `envelope`, `findpeaks`, `medfilt1`, `upfirdn`, `decimate`, `buffer`, `xcov`, `levinson`, `aryule`, `arburg`, `lpc`, `poly2rc`, `rc2poly`, `sawtooth`, `rectpuls`, `tripuls`, `gauspuls`, `chirp`, `diric`, `zplane`.
+- **A function of a complex number as a shape of four dimensions: frames are the third, colours the fourth**: `plot4d`, `view4d` (`plot4dview`, `look4d`, `snapshot4d`).
+- **Quick looks: the commands that save, with small pictures that are packed fast**: `save_png_fast` (`savepngfast`), `save_jxl_fast` (`savejxlfast`), `save_fast` (`savefast`).
+- **The earth: ways on a sphere and on an ellipsoid. Angles are degrees unless "radians" is said last; an ellipsoid is [half axis, eccentricity], the radius of a sphere or a name like "wgs84" (metres); without one, lengths are arcs of the sphere in degrees**: `azimuth`, `reckon`, `haversine`, `geoddistance`, `geodreckon`, `geodarea`, `areaint`, `areaquad`, `departure`, `antipode`, `meanm`, `track2`, `track1`, `gcwaypts`, `scircle1`, `scircle2`, `legs`, `gc2sc`, `gcxgc`, `scxsc`, `gcxsc`, `rhxrh`, `interpm`.
+- **The earth: places in space. geodetic = latitude, longitude and height above the ellipsoid (WGS84 in metres unless given); ecef = x, y, z from the middle of the earth; enu = east, north, up and ned = north, east, down at a place; aer = course, elevation and distance as seen from a place**: `geodetic2ecef`, `ecef2geodetic`, `lla2ecef`, `ecef2lla`, `geodetic2enu`, `enu2geodetic`, `geodetic2ned`, `ned2geodetic`, `geodetic2aer`, `aer2geodetic`, `ecef2enu`, `enu2ecef`, `ecef2ned`, `ned2ecef`, `ecef2aer`, `aer2ecef`, `enu2aer`, `aer2enu`, `ned2aer`, `aer2ned`, `ecef2enuv`, `enu2ecefv`, `ecef2nedv`, `ned2ecefv`, `ecefoffset`, `elevation`.
+- **The earth: ellipsoids, their radii and latitudes of other kinds**: `referenceellipsoid`, `wgs84ellipsoid`, `referencesphere`, `meridianarc`, `meridianfwd`, `spheroid`, `axes2ecc`, `majaxis`, `minaxis`, `ecc2flat`, `flat2ecc`, `ecc2n`, `n2ecc`, `rcurve`, `rsphere`, `convertlat`, `geocentriclatitude`, `parametriclatitude`, `geodeticlatitudefromgeocentric`, `geodeticlatitudefromparametric`.
+- **The earth: units of lengths and angles (exact), angles as texts, zones**: `km2nm`, `km2sm`, `nm2km`, `nm2sm`, `sm2km`, `sm2nm`, `deg2km`, `km2deg`, `deg2nm`, `nm2deg`, `deg2sm`, `sm2deg`, `rad2km`, `km2rad`, `rad2nm`, `nm2rad`, `rad2sm`, `sm2rad`, `unitsratio`, `earthradius`, `distdim`, `angledim`, `todegrees`, `toradians`, `fromdegrees`, `fromradians`, `wrapto180` (`npi2pi`), `wrapto360` (`zero22pi`), `wraptopi`, `wrapto2pi`, `roundn`, `dms2degrees`, `dm2degrees`, `degrees2dms`, `degrees2dm`, `angl2str`, `str2angle`, `timezone`, `utmzone`.
+- **The earth: maps. projfwd("map", lat, lon, choices) gives [x, y], projinv("map", x, y, choices) gives [lat, lon]**: `projfwd` (`mfwdtran`), `projinv` (`minvtran`), `deg2utm`, `utm2deg`.
+- **Networks of neurons: the functions of their units (exact; of a name a formula that has a slope), for a number or every entry of a list**: `relu` (`poslin`), `leakyrelu`, `clippedrelu`, `elu`, `gelu`, `swish` (`silu`), `mish`, `softplus`, `softsign` (`elliotsig`), `sigmoid` (`logsig`, `logistic`), `tansig`, `purelin`, `satlin`, `satlins`, `hardlim`, `hardlims`, `radbas`, `tribas`, `netinv`, `softmax`, `compet`.
+- **Networks of neurons: losses (exact; rows are observations, a flat list holds one number of every observation)**: `mse`, `sse`, `mae`, `l2loss`, `l1loss`, `huber`, `crossentropy`.
+- **Networks of neurons: the operations of layers**: `fullyconnect`, `dlconv`, `maxpool`, `avgpool`, `batchnorm`, `layernorm`, `embed`, `lstm`, `gru`, `onehotencode`, `onehotdecode`, `ind2vec`, `vec2ind`, `confusionmat`, `mapminmax`, `mapstd`, `divideblock`, `dlgradient`, `sgdmupdate`, `adamupdate`, `rmspropupdate`.
+- **Networks of neurons: a network is a list of layers [weights, biases, "function"], a row of the weights for every unit**: `feedforwardnet` (`fitnet`), `patternnet`, `predict` (`forward`), `classify`, `perform`, `trainnet` (`train`), `perceptron`, `newlind`, `newrbe`.
 
 Constants:
 
@@ -2205,13 +2688,17 @@ values checked with other software, the law `f[s](f[t](x)) = f[s + t](x)`), `tes
 `tests/round5.rs` (numbers in a base, walks, pictures of characters, saved pictures: PNG
 files byte for byte, JPEG XL files decoded and compared with them), `tests/help.rs` (every
 example of `--help` runs, and every function and constant has one) and `tests/coverage.rs`
-with the tables of `tests/coverage/`: more than 37000 inputs with their answers, among them
+with the tables of `tests/coverage/`: more than 51000 inputs with their answers, among them
 every name of every function, too few and too many arguments, numbers against exact
 arithmetic, functions against values of 25 digits from mpmath, identities of matrices, lists
-and polynomials, derivatives of integrals, texts, programs, refusals, and what MATLAB has
-area by area. A test fails when a function has no row.
-What MATLAB has was compared with GNU Octave (758 cases), SciPy and NumPy (450 checks) and
-mpmath while it was written; the scripts are not part of the repository.
+and polynomials, derivatives of integrals, texts, programs, refusals, what MATLAB has area by
+area, the shapes of four dimensions through every value of every choice, and the inputs
+whose answers agreed with other software (the tables `checked_by_*`). A test fails when a
+function has no row.
+What MATLAB has was compared with GNU Octave (more than 1100 cases), SciPy and NumPy (more
+than 1300 checks), python-control, statsmodels and scikit-learn, geographiclib, PROJ and
+pymap3d (more than 1200 cases) and mpmath while it was written; the scripts are not part of
+the repository.
 `make lint` checks the formatting and runs clippy with warnings as errors.
 
 Licensed under the GNU Affero General Public License, version 3 only (AGPL-3.0-only); see

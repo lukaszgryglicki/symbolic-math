@@ -248,7 +248,7 @@ pub fn simplify(name: &str, a: &Expr, b: &Expr) -> Option<Expr> {
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 enum Mode {
     Tet,
     Slog,
@@ -412,6 +412,101 @@ fn value(
     let v = run_tet(mode, digits, &x, &y)?;
     CACHE.with(|c| c.borrow_mut().insert(key, (digits, v.clone())));
     Ok(v)
+}
+
+/// The calls of `tet` in an expression whose arguments hold no such call: what a run of the
+/// program gives without another run before it.
+fn calls(e: &Expr) -> Vec<(Mode, Expr, Expr)> {
+    let found = RefCell::new(Vec::<(Mode, Expr, Expr)>::new());
+    e.any(&|x| {
+        if let Expr::Fn(name, args) = x
+            && let Some(mode) = mode_of(name, args)
+            && !(mode == Mode::Tet && whole_height(&args[1]).is_some())
+            && !args.iter().any(uses_tet)
+        {
+            let call = (mode, args[0].clone(), args[1].clone());
+            if !found.borrow().contains(&call) {
+                found.borrow_mut().push(call);
+            }
+        }
+        false
+    });
+    found.into_inner()
+}
+
+/// Before a function is worked out at many places with `bits` bits: the values of `tet`
+/// that it will ask for there are fetched at once, as many runs of the program at a time
+/// as the machine has processors. The values are those that would be fetched one by one.
+pub fn fetch(f: &Expr, bits: u32, places: impl Iterator<Item = Env>) {
+    let found = calls(f);
+    if found.is_empty() {
+        return;
+    }
+    let digits = digits_for(bits) + 2;
+    let mut keys = Vec::new();
+    let mut jobs = Vec::new();
+    let mut asked = std::collections::HashSet::new();
+    for env in places {
+        for (mode, a, b) in &found {
+            let key = (*mode, a.clone(), b.clone(), env_key(a, b, Some(&env)));
+            let known = CACHE.with(|c| c.borrow().get(&key).is_some_and(|(d, _)| *d >= digits));
+            if known || !asked.insert(key.clone()) {
+                continue;
+            }
+            let (Ok(x), Ok(y)) = (
+                numeric::evalf_digits_env(a, digits + 6, Some(&env)),
+                numeric::evalf_digits_env(b, digits + 6, Some(&env)),
+            ) else {
+                continue;
+            };
+            keys.push(key);
+            jobs.push((*mode, x, y));
+        }
+    }
+    // (a program that cannot be run is not asked again for every place)
+    let Some((mode, x, y)) = jobs.first() else {
+        return;
+    };
+    let first = match run_tet(*mode, digits, x, y) {
+        Err(NumErr::External(why)) if why.starts_with("could not run") => return,
+        other => other.ok(),
+    };
+    let next = std::sync::atomic::AtomicUsize::new(1);
+    let workers = std::thread::available_parallelism()
+        .map_or(4, |n| n.get())
+        .min(jobs.len());
+    let mut values: Vec<Option<Complex>> = vec![None; jobs.len()];
+    values[0] = first;
+    std::thread::scope(|scope| {
+        let running: Vec<_> = (0..workers)
+            .map(|_| {
+                scope.spawn(|| {
+                    let mut mine = Vec::new();
+                    loop {
+                        let k = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                        let Some((mode, x, y)) = jobs.get(k) else {
+                            break;
+                        };
+                        mine.push((k, run_tet(*mode, digits, x, y).ok()));
+                    }
+                    mine
+                })
+            })
+            .collect();
+        for worker in running {
+            for (k, value) in worker.join().unwrap_or_default() {
+                values[k] = value;
+            }
+        }
+    });
+    CACHE.with(|c| {
+        let mut cache = c.borrow_mut();
+        for (key, value) in keys.into_iter().zip(values) {
+            if let Some(value) = value {
+                cache.insert(key, (digits, value));
+            }
+        }
+    });
 }
 
 fn mode_of(name: &str, args: &[Expr]) -> Option<Mode> {

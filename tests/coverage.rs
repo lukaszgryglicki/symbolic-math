@@ -223,6 +223,7 @@ tables!(
     quick_looks,
     palettes,
     plot4d_all,
+    view4d,
     matlab_charts,
     checked_by_octave_1,
     checked_by_octave_2,

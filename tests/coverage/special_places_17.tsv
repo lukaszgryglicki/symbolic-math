@@ -1,4 +1,3 @@
--e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(undefined)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
@@ -698,3 +697,4 @@
 -e	contour3(0)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(-1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(1/2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)

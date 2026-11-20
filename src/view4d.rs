@@ -248,7 +248,7 @@ impl Session {
             Tints::Rgb(colours) => colours,
             Tints::Gray(_) => Vec::new(),
         };
-        let shape = plot4d::shape(&plan)?;
+        let shape = plot4d::shape(&plan).map_err(|why| why.replacen("plot4d", "view4d", 1))?;
         let (faces, cubes) = faces(&shape)?;
         // the sides of the box: what lies on the width, the height and the frames
         let part = |axis: Axis| shape.axes.iter().position(|a| *a == axis).unwrap_or(0);
@@ -435,9 +435,7 @@ mod tests {
                 && y < height as i64
                 && k < frames as i64;
             match inside {
-                true => {
-                    all[(k as usize * height + (height - 1 - y as usize)) * width + x as usize]
-                }
+                true => all[(k as usize * height + (height - 1 - y as usize)) * width + x as usize],
                 false => EMPTY,
             }
         };
@@ -618,7 +616,10 @@ mod tests {
             Some(["re z", "im z", "re f(z)"].map(String::from))
         );
         let legend = drawing.legend.as_ref().expect("the colours");
-        assert_eq!((legend.name.as_str(), legend.ends), ("im f(z)", (-8.0, 8.0)));
+        assert_eq!(
+            (legend.name.as_str(), legend.ends),
+            ("im f(z)", (-8.0, 8.0))
+        );
         // what belongs to the body is taken; the rest is left to the picture
         assert_eq!(choices.given, ["width", "palette"]);
         assert_eq!(choices.look.thickness, 0.0);
@@ -696,7 +697,10 @@ mod tests {
         let raster = picture(&drawing, &choices, 64);
         // (the imaginary part of the value is that of z: the front wall has the first colour)
         let front = raster.color(3, 60);
-        assert!(front[0] > 0.5 && front[1] == 0.0 && front[2] == 0.0, "{front:?}");
+        assert!(
+            front[0] > 0.5 && front[1] == 0.0 && front[2] == 0.0,
+            "{front:?}"
+        );
         for x in [2, 20, 40, 61] {
             assert_eq!(raster.color(x, 61), front);
         }
@@ -758,11 +762,23 @@ mod tests {
         .expect("lines");
         assert_eq!(lines[0], "a square");
         for (text, why) in [
-            ("view4d(z^2, palette = heat)", "palette is chosen for a picture that is saved"),
-            ("view4d(z^2, frames = 3)", "frames is chosen for a picture that is saved"),
+            (
+                "view4d(z^2, palette = heat)",
+                "palette is chosen for a picture that is saved",
+            ),
+            (
+                "view4d(z^2, frames = 3)",
+                "frames is chosen for a picture that is saved",
+            ),
             ("view4d(z^2, grow)", "grow belongs to the walks"),
-            ("view4d(z^2, width = 3)", "the width of a picture of characters is from 8 to 400"),
-            ("view4d(z^2, thickness = 1.5)", "the thickness of view4d is a whole number"),
+            (
+                "view4d(z^2, width = 3)",
+                "the width of a picture of characters is from 8 to 400",
+            ),
+            (
+                "view4d(z^2, thickness = 1.5)",
+                "the thickness of view4d is a whole number",
+            ),
             ("view4d(x*y)", "has several names: view4d(f, z)"),
             ("view4d(7)", "view4d draws a function of a complex number"),
             ("view4d(z, z, 0)", "view4d(f, z, a, b)"),

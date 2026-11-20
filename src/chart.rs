@@ -112,6 +112,7 @@ fn curves(a: &[Expr], detail: usize) -> Result<Drawing, String> {
     let xs: Vec<f64> = (0..=count)
         .map(|k| x0 + (x1 - x0) * k as f64 / count as f64)
         .collect();
+    crate::plot::fetched(&fs, &var, &xs);
     let all: Vec<Vec<Option<f64>>> = fs
         .iter()
         .map(|f| xs.iter().map(|x| value(f, &var, *x)).collect())
@@ -499,15 +500,17 @@ fn sampled(
     columns: usize,
     rows: usize,
 ) -> Vec<Option<f64>> {
-    let mut values = Vec::with_capacity((columns + 1) * (rows + 1));
-    for j in 0..=rows {
-        let py = y.0 + (y.1 - y.0) * j as f64 / rows as f64;
-        for i in 0..=columns {
-            let px = x.0 + (x.1 - x.0) * i as f64 / columns as f64;
-            values.push(value2(f, vars, px, py));
-        }
-    }
-    values
+    let places: Vec<(f64, f64)> = (0..=rows)
+        .flat_map(|j| {
+            let py = y.0 + (y.1 - y.0) * j as f64 / rows as f64;
+            (0..=columns).map(move |i| (x.0 + (x.1 - x.0) * i as f64 / columns as f64, py))
+        })
+        .collect();
+    crate::plot::fetched2(f, vars, &places);
+    places
+        .iter()
+        .map(|(px, py)| value2(f, vars, *px, *py))
+        .collect()
 }
 
 type TwoRanges<'a> = (&'a Expr, (Rc<str>, Rc<str>), (f64, f64), (f64, f64));

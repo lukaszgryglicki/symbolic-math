@@ -1,3 +1,19 @@
+-e	mish(10^20)	100000000000000000000((1 + e^100000000000000000000)^2 - 1)/(1 + (1 + e^100000000000000000000)^2)
+-e	mish(10^(-20))	((1 + e^(1/100000000000000000000))^2 - 1)/(100000000000000000000(1 + (1 + e^(1/100000000000000000000))^2))
+-e	mish(x)	x*e^x*(e^x + 2)/(e^(2x) + 2e^x + 2)
+-e	mish([])	[]
+-e	mish([1, 2])	[e*(2 + e)/(2 + 2e + e^2), (4e^2 + 2e^4)/(2 + 2e^2 + e^4)]
+-e	mish("text")	"text"*((e^"text" + 1)^2 - 1)/((e^"text" + 1)^2 + 1)
+-e	mish(true)	((1 + e^(true))^2 - 1)*true/(1 + (1 + e^(true))^2)
+-e	mish(-7/3)	-7(1 + 2e^(7/3))/(3(1 + 2e^(14/3) + 2e^(7/3)))
+-e	mish(0.5)	0.37524521130489510481856241339928
+-e	softplus(0)	ln(2)
+-e	softplus(1)	ln(1 + e)
+-e	softplus(-1)	ln(1 + 1/e)
+-e	softplus(1/2)	ln(1 + sqrt(e))
+-e	softplus(2)	ln(1 + e^2)
+-e	softplus(i)	ln(1 + e^i)
+-e	softplus(inf)	inf
 -e	softplus(-inf)	0
 -e	softplus(undefined)	undefined
 -e	softplus(10^20)	ln(1 + e^100000000000000000000)

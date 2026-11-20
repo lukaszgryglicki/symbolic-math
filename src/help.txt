@@ -1364,6 +1364,122 @@ More shapes as JPEG XL files, each as it is and with every frame stretched (norm
   'save_jxl_fast("f1.jxl", plot4d(e^(i*z), z, pi), frames = 16, width = 64, height = 64)'
   'save_jxl_fast("f2.jxl", plot4d(e^(i*z), z, pi), normalize, frames = 16, width = 64, height = 64)'
 
+The shape of plot4d seen from outside: view4d draws its body as an eye in space sees it:
+  'view4d(sin(z))' 'view4d(z^2, z, 1, width = 40, height = 12)'
+  'view4d(1/z, z, -1 - i, 1 + i, ascii)'
+      # as a statement: characters, with more dots where the body is lighter
+  'save_png("sin.png", view4d(sin(z)), width = 160)'
+      # Re sin(z) as heights over the plane of z in the colours of Im sin(z): the frames of plot4d
+      # stand upright; hidden parts are hidden
+  'save_png(view4d(z^2), width = 96)' 'save_jxl(view4d(z^2), width = 96)'
+  'save("v.png", view4d(z^2), width = 96)'  # without a name: view4d.png, view4d.jxl
+  'save_png_fast("q1.png", view4d(sin(z)))'
+  'save_jxl_fast("q2.jxl", view4d(sin(z)))' 'save_fast("q3.png", view4d(sin(z)))'
+      # without sizes: 1024 x 1024 pixels of 512 x 512 x 512 voxels; _fast: 256 pixels of 128 voxels
+  'save_png("e1.png", view4d(sin(z)), azimuth = 120, elevation = 40, width = 96)'
+      # the eye is found by the program unless it is said where it stands: degrees around the
+      # upright axis, and above the floor
+  'save_png("e2.png", view4d(sin(z)), azimuth = 0, elevation = 90, width = 96)'
+  'save_png("e3.png", view4d(sin(z)), elevation = -30, width = 96)'
+      # from straight above; from below
+  'save_png("e4.png", view4d(sin(z)), viewpoint = [6, -8, 5], width = 96)'
+  'save_png("e5.png", view4d(sin(z)), perspective = 2.5, width = 96)'
+      # an eye at a point: what is near is larger; or its distance in radii of the box
+  'save_png("e6.png", view4d(sin(z)), roll = 20, zoom = 1.3, width = 96)'
+  'save_png("e7.png", view4d(sin(z)), center = [0, 0, 0], scale = 12, width = 96)'
+      # the picture turned and larger; its middle, pixels for a unit
+  'save_png("e8.png", view4d(sin(z)), fog = 0.8, width = 96)'
+  'save_png("e9.png", view4d(sin(z)), fog = 0, margin = 0.1, width = 96)'
+      # how much the far parts fade; the free rim
+  'save_png("m1.png", view4d(sin(z)), frames = 12, width = 96)'
+  'save_jxl("m2.jxl", view4d(sin(z)), frames = 8, turn = 90, fps = 4, width = 96)'
+      # several frames: the eye goes around the body (once unless turn says how far)
+  'save_jxl("m3.jxl", view4d(sin(z)), views, width = 96)'
+  'save_png("m4.png", view4d(sin(z)), stereo, width = 96)'
+  'save_png("m5.png", view4d(sin(z)), slices = 4, width = 96)'
+      # from above, the front and the right; for red and cyan glasses; slabs of the depth
+  'save_png("v1.png", view4d(sin(z)), voxels = 48, width = 96)'
+  'save_png("v2.png", view4d(sin(z)), voxels = [64, 64, 24], width = 96)'
+      # the cubes of the body along every side; or across, upwards and along the frames of plot4d
+  'save_png("b1.png", view4d(sin(z)), fill = below, width = 96)'
+  'save_png("b2.png", view4d(sin(z)), fill = above, width = 96)'
+  'save_png("b3.png", view4d(sin(z)), thickness = 3, width = 96)'
+      # the body under or over the surface; a thicker surface
+  'save_png("a1.png", view4d(z^2), arg_real = width, arg_imag = height, val_real = frame,'\
+'      val_imag = color, width = 96)'
+      # the sides as plot4d has them (these are the usual ones: the frames are the heights)
+  'save_png("a2.png", view4d(z^2), arg_real = color, arg_imag = frame, val_real = width,'\
+'      val_imag = height, width = 96)'
+  'save_png("a3.png", view4d(z^2), val_real = color, val_imag = frame, width = 96)'
+      # pictures of lines one above the other; Im f(z) as heights
+  'save_png("r1.png", view4d(1/z), range_real = [-3, 3], range_imag = [-2, 2], width = 96)'
+      # the values that are drawn
+  'save_png("p1.png", view4d(exp(z)), palette = heat, width = 96)'
+  'save_png("p2.png", view4d(exp(z)), palette = {(0,0,0),(0,0,1),(0,1,0),(1,0,0),(1,1,1)},'\
+'      colors = 16, reverse, width = 96)'
+      # palettes as in plot4d, how many colours
+  'save_png("p3.png", view4d(exp(z)), color = white, width = 96)'
+  'save_png("p4.png", view4d(exp(z)), background = navy, width = 96)'
+  'save_png("p5.png", view4d(exp(z)), gray, width = 96)'
+      # one colour: light and shadow alone; the ground; grays
+  'save_png("t1.png", view4d(sin(z)), rotate(30, 20, 10), width = 96)'
+  'save_png("t2.png", view4d(sin(z)), rotate = [90, 0, 0], fill = below, width = 96)'
+      # the body turned in its box, as in plot4d
+  'save_png("n1.png", view4d(sin(z)), normalize, width = 96)'
+  'save_png("n2.png", view4d(sin(z)), fill = below, normalize, width = 96)'
+      # every frame of plot4d stretched on its own
+  'save_png("x1.png", view4d(sin(z)), noaxes, width = 96)'
+  'save_png("x2.png", view4d(sin(z)), axes, title = "the sine", width = 160)'
+      # without the box, the ends of its sides and the colours; with a title
+  'save_png("f1.png", view4d(sin(z)), alpha, width = 96)'
+  'save_jxl("f2.jxl", view4d(sin(z)), depth, alpha, width = 96)'
+  'save_png("f3.png", view4d(sin(z)), bits = 16, level = 3, width = 96)'
+      # nothing behind the body; a channel of depth; the file
+  'save_jxl("f4.jxl", view4d(sin(z)), quality = 80, effort = 3, width = 96)'
+  'save_jxl("f5.jxl", view4d(sin(z)), lossless, channels = 4, width = 96)'
+  'save_jxl("f6.jxl", view4d(sin(z)), distance = 2, width = 96)'
+  'plot4dview(z^2, width = 30, height = 8)' 'look4d(z^2, width = 30, height = 8)'
+  'snapshot4d(z^2, width = 30, height = 8)'  # other names of view4d
+
+Mountains and carpets: views of rich shapes, as they are and with every frame stretched:
+  'save_png_fast("gamma.png", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat)'
+      # the poles of gamma as peaks and pits of a body in the colours of heat
+  'save_png_fast("gamma2.png", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below,'\
+'      palette = heat, normalize)'
+  'save_png("three.png", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma,'\
+'      range_real = [-3, 3], perspective = 3, width = 200)'
+      # three zeros, three poles, an eye that is near
+  'save_png("tan.png", view4d(tan(z), z, 3), range_real = [-3, 3], range_imag = [-3, 3],'\
+'      palette = turbo, width = 200)'
+  'save_png("tan2.png", view4d(tan(z), z, 3), range_real = [-3, 3], normalize, width = 200)'
+  'save_png("zeta.png", view4d(zeta(z), z, -6 - 12i, 6 + 12i), fill = below, palette = inferno,'\
+'      range_real = [-3, 3], range_imag = [-3, 3], voxels = [48, 96, 48], width = 200)'
+      # a long box
+  'save_png("carpet.png", view4d(z + 1/z), range_real = [-4, 4], range_imag = [-4, 4],'\
+'      palette = turbo, azimuth = 30, elevation = 60, width = 200)'
+      # a carpet from high above
+  'save_png("waves.png", view4d(sin(z)*cos(z), z, pi), palette = twilight, range_real = [-2, 2],'\
+'      range_imag = [-2, 2], width = 200)'
+  'save_png("waves2.png", view4d(sin(z)*cos(z), z, pi), normalize, width = 200)'
+  'save_png("ribbons.png", view4d(z^5 - z, z, 1.5), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, thickness = 2, width = 200)'
+      # the pictures of the lines Im z = c
+  'save_png("rings.png", view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame,'\
+'      val_real = width, val_imag = height, normalize, thickness = 2, width = 200)'
+  'save_png("root.png", view4d(sqrt(z)), val_real = color, val_imag = frame, background = white,'\
+'      width = 200)'
+      # the cut of a branch as a step
+  'save_png("hang.png", view4d(z^4 - 1, z, 1.3), fill = above, palette = plasma, width = 200)'
+      # a body that hangs is seen from below
+  'save_png("turned.png", view4d(erf(z), z, 2), fill = below, rotate(25, 20, 0),'\
+'      palette = coolwarm, range_real = [-3, 3], range_imag = [-3, 3], width = 200)'
+  'save_jxl("round.jxl", view4d(sin(z)*cos(z), z, pi), fill = below, palette = twilight,'\
+'      range_real = [-2, 2], range_imag = [-2, 2], frames = 16, width = 128)'
+      # once around the body
+  'save_png("eyes.png", view4d(1/(z^2 + 1), z, 2), range_real = [-2, 2], range_imag = [-2, 2],'\
+'      stereo = 5, width = 200)'
+      # two poles for both eyes
+
 save_jxl: every choice with an example (the drawings of space, charts and plots take them too):
   'save_jxl("j1.jxl", walk(pi), width = 300, height = 200)'
   'save_jxl("j2.jxl", walk(pi), bits = 12, gray, width = 200)'

@@ -1846,11 +1846,28 @@ impl Session {
                 }
                 None => Ok(e.clone()),
             },
-            Expr::Add(a) => matrix::add(self.eval_all(a)?),
-            Expr::Mul(a) => matrix::mul(self.eval_all(a)?),
+            // (systems of control are joined by the operations as numbers are)
+            Expr::Add(a) => {
+                let items = self.eval_all(a)?;
+                match items.iter().any(crate::control::is_system) {
+                    true => self.systems_joined(true, &items),
+                    false => matrix::add(items),
+                }
+            }
+            Expr::Mul(a) => {
+                let items = self.eval_all(a)?;
+                match items.iter().any(crate::control::is_system) {
+                    true => self.systems_joined(false, &items),
+                    false => matrix::mul(items),
+                }
+            }
             Expr::Pow(b, x) => {
                 let base = crate::radix::plain(self.eval(b)?);
-                matrix::pow(base, crate::radix::plain(self.eval(x)?))
+                let exponent = crate::radix::plain(self.eval(x)?);
+                match crate::control::is_system(&base) {
+                    true => self.system_power(&base, &exponent),
+                    false => matrix::pow(base, exponent),
+                }
             }
             Expr::List(a) => Ok(Expr::list(
                 a.iter().map(|x| self.eval(x)).collect::<Result<_, _>>()?,

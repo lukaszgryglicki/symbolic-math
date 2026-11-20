@@ -28,4 +28,5 @@ rustc-ice-*.txt
 /symbolic-math.static
 ._*
 *.jxl
+!/jxls/*.jxl
 *.png

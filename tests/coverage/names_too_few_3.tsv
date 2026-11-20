@@ -84,6 +84,7 @@
 	diric()	error: diric takes 2 argument(s), 0 given
 	zplane()	error: zplane takes at least 1 argument(s), 0 given
 	plot4d()	error: plot4d takes at least 1 argument(s), 0 given
+	view4d()	error: view4d takes at least 1 argument(s), 0 given
 	save_png_fast()	error: save_png_fast takes at least 1 argument(s), 0 given
 	save_jxl_fast()	error: save_jxl_fast takes at least 1 argument(s), 0 given
 	save_fast()	error: save_fast takes at least 2 argument(s), 0 given

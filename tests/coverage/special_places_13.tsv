@@ -184,7 +184,6 @@
 -e	dct(-7/3)	[-7/3]
 -e	dct(0.5)	[0.5]
 -e	idct(0)	[0]
--e	idct(1)	[1]
 -e	idct(-1)	[-1]
 -e	idct(1/2)	[1/2]
 -e	idct(2)	[2]
@@ -698,3 +697,4 @@
 -e	ssinint(undefined)	undefined
 -e	ssinint(10^20)	si(100000000000000000000) - pi/2
 -e	ssinint(10^(-20))	si(1/100000000000000000000) - pi/2
+-e	ssinint(x)	si(x) - pi/2

@@ -303,7 +303,12 @@ const WINDOWS: [&str; 16] = [
 
 /// A window as the argument of a function gives it: a name with a number of values, or
 /// its values.
-pub(crate) fn window_of(e: Option<&Expr>, n: usize, usual: &str, who: &str) -> Result<Vec<Float>, String> {
+pub(crate) fn window_of(
+    e: Option<&Expr>,
+    n: usize,
+    usual: &str,
+    who: &str,
+) -> Result<Vec<Float>, String> {
     match e {
         None => window(usual, n, None),
         Some(e) => match word(e) {
@@ -824,7 +829,12 @@ fn design_words(words: &[Expr], edges: usize, who: &str) -> Result<(String, bool
 
 /// The filter a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... - a[1]*y[n-1] - ..., from the
 /// given state (the transposed second direct form).
-pub(crate) fn lfilter(b: &[Float], a: &[Float], x: &[Float], state: Option<&[Float]>) -> Vec<Float> {
+pub(crate) fn lfilter(
+    b: &[Float],
+    a: &[Float],
+    x: &[Float],
+    state: Option<&[Float]>,
+) -> Vec<Float> {
     let n = b.len().max(a.len());
     let at = |p: &[Float], k: usize| {
         p.get(k).map_or_else(
@@ -1065,7 +1075,10 @@ impl Spectrum {
 
 /// The recursion of Levinson and Durbin on autocorrelations r[0..=p]: the coefficients
 /// of the predictor (the first is 1), the power of the error, the reflections.
-pub(crate) fn levinson(r: &[Float], order: usize) -> Result<(Vec<Float>, Float, Vec<Float>), String> {
+pub(crate) fn levinson(
+    r: &[Float],
+    order: usize,
+) -> Result<(Vec<Float>, Float, Vec<Float>), String> {
     if r.len() <= order || r[0].is_zero() {
         return Err(
             "levinson: the autocorrelations r(0), ..., r(p) are needed, and r(0) is not zero"

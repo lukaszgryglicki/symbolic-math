@@ -112,7 +112,10 @@ pub fn is_save(name: &str) -> bool {
 
 /// The commands that draw, besides the plots of `plot`.
 pub fn is_drawing(name: &str) -> bool {
-    crate::walks::is_walk(name) || crate::chart::is_chart(name) || name == "plot4d" || name == "view4d"
+    crate::walks::is_walk(name)
+        || crate::chart::is_chart(name)
+        || name == "plot4d"
+        || name == "view4d"
 }
 
 /// The commands whose arguments may be choices of a picture.
@@ -802,9 +805,8 @@ fn smaller(image: &imgfile::Image, by: usize) -> imgfile::Image {
         .map(|_| Vec::with_capacity(width * height));
     for row in 0..height {
         for column in 0..width {
-            let places = (0..by).flat_map(|j| {
-                (0..by).map(move |i| (row * by + j) * image.width + column * by + i)
-            });
+            let places = (0..by)
+                .flat_map(|j| (0..by).map(move |i| (row * by + j) * image.width + column * by + i));
             let mut sums = [0.0f32; 4];
             let (mut drawn, mut far) = (0.0f32, 0.0f32);
             for at in places {

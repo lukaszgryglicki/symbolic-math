@@ -755,7 +755,10 @@ impl<'a> Shot<'a> {
                 0.0
             };
         let (pad, band) = if axes {
-            (pad + 2.0 * 8.0 * letters as f64, lines * 8.0 * letters as f64)
+            (
+                pad + 2.0 * 8.0 * letters as f64,
+                lines * 8.0 * letters as f64,
+            )
         } else {
             (pad, 0.0)
         };
@@ -1979,11 +1982,7 @@ pub fn lights(
             }
             let light = f64::from(light / 8.0).clamp(0.0, 1.0);
             let k = ((light * (marks - 1) as f64 + 0.5) as usize).clamp(1, marks - 1);
-            canvas.cells[r * width + c] = if ascii {
-                u32::from(MARKS[k])
-            } else {
-                DOTS[k]
-            };
+            canvas.cells[r * width + c] = if ascii { u32::from(MARKS[k]) } else { DOTS[k] };
         }
     }
     Ok(canvas.bare())
