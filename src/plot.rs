@@ -83,7 +83,7 @@ pub(crate) fn value(f: &Expr, var: &Rc<str>, x: f64) -> Option<f64> {
 }
 
 /// Before `fs` are worked out at the places `xs`: what they need of `tet` is fetched at once.
-pub(crate) fn fetched(fs: &[Expr], var: &Rc<str>, xs: &[f64]) {
+pub(crate) fn fetched(fs: &[Expr], var: &Rc<str>, xs: &[f64]) -> Result<(), String> {
     for f in fs {
         crate::tetration::fetch(
             f,
@@ -93,12 +93,17 @@ pub(crate) fn fetched(fs: &[Expr], var: &Rc<str>, xs: &[f64]) {
                 env.insert(var.clone(), rug::Complex::with_val(64, (*x, 0.0)));
                 env
             }),
-        );
+        )?;
     }
+    Ok(())
 }
 
 /// The same for a function of two variables on a grid.
-pub(crate) fn fetched2(f: &Expr, vars: &(Rc<str>, Rc<str>), places: &[(f64, f64)]) {
+pub(crate) fn fetched2(
+    f: &Expr,
+    vars: &(Rc<str>, Rc<str>),
+    places: &[(f64, f64)],
+) -> Result<(), String> {
     crate::tetration::fetch(
         f,
         64,
@@ -108,7 +113,7 @@ pub(crate) fn fetched2(f: &Expr, vars: &(Rc<str>, Rc<str>), places: &[(f64, f64)
             env.insert(vars.1.clone(), rug::Complex::with_val(64, (*y, 0.0)));
             env
         }),
-    );
+    )
 }
 
 /// The value of `f` at two variables.
@@ -390,7 +395,7 @@ fn curves(a: &[Expr]) -> Result<Vec<String>, String> {
     let xs: Vec<f64> = (0..=count)
         .map(|k| x0 + (x1 - x0) * k as f64 / count as f64)
         .collect();
-    fetched(&fs, &var, &xs);
+    fetched(&fs, &var, &xs)?;
     let all: Vec<Vec<Option<f64>>> = fs
         .iter()
         .map(|f| xs.iter().map(|x| value(f, &var, *x)).collect())

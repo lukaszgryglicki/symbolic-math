@@ -2542,10 +2542,10 @@ complex ones with `|W(-ln b)| < 1`) at `-W(-ln b)/ln b`, and the equation `x^^in
 solution `c^(1/c)` when the tower of that base settles at `c`.
 
 When `tet` cannot be run, a request for a numeric value is an error; an exact answer is still
-printed, with a note.
+printed, with a note. A drawing of tetration is then an error that says so, at once.
 
 Every drawing takes tetration: `plot`, `plot3d`, `densityplot`, `complexplot`, `plot4d` and
-`view4d` ask `tet` for the values at all their places before they draw, as many runs of the
+`view4d` ask `tet` for the values at all their places before they draw them, as many runs of the
 program at a time as the machine has processors (the values are the same as one by one; a
 drawing of `2^^x` and `e^^x` is made nine times as fast on 16 processors). Bases from `e^(-e)`
 to `e^(1/e)` take hundredths of a second for a value, the others about a second.

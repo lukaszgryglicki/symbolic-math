@@ -112,7 +112,7 @@ fn curves(a: &[Expr], detail: usize) -> Result<Drawing, String> {
     let xs: Vec<f64> = (0..=count)
         .map(|k| x0 + (x1 - x0) * k as f64 / count as f64)
         .collect();
-    crate::plot::fetched(&fs, &var, &xs);
+    crate::plot::fetched(&fs, &var, &xs)?;
     let all: Vec<Vec<Option<f64>>> = fs
         .iter()
         .map(|f| xs.iter().map(|x| value(f, &var, *x)).collect())
@@ -459,16 +459,22 @@ fn complex(a: &[Expr]) -> Result<Drawing, String> {
         _ => return Err(usage.to_string()),
     };
     let f = f.clone();
-    // (values of tetration are asked of the program tet for a whole row at once)
+    // (values of tetration are asked of the program tet for a whole row at once; when it
+    // cannot be run, the middle of the box says so before anything is drawn)
+    let place = {
+        let var = var.clone();
+        move |(px, py): (f64, f64)| {
+            let mut env = Env::new();
+            env.insert(var.clone(), Complex::with_val(64, (px, py)));
+            env
+        }
+    };
+    let middle = ((x.0 + x.1) / 2.0, (y.0 + y.1) / 2.0);
+    crate::tetration::fetch(&f, 64, std::iter::once(place(middle)))?;
     let ahead = crate::tetration::uses_tet(&f).then(|| {
-        let (f, var) = (f.clone(), var.clone());
+        let f = f.clone();
         Box::new(move |row: &[(f64, f64)]| {
-            let places = row.iter().map(|(px, py)| {
-                let mut env = Env::new();
-                env.insert(var.clone(), Complex::with_val(64, (*px, *py)));
-                env
-            });
-            crate::tetration::fetch(&f, 64, places);
+            let _ = crate::tetration::fetch(&f, 64, row.iter().copied().map(&place));
         }) as crate::scene::Ahead
     });
     let field = move |px: f64, py: f64| -> Option<Shade> {
@@ -512,18 +518,18 @@ fn sampled(
     y: (f64, f64),
     columns: usize,
     rows: usize,
-) -> Vec<Option<f64>> {
+) -> Result<Vec<Option<f64>>, String> {
     let places: Vec<(f64, f64)> = (0..=rows)
         .flat_map(|j| {
             let py = y.0 + (y.1 - y.0) * j as f64 / rows as f64;
             (0..=columns).map(move |i| (x.0 + (x.1 - x.0) * i as f64 / columns as f64, py))
         })
         .collect();
-    crate::plot::fetched2(f, vars, &places);
-    places
+    crate::plot::fetched2(f, vars, &places)?;
+    Ok(places
         .iter()
         .map(|(px, py)| value2(f, vars, *px, *py))
-        .collect()
+        .collect())
 }
 
 type TwoRanges<'a> = (&'a Expr, (Rc<str>, Rc<str>), (f64, f64), (f64, f64));
@@ -550,13 +556,19 @@ fn two_ranges<'a>(name: &str, a: &'a [Expr]) -> Result<TwoRanges<'a>, String> {
 fn density(a: &[Expr]) -> Result<Drawing, String> {
     let (f, vars, x, y) = two_ranges("densityplot", a)?;
     // the range of the colours: the values on a grid, without the few that are far away
-    let mut seen: Vec<f64> = sampled(f, &vars, x, y, 48, 48)
+    let mut seen: Vec<f64> = sampled(f, &vars, x, y, 48, 48)?
         .into_iter()
         .flatten()
         .collect();
     let (low, high) =
         spread(&mut seen).ok_or_else(|| format!("{f} has no real value in these ranges"))?;
     let f = f.clone();
+    let ahead = crate::tetration::uses_tet(&f).then(|| {
+        let (f, vars) = (f.clone(), vars.clone());
+        Box::new(move |row: &[(f64, f64)]| {
+            let _ = crate::plot::fetched2(&f, &vars, row);
+        }) as crate::scene::Ahead
+    });
     let field = move |px: f64, py: f64| -> Option<Shade> {
         let v = value2(&f, &vars, px, py)?;
         Some(Shade::Level(((v - low) / (high - low)).clamp(0.0, 1.0)))
@@ -565,6 +577,7 @@ fn density(a: &[Expr]) -> Result<Drawing, String> {
         Space::Chart { x, y, equal: false },
         vec![Item::Field(Box::new(field))],
     );
+    drawing.ahead = ahead;
     drawing.palette = "viridis";
     drawing.facts = vec![format!(
         "the colours of the palette run from the value {} to {}",
@@ -578,7 +591,7 @@ fn density(a: &[Expr]) -> Result<Drawing, String> {
 fn surface(a: &[Expr], detail: usize) -> Result<Drawing, String> {
     let (f, vars, x, y) = two_ranges("plot3d", a)?;
     let cells = (detail / 8).clamp(24, 160);
-    let values = sampled(f, &vars, x, y, cells, cells);
+    let values = sampled(f, &vars, x, y, cells, cells)?;
     let mut seen: Vec<f64> = values.iter().flatten().copied().collect();
     let (low, high) =
         spread(&mut seen).ok_or_else(|| format!("{f} has no real value in these ranges"))?;

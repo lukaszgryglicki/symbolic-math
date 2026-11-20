@@ -2488,6 +2488,12 @@ mod tetration {
                 "re((3/2)^^(x + i*y))",
                 "re(x) - im(y)",
             ),
+            (
+                "densityplot(re(1.5^^(x + i*y)), x, 0.2, 0.8, y, 0.3, 0.7, width = 12, height = 5)",
+                "densityplot(re(x + i*y), x, 0.2, 0.8, y, 0.3, 0.7, width = 12, height = 5)",
+                "",
+                "",
+            ),
         ] {
             let (got, err, ok) = run_with_path(&dir, with_tet);
             let (want, _, _) = run_with_path(&dir, plain);
@@ -2524,6 +2530,43 @@ mod tetration {
                 "{with_tet}: the runs of tet were made one by one"
             );
         }
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn a_drawing_says_that_tet_is_missing() {
+        let dir = stand_in("missing", ANSWERS);
+        std::fs::remove_file(dir.join("tet")).unwrap();
+        for input in [
+            "plot(1.5^^x, x, 0.1, 0.9, 24, 8)",
+            "plot([sin(x), 1.5^^x], x, 0.1, 0.9, 24, 8)",
+            "plot3d(b^^h, b, 1.1, 1.4, h, 0.1, 0.9, width = 20, height = 8)",
+            "densityplot(slog(b, x), b, 1.1, 1.4, x, 0.1, 0.9, width = 12, height = 5)",
+            "complexplot(1.5^^z, z, 0.15 + 0.15i, 0.85 + 0.85i, width = 16, height = 6)",
+            "plot4d(1.5^^z, z, 0.1 + 0.1i, 0.9 + 0.9i, width = 8, height = 4, frames = 3)",
+            "view4d(ssrt(z, 2.5), z, 2 + 0.1i, 3 + 0.9i, width = 24, height = 8, voxels = 8)",
+            "polarplot(1.5^^t, t, 0.1, 0.9, 20, 8)",
+            "save_png(\"t.png\", complexplot(1.5^^z, z, 0.15 + 0.15i, 0.85 + 0.85i), width = 8)",
+        ] {
+            let (out, err, ok) = run_with_path(&dir, input);
+            assert!(
+                out.is_empty()
+                    && !ok
+                    && err.starts_with("error: could not run tet: ")
+                    && err.ends_with("; ensure the tet executable is on PATH"),
+                "{input}: stdout `{out}`, stderr `{err}`"
+            );
+        }
+        // what needs no value of tet is as ever, and an exact answer comes with a note
+        let (out, err, ok) = run_with_path(&dir, "plot(x, x, 0.1, 0.9, 24, 3)");
+        assert!(ok && err.is_empty() && !out.contains("tet"), "{out} {err}");
+        let (out, _, ok) = run_with_path(&dir, "[2^^(1/2), 2^^3]");
+        assert!(ok && out == "[2^^(1/2), 16]", "{out}");
+        let (out, _, ok) = run_with_path(&dir, "2^^(1/2)");
+        assert!(
+            ok && out.starts_with("2^^(1/2)|note: could not run tet: "),
+            "{out}"
+        );
         std::fs::remove_dir_all(dir).unwrap();
     }
 

@@ -259,6 +259,18 @@ type Key = (Mode, Expr, Expr, String);
 
 thread_local! {
     static CACHE: RefCell<HashMap<Key, (u32, Complex)>> = RefCell::new(HashMap::new());
+    /// Why `tet` could not be run, when a run of it did not start.
+    static MISSING: RefCell<Option<String>> = const { RefCell::new(None) };
+}
+
+/// Why the program `tet` could not be run, when a run of it did not start since the last
+/// `forget_missing`: what was worked out without its values says so.
+pub fn missing() -> Option<String> {
+    MISSING.with(|m| m.borrow().clone())
+}
+
+pub fn forget_missing() {
+    MISSING.with(|m| m.borrow_mut().take());
 }
 
 fn env_key(a: &Expr, b: &Expr, env: Option<&Env>) -> String {
@@ -361,9 +373,9 @@ fn run_tet(mode: Mode, digits: u32, a: &Complex, b: &Complex) -> Result<Complex,
         .stdin(Stdio::null())
         .output()
         .map_err(|err| {
-            NumErr::External(format!(
-                "could not run tet: {err}; ensure the tet executable is on PATH"
-            ))
+            let why = format!("could not run tet: {err}; ensure the tet executable is on PATH");
+            MISSING.with(|m| *m.borrow_mut() = Some(why.clone()));
+            NumErr::External(why)
         })?;
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
@@ -437,10 +449,11 @@ fn calls(e: &Expr) -> Vec<(Mode, Expr, Expr)> {
 /// Before a function is worked out at many places with `bits` bits: the values of `tet`
 /// that it will ask for there are fetched at once, as many runs of the program at a time
 /// as the machine has processors. The values are those that would be fetched one by one.
-pub fn fetch(f: &Expr, bits: u32, places: impl Iterator<Item = Env>) {
+/// When the program cannot be run at all, that is the error: nothing can be drawn.
+pub fn fetch(f: &Expr, bits: u32, places: impl Iterator<Item = Env>) -> Result<(), String> {
     let found = calls(f);
     if found.is_empty() {
-        return;
+        return Ok(());
     }
     let digits = digits_for(bits) + 2;
     let mut keys = Vec::new();
@@ -465,10 +478,10 @@ pub fn fetch(f: &Expr, bits: u32, places: impl Iterator<Item = Env>) {
     }
     // (a program that cannot be run is not asked again for every place)
     let Some((mode, x, y)) = jobs.first() else {
-        return;
+        return Ok(());
     };
     let first = match run_tet(*mode, digits, x, y) {
-        Err(NumErr::External(why)) if why.starts_with("could not run") => return,
+        Err(NumErr::External(why)) if why.starts_with("could not run") => return Err(why),
         other => other.ok(),
     };
     let next = std::sync::atomic::AtomicUsize::new(1);
@@ -507,6 +520,7 @@ pub fn fetch(f: &Expr, bits: u32, places: impl Iterator<Item = Env>) {
             }
         }
     });
+    Ok(())
 }
 
 fn mode_of(name: &str, args: &[Expr]) -> Option<Mode> {

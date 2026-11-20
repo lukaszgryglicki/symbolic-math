@@ -181,7 +181,21 @@ impl Session {
         let mut lines = Vec::new();
         for stmt in &parsed.stmts {
             self.notes.clear();
-            let (value, out) = self.statement(stmt, decimal)?;
+            crate::tetration::forget_missing();
+            let done = self.statement(stmt, decimal);
+            // a drawing of tetration that fails without the program tet says that, not that
+            // the function has no values there
+            let drawn = matches!(stmt, Expr::Fn(n, _)
+                if crate::plot::is_plot(n)
+                    || crate::picture::is_save(n)
+                    || crate::picture::is_drawing(n)
+                    || matches!(&**n, "plot4d" | "view4d"));
+            let (value, out) = match (done, crate::tetration::missing()) {
+                (Err(why), Some(reason)) if drawn && !why.contains("could not run tet") => {
+                    return Err(reason);
+                }
+                (done, _) => done?,
+            };
             lines.extend(out);
             lines.extend(self.notes.drain(..).map(|n| format!("note: {n}")));
             self.ans = Some(value);
