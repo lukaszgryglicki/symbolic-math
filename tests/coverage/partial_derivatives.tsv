@@ -1,0 +1,90 @@
+-e	simplify(diff(diff(x^2*y^3, x), y) - diff(diff(x^2*y^3, y), x))	0
+-e	simplify(gradient(x^2*y^3, [x, y]) - [diff(x^2*y^3, x), diff(x^2*y^3, y)])	[0, 0]
+-e	simplify(hessian(x^2*y^3, [x, y]) - transpose(hessian(x^2*y^3, [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(x^2*y^3, [x, y]) - diff(x^2*y^3, x, 2) - diff(x^2*y^3, y, 2))	0
+-e	simplify(laplacian(x^2*y^3, [x, y]) - divergence(gradient(x^2*y^3, [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([x^2*y^3, x + y], [x, y]), 1) - gradient(x^2*y^3, [x, y]))	[0, 0]
+-e	simplify(diff(diff(sin(x*y), x), y) - diff(diff(sin(x*y), y), x))	0
+-e	simplify(gradient(sin(x*y), [x, y]) - [diff(sin(x*y), x), diff(sin(x*y), y)])	[0, 0]
+-e	simplify(hessian(sin(x*y), [x, y]) - transpose(hessian(sin(x*y), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(sin(x*y), [x, y]) - diff(sin(x*y), x, 2) - diff(sin(x*y), y, 2))	0
+-e	simplify(laplacian(sin(x*y), [x, y]) - divergence(gradient(sin(x*y), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([sin(x*y), x + y], [x, y]), 1) - gradient(sin(x*y), [x, y]))	[0, 0]
+-e	simplify(diff(diff(exp(x + 2y), x), y) - diff(diff(exp(x + 2y), y), x))	0
+-e	simplify(gradient(exp(x + 2y), [x, y]) - [diff(exp(x + 2y), x), diff(exp(x + 2y), y)])	[0, 0]
+-e	simplify(hessian(exp(x + 2y), [x, y]) - transpose(hessian(exp(x + 2y), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(exp(x + 2y), [x, y]) - diff(exp(x + 2y), x, 2) - diff(exp(x + 2y), y, 2))	0
+-e	simplify(laplacian(exp(x + 2y), [x, y]) - divergence(gradient(exp(x + 2y), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([exp(x + 2y), x + y], [x, y]), 1) - gradient(exp(x + 2y), [x, y]))	[0, 0]
+-e	simplify(diff(diff(x/y, x), y) - diff(diff(x/y, y), x))	0
+-e	simplify(gradient(x/y, [x, y]) - [diff(x/y, x), diff(x/y, y)])	[0, 0]
+-e	simplify(hessian(x/y, [x, y]) - transpose(hessian(x/y, [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(x/y, [x, y]) - diff(x/y, x, 2) - diff(x/y, y, 2))	0
+-e	simplify(laplacian(x/y, [x, y]) - divergence(gradient(x/y, [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([x/y, x + y], [x, y]), 1) - gradient(x/y, [x, y]))	[0, 0]
+-e	simplify(diff(diff(ln(x^2 + y^2), x), y) - diff(diff(ln(x^2 + y^2), y), x))	0
+-e	simplify(gradient(ln(x^2 + y^2), [x, y]) - [diff(ln(x^2 + y^2), x), diff(ln(x^2 + y^2), y)])	[0, 0]
+-e	simplify(hessian(ln(x^2 + y^2), [x, y]) - transpose(hessian(ln(x^2 + y^2), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(ln(x^2 + y^2), [x, y]) - diff(ln(x^2 + y^2), x, 2) - diff(ln(x^2 + y^2), y, 2))	0
+-e	simplify(laplacian(ln(x^2 + y^2), [x, y]) - divergence(gradient(ln(x^2 + y^2), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([ln(x^2 + y^2), x + y], [x, y]), 1) - gradient(ln(x^2 + y^2), [x, y]))	[0, 0]
+-e	simplify(diff(diff(atan(y/x), x), y) - diff(diff(atan(y/x), y), x))	0
+-e	simplify(gradient(atan(y/x), [x, y]) - [diff(atan(y/x), x), diff(atan(y/x), y)])	[0, 0]
+-e	simplify(hessian(atan(y/x), [x, y]) - transpose(hessian(atan(y/x), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(atan(y/x), [x, y]) - diff(atan(y/x), x, 2) - diff(atan(y/x), y, 2))	0
+-e	simplify(laplacian(atan(y/x), [x, y]) - divergence(gradient(atan(y/x), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([atan(y/x), x + y], [x, y]), 1) - gradient(atan(y/x), [x, y]))	[0, 0]
+-e	simplify(diff(diff(x^y, x), y) - diff(diff(x^y, y), x))	0
+-e	simplify(gradient(x^y, [x, y]) - [diff(x^y, x), diff(x^y, y)])	[0, 0]
+-e	simplify(hessian(x^y, [x, y]) - transpose(hessian(x^y, [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(x^y, [x, y]) - diff(x^y, x, 2) - diff(x^y, y, 2))	0
+-e	simplify(laplacian(x^y, [x, y]) - divergence(gradient(x^y, [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([x^y, x + y], [x, y]), 1) - gradient(x^y, [x, y]))	[0, 0]
+-e	simplify(diff(diff(cos(x)*sinh(y), x), y) - diff(diff(cos(x)*sinh(y), y), x))	0
+-e	simplify(gradient(cos(x)*sinh(y), [x, y]) - [diff(cos(x)*sinh(y), x), diff(cos(x)*sinh(y), y)])	[0, 0]
+-e	simplify(hessian(cos(x)*sinh(y), [x, y]) - transpose(hessian(cos(x)*sinh(y), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(cos(x)*sinh(y), [x, y]) - diff(cos(x)*sinh(y), x, 2) - diff(cos(x)*sinh(y), y, 2))	0
+-e	simplify(laplacian(cos(x)*sinh(y), [x, y]) - divergence(gradient(cos(x)*sinh(y), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([cos(x)*sinh(y), x + y], [x, y]), 1) - gradient(cos(x)*sinh(y), [x, y]))	[0, 0]
+-e	simplify(diff(diff(sqrt(x^2 + y^2), x), y) - diff(diff(sqrt(x^2 + y^2), y), x))	0
+-e	simplify(gradient(sqrt(x^2 + y^2), [x, y]) - [diff(sqrt(x^2 + y^2), x), diff(sqrt(x^2 + y^2), y)])	[0, 0]
+-e	simplify(hessian(sqrt(x^2 + y^2), [x, y]) - transpose(hessian(sqrt(x^2 + y^2), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(sqrt(x^2 + y^2), [x, y]) - diff(sqrt(x^2 + y^2), x, 2) - diff(sqrt(x^2 + y^2), y, 2))	0
+-e	simplify(laplacian(sqrt(x^2 + y^2), [x, y]) - divergence(gradient(sqrt(x^2 + y^2), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([sqrt(x^2 + y^2), x + y], [x, y]), 1) - gradient(sqrt(x^2 + y^2), [x, y]))	[0, 0]
+-e	simplify(diff(diff(exp(x*y)*sin(y), x), y) - diff(diff(exp(x*y)*sin(y), y), x))	0
+-e	simplify(gradient(exp(x*y)*sin(y), [x, y]) - [diff(exp(x*y)*sin(y), x), diff(exp(x*y)*sin(y), y)])	[0, 0]
+-e	simplify(hessian(exp(x*y)*sin(y), [x, y]) - transpose(hessian(exp(x*y)*sin(y), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(exp(x*y)*sin(y), [x, y]) - diff(exp(x*y)*sin(y), x, 2) - diff(exp(x*y)*sin(y), y, 2))	0
+-e	simplify(laplacian(exp(x*y)*sin(y), [x, y]) - divergence(gradient(exp(x*y)*sin(y), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([exp(x*y)*sin(y), x + y], [x, y]), 1) - gradient(exp(x*y)*sin(y), [x, y]))	[0, 0]
+-e	simplify(diff(diff((x + y)^5, x), y) - diff(diff((x + y)^5, y), x))	0
+-e	simplify(gradient((x + y)^5, [x, y]) - [diff((x + y)^5, x), diff((x + y)^5, y)])	[0, 0]
+-e	simplify(hessian((x + y)^5, [x, y]) - transpose(hessian((x + y)^5, [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian((x + y)^5, [x, y]) - diff((x + y)^5, x, 2) - diff((x + y)^5, y, 2))	0
+-e	simplify(laplacian((x + y)^5, [x, y]) - divergence(gradient((x + y)^5, [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([(x + y)^5, x + y], [x, y]), 1) - gradient((x + y)^5, [x, y]))	[0, 0]
+-e	simplify(diff(diff(x*y/(x + y), x), y) - diff(diff(x*y/(x + y), y), x))	0
+-e	simplify(gradient(x*y/(x + y), [x, y]) - [diff(x*y/(x + y), x), diff(x*y/(x + y), y)])	[0, 0]
+-e	simplify(hessian(x*y/(x + y), [x, y]) - transpose(hessian(x*y/(x + y), [x, y])))	[[0, 0], [0, 0]]
+-e	simplify(laplacian(x*y/(x + y), [x, y]) - diff(x*y/(x + y), x, 2) - diff(x*y/(x + y), y, 2))	0
+-e	simplify(laplacian(x*y/(x + y), [x, y]) - divergence(gradient(x*y/(x + y), [x, y]), [x, y]))	0
+-e	simplify(part(jacobian([x*y/(x + y), x + y], [x, y]), 1) - gradient(x*y/(x + y), [x, y]))	[0, 0]
+-e	simplify(curl(gradient(x*y*z, [x, y, z]), [x, y, z]))	[0, 0, 0]
+-e	simplify(potential(gradient(x*y*z, [x, y, z]), [x, y, z]) - (x*y*z) - subs(potential(gradient(x*y*z, [x, y, z]), [x, y, z]) - (x*y*z), [x, y, z], [1, 2, 3]))	0
+-e	simplify(curl(gradient(x^2 + y^2 + z^2, [x, y, z]), [x, y, z]))	[0, 0, 0]
+-e	simplify(potential(gradient(x^2 + y^2 + z^2, [x, y, z]), [x, y, z]) - (x^2 + y^2 + z^2) - subs(potential(gradient(x^2 + y^2 + z^2, [x, y, z]), [x, y, z]) - (x^2 + y^2 + z^2), [x, y, z], [1, 2, 3]))	0
+-e	simplify(curl(gradient(sin(x)*cos(y)*exp(z), [x, y, z]), [x, y, z]))	[0, 0, 0]
+-e	simplify(potential(gradient(sin(x)*cos(y)*exp(z), [x, y, z]), [x, y, z]) - (sin(x)*cos(y)*exp(z)) - subs(potential(gradient(sin(x)*cos(y)*exp(z), [x, y, z]), [x, y, z]) - (sin(x)*cos(y)*exp(z)), [x, y, z], [1, 2, 3]))	0
+-e	simplify(curl(gradient(x*y^2*z^3, [x, y, z]), [x, y, z]))	[0, 0, 0]
+-e	simplify(potential(gradient(x*y^2*z^3, [x, y, z]), [x, y, z]) - (x*y^2*z^3) - subs(potential(gradient(x*y^2*z^3, [x, y, z]), [x, y, z]) - (x*y^2*z^3), [x, y, z], [1, 2, 3]))	0
+-e	simplify(curl(gradient(1/sqrt(x^2 + y^2 + z^2), [x, y, z]), [x, y, z]))	[0, 0, 0]
+-e	simplify(potential(gradient(1/sqrt(x^2 + y^2 + z^2), [x, y, z]), [x, y, z]) - (1/sqrt(x^2 + y^2 + z^2)) - subs(potential(gradient(1/sqrt(x^2 + y^2 + z^2), [x, y, z]), [x, y, z]) - (1/sqrt(x^2 + y^2 + z^2)), [x, y, z], [1, 2, 3]))	0
+-e	simplify(divergence(curl([y*z, x*z, x*y], [x, y, z]), [x, y, z]))	0
+-e	simplify(divergence(curl([x^2, y^2, z^2], [x, y, z]), [x, y, z]))	0
+-e	simplify(divergence(curl([-y, x, 0], [x, y, z]), [x, y, z]))	0
+-e	simplify(divergence(curl([sin(y), cos(z), exp(x)], [x, y, z]), [x, y, z]))	0
+-e	simplify(divergence(curl([x*y, y*z, z*x], [x, y, z]), [x, y, z]))	0
+-e	simplify(curl(vectorpotential([y, z, x], [x, y, z]), [x, y, z]))	[y, z, x]
+-e	simplify(curl(vectorpotential([0, 0, 1], [x, y, z]), [x, y, z]))	[0, 0, 1]
+-e	potential([y, -x], [x, y])	undefined

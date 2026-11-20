@@ -1,0 +1,108 @@
+-e	subs(exp(x), x, 0)	1
+-e	subs(diff(exp(x), x, 1), x, 0)/1!	1
+-e	subs(diff(exp(x), x, 2), x, 0)/2!	1/2
+-e	subs(diff(exp(x), x, 3), x, 0)/3!	1/6
+-e	subs(diff(exp(x), x, 4), x, 0)/4!	1/24
+-e	subs(diff(exp(x), x, 5), x, 0)/5!	1/120
+-e	subs(diff(exp(x), x, 6), x, 0)/6!	1/720
+-e	subs(diff(exp(x), x, 7), x, 0)/7!	1/5040
+-e	subs(1/(1 - x), x, 0)	1
+-e	subs(diff(1/(1 - x), x, 1), x, 0)/1!	1
+-e	subs(diff(1/(1 - x), x, 2), x, 0)/2!	1
+-e	subs(diff(1/(1 - x), x, 3), x, 0)/3!	1
+-e	subs(diff(1/(1 - x), x, 4), x, 0)/4!	1
+-e	subs(diff(1/(1 - x), x, 5), x, 0)/5!	1
+-e	subs(diff(1/(1 - x), x, 6), x, 0)/6!	1
+-e	subs(diff(1/(1 - x), x, 7), x, 0)/7!	1
+-e	subs(1/(1 + x), x, 0)	1
+-e	subs(diff(1/(1 + x), x, 1), x, 0)/1!	-1
+-e	subs(diff(1/(1 + x), x, 2), x, 0)/2!	1
+-e	subs(diff(1/(1 + x), x, 3), x, 0)/3!	-1
+-e	subs(diff(1/(1 + x), x, 4), x, 0)/4!	1
+-e	subs(diff(1/(1 + x), x, 5), x, 0)/5!	-1
+-e	subs(diff(1/(1 + x), x, 6), x, 0)/6!	1
+-e	subs(diff(1/(1 + x), x, 7), x, 0)/7!	-1
+-e	subs(ln(1 + x), x, 0)	0
+-e	subs(diff(ln(1 + x), x, 1), x, 0)/1!	1
+-e	subs(diff(ln(1 + x), x, 2), x, 0)/2!	-1/2
+-e	subs(diff(ln(1 + x), x, 3), x, 0)/3!	1/3
+-e	subs(diff(ln(1 + x), x, 4), x, 0)/4!	-1/4
+-e	subs(diff(ln(1 + x), x, 5), x, 0)/5!	1/5
+-e	subs(diff(ln(1 + x), x, 6), x, 0)/6!	-1/6
+-e	subs(diff(ln(1 + x), x, 7), x, 0)/7!	1/7
+-e	subs(sin(x), x, 0)	0
+-e	subs(diff(sin(x), x, 1), x, 0)/1!	1
+-e	subs(diff(sin(x), x, 2), x, 0)/2!	0
+-e	subs(diff(sin(x), x, 3), x, 0)/3!	-1/6
+-e	subs(diff(sin(x), x, 4), x, 0)/4!	0
+-e	subs(diff(sin(x), x, 5), x, 0)/5!	1/120
+-e	subs(diff(sin(x), x, 6), x, 0)/6!	0
+-e	subs(diff(sin(x), x, 7), x, 0)/7!	-1/5040
+-e	subs(cos(x), x, 0)	1
+-e	subs(diff(cos(x), x, 1), x, 0)/1!	0
+-e	subs(diff(cos(x), x, 2), x, 0)/2!	-1/2
+-e	subs(diff(cos(x), x, 3), x, 0)/3!	0
+-e	subs(diff(cos(x), x, 4), x, 0)/4!	1/24
+-e	subs(diff(cos(x), x, 5), x, 0)/5!	0
+-e	subs(diff(cos(x), x, 6), x, 0)/6!	-1/720
+-e	subs(diff(cos(x), x, 7), x, 0)/7!	0
+-e	subs(sinh(x), x, 0)	0
+-e	subs(diff(sinh(x), x, 1), x, 0)/1!	1
+-e	subs(diff(sinh(x), x, 2), x, 0)/2!	0
+-e	subs(diff(sinh(x), x, 3), x, 0)/3!	1/6
+-e	subs(diff(sinh(x), x, 4), x, 0)/4!	0
+-e	subs(diff(sinh(x), x, 5), x, 0)/5!	1/120
+-e	subs(diff(sinh(x), x, 6), x, 0)/6!	0
+-e	subs(diff(sinh(x), x, 7), x, 0)/7!	1/5040
+-e	subs(cosh(x), x, 0)	1
+-e	subs(diff(cosh(x), x, 1), x, 0)/1!	0
+-e	subs(diff(cosh(x), x, 2), x, 0)/2!	1/2
+-e	subs(diff(cosh(x), x, 3), x, 0)/3!	0
+-e	subs(diff(cosh(x), x, 4), x, 0)/4!	1/24
+-e	subs(diff(cosh(x), x, 5), x, 0)/5!	0
+-e	subs(diff(cosh(x), x, 6), x, 0)/6!	1/720
+-e	subs(diff(cosh(x), x, 7), x, 0)/7!	0
+-e	subs(1/(1 - x)^2, x, 0)	1
+-e	subs(diff(1/(1 - x)^2, x, 1), x, 0)/1!	2
+-e	subs(diff(1/(1 - x)^2, x, 2), x, 0)/2!	3
+-e	subs(diff(1/(1 - x)^2, x, 3), x, 0)/3!	4
+-e	subs(diff(1/(1 - x)^2, x, 4), x, 0)/4!	5
+-e	subs(diff(1/(1 - x)^2, x, 5), x, 0)/5!	6
+-e	subs(diff(1/(1 - x)^2, x, 6), x, 0)/6!	7
+-e	subs(diff(1/(1 - x)^2, x, 7), x, 0)/7!	8
+-e	subs(atan(x), x, 0)	0
+-e	subs(diff(atan(x), x, 1), x, 0)/1!	1
+-e	subs(diff(atan(x), x, 2), x, 0)/2!	0
+-e	subs(diff(atan(x), x, 3), x, 0)/3!	-1/3
+-e	subs(diff(atan(x), x, 4), x, 0)/4!	0
+-e	subs(diff(atan(x), x, 5), x, 0)/5!	1/5
+-e	subs(diff(atan(x), x, 6), x, 0)/6!	0
+-e	subs(diff(atan(x), x, 7), x, 0)/7!	-1/7
+-e	subs((1 + x)^(1/2), x, 0)	1
+-e	subs(diff((1 + x)^(1/2), x, 1), x, 0)/1!	1/2
+-e	subs(diff((1 + x)^(1/2), x, 2), x, 0)/2!	-1/8
+-e	subs(diff((1 + x)^(1/2), x, 3), x, 0)/3!	1/16
+-e	subs(diff((1 + x)^(1/2), x, 4), x, 0)/4!	-5/128
+-e	subs(diff((1 + x)^(1/2), x, 5), x, 0)/5!	7/256
+-e	subs(diff((1 + x)^(1/2), x, 6), x, 0)/6!	-21/1024
+-e	subs(diff((1 + x)^(1/2), x, 7), x, 0)/7!	33/2048
+-e	subs(exp(2x), x, 0)	1
+-e	subs(diff(exp(2x), x, 1), x, 0)/1!	2
+-e	subs(diff(exp(2x), x, 2), x, 0)/2!	2
+-e	subs(diff(exp(2x), x, 3), x, 0)/3!	4/3
+-e	subs(diff(exp(2x), x, 4), x, 0)/4!	2/3
+-e	subs(diff(exp(2x), x, 5), x, 0)/5!	4/15
+-e	subs(diff(exp(2x), x, 6), x, 0)/6!	4/45
+-e	subs(diff(exp(2x), x, 7), x, 0)/7!	8/315
+-e	taylor(exp(x), x, 0, 5)	1 + x + x^2/2 + x^3/6 + x^4/24 + x^5/120 + O(x^6)
+-e	taylor(1/(1 - x), x, 0, 5)	1 + x + x^2 + x^3 + x^4 + x^5 + O(x^6)
+-e	taylor(1/(1 + x), x, 0, 5)	1 - x + x^2 - x^3 + x^4 - x^5 + O(x^6)
+-e	taylor(ln(1 + x), x, 0, 5)	x - x^2/2 + x^3/3 - x^4/4 + x^5/5 + O(x^6)
+-e	taylor(sin(x), x, 0, 5)	x - x^3/6 + x^5/120 + O(x^6)
+-e	taylor(cos(x), x, 0, 5)	1 - x^2/2 + x^4/24 + O(x^6)
+-e	taylor(sinh(x), x, 0, 5)	x + x^3/6 + x^5/120 + O(x^6)
+-e	taylor(cosh(x), x, 0, 5)	1 + x^2/2 + x^4/24 + O(x^6)
+-e	taylor(1/(1 - x)^2, x, 0, 5)	1 + 2x + 3x^2 + 4x^3 + 5x^4 + 6x^5 + O(x^6)
+-e	taylor(atan(x), x, 0, 5)	x - x^3/3 + x^5/5 + O(x^6)
+-e	taylor((1 + x)^(1/2), x, 0, 5)	1 + x/2 - x^2/8 + x^3/16 - 5x^4/128 + 7x^5/256 + O(x^6)
+-e	taylor(exp(2x), x, 0, 5)	1 + 2x + 2x^2 + 4x^3/3 + 2x^4/3 + 4x^5/15 + O(x^6)

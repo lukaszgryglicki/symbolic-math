@@ -1,0 +1,304 @@
+-e	simplify(diff((sin(x))*(x^3 + 1), x) - (diff(sin(x), x)*(x^3 + 1) + (sin(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((sin(x)) + 3*(x^3 + 1), x) - diff(sin(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((sin(x))*(sqrt(x)), x) - (diff(sin(x), x)*(sqrt(x)) + (sin(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((sin(x)) + 3*(sqrt(x)), x) - diff(sin(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((sin(x))*(x^x), x) - (diff(sin(x), x)*(x^x) + (sin(x))*diff(x^x, x)))	0
+-e	simplify(diff((sin(x)) + 3*(x^x), x) - diff(sin(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((sin(x))*(tan(x)), x) - (diff(sin(x), x)*(tan(x)) + (sin(x))*diff(tan(x), x)))	0
+-e	simplify(diff((sin(x)) + 3*(tan(x)), x) - diff(sin(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((sin(x))*(x*exp(-x)), x) - (diff(sin(x), x)*(x*exp(-x)) + (sin(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((sin(x)) + 3*(x*exp(-x)), x) - diff(sin(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((sin(x))^2, x) - 2*(sin(x))*diff(sin(x), x))	0
+-e	simplify(diff(sin(x), x, 2) - diff(diff(sin(x), x), x))	0
+-e	simplify(diff(exp(sin(x)), x) - exp(sin(x))*diff(sin(x), x))	0
+-e	simplify(diff(sin(sin(x)), x) - cos(sin(x))*diff(sin(x), x))	0
+-e	simplify(diff((exp(2x))*(sin(x)), x) - (diff(exp(2x), x)*(sin(x)) + (exp(2x))*diff(sin(x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(sin(x)), x) - diff(exp(2x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((exp(2x))*(x^3 + 1), x) - (diff(exp(2x), x)*(x^3 + 1) + (exp(2x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((exp(2x)) + 3*(x^3 + 1), x) - diff(exp(2x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((exp(2x))*(ln(x)), x) - (diff(exp(2x), x)*(ln(x)) + (exp(2x))*diff(ln(x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(ln(x)), x) - diff(exp(2x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((exp(2x))*(sqrt(x)), x) - (diff(exp(2x), x)*(sqrt(x)) + (exp(2x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(sqrt(x)), x) - diff(exp(2x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((exp(2x))*(x^x), x) - (diff(exp(2x), x)*(x^x) + (exp(2x))*diff(x^x, x)))	0
+-e	simplify(diff((exp(2x)) + 3*(x^x), x) - diff(exp(2x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((exp(2x))*(tan(x)), x) - (diff(exp(2x), x)*(tan(x)) + (exp(2x))*diff(tan(x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(tan(x)), x) - diff(exp(2x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((exp(2x))*(gamma(x)), x) - (diff(exp(2x), x)*(gamma(x)) + (exp(2x))*diff(gamma(x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(gamma(x)), x) - diff(exp(2x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((exp(2x))*(x*exp(-x)), x) - (diff(exp(2x), x)*(x*exp(-x)) + (exp(2x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(x*exp(-x)), x) - diff(exp(2x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((exp(2x))*(ln(x^2 + 1)), x) - (diff(exp(2x), x)*(ln(x^2 + 1)) + (exp(2x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((exp(2x)) + 3*(ln(x^2 + 1)), x) - diff(exp(2x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((exp(2x))^2, x) - 2*(exp(2x))*diff(exp(2x), x))	0
+-e	simplify(diff(exp(2x), x, 2) - diff(diff(exp(2x), x), x))	0
+-e	simplify(diff(exp(exp(2x)), x) - exp(exp(2x))*diff(exp(2x), x))	0
+-e	simplify(diff(sin(exp(2x)), x) - cos(exp(2x))*diff(exp(2x), x))	0
+-e	simplify(diff((x^3 + 1)*(x^x), x) - (diff(x^3 + 1, x)*(x^x) + (x^3 + 1)*diff(x^x, x)))	0
+-e	simplify(diff((x^3 + 1) + 3*(x^x), x) - diff(x^3 + 1, x) - 3*diff(x^x, x))	0
+-e	simplify(diff((x^3 + 1)^2, x) - 2*(x^3 + 1)*diff(x^3 + 1, x))	0
+-e	simplify(diff(x^3 + 1, x, 2) - diff(diff(x^3 + 1, x), x))	0
+-e	simplify(diff(exp(x^3 + 1), x) - exp(x^3 + 1)*diff(x^3 + 1, x))	0
+-e	simplify(diff(sin(x^3 + 1), x) - cos(x^3 + 1)*diff(x^3 + 1, x))	0
+-e	simplify(diff((ln(x))*(sin(x)), x) - (diff(ln(x), x)*(sin(x)) + (ln(x))*diff(sin(x), x)))	0
+-e	simplify(diff((ln(x)) + 3*(sin(x)), x) - diff(ln(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((ln(x))*(x^3 + 1), x) - (diff(ln(x), x)*(x^3 + 1) + (ln(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((ln(x)) + 3*(x^3 + 1), x) - diff(ln(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((ln(x))*(sqrt(x)), x) - (diff(ln(x), x)*(sqrt(x)) + (ln(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((ln(x)) + 3*(sqrt(x)), x) - diff(ln(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((ln(x))*(x^x), x) - (diff(ln(x), x)*(x^x) + (ln(x))*diff(x^x, x)))	0
+-e	simplify(diff((ln(x)) + 3*(x^x), x) - diff(ln(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((ln(x))*(tan(x)), x) - (diff(ln(x), x)*(tan(x)) + (ln(x))*diff(tan(x), x)))	0
+-e	simplify(diff((ln(x)) + 3*(tan(x)), x) - diff(ln(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((ln(x))*(x*exp(-x)), x) - (diff(ln(x), x)*(x*exp(-x)) + (ln(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((ln(x)) + 3*(x*exp(-x)), x) - diff(ln(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((ln(x))*(ln(x^2 + 1)), x) - (diff(ln(x), x)*(ln(x^2 + 1)) + (ln(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((ln(x)) + 3*(ln(x^2 + 1)), x) - diff(ln(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((ln(x))^2, x) - 2*(ln(x))*diff(ln(x), x))	0
+-e	simplify(diff(ln(x), x, 2) - diff(diff(ln(x), x), x))	0
+-e	simplify(diff(exp(ln(x)), x) - exp(ln(x))*diff(ln(x), x))	0
+-e	simplify(diff(sin(ln(x)), x) - cos(ln(x))*diff(ln(x), x))	0
+-e	simplify(diff((sqrt(x))*(x^3 + 1), x) - (diff(sqrt(x), x)*(x^3 + 1) + (sqrt(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((sqrt(x)) + 3*(x^3 + 1), x) - diff(sqrt(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((sqrt(x))*(x^x), x) - (diff(sqrt(x), x)*(x^x) + (sqrt(x))*diff(x^x, x)))	0
+-e	simplify(diff((sqrt(x)) + 3*(x^x), x) - diff(sqrt(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((sqrt(x))*(tan(x)), x) - (diff(sqrt(x), x)*(tan(x)) + (sqrt(x))*diff(tan(x), x)))	0
+-e	simplify(diff((sqrt(x)) + 3*(tan(x)), x) - diff(sqrt(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((sqrt(x))*(x*exp(-x)), x) - (diff(sqrt(x), x)*(x*exp(-x)) + (sqrt(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((sqrt(x)) + 3*(x*exp(-x)), x) - diff(sqrt(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((sqrt(x))^2, x) - 2*(sqrt(x))*diff(sqrt(x), x))	0
+-e	simplify(diff(sqrt(x), x, 2) - diff(diff(sqrt(x), x), x))	0
+-e	simplify(diff(exp(sqrt(x)), x) - exp(sqrt(x))*diff(sqrt(x), x))	0
+-e	simplify(diff(sin(sqrt(x)), x) - cos(sqrt(x))*diff(sqrt(x), x))	0
+-e	simplify(diff((atan(x))*(sin(x)), x) - (diff(atan(x), x)*(sin(x)) + (atan(x))*diff(sin(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(sin(x)), x) - diff(atan(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((atan(x))*(exp(2x)), x) - (diff(atan(x), x)*(exp(2x)) + (atan(x))*diff(exp(2x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(exp(2x)), x) - diff(atan(x), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((atan(x))*(x^3 + 1), x) - (diff(atan(x), x)*(x^3 + 1) + (atan(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((atan(x)) + 3*(x^3 + 1), x) - diff(atan(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((atan(x))*(ln(x)), x) - (diff(atan(x), x)*(ln(x)) + (atan(x))*diff(ln(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(ln(x)), x) - diff(atan(x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((atan(x))*(sqrt(x)), x) - (diff(atan(x), x)*(sqrt(x)) + (atan(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(sqrt(x)), x) - diff(atan(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((atan(x))*(cosh(x)), x) - (diff(atan(x), x)*(cosh(x)) + (atan(x))*diff(cosh(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(cosh(x)), x) - diff(atan(x), x) - 3*diff(cosh(x), x))	0
+-e	simplify(diff((atan(x))*(x^x), x) - (diff(atan(x), x)*(x^x) + (atan(x))*diff(x^x, x)))	0
+-e	simplify(diff((atan(x)) + 3*(x^x), x) - diff(atan(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((atan(x))*(tan(x)), x) - (diff(atan(x), x)*(tan(x)) + (atan(x))*diff(tan(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(tan(x)), x) - diff(atan(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((atan(x))*(erf(x)), x) - (diff(atan(x), x)*(erf(x)) + (atan(x))*diff(erf(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(erf(x)), x) - diff(atan(x), x) - 3*diff(erf(x), x))	0
+-e	simplify(diff((atan(x))*(gamma(x)), x) - (diff(atan(x), x)*(gamma(x)) + (atan(x))*diff(gamma(x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(gamma(x)), x) - diff(atan(x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((atan(x))*(besselj(0, x)), x) - (diff(atan(x), x)*(besselj(0, x)) + (atan(x))*diff(besselj(0, x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(besselj(0, x)), x) - diff(atan(x), x) - 3*diff(besselj(0, x), x))	0
+-e	simplify(diff((atan(x))*(x*exp(-x)), x) - (diff(atan(x), x)*(x*exp(-x)) + (atan(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((atan(x)) + 3*(x*exp(-x)), x) - diff(atan(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((atan(x))*(ln(x^2 + 1)), x) - (diff(atan(x), x)*(ln(x^2 + 1)) + (atan(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((atan(x)) + 3*(ln(x^2 + 1)), x) - diff(atan(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((atan(x))^2, x) - 2*(atan(x))*diff(atan(x), x))	0
+-e	simplify(diff(atan(x), x, 2) - diff(diff(atan(x), x), x))	0
+-e	simplify(diff(exp(atan(x)), x) - exp(atan(x))*diff(atan(x), x))	0
+-e	simplify(diff(sin(atan(x)), x) - cos(atan(x))*diff(atan(x), x))	0
+-e	simplify(diff((cosh(x))*(sin(x)), x) - (diff(cosh(x), x)*(sin(x)) + (cosh(x))*diff(sin(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(sin(x)), x) - diff(cosh(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((cosh(x))*(exp(2x)), x) - (diff(cosh(x), x)*(exp(2x)) + (cosh(x))*diff(exp(2x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(exp(2x)), x) - diff(cosh(x), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((cosh(x))*(x^3 + 1), x) - (diff(cosh(x), x)*(x^3 + 1) + (cosh(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((cosh(x)) + 3*(x^3 + 1), x) - diff(cosh(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((cosh(x))*(ln(x)), x) - (diff(cosh(x), x)*(ln(x)) + (cosh(x))*diff(ln(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(ln(x)), x) - diff(cosh(x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((cosh(x))*(sqrt(x)), x) - (diff(cosh(x), x)*(sqrt(x)) + (cosh(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(sqrt(x)), x) - diff(cosh(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((cosh(x))*(x^x), x) - (diff(cosh(x), x)*(x^x) + (cosh(x))*diff(x^x, x)))	0
+-e	simplify(diff((cosh(x)) + 3*(x^x), x) - diff(cosh(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((cosh(x))*(tan(x)), x) - (diff(cosh(x), x)*(tan(x)) + (cosh(x))*diff(tan(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(tan(x)), x) - diff(cosh(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((cosh(x))*(erf(x)), x) - (diff(cosh(x), x)*(erf(x)) + (cosh(x))*diff(erf(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(erf(x)), x) - diff(cosh(x), x) - 3*diff(erf(x), x))	0
+-e	simplify(diff((cosh(x))*(gamma(x)), x) - (diff(cosh(x), x)*(gamma(x)) + (cosh(x))*diff(gamma(x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(gamma(x)), x) - diff(cosh(x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((cosh(x))*(x*exp(-x)), x) - (diff(cosh(x), x)*(x*exp(-x)) + (cosh(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(x*exp(-x)), x) - diff(cosh(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((cosh(x))*(ln(x^2 + 1)), x) - (diff(cosh(x), x)*(ln(x^2 + 1)) + (cosh(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((cosh(x)) + 3*(ln(x^2 + 1)), x) - diff(cosh(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((cosh(x))^2, x) - 2*(cosh(x))*diff(cosh(x), x))	0
+-e	simplify(diff(cosh(x), x, 2) - diff(diff(cosh(x), x), x))	0
+-e	simplify(diff(exp(cosh(x)), x) - exp(cosh(x))*diff(cosh(x), x))	0
+-e	simplify(diff(sin(cosh(x)), x) - cos(cosh(x))*diff(cosh(x), x))	0
+-e	simplify(diff((1/(x + 2))*(sin(x)), x) - (diff(1/(x + 2), x)*(sin(x)) + (1/(x + 2))*diff(sin(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(sin(x)), x) - diff(1/(x + 2), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((1/(x + 2))*(exp(2x)), x) - (diff(1/(x + 2), x)*(exp(2x)) + (1/(x + 2))*diff(exp(2x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(exp(2x)), x) - diff(1/(x + 2), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((1/(x + 2))*(x^3 + 1), x) - (diff(1/(x + 2), x)*(x^3 + 1) + (1/(x + 2))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(x^3 + 1), x) - diff(1/(x + 2), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((1/(x + 2))*(ln(x)), x) - (diff(1/(x + 2), x)*(ln(x)) + (1/(x + 2))*diff(ln(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(ln(x)), x) - diff(1/(x + 2), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((1/(x + 2))*(sqrt(x)), x) - (diff(1/(x + 2), x)*(sqrt(x)) + (1/(x + 2))*diff(sqrt(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(sqrt(x)), x) - diff(1/(x + 2), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((1/(x + 2))*(atan(x)), x) - (diff(1/(x + 2), x)*(atan(x)) + (1/(x + 2))*diff(atan(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(atan(x)), x) - diff(1/(x + 2), x) - 3*diff(atan(x), x))	0
+-e	simplify(diff((1/(x + 2))*(cosh(x)), x) - (diff(1/(x + 2), x)*(cosh(x)) + (1/(x + 2))*diff(cosh(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(cosh(x)), x) - diff(1/(x + 2), x) - 3*diff(cosh(x), x))	0
+-e	simplify(diff((1/(x + 2))*(x^x), x) - (diff(1/(x + 2), x)*(x^x) + (1/(x + 2))*diff(x^x, x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(x^x), x) - diff(1/(x + 2), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((1/(x + 2))*(tan(x)), x) - (diff(1/(x + 2), x)*(tan(x)) + (1/(x + 2))*diff(tan(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(tan(x)), x) - diff(1/(x + 2), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((1/(x + 2))*(erf(x)), x) - (diff(1/(x + 2), x)*(erf(x)) + (1/(x + 2))*diff(erf(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(erf(x)), x) - diff(1/(x + 2), x) - 3*diff(erf(x), x))	0
+-e	simplify(diff((1/(x + 2))*(gamma(x)), x) - (diff(1/(x + 2), x)*(gamma(x)) + (1/(x + 2))*diff(gamma(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(gamma(x)), x) - diff(1/(x + 2), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((1/(x + 2))*(besselj(0, x)), x) - (diff(1/(x + 2), x)*(besselj(0, x)) + (1/(x + 2))*diff(besselj(0, x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(besselj(0, x)), x) - diff(1/(x + 2), x) - 3*diff(besselj(0, x), x))	0
+-e	simplify(diff((1/(x + 2))*(asin(x)), x) - (diff(1/(x + 2), x)*(asin(x)) + (1/(x + 2))*diff(asin(x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(asin(x)), x) - diff(1/(x + 2), x) - 3*diff(asin(x), x))	0
+-e	simplify(diff((1/(x + 2))*(x*exp(-x)), x) - (diff(1/(x + 2), x)*(x*exp(-x)) + (1/(x + 2))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(x*exp(-x)), x) - diff(1/(x + 2), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((1/(x + 2))*(ln(x^2 + 1)), x) - (diff(1/(x + 2), x)*(ln(x^2 + 1)) + (1/(x + 2))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((1/(x + 2)) + 3*(ln(x^2 + 1)), x) - diff(1/(x + 2), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((1/(x + 2))^2, x) - 2*(1/(x + 2))*diff(1/(x + 2), x))	0
+-e	simplify(diff(1/(x + 2), x, 2) - diff(diff(1/(x + 2), x), x))	0
+-e	simplify(diff(exp(1/(x + 2)), x) - exp(1/(x + 2))*diff(1/(x + 2), x))	0
+-e	simplify(diff(sin(1/(x + 2)), x) - cos(1/(x + 2))*diff(1/(x + 2), x))	0
+-e	simplify(diff((x^x)^2, x) - 2*(x^x)*diff(x^x, x))	0
+-e	simplify(diff(x^x, x, 2) - diff(diff(x^x, x), x))	0
+-e	simplify(diff(exp(x^x), x) - exp(x^x)*diff(x^x, x))	0
+-e	simplify(diff(sin(x^x), x) - cos(x^x)*diff(x^x, x))	0
+-e	simplify(diff((tan(x))*(x^3 + 1), x) - (diff(tan(x), x)*(x^3 + 1) + (tan(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((tan(x)) + 3*(x^3 + 1), x) - diff(tan(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((tan(x))*(x^x), x) - (diff(tan(x), x)*(x^x) + (tan(x))*diff(x^x, x)))	0
+-e	simplify(diff((tan(x)) + 3*(x^x), x) - diff(tan(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((tan(x))*(x*exp(-x)), x) - (diff(tan(x), x)*(x*exp(-x)) + (tan(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((tan(x)) + 3*(x*exp(-x)), x) - diff(tan(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((tan(x))^2, x) - 2*(tan(x))*diff(tan(x), x))	0
+-e	simplify(diff(tan(x), x, 2) - diff(diff(tan(x), x), x))	0
+-e	simplify(diff(exp(tan(x)), x) - exp(tan(x))*diff(tan(x), x))	0
+-e	simplify(diff(sin(tan(x)), x) - cos(tan(x))*diff(tan(x), x))	0
+-e	simplify(diff((erf(x))*(sin(x)), x) - (diff(erf(x), x)*(sin(x)) + (erf(x))*diff(sin(x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(sin(x)), x) - diff(erf(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((erf(x))*(exp(2x)), x) - (diff(erf(x), x)*(exp(2x)) + (erf(x))*diff(exp(2x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(exp(2x)), x) - diff(erf(x), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((erf(x))*(x^3 + 1), x) - (diff(erf(x), x)*(x^3 + 1) + (erf(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((erf(x)) + 3*(x^3 + 1), x) - diff(erf(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((erf(x))*(ln(x)), x) - (diff(erf(x), x)*(ln(x)) + (erf(x))*diff(ln(x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(ln(x)), x) - diff(erf(x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((erf(x))*(sqrt(x)), x) - (diff(erf(x), x)*(sqrt(x)) + (erf(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(sqrt(x)), x) - diff(erf(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((erf(x))*(x^x), x) - (diff(erf(x), x)*(x^x) + (erf(x))*diff(x^x, x)))	0
+-e	simplify(diff((erf(x)) + 3*(x^x), x) - diff(erf(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((erf(x))*(tan(x)), x) - (diff(erf(x), x)*(tan(x)) + (erf(x))*diff(tan(x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(tan(x)), x) - diff(erf(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((erf(x))*(gamma(x)), x) - (diff(erf(x), x)*(gamma(x)) + (erf(x))*diff(gamma(x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(gamma(x)), x) - diff(erf(x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((erf(x))*(x*exp(-x)), x) - (diff(erf(x), x)*(x*exp(-x)) + (erf(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((erf(x)) + 3*(x*exp(-x)), x) - diff(erf(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((erf(x))*(ln(x^2 + 1)), x) - (diff(erf(x), x)*(ln(x^2 + 1)) + (erf(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((erf(x)) + 3*(ln(x^2 + 1)), x) - diff(erf(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((erf(x))^2, x) - 2*(erf(x))*diff(erf(x), x))	0
+-e	simplify(diff(erf(x), x, 2) - diff(diff(erf(x), x), x))	0
+-e	simplify(diff(exp(erf(x)), x) - exp(erf(x))*diff(erf(x), x))	0
+-e	simplify(diff(sin(erf(x)), x) - cos(erf(x))*diff(erf(x), x))	0
+-e	simplify(diff((gamma(x))*(sin(x)), x) - (diff(gamma(x), x)*(sin(x)) + (gamma(x))*diff(sin(x), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(sin(x)), x) - diff(gamma(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((gamma(x))*(x^3 + 1), x) - (diff(gamma(x), x)*(x^3 + 1) + (gamma(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((gamma(x)) + 3*(x^3 + 1), x) - diff(gamma(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((gamma(x))*(ln(x)), x) - (diff(gamma(x), x)*(ln(x)) + (gamma(x))*diff(ln(x), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(ln(x)), x) - diff(gamma(x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((gamma(x))*(sqrt(x)), x) - (diff(gamma(x), x)*(sqrt(x)) + (gamma(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(sqrt(x)), x) - diff(gamma(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((gamma(x))*(x^x), x) - (diff(gamma(x), x)*(x^x) + (gamma(x))*diff(x^x, x)))	0
+-e	simplify(diff((gamma(x)) + 3*(x^x), x) - diff(gamma(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((gamma(x))*(tan(x)), x) - (diff(gamma(x), x)*(tan(x)) + (gamma(x))*diff(tan(x), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(tan(x)), x) - diff(gamma(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((gamma(x))*(x*exp(-x)), x) - (diff(gamma(x), x)*(x*exp(-x)) + (gamma(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(x*exp(-x)), x) - diff(gamma(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((gamma(x))*(ln(x^2 + 1)), x) - (diff(gamma(x), x)*(ln(x^2 + 1)) + (gamma(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((gamma(x)) + 3*(ln(x^2 + 1)), x) - diff(gamma(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((gamma(x))^2, x) - 2*(gamma(x))*diff(gamma(x), x))	0
+-e	simplify(diff(gamma(x), x, 2) - diff(diff(gamma(x), x), x))	0
+-e	simplify(diff(exp(gamma(x)), x) - exp(gamma(x))*diff(gamma(x), x))	0
+-e	simplify(diff(sin(gamma(x)), x) - cos(gamma(x))*diff(gamma(x), x))	0
+-e	simplify(diff((besselj(0, x))*(sin(x)), x) - (diff(besselj(0, x), x)*(sin(x)) + (besselj(0, x))*diff(sin(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(sin(x)), x) - diff(besselj(0, x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((besselj(0, x))*(exp(2x)), x) - (diff(besselj(0, x), x)*(exp(2x)) + (besselj(0, x))*diff(exp(2x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(exp(2x)), x) - diff(besselj(0, x), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((besselj(0, x))*(x^3 + 1), x) - (diff(besselj(0, x), x)*(x^3 + 1) + (besselj(0, x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(x^3 + 1), x) - diff(besselj(0, x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((besselj(0, x))*(ln(x)), x) - (diff(besselj(0, x), x)*(ln(x)) + (besselj(0, x))*diff(ln(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(ln(x)), x) - diff(besselj(0, x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((besselj(0, x))*(sqrt(x)), x) - (diff(besselj(0, x), x)*(sqrt(x)) + (besselj(0, x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(sqrt(x)), x) - diff(besselj(0, x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((besselj(0, x))*(cosh(x)), x) - (diff(besselj(0, x), x)*(cosh(x)) + (besselj(0, x))*diff(cosh(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(cosh(x)), x) - diff(besselj(0, x), x) - 3*diff(cosh(x), x))	0
+-e	simplify(diff((besselj(0, x))*(x^x), x) - (diff(besselj(0, x), x)*(x^x) + (besselj(0, x))*diff(x^x, x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(x^x), x) - diff(besselj(0, x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((besselj(0, x))*(tan(x)), x) - (diff(besselj(0, x), x)*(tan(x)) + (besselj(0, x))*diff(tan(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(tan(x)), x) - diff(besselj(0, x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((besselj(0, x))*(erf(x)), x) - (diff(besselj(0, x), x)*(erf(x)) + (besselj(0, x))*diff(erf(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(erf(x)), x) - diff(besselj(0, x), x) - 3*diff(erf(x), x))	0
+-e	simplify(diff((besselj(0, x))*(gamma(x)), x) - (diff(besselj(0, x), x)*(gamma(x)) + (besselj(0, x))*diff(gamma(x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(gamma(x)), x) - diff(besselj(0, x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((besselj(0, x))*(x*exp(-x)), x) - (diff(besselj(0, x), x)*(x*exp(-x)) + (besselj(0, x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(x*exp(-x)), x) - diff(besselj(0, x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((besselj(0, x))*(ln(x^2 + 1)), x) - (diff(besselj(0, x), x)*(ln(x^2 + 1)) + (besselj(0, x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((besselj(0, x)) + 3*(ln(x^2 + 1)), x) - diff(besselj(0, x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((besselj(0, x))^2, x) - 2*(besselj(0, x))*diff(besselj(0, x), x))	0
+-e	simplify(diff(besselj(0, x), x, 2) - diff(diff(besselj(0, x), x), x))	0
+-e	simplify(diff(exp(besselj(0, x)), x) - exp(besselj(0, x))*diff(besselj(0, x), x))	0
+-e	simplify(diff(sin(besselj(0, x)), x) - cos(besselj(0, x))*diff(besselj(0, x), x))	0
+-e	simplify(diff((asin(x))*(sin(x)), x) - (diff(asin(x), x)*(sin(x)) + (asin(x))*diff(sin(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(sin(x)), x) - diff(asin(x), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((asin(x))*(exp(2x)), x) - (diff(asin(x), x)*(exp(2x)) + (asin(x))*diff(exp(2x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(exp(2x)), x) - diff(asin(x), x) - 3*diff(exp(2x), x))	0
+-e	simplify(diff((asin(x))*(x^3 + 1), x) - (diff(asin(x), x)*(x^3 + 1) + (asin(x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((asin(x)) + 3*(x^3 + 1), x) - diff(asin(x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((asin(x))*(ln(x)), x) - (diff(asin(x), x)*(ln(x)) + (asin(x))*diff(ln(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(ln(x)), x) - diff(asin(x), x) - 3*diff(ln(x), x))	0
+-e	simplify(diff((asin(x))*(sqrt(x)), x) - (diff(asin(x), x)*(sqrt(x)) + (asin(x))*diff(sqrt(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(sqrt(x)), x) - diff(asin(x), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((asin(x))*(atan(x)), x) - (diff(asin(x), x)*(atan(x)) + (asin(x))*diff(atan(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(atan(x)), x) - diff(asin(x), x) - 3*diff(atan(x), x))	0
+-e	simplify(diff((asin(x))*(cosh(x)), x) - (diff(asin(x), x)*(cosh(x)) + (asin(x))*diff(cosh(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(cosh(x)), x) - diff(asin(x), x) - 3*diff(cosh(x), x))	0
+-e	simplify(diff((asin(x))*(x^x), x) - (diff(asin(x), x)*(x^x) + (asin(x))*diff(x^x, x)))	0
+-e	simplify(diff((asin(x)) + 3*(x^x), x) - diff(asin(x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((asin(x))*(tan(x)), x) - (diff(asin(x), x)*(tan(x)) + (asin(x))*diff(tan(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(tan(x)), x) - diff(asin(x), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((asin(x))*(erf(x)), x) - (diff(asin(x), x)*(erf(x)) + (asin(x))*diff(erf(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(erf(x)), x) - diff(asin(x), x) - 3*diff(erf(x), x))	0
+-e	simplify(diff((asin(x))*(gamma(x)), x) - (diff(asin(x), x)*(gamma(x)) + (asin(x))*diff(gamma(x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(gamma(x)), x) - diff(asin(x), x) - 3*diff(gamma(x), x))	0
+-e	simplify(diff((asin(x))*(besselj(0, x)), x) - (diff(asin(x), x)*(besselj(0, x)) + (asin(x))*diff(besselj(0, x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(besselj(0, x)), x) - diff(asin(x), x) - 3*diff(besselj(0, x), x))	0
+-e	simplify(diff((asin(x))*(x*exp(-x)), x) - (diff(asin(x), x)*(x*exp(-x)) + (asin(x))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((asin(x)) + 3*(x*exp(-x)), x) - diff(asin(x), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((asin(x))*(ln(x^2 + 1)), x) - (diff(asin(x), x)*(ln(x^2 + 1)) + (asin(x))*diff(ln(x^2 + 1), x)))	0
+-e	simplify(diff((asin(x)) + 3*(ln(x^2 + 1)), x) - diff(asin(x), x) - 3*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff((asin(x))^2, x) - 2*(asin(x))*diff(asin(x), x))	0
+-e	simplify(diff(asin(x), x, 2) - diff(diff(asin(x), x), x))	0
+-e	simplify(diff(exp(asin(x)), x) - exp(asin(x))*diff(asin(x), x))	0
+-e	simplify(diff(sin(asin(x)), x) - cos(asin(x))*diff(asin(x), x))	0
+-e	simplify(diff((x*exp(-x))*(x^3 + 1), x) - (diff(x*exp(-x), x)*(x^3 + 1) + (x*exp(-x))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((x*exp(-x)) + 3*(x^3 + 1), x) - diff(x*exp(-x), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((x*exp(-x))*(x^x), x) - (diff(x*exp(-x), x)*(x^x) + (x*exp(-x))*diff(x^x, x)))	0
+-e	simplify(diff((x*exp(-x)) + 3*(x^x), x) - diff(x*exp(-x), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((x*exp(-x))^2, x) - 2*(x*exp(-x))*diff(x*exp(-x), x))	0
+-e	simplify(diff(x*exp(-x), x, 2) - diff(diff(x*exp(-x), x), x))	0
+-e	simplify(diff(exp(x*exp(-x)), x) - exp(x*exp(-x))*diff(x*exp(-x), x))	0
+-e	simplify(diff(sin(x*exp(-x)), x) - cos(x*exp(-x))*diff(x*exp(-x), x))	0
+-e	simplify(diff((ln(x^2 + 1))*(sin(x)), x) - (diff(ln(x^2 + 1), x)*(sin(x)) + (ln(x^2 + 1))*diff(sin(x), x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(sin(x)), x) - diff(ln(x^2 + 1), x) - 3*diff(sin(x), x))	0
+-e	simplify(diff((ln(x^2 + 1))*(x^3 + 1), x) - (diff(ln(x^2 + 1), x)*(x^3 + 1) + (ln(x^2 + 1))*diff(x^3 + 1, x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(x^3 + 1), x) - diff(ln(x^2 + 1), x) - 3*diff(x^3 + 1, x))	0
+-e	simplify(diff((ln(x^2 + 1))*(sqrt(x)), x) - (diff(ln(x^2 + 1), x)*(sqrt(x)) + (ln(x^2 + 1))*diff(sqrt(x), x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(sqrt(x)), x) - diff(ln(x^2 + 1), x) - 3*diff(sqrt(x), x))	0
+-e	simplify(diff((ln(x^2 + 1))*(x^x), x) - (diff(ln(x^2 + 1), x)*(x^x) + (ln(x^2 + 1))*diff(x^x, x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(x^x), x) - diff(ln(x^2 + 1), x) - 3*diff(x^x, x))	0
+-e	simplify(diff((ln(x^2 + 1))*(tan(x)), x) - (diff(ln(x^2 + 1), x)*(tan(x)) + (ln(x^2 + 1))*diff(tan(x), x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(tan(x)), x) - diff(ln(x^2 + 1), x) - 3*diff(tan(x), x))	0
+-e	simplify(diff((ln(x^2 + 1))*(x*exp(-x)), x) - (diff(ln(x^2 + 1), x)*(x*exp(-x)) + (ln(x^2 + 1))*diff(x*exp(-x), x)))	0
+-e	simplify(diff((ln(x^2 + 1)) + 3*(x*exp(-x)), x) - diff(ln(x^2 + 1), x) - 3*diff(x*exp(-x), x))	0
+-e	simplify(diff((ln(x^2 + 1))^2, x) - 2*(ln(x^2 + 1))*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff(ln(x^2 + 1), x, 2) - diff(diff(ln(x^2 + 1), x), x))	0
+-e	simplify(diff(exp(ln(x^2 + 1)), x) - exp(ln(x^2 + 1))*diff(ln(x^2 + 1), x))	0
+-e	simplify(diff(sin(ln(x^2 + 1)), x) - cos(ln(x^2 + 1))*diff(ln(x^2 + 1), x))	0

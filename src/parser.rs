@@ -11,6 +11,7 @@ use std::rc::Rc;
 enum Tok {
     Num(String),
     Exact(Rat),
+    Text(String),
     Ident(String),
     Op(&'static str),
     Sup(String),
@@ -39,6 +40,11 @@ const OPS2: &[(&str, &str)] = &[
     ("!!", "!!"),
     ("↑↑", "^^"),
     ("&&", "&&"),
+    ("~=", "!="),
+    (".*", ".*"),
+    ("./", "./"),
+    (".^", ".^"),
+    (".\\", ".\\"),
 ];
 
 fn op1(ch: char) -> Option<&'static str> {
@@ -79,14 +85,54 @@ fn op1(ch: char) -> Option<&'static str> {
         '‖' => "‖",
         '±' => "±",
         '∓' => "∓",
-        '∧' => "&&",
+        '∧' | '&' => "&&",
         '∨' => "||",
-        '¬' => "¬",
+        '¬' | '~' => "¬",
+        '\\' => "\\",
+        ':' => ":",
+        '@' => "@",
         _ => return None,
     })
 }
 
-fn tokenize(src: &str) -> Result<Vec<(Tok, usize)>, String> {
+/// The first argument of `base_conv(number, from, to)` as it is written, and where its comma
+/// stands: the digits of a base are no expression.
+fn written_argument(chars: &[char], after: usize) -> Option<(String, usize)> {
+    let open = (after..chars.len()).find(|k| !chars[*k].is_whitespace())?;
+    if chars[open] != '(' {
+        return None;
+    }
+    let (mut depth, mut quoted, mut commas) = (0usize, false, Vec::new());
+    let mut closed = false;
+    for (k, c) in chars.iter().enumerate().skip(open + 1) {
+        match c {
+            '"' => quoted = !quoted,
+            _ if quoted => {}
+            '(' | '[' => depth += 1,
+            ')' | ']' if depth == 0 => {
+                closed = true;
+                break;
+            }
+            ')' | ']' => depth -= 1,
+            ',' if depth == 0 => commas.push(k),
+            _ => {}
+        }
+    }
+    if !closed || !matches!(commas.len(), 2 | 3) {
+        return None;
+    }
+    let text: String = chars[open + 1..commas[0]].iter().collect();
+    let text = text.trim();
+    let text = text
+        .strip_prefix('"')
+        .and_then(|t| t.strip_suffix('"'))
+        .unwrap_or(text);
+    Some((text.to_string(), commas[0]))
+}
+
+/// The tokens of a text whose numbers are written in base `radix`.
+fn tokenize(src: &str, radix: u32) -> Result<Vec<(Tok, usize)>, String> {
+    use crate::radix::{LETTERED, digit_of, scan};
     let chars: Vec<char> = src.chars().collect();
     let mut out = Vec::new();
     let mut i = 0;
@@ -98,31 +144,102 @@ fn tokenize(src: &str) -> Result<Vec<(Tok, usize)>, String> {
             i += 1;
             continue;
         }
+        // (a number that names its base, as 64#Hello, is the same in every base)
+        let names_base = ch.is_ascii_digit()
+            && chars[i..]
+                .iter()
+                .find(|c| !c.is_ascii_digit())
+                .is_some_and(|c| *c == '#');
+        if radix != 10 && ch != '"' && !names_base {
+            let found = if radix > LETTERED {
+                match ch {
+                    '#' => scan(&chars, i, radix, false)?,
+                    _ if ch.is_ascii_digit() => {
+                        return Err(format!(
+                            "a number of base {radix} has a # before every digit, as in #001#234"
+                        ));
+                    }
+                    _ => None,
+                }
+            } else {
+                // a word of digits is a number; a word that starts with digits has one in front
+                let word = |c: &char| c.is_ascii_alphanumeric() || *c == '_' || *c == '@';
+                let end = (i..chars.len())
+                    .find(|k| !word(&chars[*k]))
+                    .unwrap_or(chars.len());
+                let digits = chars[i..end]
+                    .iter()
+                    .take_while(|c| digit_of(**c, radix).is_some())
+                    .count();
+                let point = ch == '.'
+                    && chars
+                        .get(i + 1)
+                        .is_some_and(|c| digit_of(*c, radix).is_some());
+                if ch.is_ascii_digit() && digits == 0 {
+                    return Err(format!("{ch} is no digit of base {radix}"));
+                }
+                if point || (digits > 0 && (digits == end - i || ch.is_ascii_digit())) {
+                    scan(&chars, i, radix, false)?
+                } else {
+                    None
+                }
+            };
+            if let Some((value, end)) = found {
+                out.push((Tok::Exact(value), start));
+                i = end;
+                continue;
+            }
+        }
+        if ch == '"' {
+            let end = chars[i + 1..]
+                .iter()
+                .position(|c| *c == '"')
+                .ok_or_else(|| format!("the text from position {} has no closing quote", i + 1))?;
+            out.push((Tok::Text(chars[i + 1..i + 1 + end].iter().collect()), start));
+            i += end + 2;
+            continue;
+        }
         if ch.is_ascii_digit() || (ch == '.' && digit(i + 1)) {
             let radix = match (ch, chars.get(i + 1)) {
                 ('0', Some('x' | 'X')) if chars.get(i + 2).is_some_and(char::is_ascii_hexdigit) => {
                     16
                 }
                 ('0', Some('b' | 'B')) if matches!(chars.get(i + 2), Some('0' | '1')) => 2,
+                ('0', Some('o' | 'O')) if matches!(chars.get(i + 2), Some('0'..='7')) => 8,
                 _ => 10,
             };
-            if radix != 10 {
-                i += 2;
-                let from = i;
-                while chars.get(i).is_some_and(|c| c.is_digit(radix)) {
-                    i += 1;
-                }
-                let text: String = chars[from..i].iter().collect();
-                let n = Int::from_str_radix(&text, radix as i32).map_err(|e| e.to_string())?;
-                out.push((Tok::Exact(Rat::from(n)), start));
+            if radix != 10
+                && let Some((value, end)) = scan(&chars, i + 2, radix, false)?
+            {
+                out.push((Tok::Exact(value), start));
+                i = end;
                 continue;
             }
             while digit(i) {
                 i += 1;
             }
+            // 16#ff.8, 2#0.(01), 1000#001#234: a number written in the base before the sign
+            if chars.get(i) == Some(&'#') {
+                let base: String = chars[start..i].iter().collect();
+                let base = base
+                    .parse::<u32>()
+                    .ok()
+                    .filter(|b| *b >= 2)
+                    .ok_or_else(|| {
+                        format!(
+                            "the base before # is a whole number from 2 to {}, not {base}",
+                            u32::MAX
+                        )
+                    })?;
+                let (value, end) = scan(&chars, i + 1, base, true)?
+                    .ok_or_else(|| format!("a digit of base {base} must follow {base}#"))?;
+                out.push((Tok::Exact(value), start));
+                i = end;
+                continue;
+            }
             if chars.get(i) == Some(&'.')
                 && (digit(i + 1) || i > start)
-                && chars.get(i + 1) != Some(&'.')
+                && !matches!(chars.get(i + 1), Some('.' | '*' | '/' | '^' | '\\'))
             {
                 i += 1;
                 while digit(i) {
@@ -227,6 +344,14 @@ fn tokenize(src: &str) -> Result<Vec<(Tok, usize)>, String> {
                 }
                 i += 1;
             }
+            let converts = names::function(&name).is_some_and(|f| f.name == "base_conv");
+            if converts && let Some((text, comma)) = written_argument(&chars, i) {
+                out.push((Tok::Ident(name), start));
+                out.push((Tok::Op("("), i));
+                out.push((Tok::Text(text), i + 1));
+                i = comma;
+                continue;
+            }
             out.push((Tok::Ident(name), start));
             continue;
         }
@@ -277,6 +402,8 @@ struct Parser<'a> {
     quaternions: bool,
     /// Inside a command with units: the names of units are symbols.
     units: bool,
+    /// Two bars after an operand are `or`, not the bars of an absolute value.
+    or_bars: bool,
 }
 
 type Res = Result<Expr, String>;
@@ -289,7 +416,45 @@ enum Lenient {
     Words,
     /// The name of a function stands for the function: `map(sin, list)`.
     Functions,
+    /// What is chosen for a picture: `gray`, `scale = 2`, `color = silver`.
+    Choices,
 }
+
+/// More commands whose arguments may be the bare name of a function.
+pub const FUNCTION_ARGS: &[&str] = &[
+    "integrate",
+    "fzero",
+    "fminbnd",
+    "fminsearch",
+    "lsqcurvefit",
+    "quad",
+    "integral2",
+    "integral3",
+    "ode45",
+    "fsolve",
+    "feval",
+    "bsxfun",
+    "funm",
+    "splitapply",
+    "fmincon",
+    "jackknife",
+    "bootstrp",
+    "structfun",
+    "bvp4c",
+    "bvpinit",
+    "deval",
+    "dde23",
+    "pdepe",
+    "patternsearch",
+    "particleswarm",
+    "simulannealbnd",
+    "ga",
+    "globalsearch",
+    "fminimax",
+    "fgoalattain",
+    "varfun",
+    "rowfun",
+];
 
 /// Commands that take a function as an argument.
 pub const FUNCTION_FORMS: &[&str] = &[
@@ -355,6 +520,7 @@ impl Parser<'_> {
             Tok::End => "end of input".to_string(),
             Tok::Num(s) => format!("`{s}`"),
             Tok::Exact(r) => format!("`{r}`"),
+            Tok::Text(s) => format!("\"{s}\""),
             Tok::Ident(s) => format!("`{s}`"),
             Tok::Op(o) => format!("`{o}`"),
             Tok::Sup(s) => format!("superscript `{s}`"),
@@ -442,11 +608,23 @@ impl Parser<'_> {
         matches!(self.peek(), Tok::Ident(s) if s == word)
     }
 
+    /// `||` written right after an operand.
+    fn double_bar(&self) -> bool {
+        self.or_bars
+            && self.bars == 0
+            && self.is_op("|")
+            && self.op_at(1, "|")
+            && self.toks[self.pos].1 + 1 == self.toks[self.pos + 1].1
+    }
+
     /// `a or b`, `a xor b`.
     fn disjunction(&mut self) -> Res {
         let mut e = self.conjunction()?;
         loop {
-            let name = if self.word("or") || self.is_op("||") {
+            let name = if self.double_bar() {
+                self.bump();
+                "or"
+            } else if self.word("or") || self.is_op("||") {
                 "or"
             } else if self.word("xor") {
                 "xor"
@@ -486,7 +664,7 @@ impl Parser<'_> {
     }
 
     fn negation(&mut self) -> Res {
-        if self.is_op("¬") || (self.word("not") && !self.ends_argument(1)) {
+        if self.is_op("¬") || self.is_op("!") || (self.word("not") && !self.ends_argument(1)) {
             self.bump();
             return Ok(Expr::call("not", vec![self.negation()?]));
         }
@@ -505,22 +683,35 @@ impl Parser<'_> {
         }
     }
 
-    fn relation(&mut self) -> Res {
+    /// `a:b` and `a:step:b`: the numbers from a to b.
+    fn span(&mut self) -> Res {
         let first = self.sum()?;
+        if !self.eat(":") {
+            return Ok(first);
+        }
+        let mut parts = vec![first, self.sum()?];
+        if self.eat(":") {
+            parts.push(self.sum()?);
+        }
+        Ok(Expr::call("colon", parts))
+    }
+
+    fn relation(&mut self) -> Res {
+        let first = self.span()?;
         if self.eat("->") {
             let to = self.disjunction()?;
             return Ok(Expr::call("rule", vec![first, to]));
         }
         if self.is_op("in") || matches!(self.peek(), Tok::Ident(s) if s == "in") {
             self.bump();
-            let domain = self.sum()?;
+            let domain = self.span()?;
             return Ok(Expr::call("element", vec![first, domain]));
         }
         let mut rels = Vec::new();
         let mut left = first.clone();
         while let Some(op) = self.relop() {
             self.bump();
-            let right = self.sum()?;
+            let right = self.span()?;
             rels.push(Expr::rel(op, left, right.clone()));
             left = right;
         }
@@ -643,8 +834,8 @@ impl Parser<'_> {
             Tok::Ident(s) => !matches!(s.as_str(), "and" | "or" | "xor"),
             Tok::Exact(_) | Tok::Root(_) => true,
             Tok::Op(o) => {
-                matches!(*o, "(" | "[" | "⌊" | "⌈")
-                    || (*o == "|" && self.bars == 0)
+                matches!(*o, "(" | "[" | "⌊" | "⌈" | "@")
+                    || (*o == "|" && self.bars == 0 && !self.double_bar())
                     || (*o == "‖" && self.bars == 0)
             }
             _ => false,
@@ -672,6 +863,21 @@ impl Parser<'_> {
                     raw_mul(std::mem::take(&mut factors))
                 };
                 factors.push(Expr::call("mod", vec![left, m]));
+            } else if let Some(name) = match self.peek() {
+                Tok::Op(".*") => Some("times"),
+                Tok::Op("./") => Some("rdivide"),
+                Tok::Op(".\\") => Some("ldivide"),
+                Tok::Op("\\") => Some("mldivide"),
+                _ => None,
+            } {
+                self.bump();
+                let right = self.unary()?;
+                let left = if factors.len() == 1 {
+                    factors.pop().unwrap()
+                } else {
+                    raw_mul(std::mem::take(&mut factors))
+                };
+                factors.push(Expr::call(name, vec![left, right]));
             } else if self.starts_operand() {
                 factors.push(self.power()?);
             } else if matches!(self.peek(), Tok::Num(_)) {
@@ -717,6 +923,10 @@ impl Parser<'_> {
         if self.eat("^") {
             let exponent = self.unary()?;
             return Ok(raw_pow(base, exponent));
+        }
+        if self.eat(".^") {
+            let exponent = self.unary()?;
+            return Ok(Expr::call("power", vec![base, exponent]));
         }
         Ok(base)
     }
@@ -824,7 +1034,9 @@ impl Parser<'_> {
         let mut args = Vec::new();
         if !self.eat(")") {
             loop {
-                if lenient != Lenient::No
+                if lenient == Lenient::Choices {
+                    args.push(self.choice()?);
+                } else if lenient != Lenient::No
                     && let Tok::Ident(word) = self.peek().clone()
                     && self.ends_argument(1)
                     && (lenient == Lenient::Words
@@ -845,6 +1057,33 @@ impl Parser<'_> {
         }
         self.bars = outer;
         Ok(args)
+    }
+
+    /// An argument of a command that draws: the words and the names of what is chosen for a
+    /// picture are no functions and no constants there.
+    fn choice(&mut self) -> Res {
+        let Tok::Ident(word) = self.peek().clone() else {
+            return self.item();
+        };
+        if self.ends_argument(1) && crate::picture::WORDS.contains(&word.as_str()) {
+            self.bump();
+            return Ok(Expr::sym(&word));
+        }
+        if !matches!(self.peek_at(1), Tok::Op("="))
+            || !crate::picture::NAMED.contains(&word.as_str())
+        {
+            return self.item();
+        }
+        self.bump();
+        self.bump();
+        let value = match self.peek().clone() {
+            Tok::Ident(name) if crate::picture::takes_name(&word) && self.ends_argument(1) => {
+                self.bump();
+                Expr::sym(&name)
+            }
+            _ => self.item()?,
+        };
+        Ok(Expr::rel(crate::expr::Rel::Eq, Expr::sym(&word), value))
     }
 
     fn enclosed(&mut self, close: &str, name: &str) -> Res {
@@ -953,6 +1192,10 @@ impl Parser<'_> {
                 self.bump();
                 Ok(Expr::rational(r))
             }
+            Tok::Text(text) => {
+                self.bump();
+                Ok(Expr::call("string", vec![Expr::sym(&text)]))
+            }
             Tok::Root(n) => {
                 self.bump();
                 let operand = self.postfix()?;
@@ -1028,8 +1271,13 @@ impl Parser<'_> {
                         self.quaternions |= f.name == "qsolve";
                         self.units |= crate::units::takes_units(f.name);
                         let args = self.arguments(match f.name {
-                            "assume" | "forget" | "domain" | "polytope" => Lenient::Words,
-                            name if FUNCTION_FORMS.contains(&name) => Lenient::Functions,
+                            "assume" | "forget" | "domain" | "polytope" | "clear" => Lenient::Words,
+                            name if FUNCTION_FORMS.contains(&name)
+                                || FUNCTION_ARGS.contains(&name) =>
+                            {
+                                Lenient::Functions
+                            }
+                            name if crate::picture::takes_choices(name) => Lenient::Choices,
                             _ => Lenient::No,
                         });
                         (self.quaternions, self.units) = before;
@@ -1058,6 +1306,7 @@ impl Parser<'_> {
                 }
                 if name.chars().count() > 1
                     && !names::is_greek_name(&name)
+                    && !crate::units::is_unit(&name)
                     && names::function(&name).is_some()
                 {
                     return Err(format!("expected `(` after the function name `{name}`"));
@@ -1071,6 +1320,38 @@ impl Parser<'_> {
                 self.bars = outer;
                 self.expect(")")?;
                 Ok(inner)
+            }
+            Tok::Op("@") => {
+                // @(x) expr is x -> expr, @name is the function of that name
+                self.bump();
+                if let Tok::Ident(name) = self.peek().clone() {
+                    self.bump();
+                    return Ok(Expr::sym(&name));
+                }
+                self.expect("(")?;
+                let mut params = Vec::new();
+                loop {
+                    match self.bump() {
+                        Tok::Ident(p) => params.push(Expr::sym(&p)),
+                        _ => {
+                            return Err(
+                                "@(x) expr: the names of the arguments stand in the parentheses"
+                                    .into(),
+                            );
+                        }
+                    }
+                    if self.eat(")") {
+                        break;
+                    }
+                    self.expect(",")?;
+                }
+                let body = self.disjunction()?;
+                let head = if params.len() == 1 {
+                    params.pop().unwrap()
+                } else {
+                    Expr::list(params)
+                };
+                Ok(Expr::call("rule", vec![head, body]))
             }
             Tok::Op("[") => self.list("]"),
             Tok::Op("{") => self.list("}"),
@@ -1156,8 +1437,275 @@ fn build_call(f: &names::Func, mut a: Vec<Expr>) -> Res {
         ("gamma", 2 | 3) => call("uppergamma", a),
         ("beta", 3) => call("betainc", a),
         ("lambertw", 2) => call("lambertw", a),
+        ("select", 3) => call("lfilter", a),
+        ("inv", 3) => crate::mstats::rewrite("finv", a)?,
+        (name, _) if crate::mstats::is_name(name) => crate::mstats::rewrite(name, a)?,
+        ("pdf" | "cdf" | "quantile" | "random", 2..)
+            if crate::mstats::by_title(f.name, &a).is_some() =>
+        {
+            crate::mstats::by_title(f.name, &a).expect("checked")?
+        }
+        (name, _) if matlab_form(name, n) => matlab_call(name, a),
         (name, _) => call(name, a),
     })
+}
+
+/// The functions of MATLAB that are other functions in another dress.
+fn matlab_form(name: &str, n: usize) -> bool {
+    matches!(
+        (name, n),
+        (
+            "expm1"
+                | "log1p"
+                | "sind"
+                | "cosd"
+                | "tand"
+                | "cotd"
+                | "secd"
+                | "cscd"
+                | "asind"
+                | "acosd"
+                | "atand"
+                | "acotd"
+                | "asecd"
+                | "acscd"
+                | "atan2d"
+                | "sinpi"
+                | "cospi"
+                | "deg2rad"
+                | "rad2deg"
+                | "pow2"
+                | "erfcx"
+                | "dawson"
+                | "betaln"
+                | "ssinint"
+                | "whittakerm"
+                | "whittakerw"
+                | "wrightomega"
+                | "rectangularpulse"
+                | "triangularpulse"
+                | "jacobicd"
+                | "jacobisd"
+                | "jacobind"
+                | "jacobidc"
+                | "jacobinc"
+                | "jacobisc"
+                | "jacobins"
+                | "jacobids"
+                | "jacobics"
+                | "jacobiam"
+                | "jacobizeta"
+                | "ellipticck"
+                | "ellipticce"
+                | "ellipticcpi"
+                | "ellipke"
+                | "ellipj"
+                | "gammaincinv"
+                | "betaincinv",
+            _
+        ) | ("expint" | "kroneckerdelta" | "angle" | "airy", 1)
+            | ("digamma" | "besselh", 2)
+    )
+}
+
+fn matlab_call(name: &str, mut a: Vec<Expr>) -> Expr {
+    let n = a.len();
+    let call = |name: &str, args: Vec<Expr>| Expr::call(name, args);
+    let over = |x: Expr, y: Expr| raw_mul(vec![x, raw_pow(y, Expr::minus_one())]);
+    let less = |x: Expr, y: Expr| raw_add(vec![x, raw_neg(y)]);
+    let step = |x: Expr| call("heaviside", vec![x]);
+    let mut next = || a.remove(0);
+    match (name, n) {
+        ("expm1", _) => less(raw_pow(Expr::e(), next()), Expr::one()),
+        ("log1p", _) => call("ln", vec![raw_add(vec![Expr::one(), next()])]),
+        ("sind" | "cosd" | "tand" | "cotd" | "secd" | "cscd", _) => call(
+            &name[..3],
+            vec![over(raw_mul(vec![next(), Expr::pi()]), Expr::int(180))],
+        ),
+        ("asind" | "acosd" | "atand" | "acotd" | "asecd" | "acscd", _) => over(
+            raw_mul(vec![Expr::int(180), call(&name[..4], vec![next()])]),
+            Expr::pi(),
+        ),
+        ("atan2d", _) => over(raw_mul(vec![Expr::int(180), call("atan2", a)]), Expr::pi()),
+        ("sinpi" | "cospi", _) => call(&name[..3], vec![raw_mul(vec![Expr::pi(), next()])]),
+        ("deg2rad", _) => over(raw_mul(vec![next(), Expr::pi()]), Expr::int(180)),
+        ("rad2deg", _) => over(raw_mul(vec![Expr::int(180), next()]), Expr::pi()),
+        ("pow2", 1) => raw_pow(Expr::int(2), next()),
+        ("pow2", _) => {
+            let scale = next();
+            raw_mul(vec![scale, raw_pow(Expr::int(2), next())])
+        }
+        ("erfcx", _) => {
+            let x = next();
+            raw_mul(vec![
+                raw_pow(Expr::e(), raw_pow(x.clone(), Expr::int(2))),
+                call("erfc", vec![x]),
+            ])
+        }
+        ("dawson", _) => {
+            let x = next();
+            raw_mul(vec![
+                Expr::half(),
+                raw_pow(Expr::pi(), Expr::half()),
+                raw_pow(Expr::e(), raw_neg(raw_pow(x.clone(), Expr::int(2)))),
+                call("erfi", vec![x]),
+            ])
+        }
+        ("betaln", _) => call("ln", vec![call("beta", a)]),
+        ("ssinint", _) => less(call("si", vec![next()]), over(Expr::pi(), Expr::int(2))),
+        ("expint", _) => call("expint", vec![Expr::one(), next()]),
+        ("kroneckerdelta", _) => call("kroneckerdelta", vec![next(), Expr::zero()]),
+        ("angle", _) => call("arg", a),
+        ("airy", _) => call("airyai", a),
+        ("digamma", _) => call("polygamma", a),
+        ("besselh", _) => call("hankel1", a),
+        ("whittakerm" | "whittakerw", _) => {
+            let (k, m, z) = (next(), next(), next());
+            let first = raw_add(vec![m.clone(), raw_neg(k), Expr::half()]);
+            let second = raw_add(vec![Expr::one(), raw_mul(vec![Expr::int(2), m.clone()])]);
+            let kummer = if name == "whittakerm" {
+                "hyp1f1"
+            } else {
+                "hyperu"
+            };
+            raw_mul(vec![
+                raw_pow(Expr::e(), raw_mul(vec![Expr::rat(-1, 2), z.clone()])),
+                raw_pow(z.clone(), raw_add(vec![m, Expr::half()])),
+                call(kummer, vec![first, second, z]),
+            ])
+        }
+        ("wrightomega", _) => {
+            let x = next();
+            let branch = call(
+                "ceil",
+                vec![over(
+                    less(call("im", vec![x.clone()]), Expr::pi()),
+                    raw_mul(vec![Expr::int(2), Expr::pi()]),
+                )],
+            );
+            call("lambertw", vec![branch, raw_pow(Expr::e(), x)])
+        }
+        ("rectangularpulse", 3) => {
+            let (lo, hi, x) = (next(), next(), next());
+            less(step(less(x.clone(), lo)), step(less(x, hi)))
+        }
+        ("rectangularpulse", _) => {
+            let x = next();
+            less(
+                step(raw_add(vec![x.clone(), Expr::half()])),
+                step(less(x, Expr::half())),
+            )
+        }
+        ("triangularpulse", _) => {
+            let (lo, mid, hi, x) = match n {
+                4 => (next(), next(), next(), next()),
+                3 => {
+                    let (lo, hi) = (next(), next());
+                    let mid = over(raw_add(vec![lo.clone(), hi.clone()]), Expr::int(2));
+                    (lo, mid, hi, next())
+                }
+                _ => (Expr::minus_one(), Expr::zero(), Expr::one(), next()),
+            };
+            let rise = raw_mul(vec![
+                over(less(x.clone(), lo.clone()), less(mid.clone(), lo.clone())),
+                less(
+                    step(less(x.clone(), lo)),
+                    step(less(x.clone(), mid.clone())),
+                ),
+            ]);
+            let fall = raw_mul(vec![
+                over(less(hi.clone(), x.clone()), less(hi.clone(), mid.clone())),
+                less(step(less(x.clone(), mid)), step(less(x, hi))),
+            ]);
+            raw_add(vec![rise, fall])
+        }
+        ("jacobiam" | "jacobizeta", _) => {
+            let (u, m) = (next(), next());
+            let args = || vec![u.clone(), m.clone()];
+            let quarter = call("elliptick", vec![m.clone()]);
+            let angle = call(
+                "atan2",
+                vec![call("jacobisn", args()), call("jacobicn", args())],
+            );
+            let turns = call(
+                "floor",
+                vec![over(
+                    raw_add(vec![
+                        u.clone(),
+                        raw_mul(vec![Expr::int(2), quarter.clone()]),
+                    ]),
+                    raw_mul(vec![Expr::int(4), quarter.clone()]),
+                )],
+            );
+            if name == "jacobiam" {
+                raw_add(vec![angle, raw_mul(vec![Expr::int(2), Expr::pi(), turns])])
+            } else {
+                let near = less(
+                    u.clone(),
+                    raw_mul(vec![Expr::int(4), quarter.clone(), turns]),
+                );
+                less(
+                    call("elliptice", vec![angle, m.clone()]),
+                    raw_mul(vec![
+                        over(call("elliptice", vec![m.clone()]), quarter),
+                        near,
+                    ]),
+                )
+            }
+        }
+        (
+            "jacobicd" | "jacobisd" | "jacobind" | "jacobidc" | "jacobinc" | "jacobisc"
+            | "jacobins" | "jacobids" | "jacobics",
+            _,
+        ) => {
+            let part = |letter: u8| match letter {
+                b's' => call("jacobisn", a.clone()),
+                b'c' => call("jacobicn", a.clone()),
+                b'd' => call("jacobidn", a.clone()),
+                _ => Expr::one(),
+            };
+            let letters = name.as_bytes();
+            over(part(letters[6]), part(letters[7]))
+        }
+        ("ellipticck" | "ellipticce", _) => {
+            let m = next();
+            call(
+                if name == "ellipticck" {
+                    "elliptick"
+                } else {
+                    "elliptice"
+                },
+                vec![less(Expr::one(), m)],
+            )
+        }
+        ("ellipticcpi", _) => {
+            let (nu, m) = (next(), next());
+            call("ellipticpi", vec![nu, less(Expr::one(), m)])
+        }
+        ("ellipke", _) => {
+            let m = next();
+            Expr::list(vec![
+                call("elliptick", vec![m.clone()]),
+                call("elliptice", vec![m]),
+            ])
+        }
+        ("ellipj", _) => Expr::list(vec![
+            call("jacobisn", a.clone()),
+            call("jacobicn", a.clone()),
+            call("jacobidn", a),
+        ]),
+        ("gammaincinv", _) => {
+            let (p, shape) = (next(), next());
+            call(
+                "quantile",
+                vec![call("gammadist", vec![shape, Expr::one()]), p],
+            )
+        }
+        (_, _) => {
+            let (p, first, second) = (next(), next(), next());
+            call("quantile", vec![call("betadist", vec![first, second]), p])
+        }
+    }
 }
 
 /// The call of a built-in function by any of its names, as the parser builds it.
@@ -1169,23 +1717,45 @@ pub fn call_by_name(name: &str, args: Vec<Expr>) -> Res {
 }
 
 pub fn parse_with(src: &str, user_fn: &dyn Fn(&str) -> bool) -> Result<Parsed, String> {
-    let mut p = Parser {
-        toks: tokenize(src)?,
-        pos: 0,
-        user_fn,
-        max_digits: 0,
-        decimal: false,
-        bars: 0,
-        depth: 0,
-        quaternions: crate::assume::quaternion_mode(),
-        units: false,
+    parse_radix(src, 10, user_fn)
+}
+
+/// The statements of a text whose numbers are written in a base: there a word made of digits
+/// of the base is a number.
+pub fn parse_radix(
+    src: &str,
+    radix: u32,
+    user_fn: &dyn Fn(&str) -> bool,
+) -> Result<Parsed, String> {
+    let toks = tokenize(src, radix)?;
+    let read = |or_bars: bool| {
+        let mut p = Parser {
+            toks: toks.clone(),
+            pos: 0,
+            user_fn,
+            max_digits: 0,
+            decimal: false,
+            bars: 0,
+            depth: 0,
+            quaternions: crate::assume::quaternion_mode(),
+            units: false,
+            or_bars,
+        };
+        let stmts = p.statements()?;
+        Ok(Parsed {
+            stmts,
+            max_digits: p.max_digits,
+            decimal: p.decimal,
+        })
     };
-    let stmts = p.statements()?;
-    Ok(Parsed {
-        stmts,
-        max_digits: p.max_digits,
-        decimal: p.decimal,
-    })
+    // a || b is `or`; where that reading fails the bars are those of absolute values
+    let doubled = toks
+        .windows(2)
+        .any(|w| w[0].0 == Tok::Op("|") && w[1].0 == Tok::Op("|") && w[0].1 + 1 == w[1].1);
+    match read(doubled) {
+        Err(_) if doubled => read(false),
+        other => other,
+    }
 }
 
 pub fn parse(src: &str) -> Result<Parsed, String> {

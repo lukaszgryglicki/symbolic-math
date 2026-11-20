@@ -1,0 +1,700 @@
+-e	im2double(1/2)	1/510
+-e	im2double(2)	2/255
+-e	im2double(i)	i/255
+-e	im2double(inf)	inf
+-e	im2double(-inf)	-inf
+-e	im2double(undefined)	undefined
+-e	im2double(10^20)	20000000000000000000/51
+-e	im2double(10^(-20))	1/25500000000000000000000
+-e	im2double(x)	x/255
+-e	im2double([])	[]
+-e	im2double([1, 2])	[1/255, 2/255]
+-e	im2double("text")	"text"/255
+-e	im2double(true)	true/255
+-e	im2double(-7/3)	-7/765
+-e	im2double(0.5)	0.001960784313725490196078431372549
+-e	im2uint8(0)	0
+-e	im2uint8(1)	255
+-e	im2uint8(-1)	0
+-e	im2uint8(1/2)	128
+-e	im2uint8(2)	255
+-e	im2uint8(i)	error: im2uint8: i is not a real number
+-e	im2uint8(inf)	error: im2uint8: inf is not a real number
+-e	im2uint8(-inf)	error: im2uint8: -inf is not a real number
+-e	im2uint8(undefined)	error: im2uint8: undefined is not a real number
+-e	im2uint8(10^20)	0
+-e	im2uint8(10^(-20))	0
+-e	im2uint8(x)	error: im2uint8: x is not a real number
+-e	im2uint8([])	[]
+-e	im2uint8([1, 2])	[255, 255]
+-e	im2uint8("text")	error: im2uint8: "text" is not a real number
+-e	im2uint8(true)	error: im2uint8: true is not a real number
+-e	im2uint8(-7/3)	0
+-e	im2uint8(0.5)	128
+-e	im2uint16(0)	0
+-e	im2uint16(1)	65535
+-e	im2uint16(-1)	0
+-e	im2uint16(1/2)	32768
+-e	im2uint16(2)	65535
+-e	im2uint16(i)	error: im2uint16: i is not a real number
+-e	im2uint16(inf)	error: im2uint16: inf is not a real number
+-e	im2uint16(-inf)	error: im2uint16: -inf is not a real number
+-e	im2uint16(undefined)	error: im2uint16: undefined is not a real number
+-e	im2uint16(10^20)	0
+-e	im2uint16(10^(-20))	0
+-e	im2uint16(x)	error: im2uint16: x is not a real number
+-e	im2uint16([])	[]
+-e	im2uint16([1, 2])	[65535, 65535]
+-e	im2uint16("text")	error: im2uint16: "text" is not a real number
+-e	im2uint16(true)	error: im2uint16: true is not a real number
+-e	im2uint16(-7/3)	0
+-e	im2uint16(0.5)	32768
+-e	imcomplement(0)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(1)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(-1)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(1/2)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(2)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(i)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(inf)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(-inf)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(undefined)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(10^20)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(10^(-20))	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(x)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement([])	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement([1, 2])	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement("text")	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(true)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(-7/3)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imcomplement(0.5)	error: imcomplement needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(0)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(1)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(-1)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(1/2)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(2)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(i)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(inf)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(-inf)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(undefined)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(10^20)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(10^(-20))	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(x)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist([])	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist([1, 2])	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist("text")	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(true)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(-7/3)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imhist(0.5)	error: imhist needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(0)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(1)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(-1)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(1/2)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(2)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(i)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(inf)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(-inf)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(undefined)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(10^20)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(10^(-20))	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(x)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize([])	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize([1, 2])	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize("text")	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(true)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(-7/3)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imbinarize(0.5)	error: imbinarize needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	datenum(0)	0
+-e	datenum(1)	1
+-e	datenum(-1)	-1
+-e	datenum(1/2)	1/2
+-e	datenum(2)	2
+-e	datenum(i)	error: datenum needs real numbers, i is none
+-e	datenum(inf)	error: datenum needs real numbers, inf is none
+-e	datenum(-inf)	error: datenum needs real numbers, -inf is none
+-e	datenum(undefined)	error: datenum needs real numbers, undefined is none
+-e	datenum(10^20)	100000000000000000000
+-e	datenum(10^(-20))	1/100000000000000000000
+-e	datenum(x)	error: datenum needs real numbers, x is none
+-e	datenum([])	[]
+-e	datenum([1, 2])	[1, 2]
+-e	datenum("text")	error: datenum: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datenum("20.11.2026", "dd.mm.yyyy")
+-e	datenum(true)	error: datenum needs real numbers, true is none
+-e	datenum(-7/3)	-7/3
+-e	datenum(0.5)	0.5
+-e	datevec(0)	[-1, 12, 31, 0, 0, 0]
+-e	datevec(1)	[0, 1, 1, 0, 0, 0]
+-e	datevec(-1)	[-1, 12, 30, 0, 0, 0]
+-e	datevec(1/2)	[-1, 12, 31, 12, 0, 0]
+-e	datevec(2)	[0, 1, 2, 0, 0, 0]
+-e	datevec(i)	error: datevec needs real numbers, i is none
+-e	datevec(inf)	error: datevec needs real numbers, inf is none
+-e	datevec(-inf)	error: datevec needs real numbers, -inf is none
+-e	datevec(undefined)	error: datevec needs real numbers, undefined is none
+-e	datevec(10^20)	error: datevec: the calendar does not reach that far
+-e	datevec(10^(-20))	[-1, 12, 31, 0, 0, 27/31250000000000000]
+-e	datevec(x)	error: datevec needs real numbers, x is none
+-e	datevec([])	[]
+-e	datevec([1, 2])	[[0, 1, 1, 0, 0, 0], [0, 1, 2, 0, 0, 0]]
+-e	datevec("text")	error: datevec: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datevec("20.11.2026", "dd.mm.yyyy")
+-e	datevec(true)	error: datevec needs real numbers, true is none
+-e	datevec(-7/3)	[-1, 12, 28, 16, 0, 0]
+-e	datevec(0.5)	[-1, 12, 31, 12, 0, 0]
+-e	datestr(0)	"31-Dec--001"
+-e	datestr(1)	"01-Jan-0000"
+-e	datestr(-1)	"30-Dec--001"
+-e	datestr(1/2)	"31-Dec--001 12:00:00"
+-e	datestr(2)	"02-Jan-0000"
+-e	datestr(i)	error: datestr needs real numbers, i is none
+-e	datestr(inf)	error: datestr needs real numbers, inf is none
+-e	datestr(-inf)	error: datestr needs real numbers, -inf is none
+-e	datestr(undefined)	error: datestr needs real numbers, undefined is none
+-e	datestr(10^20)	error: datestr: the calendar does not reach that far
+-e	datestr(10^(-20))	"31-Dec--001 00:00:00"
+-e	datestr(x)	error: datestr needs real numbers, x is none
+-e	datestr([])	[]
+-e	datestr([1, 2])	["01-Jan-0000", "02-Jan-0000"]
+-e	datestr("text")	error: datestr: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datestr("20.11.2026", "dd.mm.yyyy")
+-e	datestr(true)	error: datestr needs real numbers, true is none
+-e	datestr(-7/3)	"28-Dec--001 16:00:00"
+-e	datestr(0.5)	"31-Dec--001 12:00:00"
+-e	weekday(0)	6
+-e	weekday(1)	7
+-e	weekday(-1)	5
+-e	weekday(1/2)	6
+-e	weekday(2)	1
+-e	weekday(i)	error: weekday needs real numbers, i is none
+-e	weekday(inf)	error: weekday needs real numbers, inf is none
+-e	weekday(-inf)	error: weekday needs real numbers, -inf is none
+-e	weekday(undefined)	error: weekday needs real numbers, undefined is none
+-e	weekday(10^20)	error: weekday: the calendar does not reach that far
+-e	weekday(10^(-20))	6
+-e	weekday(x)	error: weekday needs real numbers, x is none
+-e	weekday([])	[]
+-e	weekday([1, 2])	[7, 1]
+-e	weekday("text")	error: weekday: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in weekday("20.11.2026", "dd.mm.yyyy")
+-e	weekday(true)	error: weekday needs real numbers, true is none
+-e	weekday(-7/3)	3
+-e	weekday(0.5)	6
+-e	calendar(0)	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(1)	[[0, 0, 0, 0, 0, 0, 1], [2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15], [16, 17, 18, 19, 20, 21, 22], [23, 24, 25, 26, 27, 28, 29], [30, 31, 0, 0, 0, 0, 0]]
+-e	calendar(-1)	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(1/2)	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(2)	[[0, 0, 0, 0, 0, 0, 1], [2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15], [16, 17, 18, 19, 20, 21, 22], [23, 24, 25, 26, 27, 28, 29], [30, 31, 0, 0, 0, 0, 0]]
+-e	calendar(i)	error: calendar needs real numbers, i is none
+-e	calendar(inf)	error: calendar needs real numbers, inf is none
+-e	calendar(-inf)	error: calendar needs real numbers, -inf is none
+-e	calendar(undefined)	error: calendar needs real numbers, undefined is none
+-e	calendar(10^20)	error: calendar: the calendar does not reach that far
+-e	calendar(10^(-20))	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(x)	error: calendar needs real numbers, x is none
+-e	calendar([])	error: calendar needs a day number, a date in quotes or [year, month, day] with or without [hour, minute, second]
+-e	calendar([1, 2])	error: calendar needs a day number, a date in quotes or [year, month, day] with or without [hour, minute, second]
+-e	calendar("text")	error: calendar: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in calendar("20.11.2026", "dd.mm.yyyy")
+-e	calendar(true)	error: calendar needs real numbers, true is none
+-e	calendar(-7/3)	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(0.5)	[[0, 0, 0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25], [26, 27, 28, 29, 30, 31, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	juliandate(0)	3442117/2
+-e	juliandate(1)	3442119/2
+-e	juliandate(-1)	3442115/2
+-e	juliandate(1/2)	1721059
+-e	juliandate(2)	3442121/2
+-e	juliandate(i)	error: juliandate needs real numbers, i is none
+-e	juliandate(inf)	error: juliandate needs real numbers, inf is none
+-e	juliandate(-inf)	error: juliandate needs real numbers, -inf is none
+-e	juliandate(undefined)	error: juliandate needs real numbers, undefined is none
+-e	juliandate(10^20)	200000000000003442117/2
+-e	juliandate(10^(-20))	172105850000000000000000001/100000000000000000000
+-e	juliandate(x)	error: juliandate needs real numbers, x is none
+-e	juliandate([])	[]
+-e	juliandate([1, 2])	[3442119/2, 3442121/2]
+-e	juliandate("text")	error: juliandate: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in juliandate("20.11.2026", "dd.mm.yyyy")
+-e	juliandate(true)	error: juliandate needs real numbers, true is none
+-e	juliandate(-7/3)	10326337/6
+-e	juliandate(0.5)	1721059
+-e	mjuliandate(0)	-678942
+-e	mjuliandate(1)	-678941
+-e	mjuliandate(-1)	-678943
+-e	mjuliandate(1/2)	-1357883/2
+-e	mjuliandate(2)	-678940
+-e	mjuliandate(i)	error: mjuliandate needs real numbers, i is none
+-e	mjuliandate(inf)	error: mjuliandate needs real numbers, inf is none
+-e	mjuliandate(-inf)	error: mjuliandate needs real numbers, -inf is none
+-e	mjuliandate(undefined)	error: mjuliandate needs real numbers, undefined is none
+-e	mjuliandate(10^20)	99999999999999321058
+-e	mjuliandate(10^(-20))	-67894199999999999999999999/100000000000000000000
+-e	mjuliandate(x)	error: mjuliandate needs real numbers, x is none
+-e	mjuliandate([])	[]
+-e	mjuliandate([1, 2])	[-678941, -678940]
+-e	mjuliandate("text")	error: mjuliandate: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in mjuliandate("20.11.2026", "dd.mm.yyyy")
+-e	mjuliandate(true)	error: mjuliandate needs real numbers, true is none
+-e	mjuliandate(-7/3)	-2036833/3
+-e	mjuliandate(0.5)	-678941.5
+-e	posixtime(0)	-62167305600
+-e	posixtime(1)	-62167219200
+-e	posixtime(-1)	-62167392000
+-e	posixtime(1/2)	-62167262400
+-e	posixtime(2)	-62167132800
+-e	posixtime(i)	error: posixtime needs real numbers, i is none
+-e	posixtime(inf)	error: posixtime needs real numbers, inf is none
+-e	posixtime(-inf)	error: posixtime needs real numbers, -inf is none
+-e	posixtime(undefined)	error: posixtime needs real numbers, undefined is none
+-e	posixtime(10^20)	8639999999999937832694400
+-e	posixtime(10^(-20))	-1942728299999999999999999973/31250000000000000
+-e	posixtime(x)	error: posixtime needs real numbers, x is none
+-e	posixtime([])	[]
+-e	posixtime([1, 2])	[-62167219200, -62167132800]
+-e	posixtime("text")	error: posixtime: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in posixtime("20.11.2026", "dd.mm.yyyy")
+-e	posixtime(true)	error: posixtime needs real numbers, true is none
+-e	posixtime(-7/3)	-62167507200
+-e	posixtime(0.5)	-62167262400
+-e	dayofyear(0)	365
+-e	dayofyear(1)	1
+-e	dayofyear(-1)	364
+-e	dayofyear(1/2)	365
+-e	dayofyear(2)	2
+-e	dayofyear(i)	error: dayofyear needs real numbers, i is none
+-e	dayofyear(inf)	error: dayofyear needs real numbers, inf is none
+-e	dayofyear(-inf)	error: dayofyear needs real numbers, -inf is none
+-e	dayofyear(undefined)	error: dayofyear needs real numbers, undefined is none
+-e	dayofyear(10^20)	error: dayofyear: the calendar does not reach that far
+-e	dayofyear(10^(-20))	365
+-e	dayofyear(x)	error: dayofyear needs real numbers, x is none
+-e	dayofyear([])	[]
+-e	dayofyear([1, 2])	[1, 2]
+-e	dayofyear("text")	error: dayofyear: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in dayofyear("20.11.2026", "dd.mm.yyyy")
+-e	dayofyear(true)	error: dayofyear needs real numbers, true is none
+-e	dayofyear(-7/3)	362
+-e	dayofyear(0.5)	365
+-e	isweekend(0)	false
+-e	isweekend(1)	true
+-e	isweekend(-1)	false
+-e	isweekend(1/2)	false
+-e	isweekend(2)	true
+-e	isweekend(i)	error: isweekend needs real numbers, i is none
+-e	isweekend(inf)	error: isweekend needs real numbers, inf is none
+-e	isweekend(-inf)	error: isweekend needs real numbers, -inf is none
+-e	isweekend(undefined)	error: isweekend needs real numbers, undefined is none
+-e	isweekend(10^20)	error: isweekend: the calendar does not reach that far
+-e	isweekend(10^(-20))	false
+-e	isweekend(x)	error: isweekend needs real numbers, x is none
+-e	isweekend([])	[]
+-e	isweekend([1, 2])	[true, true]
+-e	isweekend("text")	error: isweekend: "text" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in isweekend("20.11.2026", "dd.mm.yyyy")
+-e	isweekend(true)	error: isweekend needs real numbers, true is none
+-e	isweekend(-7/3)	false
+-e	isweekend(0.5)	false
+-e	leapyear(0)	true
+-e	leapyear(1)	false
+-e	leapyear(-1)	false
+-e	leapyear(1/2)	error: leapyear needs a whole year, 1/2 is none
+-e	leapyear(2)	false
+-e	leapyear(i)	error: leapyear needs real numbers, i is none
+-e	leapyear(inf)	error: leapyear needs real numbers, inf is none
+-e	leapyear(-inf)	error: leapyear needs real numbers, -inf is none
+-e	leapyear(undefined)	error: leapyear needs real numbers, undefined is none
+-e	leapyear(10^20)	error: leapyear: the calendar does not reach that far
+-e	leapyear(10^(-20))	error: leapyear needs a whole year, 1/100000000000000000000 is none
+-e	leapyear(x)	error: leapyear needs real numbers, x is none
+-e	leapyear([])	[]
+-e	leapyear([1, 2])	[false, false]
+-e	leapyear("text")	error: leapyear needs real numbers, "text" is none
+-e	leapyear(true)	error: leapyear needs real numbers, true is none
+-e	leapyear(-7/3)	error: leapyear needs a whole year, -7/3 is none
+-e	leapyear(0.5)	error: leapyear needs a whole year, 1/2 is none
+-e	yeardays(0)	366
+-e	yeardays(1)	365
+-e	yeardays(-1)	365
+-e	yeardays(1/2)	error: yeardays needs a whole year, 1/2 is none
+-e	yeardays(2)	365
+-e	yeardays(i)	error: yeardays needs real numbers, i is none
+-e	yeardays(inf)	error: yeardays needs real numbers, inf is none
+-e	yeardays(-inf)	error: yeardays needs real numbers, -inf is none
+-e	yeardays(undefined)	error: yeardays needs real numbers, undefined is none
+-e	yeardays(10^20)	error: yeardays: the calendar does not reach that far
+-e	yeardays(10^(-20))	error: yeardays needs a whole year, 1/100000000000000000000 is none
+-e	yeardays(x)	error: yeardays needs real numbers, x is none
+-e	yeardays([])	[]
+-e	yeardays([1, 2])	[365, 365]
+-e	yeardays("text")	error: yeardays needs real numbers, "text" is none
+-e	yeardays(true)	error: yeardays needs real numbers, true is none
+-e	yeardays(-7/3)	error: yeardays needs a whole year, -7/3 is none
+-e	yeardays(0.5)	error: yeardays needs a whole year, 1/2 is none
+-e	strjust(0)	error: strjust needs a text in quotes, 0 is none
+-e	strjust(1)	error: strjust needs a text in quotes, 1 is none
+-e	strjust(-1)	error: strjust needs a text in quotes, -1 is none
+-e	strjust(1/2)	error: strjust needs a text in quotes, 1/2 is none
+-e	strjust(2)	error: strjust needs a text in quotes, 2 is none
+-e	strjust(i)	error: strjust needs a text in quotes, i is none
+-e	strjust(inf)	error: strjust needs a text in quotes, inf is none
+-e	strjust(-inf)	error: strjust needs a text in quotes, -inf is none
+-e	strjust(undefined)	error: strjust needs a text in quotes, undefined is none
+-e	strjust(10^20)	error: strjust needs a text in quotes, 100000000000000000000 is none
+-e	strjust(10^(-20))	error: strjust needs a text in quotes, 1/100000000000000000000 is none
+-e	strjust(x)	error: strjust needs a text in quotes, x is none
+-e	strjust([])	[]
+-e	strjust([1, 2])	error: strjust needs a text in quotes, 1 is none
+-e	strjust("text")	"text"
+-e	strjust(true)	error: strjust needs a text in quotes, true is none
+-e	strjust(-7/3)	error: strjust needs a text in quotes, -7/3 is none
+-e	strjust(0.5)	error: strjust needs a text in quotes, 1/2 is none
+-e	signrank(0)	error: signrank needs a list of numbers
+-e	signrank(1)	error: signrank needs a list of numbers
+-e	signrank(-1)	error: signrank needs a list of numbers
+-e	signrank(1/2)	error: signrank needs a list of numbers
+-e	signrank(2)	error: signrank needs a list of numbers
+-e	signrank(i)	error: signrank needs a list of numbers
+-e	signrank(inf)	error: signrank needs a list of numbers
+-e	signrank(-inf)	error: signrank needs a list of numbers
+-e	signrank(undefined)	error: signrank needs a list of numbers
+-e	signrank(10^20)	error: signrank needs a list of numbers
+-e	signrank(10^(-20))	error: signrank needs a list of numbers
+-e	signrank(x)	error: signrank needs a list of numbers
+-e	signrank([])	error: signrank needs a list of numbers
+-e	signrank([1, 2])	[1/2, 0]
+-e	signrank("text")	error: signrank needs a list of numbers
+-e	signrank(true)	error: signrank needs a list of numbers
+-e	signrank(-7/3)	error: signrank needs a list of numbers
+-e	signrank(0.5)	error: signrank needs a list of numbers
+-e	signtest(0)	error: signtest needs a list of numbers
+-e	signtest(1)	error: signtest needs a list of numbers
+-e	signtest(-1)	error: signtest needs a list of numbers
+-e	signtest(1/2)	error: signtest needs a list of numbers
+-e	signtest(2)	error: signtest needs a list of numbers
+-e	signtest(i)	error: signtest needs a list of numbers
+-e	signtest(inf)	error: signtest needs a list of numbers
+-e	signtest(-inf)	error: signtest needs a list of numbers
+-e	signtest(undefined)	error: signtest needs a list of numbers
+-e	signtest(10^20)	error: signtest needs a list of numbers
+-e	signtest(10^(-20))	error: signtest needs a list of numbers
+-e	signtest(x)	error: signtest needs a list of numbers
+-e	signtest([])	error: signtest needs a list of numbers
+-e	signtest([1, 2])	[1/2, 0]
+-e	signtest("text")	error: signtest needs a list of numbers
+-e	signtest(true)	error: signtest needs a list of numbers
+-e	signtest(-7/3)	error: signtest needs a list of numbers
+-e	signtest(0.5)	error: signtest needs a list of numbers
+-e	kruskalwallis(0)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(1)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(-1)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(1/2)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(2)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(i)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(inf)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(-inf)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(undefined)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(10^20)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(10^(-20))	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(x)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis([])	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis([1, 2])	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis("text")	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(true)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(-7/3)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	kruskalwallis(0.5)	error: kruskalwallis([[values of a group], [values of another], ...])
+-e	friedman(0)	error: friedman needs a matrix of numbers
+-e	friedman(1)	error: friedman needs a matrix of numbers
+-e	friedman(-1)	error: friedman needs a matrix of numbers
+-e	friedman(1/2)	error: friedman needs a matrix of numbers
+-e	friedman(2)	error: friedman needs a matrix of numbers
+-e	friedman(i)	error: friedman needs a matrix of numbers
+-e	friedman(inf)	error: friedman needs a matrix of numbers
+-e	friedman(-inf)	error: friedman needs a matrix of numbers
+-e	friedman(undefined)	error: friedman needs a matrix of numbers
+-e	friedman(10^20)	error: friedman needs a matrix of numbers
+-e	friedman(10^(-20))	error: friedman needs a matrix of numbers
+-e	friedman(x)	error: friedman needs a matrix of numbers
+-e	friedman([])	error: friedman needs a matrix of numbers
+-e	friedman([1, 2])	error: friedman needs a matrix of numbers
+-e	friedman("text")	error: friedman needs a matrix of numbers
+-e	friedman(true)	error: friedman needs a matrix of numbers
+-e	friedman(-7/3)	error: friedman needs a matrix of numbers
+-e	friedman(0.5)	error: friedman needs a matrix of numbers
+-e	vartestn(0)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(1)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(-1)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(1/2)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(2)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(i)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(inf)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(-inf)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(undefined)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(10^20)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(10^(-20))	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(x)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn([])	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn([1, 2])	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn("text")	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(true)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(-7/3)	error: vartestn([[values of a group], [values of another], ...])
+-e	vartestn(0.5)	error: vartestn([[values of a group], [values of another], ...])
+-e	fishertest(0)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(1)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(-1)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(1/2)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(2)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(i)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(inf)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(-inf)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(undefined)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(10^20)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(10^(-20))	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(x)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest([])	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest([1, 2])	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest("text")	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(true)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(-7/3)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	fishertest(0.5)	error: fishertest([[a, b], [c, d]]) needs four counts
+-e	kstest(0)	error: kstest needs a list of numbers
+-e	kstest(1)	error: kstest needs a list of numbers
+-e	kstest(-1)	error: kstest needs a list of numbers
+-e	kstest(1/2)	error: kstest needs a list of numbers
+-e	kstest(2)	error: kstest needs a list of numbers
+-e	kstest(i)	error: kstest needs a list of numbers
+-e	kstest(inf)	error: kstest needs a list of numbers
+-e	kstest(-inf)	error: kstest needs a list of numbers
+-e	kstest(undefined)	error: kstest needs a list of numbers
+-e	kstest(10^20)	error: kstest needs a list of numbers
+-e	kstest(10^(-20))	error: kstest needs a list of numbers
+-e	kstest(x)	error: kstest needs a list of numbers
+-e	kstest([])	error: kstest needs a list of numbers
+-e	kstest([1, 2])	[0, 0.050342979200110236338600230896245, 0.84134474606854294858523254563204]
+-e	kstest("text")	error: kstest needs a list of numbers
+-e	kstest(true)	error: kstest needs a list of numbers
+-e	kstest(-7/3)	error: kstest needs a list of numbers
+-e	kstest(0.5)	error: kstest needs a list of numbers
+-e	jbtest(0)	error: jbtest needs a list of numbers
+-e	jbtest(1)	error: jbtest needs a list of numbers
+-e	jbtest(-1)	error: jbtest needs a list of numbers
+-e	jbtest(1/2)	error: jbtest needs a list of numbers
+-e	jbtest(2)	error: jbtest needs a list of numbers
+-e	jbtest(i)	error: jbtest needs a list of numbers
+-e	jbtest(inf)	error: jbtest needs a list of numbers
+-e	jbtest(-inf)	error: jbtest needs a list of numbers
+-e	jbtest(undefined)	error: jbtest needs a list of numbers
+-e	jbtest(10^20)	error: jbtest needs a list of numbers
+-e	jbtest(10^(-20))	error: jbtest needs a list of numbers
+-e	jbtest(x)	error: jbtest needs a list of numbers
+-e	jbtest([])	error: jbtest needs a list of numbers
+-e	jbtest([1, 2])	[0, 0.84648172489061407404491739979875, 0.33333333333333333333333333333333]
+-e	jbtest("text")	error: jbtest needs a list of numbers
+-e	jbtest(true)	error: jbtest needs a list of numbers
+-e	jbtest(-7/3)	error: jbtest needs a list of numbers
+-e	jbtest(0.5)	error: jbtest needs a list of numbers
+-e	anova2(0)	error: anova2 needs a matrix of numbers
+-e	anova2(1)	error: anova2 needs a matrix of numbers
+-e	anova2(-1)	error: anova2 needs a matrix of numbers
+-e	anova2(1/2)	error: anova2 needs a matrix of numbers
+-e	anova2(2)	error: anova2 needs a matrix of numbers
+-e	anova2(i)	error: anova2 needs a matrix of numbers
+-e	anova2(inf)	error: anova2 needs a matrix of numbers
+-e	anova2(-inf)	error: anova2 needs a matrix of numbers
+-e	anova2(undefined)	error: anova2 needs a matrix of numbers
+-e	anova2(10^20)	error: anova2 needs a matrix of numbers
+-e	anova2(10^(-20))	error: anova2 needs a matrix of numbers
+-e	anova2(x)	error: anova2 needs a matrix of numbers
+-e	anova2([])	error: anova2 needs a matrix of numbers
+-e	anova2([1, 2])	error: anova2 needs a matrix of numbers
+-e	anova2("text")	error: anova2 needs a matrix of numbers
+-e	anova2(true)	error: anova2 needs a matrix of numbers
+-e	anova2(-7/3)	error: anova2 needs a matrix of numbers
+-e	anova2(0.5)	error: anova2 needs a matrix of numbers
+-e	mvnpdf(0)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(1)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(-1)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(1/2)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(2)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(i)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(inf)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(-inf)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(undefined)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(10^20)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(10^(-20))	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(x)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf([])	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf([1, 2])	1/(2e^(5/2)*pi)
+-e	mvnpdf("text")	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(true)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(-7/3)	error: mvnpdf needs a matrix: every row is a point
+-e	mvnpdf(0.5)	error: mvnpdf needs a matrix: every row is a point
+-e	ksdensity(0)	error: ksdensity needs a list of numbers
+-e	ksdensity(1)	error: ksdensity needs a list of numbers
+-e	ksdensity(-1)	error: ksdensity needs a list of numbers
+-e	ksdensity(1/2)	error: ksdensity needs a list of numbers
+-e	ksdensity(2)	error: ksdensity needs a list of numbers
+-e	ksdensity(i)	error: ksdensity needs a list of numbers
+-e	ksdensity(inf)	error: ksdensity needs a list of numbers
+-e	ksdensity(-inf)	error: ksdensity needs a list of numbers
+-e	ksdensity(undefined)	error: ksdensity needs a list of numbers
+-e	ksdensity(10^20)	error: ksdensity needs a list of numbers
+-e	ksdensity(10^(-20))	error: ksdensity needs a list of numbers
+-e	ksdensity(x)	error: ksdensity needs a list of numbers
+-e	ksdensity([])	error: ksdensity needs a list of numbers
+-e	ksdensity([1, 2])	[[0.0032555950002993689799944352395509, 0.0040721781220370667980609022941861, 0.005065007768881943214088428388465, 0.0062645992451718366394135542609221, 0.0077049442390859268611152974789295, 0.009423501371301311538254946056314, 0.011461082937213897825856557079392, 0.013861619940627814112359493703197, 0.016671789034811440620489888737127, 0.019940487654623119560130901705484, 0.02371814752946527840560142810578, 0.028055881938203985877412546055902, 0.033004468454665272539455507501649, 0.038613176398199585785356554989824, 0.044928456514140855034913776525607, 0.051992519231685196033817964277206, 0.059841836756911704386299222244205, 0.068505612752290510221136339147632, 0.078004270869945227881203976324707, 0.088348019356432155354446950474831, 0.099535552755200957765734110020034, 0.11155295287655260031127058367794, 0.12437284926068310092047228823854, 0.13795389404842125040328011794804, 0.15224059740199008269912475606355, 0.16716355750576123716051949317986, 0.18264010408046187076317956916283, 0.19857535685751319797600615635895, 0.21486368140013687908145163718362, 0.2313905050308290982967327289057, 0.24803443657390436662088113048911, 0.26466961635834854619443312045357, 0.28116820864855973860132792658983, 0.2974029384760569668506227419366, 0.3132495696417832302189987996094, 0.32858922108302686574769885803787, 0.34331042514957426912585080544301, 0.35731084352394500056013129452476, 0.37049857405905718035205727139947, 0.3827930038073038367285394174178, 0.39412518873839951679105601448164, 0.40443776756828561368079705669475, 0.41368444404227525806254043788543, 0.42182909715932891121055538064165, 0.42884460047785778807540696945368, 0.43471144828243756940975270183627, 0.43941629679866563688297271457002, 0.44295053201050502668149962881187, 0.44530897162904590798011021088786, 0.44648879756540419559679171594611, 0.44648879756540419559679171594611, 0.44530897162904590798011021088786, 0.44295053201050502668149962881187, 0.43941629679866563688297271457002, 0.43471144828243756940975270183627, 0.42884460047785778807540696945368, 0.42182909715932891121055538064165, 0.41368444404227525806254043788543, 0.40443776756828561368079705669475, 0.39412518873839951679105601448164, 0.3827930038073038367285394174178, 0.37049857405905718035205727139947, 0.35731084352394500056013129452476, 0.34331042514957426912585080544301, 0.32858922108302686574769885803787, 0.3132495696417832302189987996094, 0.2974029384760569668506227419366, 0.28116820864855973860132792658983, 0.26466961635834854619443312045357, 0.24803443657390436662088113048911, 0.2313905050308290982967327289057, 0.21486368140013687908145163718362, 0.19857535685751319797600615635895, 0.18264010408046187076317956916283, 0.16716355750576123716051949317986, 0.15224059740199008269912475606355, 0.13795389404842125040328011794804, 0.12437284926068310092047228823854, 0.11155295287655260031127058367794, 0.099535552755200957765734110020034, 0.088348019356432155354446950474831, 0.078004270869945227881203976324707, 0.068505612752290510221136339147632, 0.059841836756911704386299222244205, 0.051992519231685196033817964277206, 0.044928456514140855034913776525607, 0.038613176398199585785356554989824, 0.033004468454665272539455507501649, 0.028055881938203985877412546055902, 0.02371814752946527840560142810578, 0.019940487654623119560130901705484, 0.016671789034811440620489888737127, 0.013861619940627814112359493703197, 0.011461082937213897825856557079392, 0.009423501371301311538254946056314, 0.0077049442390859268611152974789295, 0.0062645992451718366394135542609221, 0.005065007768881943214088428388465, 0.0040721781220370667980609022941861, 0.0032555950002993689799944352395509], [-1.0506476904708549624650691215527, -0.99911945429972657938496671505668, -0.94759121812859819630486430856066, -0.89606298195746981322476190206465, -0.84453474578634143014465949556864, -0.79300650961521304706455708907262, -0.74147827344408466398445468257661, -0.68995003727295628090435227608059, -0.63842180110182789782424986958458, -0.58689356493069951474414746308857, -0.53536532875957113166404505659255, -0.48383709258844274858394265009654, -0.43230885641731436550384024360052, -0.38078062024618598242373783710451, -0.3292523840750575993436354306085, -0.27772414790392921626353302411248, -0.22619591173280083318343061761647, -0.17466767556167245010332821112045, -0.12313943939054406702322580462444, -0.071611203219415683943123398128427, -0.020082967048287300863020991632413, 0.031445269122841082217081414863601, 0.082973505293969465297183821359615, 0.13450174146509784837728622785563, 0.18602997763622623145738863435164, 0.23755821380735461453749104084766, 0.28908644997848299761759344734367, 0.34061468614961138069769585383969, 0.3921429223207397637777982603357, 0.44367115849186814685790066683171, 0.49519939466299652993800307332773, 0.54672763083412491301810547982374, 0.59825586700525329609820788631976, 0.64978410317638167917831029281577, 0.70131233934751006225841269931178, 0.7528405755186384453385151058078, 0.80436881168976682841861751230381, 0.85589704786089521149871991879983, 0.90742528403202359457882232529584, 0.95895352020315197765892473179185, 1.0104817563742803607390271382879, 1.0620099925454087438191295447839, 1.1135382287165371268992319512799, 1.1650664648876655099793343577759, 1.2165947010587938930594367642719, 1.2681229372299222761395391707679, 1.319651173401050659219641577264, 1.37117940957217904229974398376, 1.422707645743307425379846390256, 1.474235881914435808459948796752, 1.525764118085564191540051203248, 1.577292354256692574620153609744, 1.62882059042782095770025601624, 1.680348826598949340780358422736, 1.7318770627700777238604608292321, 1.7834052989412061069405632357281, 1.8349335351123344900206656422241, 1.8864617712834628731007680487201, 1.9379900074545912561808704552161, 1.9895182436257196392609728617121, 2.0410464797968480223410752682081, 2.0925747159679764054211776747042, 2.1441029521391047885012800812002, 2.1956311883102331715813824876962, 2.2471594244813615546614848941922, 2.2986876606524899377415873006882, 2.3502158968236183208216897071842, 2.4017441329947467039017921136802, 2.4532723691658750869818945201763, 2.5048006053370034700619969266723, 2.5563288415081318531420993331683, 2.6078570776792602362222017396643, 2.6593853138503886193023041461603, 2.7109135500215170023824065526563, 2.7624417861926453854625089591523, 2.8139700223637737685426113656484, 2.8654982585349021516227137721444, 2.9170264947060305347028161786404, 2.9685547308771589177829185851364, 3.0200829670482873008630209916324, 3.0716112032194156839431233981284, 3.1231394393905440670232258046244, 3.1746676755616724501033282111205, 3.2261959117328008331834306176165, 3.2777241479039292162635330241125, 3.3292523840750575993436354306085, 3.3807806202461859824237378371045, 3.4323088564173143655038402436005, 3.4838370925884427485839426500965, 3.5353653287595711316640450565926, 3.5868935649306995147441474630886, 3.6384218011018278978242498695846, 3.6899500372729562809043522760806, 3.7414782734440846639844546825766, 3.7930065096152130470645570890726, 3.8445347457863414301446594955686, 3.8960629819574698132247619020647, 3.9475912181285981963048643085607, 3.9991194542997265793849667150567, 4.0506476904708549624650691215527]]
+-e	ksdensity("text")	error: ksdensity needs a list of numbers
+-e	ksdensity(true)	error: ksdensity needs a list of numbers
+-e	ksdensity(-7/3)	error: ksdensity needs a list of numbers
+-e	ksdensity(0.5)	error: ksdensity needs a list of numbers
+-e	linkage(0)	error: linkage needs a matrix of numbers
+-e	linkage(1)	error: linkage needs a matrix of numbers
+-e	linkage(-1)	error: linkage needs a matrix of numbers
+-e	linkage(1/2)	error: linkage needs a matrix of numbers
+-e	linkage(2)	error: linkage needs a matrix of numbers
+-e	linkage(i)	error: linkage needs a matrix of numbers
+-e	linkage(inf)	error: linkage needs a matrix of numbers
+-e	linkage(-inf)	error: linkage needs a matrix of numbers
+-e	linkage(undefined)	error: linkage needs a matrix of numbers
+-e	linkage(10^20)	error: linkage needs a matrix of numbers
+-e	linkage(10^(-20))	error: linkage needs a matrix of numbers
+-e	linkage(x)	error: linkage needs a matrix of numbers
+-e	linkage([])	error: linkage needs a matrix of numbers
+-e	linkage([1, 2])	error: linkage: a list of distances has one for every pair of points
+-e	linkage("text")	error: linkage needs a matrix of numbers
+-e	linkage(true)	error: linkage needs a matrix of numbers
+-e	linkage(-7/3)	error: linkage needs a matrix of numbers
+-e	linkage(0.5)	error: linkage needs a matrix of numbers
+-e	struct(0)	error: struct(name, value, ...) needs a value for every name
+-e	struct(1)	error: struct(name, value, ...) needs a value for every name
+-e	struct(-1)	error: struct(name, value, ...) needs a value for every name
+-e	struct(1/2)	error: struct(name, value, ...) needs a value for every name
+-e	struct(2)	error: struct(name, value, ...) needs a value for every name
+-e	struct(i)	error: struct(name, value, ...) needs a value for every name
+-e	struct(inf)	error: struct(name, value, ...) needs a value for every name
+-e	struct(-inf)	error: struct(name, value, ...) needs a value for every name
+-e	struct(undefined)	error: struct(name, value, ...) needs a value for every name
+-e	struct(10^20)	error: struct(name, value, ...) needs a value for every name
+-e	struct(10^(-20))	error: struct(name, value, ...) needs a value for every name
+-e	struct(x)	error: struct(name, value, ...) needs a value for every name
+-e	struct([])	error: struct(name, value, ...) needs a value for every name
+-e	struct([1, 2])	error: struct(name, value, ...) needs a value for every name
+-e	struct("text")	error: struct(name, value, ...) needs a value for every name
+-e	struct(true)	error: struct(name, value, ...) needs a value for every name
+-e	struct(-7/3)	error: struct(name, value, ...) needs a value for every name
+-e	struct(0.5)	error: struct(name, value, ...) needs a value for every name
+-e	isstruct(0)	false
+-e	isstruct(1)	false
+-e	isstruct(-1)	false
+-e	isstruct(1/2)	false
+-e	isstruct(2)	false
+-e	isstruct(i)	false
+-e	isstruct(inf)	false
+-e	isstruct(-inf)	false
+-e	isstruct(undefined)	false
+-e	isstruct(10^20)	false
+-e	isstruct(10^(-20))	false
+-e	isstruct(x)	false
+-e	isstruct([])	false
+-e	isstruct([1, 2])	false
+-e	isstruct("text")	false
+-e	isstruct(true)	false
+-e	isstruct(-7/3)	false
+-e	isstruct(0.5)	false
+-e	fieldnames(0)	error: fieldnames needs a record made by struct(name, value, ...), 0 is none
+-e	fieldnames(1)	error: fieldnames needs a record made by struct(name, value, ...), 1 is none
+-e	fieldnames(-1)	error: fieldnames needs a record made by struct(name, value, ...), -1 is none
+-e	fieldnames(1/2)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	fieldnames(2)	error: fieldnames needs a record made by struct(name, value, ...), 2 is none
+-e	fieldnames(i)	error: fieldnames needs a record made by struct(name, value, ...), i is none
+-e	fieldnames(inf)	error: fieldnames needs a record made by struct(name, value, ...), inf is none
+-e	fieldnames(-inf)	error: fieldnames needs a record made by struct(name, value, ...), -inf is none
+-e	fieldnames(undefined)	error: fieldnames needs a record made by struct(name, value, ...), undefined is none
+-e	fieldnames(10^20)	error: fieldnames needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	fieldnames(10^(-20))	error: fieldnames needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	fieldnames(x)	error: fieldnames needs a record made by struct(name, value, ...), x is none
+-e	fieldnames([])	error: fieldnames needs a record made by struct(name, value, ...), [] is none
+-e	fieldnames([1, 2])	error: fieldnames needs a record made by struct(name, value, ...), [1, 2] is none
+-e	fieldnames("text")	error: fieldnames needs a record made by struct(name, value, ...), "text" is none
+-e	fieldnames(true)	error: fieldnames needs a record made by struct(name, value, ...), true is none
+-e	fieldnames(-7/3)	error: fieldnames needs a record made by struct(name, value, ...), -7/3 is none
+-e	fieldnames(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	numfields(0)	0
+-e	numfields(1)	0
+-e	numfields(-1)	0
+-e	numfields(1/2)	0
+-e	numfields(2)	0
+-e	numfields(i)	0
+-e	numfields(inf)	0
+-e	numfields(-inf)	0
+-e	numfields(undefined)	0
+-e	numfields(10^20)	0
+-e	numfields(10^(-20))	0
+-e	numfields(x)	0
+-e	numfields([])	0
+-e	numfields([1, 2])	0
+-e	numfields("text")	0
+-e	numfields(true)	0
+-e	numfields(-7/3)	0
+-e	numfields(0.5)	0
+-e	orderfields(0)	error: orderfields needs a record made by struct(name, value, ...), 0 is none
+-e	orderfields(1)	error: orderfields needs a record made by struct(name, value, ...), 1 is none
+-e	orderfields(-1)	error: orderfields needs a record made by struct(name, value, ...), -1 is none
+-e	orderfields(1/2)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
+-e	orderfields(2)	error: orderfields needs a record made by struct(name, value, ...), 2 is none
+-e	orderfields(i)	error: orderfields needs a record made by struct(name, value, ...), i is none
+-e	orderfields(inf)	error: orderfields needs a record made by struct(name, value, ...), inf is none
+-e	orderfields(-inf)	error: orderfields needs a record made by struct(name, value, ...), -inf is none
+-e	orderfields(undefined)	error: orderfields needs a record made by struct(name, value, ...), undefined is none
+-e	orderfields(10^20)	error: orderfields needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	orderfields(10^(-20))	error: orderfields needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	orderfields(x)	error: orderfields needs a record made by struct(name, value, ...), x is none
+-e	orderfields([])	error: orderfields needs a record made by struct(name, value, ...), [] is none
+-e	orderfields([1, 2])	error: orderfields needs a record made by struct(name, value, ...), [1, 2] is none
+-e	orderfields("text")	error: orderfields needs a record made by struct(name, value, ...), "text" is none
+-e	orderfields(true)	error: orderfields needs a record made by struct(name, value, ...), true is none
+-e	orderfields(-7/3)	error: orderfields needs a record made by struct(name, value, ...), -7/3 is none
+-e	orderfields(0.5)	error: orderfields needs a record made by struct(name, value, ...), 1/2 is none
+-e	struct2cell(0)	error: struct2cell needs a record made by struct(name, value, ...), 0 is none
+-e	struct2cell(1)	error: struct2cell needs a record made by struct(name, value, ...), 1 is none
+-e	struct2cell(-1)	error: struct2cell needs a record made by struct(name, value, ...), -1 is none
+-e	struct2cell(1/2)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
+-e	struct2cell(2)	error: struct2cell needs a record made by struct(name, value, ...), 2 is none
+-e	struct2cell(i)	error: struct2cell needs a record made by struct(name, value, ...), i is none
+-e	struct2cell(inf)	error: struct2cell needs a record made by struct(name, value, ...), inf is none
+-e	struct2cell(-inf)	error: struct2cell needs a record made by struct(name, value, ...), -inf is none
+-e	struct2cell(undefined)	error: struct2cell needs a record made by struct(name, value, ...), undefined is none
+-e	struct2cell(10^20)	error: struct2cell needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	struct2cell(10^(-20))	error: struct2cell needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	struct2cell(x)	error: struct2cell needs a record made by struct(name, value, ...), x is none
+-e	struct2cell([])	error: struct2cell needs a record made by struct(name, value, ...), [] is none
+-e	struct2cell([1, 2])	error: struct2cell needs a record made by struct(name, value, ...), [1, 2] is none
+-e	struct2cell("text")	error: struct2cell needs a record made by struct(name, value, ...), "text" is none
+-e	struct2cell(true)	error: struct2cell needs a record made by struct(name, value, ...), true is none
+-e	struct2cell(-7/3)	error: struct2cell needs a record made by struct(name, value, ...), -7/3 is none
+-e	struct2cell(0.5)	error: struct2cell needs a record made by struct(name, value, ...), 1/2 is none
+-e	dictionary(0)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-1)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(1/2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(2)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(i)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-inf)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(undefined)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(10^20)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(10^(-20))	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(x)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary([])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary([1, 2])	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary("text")	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(true)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(-7/3)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	dictionary(0.5)	error: dictionary(keys, values) or dictionary(key, value, ...): a value for every key
+-e	keys(0)	error: keys needs a table made by dictionary(keys, values), 0 is none
+-e	keys(1)	error: keys needs a table made by dictionary(keys, values), 1 is none
+-e	keys(-1)	error: keys needs a table made by dictionary(keys, values), -1 is none
+-e	keys(1/2)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
+-e	keys(2)	error: keys needs a table made by dictionary(keys, values), 2 is none
+-e	keys(i)	error: keys needs a table made by dictionary(keys, values), i is none
+-e	keys(inf)	error: keys needs a table made by dictionary(keys, values), inf is none
+-e	keys(-inf)	error: keys needs a table made by dictionary(keys, values), -inf is none
+-e	keys(undefined)	error: keys needs a table made by dictionary(keys, values), undefined is none
+-e	keys(10^20)	error: keys needs a table made by dictionary(keys, values), 100000000000000000000 is none
+-e	keys(10^(-20))	error: keys needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
+-e	keys(x)	error: keys needs a table made by dictionary(keys, values), x is none
+-e	keys([])	error: keys needs a table made by dictionary(keys, values), [] is none
+-e	keys([1, 2])	error: keys needs a table made by dictionary(keys, values), [1, 2] is none
+-e	keys("text")	error: keys needs a table made by dictionary(keys, values), "text" is none
+-e	keys(true)	error: keys needs a table made by dictionary(keys, values), true is none
+-e	keys(-7/3)	error: keys needs a table made by dictionary(keys, values), -7/3 is none
+-e	keys(0.5)	error: keys needs a table made by dictionary(keys, values), 1/2 is none
+-e	values(0)	error: values needs a table made by dictionary(keys, values), 0 is none

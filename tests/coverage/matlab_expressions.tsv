@@ -1,0 +1,74 @@
+-e	integral(sin(x)/x, 0, 1)	integrate(sin(x)/x, 0, 1)
+-e	iztrans(z/(z - 1), z, n)	1
+-e	finverse(2x + 3, x)	x/2 - 3/2
+-e	finverse(exp(x) + 1)	ln(x - 1)
+-e	finverse(x^3, x)	x^(1/3)|note: the function has 3 inverses; this is one of them
+-e	compose(sin(x), x^2)	sin(x^2)
+-e	compose(x^2 + 1, exp(y), x, y, z)	e^(2z) + 1
+-e	compose(1/x, cos(t), t)	1/cos(t)
+-e	symvar(a*x^2 + b*y)	[a, b, x, y]
+-e	symvar(a*x^2 + b*y, 1)	[x]
+-e	has(x^2 + sin(y), sin(y))	true
+-e	has(x^2 + sin(y), z)	false
+-e	children(x^2 + 3x + 1)	[1, 3x, x^2]
+-e	children(sin(x)*cos(y))	[cos(y), sin(x)]
+-e	children(x = 2)	[x, 2]
+-e	lhs(x^2 = 4)	x^2
+-e	rhs(x^2 = 4)	4
+-e	isalways(sin(x)^2 + cos(x)^2 = 1)	true
+-e	isalways(x^2 >= 0)	true
+-e	isalways(abs(x) >= x)	true
+-e	isalways(x > 0)	false
+-e	combine(x^a*x^b)	x^(a + b)
+-e	combine(sin(x)*cos(y), "sincos")	sin(x + y)/2 + sin(x - y)/2
+-e	combine(ln(2) + ln(3), "log")	ln(6)
+-e	combine(2ln(x) + ln(y), "log")	2ln(x) + ln(y)
+-e	rewrite(sin(x), "exp")	i*e^(-i*x)/2 - i*e^(i*x)/2
+-e	rewrite(exp(i*x), "sincos")	cos(x) + i*sin(x)
+-e	rewrite(sinh(x), "exp")	e^x/2 - e^(-x)/2
+-e	rewrite(tan(x), "sincos")	sin(x)/cos(x)
+-e	rewrite(sin(x), "tan")	2tan(x/2)/(tan(x/2)^2 + 1)
+-e	rewrite(cos(x), "sin")	1 - 2sin(x/2)^2
+-e	rewrite(sin(x), "cos")	sin(x)
+-e	rewrite(asinh(x), "log")	ln(x + sqrt(x^2 + 1))
+-e	rewrite(acos(x), "log")	-i*ln(x + i*sqrt(1 - x^2))
+-e	rewrite(abs(x), "heaviside")	x*(2heaviside(x) - 1)
+-e	rewrite(abs(x), "piecewise")	piecewise(x >= 0, x, -x)
+-e	rewrite(factorial(n), "gamma")	gamma(n + 1)
+-e	rewrite(gamma(n + 1), "factorial")	n!
+-e	rewrite(erfc(x), "erf")	1 - erf(x)
+-e	rewrite(erf(x), "erfc")	error: rewrite(expr, target): the targets are "exp", "sincos", "sinhcosh", "tan", "sin", "cos", "log", "heaviside", "piecewise", "gamma", "factorial", "erf", "sqrt"
+-e	rewrite(abs(x), "sqrt")	sqrt(x*conj(x))
+-e	rewrite(cosh(x), "sinhcosh")	cosh(x)
+-e	potential([2x*y, x^2], [x, y])	x^2*y
+-e	potential([y, -x], [x, y])	undefined
+-e	potential([2x, 2y, 2z], [x, y, z], [1, 1, 1])	x^2 + y^2 + z^2 - 3
+-e	vectorpotential([0, 0, 1], [x, y, z])	[-y/2, x/2, 0]
+-e	vectorpotential([x, y, z], [x, y, z])	undefined
+-e	equationstomatrix([x + 2y = 3, 3x - y = 1], [x, y])	[[[1, 2], [3, -1]], [3, 1]]
+-e	eliminate([x + y = 3, x - y = 1], [x])	[y - 1]
+-e	eliminate([x = t^2, y = t^3], [t])	[x^3 - y^2]
+-e	isolate(a*x + b = 0, x)	x = -b/a
+-e	isolate(y = x^2 + 1, x^2)	x^2 = y - 1
+-e	assume(x > 0); assumptions()	true|["x is positive"]
+-e	assume(n, integer); assumptions()	true|["n is integer"]
+-e	limit(1/x, x, 0, "left")	-inf
+-e	limit(1/x, x, 0, "right")	inf
+-e	limit(abs(x)/x, x, 0, "left")	-1
+-e	curl([x*y, y*z, z*x], [x, y, z])	[-y, -z, -x]
+-e	divergence([x^2, y^2, z^2], [x, y, z])	2x + 2y + 2z
+-e	gradient(x^2*y, [x, y])	[2x*y, x^2]
+-e	hessian(x^2*y, [x, y])	[[2y, 2x], [2x, 0]]
+-e	jacobian([x*y, x + y], [x, y])	[[y, x], [1, 1]]
+-e	laplacian(x^2 + y^2, [x, y])	4
+-e	taylor(exp(x), x, 0, 4)	1 + x + x^2/2 + x^3/6 + x^4/24 + O(x^5)
+-e	pade(exp(x), x, 2, 2)	(x^2 + 6x + 12)/(x^2 - 6x + 12)
+-e	assert(1 < 2)	true
+-e	assert(1 > 2)	error: assert: 1 > 2 does not hold
+-e	assert(1 > 2, "one is small")	error: one is small
+-e	error("bad %d", 7)	error: bad 7
+-e	splitapply(@(v) mean(v), [10, 20, 30, 40], [1, 1, 2, 2])	[15, 35]
+-e	splitapply(max, [3, 9, 4, 7], [2, 1, 2, 1])	[9, 4]
+-e	x := 5; clear(x); x	5|true|x
+-e	x := 5; y := 6; clear(); [x, y]	5|6|true|[x, y]
+-e	x := 5; clear x; x	error: expected `(` after the function name `clear`

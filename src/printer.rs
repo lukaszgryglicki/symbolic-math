@@ -310,6 +310,20 @@ fn term_key(t: &Expr) -> TermKey {
     TermKey::new(u8::from(!polynomial), -degree, vars, rest)
 }
 
+/// The terms of a sum in the order they are written in.
+pub(crate) fn ordered_terms(terms: &[Expr]) -> Vec<Expr> {
+    let mut ordered: Vec<&Expr> = terms.iter().collect();
+    ordered.sort_by_cached_key(|t| term_key(t));
+    if ordered.len() == 2
+        && is_neg_form(ordered[0])
+        && !is_neg_form(ordered[1])
+        && term_key(ordered[1]).group < 4
+    {
+        ordered.swap(0, 1);
+    }
+    ordered.into_iter().cloned().collect()
+}
+
 fn add_str(terms: &[Expr]) -> String {
     let mut split: Vec<Expr> = Vec::with_capacity(terms.len() + 1);
     for t in terms {
@@ -480,6 +494,16 @@ fn render(e: &Expr) -> (String, u8) {
                 0,
             ),
             ("hold", 1) => held(&args[0]),
+            ("string", 1) if args[0].sym_name().is_some() => (
+                format!("\"{}\"", args[0].sym_name().unwrap_or_default()),
+                P_ATOM,
+            ),
+            // a number as it was written in a base
+            ("based", 2) if args[1].sym_name().is_some() => {
+                let text = args[1].sym_name().unwrap_or_default();
+                let sum = text.starts_with('-') || text.contains(' ');
+                (text.to_string(), if sum { P_ADD } else { P_ATOM })
+            }
             ("and" | "or" | "xor", 2..) => {
                 let parts: Vec<String> = args
                     .iter()

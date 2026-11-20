@@ -1,0 +1,423 @@
+	sind(1, 2)	error: sind takes 1 argument(s), 2 given
+	cosd(1, 2)	error: cosd takes 1 argument(s), 2 given
+	tand(1, 2)	error: tand takes 1 argument(s), 2 given
+	cotd(1, 2)	error: cotd takes 1 argument(s), 2 given
+	secd(1, 2)	error: secd takes 1 argument(s), 2 given
+	cscd(1, 2)	error: cscd takes 1 argument(s), 2 given
+	asind(1, 2)	error: asind takes 1 argument(s), 2 given
+	acosd(1, 2)	error: acosd takes 1 argument(s), 2 given
+	atand(1, 2)	error: atand takes 1 argument(s), 2 given
+	acotd(1, 2)	error: acotd takes 1 argument(s), 2 given
+	asecd(1, 2)	error: asecd takes 1 argument(s), 2 given
+	acscd(1, 2)	error: acscd takes 1 argument(s), 2 given
+	atan2d(1, 2, 3)	error: atan2d takes 2 argument(s), 3 given
+	sinpi(1, 2)	error: sinpi takes 1 argument(s), 2 given
+	cospi(1, 2)	error: cospi takes 1 argument(s), 2 given
+	deg2rad(1, 2)	error: deg2rad takes 1 argument(s), 2 given
+	rad2deg(1, 2)	error: rad2deg takes 1 argument(s), 2 given
+	cart2pol(1, 2, 3, 4)	error: cart2pol takes 2 to 3 argument(s), 4 given
+	pol2cart(1, 2, 3, 4)	error: pol2cart takes 2 to 3 argument(s), 4 given
+	cart2sph(1, 2, 3, 4)	error: cart2sph takes 3 argument(s), 4 given
+	sph2cart(1, 2, 3, 4)	error: sph2cart takes 3 argument(s), 4 given
+	rat(1, 2, 3)	error: rat takes 1 to 2 argument(s), 3 given
+	bitand(1, 2, 3)	error: bitand takes 2 argument(s), 3 given
+	bitor(1, 2, 3)	error: bitor takes 2 argument(s), 3 given
+	bitxor(1, 2, 3)	error: bitxor takes 2 argument(s), 3 given
+	bitshift(1, 2, 3, 4)	error: bitshift takes 2 to 3 argument(s), 4 given
+	bitcmp(1, 2, 3)	error: bitcmp takes 1 to 2 argument(s), 3 given
+	bitget(1, 2, 3)	error: bitget takes 2 argument(s), 3 given
+	bitset(1, 2, 3, 4)	error: bitset takes 2 to 3 argument(s), 4 given
+	erfcx(1, 2)	error: erfcx takes 1 argument(s), 2 given
+	dawson(1, 2)	error: dawson takes 1 argument(s), 2 given
+	betaln(1, 2, 3)	error: betaln takes 2 argument(s), 3 given
+	ssinint(1, 2)	error: ssinint takes 1 argument(s), 2 given
+	airy(1, 2, 3)	error: airy takes 1 to 2 argument(s), 3 given
+	besselh(1, 2, 3, 4)	error: besselh takes 2 to 3 argument(s), 4 given
+	whittakerm(1, 2, 3, 4)	error: whittakerm takes 3 argument(s), 4 given
+	whittakerw(1, 2, 3, 4)	error: whittakerw takes 3 argument(s), 4 given
+	wrightomega(1, 2)	error: wrightomega takes 1 argument(s), 2 given
+	rectangularpulse(1, 2, 3, 4)	error: rectangularpulse takes 1 to 3 argument(s), 4 given
+	triangularpulse(1, 2, 3, 4, 5)	error: triangularpulse takes 1 to 4 argument(s), 5 given
+	jacobicd(1, 2, 3)	error: jacobicd takes 2 argument(s), 3 given
+	jacobisd(1, 2, 3)	error: jacobisd takes 2 argument(s), 3 given
+	jacobind(1, 2, 3)	error: jacobind takes 2 argument(s), 3 given
+	jacobidc(1, 2, 3)	error: jacobidc takes 2 argument(s), 3 given
+	jacobinc(1, 2, 3)	error: jacobinc takes 2 argument(s), 3 given
+	jacobisc(1, 2, 3)	error: jacobisc takes 2 argument(s), 3 given
+	jacobins(1, 2, 3)	error: jacobins takes 2 argument(s), 3 given
+	jacobids(1, 2, 3)	error: jacobids takes 2 argument(s), 3 given
+	jacobics(1, 2, 3)	error: jacobics takes 2 argument(s), 3 given
+	jacobiam(1, 2, 3)	error: jacobiam takes 2 argument(s), 3 given
+	jacobizeta(1, 2, 3)	error: jacobizeta takes 2 argument(s), 3 given
+	ellipticck(1, 2)	error: ellipticck takes 1 argument(s), 2 given
+	ellipticce(1, 2)	error: ellipticce takes 1 argument(s), 2 given
+	ellipticcpi(1, 2, 3)	error: ellipticcpi takes 2 argument(s), 3 given
+	ellipke(1, 2)	error: ellipke takes 1 argument(s), 2 given
+	ellipj(1, 2, 3)	error: ellipj takes 2 argument(s), 3 given
+	gammaincinv(1, 2, 3)	error: gammaincinv takes 2 argument(s), 3 given
+	betaincinv(1, 2, 3, 4)	error: betaincinv takes 3 argument(s), 4 given
+	num2str(1, 2, 3)	error: num2str takes 1 to 2 argument(s), 3 given
+	int2str(1, 2)	error: int2str takes 1 argument(s), 2 given
+	mat2str(1, 2, 3)	error: mat2str takes 1 to 2 argument(s), 3 given
+	tostring(1, 2)	error: tostring takes 1 argument(s), 2 given
+	dec2bin(1, 2, 3)	error: dec2bin takes 1 to 2 argument(s), 3 given
+	dec2hex(1, 2, 3)	error: dec2hex takes 1 to 2 argument(s), 3 given
+	dec2base(1, 2, 3, 4)	error: dec2base takes 2 to 3 argument(s), 4 given
+	bin2dec(1, 2)	error: bin2dec takes 1 argument(s), 2 given
+	hex2dec(1, 2)	error: hex2dec takes 1 argument(s), 2 given
+	base2dec(1, 2, 3)	error: base2dec takes 2 argument(s), 3 given
+	double(1, 2)	error: double takes 1 argument(s), 2 given
+	strlength(1, 2)	error: strlength takes 1 argument(s), 2 given
+	upper(1, 2)	error: upper takes 1 argument(s), 2 given
+	lower(1, 2)	error: lower takes 1 argument(s), 2 given
+	strtrim(1, 2)	error: strtrim takes 1 argument(s), 2 given
+	strrep(1, 2, 3, 4)	error: strrep takes 3 argument(s), 4 given
+	strfind(1, 2, 3)	error: strfind takes 2 argument(s), 3 given
+	strsplit(1, 2, 3)	error: strsplit takes 1 to 2 argument(s), 3 given
+	strjoin(1, 2, 3)	error: strjoin takes 1 to 2 argument(s), 3 given
+	strcmp(1, 2, 3)	error: strcmp takes 2 argument(s), 3 given
+	strcmpi(1, 2, 3)	error: strcmpi takes 2 argument(s), 3 given
+	strncmp(1, 2, 3, 4)	error: strncmp takes 3 argument(s), 4 given
+	strncmpi(1, 2, 3, 4)	error: strncmpi takes 3 argument(s), 4 given
+	startswith(1, 2, 3)	error: startswith takes 2 argument(s), 3 given
+	endswith(1, 2, 3)	error: endswith takes 2 argument(s), 3 given
+	blanks(1, 2)	error: blanks takes 1 argument(s), 2 given
+	isletter(1, 2)	error: isletter takes 1 argument(s), 2 given
+	isspace(1, 2)	error: isspace takes 1 argument(s), 2 given
+	ischar(1, 2)	error: ischar takes 1 argument(s), 2 given
+	isnumeric(1, 2)	error: isnumeric takes 1 argument(s), 2 given
+	islogical(1, 2)	error: islogical takes 1 argument(s), 2 given
+	logical(1, 2)	error: logical takes 1 argument(s), 2 given
+	rats(1, 2, 3)	error: rats takes 1 to 2 argument(s), 3 given
+	normpdf(1, 2, 3, 4)	error: normpdf takes 1 to 3 argument(s), 4 given
+	normcdf(1, 2, 3, 4, 5)	error: normcdf takes 1 to 4 argument(s), 5 given
+	norminv(1, 2, 3, 4)	error: norminv takes 1 to 3 argument(s), 4 given
+	normrnd(1, 2, 3)	error: normrnd takes 0 to 2 argument(s), 3 given
+	normstat(1, 2, 3)	error: normstat takes 0 to 2 argument(s), 3 given
+	unifpdf(1, 2, 3, 4)	error: unifpdf takes 1 to 3 argument(s), 4 given
+	unifcdf(1, 2, 3, 4, 5)	error: unifcdf takes 1 to 4 argument(s), 5 given
+	unifinv(1, 2, 3, 4)	error: unifinv takes 1 to 3 argument(s), 4 given
+	unifrnd(1, 2, 3)	error: unifrnd takes 0 to 2 argument(s), 3 given
+	unifstat(1, 2, 3)	error: unifstat takes 0 to 2 argument(s), 3 given
+	exppdf(1, 2, 3)	error: exppdf takes 1 to 2 argument(s), 3 given
+	expcdf(1, 2, 3, 4)	error: expcdf takes 1 to 3 argument(s), 4 given
+	expinv(1, 2, 3)	error: expinv takes 1 to 2 argument(s), 3 given
+	exprnd(1, 2)	error: exprnd takes 0 to 1 argument(s), 2 given
+	expstat(1, 2)	error: expstat takes 0 to 1 argument(s), 2 given
+	gampdf(1, 2, 3, 4)	error: gampdf takes 2 to 3 argument(s), 4 given
+	gamcdf(1, 2, 3, 4, 5)	error: gamcdf takes 2 to 4 argument(s), 5 given
+	gaminv(1, 2, 3, 4)	error: gaminv takes 2 to 3 argument(s), 4 given
+	gamrnd(1, 2, 3)	error: gamrnd takes 1 to 2 argument(s), 3 given
+	gamstat(1, 2, 3)	error: gamstat takes 1 to 2 argument(s), 3 given
+	betapdf(1, 2, 3, 4)	error: betapdf takes 3 argument(s), 4 given
+	betacdf(1, 2, 3, 4, 5)	error: betacdf takes 3 to 4 argument(s), 5 given
+	betainv(1, 2, 3, 4)	error: betainv takes 3 argument(s), 4 given
+	betarnd(1, 2, 3)	error: betarnd takes 2 argument(s), 3 given
+	betastat(1, 2, 3)	error: betastat takes 2 argument(s), 3 given
+	chi2pdf(1, 2, 3)	error: chi2pdf takes 2 argument(s), 3 given
+	chi2cdf(1, 2, 3, 4)	error: chi2cdf takes 2 to 3 argument(s), 4 given
+	chi2inv(1, 2, 3)	error: chi2inv takes 2 argument(s), 3 given
+	chi2rnd(1, 2)	error: chi2rnd takes 1 argument(s), 2 given
+	chi2stat(1, 2)	error: chi2stat takes 1 argument(s), 2 given
+	tpdf(1, 2, 3)	error: tpdf takes 2 argument(s), 3 given
+	tcdf(1, 2, 3, 4)	error: tcdf takes 2 to 3 argument(s), 4 given
+	tinv(1, 2, 3)	error: tinv takes 2 argument(s), 3 given
+	trnd(1, 2)	error: trnd takes 1 argument(s), 2 given
+	tstat(1, 2)	error: tstat takes 1 argument(s), 2 given
+	fpdf(1, 2, 3, 4)	error: fpdf takes 3 argument(s), 4 given
+	fcdf(1, 2, 3, 4, 5)	error: fcdf takes 3 to 4 argument(s), 5 given
+	frnd(1, 2, 3)	error: frnd takes 2 argument(s), 3 given
+	fstat(1, 2, 3)	error: fstat takes 2 argument(s), 3 given
+	lognpdf(1, 2, 3, 4)	error: lognpdf takes 1 to 3 argument(s), 4 given
+	logncdf(1, 2, 3, 4, 5)	error: logncdf takes 1 to 4 argument(s), 5 given
+	logninv(1, 2, 3, 4)	error: logninv takes 1 to 3 argument(s), 4 given
+	lognrnd(1, 2, 3)	error: lognrnd takes 0 to 2 argument(s), 3 given
+	lognstat(1, 2, 3)	error: lognstat takes 0 to 2 argument(s), 3 given
+	wblpdf(1, 2, 3, 4)	error: wblpdf takes 1 to 3 argument(s), 4 given
+	wblcdf(1, 2, 3, 4, 5)	error: wblcdf takes 1 to 4 argument(s), 5 given
+	wblinv(1, 2, 3, 4)	error: wblinv takes 1 to 3 argument(s), 4 given
+	wblrnd(1, 2, 3)	error: wblrnd takes 0 to 2 argument(s), 3 given
+	wblstat(1, 2, 3)	error: wblstat takes 0 to 2 argument(s), 3 given
+	raylpdf(1, 2, 3)	error: raylpdf takes 2 argument(s), 3 given
+	raylcdf(1, 2, 3, 4)	error: raylcdf takes 2 to 3 argument(s), 4 given
+	raylinv(1, 2, 3)	error: raylinv takes 2 argument(s), 3 given
+	raylrnd(1, 2)	error: raylrnd takes 1 argument(s), 2 given
+	raylstat(1, 2)	error: raylstat takes 1 argument(s), 2 given
+	binopdf(1, 2, 3, 4)	error: binopdf takes 3 argument(s), 4 given
+	binocdf(1, 2, 3, 4, 5)	error: binocdf takes 3 to 4 argument(s), 5 given
+	binoinv(1, 2, 3, 4)	error: binoinv takes 3 argument(s), 4 given
+	binornd(1, 2, 3)	error: binornd takes 2 argument(s), 3 given
+	binostat(1, 2, 3)	error: binostat takes 2 argument(s), 3 given
+	poisspdf(1, 2, 3)	error: poisspdf takes 2 argument(s), 3 given
+	poisscdf(1, 2, 3, 4)	error: poisscdf takes 2 to 3 argument(s), 4 given
+	poissinv(1, 2, 3)	error: poissinv takes 2 argument(s), 3 given
+	poissrnd(1, 2)	error: poissrnd takes 1 argument(s), 2 given
+	poissstat(1, 2)	error: poissstat takes 1 argument(s), 2 given
+	geopdf(1, 2, 3)	error: geopdf takes 2 argument(s), 3 given
+	geocdf(1, 2, 3, 4)	error: geocdf takes 2 to 3 argument(s), 4 given
+	geoinv(1, 2, 3)	error: geoinv takes 2 argument(s), 3 given
+	geornd(1, 2)	error: geornd takes 1 argument(s), 2 given
+	geostat(1, 2)	error: geostat takes 1 argument(s), 2 given
+	nbinpdf(1, 2, 3, 4)	error: nbinpdf takes 3 argument(s), 4 given
+	nbincdf(1, 2, 3, 4, 5)	error: nbincdf takes 3 to 4 argument(s), 5 given
+	nbininv(1, 2, 3, 4)	error: nbininv takes 3 argument(s), 4 given
+	nbinrnd(1, 2, 3)	error: nbinrnd takes 2 argument(s), 3 given
+	nbinstat(1, 2, 3)	error: nbinstat takes 2 argument(s), 3 given
+	hygepdf(1, 2, 3, 4, 5)	error: hygepdf takes 4 argument(s), 5 given
+	hygecdf(1, 2, 3, 4, 5, 6)	error: hygecdf takes 4 to 5 argument(s), 6 given
+	hygeinv(1, 2, 3, 4, 5)	error: hygeinv takes 4 argument(s), 5 given
+	hygernd(1, 2, 3, 4)	error: hygernd takes 3 argument(s), 4 given
+	hygestat(1, 2, 3, 4)	error: hygestat takes 3 argument(s), 4 given
+	unidpdf(1, 2, 3)	error: unidpdf takes 2 argument(s), 3 given
+	unidcdf(1, 2, 3, 4)	error: unidcdf takes 2 to 3 argument(s), 4 given
+	unidinv(1, 2, 3)	error: unidinv takes 2 argument(s), 3 given
+	unidrnd(1, 2)	error: unidrnd takes 1 argument(s), 2 given
+	unidstat(1, 2)	error: unidstat takes 1 argument(s), 2 given
+	rng(1, 2)	error: rng takes 0 to 1 argument(s), 2 given
+	rand(1, 2, 3)	error: rand takes 0 to 2 argument(s), 3 given
+	randn(1, 2, 3)	error: randn takes 0 to 2 argument(s), 3 given
+	randi(1, 2, 3, 4)	error: randi takes 1 to 3 argument(s), 4 given
+	randperm(1, 2, 3)	error: randperm takes 1 to 2 argument(s), 3 given
+	randsample(1, 2, 3)	error: randsample takes 2 argument(s), 3 given
+	shuffle(1, 2)	error: shuffle takes 1 argument(s), 2 given
+	linprog(1, 2, 3, 4, 5, 6, 7, 8)	error: linprog takes 3 to 7 argument(s), 8 given
+	intlinprog(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: intlinprog takes 4 to 8 argument(s), 9 given
+	lsqnonneg(1, 2, 3)	error: lsqnonneg takes 2 argument(s), 3 given
+	fzero(1, 2, 3)	error: fzero takes 2 argument(s), 3 given
+	fminbnd(1, 2, 3, 4)	error: fminbnd takes 3 argument(s), 4 given
+	fminsearch(1, 2, 3)	error: fminsearch takes 2 argument(s), 3 given
+	lsqcurvefit(1, 2, 3, 4, 5)	error: lsqcurvefit takes 4 argument(s), 5 given
+	quad(1, 2, 3, 4)	error: quad takes 3 argument(s), 4 given
+	integral2(1, 2, 3, 4, 5, 6)	error: integral2 takes 5 argument(s), 6 given
+	integral3(1, 2, 3, 4, 5, 6, 7, 8)	error: integral3 takes 7 argument(s), 8 given
+	ode45(1, 2, 3, 4)	error: ode45 takes 3 argument(s), 4 given
+	fsolve(1, 2, 3)	error: fsolve takes 2 argument(s), 3 given
+	bsxfun(1, 2, 3, 4)	error: bsxfun takes 3 argument(s), 4 given
+	funm(1, 2, 3)	error: funm takes 2 argument(s), 3 given
+	lsqminnorm(1, 2, 3)	error: lsqminnorm takes 2 argument(s), 3 given
+	str2num(1, 2)	error: str2num takes 1 argument(s), 2 given
+	str2double(1, 2)	error: str2double takes 1 argument(s), 2 given
+	finverse(1, 2, 3)	error: finverse takes 1 to 2 argument(s), 3 given
+	compose(1, 2, 3, 4, 5, 6)	error: compose takes 2 to 5 argument(s), 6 given
+	symvar(1, 2, 3)	error: symvar takes 1 to 2 argument(s), 3 given
+	has(1, 2, 3)	error: has takes 2 argument(s), 3 given
+	children(1, 2)	error: children takes 1 argument(s), 2 given
+	lhs(1, 2)	error: lhs takes 1 argument(s), 2 given
+	rhs(1, 2)	error: rhs takes 1 argument(s), 2 given
+	isalways(1, 2)	error: isalways takes 1 argument(s), 2 given
+	combine(1, 2, 3)	error: combine takes 1 to 2 argument(s), 3 given
+	rewrite(1, 2, 3)	error: rewrite takes 2 argument(s), 3 given
+	potential(1, 2, 3, 4)	error: potential takes 2 to 3 argument(s), 4 given
+	vectorpotential(1, 2, 3)	error: vectorpotential takes 2 argument(s), 3 given
+	equationstomatrix(1, 2, 3)	error: equationstomatrix takes 1 to 2 argument(s), 3 given
+	eliminate(1, 2, 3)	error: eliminate takes 2 argument(s), 3 given
+	isolate(1, 2, 3)	error: isolate takes 2 argument(s), 3 given
+	assumptions(1)	error: assumptions takes 0 argument(s), 1 given
+	ttest(1, 2, 3)	error: ttest takes 1 to 2 argument(s), 3 given
+	ttest2(1, 2, 3)	error: ttest2 takes 2 argument(s), 3 given
+	ztest(1, 2, 3, 4)	error: ztest takes 3 argument(s), 4 given
+	vartest(1, 2, 3)	error: vartest takes 2 argument(s), 3 given
+	vartest2(1, 2, 3)	error: vartest2 takes 2 argument(s), 3 given
+	splitapply(1, 2, 3, 4)	error: splitapply takes 3 argument(s), 4 given
+	assert(1, 2, 3)	error: assert takes 1 to 2 argument(s), 3 given
+	isoutlier(1, 2, 3)	error: isoutlier takes 1 to 2 argument(s), 3 given
+	rmoutliers(1, 2, 3)	error: rmoutliers takes 1 to 2 argument(s), 3 given
+	ismissing(1, 2)	error: ismissing takes 1 argument(s), 2 given
+	rmmissing(1, 2)	error: rmmissing takes 1 argument(s), 2 given
+	fillmissing(1, 2, 3, 4)	error: fillmissing takes 2 to 3 argument(s), 4 given
+	discretize(1, 2, 3)	error: discretize takes 2 argument(s), 3 given
+	findgroups(1, 2)	error: findgroups takes 1 argument(s), 2 given
+	ecdf(1, 2)	error: ecdf takes 1 argument(s), 2 given
+	cplxpair(1, 2)	error: cplxpair takes 1 argument(s), 2 given
+	regress(1, 2, 3)	error: regress takes 2 argument(s), 3 given
+	bfsearch(1, 2, 3)	error: bfsearch takes 2 argument(s), 3 given
+	dfsearch(1, 2, 3)	error: dfsearch takes 2 argument(s), 3 given
+	successors(1, 2, 3)	error: successors takes 2 argument(s), 3 given
+	predecessors(1, 2, 3)	error: predecessors takes 2 argument(s), 3 given
+	nearest(1, 2, 3, 4)	error: nearest takes 3 argument(s), 4 given
+	allpaths(1, 2, 3, 4)	error: allpaths takes 3 argument(s), 4 given
+	hascycles(1, 2)	error: hascycles takes 1 argument(s), 2 given
+	isdag(1, 2)	error: isdag takes 1 argument(s), 2 given
+	transclosure(1, 2)	error: transclosure takes 1 argument(s), 2 given
+	transreduction(1, 2)	error: transreduction takes 1 argument(s), 2 given
+	biconncomp(1, 2)	error: biconncomp takes 1 argument(s), 2 given
+	cutvertices(1, 2)	error: cutvertices takes 1 argument(s), 2 given
+	bridges(1, 2)	error: bridges takes 1 argument(s), 2 given
+	centrality(1, 2, 3)	error: centrality takes 2 argument(s), 3 given
+	addedge(1, 2, 3, 4, 5)	error: addedge takes 3 to 4 argument(s), 5 given
+	rmedge(1, 2, 3, 4)	error: rmedge takes 3 argument(s), 4 given
+	addnode(1, 2, 3)	error: addnode takes 2 argument(s), 3 given
+	rmnode(1, 2, 3)	error: rmnode takes 2 argument(s), 3 given
+	findedge(1, 2, 3, 4)	error: findedge takes 3 argument(s), 4 given
+	flipedge(1, 2)	error: flipedge takes 1 argument(s), 2 given
+	polyarea(1, 2, 3)	error: polyarea takes 1 to 2 argument(s), 3 given
+	inpolygon(1, 2, 3, 4, 5)	error: inpolygon takes 4 argument(s), 5 given
+	convhull(1, 2, 3)	error: convhull takes 1 to 2 argument(s), 3 given
+	convexhull(1, 2, 3)	error: convexhull takes 1 to 2 argument(s), 3 given
+	delaunay(1, 2, 3)	error: delaunay takes 1 to 2 argument(s), 3 given
+	voronoi(1, 2, 3)	error: voronoi takes 1 to 2 argument(s), 3 given
+	rectint(1, 2, 3)	error: rectint takes 2 argument(s), 3 given
+	dsearchn(1, 2, 3)	error: dsearchn takes 2 argument(s), 3 given
+	rotx(1, 2)	error: rotx takes 1 argument(s), 2 given
+	roty(1, 2)	error: roty takes 1 argument(s), 2 given
+	rotz(1, 2)	error: rotz takes 1 argument(s), 2 given
+	int8(1, 2)	error: int8 takes 1 argument(s), 2 given
+	int16(1, 2)	error: int16 takes 1 argument(s), 2 given
+	int32(1, 2)	error: int32 takes 1 argument(s), 2 given
+	int64(1, 2)	error: int64 takes 1 argument(s), 2 given
+	uint8(1, 2)	error: uint8 takes 1 argument(s), 2 given
+	uint16(1, 2)	error: uint16 takes 1 argument(s), 2 given
+	uint32(1, 2)	error: uint32 takes 1 argument(s), 2 given
+	uint64(1, 2)	error: uint64 takes 1 argument(s), 2 given
+	eigs(1, 2, 3)	error: eigs takes 1 to 2 argument(s), 3 given
+	svds(1, 2, 3)	error: svds takes 1 to 2 argument(s), 3 given
+	disp(1, 2)	error: disp takes 1 argument(s), 2 given
+	readmatrix(1, 2)	error: readmatrix takes 1 argument(s), 2 given
+	writematrix(1, 2, 3)	error: writematrix takes 2 argument(s), 3 given
+	imread(1, 2)	error: imread takes 1 argument(s), 2 given
+	imwrite(1, 2, 3, 4)	error: imwrite takes 2 to 3 argument(s), 4 given
+	condest(1, 2)	error: condest takes 1 argument(s), 2 given
+	normest(1, 2)	error: normest takes 1 argument(s), 2 given
+	filter2(1, 2, 3, 4)	error: filter2 takes 2 to 3 argument(s), 4 given
+	newline(1)	error: newline takes 0 argument(s), 1 given
+	meanabs(1, 2)	error: meanabs takes 1 argument(s), 2 given
+	nansum(1, 2, 3)	error: nansum takes 1 to 2 argument(s), 3 given
+	nanmean(1, 2, 3)	error: nanmean takes 1 to 2 argument(s), 3 given
+	nanmax(1, 2, 3)	error: nanmax takes 1 to 2 argument(s), 3 given
+	nanmin(1, 2, 3)	error: nanmin takes 1 to 2 argument(s), 3 given
+	nanstd(1, 2, 3)	error: nanstd takes 1 to 2 argument(s), 3 given
+	nanvar(1, 2, 3)	error: nanvar takes 1 to 2 argument(s), 3 given
+	nanmedian(1, 2, 3)	error: nanmedian takes 1 to 2 argument(s), 3 given
+	single(1, 2)	error: single takes 1 argument(s), 2 given
+	cast(1, 2, 3)	error: cast takes 2 argument(s), 3 given
+	class(1, 2)	error: class takes 1 argument(s), 2 given
+	isa(1, 2, 3)	error: isa takes 2 argument(s), 3 given
+	sparse(1, 2, 3, 4, 5, 6)	error: sparse takes 1 to 5 argument(s), 6 given
+	full(1, 2)	error: full takes 1 argument(s), 2 given
+	issparse(1, 2)	error: issparse takes 1 argument(s), 2 given
+	nzmax(1, 2)	error: nzmax takes 1 argument(s), 2 given
+	spones(1, 2)	error: spones takes 1 argument(s), 2 given
+	speye(1, 2, 3)	error: speye takes 1 to 2 argument(s), 3 given
+	spdiags(1, 2, 3, 4, 5)	error: spdiags takes 4 argument(s), 5 given
+	squeeze(1, 2)	error: squeeze takes 1 argument(s), 2 given
+	permute(1, 2, 3)	error: permute takes 2 argument(s), 3 given
+	ipermute(1, 2, 3)	error: ipermute takes 2 argument(s), 3 given
+	num2cell(1, 2)	error: num2cell takes 1 argument(s), 2 given
+	cell2mat(1, 2)	error: cell2mat takes 1 argument(s), 2 given
+	signim(1, 2)	error: signim takes 1 argument(s), 2 given
+	padecoef(1, 2, 3)	error: padecoef takes 1 to 2 argument(s), 3 given
+	crosstab(1, 2, 3)	error: crosstab takes 2 argument(s), 3 given
+	pdist(1, 2)	error: pdist takes 1 argument(s), 2 given
+	squareform(1, 2)	error: squareform takes 1 argument(s), 2 given
+	normfit(1, 2)	error: normfit takes 1 argument(s), 2 given
+	expfit(1, 2)	error: expfit takes 1 argument(s), 2 given
+	partialcorr(1, 2)	error: partialcorr takes 1 argument(s), 2 given
+	del2(1, 2, 3)	error: del2 takes 1 to 2 argument(s), 3 given
+	interpft(1, 2, 3)	error: interpft takes 2 argument(s), 3 given
+	datasample(1, 2, 3)	error: datasample takes 2 argument(s), 3 given
+	quadprog(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: quadprog takes 2 to 8 argument(s), 9 given
+	lsqlin(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: lsqlin takes 2 to 8 argument(s), 9 given
+	lsqnonlin(1, 2, 3)	error: lsqnonlin takes 2 argument(s), 3 given
+	mellin(1, 2, 3, 4)	error: mellin takes 3 argument(s), 4 given
+	anova1(1, 2)	error: anova1 takes 1 argument(s), 2 given
+	pca(1, 2)	error: pca takes 1 argument(s), 2 given
+	mkpp(1, 2, 3)	error: mkpp takes 2 argument(s), 3 given
+	unmkpp(1, 2)	error: unmkpp takes 1 argument(s), 2 given
+	ppval(1, 2, 3)	error: ppval takes 2 argument(s), 3 given
+	polynomialreduce(1, 2, 3, 4)	error: polynomialreduce takes 2 to 3 argument(s), 4 given
+	griddata(1, 2, 3, 4, 5, 6, 7)	error: griddata takes 5 to 6 argument(s), 7 given
+	tsearchn(1, 2, 3, 4)	error: tsearchn takes 3 argument(s), 4 given
+	erase(1, 2, 3)	error: erase takes 2 argument(s), 3 given
+	extractbefore(1, 2, 3)	error: extractbefore takes 2 argument(s), 3 given
+	extractafter(1, 2, 3)	error: extractafter takes 2 argument(s), 3 given
+	extractbetween(1, 2, 3, 4)	error: extractbetween takes 3 argument(s), 4 given
+	insertafter(1, 2, 3, 4)	error: insertafter takes 3 argument(s), 4 given
+	insertbefore(1, 2, 3, 4)	error: insertbefore takes 3 argument(s), 4 given
+	pad(1, 2, 3, 4, 5)	error: pad takes 2 to 4 argument(s), 5 given
+	isstrprop(1, 2, 3)	error: isstrprop takes 2 argument(s), 3 given
+	rgb2gray(1, 2)	error: rgb2gray takes 1 argument(s), 2 given
+	im2double(1, 2, 3)	error: im2double takes 1 to 2 argument(s), 3 given
+	im2uint8(1, 2)	error: im2uint8 takes 1 argument(s), 2 given
+	im2uint16(1, 2)	error: im2uint16 takes 1 argument(s), 2 given
+	imcomplement(1, 2)	error: imcomplement takes 1 argument(s), 2 given
+	imcrop(1, 2, 3)	error: imcrop takes 2 argument(s), 3 given
+	imresize(1, 2, 3, 4)	error: imresize takes 2 to 3 argument(s), 4 given
+	imrotate(1, 2, 3)	error: imrotate takes 2 argument(s), 3 given
+	imfilter(1, 2, 3, 4)	error: imfilter takes 2 to 3 argument(s), 4 given
+	imhist(1, 2, 3)	error: imhist takes 1 to 2 argument(s), 3 given
+	imbinarize(1, 2, 3)	error: imbinarize takes 1 to 2 argument(s), 3 given
+	htrans(1, 2, 3, 4)	error: htrans takes 3 argument(s), 4 given
+	ihtrans(1, 2, 3, 4)	error: ihtrans takes 3 argument(s), 4 given
+	datenum(1, 2, 3, 4, 5, 6, 7)	error: datenum takes 1 to 6 argument(s), 7 given
+	datevec(1, 2, 3)	error: datevec takes 1 to 2 argument(s), 3 given
+	datestr(1, 2, 3)	error: datestr takes 1 to 2 argument(s), 3 given
+	weekday(1, 2, 3)	error: weekday takes 1 to 2 argument(s), 3 given
+	eomday(1, 2, 3)	error: eomday takes 2 argument(s), 3 given
+	calendar(1, 2, 3)	error: calendar takes 0 to 2 argument(s), 3 given
+	addtodate(1, 2, 3, 4)	error: addtodate takes 3 argument(s), 4 given
+	etime(1, 2, 3)	error: etime takes 2 argument(s), 3 given
+	juliandate(1, 2)	error: juliandate takes 1 argument(s), 2 given
+	mjuliandate(1, 2)	error: mjuliandate takes 1 argument(s), 2 given
+	posixtime(1, 2)	error: posixtime takes 1 argument(s), 2 given
+	dayofyear(1, 2)	error: dayofyear takes 1 argument(s), 2 given
+	isweekend(1, 2)	error: isweekend takes 1 argument(s), 2 given
+	leapyear(1, 2)	error: leapyear takes 1 argument(s), 2 given
+	yeardays(1, 2)	error: yeardays takes 1 argument(s), 2 given
+	now(1)	error: now takes 0 argument(s), 1 given
+	clock(1)	error: clock takes 0 argument(s), 1 given
+	date(1)	error: date takes 0 argument(s), 1 given
+	cputime(1)	error: cputime takes 0 argument(s), 1 given
+	regexptranslate(1, 2, 3)	error: regexptranslate takes 2 argument(s), 3 given
+	strjust(1, 2, 3)	error: strjust takes 1 to 2 argument(s), 3 given
+	validatestring(1, 2, 3)	error: validatestring takes 2 argument(s), 3 given
+	ranksum(1, 2, 3, 4)	error: ranksum takes 2 to 3 argument(s), 4 given
+	signrank(1, 2, 3, 4)	error: signrank takes 1 to 3 argument(s), 4 given
+	signtest(1, 2, 3, 4)	error: signtest takes 1 to 3 argument(s), 4 given
+	kruskalwallis(1, 2)	error: kruskalwallis takes 1 argument(s), 2 given
+	friedman(1, 2)	error: friedman takes 1 argument(s), 2 given
+	vartestn(1, 2)	error: vartestn takes 1 argument(s), 2 given
+	fishertest(1, 2)	error: fishertest takes 1 argument(s), 2 given
+	chi2gof(1, 2, 3, 4)	error: chi2gof takes 2 to 3 argument(s), 4 given
+	kstest(1, 2, 3)	error: kstest takes 1 to 2 argument(s), 3 given
+	kstest2(1, 2, 3)	error: kstest2 takes 2 argument(s), 3 given
+	jbtest(1, 2)	error: jbtest takes 1 argument(s), 2 given
+	anova2(1, 2, 3)	error: anova2 takes 1 to 2 argument(s), 3 given
+	mahal(1, 2, 3)	error: mahal takes 2 argument(s), 3 given
+	mvnpdf(1, 2, 3, 4)	error: mvnpdf takes 1 to 3 argument(s), 4 given
+	mvnrnd(1, 2, 3, 4)	error: mvnrnd takes 2 to 3 argument(s), 4 given
+	ksdensity(1, 2, 3, 4)	error: ksdensity takes 1 to 3 argument(s), 4 given
+	jackknife(1, 2, 3)	error: jackknife takes 2 argument(s), 3 given
+	bootstrp(1, 2, 3, 4)	error: bootstrp takes 3 argument(s), 4 given
+	grpstats(1, 2, 3, 4)	error: grpstats takes 2 to 3 argument(s), 4 given
+	linkage(1, 2, 3)	error: linkage takes 1 to 2 argument(s), 3 given
+	cluster(1, 2, 3)	error: cluster takes 2 argument(s), 3 given
+	kmeans(1, 2, 3)	error: kmeans takes 2 argument(s), 3 given
+	fitlm(1, 2, 3)	error: fitlm takes 2 argument(s), 3 given
+	isstruct(1, 2)	error: isstruct takes 1 argument(s), 2 given
+	fieldnames(1, 2)	error: fieldnames takes 1 argument(s), 2 given
+	numfields(1, 2)	error: numfields takes 1 argument(s), 2 given
+	rmfield(1, 2, 3)	error: rmfield takes 2 argument(s), 3 given
+	isfield(1, 2, 3)	error: isfield takes 2 argument(s), 3 given
+	orderfields(1, 2)	error: orderfields takes 1 argument(s), 2 given
+	struct2cell(1, 2)	error: struct2cell takes 1 argument(s), 2 given
+	cell2struct(1, 2, 3)	error: cell2struct takes 2 argument(s), 3 given
+	structfun(1, 2, 3)	error: structfun takes 2 argument(s), 3 given
+	keys(1, 2)	error: keys takes 1 argument(s), 2 given
+	values(1, 2, 3)	error: values takes 1 to 2 argument(s), 3 given
+	entries(1, 2)	error: entries takes 1 argument(s), 2 given
+	numentries(1, 2)	error: numentries takes 1 argument(s), 2 given
+	iskey(1, 2, 3)	error: iskey takes 2 argument(s), 3 given
+	lookup(1, 2, 3, 4)	error: lookup takes 2 to 3 argument(s), 4 given
+	remove(1, 2, 3)	error: remove takes 2 argument(s), 3 given
+	iscell(1, 2)	error: iscell takes 1 argument(s), 2 given
+	iscellstr(1, 2)	error: iscellstr takes 1 argument(s), 2 given
+	cell(1, 2, 3)	error: cell takes 1 to 2 argument(s), 3 given
+	meijerg(1, 2, 3, 4, 5, 6)	error: meijerg takes 5 argument(s), 6 given
+	lerchphi(1, 2, 3, 4)	error: lerchphi takes 3 argument(s), 4 given
+	functionalderivative(1, 2, 3, 4)	error: functionalderivative takes 1 to 3 argument(s), 4 given
+	odetovectorfield(1, 2, 3, 4)	error: odetovectorfield takes 1 to 3 argument(s), 4 given
+	fmincon(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)	error: fmincon takes 2 to 9 argument(s), 10 given
+	gallery(1, 2, 3, 4, 5, 6)	error: gallery takes 2 to 5 argument(s), 6 given
+	peaks(1, 2, 3)	error: peaks takes 0 to 2 argument(s), 3 given
+	colormap(1, 2, 3)	error: colormap takes 1 to 2 argument(s), 3 given
+	histcounts2(1, 2, 3, 4, 5)	error: histcounts2 takes 3 to 4 argument(s), 5 given

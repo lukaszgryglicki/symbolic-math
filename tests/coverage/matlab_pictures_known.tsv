@@ -1,0 +1,18 @@
+-e	imrotate(imrotate(magic(4), 90), 270) == magic(4)	true
+-e	imrotate(magic(4), 180) == rot90(magic(4), 2)	true
+-e	imrotate(magic(5), 90) == rot90(magic(5))	true
+-e	imresize(magic(4), 1) == magic(4)	true
+-e	imresize(imresize(magic(4), 3, "nearest"), 1/3, "nearest") == magic(4)	true
+-e	size(imresize(magic(4), 5/2))	[10, 10]
+-e	size(imresize(magic(4), [3, 7]))	[3, 7]
+-e	imcomplement(imcomplement(magic(4))) == magic(4)	true
+-e	im2uint8(im2double(magic(4))) == magic(4)	true
+-e	im2uint16(im2double(magic(4), 16)) == magic(4)	true
+-e	imcrop(magic(4), [1, 1, 3, 3]) == magic(4)	true
+-e	imfilter(magic(4), [[1]]) == magic(4)	true
+-e	imfilter(magic(4), [[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == magic(4)	true
+-e	sum(imhist(magic(4), 8)) == 16	true
+-e	rgb2gray([magic(4), magic(4), magic(4)]) == magic(4)	true
+-e	sum(imbinarize(magic(4)), "all")	8
+-e	mat2gray(magic(4)) == (magic(4) - 1)/15	true
+-e	size(imrotate(magic(4), 45))	[6, 6]

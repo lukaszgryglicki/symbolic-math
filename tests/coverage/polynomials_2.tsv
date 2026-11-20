@@ -1,0 +1,155 @@
+-e	polyvalm([3, 3, -1], [[2]]) == [[polyval([3, 3, -1], 2)]]	true
+-e	part(residue(part(residue([-5, 5, -2], conv([1, -7], [1, 9])), 1), part(residue([-5, 5, -2], conv([1, -7], [1, 9])), 2), part(residue([-5, 5, -2], conv([1, -7], [1, 9])), 3)), 1) == [-5, 5, -2]	true
+-e	conv([1, 2], [-2, 1, 4])	[-2, -3, 6, 8]
+-e	conv([1, 2], [-2, 1, 4]) == conv([-2, 1, 4], [1, 2])	true
+-e	part(deconv(conv([1, 2], [-2, 1, 4]), [-2, 1, 4]), 1) == [1, 2]	true
+-e	sym2poly(expand(poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x)), x) == conv([1, 2], [-2, 1, 4])	true
+-e	expand(factor(poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x)) - poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x))	0
+-e	expand(part(quorem(poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x) + 1, poly2sym([-2, 1, 4], x), x), 1)*poly2sym([-2, 1, 4], x) + part(quorem(poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x) + 1, poly2sym([-2, 1, 4], x), x), 2) - poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x) - 1)	0
+-e	polyder([1, 2], [-2, 1, 4]) == polyder(conv([1, 2], [-2, 1, 4]))	true
+-e	simplify(diff(poly2sym([1, 2], x), x) - poly2sym(polyder([1, 2]), x))	0
+-e	simplify(integrate(poly2sym([1, 2], x), x) - poly2sym(polyint([1, 2]), x))	0
+-e	simplify(together(apart(poly2sym([1, 2], x)/(poly2sym([-2, 1, 4], x)), x)) - poly2sym([1, 2], x)/(poly2sym([-2, 1, 4], x)))	0
+-e	simplify(numer(poly2sym([1, 2], x)/(poly2sym([-2, 1, 4], x)))/denom(poly2sym([1, 2], x)/(poly2sym([-2, 1, 4], x))) - poly2sym([1, 2], x)/(poly2sym([-2, 1, 4], x)))	0
+-e	degree(poly2sym([1, 2], x), x)	1
+-e	polyval([1, 2], 2)	4
+-e	polyval([1, 2], [0, 1, -1])	[2, 3, 1]
+-e	coeffs(poly2sym([1, 2], x), x, "all") == [1, 2]	true
+-e	expand(horner(poly2sym([1, 2], x)) - (poly2sym([1, 2], x)))	0
+-e	polynomialreduce(poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x), [poly2sym([-2, 1, 4], x)], [x])	0
+-e	simplify(prod(roots([1, 2])) - (-2)/(1))	0
+-e	simplify(sum(roots([1, 2])) + (2)/(1))	0
+-e	expand(resultant(poly2sym([1, 2], x), poly2sym([1, 2], x)*poly2sym([-2, 1, 4], x), x))	0
+-e	polyvalm([1, 2], [[2]]) == [[polyval([1, 2], 2)]]	true
+-e	part(residue(part(residue([-2, 1, 4], conv([1, -7], [1, 9])), 1), part(residue([-2, 1, 4], conv([1, -7], [1, 9])), 2), part(residue([-2, 1, 4], conv([1, -7], [1, 9])), 3)), 1) == [-2, 1, 4]	true
+-e	conv([-3, 0, -3], [-1, 3, -3])	[3, -9, 12, -9, 9]
+-e	conv([-3, 0, -3], [-1, 3, -3]) == conv([-1, 3, -3], [-3, 0, -3])	true
+-e	part(deconv(conv([-3, 0, -3], [-1, 3, -3]), [-1, 3, -3]), 1) == [-3, 0, -3]	true
+-e	sym2poly(expand(poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x)), x) == conv([-3, 0, -3], [-1, 3, -3])	true
+-e	expand(factor(poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x)) - poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x))	0
+-e	expand(part(quorem(poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x) + 1, poly2sym([-1, 3, -3], x), x), 1)*poly2sym([-1, 3, -3], x) + part(quorem(poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x) + 1, poly2sym([-1, 3, -3], x), x), 2) - poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x) - 1)	0
+-e	polyder([-3, 0, -3], [-1, 3, -3]) == polyder(conv([-3, 0, -3], [-1, 3, -3]))	true
+-e	simplify(diff(poly2sym([-3, 0, -3], x), x) - poly2sym(polyder([-3, 0, -3]), x))	0
+-e	simplify(integrate(poly2sym([-3, 0, -3], x), x) - poly2sym(polyint([-3, 0, -3]), x))	0
+-e	simplify(together(apart(poly2sym([-3, 0, -3], x)/(poly2sym([-1, 3, -3], x)), x)) - poly2sym([-3, 0, -3], x)/(poly2sym([-1, 3, -3], x)))	0
+-e	simplify(numer(poly2sym([-3, 0, -3], x)/(poly2sym([-1, 3, -3], x)))/denom(poly2sym([-3, 0, -3], x)/(poly2sym([-1, 3, -3], x))) - poly2sym([-3, 0, -3], x)/(poly2sym([-1, 3, -3], x)))	0
+-e	degree(poly2sym([-3, 0, -3], x), x)	2
+-e	polyval([-3, 0, -3], 2)	-15
+-e	polyval([-3, 0, -3], [0, 1, -1])	[-3, -6, -6]
+-e	coeffs(poly2sym([-3, 0, -3], x), x, "all") == [-3, 0, -3]	true
+-e	expand(horner(poly2sym([-3, 0, -3], x)) - (poly2sym([-3, 0, -3], x)))	0
+-e	polynomialreduce(poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x), [poly2sym([-1, 3, -3], x)], [x])	0
+-e	simplify(prod(roots([-3, 0, -3])) - (-3)/(-3))	0
+-e	simplify(sum(roots([-3, 0, -3])) + (0)/(-3))	0
+-e	expand(resultant(poly2sym([-3, 0, -3], x), poly2sym([-3, 0, -3], x)*poly2sym([-1, 3, -3], x), x))	0
+-e	polyvalm([-3, 0, -3], [[2]]) == [[polyval([-3, 0, -3], 2)]]	true
+-e	part(residue(part(residue([-1, 3, -3], conv([1, -7], [1, 9])), 1), part(residue([-1, 3, -3], conv([1, -7], [1, 9])), 2), part(residue([-1, 3, -3], conv([1, -7], [1, 9])), 3)), 1) == [-1, 3, -3]	true
+-e	conv([3, -5, -3, 4], [-3, -5, -2, -3])	[-9, 0, 28, 4, 1, 1, -12]
+-e	conv([3, -5, -3, 4], [-3, -5, -2, -3]) == conv([-3, -5, -2, -3], [3, -5, -3, 4])	true
+-e	part(deconv(conv([3, -5, -3, 4], [-3, -5, -2, -3]), [-3, -5, -2, -3]), 1) == [3, -5, -3, 4]	true
+-e	sym2poly(expand(poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x)), x) == conv([3, -5, -3, 4], [-3, -5, -2, -3])	true
+-e	expand(factor(poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x)) - poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x))	0
+-e	expand(part(quorem(poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x) + 1, poly2sym([-3, -5, -2, -3], x), x), 1)*poly2sym([-3, -5, -2, -3], x) + part(quorem(poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x) + 1, poly2sym([-3, -5, -2, -3], x), x), 2) - poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x) - 1)	0
+-e	polyder([3, -5, -3, 4], [-3, -5, -2, -3]) == polyder(conv([3, -5, -3, 4], [-3, -5, -2, -3]))	true
+-e	simplify(diff(poly2sym([3, -5, -3, 4], x), x) - poly2sym(polyder([3, -5, -3, 4]), x))	0
+-e	simplify(integrate(poly2sym([3, -5, -3, 4], x), x) - poly2sym(polyint([3, -5, -3, 4]), x))	0
+-e	simplify(together(apart(poly2sym([3, -5, -3, 4], x)/(poly2sym([-3, -5, -2, -3], x)), x)) - poly2sym([3, -5, -3, 4], x)/(poly2sym([-3, -5, -2, -3], x)))	0
+-e	simplify(numer(poly2sym([3, -5, -3, 4], x)/(poly2sym([-3, -5, -2, -3], x)))/denom(poly2sym([3, -5, -3, 4], x)/(poly2sym([-3, -5, -2, -3], x))) - poly2sym([3, -5, -3, 4], x)/(poly2sym([-3, -5, -2, -3], x)))	0
+-e	degree(poly2sym([3, -5, -3, 4], x), x)	3
+-e	polyval([3, -5, -3, 4], 2)	2
+-e	polyval([3, -5, -3, 4], [0, 1, -1])	[4, -1, -1]
+-e	coeffs(poly2sym([3, -5, -3, 4], x), x, "all") == [3, -5, -3, 4]	true
+-e	expand(horner(poly2sym([3, -5, -3, 4], x)) - (poly2sym([3, -5, -3, 4], x)))	0
+-e	polynomialreduce(poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x), [poly2sym([-3, -5, -2, -3], x)], [x])	0
+-e	expand(resultant(poly2sym([3, -5, -3, 4], x), poly2sym([3, -5, -3, 4], x)*poly2sym([-3, -5, -2, -3], x), x))	0
+-e	polyvalm([3, -5, -3, 4], [[2]]) == [[polyval([3, -5, -3, 4], 2)]]	true
+-e	part(residue(part(residue([-3, -5, -2, -3], conv([1, -7], [1, 9])), 1), part(residue([-3, -5, -2, -3], conv([1, -7], [1, 9])), 2), part(residue([-3, -5, -2, -3], conv([1, -7], [1, 9])), 3)), 1) == [-3, -5, -2, -3]	true
+-e	conv([1, -1, 4], [3, -4])	[3, -7, 16, -16]
+-e	conv([1, -1, 4], [3, -4]) == conv([3, -4], [1, -1, 4])	true
+-e	part(deconv(conv([1, -1, 4], [3, -4]), [3, -4]), 1) == [1, -1, 4]	true
+-e	sym2poly(expand(poly2sym([1, -1, 4], x)*poly2sym([3, -4], x)), x) == conv([1, -1, 4], [3, -4])	true
+-e	expand(factor(poly2sym([1, -1, 4], x)*poly2sym([3, -4], x)) - poly2sym([1, -1, 4], x)*poly2sym([3, -4], x))	0
+-e	expand(part(quorem(poly2sym([1, -1, 4], x)*poly2sym([3, -4], x) + 1, poly2sym([3, -4], x), x), 1)*poly2sym([3, -4], x) + part(quorem(poly2sym([1, -1, 4], x)*poly2sym([3, -4], x) + 1, poly2sym([3, -4], x), x), 2) - poly2sym([1, -1, 4], x)*poly2sym([3, -4], x) - 1)	0
+-e	polyder([1, -1, 4], [3, -4]) == polyder(conv([1, -1, 4], [3, -4]))	true
+-e	simplify(diff(poly2sym([1, -1, 4], x), x) - poly2sym(polyder([1, -1, 4]), x))	0
+-e	simplify(integrate(poly2sym([1, -1, 4], x), x) - poly2sym(polyint([1, -1, 4]), x))	0
+-e	simplify(together(apart(poly2sym([1, -1, 4], x)/(poly2sym([3, -4], x)), x)) - poly2sym([1, -1, 4], x)/(poly2sym([3, -4], x)))	0
+-e	simplify(numer(poly2sym([1, -1, 4], x)/(poly2sym([3, -4], x)))/denom(poly2sym([1, -1, 4], x)/(poly2sym([3, -4], x))) - poly2sym([1, -1, 4], x)/(poly2sym([3, -4], x)))	0
+-e	degree(poly2sym([1, -1, 4], x), x)	2
+-e	polyval([1, -1, 4], 2)	6
+-e	polyval([1, -1, 4], [0, 1, -1])	[4, 4, 6]
+-e	coeffs(poly2sym([1, -1, 4], x), x, "all") == [1, -1, 4]	true
+-e	expand(horner(poly2sym([1, -1, 4], x)) - (poly2sym([1, -1, 4], x)))	0
+-e	polynomialreduce(poly2sym([1, -1, 4], x)*poly2sym([3, -4], x), [poly2sym([3, -4], x)], [x])	0
+-e	simplify(prod(roots([1, -1, 4])) - (4)/(1))	0
+-e	simplify(sum(roots([1, -1, 4])) + (-1)/(1))	0
+-e	expand(resultant(poly2sym([1, -1, 4], x), poly2sym([1, -1, 4], x)*poly2sym([3, -4], x), x))	0
+-e	polyvalm([1, -1, 4], [[2]]) == [[polyval([1, -1, 4], 2)]]	true
+-e	conv([2, -4, 4, 3, 3], [-1, -5, -2, 1])	[-2, -6, 12, -13, -30, -17, -3, 3]
+-e	conv([2, -4, 4, 3, 3], [-1, -5, -2, 1]) == conv([-1, -5, -2, 1], [2, -4, 4, 3, 3])	true
+-e	part(deconv(conv([2, -4, 4, 3, 3], [-1, -5, -2, 1]), [-1, -5, -2, 1]), 1) == [2, -4, 4, 3, 3]	true
+-e	sym2poly(expand(poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x)), x) == conv([2, -4, 4, 3, 3], [-1, -5, -2, 1])	true
+-e	expand(factor(poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x)) - poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x))	0
+-e	expand(part(quorem(poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x) + 1, poly2sym([-1, -5, -2, 1], x), x), 1)*poly2sym([-1, -5, -2, 1], x) + part(quorem(poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x) + 1, poly2sym([-1, -5, -2, 1], x), x), 2) - poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x) - 1)	0
+-e	polyder([2, -4, 4, 3, 3], [-1, -5, -2, 1]) == polyder(conv([2, -4, 4, 3, 3], [-1, -5, -2, 1]))	true
+-e	simplify(diff(poly2sym([2, -4, 4, 3, 3], x), x) - poly2sym(polyder([2, -4, 4, 3, 3]), x))	0
+-e	simplify(integrate(poly2sym([2, -4, 4, 3, 3], x), x) - poly2sym(polyint([2, -4, 4, 3, 3]), x))	0
+-e	simplify(together(apart(poly2sym([2, -4, 4, 3, 3], x)/(poly2sym([-1, -5, -2, 1], x)), x)) - poly2sym([2, -4, 4, 3, 3], x)/(poly2sym([-1, -5, -2, 1], x)))	0
+-e	simplify(numer(poly2sym([2, -4, 4, 3, 3], x)/(poly2sym([-1, -5, -2, 1], x)))/denom(poly2sym([2, -4, 4, 3, 3], x)/(poly2sym([-1, -5, -2, 1], x))) - poly2sym([2, -4, 4, 3, 3], x)/(poly2sym([-1, -5, -2, 1], x)))	0
+-e	degree(poly2sym([2, -4, 4, 3, 3], x), x)	4
+-e	polyval([2, -4, 4, 3, 3], 2)	25
+-e	polyval([2, -4, 4, 3, 3], [0, 1, -1])	[3, 8, 10]
+-e	coeffs(poly2sym([2, -4, 4, 3, 3], x), x, "all") == [2, -4, 4, 3, 3]	true
+-e	expand(horner(poly2sym([2, -4, 4, 3, 3], x)) - (poly2sym([2, -4, 4, 3, 3], x)))	0
+-e	polynomialreduce(poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x), [poly2sym([-1, -5, -2, 1], x)], [x])	0
+-e	expand(resultant(poly2sym([2, -4, 4, 3, 3], x), poly2sym([2, -4, 4, 3, 3], x)*poly2sym([-1, -5, -2, 1], x), x))	0
+-e	polyvalm([2, -4, 4, 3, 3], [[2]]) == [[polyval([2, -4, 4, 3, 3], 2)]]	true
+-e	part(residue(part(residue([-1, -5, -2, 1], conv([1, -7], [1, 9])), 1), part(residue([-1, -5, -2, 1], conv([1, -7], [1, 9])), 2), part(residue([-1, -5, -2, 1], conv([1, -7], [1, 9])), 3)), 1) == [-1, -5, -2, 1]	true
+-e	conv([-4, 2, -2], [-5, 3, 1, 3])	[20, -22, 12, -16, 4, -6]
+-e	conv([-4, 2, -2], [-5, 3, 1, 3]) == conv([-5, 3, 1, 3], [-4, 2, -2])	true
+-e	part(deconv(conv([-4, 2, -2], [-5, 3, 1, 3]), [-5, 3, 1, 3]), 1) == [-4, 2, -2]	true
+-e	sym2poly(expand(poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x)), x) == conv([-4, 2, -2], [-5, 3, 1, 3])	true
+-e	expand(factor(poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x)) - poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x))	0
+-e	expand(part(quorem(poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x) + 1, poly2sym([-5, 3, 1, 3], x), x), 1)*poly2sym([-5, 3, 1, 3], x) + part(quorem(poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x) + 1, poly2sym([-5, 3, 1, 3], x), x), 2) - poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x) - 1)	0
+-e	polyder([-4, 2, -2], [-5, 3, 1, 3]) == polyder(conv([-4, 2, -2], [-5, 3, 1, 3]))	true
+-e	simplify(diff(poly2sym([-4, 2, -2], x), x) - poly2sym(polyder([-4, 2, -2]), x))	0
+-e	simplify(integrate(poly2sym([-4, 2, -2], x), x) - poly2sym(polyint([-4, 2, -2]), x))	0
+-e	simplify(together(apart(poly2sym([-4, 2, -2], x)/(poly2sym([-5, 3, 1, 3], x)), x)) - poly2sym([-4, 2, -2], x)/(poly2sym([-5, 3, 1, 3], x)))	0
+-e	simplify(numer(poly2sym([-4, 2, -2], x)/(poly2sym([-5, 3, 1, 3], x)))/denom(poly2sym([-4, 2, -2], x)/(poly2sym([-5, 3, 1, 3], x))) - poly2sym([-4, 2, -2], x)/(poly2sym([-5, 3, 1, 3], x)))	0
+-e	degree(poly2sym([-4, 2, -2], x), x)	2
+-e	polyval([-4, 2, -2], 2)	-14
+-e	polyval([-4, 2, -2], [0, 1, -1])	[-2, -4, -8]
+-e	coeffs(poly2sym([-4, 2, -2], x), x, "all") == [-4, 2, -2]	true
+-e	expand(horner(poly2sym([-4, 2, -2], x)) - (poly2sym([-4, 2, -2], x)))	0
+-e	polynomialreduce(poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x), [poly2sym([-5, 3, 1, 3], x)], [x])	0
+-e	simplify(prod(roots([-4, 2, -2])) - (-2)/(-4))	0
+-e	simplify(sum(roots([-4, 2, -2])) + (2)/(-4))	0
+-e	expand(resultant(poly2sym([-4, 2, -2], x), poly2sym([-4, 2, -2], x)*poly2sym([-5, 3, 1, 3], x), x))	0
+-e	polyvalm([-4, 2, -2], [[2]]) == [[polyval([-4, 2, -2], 2)]]	true
+-e	part(residue(part(residue([-5, 3, 1, 3], conv([1, -7], [1, 9])), 1), part(residue([-5, 3, 1, 3], conv([1, -7], [1, 9])), 2), part(residue([-5, 3, 1, 3], conv([1, -7], [1, 9])), 3)), 1) == [-5, 3, 1, 3]	true
+-e	sym2poly(expand((x + 1)^0), x)	[1]
+-e	expand((x - 1)*sum(x^k, k, 0, 0))	x - 1
+-e	sym2poly(expand((x + 1)^1), x)	[1, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 1))	x^2 - 1
+-e	sym2poly(expand((x + 1)^2), x)	[1, 2, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 2))	x^3 - 1
+-e	sym2poly(expand((x + 1)^3), x)	[1, 3, 3, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 3))	x^4 - 1
+-e	sym2poly(expand((x + 1)^4), x)	[1, 4, 6, 4, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 4))	x^5 - 1
+-e	sym2poly(expand((x + 1)^5), x)	[1, 5, 10, 10, 5, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 5))	x^6 - 1
+-e	sym2poly(expand((x + 1)^6), x)	[1, 6, 15, 20, 15, 6, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 6))	x^7 - 1
+-e	sym2poly(expand((x + 1)^7), x)	[1, 7, 21, 35, 35, 21, 7, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 7))	x^8 - 1
+-e	sym2poly(expand((x + 1)^8), x)	[1, 8, 28, 56, 70, 56, 28, 8, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 8))	x^9 - 1
+-e	sym2poly(expand((x + 1)^9), x)	[1, 9, 36, 84, 126, 126, 84, 36, 9, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 9))	x^10 - 1
+-e	sym2poly(expand((x + 1)^10), x)	[1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 10))	x^11 - 1
+-e	sym2poly(expand((x + 1)^11), x)	[1, 11, 55, 165, 330, 462, 462, 330, 165, 55, 11, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 11))	x^12 - 1
+-e	sym2poly(expand((x + 1)^12), x)	[1, 12, 66, 220, 495, 792, 924, 792, 495, 220, 66, 12, 1]
+-e	expand((x - 1)*sum(x^k, k, 0, 12))	x^13 - 1

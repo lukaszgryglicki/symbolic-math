@@ -1,0 +1,700 @@
+-e	fft([1, 2])	[3, -1]
+-e	fft("text")	["text"]
+-e	fft(true)	[true]
+-e	fft(-7/3)	[-7/3]
+-e	fft(0.5)	[0.5]
+-e	ifft(0)	[0]
+-e	ifft(1)	[1]
+-e	ifft(-1)	[-1]
+-e	ifft(1/2)	[1/2]
+-e	ifft(2)	[2]
+-e	ifft(i)	[i]
+-e	ifft(inf)	[inf]
+-e	ifft(-inf)	[-inf]
+-e	ifft(undefined)	[undefined]
+-e	ifft(10^20)	[100000000000000000000]
+-e	ifft(10^(-20))	[1/100000000000000000000]
+-e	ifft(x)	[x]
+-e	ifft([])	[]
+-e	ifft([1, 2])	[3/2, -1/2]
+-e	ifft("text")	["text"]
+-e	ifft(true)	[true]
+-e	ifft(-7/3)	[-7/3]
+-e	ifft(0.5)	[0.5]
+-e	fft2(0)	error: fft2 needs a matrix
+-e	fft2(1)	error: fft2 needs a matrix
+-e	fft2(-1)	error: fft2 needs a matrix
+-e	fft2(1/2)	error: fft2 needs a matrix
+-e	fft2(2)	error: fft2 needs a matrix
+-e	fft2(i)	error: fft2 needs a matrix
+-e	fft2(inf)	error: fft2 needs a matrix
+-e	fft2(-inf)	error: fft2 needs a matrix
+-e	fft2(undefined)	error: fft2 needs a matrix
+-e	fft2(10^20)	error: fft2 needs a matrix
+-e	fft2(10^(-20))	error: fft2 needs a matrix
+-e	fft2(x)	error: fft2 needs a matrix
+-e	fft2([])	error: fft2 needs a matrix
+-e	fft2([1, 2])	error: fft2 needs a matrix
+-e	fft2("text")	error: fft2 needs a matrix
+-e	fft2(true)	error: fft2 needs a matrix
+-e	fft2(-7/3)	error: fft2 needs a matrix
+-e	fft2(0.5)	error: fft2 needs a matrix
+-e	ifft2(0)	error: ifft2 needs a matrix
+-e	ifft2(1)	error: ifft2 needs a matrix
+-e	ifft2(-1)	error: ifft2 needs a matrix
+-e	ifft2(1/2)	error: ifft2 needs a matrix
+-e	ifft2(2)	error: ifft2 needs a matrix
+-e	ifft2(i)	error: ifft2 needs a matrix
+-e	ifft2(inf)	error: ifft2 needs a matrix
+-e	ifft2(-inf)	error: ifft2 needs a matrix
+-e	ifft2(undefined)	error: ifft2 needs a matrix
+-e	ifft2(10^20)	error: ifft2 needs a matrix
+-e	ifft2(10^(-20))	error: ifft2 needs a matrix
+-e	ifft2(x)	error: ifft2 needs a matrix
+-e	ifft2([])	error: ifft2 needs a matrix
+-e	ifft2([1, 2])	error: ifft2 needs a matrix
+-e	ifft2("text")	error: ifft2 needs a matrix
+-e	ifft2(true)	error: ifft2 needs a matrix
+-e	ifft2(-7/3)	error: ifft2 needs a matrix
+-e	ifft2(0.5)	error: ifft2 needs a matrix
+-e	fftshift(0)	0
+-e	fftshift(1)	1
+-e	fftshift(-1)	-1
+-e	fftshift(1/2)	1/2
+-e	fftshift(2)	2
+-e	fftshift(i)	i
+-e	fftshift(inf)	inf
+-e	fftshift(-inf)	-inf
+-e	fftshift(undefined)	undefined
+-e	fftshift(10^20)	100000000000000000000
+-e	fftshift(10^(-20))	1/100000000000000000000
+-e	fftshift(x)	x
+-e	fftshift([])	[]
+-e	fftshift([1, 2])	[2, 1]
+-e	fftshift("text")	"text"
+-e	fftshift(true)	true
+-e	fftshift(-7/3)	-7/3
+-e	fftshift(0.5)	0.5
+-e	ifftshift(0)	0
+-e	ifftshift(1)	1
+-e	ifftshift(-1)	-1
+-e	ifftshift(1/2)	1/2
+-e	ifftshift(2)	2
+-e	ifftshift(i)	i
+-e	ifftshift(inf)	inf
+-e	ifftshift(-inf)	-inf
+-e	ifftshift(undefined)	undefined
+-e	ifftshift(10^20)	100000000000000000000
+-e	ifftshift(10^(-20))	1/100000000000000000000
+-e	ifftshift(x)	x
+-e	ifftshift([])	[]
+-e	ifftshift([1, 2])	[2, 1]
+-e	ifftshift("text")	"text"
+-e	ifftshift(true)	true
+-e	ifftshift(-7/3)	-7/3
+-e	ifftshift(0.5)	0.5
+-e	dct(0)	[0]
+-e	dct(1)	[1]
+-e	dct(-1)	[-1]
+-e	dct(1/2)	[1/2]
+-e	dct(2)	[2]
+-e	dct(i)	[i]
+-e	dct(inf)	[inf]
+-e	dct(-inf)	[-inf]
+-e	dct(undefined)	[undefined]
+-e	dct(10^20)	[100000000000000000000]
+-e	dct(10^(-20))	[1/100000000000000000000]
+-e	dct(x)	[x]
+-e	dct([])	[]
+-e	dct([1, 2])	[3sqrt(2)/2, -sqrt(2)/2]
+-e	dct("text")	["text"]
+-e	dct(true)	[true]
+-e	dct(-7/3)	[-7/3]
+-e	dct(0.5)	[0.5]
+-e	idct(0)	[0]
+-e	idct(1)	[1]
+-e	idct(-1)	[-1]
+-e	idct(1/2)	[1/2]
+-e	idct(2)	[2]
+-e	idct(i)	[i]
+-e	idct(inf)	[inf]
+-e	idct(-inf)	[-inf]
+-e	idct(undefined)	[undefined]
+-e	idct(10^20)	[100000000000000000000]
+-e	idct(10^(-20))	[1/100000000000000000000]
+-e	idct(x)	[x]
+-e	idct([])	[]
+-e	idct([1, 2])	[3sqrt(2)/2, -sqrt(2)/2]
+-e	idct("text")	["text"]
+-e	idct(true)	[true]
+-e	idct(-7/3)	[-7/3]
+-e	idct(0.5)	[0.5]
+-e	xcorr(0)	error: xcorr needs lists
+-e	xcorr(1)	error: xcorr needs lists
+-e	xcorr(-1)	error: xcorr needs lists
+-e	xcorr(1/2)	error: xcorr needs lists
+-e	xcorr(2)	error: xcorr needs lists
+-e	xcorr(i)	error: xcorr needs lists
+-e	xcorr(inf)	error: xcorr needs lists
+-e	xcorr(-inf)	error: xcorr needs lists
+-e	xcorr(undefined)	error: xcorr needs lists
+-e	xcorr(10^20)	error: xcorr needs lists
+-e	xcorr(10^(-20))	error: xcorr needs lists
+-e	xcorr(x)	error: xcorr needs lists
+-e	xcorr([])	[]
+-e	xcorr([1, 2])	[2, 5, 2]
+-e	xcorr("text")	error: xcorr needs lists
+-e	xcorr(true)	error: xcorr needs lists
+-e	xcorr(-7/3)	error: xcorr needs lists
+-e	xcorr(0.5)	error: xcorr needs lists
+-e	expm1(0)	0
+-e	expm1(1)	e - 1
+-e	expm1(-1)	1/e - 1
+-e	expm1(1/2)	sqrt(e) - 1
+-e	expm1(2)	e^2 - 1
+-e	expm1(i)	e^i - 1
+-e	expm1(inf)	inf
+-e	expm1(-inf)	-1
+-e	expm1(undefined)	undefined
+-e	expm1(10^20)	e^100000000000000000000 - 1
+-e	expm1(10^(-20))	e^(1/100000000000000000000) - 1
+-e	expm1(x)	e^x - 1
+-e	expm1([])	[]
+-e	expm1([1, 2])	[e - 1, e^2 - 1]
+-e	expm1("text")	e^"text" - 1
+-e	expm1(true)	e^(true) - 1
+-e	expm1(-7/3)	1/e^(7/3) - 1
+-e	expm1(0.5)	0.64872127070012814684865078781416
+-e	log1p(0)	0
+-e	log1p(1)	ln(2)
+-e	log1p(-1)	-inf
+-e	log1p(1/2)	ln(3) - ln(2)
+-e	log1p(2)	ln(3)
+-e	log1p(i)	ln(2)/2 + i*pi/4
+-e	log1p(inf)	inf
+-e	log1p(-inf)	inf
+-e	log1p(undefined)	undefined
+-e	log1p(10^20)	ln(137) + ln(73) + ln(9999000099990001)
+-e	log1p(10^(-20))	ln(137) - 20ln(2) - 20ln(5) + ln(73) + ln(9999000099990001)
+-e	log1p(x)	ln(x + 1)
+-e	log1p([])	[]
+-e	log1p([1, 2])	[ln(2), ln(3)]
+-e	log1p("text")	ln("text" + 1)
+-e	log1p(true)	ln(1 + true)
+-e	log1p(-7/3)	2ln(2) - ln(3) + i*pi
+-e	log1p(0.5)	0.40546510810816438197801311546435
+-e	realsqrt(0)	0
+-e	realsqrt(1)	1
+-e	realsqrt(-1)	error: realsqrt: the result i is not a real number
+-e	realsqrt(1/2)	sqrt(2)/2
+-e	realsqrt(2)	sqrt(2)
+-e	realsqrt(i)	error: realsqrt: the result (-1)^(1/4) is not a real number
+-e	realsqrt(inf)	inf
+-e	realsqrt(-inf)	i*inf
+-e	realsqrt(undefined)	undefined
+-e	realsqrt(10^20)	10000000000
+-e	realsqrt(10^(-20))	1/10000000000
+-e	realsqrt(x)	sqrt(x)
+-e	realsqrt([])	[]
+-e	realsqrt([1, 2])	[1, sqrt(2)]
+-e	realsqrt("text")	sqrt("text")
+-e	realsqrt(true)	error: realsqrt: the result sqrt(true) is not a real number
+-e	realsqrt(-7/3)	error: realsqrt: the result i*sqrt(21)/3 is not a real number
+-e	realsqrt(0.5)	0.70710678118654752440084436210485
+-e	reallog(0)	-inf
+-e	reallog(1)	0
+-e	reallog(-1)	error: reallog: the result i*pi is not a real number
+-e	reallog(1/2)	-ln(2)
+-e	reallog(2)	ln(2)
+-e	reallog(i)	error: reallog: the result i*pi/2 is not a real number
+-e	reallog(inf)	inf
+-e	reallog(-inf)	inf
+-e	reallog(undefined)	undefined
+-e	reallog(10^20)	20ln(2) + 20ln(5)
+-e	reallog(10^(-20))	-20ln(2) - 20ln(5)
+-e	reallog(x)	ln(x)
+-e	reallog([])	[]
+-e	reallog([1, 2])	[0, ln(2)]
+-e	reallog("text")	ln("text")
+-e	reallog(true)	error: reallog: the result ln(true) is not a real number
+-e	reallog(-7/3)	error: reallog: the result -ln(3) + ln(7) + i*pi is not a real number
+-e	reallog(0.5)	-0.69314718055994530941723212145818
+-e	nextpow2(0)	-inf
+-e	nextpow2(1)	0
+-e	nextpow2(-1)	0
+-e	nextpow2(1/2)	-1
+-e	nextpow2(2)	1
+-e	nextpow2(i)	0
+-e	nextpow2(inf)	error: nextpow2: inf has no size
+-e	nextpow2(-inf)	error: nextpow2: -inf has no size
+-e	nextpow2(undefined)	error: nextpow2: undefined has no size
+-e	nextpow2(10^20)	67
+-e	nextpow2(10^(-20))	-66
+-e	nextpow2(x)	ceil(ln(abs(x))/ln(2))
+-e	nextpow2([])	[]
+-e	nextpow2([1, 2])	[0, 1]
+-e	nextpow2("text")	ceil(ln(abs("text"))/ln(2))
+-e	nextpow2(true)	error: nextpow2: true has no size
+-e	nextpow2(-7/3)	2
+-e	nextpow2(0.5)	-1
+-e	pow2(0)	1
+-e	pow2(1)	2
+-e	pow2(-1)	1/2
+-e	pow2(1/2)	sqrt(2)
+-e	pow2(2)	4
+-e	pow2(i)	2^i
+-e	pow2(inf)	inf
+-e	pow2(-inf)	0
+-e	pow2(undefined)	undefined
+-e	pow2(10^20)	2^100000000000000000000
+-e	pow2(10^(-20))	2^(1/100000000000000000000)
+-e	pow2(x)	2^x
+-e	pow2([])	[]
+-e	pow2([1, 2])	[2, 4]
+-e	pow2("text")	2^"text"
+-e	pow2(true)	2^(true)
+-e	pow2(-7/3)	2^(2/3)/8
+-e	pow2(0.5)	1.4142135623730950488016887242097
+-e	sind(0)	0
+-e	sind(1)	sin(pi/180)
+-e	sind(-1)	-sin(pi/180)
+-e	sind(1/2)	sin(pi/360)
+-e	sind(2)	sin(pi/90)
+-e	sind(i)	i*sinh(pi/180)
+-e	sind(inf)	sin(inf)
+-e	sind(-inf)	sin(-inf)
+-e	sind(undefined)	undefined
+-e	sind(10^20)	-sin(4pi/9)
+-e	sind(10^(-20))	sin(pi/18000000000000000000000)
+-e	sind(x)	sin(pi*x/180)
+-e	sind([])	[]
+-e	sind([1, 2])	[sin(pi/180), sin(pi/90)]
+-e	sind("text")	sin(pi*"text"/180)
+-e	sind(true)	sin(pi*true/180)
+-e	sind(-7/3)	-sin(7pi/540)
+-e	sind(0.5)	0.0087265354983739349648882139735844
+-e	cosd(0)	1
+-e	cosd(1)	cos(pi/180)
+-e	cosd(-1)	cos(pi/180)
+-e	cosd(1/2)	cos(pi/360)
+-e	cosd(2)	cos(pi/90)
+-e	cosd(i)	cosh(pi/180)
+-e	cosd(inf)	cos(inf)
+-e	cosd(-inf)	cos(-inf)
+-e	cosd(undefined)	undefined
+-e	cosd(10^20)	cos(4pi/9)
+-e	cosd(10^(-20))	cos(pi/18000000000000000000000)
+-e	cosd(x)	cos(pi*x/180)
+-e	cosd([])	[]
+-e	cosd([1, 2])	[cos(pi/180), cos(pi/90)]
+-e	cosd("text")	cos(pi*"text"/180)
+-e	cosd(true)	cos(pi*true/180)
+-e	cosd(-7/3)	cos(7pi/540)
+-e	cosd(0.5)	0.99996192306417128873735516482698
+-e	tand(0)	0
+-e	tand(1)	tan(pi/180)
+-e	tand(-1)	-tan(pi/180)
+-e	tand(1/2)	tan(pi/360)
+-e	tand(2)	tan(pi/90)
+-e	tand(i)	i*tanh(pi/180)
+-e	tand(inf)	tan(inf)
+-e	tand(-inf)	tan(-inf)
+-e	tand(undefined)	undefined
+-e	tand(10^20)	-tan(4pi/9)
+-e	tand(10^(-20))	tan(pi/18000000000000000000000)
+-e	tand(x)	tan(pi*x/180)
+-e	tand([])	[]
+-e	tand([1, 2])	[tan(pi/180), tan(pi/90)]
+-e	tand("text")	tan(pi*"text"/180)
+-e	tand(true)	tan(pi*true/180)
+-e	tand(-7/3)	-tan(7pi/540)
+-e	tand(0.5)	0.0087268677907587893345361980612019
+-e	cotd(0)	ComplexInfinity
+-e	cotd(1)	1/tan(pi/180)
+-e	cotd(-1)	-1/tan(pi/180)
+-e	cotd(1/2)	1/tan(pi/360)
+-e	cotd(2)	1/tan(pi/90)
+-e	cotd(i)	-i/tanh(pi/180)
+-e	cotd(inf)	1/tan(inf)
+-e	cotd(-inf)	1/tan(-inf)
+-e	cotd(undefined)	undefined
+-e	cotd(10^20)	-1/tan(4pi/9)
+-e	cotd(10^(-20))	1/tan(pi/18000000000000000000000)
+-e	cotd(x)	1/tan(pi*x/180)
+-e	cotd([])	[]
+-e	cotd([1, 2])	[1/tan(pi/180), 1/tan(pi/90)]
+-e	cotd("text")	1/tan(pi*"text"/180)
+-e	cotd(true)	1/tan(pi*true/180)
+-e	cotd(-7/3)	-1/tan(7pi/540)
+-e	cotd(0.5)	114.58865012930960816389083127229
+-e	secd(0)	1
+-e	secd(1)	1/cos(pi/180)
+-e	secd(-1)	1/cos(pi/180)
+-e	secd(1/2)	1/cos(pi/360)
+-e	secd(2)	1/cos(pi/90)
+-e	secd(i)	1/cosh(pi/180)
+-e	secd(inf)	1/cos(inf)
+-e	secd(-inf)	1/cos(-inf)
+-e	secd(undefined)	undefined
+-e	secd(10^20)	1/cos(4pi/9)
+-e	secd(10^(-20))	1/cos(pi/18000000000000000000000)
+-e	secd(x)	1/cos(pi*x/180)
+-e	secd([])	[]
+-e	secd([1, 2])	[1/cos(pi/180), 1/cos(pi/90)]
+-e	secd("text")	1/cos(pi*"text"/180)
+-e	secd(true)	1/cos(pi*true/180)
+-e	secd(-7/3)	1/cos(7pi/540)
+-e	secd(0.5)	1.0000380783857369614298394202301
+-e	cscd(0)	ComplexInfinity
+-e	cscd(1)	1/sin(pi/180)
+-e	cscd(-1)	-1/sin(pi/180)
+-e	cscd(1/2)	1/sin(pi/360)
+-e	cscd(2)	1/sin(pi/90)
+-e	cscd(i)	-i/sinh(pi/180)
+-e	cscd(inf)	1/sin(inf)
+-e	cscd(-inf)	1/sin(-inf)
+-e	cscd(undefined)	undefined
+-e	cscd(10^20)	-1/sin(4pi/9)
+-e	cscd(10^(-20))	1/sin(pi/18000000000000000000000)
+-e	cscd(x)	1/sin(pi*x/180)
+-e	cscd([])	[]
+-e	cscd([1, 2])	[1/sin(pi/180), 1/sin(pi/90)]
+-e	cscd("text")	1/sin(pi*"text"/180)
+-e	cscd(true)	1/sin(pi*true/180)
+-e	cscd(-7/3)	-1/sin(7pi/540)
+-e	cscd(0.5)	114.59301348013030973037736012513
+-e	asind(0)	0
+-e	asind(1)	90
+-e	asind(-1)	-90
+-e	asind(1/2)	30
+-e	asind(2)	180asin(2)/pi
+-e	asind(i)	180i*asinh(1)/pi
+-e	asind(inf)	180asin(inf)/pi
+-e	asind(-inf)	-180asin(inf)/pi
+-e	asind(undefined)	undefined
+-e	asind(10^20)	180asin(100000000000000000000)/pi
+-e	asind(10^(-20))	180asin(1/100000000000000000000)/pi
+-e	asind(x)	180asin(x)/pi
+-e	asind([])	[]
+-e	asind([1, 2])	[90, 180asin(2)/pi]
+-e	asind("text")	180asin("text")/pi
+-e	asind(true)	180asin(true)/pi
+-e	asind(-7/3)	-180asin(7/3)/pi
+-e	asind(0.5)	30
+-e	acosd(0)	90
+-e	acosd(1)	0
+-e	acosd(-1)	180
+-e	acosd(1/2)	60
+-e	acosd(2)	180acos(2)/pi
+-e	acosd(i)	90 - 180i*asinh(1)/pi
+-e	acosd(inf)	180acos(inf)/pi
+-e	acosd(-inf)	180acos(-inf)/pi
+-e	acosd(undefined)	undefined
+-e	acosd(10^20)	180acos(100000000000000000000)/pi
+-e	acosd(10^(-20))	180acos(1/100000000000000000000)/pi
+-e	acosd(x)	180acos(x)/pi
+-e	acosd([])	[]
+-e	acosd([1, 2])	[0, 180acos(2)/pi]
+-e	acosd("text")	180acos("text")/pi
+-e	acosd(true)	180acos(true)/pi
+-e	acosd(-7/3)	180acos(-7/3)/pi
+-e	acosd(0.5)	60
+-e	atand(0)	0
+-e	atand(1)	45
+-e	atand(-1)	-45
+-e	atand(1/2)	180atan(1/2)/pi
+-e	atand(2)	180atan(2)/pi
+-e	atand(i)	i*inf
+-e	atand(inf)	90
+-e	atand(-inf)	-90
+-e	atand(undefined)	undefined
+-e	atand(10^20)	180atan(100000000000000000000)/pi
+-e	atand(10^(-20))	180atan(1/100000000000000000000)/pi
+-e	atand(x)	180atan(x)/pi
+-e	atand([])	[]
+-e	atand([1, 2])	[45, 180atan(2)/pi]
+-e	atand("text")	180atan("text")/pi
+-e	atand(true)	180atan(true)/pi
+-e	atand(-7/3)	-180atan(7/3)/pi
+-e	atand(0.5)	26.565051177077989351572193720453
+-e	acotd(0)	180atan(ComplexInfinity)/pi
+-e	acotd(1)	45
+-e	acotd(-1)	-45
+-e	acotd(1/2)	180atan(2)/pi
+-e	acotd(2)	180atan(1/2)/pi
+-e	acotd(i)	-i*inf
+-e	acotd(inf)	0
+-e	acotd(-inf)	0
+-e	acotd(undefined)	undefined
+-e	acotd(10^20)	180atan(1/100000000000000000000)/pi
+-e	acotd(10^(-20))	180atan(100000000000000000000)/pi
+-e	acotd(x)	180atan(1/x)/pi
+-e	acotd([])	[]
+-e	acotd([1, 2])	[45, 180atan(1/2)/pi]
+-e	acotd("text")	180atan(1/"text")/pi
+-e	acotd(true)	180atan(1/true)/pi
+-e	acotd(-7/3)	-180atan(3/7)/pi
+-e	acotd(0.5)	63.434948822922010648427806279547
+-e	asecd(0)	180acos(ComplexInfinity)/pi
+-e	asecd(1)	0
+-e	asecd(-1)	180
+-e	asecd(1/2)	180acos(2)/pi
+-e	asecd(2)	60
+-e	asecd(i)	90 + 180i*asinh(1)/pi
+-e	asecd(inf)	90
+-e	asecd(-inf)	90
+-e	asecd(undefined)	undefined
+-e	asecd(10^20)	180acos(1/100000000000000000000)/pi
+-e	asecd(10^(-20))	180acos(100000000000000000000)/pi
+-e	asecd(x)	180acos(1/x)/pi
+-e	asecd([])	[]
+-e	asecd([1, 2])	[0, 60]
+-e	asecd("text")	180acos(1/"text")/pi
+-e	asecd(true)	180acos(1/true)/pi
+-e	asecd(-7/3)	180acos(-3/7)/pi
+-e	asecd(0.5)	75.456129290216892004100125807761i
+-e	acscd(0)	180asin(ComplexInfinity)/pi
+-e	acscd(1)	90
+-e	acscd(-1)	-90
+-e	acscd(1/2)	180asin(2)/pi
+-e	acscd(2)	30
+-e	acscd(i)	-180i*asinh(1)/pi
+-e	acscd(inf)	0
+-e	acscd(-inf)	0
+-e	acscd(undefined)	undefined
+-e	acscd(10^20)	180asin(1/100000000000000000000)/pi
+-e	acscd(10^(-20))	180asin(100000000000000000000)/pi
+-e	acscd(x)	180asin(1/x)/pi
+-e	acscd([])	[]
+-e	acscd([1, 2])	[90, 30]
+-e	acscd("text")	180asin(1/"text")/pi
+-e	acscd(true)	180asin(1/true)/pi
+-e	acscd(-7/3)	-180asin(3/7)/pi
+-e	acscd(0.5)	90 - 75.456129290216892004100125807761i
+-e	sinpi(0)	0
+-e	sinpi(1)	0
+-e	sinpi(-1)	0
+-e	sinpi(1/2)	1
+-e	sinpi(2)	0
+-e	sinpi(i)	i*sinh(pi)
+-e	sinpi(inf)	sin(inf)
+-e	sinpi(-inf)	sin(-inf)
+-e	sinpi(undefined)	undefined
+-e	sinpi(10^20)	0
+-e	sinpi(10^(-20))	sin(pi/100000000000000000000)
+-e	sinpi(x)	sin(pi*x)
+-e	sinpi([])	[]
+-e	sinpi([1, 2])	[0, 0]
+-e	sinpi("text")	sin(pi*"text")
+-e	sinpi(true)	sin(pi*true)
+-e	sinpi(-7/3)	-sqrt(3)/2
+-e	sinpi(0.5)	1
+-e	cospi(0)	1
+-e	cospi(1)	-1
+-e	cospi(-1)	-1
+-e	cospi(1/2)	0
+-e	cospi(2)	1
+-e	cospi(i)	cosh(pi)
+-e	cospi(inf)	cos(inf)
+-e	cospi(-inf)	cos(-inf)
+-e	cospi(undefined)	undefined
+-e	cospi(10^20)	1
+-e	cospi(10^(-20))	cos(pi/100000000000000000000)
+-e	cospi(x)	cos(pi*x)
+-e	cospi([])	[]
+-e	cospi([1, 2])	[-1, 1]
+-e	cospi("text")	cos(pi*"text")
+-e	cospi(true)	cos(pi*true)
+-e	cospi(-7/3)	1/2
+-e	cospi(0.5)	0
+-e	deg2rad(0)	0
+-e	deg2rad(1)	pi/180
+-e	deg2rad(-1)	-pi/180
+-e	deg2rad(1/2)	pi/360
+-e	deg2rad(2)	pi/90
+-e	deg2rad(i)	i*pi/180
+-e	deg2rad(inf)	inf
+-e	deg2rad(-inf)	-inf
+-e	deg2rad(undefined)	undefined
+-e	deg2rad(10^20)	5000000000000000000pi/9
+-e	deg2rad(10^(-20))	pi/18000000000000000000000
+-e	deg2rad(x)	pi*x/180
+-e	deg2rad([])	[]
+-e	deg2rad([1, 2])	[pi/180, pi/90]
+-e	deg2rad("text")	pi*"text"/180
+-e	deg2rad(true)	pi*true/180
+-e	deg2rad(-7/3)	-7pi/540
+-e	deg2rad(0.5)	0.0087266462599716478846184538424431
+-e	rad2deg(0)	0
+-e	rad2deg(1)	180/pi
+-e	rad2deg(-1)	-180/pi
+-e	rad2deg(1/2)	90/pi
+-e	rad2deg(2)	360/pi
+-e	rad2deg(i)	180i/pi
+-e	rad2deg(inf)	inf
+-e	rad2deg(-inf)	-inf
+-e	rad2deg(undefined)	undefined
+-e	rad2deg(10^20)	18000000000000000000000/pi
+-e	rad2deg(10^(-20))	9/(5000000000000000000pi)
+-e	rad2deg(x)	180x/pi
+-e	rad2deg([])	[]
+-e	rad2deg([1, 2])	[180/pi, 360/pi]
+-e	rad2deg("text")	180*"text"/pi
+-e	rad2deg(true)	180true/pi
+-e	rad2deg(-7/3)	-420/pi
+-e	rad2deg(0.5)	28.647889756541160438399077407053
+-e	rat(0)	0
+-e	rat(1)	1
+-e	rat(-1)	-1
+-e	rat(1/2)	1/2
+-e	rat(2)	2
+-e	rat(i)	error: rat: i is not a real number
+-e	rat(inf)	error: rat: inf is not a real number
+-e	rat(-inf)	error: rat: -inf is not a real number
+-e	rat(undefined)	error: rat: undefined is not a real number
+-e	rat(10^20)	100000000000000000000
+-e	rat(10^(-20))	1/100000000000000000000
+-e	rat(x)	error: rat: x is not a real number
+-e	rat([])	[]
+-e	rat([1, 2])	[1, 2]
+-e	rat("text")	error: rat: "text" is not a real number
+-e	rat(true)	error: rat: true is not a real number
+-e	rat(-7/3)	-7/3
+-e	rat(0.5)	1/2
+-e	bitcmp(0)	18446744073709551615
+-e	bitcmp(1)	18446744073709551614
+-e	bitcmp(-1)	error: bitcmp needs whole numbers that are not negative, -1 is none
+-e	bitcmp(1/2)	error: bitcmp needs whole numbers that are not negative, 1/2 is none
+-e	bitcmp(2)	18446744073709551613
+-e	bitcmp(i)	error: bitcmp needs whole numbers that are not negative, i is none
+-e	bitcmp(inf)	error: bitcmp needs whole numbers that are not negative, inf is none
+-e	bitcmp(-inf)	error: bitcmp needs whole numbers that are not negative, -inf is none
+-e	bitcmp(undefined)	error: bitcmp needs whole numbers that are not negative, undefined is none
+-e	bitcmp(10^20)	error: bitcmp: 100000000000000000000 has more than 64 bits
+-e	bitcmp(10^(-20))	error: bitcmp needs whole numbers that are not negative, 1/100000000000000000000 is none
+-e	bitcmp(x)	error: bitcmp needs whole numbers that are not negative, x is none
+-e	bitcmp([])	[]
+-e	bitcmp([1, 2])	[18446744073709551614, 18446744073709551613]
+-e	bitcmp("text")	error: bitcmp needs whole numbers that are not negative, "text" is none
+-e	bitcmp(true)	error: bitcmp needs whole numbers that are not negative, true is none
+-e	bitcmp(-7/3)	error: bitcmp needs whole numbers that are not negative, -7/3 is none
+-e	bitcmp(0.5)	error: bitcmp needs whole numbers that are not negative, 1/2 is none
+-e	erfcx(0)	1
+-e	erfcx(1)	e - e*erf(1)
+-e	erfcx(-1)	e + e*erf(1)
+-e	erfcx(1/2)	e^(1/4)*(1 - erf(1/2))
+-e	erfcx(2)	e^4*(1 - erf(2))
+-e	erfcx(i)	(1 - erf(i))/e
+-e	erfcx(inf)	undefined
+-e	erfcx(-inf)	inf
+-e	erfcx(undefined)	undefined
+-e	erfcx(10^20)	e^10000000000000000000000000000000000000000*erfc(100000000000000000000)
+-e	erfcx(10^(-20))	e^(1/10000000000000000000000000000000000000000)*(1 - erf(1/100000000000000000000))
+-e	erfcx(x)	e^(x^2)*(1 - erf(x))
+-e	erfcx([])	0
+-e	erfcx([1, 2])	e - e*erf(1) + e^4 - e^4*erf(2)
+-e	erfcx("text")	e^("text"^2)*(1 - erf("text"))
+-e	erfcx(true)	e^((true)^2)*(1 - erf(true))
+-e	erfcx(-7/3)	e^(49/9)*(1 + erf(7/3))
+-e	erfcx(0.5)	0.61569034419292587487079342268374
+-e	dawson(0)	0
+-e	dawson(1)	-i*sqrt(pi)*erf(i)/(2e)
+-e	dawson(-1)	i*sqrt(pi)*erf(i)/(2e)
+-e	dawson(1/2)	-i*sqrt(pi)*erf(i/2)/(2e^(1/4))
+-e	dawson(2)	-i*sqrt(pi)*erf(2i)/(2e^4)
+-e	dawson(i)	i*e*sqrt(pi)*erf(1)/2
+-e	dawson(inf)	0
+-e	dawson(-inf)	0
+-e	dawson(undefined)	undefined
+-e	dawson(10^20)	-i*sqrt(pi)*erf(100000000000000000000i)/(2e^10000000000000000000000000000000000000000)
+-e	dawson(10^(-20))	-i*sqrt(pi)*erf(i/100000000000000000000)/(2e^(1/10000000000000000000000000000000000000000))
+-e	dawson(x)	-i*sqrt(pi)*e^(-x^2)*erf(i*x)/2
+-e	dawson([])	0
+-e	dawson([1, 2])	-i*sqrt(pi)*erf(2i)/(2e^4) - i*sqrt(pi)*erf(i)/(2e)
+-e	dawson("text")	-i*sqrt(pi)*e^(-"text"^2)*erf(i*"text")/2
+-e	dawson(true)	-i*sqrt(pi)*e^(-(true)^2)*erf(i*true)/2
+-e	dawson(-7/3)	i*sqrt(pi)*erf(7i/3)/(2e^(49/9))
+-e	dawson(0.5)	0.42443638350202229593404235248967
+-e	ssinint(0)	-pi/2
+-e	ssinint(1)	si(1) - pi/2
+-e	ssinint(-1)	-pi/2 - si(1)
+-e	ssinint(1/2)	si(1/2) - pi/2
+-e	ssinint(2)	si(2) - pi/2
+-e	ssinint(i)	si(i) - pi/2
+-e	ssinint(inf)	0
+-e	ssinint(-inf)	-pi
+-e	ssinint(undefined)	undefined
+-e	ssinint(10^20)	si(100000000000000000000) - pi/2
+-e	ssinint(10^(-20))	si(1/100000000000000000000) - pi/2
+-e	ssinint(x)	si(x) - pi/2
+-e	ssinint([])	[]
+-e	ssinint([1, 2])	[si(1) - pi/2, si(2) - pi/2]
+-e	ssinint("text")	si("text") - pi/2
+-e	ssinint(true)	si(true) - pi/2
+-e	ssinint(-7/3)	-pi/2 - si(7/3)
+-e	ssinint(0.5)	-1.077688908751829930069694984067
+-e	airy(0)	3^(1/3)/(3gamma(2/3))
+-e	airy(1)	airyai(1)
+-e	airy(-1)	airyai(-1)
+-e	airy(1/2)	airyai(1/2)
+-e	airy(2)	airyai(2)
+-e	airy(i)	airyai(i)
+-e	airy(inf)	0
+-e	airy(-inf)	airyai(-inf)
+-e	airy(undefined)	undefined
+-e	airy(10^20)	airyai(100000000000000000000)
+-e	airy(10^(-20))	airyai(1/100000000000000000000)
+-e	airy(x)	airyai(x)
+-e	airy([])	[]
+-e	airy([1, 2])	[airyai(1), airyai(2)]
+-e	airy("text")	airyai("text")
+-e	airy(true)	airyai(true)
+-e	airy(-7/3)	airyai(-7/3)
+-e	airy(0.5)	0.23169360648083348976912525450992
+-e	wrightomega(0)	lambertw(1)
+-e	wrightomega(1)	1
+-e	wrightomega(-1)	lambertw(1/e)
+-e	wrightomega(1/2)	lambertw(sqrt(e))
+-e	wrightomega(2)	lambertw(e^2)
+-e	wrightomega(i)	lambertw(e^i)
+-e	wrightomega(inf)	inf
+-e	wrightomega(-inf)	0
+-e	wrightomega(undefined)	undefined
+-e	wrightomega(10^20)	lambertw(e^100000000000000000000)
+-e	wrightomega(10^(-20))	lambertw(e^(1/100000000000000000000))
+-e	wrightomega(x)	lambertw(ceil(im(x)/(2pi) - 1/2), e^x)
+-e	wrightomega([])	lambertw([], [])
+-e	wrightomega([1, 2])	lambertw([0, 0], [e, e^2])
+-e	wrightomega("text")	lambertw(ceil(im("text")/(2pi) - 1/2), e^"text")
+-e	wrightomega(true)	lambertw(ceil(im(true)/(2pi) - 1/2), e^(true))
+-e	wrightomega(-7/3)	lambertw(1/e^(7/3))
+-e	wrightomega(0.5)	0.76624860816175025887746864453126
+-e	rectangularpulse(0)	1
+-e	rectangularpulse(1)	0
+-e	rectangularpulse(-1)	0
+-e	rectangularpulse(1/2)	1/2
+-e	rectangularpulse(2)	0
+-e	rectangularpulse(i)	heaviside(1/2 + i) - heaviside(-1/2 + i)
+-e	rectangularpulse(inf)	0
+-e	rectangularpulse(-inf)	0
+-e	rectangularpulse(undefined)	undefined
+-e	rectangularpulse(10^20)	0
+-e	rectangularpulse(10^(-20))	1
+-e	rectangularpulse(x)	heaviside(x + 1/2) - heaviside(x - 1/2)
+-e	rectangularpulse([])	[]
+-e	rectangularpulse([1, 2])	[0, 0]
+-e	rectangularpulse("text")	heaviside("text" + 1/2) - heaviside("text" - 1/2)
+-e	rectangularpulse(true)	heaviside(1/2 + true) - heaviside(true - 1/2)
+-e	rectangularpulse(-7/3)	0
+-e	rectangularpulse(0.5)	0.5
+-e	triangularpulse(0)	1
+-e	triangularpulse(1)	0
+-e	triangularpulse(-1)	0
+-e	triangularpulse(1/2)	1/2
+-e	triangularpulse(2)	0
+-e	triangularpulse(i)	-heaviside(-1 + i) + heaviside(1 + i) + i*heaviside(-1 + i) + i*heaviside(1 + i) - 2i*heaviside(i)
+-e	triangularpulse(inf)	undefined
+-e	triangularpulse(-inf)	undefined
+-e	triangularpulse(undefined)	undefined
+-e	triangularpulse(10^20)	0
+-e	triangularpulse(10^(-20))	99999999999999999999/100000000000000000000

@@ -1,0 +1,700 @@
+-e	lambertw("text")	lambertw("text")
+-e	lambertw(true)	lambertw(true)
+-e	lambertw(-7/3)	lambertw(-7/3)
+-e	lambertw(0.5)	0.35173371124919582602490930092995
+-e	expint(0)	inf
+-e	expint(1)	expint(1, 1)
+-e	expint(-1)	expint(1, -1)
+-e	expint(1/2)	expint(1, 1/2)
+-e	expint(2)	expint(1, 2)
+-e	expint(i)	expint(1, i)
+-e	expint(inf)	expint(1, inf)
+-e	expint(-inf)	expint(1, -inf)
+-e	expint(undefined)	undefined
+-e	expint(10^20)	expint(1, 100000000000000000000)
+-e	expint(10^(-20))	expint(1, 1/100000000000000000000)
+-e	expint(x)	expint(1, x)
+-e	expint([])	expint(1, [])
+-e	expint([1, 2])	expint(1, [1, 2])
+-e	expint("text")	expint(1, "text")
+-e	expint(true)	expint(1, true)
+-e	expint(-7/3)	expint(1, -7/3)
+-e	expint(0.5)	0.55977359477616081174679593931509
+-e	erfinv(0)	0
+-e	erfinv(1)	inf
+-e	erfinv(-1)	-inf
+-e	erfinv(1/2)	erfinv(1/2)
+-e	erfinv(2)	erfinv(2)
+-e	erfinv(i)	erfinv(i)
+-e	erfinv(inf)	erfinv(inf)
+-e	erfinv(-inf)	-erfinv(inf)
+-e	erfinv(undefined)	undefined
+-e	erfinv(10^20)	erfinv(100000000000000000000)
+-e	erfinv(10^(-20))	erfinv(1/100000000000000000000)
+-e	erfinv(x)	erfinv(x)
+-e	erfinv([])	[]
+-e	erfinv([1, 2])	[inf, erfinv(2)]
+-e	erfinv("text")	erfinv("text")
+-e	erfinv(true)	erfinv(true)
+-e	erfinv(-7/3)	erfinv(-7/3)
+-e	erfinv(0.5)	0.47693627620446987338141835364313
+-e	erfcinv(0)	inf
+-e	erfcinv(1)	0
+-e	erfcinv(-1)	erfcinv(-1)
+-e	erfcinv(1/2)	erfcinv(1/2)
+-e	erfcinv(2)	-inf
+-e	erfcinv(i)	erfcinv(i)
+-e	erfcinv(inf)	erfcinv(inf)
+-e	erfcinv(-inf)	erfcinv(-inf)
+-e	erfcinv(undefined)	undefined
+-e	erfcinv(10^20)	erfcinv(100000000000000000000)
+-e	erfcinv(10^(-20))	erfcinv(1/100000000000000000000)
+-e	erfcinv(x)	erfcinv(x)
+-e	erfcinv([])	[]
+-e	erfcinv([1, 2])	[0, -inf]
+-e	erfcinv("text")	erfcinv("text")
+-e	erfcinv(true)	erfcinv(true)
+-e	erfcinv(-7/3)	erfcinv(-7/3)
+-e	erfcinv(0.5)	0.47693627620446987338141835364313
+-e	fresnels(0)	0
+-e	fresnels(1)	fresnels(1)
+-e	fresnels(-1)	fresnels(-1)
+-e	fresnels(1/2)	fresnels(1/2)
+-e	fresnels(2)	fresnels(2)
+-e	fresnels(i)	fresnels(i)
+-e	fresnels(inf)	1/2
+-e	fresnels(-inf)	-1/2
+-e	fresnels(undefined)	undefined
+-e	fresnels(10^20)	fresnels(100000000000000000000)
+-e	fresnels(10^(-20))	fresnels(1/100000000000000000000)
+-e	fresnels(x)	fresnels(x)
+-e	fresnels([])	[]
+-e	fresnels([1, 2])	[fresnels(1), fresnels(2)]
+-e	fresnels("text")	fresnels("text")
+-e	fresnels(true)	fresnels(true)
+-e	fresnels(-7/3)	fresnels(-7/3)
+-e	fresnels(0.5)	0.064732432859999277611480512230615
+-e	fresnelc(0)	0
+-e	fresnelc(1)	fresnelc(1)
+-e	fresnelc(-1)	fresnelc(-1)
+-e	fresnelc(1/2)	fresnelc(1/2)
+-e	fresnelc(2)	fresnelc(2)
+-e	fresnelc(i)	fresnelc(i)
+-e	fresnelc(inf)	1/2
+-e	fresnelc(-inf)	-1/2
+-e	fresnelc(undefined)	undefined
+-e	fresnelc(10^20)	fresnelc(100000000000000000000)
+-e	fresnelc(10^(-20))	fresnelc(1/100000000000000000000)
+-e	fresnelc(x)	fresnelc(x)
+-e	fresnelc([])	[]
+-e	fresnelc([1, 2])	[fresnelc(1), fresnelc(2)]
+-e	fresnelc("text")	fresnelc("text")
+-e	fresnelc(true)	fresnelc(true)
+-e	fresnelc(-7/3)	fresnelc(-7/3)
+-e	fresnelc(0.5)	0.49234422587144639287884366515668
+-e	sinc(0)	1
+-e	sinc(1)	sin(1)
+-e	sinc(-1)	sin(1)
+-e	sinc(1/2)	2sin(1/2)
+-e	sinc(2)	sin(2)/2
+-e	sinc(i)	sinh(1)
+-e	sinc(inf)	0
+-e	sinc(-inf)	0
+-e	sinc(undefined)	undefined
+-e	sinc(10^20)	sin(100000000000000000000)/100000000000000000000
+-e	sinc(10^(-20))	100000000000000000000sin(1/100000000000000000000)
+-e	sinc(x)	sinc(x)
+-e	sinc([])	[]
+-e	sinc([1, 2])	[sin(1), sin(2)/2]
+-e	sinc("text")	sinc("text")
+-e	sinc(true)	sin(true)/true
+-e	sinc(-7/3)	3sin(7/3)/7
+-e	sinc(0.5)	0.95885107720840600054657587043114
+-e	airyai(0)	3^(1/3)/(3gamma(2/3))
+-e	airyai(1)	airyai(1)
+-e	airyai(-1)	airyai(-1)
+-e	airyai(1/2)	airyai(1/2)
+-e	airyai(2)	airyai(2)
+-e	airyai(i)	airyai(i)
+-e	airyai(inf)	0
+-e	airyai(-inf)	airyai(-inf)
+-e	airyai(undefined)	undefined
+-e	airyai(10^20)	airyai(100000000000000000000)
+-e	airyai(10^(-20))	airyai(1/100000000000000000000)
+-e	airyai(x)	airyai(x)
+-e	airyai([])	[]
+-e	airyai([1, 2])	[airyai(1), airyai(2)]
+-e	airyai("text")	airyai("text")
+-e	airyai(true)	airyai(true)
+-e	airyai(-7/3)	airyai(-7/3)
+-e	airyai(0.5)	0.23169360648083348976912525450992
+-e	airybi(0)	3^(5/6)/(3gamma(2/3))
+-e	airybi(1)	airybi(1)
+-e	airybi(-1)	airybi(-1)
+-e	airybi(1/2)	airybi(1/2)
+-e	airybi(2)	airybi(2)
+-e	airybi(i)	airybi(i)
+-e	airybi(inf)	inf
+-e	airybi(-inf)	airybi(-inf)
+-e	airybi(undefined)	undefined
+-e	airybi(10^20)	airybi(100000000000000000000)
+-e	airybi(10^(-20))	airybi(1/100000000000000000000)
+-e	airybi(x)	airybi(x)
+-e	airybi([])	[]
+-e	airybi([1, 2])	[airybi(1), airybi(2)]
+-e	airybi("text")	airybi("text")
+-e	airybi(true)	airybi(true)
+-e	airybi(-7/3)	airybi(-7/3)
+-e	airybi(0.5)	0.85427704310315549330004879879524
+-e	airyaiprime(0)	-3^(2/3)/(3gamma(1/3))
+-e	airyaiprime(1)	airyaiprime(1)
+-e	airyaiprime(-1)	airyaiprime(-1)
+-e	airyaiprime(1/2)	airyaiprime(1/2)
+-e	airyaiprime(2)	airyaiprime(2)
+-e	airyaiprime(i)	airyaiprime(i)
+-e	airyaiprime(inf)	0
+-e	airyaiprime(-inf)	airyaiprime(-inf)
+-e	airyaiprime(undefined)	undefined
+-e	airyaiprime(10^20)	airyaiprime(100000000000000000000)
+-e	airyaiprime(10^(-20))	airyaiprime(1/100000000000000000000)
+-e	airyaiprime(x)	airyaiprime(x)
+-e	airyaiprime([])	[]
+-e	airyaiprime([1, 2])	[airyaiprime(1), airyaiprime(2)]
+-e	airyaiprime("text")	airyaiprime("text")
+-e	airyaiprime(true)	airyaiprime(true)
+-e	airyaiprime(-7/3)	airyaiprime(-7/3)
+-e	airyaiprime(0.5)	-0.22491053266468389313599699032858
+-e	airybiprime(0)	3^(1/6)/gamma(1/3)
+-e	airybiprime(1)	airybiprime(1)
+-e	airybiprime(-1)	airybiprime(-1)
+-e	airybiprime(1/2)	airybiprime(1/2)
+-e	airybiprime(2)	airybiprime(2)
+-e	airybiprime(i)	airybiprime(i)
+-e	airybiprime(inf)	inf
+-e	airybiprime(-inf)	airybiprime(-inf)
+-e	airybiprime(undefined)	undefined
+-e	airybiprime(10^20)	airybiprime(100000000000000000000)
+-e	airybiprime(10^(-20))	airybiprime(1/100000000000000000000)
+-e	airybiprime(x)	airybiprime(x)
+-e	airybiprime([])	[]
+-e	airybiprime([1, 2])	[airybiprime(1), airybiprime(2)]
+-e	airybiprime("text")	airybiprime("text")
+-e	airybiprime(true)	airybiprime(true)
+-e	airybiprime(-7/3)	airybiprime(-7/3)
+-e	airybiprime(0.5)	0.54457256414059230182716401821782
+-e	dirichleteta(0)	1/2
+-e	dirichleteta(1)	ln(2)
+-e	dirichleteta(-1)	1/4
+-e	dirichleteta(1/2)	zeta(1/2)*(1 - sqrt(2))
+-e	dirichleteta(2)	pi^2/12
+-e	dirichleteta(i)	zeta(i)*(1 - 2^(1 - i))
+-e	dirichleteta(inf)	1
+-e	dirichleteta(-inf)	-inf*zeta(-inf)
+-e	dirichleteta(undefined)	undefined
+-e	dirichleteta(10^20)	zeta(100000000000000000000)*(1 - 1/2^99999999999999999999)
+-e	dirichleteta(10^(-20))	zeta(1/100000000000000000000)*(1 - 2^(99999999999999999999/100000000000000000000))
+-e	dirichleteta(x)	zeta(x)*(1 - 2^(1 - x))
+-e	dirichleteta([])	[]
+-e	dirichleteta([1, 2])	[ln(2), pi^2/12]
+-e	dirichleteta("text")	zeta("text")*(1 - 2^(1 - "text"))
+-e	dirichleteta(true)	zeta(true)*(1 - 2^(1 - true))
+-e	dirichleteta(-7/3)	zeta(-7/3)*(1 - 8*2^(1/3))
+-e	dirichleteta(0.5)	0.60489864342163037024726591423596
+-e	elliptick(0)	pi/2
+-e	elliptick(1)	inf
+-e	elliptick(-1)	sqrt(2)*gamma(1/4)^2/(8sqrt(pi))
+-e	elliptick(1/2)	gamma(1/4)^2/(4sqrt(pi))
+-e	elliptick(2)	elliptick(2)
+-e	elliptick(i)	elliptick(i)
+-e	elliptick(inf)	elliptick(inf)
+-e	elliptick(-inf)	elliptick(-inf)
+-e	elliptick(undefined)	undefined
+-e	elliptick(10^20)	elliptick(100000000000000000000)
+-e	elliptick(10^(-20))	elliptick(1/100000000000000000000)
+-e	elliptick(x)	elliptick(x)
+-e	elliptick([])	[]
+-e	elliptick([1, 2])	[inf, elliptick(2)]
+-e	elliptick("text")	elliptick("text")
+-e	elliptick(true)	elliptick(true)
+-e	elliptick(-7/3)	elliptick(-7/3)
+-e	elliptick(0.5)	1.8540746773013719184338503471953
+-e	elliptice(0)	pi/2
+-e	elliptice(1)	1
+-e	elliptice(-1)	elliptice(-1)
+-e	elliptice(1/2)	elliptice(1/2)
+-e	elliptice(2)	elliptice(2)
+-e	elliptice(i)	elliptice(i)
+-e	elliptice(inf)	elliptice(inf)
+-e	elliptice(-inf)	elliptice(-inf)
+-e	elliptice(undefined)	undefined
+-e	elliptice(10^20)	elliptice(100000000000000000000)
+-e	elliptice(10^(-20))	elliptice(1/100000000000000000000)
+-e	elliptice(x)	elliptice(x)
+-e	elliptice([])	[]
+-e	elliptice([1, 2])	[1, elliptice(2)]
+-e	elliptice("text")	elliptice("text")
+-e	elliptice(true)	elliptice(true)
+-e	elliptice(-7/3)	elliptice(-7/3)
+-e	elliptice(0.5)	1.3506438810476755025201747353387
+-e	ellipticnome(0)	0
+-e	ellipticnome(1)	1
+-e	ellipticnome(-1)	ellipticnome(-1)
+-e	ellipticnome(1/2)	e^(-pi)
+-e	ellipticnome(2)	ellipticnome(2)
+-e	ellipticnome(i)	ellipticnome(i)
+-e	ellipticnome(inf)	ellipticnome(inf)
+-e	ellipticnome(-inf)	ellipticnome(-inf)
+-e	ellipticnome(undefined)	undefined
+-e	ellipticnome(10^20)	ellipticnome(100000000000000000000)
+-e	ellipticnome(10^(-20))	ellipticnome(1/100000000000000000000)
+-e	ellipticnome(x)	ellipticnome(x)
+-e	ellipticnome([])	[]
+-e	ellipticnome([1, 2])	[1, ellipticnome(2)]
+-e	ellipticnome("text")	ellipticnome("text")
+-e	ellipticnome(true)	ellipticnome(true)
+-e	ellipticnome(-7/3)	ellipticnome(-7/3)
+-e	ellipticnome(0.5)	0.043213918263772249774417737171728
+-e	heaviside(0)	1/2
+-e	heaviside(1)	1
+-e	heaviside(-1)	0
+-e	heaviside(1/2)	1
+-e	heaviside(2)	1
+-e	heaviside(i)	heaviside(i)
+-e	heaviside(inf)	heaviside(inf)
+-e	heaviside(-inf)	heaviside(-inf)
+-e	heaviside(undefined)	undefined
+-e	heaviside(10^20)	1
+-e	heaviside(10^(-20))	1
+-e	heaviside(x)	heaviside(x)
+-e	heaviside([])	[]
+-e	heaviside([1, 2])	[1, 1]
+-e	heaviside("text")	heaviside("text")
+-e	heaviside(true)	heaviside(true)
+-e	heaviside(-7/3)	0
+-e	heaviside(0.5)	1
+-e	unitstep(0)	1
+-e	unitstep(1)	1
+-e	unitstep(-1)	0
+-e	unitstep(1/2)	1
+-e	unitstep(2)	1
+-e	unitstep(i)	unitstep(i)
+-e	unitstep(inf)	unitstep(inf)
+-e	unitstep(-inf)	unitstep(-inf)
+-e	unitstep(undefined)	undefined
+-e	unitstep(10^20)	1
+-e	unitstep(10^(-20))	1
+-e	unitstep(x)	unitstep(x)
+-e	unitstep([])	[]
+-e	unitstep([1, 2])	[1, 1]
+-e	unitstep("text")	unitstep("text")
+-e	unitstep(true)	unitstep(true)
+-e	unitstep(-7/3)	0
+-e	unitstep(0.5)	1
+-e	diracdelta(0)	diracdelta(0)
+-e	diracdelta(1)	0
+-e	diracdelta(-1)	0
+-e	diracdelta(1/2)	0
+-e	diracdelta(2)	0
+-e	diracdelta(i)	0
+-e	diracdelta(inf)	0
+-e	diracdelta(-inf)	0
+-e	diracdelta(undefined)	undefined
+-e	diracdelta(10^20)	0
+-e	diracdelta(10^(-20))	0
+-e	diracdelta(x)	diracdelta(x)
+-e	diracdelta([])	[]
+-e	diracdelta([1, 2])	[0, 0]
+-e	diracdelta("text")	diracdelta("text")
+-e	diracdelta(true)	diracdelta(true)
+-e	diracdelta(-7/3)	0
+-e	diracdelta(0.5)	0
+-e	simplify(0)	0
+-e	simplify(1)	1
+-e	simplify(-1)	-1
+-e	simplify(1/2)	1/2
+-e	simplify(2)	2
+-e	simplify(i)	i
+-e	simplify(inf)	inf
+-e	simplify(-inf)	-inf
+-e	simplify(undefined)	undefined
+-e	simplify(10^20)	100000000000000000000
+-e	simplify(10^(-20))	1/100000000000000000000
+-e	simplify(x)	x
+-e	simplify([])	[]
+-e	simplify([1, 2])	[1, 2]
+-e	simplify("text")	"text"
+-e	simplify(true)	true
+-e	simplify(-7/3)	-7/3
+-e	simplify(0.5)	0.5
+-e	expand(0)	0
+-e	expand(1)	1
+-e	expand(-1)	-1
+-e	expand(1/2)	1/2
+-e	expand(2)	2
+-e	expand(i)	i
+-e	expand(inf)	inf
+-e	expand(-inf)	-inf
+-e	expand(undefined)	undefined
+-e	expand(10^20)	100000000000000000000
+-e	expand(10^(-20))	1/100000000000000000000
+-e	expand(x)	x
+-e	expand([])	[]
+-e	expand([1, 2])	[1, 2]
+-e	expand("text")	"text"
+-e	expand(true)	true
+-e	expand(-7/3)	-7/3
+-e	expand(0.5)	0.5
+-e	factor(0)	0
+-e	factor(1)	1
+-e	factor(-1)	-1
+-e	factor(1/2)	1/2
+-e	factor(2)	2
+-e	factor(i)	i
+-e	factor(inf)	inf
+-e	factor(-inf)	-inf
+-e	factor(undefined)	undefined
+-e	factor(10^20)	2^20*5^20
+-e	factor(10^(-20))	1/100000000000000000000
+-e	factor(x)	x
+-e	factor([])	[]
+-e	factor([1, 2])	[1, 2]
+-e	factor("text")	"text"
+-e	factor(true)	true
+-e	factor(-7/3)	-7/3
+-e	factor(0.5)	0.5
+-e	together(0)	0
+-e	together(1)	1
+-e	together(-1)	-1
+-e	together(1/2)	1/2
+-e	together(2)	2
+-e	together(i)	i
+-e	together(inf)	inf
+-e	together(-inf)	-inf
+-e	together(undefined)	undefined
+-e	together(10^20)	100000000000000000000
+-e	together(10^(-20))	1/100000000000000000000
+-e	together(x)	x
+-e	together([])	[]
+-e	together([1, 2])	[1, 2]
+-e	together("text")	"text"
+-e	together(true)	true
+-e	together(-7/3)	-7/3
+-e	together(0.5)	0.5
+-e	cancel(0)	0
+-e	cancel(1)	1
+-e	cancel(-1)	-1
+-e	cancel(1/2)	1/2
+-e	cancel(2)	2
+-e	cancel(i)	i
+-e	cancel(inf)	inf
+-e	cancel(-inf)	-inf
+-e	cancel(undefined)	undefined
+-e	cancel(10^20)	100000000000000000000
+-e	cancel(10^(-20))	1/100000000000000000000
+-e	cancel(x)	x
+-e	cancel([])	[]
+-e	cancel([1, 2])	[1, 2]
+-e	cancel("text")	"text"
+-e	cancel(true)	true
+-e	cancel(-7/3)	-7/3
+-e	cancel(0.5)	0.5
+-e	apart(0)	error: the expression has no variable
+-e	apart(1)	error: the expression has no variable
+-e	apart(-1)	error: the expression has no variable
+-e	apart(1/2)	error: the expression has no variable
+-e	apart(2)	error: the expression has no variable
+-e	apart(i)	error: the expression has no variable
+-e	apart(inf)	error: the expression has no variable
+-e	apart(-inf)	error: the expression has no variable
+-e	apart(undefined)	error: the expression has no variable
+-e	apart(10^20)	error: the expression has no variable
+-e	apart(10^(-20))	error: the expression has no variable
+-e	apart(x)	x
+-e	apart([])	error: the expression has no variable
+-e	apart([1, 2])	error: the expression has no variable
+-e	apart("text")	"text"
+-e	apart(true)	error: the expression has no variable
+-e	apart(-7/3)	error: the expression has no variable
+-e	apart(0.5)	error: the expression has no variable
+-e	numer(0)	0
+-e	numer(1)	1
+-e	numer(-1)	-1
+-e	numer(1/2)	1
+-e	numer(2)	2
+-e	numer(i)	i
+-e	numer(inf)	inf
+-e	numer(-inf)	-inf
+-e	numer(undefined)	undefined
+-e	numer(10^20)	100000000000000000000
+-e	numer(10^(-20))	1
+-e	numer(x)	x
+-e	numer([])	[]
+-e	numer([1, 2])	[1, 2]
+-e	numer("text")	"text"
+-e	numer(true)	true
+-e	numer(-7/3)	-7
+-e	numer(0.5)	1
+-e	denom(0)	1
+-e	denom(1)	1
+-e	denom(-1)	1
+-e	denom(1/2)	2
+-e	denom(2)	1
+-e	denom(i)	1
+-e	denom(inf)	1
+-e	denom(-inf)	1
+-e	denom(undefined)	1
+-e	denom(10^20)	1
+-e	denom(10^(-20))	100000000000000000000
+-e	denom(x)	1
+-e	denom([])	1
+-e	denom([1, 2])	1
+-e	denom("text")	1
+-e	denom(true)	1
+-e	denom(-7/3)	3
+-e	denom(0.5)	2
+-e	degree(0)	error: the expression has no variable
+-e	degree(1)	error: the expression has no variable
+-e	degree(-1)	error: the expression has no variable
+-e	degree(1/2)	error: the expression has no variable
+-e	degree(2)	error: the expression has no variable
+-e	degree(i)	error: the expression has no variable
+-e	degree(inf)	error: the expression has no variable
+-e	degree(-inf)	error: the expression has no variable
+-e	degree(undefined)	error: the expression has no variable
+-e	degree(10^20)	error: the expression has no variable
+-e	degree(10^(-20))	error: the expression has no variable
+-e	degree(x)	1
+-e	degree([])	error: the expression has no variable
+-e	degree([1, 2])	error: the expression has no variable
+-e	degree("text")	error: "text" is not a polynomial in text
+-e	degree(true)	error: the expression has no variable
+-e	degree(-7/3)	error: the expression has no variable
+-e	degree(0.5)	error: the expression has no variable
+-e	gcd(0)	0
+-e	gcd(1)	1
+-e	gcd(-1)	1
+-e	gcd(1/2)	1/2
+-e	gcd(2)	2
+-e	gcd(i)	gcd(i)
+-e	gcd(inf)	gcd(inf)
+-e	gcd(-inf)	gcd(-inf)
+-e	gcd(undefined)	undefined
+-e	gcd(10^20)	100000000000000000000
+-e	gcd(10^(-20))	1/100000000000000000000
+-e	gcd(x)	gcd(x)
+-e	gcd([])	[]
+-e	gcd([1, 2])	[1, 2]
+-e	gcd("text")	gcd("text")
+-e	gcd(true)	gcd(true)
+-e	gcd(-7/3)	7/3
+-e	gcd(0.5)	0.5
+-e	lcm(0)	0
+-e	lcm(1)	1
+-e	lcm(-1)	1
+-e	lcm(1/2)	1/2
+-e	lcm(2)	2
+-e	lcm(i)	lcm(i)
+-e	lcm(inf)	lcm(inf)
+-e	lcm(-inf)	lcm(-inf)
+-e	lcm(undefined)	undefined
+-e	lcm(10^20)	100000000000000000000
+-e	lcm(10^(-20))	1/100000000000000000000
+-e	lcm(x)	lcm(x)
+-e	lcm([])	[]
+-e	lcm([1, 2])	[1, 2]
+-e	lcm("text")	lcm("text")
+-e	lcm(true)	lcm(true)
+-e	lcm(-7/3)	7/3
+-e	lcm(0.5)	0.5
+-e	discriminant(0)	error: the expression has no variable
+-e	discriminant(1)	error: the expression has no variable
+-e	discriminant(-1)	error: the expression has no variable
+-e	discriminant(1/2)	error: the expression has no variable
+-e	discriminant(2)	error: the expression has no variable
+-e	discriminant(i)	error: the expression has no variable
+-e	discriminant(inf)	error: the expression has no variable
+-e	discriminant(-inf)	error: the expression has no variable
+-e	discriminant(undefined)	error: the expression has no variable
+-e	discriminant(10^20)	error: the expression has no variable
+-e	discriminant(10^(-20))	error: the expression has no variable
+-e	discriminant(x)	1
+-e	discriminant([])	error: the expression has no variable
+-e	discriminant([1, 2])	error: the expression has no variable
+-e	discriminant("text")	error: "text" is not a polynomial in text of degree 1 or more
+-e	discriminant(true)	error: the expression has no variable
+-e	discriminant(-7/3)	error: the expression has no variable
+-e	discriminant(0.5)	error: the expression has no variable
+-e	roots(0)	error: the expression has no variable
+-e	roots(1)	error: the expression has no variable
+-e	roots(-1)	error: the expression has no variable
+-e	roots(1/2)	error: the expression has no variable
+-e	roots(2)	error: the expression has no variable
+-e	roots(i)	error: the expression has no variable
+-e	roots(inf)	error: the expression has no variable
+-e	roots(-inf)	error: the expression has no variable
+-e	roots(undefined)	error: the expression has no variable
+-e	roots(10^20)	error: the expression has no variable
+-e	roots(10^(-20))	error: the expression has no variable
+-e	roots(x)	[0]
+-e	roots([])	[]
+-e	roots([1, 2])	[-2]
+-e	roots("text")	[]
+-e	roots(true)	error: the expression has no variable
+-e	roots(-7/3)	error: the expression has no variable
+-e	roots(0.5)	error: the expression has no variable
+-e	trigexpand(0)	0
+-e	trigexpand(1)	1
+-e	trigexpand(-1)	-1
+-e	trigexpand(1/2)	1/2
+-e	trigexpand(2)	2
+-e	trigexpand(i)	i
+-e	trigexpand(inf)	inf
+-e	trigexpand(-inf)	-inf
+-e	trigexpand(undefined)	undefined
+-e	trigexpand(10^20)	100000000000000000000
+-e	trigexpand(10^(-20))	1/100000000000000000000
+-e	trigexpand(x)	x
+-e	trigexpand([])	[]
+-e	trigexpand([1, 2])	[1, 2]
+-e	trigexpand("text")	"text"
+-e	trigexpand(true)	true
+-e	trigexpand(-7/3)	-7/3
+-e	trigexpand(0.5)	0.5
+-e	trigreduce(0)	0
+-e	trigreduce(1)	1
+-e	trigreduce(-1)	-1
+-e	trigreduce(1/2)	1/2
+-e	trigreduce(2)	2
+-e	trigreduce(i)	i
+-e	trigreduce(inf)	inf
+-e	trigreduce(-inf)	-inf
+-e	trigreduce(undefined)	undefined
+-e	trigreduce(10^20)	100000000000000000000
+-e	trigreduce(10^(-20))	1/100000000000000000000
+-e	trigreduce(x)	x
+-e	trigreduce([])	[]
+-e	trigreduce([1, 2])	[1, 2]
+-e	trigreduce("text")	"text"
+-e	trigreduce(true)	true
+-e	trigreduce(-7/3)	-7/3
+-e	trigreduce(0.5)	0.5
+-e	rewrite_exp(0)	0
+-e	rewrite_exp(1)	1
+-e	rewrite_exp(-1)	-1
+-e	rewrite_exp(1/2)	1/2
+-e	rewrite_exp(2)	2
+-e	rewrite_exp(i)	i
+-e	rewrite_exp(inf)	inf
+-e	rewrite_exp(-inf)	-inf
+-e	rewrite_exp(undefined)	undefined
+-e	rewrite_exp(10^20)	100000000000000000000
+-e	rewrite_exp(10^(-20))	1/100000000000000000000
+-e	rewrite_exp(x)	x
+-e	rewrite_exp([])	[]
+-e	rewrite_exp([1, 2])	[1, 2]
+-e	rewrite_exp("text")	"text"
+-e	rewrite_exp(true)	true
+-e	rewrite_exp(-7/3)	-7/3
+-e	rewrite_exp(0.5)	0.5
+-e	N(0)	0
+-e	N(1)	1
+-e	N(-1)	-1
+-e	N(1/2)	0.5
+-e	N(2)	2
+-e	N(i)	i
+-e	N(inf)	inf
+-e	N(-inf)	-inf
+-e	N(undefined)	undefined
+-e	N(10^20)	100000000000000000000
+-e	N(10^(-20))	1e-20
+-e	N(x)	x
+-e	N([])	[]
+-e	N([1, 2])	[1, 2]
+-e	N("text")	"text"
+-e	N(true)	true
+-e	N(-7/3)	-2.3333333333333333333333333333333
+-e	N(0.5)	0.5
+-e	rationalize(0)	0
+-e	rationalize(1)	1
+-e	rationalize(-1)	-1
+-e	rationalize(1/2)	1/2
+-e	rationalize(2)	2
+-e	rationalize(i)	i
+-e	rationalize(inf)	error: inf has no numeric value
+-e	rationalize(-inf)	error: -inf has no numeric value
+-e	rationalize(undefined)	error: undefined has no numeric value
+-e	rationalize(10^20)	100000000000000000000
+-e	rationalize(10^(-20))	1/100000000000000000000
+-e	rationalize(x)	error: x has no numeric value
+-e	rationalize([])	error: [] has no numeric value
+-e	rationalize([1, 2])	error: [1, 2] has no numeric value
+-e	rationalize("text")	error: "text" has no numeric value
+-e	rationalize(true)	error: true has no numeric value
+-e	rationalize(-7/3)	-7/3
+-e	rationalize(0.5)	1/2
+-e	identify(0)	0
+-e	identify(1)	1
+-e	identify(-1)	-1
+-e	identify(1/2)	1/2
+-e	identify(2)	2
+-e	identify(i)	i
+-e	identify(inf)	inf
+-e	identify(-inf)	-inf
+-e	identify(undefined)	undefined
+-e	identify(10^20)	100000000000000000000
+-e	identify(10^(-20))	0
+-e	identify(x)	x
+-e	identify([])	[]
+-e	identify([1, 2])	[1, 2]
+-e	identify("text")	"text"
+-e	identify(true)	true
+-e	identify(-7/3)	-7/3
+-e	identify(0.5)	1/2
+-e	solve(0)	true
+-e	solve(1)	false
+-e	solve(-1)	false
+-e	solve(1/2)	false
+-e	solve(2)	false
+-e	solve(i)	false
+-e	solve(inf)	false
+-e	solve(-inf)	false
+-e	solve(undefined)	false
+-e	solve(10^20)	false
+-e	solve(10^(-20))	false
+-e	solve(x)	x = 0
+-e	solve([])	false
+-e	solve([1, 2])	false
+-e	solve("text")	no solution
+-e	solve(true)	false
+-e	solve(-7/3)	false
+-e	solve(0.5)	false
+-e	qsolve(0)	true
+-e	qsolve(1)	false
+-e	qsolve(-1)	false
+-e	qsolve(1/2)	false
+-e	qsolve(2)	false
+-e	qsolve(i)	false
+-e	qsolve(inf)	false
+-e	qsolve(-inf)	false
+-e	qsolve(undefined)	false
+-e	qsolve(10^20)	false
+-e	qsolve(10^(-20))	false
+-e	qsolve(x)	x = 0
+-e	qsolve([])	false
+-e	qsolve([1, 2])	false
+-e	qsolve("text")	error: no method for this equation: text is a quaternion here and a part of the equation takes no quaternion (after assume(text, real) it is solved for a real text)
+-e	qsolve(true)	false
+-e	qsolve(-7/3)	false
+-e	qsolve(0.5)	false
+-e	dsolve(0)	error: the equation has no derivative of y
+-e	dsolve(1)	error: the equation has no derivative of y
+-e	dsolve(-1)	error: the equation has no derivative of y
+-e	dsolve(1/2)	error: the equation has no derivative of y
+-e	dsolve(2)	error: the equation has no derivative of y
+-e	dsolve(i)	error: the equation has no derivative of y
+-e	dsolve(inf)	error: the equation has no derivative of y
+-e	dsolve(-inf)	error: the equation has no derivative of y
+-e	dsolve(undefined)	error: the equation has no derivative of y
+-e	dsolve(10^20)	error: the equation has no derivative of y
+-e	dsolve(10^(-20))	error: the equation has no derivative of y
+-e	dsolve(x)	error: the equation has no derivative of y

@@ -98,10 +98,181 @@ pub(crate) fn pfq(a: &[Complex], b: &[Complex], z: &Complex, p: u32) -> Out {
             return None;
         }
         if a.len() == b.len() + 1 && size(z) > 0.97 {
-            return None;
+            return match size(z) > 1.03 {
+                true => pfq_far(a, b, z, p),
+                false => None,
+            };
         }
     }
     adaptive(p, &mut |wp| series_once(a, b, z, wp))
+}
+
+/// One upper parameter more than lower ones, beyond the unit circle: the function is
+/// `prod gamma(b) / prod gamma(a) * G(-z | 1 - a; 0, 1 - b)`, a sum of series in `1/z`. On the
+/// cut from 1 on, the value is the one that `2F1` takes there.
+fn pfq_far(a: &[Complex], b: &[Complex], z: &Complex, p: u32) -> Out {
+    let wp = p + 32;
+    let from_one = |x: &Complex| Complex::with_val(wp, 1u32 - Complex::with_val(wp, x));
+    let upper: Vec<Complex> = a.iter().map(from_one).collect();
+    let lower: Vec<Complex> = b.iter().map(from_one).collect();
+    let mut minus = Complex::with_val(wp, -z);
+    if z.imag().is_zero() {
+        minus = Complex::with_val(wp, (minus.real(), 0));
+    }
+    let Some(g) = meijer_g(&upper, &[], &[Complex::new(wp)], &lower, &minus, wp)? else {
+        return Some(None);
+    };
+    let mut scale = Complex::with_val(wp, 1);
+    for y in b {
+        let Some(top) = gamma_any(y, wp)? else {
+            return Some(None);
+        };
+        scale *= top;
+    }
+    for x in a {
+        scale *= rgamma(x, wp)?;
+    }
+    Some(Some(Complex::with_val(p, g * scale)))
+}
+
+/// Meijer's G function `G^{m,n}_{p,q}(z | a_1..a_n; a_n+1..a_p | b_1..b_m; b_m+1..b_q)` by
+/// Slater's sums of hypergeometric series: over the first b's where the series in z converge
+/// (p < q, or p = q inside the unit circle), over the first a's else. Parameters that lie a
+/// whole number apart make the single terms infinite; they are nudged a little apart and the
+/// precision is raised by what the terms then cancel.
+pub(crate) fn meijer_g(
+    an: &[Complex],
+    ap: &[Complex],
+    bm: &[Complex],
+    bq: &[Complex],
+    z: &Complex,
+    p: u32,
+) -> Out {
+    let (n, m) = (an.len(), bm.len());
+    let (count_a, count_b) = (n + ap.len(), m + bq.len());
+    if z.is_zero() || !z.real().is_finite() || !z.imag().is_finite() {
+        return None;
+    }
+    let first = match count_a.cmp(&count_b) {
+        std::cmp::Ordering::Less => true,
+        std::cmp::Ordering::Greater => false,
+        std::cmp::Ordering::Equal => {
+            if (size(z) - 1.0).abs() < 0.03 {
+                return None;
+            }
+            size(z) < 1.0
+        }
+    };
+    let all_a: Vec<&Complex> = an.iter().chain(ap).collect();
+    let all_b: Vec<&Complex> = bm.iter().chain(bq).collect();
+    let (summed, group) = if first { (m, &all_b) } else { (n, &all_a) };
+    let whole_apart = |x: &Complex, y: &Complex| {
+        let d = Complex::with_val(p + 64, x - y);
+        let nearest = Float::with_val(p + 64, d.real().round_ref());
+        let off = Complex::with_val(p + 64, d - nearest);
+        expo(&off) < -i64::from(p / 2)
+    };
+    let nudge =
+        (0..summed).any(|h| (0..group.len()).any(|j| j != h && whole_apart(group[j], group[h])));
+    let step = Float::with_val(p + 64, 1) >> (p + 16);
+    let value = adaptive(p, &mut |wp| {
+        let at = |x: &Complex, k: usize, moved: bool| -> Complex {
+            match moved {
+                true => Complex::with_val(wp, x + Float::with_val(wp, &step * (k as u32 + 1))),
+                false => Complex::with_val(wp, x),
+            }
+        };
+        let a: Vec<Complex> = all_a
+            .iter()
+            .enumerate()
+            .map(|(k, x)| at(x, k, nudge && !first))
+            .collect();
+        let b: Vec<Complex> = all_b
+            .iter()
+            .enumerate()
+            .map(|(k, x)| at(x, k, nudge && first))
+            .collect();
+        // the sum runs over `own`, the other parameters are `other`; with the a's summed
+        // every parameter is mirrored: a -> 1 - a and b -> 1 - b turn the one sum into the other
+        let (own, other, own_first, other_first) = match first {
+            true => (&b, &a, m, n),
+            false => (&a, &b, n, m),
+        };
+        let signed = |x: Complex| if first { x } else { -x };
+        let mut sum = Complex::new(wp);
+        let mut top = -(1i64 << 40);
+        for h in 0..own_first {
+            let mut term = Complex::with_val(wp, 1);
+            for (j, x) in own.iter().enumerate().filter(|(j, _)| *j != h) {
+                // gamma(b_j - b_h) above for the first ones, 1/gamma(1 + b_h - b_j) for the rest
+                let d = signed(Complex::with_val(wp, x - &own[h]));
+                if j < own_first {
+                    let Some(g) = gamma_any(&d, wp)? else {
+                        return Some(None);
+                    };
+                    term *= g;
+                } else {
+                    term *= rgamma(&Complex::with_val(wp, 1u32 - d), wp)?;
+                }
+            }
+            for (j, x) in other.iter().enumerate() {
+                // gamma(1 + b_h - a_j) above for the first ones, 1/gamma(a_j - b_h) for the rest
+                let d = signed(Complex::with_val(wp, x - &own[h]));
+                if j < other_first {
+                    let Some(g) = gamma_any(&Complex::with_val(wp, 1u32 - d), wp)? else {
+                        return Some(None);
+                    };
+                    term *= g;
+                } else {
+                    term *= rgamma(&d, wp)?;
+                }
+            }
+            let upper: Vec<Complex> = other
+                .iter()
+                .map(|x| Complex::with_val(wp, 1u32 - signed(Complex::with_val(wp, x - &own[h]))))
+                .collect();
+            let lower: Vec<Complex> = own
+                .iter()
+                .enumerate()
+                .filter(|(j, _)| *j != h)
+                .map(|(_, x)| {
+                    Complex::with_val(wp, 1u32 - signed(Complex::with_val(wp, x - &own[h])))
+                })
+                .collect();
+            let flips = (other.len() + own_first + other_first) % 2 == 1;
+            let mut arg = match first {
+                true => Complex::with_val(wp, z),
+                false => Complex::with_val(wp, z.recip_ref()),
+            };
+            if flips {
+                arg = -arg;
+            }
+            let Some(series) = pfq(&upper, &lower, &arg, wp)? else {
+                return Some(None);
+            };
+            let power = match first {
+                true => own[h].clone(),
+                false => Complex::with_val(wp, &own[h] - 1u32),
+            };
+            let log = Complex::with_val(wp, z.ln_ref());
+            term *= Complex::with_val(wp, (log * power).exp_ref());
+            term *= series;
+            top = top.max(expo(&term));
+            sum += term;
+        }
+        // (terms that cancel to nothing at all have lost every bit there was)
+        let lost = match (sum.is_zero(), top > -(1i64 << 39)) {
+            (true, true) => i64::from(wp),
+            (true, false) => 0,
+            (false, _) => top - expo(&sum),
+        };
+        Some(Some((sum, lost)))
+    })?;
+    match value {
+        // (parameters that had to be nudged and still give something huge: a pole)
+        Some(v) if nudge && expo(&v) > i64::from(p / 2) => Some(None),
+        other => Some(other),
+    }
 }
 
 pub(crate) fn hyp0f1(b: &Complex, z: &Complex, p: u32) -> Out {

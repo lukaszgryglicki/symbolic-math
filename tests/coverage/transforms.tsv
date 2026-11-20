@@ -1,0 +1,36 @@
+-e	simplify(invlaplace(laplace(1, t, s), s, t) - (1))	0
+-e	simplify(invlaplace(laplace(t, t, s), s, t) - (t))	0
+-e	simplify(invlaplace(laplace(t^2, t, s), s, t) - (t^2))	0
+-e	simplify(invlaplace(laplace(exp(-2t), t, s), s, t) - (exp(-2t)))	0
+-e	simplify(invlaplace(laplace(sin(3t), t, s), s, t) - (sin(3t)))	0
+-e	simplify(invlaplace(laplace(cos(t), t, s), s, t) - (cos(t)))	0
+-e	simplify(invlaplace(laplace(t*exp(-t), t, s), s, t) - (t*exp(-t)))	0
+-e	simplify(invlaplace(laplace(exp(-t)*sin(2t), t, s), s, t) - (exp(-t)*sin(2t)))	0
+-e	simplify(invlaplace(laplace(sinh(t), t, s), s, t) - (sinh(t)))	0
+-e	simplify(invlaplace(laplace(t^3, t, s), s, t) - (t^3))	0
+-e	simplify(laplace(1, t, s) - (1/s))	0
+-e	simplify(laplace(t, t, s) - (1/s^2))	0
+-e	simplify(laplace(exp(-a*t), t, s) - (1/(a + s)))	0
+-e	simplify(laplace(sin(w*t), t, s) - (w/(s^2 + w^2)))	0
+-e	simplify(laplace(cos(w*t), t, s) - (s/(s^2 + w^2)))	0
+-e	simplify(laplace(t^2, t, s) - (2/s^3))	0
+-e	simplify(laplace(t*exp(-t), t, s) - (1/(s + 1)^2))	0
+-e	simplify(invztransform(ztransform(1, n, z), z, n) - (1))	0
+-e	simplify(invztransform(ztransform(n, n, z), z, n) - (n))	0
+-e	simplify(invztransform(ztransform(n^2, n, z), z, n) - (n^2))	0
+-e	simplify(invztransform(ztransform(2^n, n, z), z, n) - (2^n))	0
+-e	simplify(invztransform(ztransform((1/2)^n, n, z), z, n) - ((1/2)^n))	0
+-e	simplify(ihtrans(htrans(sin(x), x, t), t, x) - (sin(x)))	0
+-e	simplify(htrans(htrans(sin(x), x, t), t, x) + (sin(x)))	0
+-e	simplify(ihtrans(htrans(cos(2x), x, t), t, x) - (cos(2x)))	0
+-e	simplify(htrans(htrans(cos(2x), x, t), t, x) + (cos(2x)))	0
+-e	simplify(ihtrans(htrans(1/(x^2 + 1), x, t), t, x) - (1/(x^2 + 1)))	0
+-e	simplify(htrans(htrans(1/(x^2 + 1), x, t), t, x) + (1/(x^2 + 1)))	0
+-e	simplify(ihtrans(htrans(x/(x^2 + 4), x, t), t, x) - (x/(x^2 + 4)))	0
+-e	simplify(htrans(htrans(x/(x^2 + 4), x, t), t, x) + (x/(x^2 + 4)))	0
+-e	simplify(ihtrans(htrans(3sin(x) - 2cos(5x), x, t), t, x) - (3sin(x) - 2cos(5x)))	0
+-e	simplify(htrans(htrans(3sin(x) - 2cos(5x), x, t), t, x) + (3sin(x) - 2cos(5x)))	0
+-e	simplify(ihtrans(htrans(exp(3i*x), x, t), t, x) - (exp(3i*x)))	0
+-e	simplify(htrans(htrans(exp(3i*x), x, t), t, x) + (exp(3i*x)))	0
+-e	simplify(mellin(exp(-x), x, s) - gamma(s))	0
+-e	simplify(mellin(exp(-2x), x, s) - gamma(s)/2^s)	0

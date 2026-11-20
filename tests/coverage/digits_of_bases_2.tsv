@@ -1,0 +1,668 @@
+-e	base_conv(31nyx4pu, 35, 10)	196116601305
+-e	35#1iyn5lba9dl53c9g9ivf	335382825933043858012513647150
+-e	base_conv(335382825933043858012513647150, 10, 35)	1iyn5lba9dl53c9g9ivf
+-e	base_conv(1iyn5lba9dl53c9g9ivf, 35, 10)	335382825933043858012513647150
+-e	36#0	0
+-e	base_conv(0, 10, 36)	0
+-e	base_conv(0, 36, 10)	0
+-e	36#1	1
+-e	base_conv(1, 10, 36)	1
+-e	base_conv(1, 36, 10)	1
+-e	36#z	35
+-e	base_conv(35, 10, 36)	z
+-e	base_conv(z, 36, 10)	35
+-e	36#10	36
+-e	base_conv(36, 10, 36)	10
+-e	base_conv(10, 36, 10)	36
+-e	36#101	1297
+-e	base_conv(1297, 10, 36)	101
+-e	base_conv(101, 36, 10)	1297
+-e	36#6orlckas	524096205508
+-e	base_conv(524096205508, 10, 36)	6orlckas
+-e	base_conv(6orlckas, 36, 10)	524096205508
+-e	36#18p89v5foesxn9ystzxa	461063336383098437726670491422
+-e	base_conv(461063336383098437726670491422, 10, 36)	18p89v5foesxn9ystzxa
+-e	base_conv(18p89v5foesxn9ystzxa, 36, 10)	461063336383098437726670491422
+-e	37#0	0
+-e	base_conv(0, 10, 37)	0
+-e	base_conv(0, 37, 10)	0
+-e	37#1	1
+-e	base_conv(1, 10, 37)	1
+-e	base_conv(1, 37, 10)	1
+-e	37#A	36
+-e	base_conv(36, 10, 37)	A
+-e	base_conv(A, 37, 10)	36
+-e	37#10	37
+-e	base_conv(37, 10, 37)	10
+-e	base_conv(10, 37, 10)	37
+-e	37#101	1370
+-e	base_conv(1370, 10, 37)	101
+-e	base_conv(101, 37, 10)	1370
+-e	37#1sfeeltA	167839353194
+-e	base_conv(167839353194, 10, 37)	1sfeeltA
+-e	base_conv(1sfeeltA, 37, 10)	167839353194
+-e	37#j0ks5lup7Aju7omu9o2	321167159511724805955368316190
+-e	base_conv(321167159511724805955368316190, 10, 37)	j0ks5lup7Aju7omu9o2
+-e	base_conv(j0ks5lup7Aju7omu9o2, 37, 10)	321167159511724805955368316190
+-e	38#0	0
+-e	base_conv(0, 10, 38)	0
+-e	base_conv(0, 38, 10)	0
+-e	38#1	1
+-e	base_conv(1, 10, 38)	1
+-e	base_conv(1, 38, 10)	1
+-e	38#B	37
+-e	base_conv(37, 10, 38)	B
+-e	base_conv(B, 38, 10)	37
+-e	38#10	38
+-e	base_conv(38, 10, 38)	10
+-e	base_conv(10, 38, 10)	38
+-e	38#101	1445
+-e	base_conv(1445, 10, 38)	101
+-e	base_conv(101, 38, 10)	1445
+-e	38#5adjwice	603258733934
+-e	base_conv(603258733934, 10, 38)	5adjwice
+-e	base_conv(5adjwice, 38, 10)	603258733934
+-e	38#rfy366bq996nk86al37	748420887303078281580511781693
+-e	base_conv(748420887303078281580511781693, 10, 38)	rfy366bq996nk86al37
+-e	base_conv(rfy366bq996nk86al37, 38, 10)	748420887303078281580511781693
+-e	39#0	0
+-e	base_conv(0, 10, 39)	0
+-e	base_conv(0, 39, 10)	0
+-e	39#1	1
+-e	base_conv(1, 10, 39)	1
+-e	base_conv(1, 39, 10)	1
+-e	39#C	38
+-e	base_conv(38, 10, 39)	C
+-e	base_conv(C, 39, 10)	38
+-e	39#10	39
+-e	base_conv(39, 10, 39)	10
+-e	base_conv(10, 39, 10)	39
+-e	39#101	1522
+-e	base_conv(1522, 10, 39)	101
+-e	base_conv(101, 39, 10)	1522
+-e	39#5o1zhubu	770777132805
+-e	base_conv(770777132805, 10, 39)	5o1zhubu
+-e	base_conv(5o1zhubu, 39, 10)	770777132805
+-e	39#4md8cprjdj2oknpwCh6	199225155822929832104936005611
+-e	base_conv(199225155822929832104936005611, 10, 39)	4md8cprjdj2oknpwCh6
+-e	base_conv(4md8cprjdj2oknpwCh6, 39, 10)	199225155822929832104936005611
+-e	40#0	0
+-e	base_conv(0, 10, 40)	0
+-e	base_conv(0, 40, 10)	0
+-e	40#1	1
+-e	base_conv(1, 10, 40)	1
+-e	base_conv(1, 40, 10)	1
+-e	40#D	39
+-e	base_conv(39, 10, 40)	D
+-e	base_conv(D, 40, 10)	39
+-e	40#10	40
+-e	base_conv(40, 10, 40)	10
+-e	base_conv(10, 40, 10)	40
+-e	40#101	1601
+-e	base_conv(1601, 10, 40)	101
+-e	base_conv(101, 40, 10)	1601
+-e	40#21jfzCqh	333762301857
+-e	base_conv(333762301857, 10, 40)	21jfzCqh
+-e	base_conv(21jfzCqh, 40, 10)	333762301857
+-e	40#dt3fd0ax8wp77t6k7do	943320122495638602906538251744
+-e	base_conv(943320122495638602906538251744, 10, 40)	dt3fd0ax8wp77t6k7do
+-e	base_conv(dt3fd0ax8wp77t6k7do, 40, 10)	943320122495638602906538251744
+-e	41#0	0
+-e	base_conv(0, 10, 41)	0
+-e	base_conv(0, 41, 10)	0
+-e	41#1	1
+-e	base_conv(1, 10, 41)	1
+-e	base_conv(1, 41, 10)	1
+-e	41#E	40
+-e	base_conv(40, 10, 41)	E
+-e	base_conv(E, 41, 10)	40
+-e	41#10	41
+-e	base_conv(41, 10, 41)	10
+-e	base_conv(10, 41, 10)	41
+-e	41#101	1682
+-e	base_conv(1682, 10, 41)	101
+-e	base_conv(101, 41, 10)	1682
+-e	41#yga2DC0	163385705979
+-e	base_conv(163385705979, 10, 41)	yga2DC0
+-e	base_conv(yga2DC0, 41, 10)	163385705979
+-e	41#5ojuwBAgcCi2w5i6r39	599892864579855276398618983289
+-e	base_conv(599892864579855276398618983289, 10, 41)	5ojuwBAgcCi2w5i6r39
+-e	base_conv(5ojuwBAgcCi2w5i6r39, 41, 10)	599892864579855276398618983289
+-e	42#0	0
+-e	base_conv(0, 10, 42)	0
+-e	base_conv(0, 42, 10)	0
+-e	42#1	1
+-e	base_conv(1, 10, 42)	1
+-e	base_conv(1, 42, 10)	1
+-e	42#F	41
+-e	base_conv(41, 10, 42)	F
+-e	base_conv(F, 42, 10)	41
+-e	42#10	42
+-e	base_conv(42, 10, 42)	10
+-e	base_conv(10, 42, 10)	42
+-e	42#101	1765
+-e	base_conv(1765, 10, 42)	101
+-e	base_conv(101, 42, 10)	1765
+-e	42#3n50Fsc0	818522273520
+-e	base_conv(818522273520, 10, 42)	3n50Fsc0
+-e	base_conv(3n50Fsc0, 42, 10)	818522273520
+-e	42#2quyya6lqy4k9C2zxta	436032651817538901309350804872
+-e	base_conv(436032651817538901309350804872, 10, 42)	2quyya6lqy4k9C2zxta
+-e	base_conv(2quyya6lqy4k9C2zxta, 42, 10)	436032651817538901309350804872
+-e	43#0	0
+-e	base_conv(0, 10, 43)	0
+-e	base_conv(0, 43, 10)	0
+-e	43#1	1
+-e	base_conv(1, 10, 43)	1
+-e	base_conv(1, 43, 10)	1
+-e	43#G	42
+-e	base_conv(42, 10, 43)	G
+-e	base_conv(G, 43, 10)	42
+-e	43#10	43
+-e	base_conv(43, 10, 43)	10
+-e	base_conv(10, 43, 10)	43
+-e	43#101	1850
+-e	base_conv(1850, 10, 43)	101
+-e	base_conv(101, 43, 10)	1850
+-e	43#Ayp7r3x	232653433485
+-e	base_conv(232653433485, 10, 43)	Ayp7r3x
+-e	base_conv(Ayp7r3x, 43, 10)	232653433485
+-e	43#tra4nom7n59lvcbwpb	174078375523944324107964836012
+-e	base_conv(174078375523944324107964836012, 10, 43)	tra4nom7n59lvcbwpb
+-e	base_conv(tra4nom7n59lvcbwpb, 43, 10)	174078375523944324107964836012
+-e	44#0	0
+-e	base_conv(0, 10, 44)	0
+-e	base_conv(0, 44, 10)	0
+-e	44#1	1
+-e	base_conv(1, 10, 44)	1
+-e	base_conv(1, 44, 10)	1
+-e	44#H	43
+-e	base_conv(43, 10, 44)	H
+-e	base_conv(H, 44, 10)	43
+-e	44#10	44
+-e	base_conv(44, 10, 44)	10
+-e	base_conv(10, 44, 10)	44
+-e	44#101	1937
+-e	base_conv(1937, 10, 44)	101
+-e	base_conv(101, 44, 10)	1937
+-e	44#2bfmBGqs	720934507508
+-e	base_conv(720934507508, 10, 44)	2bfmBGqs
+-e	base_conv(2bfmBGqs, 44, 10)	720934507508
+-e	44#27ayzC2f1G4Fk0y3fGx	827063495359361785491316465929
+-e	base_conv(827063495359361785491316465929, 10, 44)	27ayzC2f1G4Fk0y3fGx
+-e	base_conv(27ayzC2f1G4Fk0y3fGx, 44, 10)	827063495359361785491316465929
+-e	45#0	0
+-e	base_conv(0, 10, 45)	0
+-e	base_conv(0, 45, 10)	0
+-e	45#1	1
+-e	base_conv(1, 10, 45)	1
+-e	base_conv(1, 45, 10)	1
+-e	45#I	44
+-e	base_conv(44, 10, 45)	I
+-e	base_conv(I, 45, 10)	44
+-e	45#10	45
+-e	base_conv(45, 10, 45)	10
+-e	base_conv(10, 45, 10)	45
+-e	45#101	2026
+-e	base_conv(2026, 10, 45)	101
+-e	base_conv(101, 45, 10)	2026
+-e	45#1i5jbuDs	524138851783
+-e	base_conv(524138851783, 10, 45)	1i5jbuDs
+-e	base_conv(1i5jbuDs, 45, 10)	524138851783
+-e	45#s9qbrwrumc06eq185x	358972760484299800865478336333
+-e	base_conv(358972760484299800865478336333, 10, 45)	s9qbrwrumc06eq185x
+-e	base_conv(s9qbrwrumc06eq185x, 45, 10)	358972760484299800865478336333
+-e	46#0	0
+-e	base_conv(0, 10, 46)	0
+-e	base_conv(0, 46, 10)	0
+-e	46#1	1
+-e	base_conv(1, 10, 46)	1
+-e	base_conv(1, 46, 10)	1
+-e	46#J	45
+-e	base_conv(45, 10, 46)	J
+-e	base_conv(J, 46, 10)	45
+-e	46#10	46
+-e	base_conv(46, 10, 46)	10
+-e	base_conv(10, 46, 10)	46
+-e	46#101	2117
+-e	base_conv(2117, 10, 46)	101
+-e	base_conv(101, 46, 10)	2117
+-e	46#uhFsaDu	287916601560
+-e	base_conv(287916601560, 10, 46)	uhFsaDu
+-e	base_conv(uhFsaDu, 46, 10)	287916601560
+-e	46#G6fkAJu317s05dgFI4	779030301555497917070346045056
+-e	base_conv(779030301555497917070346045056, 10, 46)	G6fkAJu317s05dgFI4
+-e	base_conv(G6fkAJu317s05dgFI4, 46, 10)	779030301555497917070346045056
+-e	47#0	0
+-e	base_conv(0, 10, 47)	0
+-e	base_conv(0, 47, 10)	0
+-e	47#1	1
+-e	base_conv(1, 10, 47)	1
+-e	base_conv(1, 47, 10)	1
+-e	47#K	46
+-e	base_conv(46, 10, 47)	K
+-e	base_conv(K, 47, 10)	46
+-e	47#10	47
+-e	base_conv(47, 10, 47)	10
+-e	base_conv(10, 47, 10)	47
+-e	47#101	2210
+-e	base_conv(2210, 10, 47)	101
+-e	base_conv(101, 47, 10)	2210
+-e	47#13cyv9DC	541882055953
+-e	base_conv(541882055953, 10, 47)	13cyv9DC
+-e	base_conv(13cyv9DC, 47, 10)	541882055953
+-e	47#mf4zmEglj2r4gIA6dt	594816625308749778162125146437
+-e	base_conv(594816625308749778162125146437, 10, 47)	mf4zmEglj2r4gIA6dt
+-e	base_conv(mf4zmEglj2r4gIA6dt, 47, 10)	594816625308749778162125146437
+-e	48#0	0
+-e	base_conv(0, 10, 48)	0
+-e	base_conv(0, 48, 10)	0
+-e	48#1	1
+-e	base_conv(1, 10, 48)	1
+-e	base_conv(1, 48, 10)	1
+-e	48#L	47
+-e	base_conv(47, 10, 48)	L
+-e	base_conv(L, 48, 10)	47
+-e	48#10	48
+-e	base_conv(48, 10, 48)	10
+-e	base_conv(10, 48, 10)	48
+-e	48#101	2305
+-e	base_conv(2305, 10, 48)	101
+-e	base_conv(101, 48, 10)	2305
+-e	48#bELfA21	144979891297
+-e	base_conv(144979891297, 10, 48)	bELfA21
+-e	base_conv(bELfA21, 48, 10)	144979891297
+-e	48#qaerqj6h0jsbJ3xFGz	999183481002894656454780528899
+-e	base_conv(999183481002894656454780528899, 10, 48)	qaerqj6h0jsbJ3xFGz
+-e	base_conv(qaerqj6h0jsbJ3xFGz, 48, 10)	999183481002894656454780528899
+-e	49#0	0
+-e	base_conv(0, 10, 49)	0
+-e	base_conv(0, 49, 10)	0
+-e	49#1	1
+-e	base_conv(1, 10, 49)	1
+-e	base_conv(1, 49, 10)	1
+-e	49#M	48
+-e	base_conv(48, 10, 49)	M
+-e	base_conv(M, 49, 10)	48
+-e	49#10	49
+-e	base_conv(49, 10, 49)	10
+-e	base_conv(10, 49, 10)	49
+-e	49#101	2402
+-e	base_conv(2402, 10, 49)	101
+-e	base_conv(101, 49, 10)	2402
+-e	49#G5bvCre	582813591192
+-e	base_conv(582813591192, 10, 49)	G5bvCre
+-e	base_conv(G5bvCre, 49, 10)	582813591192
+-e	49#cpnBnvHk3alzBwmDEx	677549810660850754918521760038
+-e	base_conv(677549810660850754918521760038, 10, 49)	cpnBnvHk3alzBwmDEx
+-e	base_conv(cpnBnvHk3alzBwmDEx, 49, 10)	677549810660850754918521760038
+-e	50#0	0
+-e	base_conv(0, 10, 50)	0
+-e	base_conv(0, 50, 10)	0
+-e	50#1	1
+-e	base_conv(1, 10, 50)	1
+-e	base_conv(1, 50, 10)	1
+-e	50#N	49
+-e	base_conv(49, 10, 50)	N
+-e	base_conv(N, 50, 10)	49
+-e	50#10	50
+-e	base_conv(50, 10, 50)	10
+-e	base_conv(10, 50, 10)	50
+-e	50#101	2501
+-e	base_conv(2501, 10, 50)	101
+-e	base_conv(101, 50, 10)	2501
+-e	50#LvELH8n	744318482923
+-e	base_conv(744318482923, 10, 50)	LvELH8n
+-e	base_conv(LvELH8n, 50, 10)	744318482923
+-e	50#bwhJ0Jhv5JmBkJD3bu	888607799158312322459661133080
+-e	base_conv(888607799158312322459661133080, 10, 50)	bwhJ0Jhv5JmBkJD3bu
+-e	base_conv(bwhJ0Jhv5JmBkJD3bu, 50, 10)	888607799158312322459661133080
+-e	51#0	0
+-e	base_conv(0, 10, 51)	0
+-e	base_conv(0, 51, 10)	0
+-e	51#1	1
+-e	base_conv(1, 10, 51)	1
+-e	base_conv(1, 51, 10)	1
+-e	51#O	50
+-e	base_conv(50, 10, 51)	O
+-e	base_conv(O, 51, 10)	50
+-e	51#10	51
+-e	base_conv(51, 10, 51)	10
+-e	base_conv(10, 51, 10)	51
+-e	51#101	2602
+-e	base_conv(2602, 10, 51)	101
+-e	base_conv(101, 51, 10)	2602
+-e	51#NAHuaMJ	874933922961
+-e	base_conv(874933922961, 10, 51)	NAHuaMJ
+-e	base_conv(NAHuaMJ, 51, 10)	874933922961
+-e	51#36NkbMhCMEpllsybtz	335086910338178630720237426534
+-e	base_conv(335086910338178630720237426534, 10, 51)	36NkbMhCMEpllsybtz
+-e	base_conv(36NkbMhCMEpllsybtz, 51, 10)	335086910338178630720237426534
+-e	52#0	0
+-e	base_conv(0, 10, 52)	0
+-e	base_conv(0, 52, 10)	0
+-e	52#1	1
+-e	base_conv(1, 10, 52)	1
+-e	base_conv(1, 52, 10)	1
+-e	52#P	51
+-e	base_conv(51, 10, 52)	P
+-e	base_conv(P, 52, 10)	51
+-e	52#10	52
+-e	base_conv(52, 10, 52)	10
+-e	base_conv(10, 52, 10)	52
+-e	52#101	2705
+-e	base_conv(2705, 10, 52)	101
+-e	base_conv(101, 52, 10)	2705
+-e	52#aKa8p3	4139803671
+-e	base_conv(4139803671, 10, 52)	aKa8p3
+-e	base_conv(aKa8p3, 52, 10)	4139803671
+-e	52#2Ivb1PJOgpgyvtFyq0	424690941358745371305720675496
+-e	base_conv(424690941358745371305720675496, 10, 52)	2Ivb1PJOgpgyvtFyq0
+-e	base_conv(2Ivb1PJOgpgyvtFyq0, 52, 10)	424690941358745371305720675496
+-e	53#0	0
+-e	base_conv(0, 10, 53)	0
+-e	base_conv(0, 53, 10)	0
+-e	53#1	1
+-e	base_conv(1, 10, 53)	1
+-e	base_conv(1, 53, 10)	1
+-e	53#Q	52
+-e	base_conv(52, 10, 53)	Q
+-e	base_conv(Q, 53, 10)	52
+-e	53#10	53
+-e	base_conv(53, 10, 53)	10
+-e	base_conv(10, 53, 10)	53
+-e	53#101	2810
+-e	base_conv(2810, 10, 53)	101
+-e	base_conv(101, 53, 10)	2810
+-e	53#AN73dPQ	818464299071
+-e	base_conv(818464299071, 10, 53)	AN73dPQ
+-e	base_conv(AN73dPQ, 53, 10)	818464299071
+-e	53#4HpaNAiov6lwvhMHCm	990292129695905628105477737518
+-e	base_conv(990292129695905628105477737518, 10, 53)	4HpaNAiov6lwvhMHCm
+-e	base_conv(4HpaNAiov6lwvhMHCm, 53, 10)	990292129695905628105477737518
+-e	54#0	0
+-e	base_conv(0, 10, 54)	0
+-e	base_conv(0, 54, 10)	0
+-e	54#1	1
+-e	base_conv(1, 10, 54)	1
+-e	base_conv(1, 54, 10)	1
+-e	54#R	53
+-e	base_conv(53, 10, 54)	R
+-e	base_conv(R, 54, 10)	53
+-e	54#10	54
+-e	base_conv(54, 10, 54)	10
+-e	base_conv(10, 54, 10)	54
+-e	54#101	2917
+-e	base_conv(2917, 10, 54)	101
+-e	base_conv(101, 54, 10)	2917
+-e	54#kwxprN8	510876125522
+-e	base_conv(510876125522, 10, 54)	kwxprN8
+-e	base_conv(kwxprN8, 54, 10)	510876125522
+-e	54#2cwmldM4uOQuJELmqO	630446800583537998263140432270
+-e	base_conv(630446800583537998263140432270, 10, 54)	2cwmldM4uOQuJELmqO
+-e	base_conv(2cwmldM4uOQuJELmqO, 54, 10)	630446800583537998263140432270
+-e	55#0	0
+-e	base_conv(0, 10, 55)	0
+-e	base_conv(0, 55, 10)	0
+-e	55#1	1
+-e	base_conv(1, 10, 55)	1
+-e	base_conv(1, 55, 10)	1
+-e	55#S	54
+-e	base_conv(54, 10, 55)	S
+-e	base_conv(S, 55, 10)	54
+-e	55#10	55
+-e	base_conv(55, 10, 55)	10
+-e	base_conv(10, 55, 10)	55
+-e	55#101	3026
+-e	base_conv(3026, 10, 55)	101
+-e	base_conv(101, 55, 10)	3026
+-e	55#qdoQD3A	726467737801
+-e	base_conv(726467737801, 10, 55)	qdoQD3A
+-e	base_conv(qdoQD3A, 55, 10)	726467737801
+-e	55#14IAIrcSOnE4EkCCAc	419365383051073348296465654817
+-e	base_conv(419365383051073348296465654817, 10, 55)	14IAIrcSOnE4EkCCAc
+-e	base_conv(14IAIrcSOnE4EkCCAc, 55, 10)	419365383051073348296465654817
+-e	56#0	0
+-e	base_conv(0, 10, 56)	0
+-e	base_conv(0, 56, 10)	0
+-e	56#1	1
+-e	base_conv(1, 10, 56)	1
+-e	base_conv(1, 56, 10)	1
+-e	56#T	55
+-e	base_conv(55, 10, 56)	T
+-e	base_conv(T, 56, 10)	55
+-e	56#10	56
+-e	base_conv(56, 10, 56)	10
+-e	base_conv(10, 56, 10)	56
+-e	56#101	3137
+-e	base_conv(3137, 10, 56)	101
+-e	base_conv(101, 56, 10)	3137
+-e	56#1kwHE7i	42177996186
+-e	base_conv(42177996186, 10, 56)	1kwHE7i
+-e	base_conv(1kwHE7i, 56, 10)	42177996186
+-e	56#1qJAnek7kfksHLojEp	774672965643633691770638086553
+-e	base_conv(774672965643633691770638086553, 10, 56)	1qJAnek7kfksHLojEp
+-e	base_conv(1qJAnek7kfksHLojEp, 56, 10)	774672965643633691770638086553
+-e	57#0	0
+-e	base_conv(0, 10, 57)	0
+-e	base_conv(0, 57, 10)	0
+-e	57#1	1
+-e	base_conv(1, 10, 57)	1
+-e	base_conv(1, 57, 10)	1
+-e	57#U	56
+-e	base_conv(56, 10, 57)	U
+-e	base_conv(U, 57, 10)	56
+-e	57#10	57
+-e	base_conv(57, 10, 57)	10
+-e	base_conv(10, 57, 10)	57
+-e	57#101	3250
+-e	base_conv(3250, 10, 57)	101
+-e	base_conv(101, 57, 10)	3250
+-e	57#qIMHk4R	918696795590
+-e	base_conv(918696795590, 10, 57)	qIMHk4R
+-e	base_conv(qIMHk4R, 57, 10)	918696795590
+-e	57#oQM3pQeesGmoRRkxw	309505933052268596194177239683
+-e	base_conv(309505933052268596194177239683, 10, 57)	oQM3pQeesGmoRRkxw
+-e	base_conv(oQM3pQeesGmoRRkxw, 57, 10)	309505933052268596194177239683
+-e	58#0	0
+-e	base_conv(0, 10, 58)	0
+-e	base_conv(0, 58, 10)	0
+-e	58#1	1
+-e	base_conv(1, 10, 58)	1
+-e	base_conv(1, 58, 10)	1
+-e	58#V	57
+-e	base_conv(57, 10, 58)	V
+-e	base_conv(V, 58, 10)	57
+-e	58#10	58
+-e	base_conv(58, 10, 58)	10
+-e	base_conv(10, 58, 10)	58
+-e	58#101	3365
+-e	base_conv(3365, 10, 58)	101
+-e	base_conv(101, 58, 10)	3365
+-e	58#cAtuoeJ	480787267513
+-e	base_conv(480787267513, 10, 58)	cAtuoeJ
+-e	base_conv(cAtuoeJ, 58, 10)	480787267513
+-e	58#JLjgST0maK0y86ON9	751390712734931876541049643483
+-e	base_conv(751390712734931876541049643483, 10, 58)	JLjgST0maK0y86ON9
+-e	base_conv(JLjgST0maK0y86ON9, 58, 10)	751390712734931876541049643483
+-e	59#0	0
+-e	base_conv(0, 10, 59)	0
+-e	base_conv(0, 59, 10)	0
+-e	59#1	1
+-e	base_conv(1, 10, 59)	1
+-e	base_conv(1, 59, 10)	1
+-e	59#W	58
+-e	base_conv(58, 10, 59)	W
+-e	base_conv(W, 59, 10)	58
+-e	59#10	59
+-e	base_conv(59, 10, 59)	10
+-e	base_conv(10, 59, 10)	59
+-e	59#101	3482
+-e	base_conv(3482, 10, 59)	101
+-e	base_conv(101, 59, 10)	3482
+-e	59#4u5grnA	190233831783
+-e	base_conv(190233831783, 10, 59)	4u5grnA
+-e	base_conv(4u5grnA, 59, 10)	190233831783
+-e	59#GaoAAG65dH9v6hJVC	909292034568007218071854211798
+-e	base_conv(909292034568007218071854211798, 10, 59)	GaoAAG65dH9v6hJVC
+-e	base_conv(GaoAAG65dH9v6hJVC, 59, 10)	909292034568007218071854211798
+-e	60#0	0
+-e	base_conv(0, 10, 60)	0
+-e	base_conv(0, 60, 10)	0
+-e	60#1	1
+-e	base_conv(1, 10, 60)	1
+-e	base_conv(1, 60, 10)	1
+-e	60#X	59
+-e	base_conv(59, 10, 60)	X
+-e	base_conv(X, 60, 10)	59
+-e	60#10	60
+-e	base_conv(60, 10, 60)	10
+-e	base_conv(10, 60, 10)	60
+-e	60#101	3601
+-e	base_conv(3601, 10, 60)	101
+-e	base_conv(101, 60, 10)	3601
+-e	60#6xS3k1c	306297360072
+-e	base_conv(306297360072, 10, 60)	6xS3k1c
+-e	base_conv(6xS3k1c, 60, 10)	306297360072
+-e	60#e3a3Ucz8fhGaOFQkW	396444820338898115349105044458
+-e	base_conv(396444820338898115349105044458, 10, 60)	e3a3Ucz8fhGaOFQkW
+-e	base_conv(e3a3Ucz8fhGaOFQkW, 60, 10)	396444820338898115349105044458
+-e	61#0	0
+-e	base_conv(0, 10, 61)	0
+-e	base_conv(0, 61, 10)	0
+-e	61#1	1
+-e	base_conv(1, 10, 61)	1
+-e	base_conv(1, 61, 10)	1
+-e	61#Y	60
+-e	base_conv(60, 10, 61)	Y
+-e	base_conv(Y, 61, 10)	60
+-e	61#10	61
+-e	base_conv(61, 10, 61)	10
+-e	base_conv(10, 61, 10)	61
+-e	61#101	3722
+-e	base_conv(3722, 10, 61)	101
+-e	base_conv(101, 61, 10)	3722
+-e	61#g0rWpcK	824713086184
+-e	base_conv(824713086184, 10, 61)	g0rWpcK
+-e	base_conv(g0rWpcK, 61, 10)	824713086184
+-e	61#oHQ99g92Be39nfiPE	908462661415441628735013606794
+-e	base_conv(908462661415441628735013606794, 10, 61)	oHQ99g92Be39nfiPE
+-e	base_conv(oHQ99g92Be39nfiPE, 61, 10)	908462661415441628735013606794
+-e	62#0	0
+-e	base_conv(0, 10, 62)	0
+-e	base_conv(0, 62, 10)	0
+-e	62#1	1
+-e	base_conv(1, 10, 62)	1
+-e	base_conv(1, 62, 10)	1
+-e	62#Z	61
+-e	base_conv(61, 10, 62)	Z
+-e	base_conv(Z, 62, 10)	61
+-e	62#10	62
+-e	base_conv(62, 10, 62)	10
+-e	base_conv(10, 62, 10)	62
+-e	62#101	3845
+-e	base_conv(3845, 10, 62)	101
+-e	base_conv(101, 62, 10)	3845
+-e	62#gVyimiX	961530111839
+-e	base_conv(961530111839, 10, 62)	gVyimiX
+-e	base_conv(gVyimiX, 62, 10)	961530111839
+-e	62#9DI0zU8mjj9Qnr8ZS	459584887549939141294263343604
+-e	base_conv(459584887549939141294263343604, 10, 62)	9DI0zU8mjj9Qnr8ZS
+-e	base_conv(9DI0zU8mjj9Qnr8ZS, 62, 10)	459584887549939141294263343604
+-e	63#0	0
+-e	base_conv(0, 10, 63)	0
+-e	base_conv(0, 63, 10)	0
+-e	63#1	1
+-e	base_conv(1, 10, 63)	1
+-e	base_conv(1, 63, 10)	1
+-e	63#@	62
+-e	base_conv(62, 10, 63)	@
+-e	base_conv(@, 63, 10)	62
+-e	63#10	63
+-e	base_conv(63, 10, 63)	10
+-e	base_conv(10, 63, 10)	63
+-e	63#101	3970
+-e	base_conv(3970, 10, 63)	101
+-e	base_conv(101, 63, 10)	3970
+-e	63#cqrhrh8	776515065614
+-e	base_conv(776515065614, 10, 63)	cqrhrh8
+-e	base_conv(cqrhrh8, 63, 10)	776515065614
+-e	63#aixjqOLIURM8wNsM2	633924365299851308204159221817
+-e	base_conv(633924365299851308204159221817, 10, 63)	aixjqOLIURM8wNsM2
+-e	base_conv(aixjqOLIURM8wNsM2, 63, 10)	633924365299851308204159221817
+-e	64#0	0
+-e	base_conv(0, 10, 64)	0
+-e	base_conv(0, 64, 10)	0
+-e	64#1	1
+-e	base_conv(1, 10, 64)	1
+-e	base_conv(1, 64, 10)	1
+-e	64#_	63
+-e	base_conv(63, 10, 64)	_
+-e	base_conv(_, 64, 10)	63
+-e	64#10	64
+-e	base_conv(64, 10, 64)	10
+-e	base_conv(10, 64, 10)	64
+-e	64#101	4097
+-e	base_conv(4097, 10, 64)	101
+-e	base_conv(101, 64, 10)	4097
+-e	64#6q2nuJL	440273857391
+-e	base_conv(440273857391, 10, 64)	6q2nuJL
+-e	base_conv(6q2nuJL, 64, 10)	440273857391
+-e	64#cAmL_TKXlfq8xL6aa	995743839973805896849990378122
+-e	base_conv(995743839973805896849990378122, 10, 64)	cAmL_TKXlfq8xL6aa
+-e	base_conv(cAmL_TKXlfq8xL6aa, 64, 10)	995743839973805896849990378122
+-e	65#00	0
+-e	base_conv(0, 10, 65)	#00
+-e	65#01	1
+-e	base_conv(1, 10, 65)	#01
+-e	65#64	64
+-e	base_conv(64, 10, 65)	#64
+-e	65#01#00	65
+-e	base_conv(65, 10, 65)	#01#00
+-e	65#01#03#02#12#18#03#08#01#25#54#03#06	91591990782573003976
+-e	base_conv(91591990782573003976, 10, 65)	#01#03#02#12#18#03#08#01#25#54#03#06
+-e	100#00	0
+-e	base_conv(0, 10, 100)	#00
+-e	100#01	1
+-e	base_conv(1, 10, 100)	#01
+-e	100#99	99
+-e	base_conv(99, 10, 100)	#99
+-e	100#01#00	100
+-e	base_conv(100, 10, 100)	#01#00
+-e	100#02#75#57#07#83#56#15#23#97#02	2755707835615239702
+-e	base_conv(2755707835615239702, 10, 100)	#02#75#57#07#83#56#15#23#97#02
+-e	256#000	0
+-e	256#001	1
+-e	256#255	255
+-e	256#001#000	256
+-e	256#003#210#129#204#033#219#155#244#086	70508861686879614038
+-e	1000#000	0
+-e	base_conv(0, 10, 1000)	#000
+-e	1000#001	1
+-e	base_conv(1, 10, 1000)	#001
+-e	1000#999	999
+-e	base_conv(999, 10, 1000)	#999
+-e	1000#001#000	1000
+-e	base_conv(1000, 10, 1000)	#001#000
+-e	1000#058#844#177#982#292#822#053	58844177982292822053
+-e	base_conv(58844177982292822053, 10, 1000)	#058#844#177#982#292#822#053
+-e	65536#00000	0
+-e	base_conv(0, 10, 65536)	#00000
+-e	65536#00001	1
+-e	base_conv(1, 10, 65536)	#00001
+-e	65536#65535	65535
+-e	base_conv(65535, 10, 65536)	#65535
+-e	65536#00001#00000	65536
+-e	base_conv(65536, 10, 65536)	#00001#00000
+-e	65536#12343#61614#31776#60452	3474510269737135140
+-e	base_conv(3474510269737135140, 10, 65536)	#12343#61614#31776#60452
+-e	1000000000#000000000	0
+-e	base_conv(0, 10, 1000000000)	#000000000
+-e	1000000000#000000001	1
+-e	base_conv(1, 10, 1000000000)	#000000001
+-e	1000000000#999999999	999999999
+-e	base_conv(999999999, 10, 1000000000)	#999999999
+-e	1000000000#000000001#000000000	1000000000
+-e	base_conv(1000000000, 10, 1000000000)	#000000001#000000000
+-e	1000000000#000000022#710870177#942708422	22710870177942708422
+-e	base_conv(22710870177942708422, 10, 1000000000)	#000000022#710870177#942708422

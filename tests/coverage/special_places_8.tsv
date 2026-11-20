@@ -1,0 +1,700 @@
+-e	median(i)	error: median needs a list of values that is not empty
+-e	median(inf)	error: median needs a list of values that is not empty
+-e	median(-inf)	error: median needs a list of values that is not empty
+-e	median(undefined)	error: median needs a list of values that is not empty
+-e	median(10^20)	error: median needs a list of values that is not empty
+-e	median(10^(-20))	error: median needs a list of values that is not empty
+-e	median(x)	error: median needs a list of values that is not empty
+-e	median([])	error: median needs a list of values that is not empty
+-e	median([1, 2])	3/2
+-e	median("text")	error: median needs a list of values that is not empty
+-e	median(true)	error: median needs a list of values that is not empty
+-e	median(-7/3)	error: median needs a list of values that is not empty
+-e	median(0.5)	error: median needs a list of values that is not empty
+-e	mode(0)	error: mode needs a list of values that is not empty
+-e	mode(1)	error: mode needs a list of values that is not empty
+-e	mode(-1)	error: mode needs a list of values that is not empty
+-e	mode(1/2)	error: mode needs a list of values that is not empty
+-e	mode(2)	error: mode needs a list of values that is not empty
+-e	mode(i)	error: mode needs a list of values that is not empty
+-e	mode(inf)	error: mode needs a list of values that is not empty
+-e	mode(-inf)	error: mode needs a list of values that is not empty
+-e	mode(undefined)	error: mode needs a list of values that is not empty
+-e	mode(10^20)	error: mode needs a list of values that is not empty
+-e	mode(10^(-20))	error: mode needs a list of values that is not empty
+-e	mode(x)	error: mode needs a list of values that is not empty
+-e	mode([])	error: mode needs a list of values that is not empty
+-e	mode([1, 2])	[1, 2]
+-e	mode("text")	error: mode needs a list of values that is not empty
+-e	mode(true)	error: mode needs a list of values that is not empty
+-e	mode(-7/3)	error: mode needs a list of values that is not empty
+-e	mode(0.5)	error: mode needs a list of values that is not empty
+-e	variance(0)	error: variance needs a list of values that is not empty
+-e	variance(1)	error: variance needs a list of values that is not empty
+-e	variance(-1)	error: variance needs a list of values that is not empty
+-e	variance(1/2)	error: variance needs a list of values that is not empty
+-e	variance(2)	error: variance needs a list of values that is not empty
+-e	variance(i)	error: variance needs a list of values that is not empty
+-e	variance(inf)	error: variance needs a list of values that is not empty
+-e	variance(-inf)	error: variance needs a list of values that is not empty
+-e	variance(undefined)	error: variance needs a list of values that is not empty
+-e	variance(10^20)	error: variance needs a list of values that is not empty
+-e	variance(10^(-20))	error: variance needs a list of values that is not empty
+-e	variance(x)	error: variance needs a list of values that is not empty
+-e	variance([])	error: variance needs a list of values that is not empty
+-e	variance([1, 2])	1/2
+-e	variance("text")	error: variance needs a list of values that is not empty
+-e	variance(true)	error: variance needs a list of values that is not empty
+-e	variance(-7/3)	error: variance needs a list of values that is not empty
+-e	variance(0.5)	error: variance needs a list of values that is not empty
+-e	stddev(0)	error: stddev needs a list of values that is not empty
+-e	stddev(1)	error: stddev needs a list of values that is not empty
+-e	stddev(-1)	error: stddev needs a list of values that is not empty
+-e	stddev(1/2)	error: stddev needs a list of values that is not empty
+-e	stddev(2)	error: stddev needs a list of values that is not empty
+-e	stddev(i)	error: stddev needs a list of values that is not empty
+-e	stddev(inf)	error: stddev needs a list of values that is not empty
+-e	stddev(-inf)	error: stddev needs a list of values that is not empty
+-e	stddev(undefined)	error: stddev needs a list of values that is not empty
+-e	stddev(10^20)	error: stddev needs a list of values that is not empty
+-e	stddev(10^(-20))	error: stddev needs a list of values that is not empty
+-e	stddev(x)	error: stddev needs a list of values that is not empty
+-e	stddev([])	error: stddev needs a list of values that is not empty
+-e	stddev([1, 2])	sqrt(2)/2
+-e	stddev("text")	error: stddev needs a list of values that is not empty
+-e	stddev(true)	error: stddev needs a list of values that is not empty
+-e	stddev(-7/3)	error: stddev needs a list of values that is not empty
+-e	stddev(0.5)	error: stddev needs a list of values that is not empty
+-e	pvariance(0)	error: pvariance needs a list of values that is not empty
+-e	pvariance(1)	error: pvariance needs a list of values that is not empty
+-e	pvariance(-1)	error: pvariance needs a list of values that is not empty
+-e	pvariance(1/2)	error: pvariance needs a list of values that is not empty
+-e	pvariance(2)	error: pvariance needs a list of values that is not empty
+-e	pvariance(i)	error: pvariance needs a list of values that is not empty
+-e	pvariance(inf)	error: pvariance needs a list of values that is not empty
+-e	pvariance(-inf)	error: pvariance needs a list of values that is not empty
+-e	pvariance(undefined)	error: pvariance needs a list of values that is not empty
+-e	pvariance(10^20)	error: pvariance needs a list of values that is not empty
+-e	pvariance(10^(-20))	error: pvariance needs a list of values that is not empty
+-e	pvariance(x)	error: pvariance needs a list of values that is not empty
+-e	pvariance([])	error: pvariance needs a list of values that is not empty
+-e	pvariance([1, 2])	1/4
+-e	pvariance("text")	error: pvariance needs a list of values that is not empty
+-e	pvariance(true)	error: pvariance needs a list of values that is not empty
+-e	pvariance(-7/3)	error: pvariance needs a list of values that is not empty
+-e	pvariance(0.5)	error: pvariance needs a list of values that is not empty
+-e	pstddev(0)	error: pstddev needs a list of values that is not empty
+-e	pstddev(1)	error: pstddev needs a list of values that is not empty
+-e	pstddev(-1)	error: pstddev needs a list of values that is not empty
+-e	pstddev(1/2)	error: pstddev needs a list of values that is not empty
+-e	pstddev(2)	error: pstddev needs a list of values that is not empty
+-e	pstddev(i)	error: pstddev needs a list of values that is not empty
+-e	pstddev(inf)	error: pstddev needs a list of values that is not empty
+-e	pstddev(-inf)	error: pstddev needs a list of values that is not empty
+-e	pstddev(undefined)	error: pstddev needs a list of values that is not empty
+-e	pstddev(10^20)	error: pstddev needs a list of values that is not empty
+-e	pstddev(10^(-20))	error: pstddev needs a list of values that is not empty
+-e	pstddev(x)	error: pstddev needs a list of values that is not empty
+-e	pstddev([])	error: pstddev needs a list of values that is not empty
+-e	pstddev([1, 2])	1/2
+-e	pstddev("text")	error: pstddev needs a list of values that is not empty
+-e	pstddev(true)	error: pstddev needs a list of values that is not empty
+-e	pstddev(-7/3)	error: pstddev needs a list of values that is not empty
+-e	pstddev(0.5)	error: pstddev needs a list of values that is not empty
+-e	quartiles(0)	error: quartiles needs a list of values that is not empty
+-e	quartiles(1)	error: quartiles needs a list of values that is not empty
+-e	quartiles(-1)	error: quartiles needs a list of values that is not empty
+-e	quartiles(1/2)	error: quartiles needs a list of values that is not empty
+-e	quartiles(2)	error: quartiles needs a list of values that is not empty
+-e	quartiles(i)	error: quartiles needs a list of values that is not empty
+-e	quartiles(inf)	error: quartiles needs a list of values that is not empty
+-e	quartiles(-inf)	error: quartiles needs a list of values that is not empty
+-e	quartiles(undefined)	error: quartiles needs a list of values that is not empty
+-e	quartiles(10^20)	error: quartiles needs a list of values that is not empty
+-e	quartiles(10^(-20))	error: quartiles needs a list of values that is not empty
+-e	quartiles(x)	error: quartiles needs a list of values that is not empty
+-e	quartiles([])	error: quartiles needs a list of values that is not empty
+-e	quartiles([1, 2])	[5/4, 3/2, 7/4]
+-e	quartiles("text")	error: quartiles needs a list of values that is not empty
+-e	quartiles(true)	error: quartiles needs a list of values that is not empty
+-e	quartiles(-7/3)	error: quartiles needs a list of values that is not empty
+-e	quartiles(0.5)	error: quartiles needs a list of values that is not empty
+-e	iqr(0)	error: iqr needs a list of values that is not empty
+-e	iqr(1)	error: iqr needs a list of values that is not empty
+-e	iqr(-1)	error: iqr needs a list of values that is not empty
+-e	iqr(1/2)	error: iqr needs a list of values that is not empty
+-e	iqr(2)	error: iqr needs a list of values that is not empty
+-e	iqr(i)	error: iqr needs a list of values that is not empty
+-e	iqr(inf)	error: iqr needs a list of values that is not empty
+-e	iqr(-inf)	error: iqr needs a list of values that is not empty
+-e	iqr(undefined)	error: iqr needs a list of values that is not empty
+-e	iqr(10^20)	error: iqr needs a list of values that is not empty
+-e	iqr(10^(-20))	error: iqr needs a list of values that is not empty
+-e	iqr(x)	error: iqr needs a list of values that is not empty
+-e	iqr([])	error: iqr needs a list of values that is not empty
+-e	iqr([1, 2])	1/2
+-e	iqr("text")	error: iqr needs a list of values that is not empty
+-e	iqr(true)	error: iqr needs a list of values that is not empty
+-e	iqr(-7/3)	error: iqr needs a list of values that is not empty
+-e	iqr(0.5)	error: iqr needs a list of values that is not empty
+-e	skewness(0)	error: skewness needs a list of values that is not empty
+-e	skewness(1)	error: skewness needs a list of values that is not empty
+-e	skewness(-1)	error: skewness needs a list of values that is not empty
+-e	skewness(1/2)	error: skewness needs a list of values that is not empty
+-e	skewness(2)	error: skewness needs a list of values that is not empty
+-e	skewness(i)	error: skewness needs a list of values that is not empty
+-e	skewness(inf)	error: skewness needs a list of values that is not empty
+-e	skewness(-inf)	error: skewness needs a list of values that is not empty
+-e	skewness(undefined)	error: skewness needs a list of values that is not empty
+-e	skewness(10^20)	error: skewness needs a list of values that is not empty
+-e	skewness(10^(-20))	error: skewness needs a list of values that is not empty
+-e	skewness(x)	error: skewness needs a list of values that is not empty
+-e	skewness([])	error: skewness needs a list of values that is not empty
+-e	skewness([1, 2])	0
+-e	skewness("text")	error: skewness needs a list of values that is not empty
+-e	skewness(true)	error: skewness needs a list of values that is not empty
+-e	skewness(-7/3)	error: skewness needs a list of values that is not empty
+-e	skewness(0.5)	error: skewness needs a list of values that is not empty
+-e	kurtosis(0)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(1)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(-1)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(1/2)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(2)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(i)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(inf)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(-inf)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(undefined)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(10^20)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(10^(-20))	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(x)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis([])	error: kurtosis needs a list of values that is not empty
+-e	kurtosis([1, 2])	1
+-e	kurtosis("text")	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(true)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(-7/3)	error: kurtosis needs a list of values that is not empty
+-e	kurtosis(0.5)	error: kurtosis needs a list of values that is not empty
+-e	geometricmean(0)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(1)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(-1)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(1/2)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(2)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(i)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(inf)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(-inf)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(undefined)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(10^20)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(10^(-20))	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(x)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean([])	error: geometricmean needs a list of values that is not empty
+-e	geometricmean([1, 2])	sqrt(2)
+-e	geometricmean("text")	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(true)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(-7/3)	error: geometricmean needs a list of values that is not empty
+-e	geometricmean(0.5)	error: geometricmean needs a list of values that is not empty
+-e	harmonicmean(0)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(1)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(-1)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(1/2)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(2)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(i)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(inf)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(-inf)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(undefined)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(10^20)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(10^(-20))	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(x)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean([])	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean([1, 2])	4/3
+-e	harmonicmean("text")	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(true)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(-7/3)	error: harmonicmean needs a list of values that is not empty
+-e	harmonicmean(0.5)	error: harmonicmean needs a list of values that is not empty
+-e	rms(0)	error: rms needs a list of values that is not empty
+-e	rms(1)	error: rms needs a list of values that is not empty
+-e	rms(-1)	error: rms needs a list of values that is not empty
+-e	rms(1/2)	error: rms needs a list of values that is not empty
+-e	rms(2)	error: rms needs a list of values that is not empty
+-e	rms(i)	error: rms needs a list of values that is not empty
+-e	rms(inf)	error: rms needs a list of values that is not empty
+-e	rms(-inf)	error: rms needs a list of values that is not empty
+-e	rms(undefined)	error: rms needs a list of values that is not empty
+-e	rms(10^20)	error: rms needs a list of values that is not empty
+-e	rms(10^(-20))	error: rms needs a list of values that is not empty
+-e	rms(x)	error: rms needs a list of values that is not empty
+-e	rms([])	error: rms needs a list of values that is not empty
+-e	rms([1, 2])	sqrt(10)/2
+-e	rms("text")	error: rms needs a list of values that is not empty
+-e	rms(true)	error: rms needs a list of values that is not empty
+-e	rms(-7/3)	error: rms needs a list of values that is not empty
+-e	rms(0.5)	error: rms needs a list of values that is not empty
+-e	meandeviation(0)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(1)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(-1)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(1/2)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(2)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(i)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(inf)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(-inf)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(undefined)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(10^20)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(10^(-20))	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(x)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation([])	error: meandeviation needs a list of values that is not empty
+-e	meandeviation([1, 2])	1/2
+-e	meandeviation("text")	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(true)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(-7/3)	error: meandeviation needs a list of values that is not empty
+-e	meandeviation(0.5)	error: meandeviation needs a list of values that is not empty
+-e	normaldist(0)	normaldist(0)
+-e	normaldist(1)	normaldist(1)
+-e	normaldist(-1)	normaldist(-1)
+-e	normaldist(1/2)	normaldist(1/2)
+-e	normaldist(2)	normaldist(2)
+-e	normaldist(i)	normaldist(i)
+-e	normaldist(inf)	normaldist(inf)
+-e	normaldist(-inf)	normaldist(-inf)
+-e	normaldist(undefined)	undefined
+-e	normaldist(10^20)	normaldist(100000000000000000000)
+-e	normaldist(10^(-20))	normaldist(1/100000000000000000000)
+-e	normaldist(x)	normaldist(x)
+-e	normaldist([])	normaldist([])
+-e	normaldist([1, 2])	normaldist([1, 2])
+-e	normaldist("text")	normaldist("text")
+-e	normaldist(true)	normaldist(true)
+-e	normaldist(-7/3)	normaldist(-7/3)
+-e	normaldist(0.5)	normaldist(0.5)
+-e	uniformdist(0)	uniformdist(0)
+-e	uniformdist(1)	uniformdist(1)
+-e	uniformdist(-1)	uniformdist(-1)
+-e	uniformdist(1/2)	uniformdist(1/2)
+-e	uniformdist(2)	uniformdist(2)
+-e	uniformdist(i)	uniformdist(i)
+-e	uniformdist(inf)	uniformdist(inf)
+-e	uniformdist(-inf)	uniformdist(-inf)
+-e	uniformdist(undefined)	undefined
+-e	uniformdist(10^20)	uniformdist(100000000000000000000)
+-e	uniformdist(10^(-20))	uniformdist(1/100000000000000000000)
+-e	uniformdist(x)	uniformdist(x)
+-e	uniformdist([])	uniformdist([])
+-e	uniformdist([1, 2])	uniformdist([1, 2])
+-e	uniformdist("text")	uniformdist("text")
+-e	uniformdist(true)	uniformdist(true)
+-e	uniformdist(-7/3)	uniformdist(-7/3)
+-e	uniformdist(0.5)	uniformdist(0.5)
+-e	exponentialdist(0)	exponentialdist(0)
+-e	exponentialdist(1)	exponentialdist(1)
+-e	exponentialdist(-1)	exponentialdist(-1)
+-e	exponentialdist(1/2)	exponentialdist(1/2)
+-e	exponentialdist(2)	exponentialdist(2)
+-e	exponentialdist(i)	exponentialdist(i)
+-e	exponentialdist(inf)	exponentialdist(inf)
+-e	exponentialdist(-inf)	exponentialdist(-inf)
+-e	exponentialdist(undefined)	undefined
+-e	exponentialdist(10^20)	exponentialdist(100000000000000000000)
+-e	exponentialdist(10^(-20))	exponentialdist(1/100000000000000000000)
+-e	exponentialdist(x)	exponentialdist(x)
+-e	exponentialdist([])	exponentialdist([])
+-e	exponentialdist([1, 2])	exponentialdist([1, 2])
+-e	exponentialdist("text")	exponentialdist("text")
+-e	exponentialdist(true)	exponentialdist(true)
+-e	exponentialdist(-7/3)	exponentialdist(-7/3)
+-e	exponentialdist(0.5)	exponentialdist(0.5)
+-e	gammadist(0)	gammadist(0)
+-e	gammadist(1)	gammadist(1)
+-e	gammadist(-1)	gammadist(-1)
+-e	gammadist(1/2)	gammadist(1/2)
+-e	gammadist(2)	gammadist(2)
+-e	gammadist(i)	gammadist(i)
+-e	gammadist(inf)	gammadist(inf)
+-e	gammadist(-inf)	gammadist(-inf)
+-e	gammadist(undefined)	undefined
+-e	gammadist(10^20)	gammadist(100000000000000000000)
+-e	gammadist(10^(-20))	gammadist(1/100000000000000000000)
+-e	gammadist(x)	gammadist(x)
+-e	gammadist([])	gammadist([])
+-e	gammadist([1, 2])	gammadist([1, 2])
+-e	gammadist("text")	gammadist("text")
+-e	gammadist(true)	gammadist(true)
+-e	gammadist(-7/3)	gammadist(-7/3)
+-e	gammadist(0.5)	gammadist(0.5)
+-e	chisquaredist(0)	chisquaredist(0)
+-e	chisquaredist(1)	chisquaredist(1)
+-e	chisquaredist(-1)	chisquaredist(-1)
+-e	chisquaredist(1/2)	chisquaredist(1/2)
+-e	chisquaredist(2)	chisquaredist(2)
+-e	chisquaredist(i)	chisquaredist(i)
+-e	chisquaredist(inf)	chisquaredist(inf)
+-e	chisquaredist(-inf)	chisquaredist(-inf)
+-e	chisquaredist(undefined)	undefined
+-e	chisquaredist(10^20)	chisquaredist(100000000000000000000)
+-e	chisquaredist(10^(-20))	chisquaredist(1/100000000000000000000)
+-e	chisquaredist(x)	chisquaredist(x)
+-e	chisquaredist([])	chisquaredist([])
+-e	chisquaredist([1, 2])	chisquaredist([1, 2])
+-e	chisquaredist("text")	chisquaredist("text")
+-e	chisquaredist(true)	chisquaredist(true)
+-e	chisquaredist(-7/3)	chisquaredist(-7/3)
+-e	chisquaredist(0.5)	chisquaredist(0.5)
+-e	studenttdist(0)	studenttdist(0)
+-e	studenttdist(1)	studenttdist(1)
+-e	studenttdist(-1)	studenttdist(-1)
+-e	studenttdist(1/2)	studenttdist(1/2)
+-e	studenttdist(2)	studenttdist(2)
+-e	studenttdist(i)	studenttdist(i)
+-e	studenttdist(inf)	studenttdist(inf)
+-e	studenttdist(-inf)	studenttdist(-inf)
+-e	studenttdist(undefined)	undefined
+-e	studenttdist(10^20)	studenttdist(100000000000000000000)
+-e	studenttdist(10^(-20))	studenttdist(1/100000000000000000000)
+-e	studenttdist(x)	studenttdist(x)
+-e	studenttdist([])	studenttdist([])
+-e	studenttdist([1, 2])	studenttdist([1, 2])
+-e	studenttdist("text")	studenttdist("text")
+-e	studenttdist(true)	studenttdist(true)
+-e	studenttdist(-7/3)	studenttdist(-7/3)
+-e	studenttdist(0.5)	studenttdist(0.5)
+-e	cauchydist(0)	cauchydist(0)
+-e	cauchydist(1)	cauchydist(1)
+-e	cauchydist(-1)	cauchydist(-1)
+-e	cauchydist(1/2)	cauchydist(1/2)
+-e	cauchydist(2)	cauchydist(2)
+-e	cauchydist(i)	cauchydist(i)
+-e	cauchydist(inf)	cauchydist(inf)
+-e	cauchydist(-inf)	cauchydist(-inf)
+-e	cauchydist(undefined)	undefined
+-e	cauchydist(10^20)	cauchydist(100000000000000000000)
+-e	cauchydist(10^(-20))	cauchydist(1/100000000000000000000)
+-e	cauchydist(x)	cauchydist(x)
+-e	cauchydist([])	cauchydist([])
+-e	cauchydist([1, 2])	cauchydist([1, 2])
+-e	cauchydist("text")	cauchydist("text")
+-e	cauchydist(true)	cauchydist(true)
+-e	cauchydist(-7/3)	cauchydist(-7/3)
+-e	cauchydist(0.5)	cauchydist(0.5)
+-e	lognormaldist(0)	lognormaldist(0)
+-e	lognormaldist(1)	lognormaldist(1)
+-e	lognormaldist(-1)	lognormaldist(-1)
+-e	lognormaldist(1/2)	lognormaldist(1/2)
+-e	lognormaldist(2)	lognormaldist(2)
+-e	lognormaldist(i)	lognormaldist(i)
+-e	lognormaldist(inf)	lognormaldist(inf)
+-e	lognormaldist(-inf)	lognormaldist(-inf)
+-e	lognormaldist(undefined)	undefined
+-e	lognormaldist(10^20)	lognormaldist(100000000000000000000)
+-e	lognormaldist(10^(-20))	lognormaldist(1/100000000000000000000)
+-e	lognormaldist(x)	lognormaldist(x)
+-e	lognormaldist([])	lognormaldist([])
+-e	lognormaldist([1, 2])	lognormaldist([1, 2])
+-e	lognormaldist("text")	lognormaldist("text")
+-e	lognormaldist(true)	lognormaldist(true)
+-e	lognormaldist(-7/3)	lognormaldist(-7/3)
+-e	lognormaldist(0.5)	lognormaldist(0.5)
+-e	weibulldist(0)	weibulldist(0)
+-e	weibulldist(1)	weibulldist(1)
+-e	weibulldist(-1)	weibulldist(-1)
+-e	weibulldist(1/2)	weibulldist(1/2)
+-e	weibulldist(2)	weibulldist(2)
+-e	weibulldist(i)	weibulldist(i)
+-e	weibulldist(inf)	weibulldist(inf)
+-e	weibulldist(-inf)	weibulldist(-inf)
+-e	weibulldist(undefined)	undefined
+-e	weibulldist(10^20)	weibulldist(100000000000000000000)
+-e	weibulldist(10^(-20))	weibulldist(1/100000000000000000000)
+-e	weibulldist(x)	weibulldist(x)
+-e	weibulldist([])	weibulldist([])
+-e	weibulldist([1, 2])	weibulldist([1, 2])
+-e	weibulldist("text")	weibulldist("text")
+-e	weibulldist(true)	weibulldist(true)
+-e	weibulldist(-7/3)	weibulldist(-7/3)
+-e	weibulldist(0.5)	weibulldist(0.5)
+-e	laplacedist(0)	laplacedist(0)
+-e	laplacedist(1)	laplacedist(1)
+-e	laplacedist(-1)	laplacedist(-1)
+-e	laplacedist(1/2)	laplacedist(1/2)
+-e	laplacedist(2)	laplacedist(2)
+-e	laplacedist(i)	laplacedist(i)
+-e	laplacedist(inf)	laplacedist(inf)
+-e	laplacedist(-inf)	laplacedist(-inf)
+-e	laplacedist(undefined)	undefined
+-e	laplacedist(10^20)	laplacedist(100000000000000000000)
+-e	laplacedist(10^(-20))	laplacedist(1/100000000000000000000)
+-e	laplacedist(x)	laplacedist(x)
+-e	laplacedist([])	laplacedist([])
+-e	laplacedist([1, 2])	laplacedist([1, 2])
+-e	laplacedist("text")	laplacedist("text")
+-e	laplacedist(true)	laplacedist(true)
+-e	laplacedist(-7/3)	laplacedist(-7/3)
+-e	laplacedist(0.5)	laplacedist(0.5)
+-e	rayleighdist(0)	rayleighdist(0)
+-e	rayleighdist(1)	rayleighdist(1)
+-e	rayleighdist(-1)	rayleighdist(-1)
+-e	rayleighdist(1/2)	rayleighdist(1/2)
+-e	rayleighdist(2)	rayleighdist(2)
+-e	rayleighdist(i)	rayleighdist(i)
+-e	rayleighdist(inf)	rayleighdist(inf)
+-e	rayleighdist(-inf)	rayleighdist(-inf)
+-e	rayleighdist(undefined)	undefined
+-e	rayleighdist(10^20)	rayleighdist(100000000000000000000)
+-e	rayleighdist(10^(-20))	rayleighdist(1/100000000000000000000)
+-e	rayleighdist(x)	rayleighdist(x)
+-e	rayleighdist([])	rayleighdist([])
+-e	rayleighdist([1, 2])	rayleighdist([1, 2])
+-e	rayleighdist("text")	rayleighdist("text")
+-e	rayleighdist(true)	rayleighdist(true)
+-e	rayleighdist(-7/3)	rayleighdist(-7/3)
+-e	rayleighdist(0.5)	rayleighdist(0.5)
+-e	logisticdist(0)	logisticdist(0)
+-e	logisticdist(1)	logisticdist(1)
+-e	logisticdist(-1)	logisticdist(-1)
+-e	logisticdist(1/2)	logisticdist(1/2)
+-e	logisticdist(2)	logisticdist(2)
+-e	logisticdist(i)	logisticdist(i)
+-e	logisticdist(inf)	logisticdist(inf)
+-e	logisticdist(-inf)	logisticdist(-inf)
+-e	logisticdist(undefined)	undefined
+-e	logisticdist(10^20)	logisticdist(100000000000000000000)
+-e	logisticdist(10^(-20))	logisticdist(1/100000000000000000000)
+-e	logisticdist(x)	logisticdist(x)
+-e	logisticdist([])	logisticdist([])
+-e	logisticdist([1, 2])	logisticdist([1, 2])
+-e	logisticdist("text")	logisticdist("text")
+-e	logisticdist(true)	logisticdist(true)
+-e	logisticdist(-7/3)	logisticdist(-7/3)
+-e	logisticdist(0.5)	logisticdist(0.5)
+-e	poissondist(0)	poissondist(0)
+-e	poissondist(1)	poissondist(1)
+-e	poissondist(-1)	poissondist(-1)
+-e	poissondist(1/2)	poissondist(1/2)
+-e	poissondist(2)	poissondist(2)
+-e	poissondist(i)	poissondist(i)
+-e	poissondist(inf)	poissondist(inf)
+-e	poissondist(-inf)	poissondist(-inf)
+-e	poissondist(undefined)	undefined
+-e	poissondist(10^20)	poissondist(100000000000000000000)
+-e	poissondist(10^(-20))	poissondist(1/100000000000000000000)
+-e	poissondist(x)	poissondist(x)
+-e	poissondist([])	poissondist([])
+-e	poissondist([1, 2])	poissondist([1, 2])
+-e	poissondist("text")	poissondist("text")
+-e	poissondist(true)	poissondist(true)
+-e	poissondist(-7/3)	poissondist(-7/3)
+-e	poissondist(0.5)	poissondist(0.5)
+-e	geometricdist(0)	geometricdist(0)
+-e	geometricdist(1)	geometricdist(1)
+-e	geometricdist(-1)	geometricdist(-1)
+-e	geometricdist(1/2)	geometricdist(1/2)
+-e	geometricdist(2)	geometricdist(2)
+-e	geometricdist(i)	geometricdist(i)
+-e	geometricdist(inf)	geometricdist(inf)
+-e	geometricdist(-inf)	geometricdist(-inf)
+-e	geometricdist(undefined)	undefined
+-e	geometricdist(10^20)	geometricdist(100000000000000000000)
+-e	geometricdist(10^(-20))	geometricdist(1/100000000000000000000)
+-e	geometricdist(x)	geometricdist(x)
+-e	geometricdist([])	geometricdist([])
+-e	geometricdist([1, 2])	geometricdist([1, 2])
+-e	geometricdist("text")	geometricdist("text")
+-e	geometricdist(true)	geometricdist(true)
+-e	geometricdist(-7/3)	geometricdist(-7/3)
+-e	geometricdist(0.5)	geometricdist(0.5)
+-e	bernoullidist(0)	bernoullidist(0)
+-e	bernoullidist(1)	bernoullidist(1)
+-e	bernoullidist(-1)	bernoullidist(-1)
+-e	bernoullidist(1/2)	bernoullidist(1/2)
+-e	bernoullidist(2)	bernoullidist(2)
+-e	bernoullidist(i)	bernoullidist(i)
+-e	bernoullidist(inf)	bernoullidist(inf)
+-e	bernoullidist(-inf)	bernoullidist(-inf)
+-e	bernoullidist(undefined)	undefined
+-e	bernoullidist(10^20)	bernoullidist(100000000000000000000)
+-e	bernoullidist(10^(-20))	bernoullidist(1/100000000000000000000)
+-e	bernoullidist(x)	bernoullidist(x)
+-e	bernoullidist([])	bernoullidist([])
+-e	bernoullidist([1, 2])	bernoullidist([1, 2])
+-e	bernoullidist("text")	bernoullidist("text")
+-e	bernoullidist(true)	bernoullidist(true)
+-e	bernoullidist(-7/3)	bernoullidist(-7/3)
+-e	bernoullidist(0.5)	bernoullidist(0.5)
+-e	latticereduce(0)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(1)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(-1)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(1/2)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(2)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(i)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(inf)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(-inf)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(undefined)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(10^20)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(10^(-20))	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(x)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce([])	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce([1, 2])	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce("text")	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(true)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(-7/3)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(0.5)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	findrelation(0)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(1)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(-1)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(1/2)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(2)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(i)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(inf)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(-inf)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(undefined)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(10^20)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(10^(-20))	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(x)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation([])	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation([1, 2])	[2, -1]
+-e	findrelation("text")	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(true)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(-7/3)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	findrelation(0.5)	error: findrelation([x1, x2, ...]) needs two or more numbers
+-e	minpoly(0)	x|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(1)	x - 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(-1)	x + 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(1/2)	2x - 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(2)	x - 2|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(i)	x^2 + 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(inf)	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly(-inf)	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly(undefined)	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly(10^20)	x - 100000000000000000000|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(10^(-20))	100000000000000000000x - 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(x)	error: minpoly needs a number
+-e	minpoly([])	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly([1, 2])	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly("text")	error: minpoly needs a number
+-e	minpoly(true)	error: no polynomial of degree 12 or less with whole coefficients has this root
+-e	minpoly(-7/3)	3x + 7|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	minpoly(0.5)	2x - 1|note: the polynomial was found with numbers and confirmed with twice the digits
+-e	interpolate(0)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(1)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(-1)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(1/2)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(2)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(i)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(inf)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(-inf)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(undefined)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(10^20)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(10^(-20))	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(x)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate([])	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate([1, 2])	x
+-e	interpolate("text")	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(true)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(-7/3)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	interpolate(0.5)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(0)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(1)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(-1)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(1/2)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(2)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(i)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(inf)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(-inf)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(undefined)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(10^20)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(10^(-20))	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(x)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit([])	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit([1, 2])	x
+-e	fit("text")	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(true)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(-7/3)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	fit(0.5)	error: the data must be [[x1, y1], [x2, y2], ...], a list of values, or two lists
+-e	criticalpoints(0)	[[[], 0, minimum]]
+-e	criticalpoints(1)	[[[], 1, minimum]]
+-e	criticalpoints(-1)	[[[], -1, minimum]]
+-e	criticalpoints(1/2)	[[[], 1/2, minimum]]
+-e	criticalpoints(2)	[[[], 2, minimum]]
+-e	criticalpoints(i)	[[[], i, minimum]]
+-e	criticalpoints(inf)	[[[], inf, minimum]]
+-e	criticalpoints(-inf)	[[[], -inf, minimum]]
+-e	criticalpoints(undefined)	[[[], undefined, minimum]]
+-e	criticalpoints(10^20)	[[[], 100000000000000000000, minimum]]
+-e	criticalpoints(10^(-20))	[[[], 1/100000000000000000000, minimum]]
+-e	criticalpoints(x)	[]
+-e	criticalpoints([])	[[[], [], minimum]]
+-e	criticalpoints([1, 2])	[[[], [1, 2], minimum]]
+-e	criticalpoints("text")	[]
+-e	criticalpoints(true)	[[[], true, minimum]]
+-e	criticalpoints(-7/3)	[[[], -7/3, minimum]]
+-e	criticalpoints(0.5)	[[[], 0.5, minimum]]
+-e	diophantine(0)	error: the equation has no variable
+-e	diophantine(1)	error: the equation has no variable
+-e	diophantine(-1)	error: the equation has no variable
+-e	diophantine(1/2)	error: the equation has no variable
+-e	diophantine(2)	error: the equation has no variable
+-e	diophantine(i)	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(inf)	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(-inf)	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(undefined)	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(10^20)	error: the equation has no variable
+-e	diophantine(10^(-20))	error: the equation has no variable
+-e	diophantine(x)	[0]
+-e	diophantine([])	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine([1, 2])	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine("text")	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(true)	error: diophantine needs a polynomial equation with rational coefficients in the unknowns
+-e	diophantine(-7/3)	error: the equation has no variable
+-e	diophantine(0.5)	error: the equation has no variable
+-e	vertexlist(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist([])	[]
+-e	vertexlist([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexlist(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist([])	[]
+-e	edgelist([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgelist(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount([])	0
+-e	vertexcount([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	vertexcount(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgecount(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgecount(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	edgecount(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]

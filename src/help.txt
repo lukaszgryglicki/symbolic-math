@@ -428,6 +428,689 @@ Plots drawn with characters:
   'implicitplot(x^2 + y^2 = 1, x, -1.5, 1.5, y, -1.5, 1.5)'
   'listplot([1, 4, 9, 16, 25])' 'histogram([1, 2, 2, 3, 3, 3, 4, 4, 5])'
 
+Numbers in a base (base#digits is a number written in a base):
+  '16#ff' '2#101.1' '2#0.(01)' '36#z' '64#Az@_' '0x1F.8' '0b0.(01)' '0o17'
+      # digits 0-9 a-z, then A-Z @ _ up to base 64
+  '1000#001#234' '1000#001.#500' '1000#000.(#333)' '256#072#105'
+      # from base 65 on a number after # for every digit
+  'base_conv(15, 10, 16)' 'base_conv(fe, 16, 10)' 'base_conv(ff.8, 16, 2)' 'base_conv(0.(3), 10, 3)'
+      # a number written in one base, in another
+  'base_conv(64#Hello, 64, 10)' 'base_conv(16#ff, 2)'  # the number may name its base itself
+  'base_conv(pi, 16)' 'base_conv(e, 2)' 'base_conv(sqrt(2), 60)' 'base_conv(pi, 10, 16, 50)'
+      # a value has no base: pi in base 16, 50 digits of it
+  'base_conv(1234, 10, 1000)' 'base_conv(#001#234, 1000, 10)'
+  'base_conv(1/3, 10, 1000)' 'base_conv(2^64, 10, 64)'
+  'base_conv(Hello, 256, 10)' 'base_conv(310939249775, 10, 256)'
+      # base 256: a text, character by character
+  'base_conv(11/101, 2, 10)' 'base_conv(101 + 11, 2, 10)' 'base_conv([10, 255, 1/3], 10, 16)'
+      # fractions, expressions and lists
+  'tobase(1/7)' 'tobase(1/3, 2)' 'tobase(pi, 16)' 'tobase(pi, 2, 40)' 'tobase(1/3 + i/7, 2)'
+      # the digits that repeat stand in parentheses
+  'tofraction(0.(142857))' 'tofraction(2#0.(01), 2)' 'tofraction(0.75, 16)'
+      # the fraction, written in a base
+  'digits(1/7)' 'digits(255, 16)' 'digits(pi, 60, 5)'
+  'frombase([[3], [8, 29, 44]], 60)' 'frombase("ff.8", 16)'  # digits as lists
+  'period(1/7)' 'period(1/97)' 'period(1/3, 2)' 'digitcounts(pi, 10, 1000)'
+      # how many digits repeat; how often each digit stands
+
+Walks along the digits of a number:
+  'walk(pi, 10, 1000)'
+      # a step for each of 1000 digits of pi in base 10: the digit d at 36*d degrees
+  'walk(1/7, 10, 60)' 'walk(sqrt(2), 3, 500)' 'walk(1/4, 10, 100)' 'walk(2^100, 7)'
+      # any number in any base; digits that end
+  'walk(e, 16, 300, width = 40, height = 12)' 'walk(pi, 4, 200, ascii)'
+      # the size of the picture of characters, plain marks
+  'walk3d(e + pi*i, 12, 2000)' 'walk3d(sqrt(2) + sqrt(3)*i)'
+      # a complex number: its two parts are two angles of a step in space
+
+Walks along the primes, and spirals of the primes:
+  'primewalk(2000)' 'primewalk(2000, 6)' 'primewalk(500, 5, 2)'
+      # a step for every whole number, a turn at every prime
+  'primewalk3d(2000)' 'primewalk3d(2000, 3)' 'primes3d_xyz(1000, 4)'
+      # at every prime the next direction of space
+  'primemodwalk(5000)' 'primemodwalk(5000, 12)'
+      # a step for every prime, in the direction of its remainder
+  'primemodwalk3d(5000)' 'primemodwalk3d(5000, 5, 7)'  # two remainders, two angles
+  'ulamspiral(2000)' 'sacksspiral(2000)'
+      # the primes on the square spiral and on the spiral of Sacks
+
+Pictures of functions, graphs and matrices:
+  'complexplot(z^2 - 1, z)' 'complexplot(1/z, z, 3)' 'complexplot(sin(z), z, -pi - 2i, pi + 2i)'
+      # a complex function: zeros dark, poles light
+  'densityplot(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)'  # the values of f(x, y) as shades
+  'plot3d(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)'
+  'parametricplot3d([cos(t), sin(t), t/10], t, 0, 20)'  # a surface, a curve of space
+  'graphplot(petersengraph())' 'graphplot([1 -> 2, 2 -> 3, 3 -> 1])'
+  'matrixplot([[1, 2, 3], [4, 5, 6]])'
+
+Pictures as files: PNG and JPEG XL (every drawing and every plot can be saved):
+  'save_png("walk.png", walk(pi, 10, 10000))'  # a PNG file of 1024 by 1024 pixels, 8 bits, colours
+  'save_png("walk.png", walk(pi), width = 800, height = 600, bits = 16, level = 9)'
+      # size, 16 bits, how hard it is packed (0 to 9)
+  'save_png("gray.png", walk(pi), gray)' 'save_png("clear.png", walk(pi), alpha)'
+  'save_png("four.png", walk(pi), channels = 4)'
+  'save_jxl("walk.jxl", walk(pi, 10, 10000))'
+  'save_jxl("walk.jxl", walk(pi), lossless, bits = 12, gray)'  # JPEG XL without loss, 1 to 16 bits
+  'save_jxl("lossy.jxl", walk(pi), quality = 80)'
+  'save_jxl("lossy.jxl", walk(pi), distance = 2, effort = 3)'  # with loss
+  'save("walk.jxl", walk(pi))' 'save("walk.png", walk(pi))'
+      # the kind of file by the end of its name
+  'save_png("fire.png", walk(pi), palette = fire, background = white, thickness = 2, margin = 0.1)'
+  'save_png("own.png", walk(pi), palette = [blue, "#ff8000", [1, 1, 0]], reverse)'
+  'save_png("gold.png", walk(pi), color = gold)'
+  'save_png("sea.png", walk(pi), palette = ocean)' 'save_png("sun.png", walk(pi), palette = sunset)'
+      # palettes: rainbow, fire, ice,
+  'save_png("warm.png", walk(pi), palette = warm)' 'save_png("cool.png", walk(pi), palette = cool)'
+      # viridis, plasma, heat, ocean,
+  'save_png("ink.png", walk(pi), palette = ink, background = white)'
+      # sunset, gray, ink, cool, warm, or a list of colours
+  'save_png("grey.png", walk(pi), grey, colour = white, centre = [0, 0])'  # British spellings
+  'save_png("axes.png", walk(pi), axes, grid)'
+  'save_png("bare.png", plot(sin(x), x, 0, 2pi), noaxes)'  # with and without axes
+  'save_png("eye.png", walk3d(e + pi*i, 12, 5000), azimuth = 60, elevation = 20, roll = 10)'
+      # where the eye is
+  'save_png("near.png", walk3d(e + pi*i, 12, 5000), viewpoint = [100, -80, 60])'
+      # from a point: near things are larger
+  'save_png("deep.png", walk3d(e + pi*i, 12, 5000), perspective = 3, fog = 0.8, zoom = 1.2)'
+  'save_png("part.png", walk3d(e + pi*i, 12, 5000), center = [0, 0, 0], scale = 8)'
+      # a point in the middle, pixels for a unit
+  'save_png("turn.png", walk3d(e + pi*i, 12, 2000), frames = 12, fps = 6, width = 300)'
+      # frames: the eye goes around
+  'save_jxl("turn.jxl", walk3d(e + pi*i, 12, 2000), frames = 12, turn = 90, width = 300)'
+  'save_jxl("grow.jxl", walk(pi), frames = 10, grow, width = 300)'
+      # the walk grows from frame to frame
+  'save_jxl("slices.jxl", walk3d(e + pi*i, 12, 2000), slices = 16, width = 300)'
+      # space cut into slabs of depth, a frame each
+  'save_jxl("depth.jxl", walk3d(e + pi*i, 12, 2000), depth, width = 300)'
+      # a channel with the depth of every pixel
+  'save_jxl("views.jxl", walk3d(e + pi*i, 12, 2000), views, width = 300)'
+      # three frames: from above, from the front, from the right
+  'save_png("eyes.png", walk3d(e + pi*i, 12, 2000), stereo)'
+  'save_png("eyes.png", plot3d(x*y, x, -1, 1, y, -1, 1), stereo = 6)'
+      # for glasses with a red and a cyan glass
+  'save_png("primes.png", primewalk(20000))' 'save_png("space.png", primewalk3d(20000), axes)'
+  'save_png("mod.png", primemodwalk(50000, 12))'
+  'save_jxl("mod3d.jxl", primemodwalk3d(20000), frames = 8, width = 300)'
+  'save_png("ulam.png", ulamspiral(50000))' 'save_jxl("sacks.jxl", sacksspiral(20000))'
+  'save_png("plot.png", plot([sin(x), cos(x)], x, 0, 2pi, [-2, 2]), grid)'
+      # the plots with axes, numbers and names
+  'save_png("curve.png", parametricplot([sin(2t), sin(3t)], t, 0, 2pi))'
+  'save_png("polar.png", polarplot(cos(3t), t, 0, pi))'
+  'save_png("circle.png", implicitplot(x^2 + y^2 = 1, x, -1.5, 1.5, y, -1.5, 1.5))'
+  'save_png("points.png", listplot([1, 4, 9, 16, 25]))'
+  'save_png("bars.png", histogram([1, 2, 2, 3, 3, 3, 4, 4, 5]))'
+  'save_png("complex.png", complexplot((z^2 - 1)/(z^2 + 1), z), width = 400)'
+      # the argument as the colour
+  'save_png("heat.png", densityplot(x*y, x, -1, 1, y, -1, 1), width = 400, palette = heat)'
+  'save_png("saddle.png", plot3d(x^2 - y^2, x, -1, 1, y, -1, 1), azimuth = 45, palette = plasma)'
+  'save_jxl("h.jxl", parametricplot3d([cos(t), sin(t), t/9], t, 0, 20), frames = 8, width = 300)'
+  'save_png("graph.png", graphplot(petersengraph()))'
+  'save_png("matrix.png", matrixplot([[1, 2, 3], [4, 5, 6]]), palette = ice)'
+
+Arrays as MATLAB has them (a list is a row, a list of rows a matrix; [1, 2; 3, 4] too):
+  '[1, 2, 3] .* [4, 5, 6]' '[1, 2, 3] ./ [4, 5, 6]' '[1, 2, 3] .^ 2' '[1, 2, 4] .\ 8'
+      # entry by entry
+  '1:5' '0:0.25:1' '10:-3:1' '(1:5).^2' 'sum((1:100).^2)'
+      # a:b and a:step:b are the numbers from a to b
+  '[1, 2; 3, 4] * [5, 6; 7, 8]' '[1, 2; 3, 4] \ [5; 6]' '[5, 6] / [1, 2; 3, 4]'
+      # rows after ; and A \ b solves A*x = b
+  'times([1, 2], [3, 4])' 'rdivide([1, 2], [3, 4])'
+  'ldivide([1, 2], [3, 4])' 'power([1, 2], [3, 4])'  # the signs by their names
+  'plus([1, 2], [3, 4], 1)' 'minus([1, 2], [3, 4])'
+  'uminus([1, -2])' 'uplus([1, -2])' 'colon(1, 4)' 'colon(1, 2, 9)'
+  'mtimes([[1, 2], [3, 4]], [[0, 1], [1, 0]])' 'mpower([[1, 1], [0, 1]], 5)'
+  'mldivide([[2, 0], [0, 4]], [2, 4])' 'mrdivide([2, 4], [[2, 0], [0, 4]])'
+  'linspace(0, 1, 5)' 'logspace(0, 3, 4)'
+  'meshgrid([1, 2, 3], [10, 20])' 'ndgrid([1, 2, 3], [10, 20])'  # numbers in steps, grids
+  'repmat([1, 2], 2, 3)' 'repelem([1, 2, 3], 2)' 'repelem([[1, 2], [3, 4]], 2, 3)'  # copies
+  'horzcat([1, 2], [3], [4, 5])' 'vertcat([1, 2], [3, 4])' 'cat(1, [[1, 2]], [[3, 4]])'
+  'cat(2, [[1, 2]], [[3, 4]])' 'blkdiag([[1, 2], [3, 4]], 5)'
+  'identity(2, 3)' 'diag([1, 2], 1)' 'diag([[1, 2, 3], [4, 5, 6], [7, 8, 9]], -1)'
+  'tril([[1, 2], [3, 4]])' 'triu([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1)'
+  'flip([1, 2, 3])' 'flip([[1, 2], [3, 4]], 2)' 'fliplr([[1, 2], [3, 4]])'
+  'flipud([[1, 2], [3, 4]])' 'rot90([[1, 2], [3, 4]])' 'rot90([[1, 2], [3, 4]], 2)'
+  'circshift([1, 2, 3, 4, 5], 2)' 'circshift([[1, 2, 3], [4, 5, 6]], 1, 2)'  # moved round
+  'sortrows([[3, 1], [1, 2], [2, 0]])' 'sortrows([[3, 1], [1, 2], [2, 0]], -2)'
+  'sort([3, 1, 2], "descend")' 'sort([[3, 1], [1, 2]], 2)'
+  'issorted([1, 2, 2, 5])' 'issorted([3, 2, 1], "descend")'
+  'unique([3, 1, 2, 3, 1], "sorted")' 'setxor([1, 2, 3], [2, 3, 4])'
+  'ismember(2, [1, 2, 3])' 'ismember([1, 5], [1, 2, 3])' 'isequal([1, 2], [1, 2], [1, 2])'
+  'numel([[1, 2, 3], [4, 5, 6]])' 'size([[1, 2, 3], [4, 5, 6]])'
+  'size([1, 2, 3])' 'size([[1, 2, 3], [4, 5, 6]], 2)' 'ndims([[1, 2], [3, 4]])'  # sizes
+  'isempty([])' 'isrow([1, 2, 3])' 'iscolumn([[1], [2]])'
+  'isvector([[1], [2]])' 'isscalar(5)' 'ismatrix([[1, 2], [3, 4]])'  # shapes
+  'isdiag([[1, 0], [0, 2]])' 'istril([[1, 0], [3, 2]])' 'istriu([[1, 0], [3, 2]])'
+  'bandwidth([[1, 2, 0], [0, 3, 4], [0, 0, 5]])' 'isbanded([[1, 2], [0, 3]], 0, 1)'
+  'issymmetric([[1, 2], [2, 1]])' 'issymmetric([[0, 2], [-2, 0]], "skew")'
+  'ishermitian([[1, i], [-i, 1]])'
+  'nnz([1, 0, 2, 0])' 'nnz([1, 5, 9] > 2)' 'nonzeros([[1, 0], [0, 2]])' 'sum([1, 5, 9] > 2)'
+      # a condition on a list counts
+  'find([0, 3, 0, 5])' 'find([1, 5, 9] > 2)' 'find([[0, 1], [1, 0]])' 'find([0, 3, 0, 5, 7], 2)'
+      # the places
+  'any([0, 0, 1])' 'any([[0, 1], [0, 0]], 2)' 'all([1, 2, 0])'
+  'all([[1, 1], [0, 1]], "all")' 'all([1, 5, 9] > 0)'
+  'ind2sub([3, 4], 5)' 'sub2ind([3, 4], 2, 2)'  # entries are counted down the columns
+  'magic(4)' 'invhilb(3)' 'pascal(4)' 'pascal(3, 1)'
+  'rosser()' 'wilkinson(3)' 'hadamard(4)' 'vander([1, 2, 3])'  # matrices with names
+  'toeplitz([1, 2, 3])' 'toeplitz([1, 2, 3], [1, 5, 6])' 'hankel([1, 2, 3])'
+  'hankel([1, 2, 3], [3, 4, 5])' 'compan([1, -6, 11, -6])'
+  'ctranspose([[1, i], [2, 3 - i]])' 'transpose([1, 2, 3])'
+  'nchoosek(5, 2)' 'nchoosek([a, b, c], 2)' 'perms([1, 2, 3])'
+  '1 ~= 2' '~(1 > 2)' '!true' '1 < 2 & 2 < 3' '1 > 2 || 2 > 1'
+      # not equal, not, and, or as MATLAB writes them
+
+Sums and statistics of data (of a matrix down its columns; a second argument 2: along its rows):
+  'sum([[1, 2], [3, 4]])' 'sum([[1, 2], [3, 4]], 2)' 'sum([[1, 2], [3, 4]], "all")'
+  'prod([[1, 2], [3, 4]])' 'mean([[1, 2], [3, 4]], 2)'
+  'median([[1, 2], [3, 4], [5, 9]])' 'mode([[1, 2], [1, 3], [2, 3]])'
+  'var([1, 2, 3, 4])' 'var([1, 2, 3, 4], 1)' 'std([[1, 2], [3, 6]])'
+  'max([[1, 5], [7, 2]])' 'max([[1, 5], [7, 2]], [], 2)'
+  'max([1, 5, 3], [4, 2, 6])' 'min([[1, 5], [7, 2]], [], "all")'  # [] before the dimension
+  'cumsum([[1, 2], [3, 4]], 2)' 'cumprod([1, 2, 3, 4])'
+  'cummax([1, 3, 2, 5, 4])' 'cummin([5, 3, 4, 1, 2])'  # running values
+  'bounds([3, 1, 4, 1, 5])' 'peak2peak([3, 1, 4, 1, 5])'
+  'maxk([3, 1, 4, 1, 5], 2)' 'mink([3, 1, 4, 1, 5], 2)'
+  'movmean([1, 2, 3, 4, 5], 3)' 'movsum([1, 2, 3, 4, 5], [1, 0])' 'movmedian([1, 9, 2, 8, 3], 3)'
+      # a window that moves along
+  'movmax([1, 9, 2, 8, 3], 3)' 'movmin([1, 9, 2, 8, 3], 3)' 'movprod([1, 2, 3, 4], 2)'
+  'movstd([1, 2, 4, 8], 2)' 'movvar([1, 2, 4, 8], 2)' 'movmad([1, 9, 2, 8, 3], 3)'
+  'trapz([1, 4, 9, 16])' 'trapz([0, 1, 3], [1, 2, 4])' 'cumtrapz([1, 4, 9, 16])'
+  'diff([1, 4, 9, 16])' 'diff([1, 4, 9, 16], 2)' 'gradient([1, 4, 9, 16])'
+  'prctile([1, 2, 3, 4, 5], [25, 50, 75])' 'zscore([1, 2, 3])' 'rescale([1, 2, 5])'
+  'rescale([1, 2, 5], -1, 1)' 'trimmean([1, 2, 3, 4, 100], 40)'
+  'mad([1, 2, 3, 4, 10])' 'mad([1, 2, 3, 4, 10], 1)' 'geomean([1, 2, 4])' 'harmmean([1, 2, 4])'
+  'cov([1, 2, 3, 4], [2, 4, 5, 9])' 'cov([[1, 2], [3, 4], [5, 9]])'
+  'corrcoef([1, 2, 3, 4], [2, 4, 5, 9])'
+  'corr([1, 2, 3, 4], [1, 3, 2, 4], "spearman")' 'corr([1, 2, 3, 4], [1, 3, 2, 4], "kendall")'
+      # of the ranks
+  'histcounts([1, 2, 2, 3, 5], [0, 2, 4, 6])' 'histcounts([1, 2, 2, 3, 5], 2)'
+  'accumarray([1, 2, 1, 3], [10, 20, 30, 40])'
+  'tabulate([1, 2, 2, 3, 3, 3])' 'tiedrank([10, 20, 20, 30])' 'ecdf([3, 1, 2, 2])'
+  'findgroups([5, 3, 5, 7])' 'discretize([1, 3, 5], [0, 2, 4, 6])'
+  'detrend([1, 2, 4, 3])' 'detrend([1, 4, 9, 16], 2)'
+  'unwrap([0, 1, 7])' 'cplxpair([1 + i, 3, 1 - i])'
+  'isoutlier([1, 2, 3, 2, 1, 100])' 'rmoutliers([1, 2, 3, 2, 1, 100])'
+  'isoutlier([1, 2, 3, 2, 1, 9], "quartiles")'  # entries that lie far out
+  'ismissing([1, undefined, 3])' 'rmmissing([1, undefined, 3])'
+  'fillmissing([1, undefined, 3], "linear")' 'fillmissing([1, undefined, 3], "constant", 0)'
+  'regress([1, 3, 5], [[1, 0], [1, 1], [1, 2]])' 'splitapply(mean, [10, 20, 30, 40], [1, 1, 2, 2])'
+  'splitapply(@(v) max(v) - min(v), [3, 9, 4, 7], [2, 1, 2, 1])'
+  'ttest([5.1, 4.9, 5.6, 5.8, 6.0], 5)'
+  'ttest([1, 2, 3], [2, 4, 7])' 'ttest2([1, 2, 3, 4], [2, 4, 6, 9])'  # tests: [1 when p < 5%, p]
+  'ztest([1, 2, 3, 4, 5], 3, 1)' 'vartest([1, 2, 3, 4, 5], 2)'
+  'vartest2([1, 2, 3, 4], [2, 4, 6, 9])'
+
+Matrices taken apart:
+  'norm([[1, 2], [3, 4]])' 'norm([[1, 2], [3, 4]], 1)'
+  'norm([[1, 2], [3, 4]], inf)' 'norm([[1, 2], [3, 4]], "fro")'  # norms of a matrix
+  'cond([[2, 0], [0, 1/2]])' 'cond([[1, 2], [3, 4]], 1)' 'rcond([[1, 2], [3, 4]])'
+  'vecnorm([[3, 0], [4, 5]])' 'vecnorm([[3, 0], [4, 5]], 1, 2)'
+  'orth([[1, 1], [1, 1]])' 'colspace([[1, 2], [2, 4]])' 'null([[1, 2], [2, 4]])'
+  'pinv([[1, 2], [2, 4]])' 'subspace([[1], [0]], [[1], [1]])'
+  'lu([[1, 2], [3, 4]])' 'chol([[4, 2], [2, 3]])' 'chol([[4, 2], [2, 3]], "lower")'
+      # [L, U, P] with P*A = L*U; R with R'*R = A
+  'jordan([[2, 1], [0, 2]])' 'jordandecomposition([[3, 1], [-1, 1]])'
+  'diagonalize([[2, 0], [1, 3]])'  # [S, J] and [V, D]
+  'smithform([[2, 4], [6, 8]])' 'smithdecomposition([[2, 4], [6, 8]])'
+  'hermiteform([[2, 4], [6, 8]])' 'hermitedecomposition([[2, 4], [6, 8]])'  # whole numbers
+  'schur([[1, 2], [3, 4]])' 'schurdecomposition([[1, 2], [2, 1]])'
+  'hess([[1, 2, 3], [4, 5, 6], [7, 8, 10]])' 'hessenbergdecomposition([[1, 2], [3, 4]])'
+      # in decimals
+  'svd([[3, 0], [0, 4]])' 'svd([[1, i]])'
+  'singularvaluedecomposition([[3, 0], [0, 4]])' 'svds([[3, 0], [0, 4]], 1)'  # [U, S, V]
+  'eig([[2, 0], [0, 3]])' 'eig([[1, 2], [3, 4]], [[1, 0], [0, 2]])'
+  'eigs([[1, 0, 0], [0, 5, 0], [0, 0, 3]], 2)' 'adjoint([[1, 2], [3, 4]])' 'hilb(3)'
+  'sylvester([[1, 0], [0, 2]], [[3, 0], [0, 4]], [[4, 5], [5, 6]])' 'planerot([3, 4])'
+      # A*X + X*B = C; a turn that makes a zero
+  'funm([[1, 1], [0, 1]], exp)' 'funm([[4, 0], [0, 9]], @(x) sqrt(x))' 'lsqminnorm([[1, 1]], [2])'
+      # a function of a matrix
+
+Polynomials as lists of coefficients (the highest first), interpolation:
+  'poly([1, 2, 3])' 'poly([[1, 2], [3, 4]])' 'polyval([1, -3, 2], 5)'
+  'polyval([1, -3, 2], [0, 1, 2])' 'polyvalm([1, 0, 1], [[0, 1], [1, 0]])'
+  'roots([1, -3, 2])' 'roots([1, 0, 1])' 'polyfit([0, 1, 2, 3], [1, 3, 7, 13], 2)'
+  'polyder([1, -3, 2])' 'polyder([1, 1], [1, -1])' 'polyint([3, 2, 1])'
+  'conv([1, 1], [1, -1])' 'conv([1, 2, 3], [1, 1, 1], "same")' 'deconv([1, 0, -1], [1, 1])'
+      # product and division
+  'residue([1, 2], [1, 3, 2])' 'residue([-1, 2], [-2, -1], [])'
+      # partial fractions: [residues, poles, polynomial] and back
+  'poly2sym([1, -3, 2], x)' 'sym2poly(x^2 - 3x + 2, x)' 'coeffs(x^3 - 2x + 5, x)'
+  'coeffs(x^3 - 2x + 5, x, "all")' 'horner(x^3 - 6x^2 + 11x - 6)'
+  'numden(1/x + 1/y)' 'quorem(17, 5)' 'quorem(x^3 + 1, x - 1, x)'
+  'gbasis([x^2 + y^2 - 1, x - y], [x, y])'  # a Groebner basis
+  'interp1([1, 2, 3], [10, 20, 40], 5/2)' 'interp1([1, 2, 3], [10, 20, 40], [3/2, 5/2], "nearest")'
+  'interp1([1, 2, 3], [10, 20, 40], 3/2, "previous")'
+  'interp1([1, 2, 3], [10, 20, 40], 3/2, "next")'
+  'interp1([1, 2, 3], [10, 20, 40], 4, "linear", "extrap")' 'interp1([1, 2, 3], [10, 20, 40], x)'
+  'interp1([1, 2, 3, 4], [1, 4, 9, 16], 5/2, "spline")'
+  'interp1([1, 2, 3, 4], [1, 4, 9, 16], 5/2, "pchip")'
+  'interp1([1, 2, 3, 4], [1, 4, 9, 16], 5/2, "makima")'
+  'spline([0, 1, 2, 3], [0, 1, 8, 27], 3/2)' 'pchip([0, 1, 2, 3], [0, 1, 8, 27], 3/2)'
+  'makima([0, 1, 2, 3], [0, 1, 8, 27], 3/2)'  # cubic pieces
+  'interp2([0, 1], [0, 1], [[0, 1], [2, 3]], 1/2, 1/2)'
+  'interp2([0, 1], [0, 1], [[0, 1], [2, 3]], 1/4, 3/4, "nearest")'  # on a grid
+
+Transforms of data and filters:
+  'fft([1, 2, 3, 4])' 'ifft([10, -2 + 2i, -2, -2 - 2i])'
+  'fft([1, 2, 3], 4)' 'fft([a, b])' 'fft([1, 2, 3, 4, 5])'  # exact where it can be
+  'fft2([[1, 2], [3, 4]])' 'ifft2([[10, -2], [-4, 0]])'
+  'fftshift([1, 2, 3, 4, 5])' 'ifftshift([4, 5, 1, 2, 3])'
+  'dct([1, 2, 3, 4])' 'idct(dct([1, 2, 3, 4]))'  # the cosine transform
+  'filter([1, 1], [1], [1, 2, 3, 4])' 'filter([1], [1, -1/2], [1, 0, 0, 0])'
+  'lfilter([1, 1], [1], [1, 2, 3, 4])'  # filter(b, a, x)
+  'conv2([[1, 2], [3, 4]], [[1, 1], [1, 1]])' 'conv2([[1, 2], [3, 4]], [[1, 1], [1, 1]], "same")'
+  'xcorr([1, 2, 3], [1, 1, 1])' 'xcorr([1, 2, 3])'
+  'upsample([1, 2, 3], 2)' 'downsample([1, 2, 3, 4, 5, 6], 2)'
+  'downsample([1, 2, 3, 4, 5, 6], 2, 1)'
+
+More functions of numbers by the names of MATLAB:
+  'expm1(1/1000000.)' 'log1p(1e-20)' 'nthroot(-8, 3)' 'realsqrt(16)'
+  'reallog(e^2)' 'realpow(2, 10)' 'nextpow2(100)' 'pow2(10)' 'pow2(3, 4)'
+  'idivide(7, 2)' 'idivide(7, 2, "round")'
+  'idivide(-7, 2, "floor")' 'rem(-7, 3)' 'mod(-7, 3)' 'fix(-3.7)'  # whole quotients, remainders
+  'round(2.567, 2)' 'round(1234.567, -2)'
+  'round(1234.567, 2, "significant")' 'rat(pi)' 'rat(pi, 1/100)' 'rat(0.75)'
+      # digits kept, fractions near
+  'sind(30)' 'cosd(60)' 'tand(45)' 'cotd(45)' 'secd(60)' 'cscd(30)'  # angles in degrees
+  'asind(1/2)' 'acosd(1/2)' 'atand(1)' 'acotd(1)' 'asecd(2)' 'acscd(2)'
+  'atan2d(1, 1)' 'sinpi(1/6)' 'cospi(1/3)' 'deg2rad(180)' 'rad2deg(pi/3)'
+  'cart2pol(1, 1)' 'pol2cart(pi/2, 2)' 'cart2sph(1, 1, 1)'
+  'sph2cart(pi/2, pi/4, 2)' 'cart2pol(3, 4, 5)'  # [angle, radius], [azimuth, elevation, radius]
+  'bitand(12, 10)' 'bitor(12, 10)' 'bitxor(12, 10)'
+  'bitshift(1, 10)' 'bitshift(1024, -3)' 'bitshift(255, 4, 8)'  # the bits of whole numbers
+  'bitcmp(5, 8)' 'bitcmp(5, "uint8")' 'bitget(5, [1, 2, 3])' 'bitset(8, 1)' 'bitset(15, 1, 0)'
+  'int8(200)' 'int8(-200)' 'int8(2.5)' 'int16(40000)' 'int32(2^40)' 'int64(2^70)'
+      # whole numbers of a size: what does not fit is the end
+  'uint8(300)' 'uint8(-5)' 'uint16(70000)' 'uint32(-1)' 'uint64(2^70)'
+  '[intmax, intmin, flintmax]' 'log2(realmin)' 'log2(realmax + 2^970)'
+  'erfcx(10)' 'dawson(1)' 'betaln(2, 3)' 'ssinint(1)' 'gammaln(10)'
+  'psi(1)' 'psi(1, 1)' 'expint(1)' 'angle(1 + i)' 'kroneckerdelta(0)'
+  'airy(1)' 'airy(1, 1)' 'airy(2, 1)' 'airy(3, 1)' 'besselh(0, 1)' 'besselh(0, 2, 1)'
+      # Ai, Ai', Bi, Bi'; Hankel functions
+  'whittakerm(1/2, 1/2, 1)' 'whittakerw(1/2, 1/2, 1)' 'wrightomega(1)' 'rectangularpulse(1/4)'
+  'rectangularpulse(1, 3, 2)' 'triangularpulse(1/2)' 'triangularpulse(0, 2, 6, 3)'
+  'jacobicd(1/2, 1/2)' 'jacobisd(1/2, 1/2)' 'jacobind(1/2, 1/2)'
+  'jacobidc(1/2, 1/2)' 'jacobinc(1/2, 1/2)' 'jacobisc(1/2, 1/2)'  # Jacobi's functions
+  'jacobins(1/2, 1/2)' 'jacobids(1/2, 1/2)' 'jacobics(1/2, 1/2)'
+  'jacobiam(1/2, 1/2)' 'jacobizeta(1/2, 1/2)' 'ellipj(1/2, 1/2)' 'ellipke(1/2)'
+  'ellipticck(1/2)' 'ellipticce(1/2)' 'ellipticcpi(1/3, 1/2)'
+  'gammaincinv(1/2, 3)' 'betaincinv(1/2, 2, 3)'  # elliptic integrals; inverses
+
+Texts:
+  'num2str(pi)' 'num2str(pi, 10)' 'int2str(2.7)'
+  'mat2str([[1, 2], [3, 4]])' 'tostring(x^2 + 1/3)' 'rats(0.75)'  # values as texts
+  'dec2bin(10)' 'dec2bin(5, 8)' 'dec2hex(255)' 'dec2base(100, 7)'
+  'bin2dec("1010")' 'hex2dec("FF")' 'base2dec("202", 7)'  # digits of a base
+  'char(72, 105)' 'char([72, 101, 108, 108, 111])' 'double("Hi")' 'double(1/3)'
+  'strcat("ab", "cd", 12)' 'strlength("hello")' 'length("hello")'
+  'upper("abc")' 'lower("ABC")' 'strtrim("  a b  ")'
+  'strrep("banana", "an", "AN")' 'strfind("banana", "an")' 'reverse("abc")'
+  'strsplit("a b  c")' 'strsplit("a,b,c", ",")' 'strjoin(["a", "b", "c"], "-")'
+  'blanks(3)' 'contains("banana", "nan")' 'count("banana", "an")'
+  'strcmp("abc", "abc")' 'strcmpi("abc", "ABC")' 'strncmp("abcdef", "abcxyz", 3)'
+  'strncmpi("ABcdef", "abCxyz", 3)' '"abc" < "abd"'  # comparing
+  'startswith("hello", "he")' 'endswith("hello", "lo")' 'isletter("a1b")'
+  'isspace("a b")' 'ischar("a")' 'isnumeric([1, 2])' 'islogical(true)'
+  'logical([0, 1, 2])' 'sprintf("%d apples", 3)'
+  'sprintf("%5.2f|%e|%g", pi, 12345.678, 0.0001)' 'sprintf("%s: %x %o %c", "word", 255, 8, 65)'
+  'str2num("2^10 + 1")' 'str2double("3.5")' 'disp("hello")'
+  'disp([[1, 22], [333, 4]])' 'fprintf("%d + %d = %d\n", 1, 2, 3)'  # shown without quotes
+
+Distributions by the names of MATLAB, random numbers:
+  'normpdf(0)' 'normcdf(1.96)' 'normcdf(2, 1, 2, "upper")' 'norminv(0.975)' 'normstat(1, 2)'
+      # density, probability, quantile, [mean, variance]
+  'unifpdf(1/2, 0, 2)' 'unifcdf(1/2, 0, 2)' 'unifinv(1/4, 0, 2)'
+  'unifstat(0, 6)' 'exppdf(1, 2)' 'expcdf(1, 2)' 'expinv(1/2, 2)' 'expstat(3)'
+  'gampdf(1, 2, 3)' 'gamcdf(1, 2, 3)' 'gaminv(1/2, 2, 3)' 'gamstat(2, 3)'
+  'betapdf(1/2, 2, 3)' 'betacdf(1/2, 2, 3)' 'betainv(1/2, 2, 3)' 'betastat(2, 3)'
+  'chi2pdf(1, 2)' 'chi2cdf(1, 2)' 'chi2inv(0.95, 2)' 'chi2stat(4)'
+  'tpdf(0, 3)' 'tcdf(1, 3)' 'tinv(0.975, 10)' 'tstat(5)'
+  'fpdf(1, 2, 3)' 'fcdf(1, 2, 3)' 'finv(0.95, 2, 3)' 'fstat(3, 6)'
+  'lognpdf(1, 0, 1)' 'logncdf(1, 0, 1)' 'logninv(1/2, 0, 1)' 'lognstat(0, 1)'
+  'wblpdf(1, 2, 3)' 'wblcdf(1, 2, 3)' 'wblinv(1/2, 2, 3)' 'wblstat(2, 1)'
+  'raylpdf(1, 2)' 'raylcdf(1, 2)' 'raylinv(1/2, 2)' 'raylstat(2)'
+  'binopdf(2, 5, 1/2)' 'binocdf(2, 5, 1/2)' 'binoinv(1/2, 5, 1/2)' 'binostat(10, 1/4)'
+  'poisspdf(2, 3)' 'poisscdf(2, 3)' 'poissinv(1/2, 3)' 'poissstat(3)'
+  'geopdf(2, 1/4)' 'geocdf(2, 1/4)' 'geoinv(1/2, 1/4)' 'geostat(1/4)'
+  'nbinpdf(2, 3, 1/2)' 'nbincdf(2, 3, 1/2)' 'nbininv(1/2, 3, 1/2)' 'nbinstat(3, 1/2)'
+  'hygepdf(1, 10, 4, 3)' 'hygecdf(1, 10, 4, 3)' 'hygeinv(1/2, 10, 4, 3)'
+  'hygestat(10, 4, 3)' 'unidpdf(3, 6)' 'unidcdf(3, 6)' 'unidinv(1/2, 6)' 'unidstat(6)'
+  'pdf("Normal", 0, 0, 1)' 'cdf("Poisson", 2, 3)' 'icdf("Exponential", 1/2, 2)'
+      # a distribution by its name
+  'rng(0); rand()' 'rng(0); rand(1, 3)' 'rng(0); randi(10, 1, 5)'
+      # rng(0): the numbers that MATLAB starts with
+  'rng(42); randn()' 'rng(1); randn(1, 2)' 'rng(1); rand(2)'
+  'rng(1); randi([5, 8])' 'rng("shuffle"); rand() < 1'  # a seed gives the same numbers again
+  'rng(1); randperm(5)' 'rng(1); randperm(10, 3)'
+  'rng(1); randsample([a, b, c, d], 2)' 'rng(1); shuffle([1, 2, 3, 4, 5])'
+  'rng(7); normrnd(10, 2)' 'rng(7); unifrnd(0, 6)' 'rng(7); exprnd(2)'
+  'rng(7); gamrnd(2, 3)' 'rng(7); betarnd(2, 3)' 'rng(7); chi2rnd(3)'
+  'rng(7); trnd(5)' 'rng(7); frnd(3, 6)' 'rng(7); lognrnd(0, 1)'
+  'rng(7); wblrnd(2, 3)' 'rng(7); raylrnd(2)' 'rng(7); binornd(10, 1/2)'
+  'rng(7); poissrnd(4)' 'rng(7); geornd(1/4)' 'rng(7); nbinrnd(3, 1/2)'
+  'rng(7); hygernd(10, 4, 3)' 'rng(7); unidrnd(6)'
+  'rng(7); random("Normal", 0, 1)' 'rng(7); random(normaldist(0, 1), 3)'  # of a distribution
+
+Functions as values: zeros, least values, fits, integrals, differential equations:
+  'fzero(cos(x) - x, 1)' 'fzero(@(x) x^3 - 2, [1, 2])'
+  'fzero(sin, 3)' 'f(x) := x^2 - 2; fzero(f, 1)'  # @(x) expr, a name, an expression
+  'fminbnd(@(x) (x - 1)^2 + 3, -5, 5)'
+  'fminsearch(@(x, y) (x - 1)^2 + (y + 2)^2, [0, 0])' 'fminunc(@(x) (x - 3)^4, 0)'  # least values
+  'lsqcurvefit(@(a, b, x) a*exp(b*x), [1, 1], [0, 1, 2], [2, 2e, 2e^2])'
+      # the parameters of a model
+  'quad(@(x) x^2, 0, 3)' 'integral(@(x) exp(-x^2), 0, inf)'
+  'quadgk(@(x) abs(x), -1, 2)' 'quad(@(x) sin(x)/x, 0, 1)'  # exact when it can be
+  'integral2(@(x, y) x*y, 0, 1, 0, 2)' 'integral2(@(x, y) 1, 0, 1, 0, @(x) x)'
+  'integral3(@(x, y, z) x*y*z, 0, 1, 0, 1, 0, 1)'
+  'ode45(@(t, y) -y, [0, 1], 1)' 'ode45(@(t, y) y, [0, 1/2, 1], 1)'
+  'ode45(@(t, x, y) [y, -x], [0, pi], [0, 1])'  # rows [t, y]
+  'fsolve(@(x) x^2 - 2, 1)' 'fsolve(@(x, y) [x + y - 3, x*y - 2], [0, 5])'
+  'vpasolve(x^5 + x - 1, x)' 'vpa(pi, 50)'
+  'feval(sin, pi/2)' 'feval(@(x, y) x + y, 1, 2)' 'feval(@(v) max(v), [1, 5, 3])'
+  'arrayfun(@(k) sum(1:k), [1, 2, 3, 4])' 'cellfun(@(x) 2x, [1, 2, 3])'
+  'bsxfun(@plus, [1, 2, 3], 10)' 'bsxfun(@(a, b) a*b, [1, 2, 3], [4, 5, 6])'
+  'bsxfun(@max, [1, 5, 3], [4, 2, 6])'  # @name is a function too
+  'linprog([-1, -1], [[1, 2], [3, 1]], [4, 6])' 'linprog([-1, -2], [[1, 1]], [4], [[1, -1]], [0])'
+      # least f*x with A*x <= b, Aeq*x = beq: exact
+  'linprog([-1, -1], [[1, 2], [3, 1]], [4, 6], [], [], [0, 0], [1, 5])'
+  'intlinprog([-5, -4], [1, 2], [[6, 4], [1, 2]], [24, 6], [], [], [0, 0], [])'
+  'lsqnonneg([[1, 2], [3, 4], [5, 6]], [1, 2, 3])'  # least squares without negative unknowns
+
+Tools for expressions by the names of MATLAB:
+  'finverse(2x + 3, x)' 'finverse(exp(x) + 1)'
+  'compose(sin(x), x^2)' 'compose(x^2 + 1, exp(y), x, y, z)'  # inverse function, f of g
+  'symvar(a*x^2 + b*y)' 'symvar(a*x^2 + b*y, 1)' 'has(x^2 + sin(y), sin(y))'
+  'children(x^2 + 3x + 1)' 'lhs(x^2 = 4)' 'rhs(x^2 = 4)'  # parts
+  'isalways(sin(x)^2 + cos(x)^2 = 1)' 'isalways(abs(x) >= x)' 'isalways(x > 0)'
+      # whether it holds for all values
+  'combine(x^a*x^b)' 'combine(sin(x)*cos(y), "sincos")' 'combine(ln(2) + ln(3), "log")'
+  'rewrite(sin(x), "exp")' 'rewrite(exp(i*x), "sincos")'
+  'rewrite(exp(x), "sinhcosh")' 'rewrite(tan(x), "sincos")' 'rewrite(sin(x), "tan")'
+  'rewrite(cos(x), "sin")' 'rewrite(sin(x)^2, "cos")' 'rewrite(asinh(x), "log")'
+  'rewrite(abs(x), "heaviside")' 'rewrite(abs(x), "piecewise")'
+  'rewrite(factorial(n), "gamma")' 'rewrite(gamma(n + 1), "factorial")'
+  'rewrite(erfc(x), "erf")' 'rewrite(abs(x), "sqrt")'
+  'potential([2x*y, x^2], [x, y])' 'potential([2x, 2y, 2z], [x, y, z], [1, 1, 1])'
+  'vectorpotential([0, 0, 1], [x, y, z])'  # of a field
+  'equationstomatrix([x + 2y = 3, 3x - y = 1], [x, y])' 'eliminate([x = t^2, y = t^3], [t])'
+  'isolate(a*x + b = 0, x)' 'isolate(y = x^2 + 1, x^2)'
+  'limit(1/x, x, 0, "left")' 'limit(1/x, x, 0, "right")'
+  'subs(x^2 + y, [x, y], [1, 2])' 'symsum(1/k^2, k, 1, inf)' 'symprod(k, k, 1, 5)'
+  'simplifyfraction((x^2 - 1)/(x - 1))' 'partfrac(1/(x^2 - 1), x)'
+  'ztrans(n, n, z)' 'iztrans(z/(z - 1), z, n)'  # other names of what there is
+  'assume(x > 0); assumptions()' 'x := 5; f(t) := t^2; who()'
+  'x := 5; clear(x); x' 'x := 5; clear(); x' 'tic(); toc() >= 0'
+  'assert(1 < 2)' 'assert(2 > 1, "two is small")'
+  'x := 3; if(x > 0, sqrt(x), error("x is %d, not positive", x))'  # an error stops the input
+
+More on graphs, and points of the plane:
+  'bfsearch([[1, 2], [1, 3], [2, 4], [3, 5]], 1)' 'dfsearch([[1, 2], [1, 3], [2, 4], [3, 5]], 1)'
+      # the order of a search
+  'successors([1 -> 2, 1 -> 3, 3 -> 1], 1)' 'predecessors([1 -> 2, 1 -> 3, 3 -> 1], 1)'
+  'nearest(pathgraph(6), 1, 2)' 'allpaths([[1, 2], [2, 3], [1, 3]], 1, 3)'
+  'hascycles(pathgraph(4))' 'isdag([1 -> 2, 2 -> 3])'
+  'transclosure([1 -> 2, 2 -> 3])' 'transreduction([1 -> 2, 2 -> 3, 1 -> 3])'
+  'biconncomp([[1, 2], [2, 3], [3, 1], [3, 4]])'
+  'cutvertices([[1, 2], [2, 3], [3, 1], [3, 4]])' 'bridges([[1, 2], [2, 3], [3, 1], [3, 4]])'
+  'centrality(stargraph(4), "degree")' 'centrality(pathgraph(3), "closeness")'
+  'centrality(pathgraph(3), "betweenness")'  # how central a vertex is
+  'centrality([1 -> 2, 2 -> 3, 3 -> 1], "pagerank")'
+  'centrality(pathgraph(3), "eigenvector")' 'centrality([1 -> 2, 1 -> 3], "indegree")'
+  'addedge([[1, 2]], 2, 3)' 'addedge([[1, 2]], 2, 3, 7)'
+  'rmedge([[1, 2], [2, 3]], 1, 2)' 'addnode([[1, 2]], 5)' 'rmnode([[1, 2], [2, 3]], 2)'
+  'findedge([[1, 2], [2, 3]], 2, 3)' 'flipedge([1 -> 2, 2 -> 3])'
+  'conncomp([[1, 2], [3, 4], [5]])' 'numnodes(petersengraph())' 'distances(pathgraph(3))'
+  'polyarea([0, 4, 4, 0], [0, 0, 3, 3])' 'inpolygon(1, 1, [0, 4, 4, 0], [0, 0, 3, 3])'
+  'inpolygon([1, 5], [1, 1], [0, 4, 4, 0], [0, 0, 3, 3])'  # a polygon
+  'convhull([0, 2, 2, 0, 1], [0, 0, 2, 2, 1])'
+  'convexhull([[0, 0], [2, 0], [2, 2], [0, 2], [1, 1]])'
+      # the hull: numbers of the points, the points
+  'delaunay([0, 2, 1, 1], [0, 0, 2, 1])'
+  'voronoi([0, 2, 0, 2, 1], [0, 0, 2, 2, 1])' 'rectint([0, 0, 2, 2], [1, 1, 2, 2])'
+      # triangles, cells
+  'dsearchn([[0, 0], [1, 1], [5, 5]], [4, 4])' 'rotx(90)' 'roty(90)' 'rotz(45)'
+      # the nearest point; turns of space by degrees
+
+More by the names of MATLAB: arrays of more sizes, gaps in data, pieces of polynomials:
+  'reshape([1, 2, 3, 4, 5, 6], 2, 3)' 'permute([[1, 2, 3], [4, 5, 6]], [2, 1])'
+  'permute([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [3, 1, 2])'  # sizes in another order
+  'ipermute(permute([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [3, 1, 2]), [3, 1, 2])'
+  'squeeze([[[1, 2, 3]]])' 'cell2mat([[[1, 2]], [[3]]])' 'num2cell([1, 2])'
+  'sparse([1, 2, 2], [1, 3, 3], [5, 6, 7])' 'sparse([1, 2], [1, 2], 9, 3, 3)'
+  'sparse(2, 3)' 'full([[1, 0], [0, 2]])' 'issparse([[1, 0], [0, 2]])'  # a matrix by its places
+  'speye(2, 3)' 'spones([[5, 0], [0, -2]])' 'nzmax([[1, 0], [0, 2]])'
+  'spdiags([[1, 4], [2, 5], [3, 6]], [0, 1], 3, 3)'  # columns along diagonals
+  'nansum([1, nan, 3])' 'nanmean([1, nan, 3])' 'nanmax([1, nan, 3])' 'nanmin([1, nan, 3])'
+  'nanstd([1, nan, 3, 5])' 'nanvar([1, nan, 3, 5])' 'nanmedian([5, nan, 1, 3])'
+  'nansum([[1, nan], [3, 4]], 2)' 'meanabs([1, -2, 3, -4])' 'normfit([1, 2, 3, 4, 5])'
+  'expfit([1, 2, 3])' 'crosstab([1, 1, 2, 2, 2], [a, b, a, a, b])'  # nan is undefined
+  'pdist([[0, 0], [3, 4], [6, 8]])' 'squareform([5, 10, 5])'
+  'partialcorr([[1, 2, 1], [2, 1, 3], [3, 5, 2], [4, 3, 6], [5, 6, 4]])'  # distances of rows
+  'anova1([[1, 2, 3], [2, 3, 4], [5, 6, 7]])'
+  'pca([[1, 2], [3, 4], [5, 7], [7, 8]])' 'rng(3); datasample([a, b, c], 5)'
+      # groups; [directions, scores, variances]
+  'single(0.1)' 'cast(300, "uint8")' 'cast(65, "char")' 'class(3)' 'class("abc")'
+  'class(x^2)' 'class(@(x) x^2)' 'isa(3, "numeric")' 'signim(2 - 3i)'  # kinds of values
+  'condest([[1, 2], [3, 4]])' 'normest([[3, 0], [0, 4]])'
+  'polyeig([[1, 0], [0, 4]], [[0, 0], [0, 0]], [[-1, 0], [0, -1]])'  # det(A0 + x*A1 + x^2*A2) = 0
+  'del2([0, 1, 4, 9, 16, 25])' 'del2([[1, 4, 9], [4, 9, 16], [9, 16, 25]])'
+  'interpft([1, 2, 3, 4], 8)' 'filter2([[1, 1], [1, 1]], [[1, 2, 3], [4, 5, 6], [7, 8, 9]])'
+  'padecoef(1, 2)' 'mellin(exp(-x), x, s)' 'htrans(sin(x), x, t)'
+  'htrans(1/(x^2 + 1), x, t)' 'ihtrans(t/(t^2 + 1), t, x)'  # Pade; Mellin and Hilbert transforms
+  'mkpp([0, 1, 2], [[1, 0], [2, 1]])' 'ppval(mkpp([0, 1, 2], [[1, 0], [2, 1]]), [1/2, 3/2, 3])'
+  'unmkpp(mkpp([0, 1, 2], [[1, 0], [2, 1]]))'  # pieces of polynomials
+  'spline([0, 1, 2, 3], [0, 1, 8, 27])' 'ppval(pchip([0, 1, 2, 3], [0, 1, 8, 27]), 3/2)'
+  'ppval(makima([0, 1, 2, 3], [0, 1, 8, 27]), [3/2, 5/2])'  # the pieces of a curve
+  'polynomialreduce(x^2*y + x*y^2 + y^2, [x*y - 1, y^2 - 1], [x, y])'
+  'polynomialreduce(x^2 + 1, x - 1)'  # what division leaves
+  'griddata([0, 1, 0, 1], [0, 0, 1, 1], [0, 1, 1, 2], 1/2, 1/2)'
+  'griddata([0, 1, 0, 1], [0, 0, 1, 1], [0, 1, 1, 2], 0.9, 0.2, "nearest")'
+      # between scattered points
+  'tsearchn([[0, 0], [1, 0], [0, 1], [1, 1]], [[1, 2, 3], [2, 4, 3]], [1/4, 1/4])'
+      # the triangle that holds a point
+  'quadprog([[1, -1], [-1, 2]], [-2, -6], [[1, 1], [-1, 2], [2, 1]], [2, 2, 3])'
+  'quadprog([[2, 0], [0, 2]], [-4, -4], [], [], [], [], [0, 0], [1, 1])'
+      # least x'*H*x/2 + f*x, exact
+  'lsqlin([[1, 0], [0, 1]], [2, 3], [[1, 1]], [1])'
+  'lsqnonlin(@(a, b) [a - 1, b - 2, a + b - 4], [0, 0])' 'lsqnonlin(@(x) [x^2 - 2], 1)'
+      # least squares with conditions
+  'erase("banana", "an")' 'extractbefore("hello world", " ")' 'extractafter("hello world", " ")'
+  'extractbetween("a[b]c[d]", "[", "]")' 'extractbetween("hello", 2, 4)'
+  'insertafter("abc", "b", "-")' 'insertbefore("abc", 1, "-")' 'pad("7", 3, "left", "0")'
+  'isstrprop("a1 B", "alpha")' 'strlength(newline())' 'split("a b")'
+  'intersect([1, 2, 3], [2, 3, 4])' 'setdiff([1, 2, 3, 5], [2])' 'assumealso(x > 0)'
+  'vpaintegral(exp(-x^2), x, 0, 1)' 'fftn([[1, 2], [3, 4]])' 'convn([[1, 2]], [[1, 1]])'
+
+Pictures as matrices of numbers (a gray picture is a matrix, colours are a list of three):
+  'rgb2gray([[[255, 0], [0, 0]], [[0, 255], [0, 0]], [[0, 0], [255, 0]]])'
+  'im2double([[0, 51, 255]])' 'im2uint8([[0, 1/2, 1]])' 'im2uint16([[0, 1/2, 1]])'
+  'imcomplement([[0, 100, 255]])' 'imcrop([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [2, 1, 1, 1])'
+  'imbinarize([[0, 100, 255], [200, 50, 10]])' 'mat2gray([[1, 2], [3, 5]])'
+  'imresize([[0, 4], [8, 12]], 2)' 'imresize([[0, 4], [8, 12]], 2, "nearest")'
+  'imresize([[0, 4, 8, 12]], [1, 2])'  # another size
+  'imrotate([[1, 2], [3, 4]], 90)' 'imrotate([[1, 1, 1], [1, 1, 1], [1, 1, 1]], 45)'
+  'imhist([[0, 1, 1], [3, 3, 3]], 2)'  # turned; how often every sample
+  'imfilter([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[0, 1, 0], [1, -4, 1], [0, 1, 0]])'
+  'imfilter([[1, 0], [0, 0]], [[1, 2], [3, 4]], "conv")'  # weights on every pixel
+  'imwrite(imresize(magic(4)/16, 8, "nearest"), "big.png"); size(imread("big.png"))'
+      # a picture made, written and read
+
+Charts of data, and numbers and pictures in files:
+  'lineplot([1, 4, 9, 16, 25])' 'lineplot([0, 1, 2], [3, 1, 2])'
+  'scatter([1, 2, 3, 4], [2, 1, 4, 3])'  # a line through points; dots
+  'bar([3, 1, 4, 1, 5])' 'barh([3, -1, 4])'
+  'stairs([0, 1, 2, 3], [1, 3, 2, 5])' 'stem([1, 2, 3, 4], [1, -1, 2, -2])'  # bars, steps, stalks
+  'errorbar([1, 2, 3], [2, 4, 3], [1/2, 1, 1/4])'
+  'boxplot([[1, 2, 3, 4, 5, 6, 30], [2, 4, 4, 5, 7, 9]])' 'pie([3, 1, 4])' 'pie([1, 2], ["a", "b"])'
+  'loglog([1, 10, 100], [1, 100, 10000])'
+  'semilogx([1, 10, 100], [1, 2, 3])' 'semilogy([1, 2, 3], [10, 100, 1000])'
+      # axes by powers of ten
+  'contour(x^2 + y^2, x, -2, 2, y, -2, 2)'
+  'contour(sin(x)*cos(y), x, -pi, pi, y, -pi, pi, [-1/2, 0, 1/2])' 'contour(magic(6), 4)'
+      # lines of equal height
+  'quiver([-y, x], x, -1, 1, y, -1, 1)' 'quiver([0, 1, 2], [0, 0, 0], [1, 1, 1], [1, 2, 3])'
+  'spy(identity(6) + diag([1, 1, 1, 1, 1], 1))'  # arrows; what is not zero
+  'plot3(cos((0:60)/5), sin((0:60)/5), 0:60)'
+  'scatter3([1, 2, 3, 4], [1, 4, 9, 16], [1, 8, 27, 64])' 'surf([[1, 2, 3], [2, 4, 6], [3, 6, 9]])'
+      # space
+  'stem3([1, 2, 3, 4], [1, 2, 1, 2], [1, 4, 2, 3])'
+  'quiver3([0, 1, 2], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1])'
+      # stalks and arrows of space
+  'contour3(x^2 + y^2, x, -2, 2, y, -2, 2)'
+  'waterfall([[1, 2, 3, 2, 1], [2, 4, 6, 4, 2], [3, 6, 9, 6, 3]])'
+      # lines of equal height at their heights; rows as lines
+  'compass([1, -1, 2], [2, 1, -1])' 'compass([1 + 2i, -1 + i])'
+  'feather([1, 0, -1, 1], [1, 2, 1, -1])' 'polarscatter([0, pi/4, pi/2, pi], [1, 2, 3, 2])'
+      # arrows; points by angle
+  'bar([3, 1, 4], width = 40, height = 8, title = "three bars", xlabel = "n", ylabel = "size")'
+      # words of a picture
+  'save_png("bar.png", bar([3, 1, 4, 1, 5]), title = "of pi", xlabel = "place", ylabel = "digit")'
+  'save_png("pie.png", pie([3, 1, 4], ["a", "b", "c"]), palette = jet, title = "shares")'
+  'save_png("mesh.png", mesh([0, 1, 2], [0, 1], [[0, 1, 4], [1, 2, 5]]))'
+  'save_png("p1.png", matrixplot(magic(4)), palette = parula)'
+  'save_png("p2.png", matrixplot(magic(4)), palette = turbo)'  # the palettes of MATLAB:
+  'save_png("p3.png", matrixplot(magic(4)), palette = hot)'
+  'save_png("p4.png", matrixplot(magic(4)), palette = hsv)'  # parula, turbo, jet, hot, hsv,
+  'save_png("p5.png", matrixplot(magic(4)), palette = bone)'
+  'save_png("p6.png", matrixplot(magic(4)), palette = copper)'  # bone, copper, pink,
+  'save_png("p7.png", matrixplot(magic(4)), palette = pink)'
+  'save_png("p8.png", matrixplot(magic(4)), palette = spring)'  # spring, summer,
+  'save_png("p9.png", matrixplot(magic(4)), palette = summer)'
+  'save_png("p10.png", matrixplot(magic(4)), palette = autumn)'  # autumn, winter
+  'save_png("p11.png", matrixplot(magic(4)), palette = winter)'
+  'save_jxl("log.jxl", loglog([1, 10, 100], [1, 100, 10000]))'
+  'imwrite([[0, 1/2, 1], [1, 1/2, 0]], "gray.png")'
+  'imwrite([[0, 1/2, 1], [1, 1/2, 0]], "gray.png"); imread("gray.png")'
+      # a matrix as a gray picture, and back
+  'imwrite([[[255, 0]], [[0, 255]], [[0, 0]]], "rgb.jxl"); imread("rgb.jxl")'
+  'imwrite([[0, 65535]], "deep.png", 16)'  # three matrices: red, green, blue
+  'writematrix([[1, 2], [3, 4]], "m.csv"); readmatrix("m.csv")'  # numbers in a file with commas
+
+The calendar (a date is a day number as in MATLAB, a date in quotes or [year, month, day]):
+  'datenum(2026, 11, 20)' 'datenum(2026, 11, 20, 13, 45, 10)'
+  'datenum([2026, 11, 20])' 'datenum("2026-11-20 13:45:10")' 'datenum("20-Nov-2026")'
+      # the days since the year 0 began
+  'datenum("20.11.2026", "dd.mm.yyyy")' 'datenum(2460000.5, "juliandate")'
+  'datenum(1000000000, "posixtime")' 'datenum(45000, "excel")' 'datetime(2000, 1, 1)'
+      # other forms, other counts
+  'datevec(740306.5)' 'datevec("2026-11-20 13:45:10")'
+  'datestr(740306.5)' 'datestr(740306.5, "dddd, dd mmmm yyyy, HH:MM PM")'
+  'datestr("2026-11-20", 1)' 'datestr([2026, 11, 20], 29)'
+  'weekday("2026-11-20")' 'weekday(740306, "long")' 'eomday(2024, 2)' 'eomday(2026, 1:12)'
+  'calendar(2026, 11)' 'leapyear([1900, 2000, 2024])' 'yeardays(2024)'  # 1 is Sunday
+  'addtodate(datenum(2024, 1, 31), 1, "month")' 'datestr(addtodate(740306, 36, "hour"))'
+  'etime([2026, 11, 20, 13, 0, 0], [2026, 11, 20, 12, 0, 0])'  # dates moved; seconds between
+  'juliandate("2026-11-20")' 'mjuliandate("2026-11-20")'
+  'posixtime("2026-11-20")' 'dayofyear("2026-11-20")'
+  'isweekend("2026-11-21")' 'datenum(2026, 12, 25) - datenum("2026-11-20")'
+  'datestr(now())' 'clock()' 'date()' 'calendar()' 'cputime()'
+  'floor(now()) == datenum(date())' 'length(clock())' 'cputime() >= 0'
+      # this moment, by the clock of this place
+
+Patterns of texts (regular expressions as MATLAB writes them):
+  'regexp("a12b345c", "\d+")' 'regexp("a12b345c", "\d+", "match")'
+  'regexp("a12b345c", "\d+", "start", "end")' 'regexp("a12b345c", "\d+", "split")'
+      # where, what, between
+  'regexp("key=value; k2=v2", "(\w+)=(\w+)", "tokens")'
+  'regexp("key=value", "(?<key>\w+)=(?<val>\w+)", "names", "once")'
+  'regexp("a1b22", "\d+", "match", "once")'  # the parts in brackets
+  'regexpi("Hello World", "hello", "match")' 'regexp("the cat sat", "\<\w*at\>", "match")'
+  'regexp("price: $15, 20 EUR", "(?<!\$)\<\d+", "match")' 'regexp("aabbcd", "(\w)\1", "match")'
+  'regexprep("hello world", "(\w+) (\w+)", "$2 $1")'
+  'regexprep("CamelCaseText", "([a-z])([A-Z])", "$1_$2")'
+  'regexprep("a  b   c", "\s+", " ")' 'regexprep("hello", "l", "L", "once")'
+  'regexptranslate("escape", "a.b*c")'
+  'regexp("data.txt", regexptranslate("wildcard", "*.txt"), "match", "once")'
+  'str2double(regexp("2026-11-20", "\d+", "match"))'
+  'strjust("a  ")' 'strjust("  a", "left")' 'strjust("a   ", "center")'
+  'validatestring("app", ["apple", "banana"])'  # blanks moved; the word that a text begins
+
+Tests of ranks and counts, distances of samples, groups of points:
+  'ranksum([1, 2, 3], [4, 5, 6])'
+  'ranksum([1.1, 2.3, 3.5, 4.2, 5.9], [2.2, 6.1, 7.3, 8.8, 9.4, 10.5], "approximate")'
+      # [p, h]: p is a fraction when every case is counted
+  'signrank([1.5, -0.3, 2.2, 3.1, -1.2, 4.4, 0.7, 2.9])' 'signrank([5.2, 4.8, 6.1, 5.9], 5)'
+  'signtest([1, 2, 3, 4, -5])' 'signtest([3, 5, 2, 6], [1, 4, 3, 2])'  # signed ranks and signs
+  'kruskalwallis([[1, 2, 3, 4], [3, 5, 6, 7], [8, 9, 10, 11]])'
+  'friedman([[7, 9, 8], [6, 5, 7], [9, 7, 6], [8, 5, 6]])'
+  'vartestn([[1, 2, 3, 4], [2, 4, 6, 8], [1, 5, 9, 13]])'  # p of groups alike
+  'fishertest([[8, 2], [1, 5]])' 'chi2gof([18, 22, 20], [1, 1, 1])'
+  'chi2gof([43, 52, 54, 40], [47.25, 47.25, 47.25, 47.25], 1)'
+      # [h, p, odds ratio]; [h, p, statistic]
+  'kstest([-1.2, -0.5, 0.1, 0.3, 0.8, 1.4, 2.0])'
+  'kstest([0.1, 0.2, 0.3, 0.4, 0.5], uniformdist(0, 1))'
+  'kstest2([1, 2, 3, 4, 5], [3, 4, 5, 6, 7, 8])' 'jbtest([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])'
+  'anova2([[1, 2, 3], [2, 4, 5], [3, 5, 9], [4, 6, 8]])'
+  'anova2([[5.5, 4.5, 3.5], [5.5, 4.5, 4], [6, 4, 3], [6.5, 5, 4], [7, 5.5, 5], [7, 5, 4.5]], 3)'
+      # [p of columns, p of rows, p of both]
+  'fitlm([1, 2, 3, 4, 5], [2.1, 3.9, 6.2, 7.8, 10.1])'
+  'getfield(fitlm([[1, 2], [2, 1], [3, 5], [4, 3], [5, 6]], [3, 3, 8, 7, 11]), "coefficients")'
+      # a straight fit as a record
+  'mahal([[1, 2], [5, 5]], [[0, 0], [2, 1], [1, 3], [3, 4]])'
+  'mvnpdf([x, y], [0, 0], [[1, 0], [0, 1]])' 'mvnpdf([1, 2], [1, 2], [[2, 0], [0, 3]])'
+  'rng(1); mvnrnd([1, 2], [[2, 1], [1, 2]], 3)'
+  'ksdensity([1, 2, 3, 4, 5], [0, 2.5, 5])' 'jackknife(@mean, [1, 2, 3, 4])'
+  'rng(7); bootstrp(4, @mean, [1, 2, 3, 4, 5])'
+  'grpstats([1, 2, 3, 4, 5, 6], [1, 1, 2, 2, 2, 3], ["mean", "numel"])'
+  'linkage([[0, 0], [1, 0], [0, 3], [5, 5], [6, 5]])'
+  'linkage([[0, 0], [1, 0], [0, 3], [5, 5]], "ward")'
+  'cluster(linkage([[0, 0], [1, 0], [0, 3], [5, 5], [6, 5]]), 2)'  # [group, group, distance]
+  'kmeans([[0, 0], [1, 0], [0, 1], [10, 10], [11, 10], [10, 11]], 2)'
+  'kmeans([1, 2, 3, 10, 11, 12], 2)'  # [the group of every point, the means]
+
+Records with named fields and tables of keys and values (struct and dictionary):
+  's := struct("name", "pi", "value", pi); getfield(s, "value")'
+  'fieldnames(struct("a", 1, "b", 2))' 'setfield(struct("a", 1), "b", x^2)'
+  'rmfield(struct("a", 1, "b", 2), "a")'
+  'setfield(struct(), "a", "b", 5)' 'getfield(struct("p", struct("q", 7)), "p", "q")'
+  'isfield(struct("a", 1), ["a", "z"])' 'isstruct(struct())' 'numfields(struct("a", 1))'
+      # records within records
+  'orderfields(struct("b", 1, "a", 2))' 'struct2cell(struct("a", 1, "b", "two"))'
+  'cell2struct([1, "two"], ["a", "b"])'
+  'structfun(@(v) v^2, struct("a", 2, "b", 3))' 'class(struct("a", 1))'
+  'd := dictionary(["a", "b"], [1, 2]); lookup(d, "b")'
+  'dictionary("one", 1, "two", 2)' 'keys(dictionary([1, 2], ["x", "y"]))'
+  'values(dictionary([1, 2], ["x", "y"]))' 'entries(dictionary("a", 1))'
+  'insert(dictionary("a", 1), "b", 2)' 'remove(dictionary("a", 1, "b", 2), "a")'
+  'iskey(dictionary("a", 1), ["a", "z"])' 'lookup(dictionary("a", 1), "z", 0)'
+  'numentries(dictionary("a", 1))'
+  'iscell(["a", 1])' 'iscellstr(["a", "b"])' 'cell(2)' 'cell(1, 2)'
+      # a list of unlike things is what MATLAB calls a cell
+
+More special functions, functionals, least values under conditions, matrices with names:
+  'meijerg([], [], [0], [], 0.5)' 'meijerg([1, 1], [], [1], [0], 0.3)'
+  'meijerg([], [], [0, 1/2], [], 25.0)' 'N(meijerg([1/2], [], [0], [0], 3))'
+      # Meijer's G: here e^(-z), ln(1 + z), ...
+  'hypergeom([1, 1, 1], [2, 2], -3.5)' 'hypergeom([1/2, 1, 3/2, 2], [5/2, 3, 7/2], -4.0)'
+      # beyond the unit circle
+  'lerchphi(0.5, 2, 3)' 'lerchphi(z, s, 1)' 'lerchphi(1, s, a)'
+  'lerchphi(-1.0, 2, 0.5)' 'diff(lerchphi(z, s, a), z)'  # the sum of z^k/(k + a)^s
+  "functionalderivative(y'^2/2 - y^2/2, y, x)" "functionalderivative(sqrt(1 + y'^2), y, x)"
+  "functionalderivative(y''^2/2, y, x)" "eulerlagrange(m*u'^2/2 - k*u^2/2, u, t)"
+      # Euler and Lagrange
+  "odetovectorfield(y'' + y = 0, y, x)"
+  "odetovectorfield(diff(y, x, 3) + 2y'' - x*y' + y = sin(x), y, x)"
+      # the derivatives of [y, y', ...]
+  'fmincon(@(x, y) x^2 + y^2, [0, 0], [], [], [1, 1], [1])'
+  'fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [-1, 2], [1, 2], [1])'
+      # least f with A*x <= b, Aeq*x = beq
+  'fmincon(@(x, y) (x - 2)^2 + y^2, [0, 0], [], [], [], [], [], [], @(x, y) x^2 + y^2 - 1)'
+  'fmincon(@(x) (x - 3)^2, 0, [], [], [], [], [], 2)'  # conditions <= 0; bounds
+  'fmincon(@(x, y) x + y, [1, 0], [], [], [], [], [], [], @(x, y) [[], [x^2 + y^2 - 2]])'
+      # conditions: [[values <= 0], [values = 0]]
+  'gallery("minij", 4)' 'gallery("lehmer", 3)' 'gallery("tridiag", 4)' 'gallery("frank", 4)'
+  'gallery("moler", 3)' 'gallery("fiedler", 3)' 'gallery("kms", 3, r)' 'gallery("pei", 3)'
+  'gallery("ris", 3)' 'gallery("parter", 3)' 'gallery("clement", 4)'
+  'gallery("grcar", 4)' 'gallery("jordbloc", 3, 2)' 'gallery("circul", [1, 2, 3])'
+  'gallery("cauchy", [1, 2, 3])' 'gallery("lotkin", 3)'
+  'peaks(3)' 'peaks(x, y)' 'peaks(0, 0)' 'colormap("jet", 5)'
+  'histcounts2([1, 2, 3, 4], [1, 2, 3, 4], 2)'
+  'histcounts2([1, 5, 9], [2, 2, 2], [0, 4, 8], [0, 3])'  # a surface, colours, counts of pairs
+  'pcg([[4, 1], [1, 3]], [1, 2])' 'gmres([[1, 2], [3, 4]], [5, 6])'
+  'lsqr([[1, 0], [0, 1], [1, 1]], [1, 2, 4])'  # A*x = b; the least |A*x - b|
+  'pie3([3, 1, 2])' 'comet([1, 4, 9, 16])' 'comet3([1, 2, 3], [1, 4, 9], [1, 8, 27])'
+      # the pictures that pie, a line and plot3 draw
+
 Real numbers only, quaternions, digits and forms of the output:
   -r 'x^3 = -8'  # real numbers only: x = -2
   -r '(-8)^(1/3)' 'x^2 + 1 = 0' 'sqrt(x^2)'  # real roots, no solution, abs(x)

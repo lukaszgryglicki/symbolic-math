@@ -1,0 +1,700 @@
+-e	transclosure(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure([])	[]
+-e	transclosure([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction([])	[]
+-e	transreduction([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transreduction(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp([])	[]
+-e	biconncomp([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	biconncomp(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices([])	[]
+-e	cutvertices([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	cutvertices(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges([])	[]
+-e	bridges([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	bridges(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge([])	[]
+-e	flipedge([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	flipedge(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	polyarea(0)	error: polyarea([[x, y], ...])
+-e	polyarea(1)	error: polyarea([[x, y], ...])
+-e	polyarea(-1)	error: polyarea([[x, y], ...])
+-e	polyarea(1/2)	error: polyarea([[x, y], ...])
+-e	polyarea(2)	error: polyarea([[x, y], ...])
+-e	polyarea(i)	error: polyarea([[x, y], ...])
+-e	polyarea(inf)	error: polyarea([[x, y], ...])
+-e	polyarea(-inf)	error: polyarea([[x, y], ...])
+-e	polyarea(undefined)	error: polyarea([[x, y], ...])
+-e	polyarea(10^20)	error: polyarea([[x, y], ...])
+-e	polyarea(10^(-20))	error: polyarea([[x, y], ...])
+-e	polyarea(x)	error: polyarea([[x, y], ...])
+-e	polyarea([])	0
+-e	polyarea([1, 2])	error: polyarea([[x, y], ...])
+-e	polyarea("text")	error: polyarea([[x, y], ...])
+-e	polyarea(true)	error: polyarea([[x, y], ...])
+-e	polyarea(-7/3)	error: polyarea([[x, y], ...])
+-e	polyarea(0.5)	error: polyarea([[x, y], ...])
+-e	convhull(0)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(1)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(-1)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(1/2)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(2)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(i)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(inf)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(-inf)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(undefined)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(10^20)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(10^(-20))	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(x)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull([])	[]
+-e	convhull([1, 2])	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull("text")	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(true)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(-7/3)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convhull(0.5)	error: convhull([x values], [y values]) or convhull([[x, y], ...])
+-e	convexhull(0)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(1)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(-1)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(1/2)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(2)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(i)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(inf)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(-inf)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(undefined)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(10^20)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(10^(-20))	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(x)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull([])	[]
+-e	convexhull([1, 2])	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull("text")	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(true)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(-7/3)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	convexhull(0.5)	error: convexhull([x values], [y values]) or convexhull([[x, y], ...])
+-e	delaunay(0)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(1)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(-1)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(1/2)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(2)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(i)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(inf)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(-inf)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(undefined)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(10^20)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(10^(-20))	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(x)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay([])	error: delaunay: the points lie on one line
+-e	delaunay([1, 2])	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay("text")	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(true)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(-7/3)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	delaunay(0.5)	error: delaunay([x values], [y values]) or delaunay([[x, y], ...])
+-e	voronoi(0)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(1)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(-1)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(1/2)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(2)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(i)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(inf)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(-inf)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(undefined)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(10^20)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(10^(-20))	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(x)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi([])	error: delaunay: the points lie on one line
+-e	voronoi([1, 2])	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi("text")	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(true)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(-7/3)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	voronoi(0.5)	error: voronoi([x values], [y values]) or voronoi([[x, y], ...])
+-e	rotx(0)	[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+-e	rotx(1)	[[1, 0, 0], [0, cos(pi/180), -sin(pi/180)], [0, sin(pi/180), cos(pi/180)]]
+-e	rotx(-1)	[[1, 0, 0], [0, cos(pi/180), sin(pi/180)], [0, -sin(pi/180), cos(pi/180)]]
+-e	rotx(1/2)	[[1, 0, 0], [0, cos(pi/360), -sin(pi/360)], [0, sin(pi/360), cos(pi/360)]]
+-e	rotx(2)	[[1, 0, 0], [0, cos(pi/90), -sin(pi/90)], [0, sin(pi/90), cos(pi/90)]]
+-e	rotx(i)	[[1, 0, 0], [0, cosh(pi/180), -i*sinh(pi/180)], [0, i*sinh(pi/180), cosh(pi/180)]]
+-e	rotx(inf)	[[1, 0, 0], [0, cos(inf), -sin(inf)], [0, sin(inf), cos(inf)]]
+-e	rotx(-inf)	[[1, 0, 0], [0, cos(-inf), -sin(-inf)], [0, sin(-inf), cos(-inf)]]
+-e	rotx(undefined)	[[1, 0, 0], [0, undefined, undefined], [0, undefined, undefined]]
+-e	rotx(10^20)	[[1, 0, 0], [0, cos(4pi/9), sin(4pi/9)], [0, -sin(4pi/9), cos(4pi/9)]]
+-e	rotx(10^(-20))	[[1, 0, 0], [0, cos(pi/18000000000000000000000), -sin(pi/18000000000000000000000)], [0, sin(pi/18000000000000000000000), cos(pi/18000000000000000000000)]]
+-e	rotx(x)	[[1, 0, 0], [0, cos(pi*x/180), -sin(pi*x/180)], [0, sin(pi*x/180), cos(pi*x/180)]]
+-e	rotx([])	[[1, 0, 0], [0, cos(pi*[]/180), -sin(pi*[]/180)], [0, sin(pi*[]/180), cos(pi*[]/180)]]
+-e	rotx([1, 2])	[[1, 0, 0], [0, cos(pi*[1, 2]/180), -sin(pi*[1, 2]/180)], [0, sin(pi*[1, 2]/180), cos(pi*[1, 2]/180)]]
+-e	rotx("text")	[[1, 0, 0], [0, cos(pi*"text"/180), -sin(pi*"text"/180)], [0, sin(pi*"text"/180), cos(pi*"text"/180)]]
+-e	rotx(true)	[[1, 0, 0], [0, cos(pi*true/180), -sin(pi*true/180)], [0, sin(pi*true/180), cos(pi*true/180)]]
+-e	rotx(-7/3)	[[1, 0, 0], [0, cos(7pi/540), sin(7pi/540)], [0, -sin(7pi/540), cos(7pi/540)]]
+-e	rotx(0.5)	[[1, 0, 0], [0, 0.99996192306417128873735516482698, -0.0087265354983739349648882139735844], [0, 0.0087265354983739349648882139735844, 0.99996192306417128873735516482698]]
+-e	roty(0)	[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+-e	roty(1)	[[cos(pi/180), 0, sin(pi/180)], [0, 1, 0], [-sin(pi/180), 0, cos(pi/180)]]
+-e	roty(-1)	[[cos(pi/180), 0, -sin(pi/180)], [0, 1, 0], [sin(pi/180), 0, cos(pi/180)]]
+-e	roty(1/2)	[[cos(pi/360), 0, sin(pi/360)], [0, 1, 0], [-sin(pi/360), 0, cos(pi/360)]]
+-e	roty(2)	[[cos(pi/90), 0, sin(pi/90)], [0, 1, 0], [-sin(pi/90), 0, cos(pi/90)]]
+-e	roty(i)	[[cosh(pi/180), 0, i*sinh(pi/180)], [0, 1, 0], [-i*sinh(pi/180), 0, cosh(pi/180)]]
+-e	roty(inf)	[[cos(inf), 0, sin(inf)], [0, 1, 0], [-sin(inf), 0, cos(inf)]]
+-e	roty(-inf)	[[cos(-inf), 0, sin(-inf)], [0, 1, 0], [-sin(-inf), 0, cos(-inf)]]
+-e	roty(undefined)	[[undefined, 0, undefined], [0, 1, 0], [undefined, 0, undefined]]
+-e	roty(10^20)	[[cos(4pi/9), 0, -sin(4pi/9)], [0, 1, 0], [sin(4pi/9), 0, cos(4pi/9)]]
+-e	roty(10^(-20))	[[cos(pi/18000000000000000000000), 0, sin(pi/18000000000000000000000)], [0, 1, 0], [-sin(pi/18000000000000000000000), 0, cos(pi/18000000000000000000000)]]
+-e	roty(x)	[[cos(pi*x/180), 0, sin(pi*x/180)], [0, 1, 0], [-sin(pi*x/180), 0, cos(pi*x/180)]]
+-e	roty([])	[[cos(pi*[]/180), 0, sin(pi*[]/180)], [0, 1, 0], [-sin(pi*[]/180), 0, cos(pi*[]/180)]]
+-e	roty([1, 2])	[[cos(pi*[1, 2]/180), 0, sin(pi*[1, 2]/180)], [0, 1, 0], [-sin(pi*[1, 2]/180), 0, cos(pi*[1, 2]/180)]]
+-e	roty("text")	[[cos(pi*"text"/180), 0, sin(pi*"text"/180)], [0, 1, 0], [-sin(pi*"text"/180), 0, cos(pi*"text"/180)]]
+-e	roty(true)	[[cos(pi*true/180), 0, sin(pi*true/180)], [0, 1, 0], [-sin(pi*true/180), 0, cos(pi*true/180)]]
+-e	roty(-7/3)	[[cos(7pi/540), 0, -sin(7pi/540)], [0, 1, 0], [sin(7pi/540), 0, cos(7pi/540)]]
+-e	roty(0.5)	[[0.99996192306417128873735516482698, 0, 0.0087265354983739349648882139735844], [0, 1, 0], [-0.0087265354983739349648882139735844, 0, 0.99996192306417128873735516482698]]
+-e	rotz(0)	[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+-e	rotz(1)	[[cos(pi/180), -sin(pi/180), 0], [sin(pi/180), cos(pi/180), 0], [0, 0, 1]]
+-e	rotz(-1)	[[cos(pi/180), sin(pi/180), 0], [-sin(pi/180), cos(pi/180), 0], [0, 0, 1]]
+-e	rotz(1/2)	[[cos(pi/360), -sin(pi/360), 0], [sin(pi/360), cos(pi/360), 0], [0, 0, 1]]
+-e	rotz(2)	[[cos(pi/90), -sin(pi/90), 0], [sin(pi/90), cos(pi/90), 0], [0, 0, 1]]
+-e	rotz(i)	[[cosh(pi/180), -i*sinh(pi/180), 0], [i*sinh(pi/180), cosh(pi/180), 0], [0, 0, 1]]
+-e	rotz(inf)	[[cos(inf), -sin(inf), 0], [sin(inf), cos(inf), 0], [0, 0, 1]]
+-e	rotz(-inf)	[[cos(-inf), -sin(-inf), 0], [sin(-inf), cos(-inf), 0], [0, 0, 1]]
+-e	rotz(undefined)	[[undefined, undefined, 0], [undefined, undefined, 0], [0, 0, 1]]
+-e	rotz(10^20)	[[cos(4pi/9), sin(4pi/9), 0], [-sin(4pi/9), cos(4pi/9), 0], [0, 0, 1]]
+-e	rotz(10^(-20))	[[cos(pi/18000000000000000000000), -sin(pi/18000000000000000000000), 0], [sin(pi/18000000000000000000000), cos(pi/18000000000000000000000), 0], [0, 0, 1]]
+-e	rotz(x)	[[cos(pi*x/180), -sin(pi*x/180), 0], [sin(pi*x/180), cos(pi*x/180), 0], [0, 0, 1]]
+-e	rotz([])	[[cos(pi*[]/180), -sin(pi*[]/180), 0], [sin(pi*[]/180), cos(pi*[]/180), 0], [0, 0, 1]]
+-e	rotz([1, 2])	[[cos(pi*[1, 2]/180), -sin(pi*[1, 2]/180), 0], [sin(pi*[1, 2]/180), cos(pi*[1, 2]/180), 0], [0, 0, 1]]
+-e	rotz("text")	[[cos(pi*"text"/180), -sin(pi*"text"/180), 0], [sin(pi*"text"/180), cos(pi*"text"/180), 0], [0, 0, 1]]
+-e	rotz(true)	[[cos(pi*true/180), -sin(pi*true/180), 0], [sin(pi*true/180), cos(pi*true/180), 0], [0, 0, 1]]
+-e	rotz(-7/3)	[[cos(7pi/540), sin(7pi/540), 0], [-sin(7pi/540), cos(7pi/540), 0], [0, 0, 1]]
+-e	rotz(0.5)	[[0.99996192306417128873735516482698, -0.0087265354983739349648882139735844, 0], [0.0087265354983739349648882139735844, 0.99996192306417128873735516482698, 0], [0, 0, 1]]
+-e	int8(0)	0
+-e	int8(1)	1
+-e	int8(-1)	-1
+-e	int8(1/2)	1
+-e	int8(2)	2
+-e	int8(i)	error: int8: i is not a real number
+-e	int8(inf)	127
+-e	int8(-inf)	-128
+-e	int8(undefined)	0
+-e	int8(10^20)	127
+-e	int8(10^(-20))	0
+-e	int8(x)	error: int8: x is not a real number
+-e	int8([])	[]
+-e	int8([1, 2])	[1, 2]
+-e	int8("text")	error: int8: "text" is not a real number
+-e	int8(true)	error: int8: true is not a real number
+-e	int8(-7/3)	-2
+-e	int8(0.5)	1
+-e	int16(0)	0
+-e	int16(1)	1
+-e	int16(-1)	-1
+-e	int16(1/2)	1
+-e	int16(2)	2
+-e	int16(i)	error: int16: i is not a real number
+-e	int16(inf)	32767
+-e	int16(-inf)	-32768
+-e	int16(undefined)	0
+-e	int16(10^20)	32767
+-e	int16(10^(-20))	0
+-e	int16(x)	error: int16: x is not a real number
+-e	int16([])	[]
+-e	int16([1, 2])	[1, 2]
+-e	int16("text")	error: int16: "text" is not a real number
+-e	int16(true)	error: int16: true is not a real number
+-e	int16(-7/3)	-2
+-e	int16(0.5)	1
+-e	int32(0)	0
+-e	int32(1)	1
+-e	int32(-1)	-1
+-e	int32(1/2)	1
+-e	int32(2)	2
+-e	int32(i)	error: int32: i is not a real number
+-e	int32(inf)	2147483647
+-e	int32(-inf)	-2147483648
+-e	int32(undefined)	0
+-e	int32(10^20)	2147483647
+-e	int32(10^(-20))	0
+-e	int32(x)	error: int32: x is not a real number
+-e	int32([])	[]
+-e	int32([1, 2])	[1, 2]
+-e	int32("text")	error: int32: "text" is not a real number
+-e	int32(true)	error: int32: true is not a real number
+-e	int32(-7/3)	-2
+-e	int32(0.5)	1
+-e	int64(0)	0
+-e	int64(1)	1
+-e	int64(-1)	-1
+-e	int64(1/2)	1
+-e	int64(2)	2
+-e	int64(i)	error: int64: i is not a real number
+-e	int64(inf)	9223372036854775807
+-e	int64(-inf)	-9223372036854775808
+-e	int64(undefined)	0
+-e	int64(10^20)	9223372036854775807
+-e	int64(10^(-20))	0
+-e	int64(x)	error: int64: x is not a real number
+-e	int64([])	[]
+-e	int64([1, 2])	[1, 2]
+-e	int64("text")	error: int64: "text" is not a real number
+-e	int64(true)	error: int64: true is not a real number
+-e	int64(-7/3)	-2
+-e	int64(0.5)	1
+-e	uint8(0)	0
+-e	uint8(1)	1
+-e	uint8(-1)	0
+-e	uint8(1/2)	1
+-e	uint8(2)	2
+-e	uint8(i)	error: uint8: i is not a real number
+-e	uint8(inf)	255
+-e	uint8(-inf)	0
+-e	uint8(undefined)	0
+-e	uint8(10^20)	255
+-e	uint8(10^(-20))	0
+-e	uint8(x)	error: uint8: x is not a real number
+-e	uint8([])	[]
+-e	uint8([1, 2])	[1, 2]
+-e	uint8("text")	error: uint8: "text" is not a real number
+-e	uint8(true)	error: uint8: true is not a real number
+-e	uint8(-7/3)	0
+-e	uint8(0.5)	1
+-e	uint16(0)	0
+-e	uint16(1)	1
+-e	uint16(-1)	0
+-e	uint16(1/2)	1
+-e	uint16(2)	2
+-e	uint16(i)	error: uint16: i is not a real number
+-e	uint16(inf)	65535
+-e	uint16(-inf)	0
+-e	uint16(undefined)	0
+-e	uint16(10^20)	65535
+-e	uint16(10^(-20))	0
+-e	uint16(x)	error: uint16: x is not a real number
+-e	uint16([])	[]
+-e	uint16([1, 2])	[1, 2]
+-e	uint16("text")	error: uint16: "text" is not a real number
+-e	uint16(true)	error: uint16: true is not a real number
+-e	uint16(-7/3)	0
+-e	uint16(0.5)	1
+-e	uint32(0)	0
+-e	uint32(1)	1
+-e	uint32(-1)	0
+-e	uint32(1/2)	1
+-e	uint32(2)	2
+-e	uint32(i)	error: uint32: i is not a real number
+-e	uint32(inf)	4294967295
+-e	uint32(-inf)	0
+-e	uint32(undefined)	0
+-e	uint32(10^20)	4294967295
+-e	uint32(10^(-20))	0
+-e	uint32(x)	error: uint32: x is not a real number
+-e	uint32([])	[]
+-e	uint32([1, 2])	[1, 2]
+-e	uint32("text")	error: uint32: "text" is not a real number
+-e	uint32(true)	error: uint32: true is not a real number
+-e	uint32(-7/3)	0
+-e	uint32(0.5)	1
+-e	uint64(0)	0
+-e	uint64(1)	1
+-e	uint64(-1)	0
+-e	uint64(1/2)	1
+-e	uint64(2)	2
+-e	uint64(i)	error: uint64: i is not a real number
+-e	uint64(inf)	18446744073709551615
+-e	uint64(-inf)	0
+-e	uint64(undefined)	0
+-e	uint64(10^20)	18446744073709551615
+-e	uint64(10^(-20))	0
+-e	uint64(x)	error: uint64: x is not a real number
+-e	uint64([])	[]
+-e	uint64([1, 2])	[1, 2]
+-e	uint64("text")	error: uint64: "text" is not a real number
+-e	uint64(true)	error: uint64: true is not a real number
+-e	uint64(-7/3)	0
+-e	uint64(0.5)	1
+-e	eigs(0)	error: eigs needs a matrix
+-e	eigs(1)	error: eigs needs a matrix
+-e	eigs(-1)	error: eigs needs a matrix
+-e	eigs(1/2)	error: eigs needs a matrix
+-e	eigs(2)	error: eigs needs a matrix
+-e	eigs(i)	error: eigs needs a matrix
+-e	eigs(inf)	error: eigs needs a matrix
+-e	eigs(-inf)	error: eigs needs a matrix
+-e	eigs(undefined)	error: eigs needs a matrix
+-e	eigs(10^20)	error: eigs needs a matrix
+-e	eigs(10^(-20))	error: eigs needs a matrix
+-e	eigs(x)	error: eigs needs a matrix
+-e	eigs([])	error: eigs needs a matrix
+-e	eigs([1, 2])	error: eigs needs a matrix
+-e	eigs("text")	error: eigs needs a matrix
+-e	eigs(true)	error: eigs needs a matrix
+-e	eigs(-7/3)	error: eigs needs a matrix
+-e	eigs(0.5)	error: eigs needs a matrix
+-e	svds(0)	error: svds needs a matrix
+-e	svds(1)	error: svds needs a matrix
+-e	svds(-1)	error: svds needs a matrix
+-e	svds(1/2)	error: svds needs a matrix
+-e	svds(2)	error: svds needs a matrix
+-e	svds(i)	error: svds needs a matrix
+-e	svds(inf)	error: svds needs a matrix
+-e	svds(-inf)	error: svds needs a matrix
+-e	svds(undefined)	error: svds needs a matrix
+-e	svds(10^20)	error: svds needs a matrix
+-e	svds(10^(-20))	error: svds needs a matrix
+-e	svds(x)	error: svds needs a matrix
+-e	svds([])	error: svds needs a matrix
+-e	svds([1, 2])	error: svds needs a matrix
+-e	svds("text")	error: svds needs a matrix
+-e	svds(true)	error: svds needs a matrix
+-e	svds(-7/3)	error: svds needs a matrix
+-e	svds(0.5)	error: svds needs a matrix
+-e	lineplot(0)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(1)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(-1)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(1/2)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(2)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(i)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(inf)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(-inf)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(undefined)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(10^20)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(10^(-20))	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(x)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot([])	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot([1, 2])	2.04 │                                                            ⣀⠄|     │                                                        ⣀⠤⠒⠉|     │                                                    ⣀⠤⠒⠉|     │                                                ⣀⠤⠒⠉|     │                                            ⣀⠤⠒⠉|     │                                        ⣀⠤⠒⠉|     │                                    ⣀⠤⠒⠉|     │                                ⣀⠤⠒⠉|     │                            ⣀⠤⠒⠉⠁|     │                        ⣀⠤⠒⠉|     │                    ⣀⠤⠒⠉|     │                ⣀⠤⠒⠉|     │            ⣀⠤⠒⠉|     │        ⣀⠤⠒⠉|     │    ⣀⠤⠒⠉|0.96 │  ⠐⠉|     └────────────────────────────────────────────────────────────────|      0.96                                                        2.04|2 points
+-e	lineplot("text")	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(true)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(-7/3)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	lineplot(0.5)	error: lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...])
+-e	scatter(0)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(1)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(-1)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(1/2)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(2)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(i)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(inf)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(-inf)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(undefined)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(10^20)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(10^(-20))	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(x)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter([])	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter([1, 2])	2.04 │                                                            ⠠⡦|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|     │|0.96 │  ⠺⠂|     └────────────────────────────────────────────────────────────────|      0.96                                                        2.04|2 points
+-e	scatter("text")	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(true)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(-7/3)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	scatter(0.5)	error: scatter([y values]), scatter([x values], [y values]) or scatter([[x, y], ...])
+-e	bar(0)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(1)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(-1)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(1/2)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(2)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(i)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(inf)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(-inf)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(undefined)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(10^20)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(10^(-20))	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(x)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar([])	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar([1, 2])	 2.08 │                                   ⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │                                   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.08 │──────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉──────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉──────|      └────────────────────────────────────────────────────────────────|       0.4                                                          2.6|2 bars
+-e	bar("text")	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(true)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(-7/3)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	bar(0.5)	error: bar([y values]), bar([x values], [y values]) or bar([[x, y], ...])
+-e	barh(0)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(1)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(-1)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(1/2)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(2)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(i)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(inf)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(-inf)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(undefined)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(10^20)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(10^(-20))	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(x)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh([])	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh([1, 2])	2.6 │  │|    │  ⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⡄|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    │  ⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁|    │  ⢀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|    │  ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|    │  ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛|0.4 │  │|    └────────────────────────────────────────────────────────────────|     -0.08                                                       2.08|2 bars
+-e	barh("text")	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(true)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(-7/3)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	barh(0.5)	error: barh([y values]), barh([x values], [y values]) or barh([[x, y], ...])
+-e	stairs(0)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(1)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(-1)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(1/2)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(2)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(i)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(inf)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(-inf)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(undefined)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(10^20)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(10^(-20))	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(x)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs([])	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs([1, 2])	2.04 │                                                             ⡄|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|     │                                                             ⡇|0.96 │  ⠐⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠃|     └────────────────────────────────────────────────────────────────|      0.96                                                        2.04|2 points
+-e	stairs("text")	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(true)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(-7/3)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stairs(0.5)	error: stairs([y values]), stairs([x values], [y values]) or stairs([[x, y], ...])
+-e	stem(0)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(1)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(-1)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(1/2)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(2)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(i)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(inf)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(-inf)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(undefined)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(10^20)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(10^(-20))	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(x)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem([])	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem([1, 2])	 2.08 │                                                            ⠠⡦|      │                                                             ⡇|      │                                                             ⡇|      │                                                             ⡇|      │                                                             ⡇|      │                                                             ⡇|      │                                                             ⡇|      │  ⢀                                                          ⡇|      │  ⢹⠁                                                         ⡇|      │  ⢸                                                          ⡇|      │  ⢸                                                          ⡇|      │  ⢸                                                          ⡇|      │  ⢸                                                          ⡇|      │  ⢸                                                          ⡇|      │  ⢸                                                          ⡇|-0.08 │──⠘──────────────────────────────────────────────────────────⠃──|      └────────────────────────────────────────────────────────────────|       0.96                                                        2.04|2 points
+-e	stem("text")	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(true)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(-7/3)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	stem(0.5)	error: stem([y values]), stem([x values], [y values]) or stem([[x, y], ...])
+-e	pie(0)	error: pie needs lists of numbers, 0 is none
+-e	pie(1)	error: pie needs lists of numbers, 1 is none
+-e	pie(-1)	error: pie needs lists of numbers, -1 is none
+-e	pie(1/2)	error: pie needs lists of numbers, 1/2 is none
+-e	pie(2)	error: pie needs lists of numbers, 2 is none
+-e	pie(i)	error: pie needs lists of numbers, i is none
+-e	pie(inf)	error: pie needs lists of numbers, inf is none
+-e	pie(-inf)	error: pie needs lists of numbers, -inf is none
+-e	pie(undefined)	error: pie needs lists of numbers, undefined is none
+-e	pie(10^20)	error: pie needs lists of numbers, 100000000000000000000 is none
+-e	pie(10^(-20))	error: pie needs lists of numbers, 1/100000000000000000000 is none
+-e	pie(x)	error: pie needs lists of numbers, x is none
+-e	pie([])	error: pie needs values that are not negative, one above zero
+-e	pie([1, 2])	 1.575 │|       │|       │|       │                                ⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                              ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                           ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                       ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                         ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                           ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │|       │|-1.575 │|       └────────────────────────────────────────────────────────────────|        -3.15                                                       3.15|2 parts of the sum 3, from the top against the clock: 33.3%, 66.7%
+-e	pie("text")	error: pie needs lists of numbers, "text" is none
+-e	pie(true)	error: pie needs lists of numbers, true is none
+-e	pie(-7/3)	error: pie needs lists of numbers, -7/3 is none
+-e	pie(0.5)	error: pie needs lists of numbers, 1/2 is none
+-e	loglog(0)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(1)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(-1)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(1/2)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(2)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(i)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(inf)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(-inf)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(undefined)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(10^20)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(10^(-20))	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(x)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog([])	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog([1, 2])	 2.056 │  │                                                         ⣀⠄|       │  │                                                     ⣀⠤⠒⠉|       │  │                                                 ⣀⠤⠒⠉|       │  │                                             ⣀⠤⠒⠉|       │  │                                         ⣀⠤⠒⠉|       │  │                                     ⣀⠤⠒⠉|       │  │                                 ⣀⠤⠒⠉|       │  │                             ⣀⠤⠒⠉|       │  │                         ⣀⠤⠒⠉|       │  │                     ⣀⠤⠒⠉|       │  │                 ⣀⠤⠒⠉|       │  │             ⣀⠤⠒⠉|       │  │         ⣀⠤⠒⠉|       │  │     ⣀⠤⠒⠉|       │  │ ⣀⠤⠒⠉|0.9727 │──⠐⠉────────────────────────────────────────────────────────────|       └────────────────────────────────────────────────────────────────|        0.9727                                                     2.056|2 points; both axes go by powers of ten
+-e	loglog("text")	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(true)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(-7/3)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	loglog(0.5)	error: loglog([y values]), loglog([x values], [y values]) or loglog([[x, y], ...])
+-e	semilogx(0)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(1)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(-1)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(1/2)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(2)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(i)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(inf)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(-inf)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(undefined)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(10^20)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(10^(-20))	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(x)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx([])	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx([1, 2])	2.04 │  │                                                         ⣀⠄|     │  │                                                     ⣀⠤⠒⠉|     │  │                                                 ⣀⠤⠒⠉|     │  │                                             ⣀⠤⠒⠉|     │  │                                         ⣀⠤⠒⠉|     │  │                                     ⣀⠤⠒⠉|     │  │                                 ⣀⠤⠒⠉|     │  │                             ⣀⠤⠒⠉|     │  │                         ⣀⠤⠒⠉|     │  │                     ⣀⠤⠒⠉|     │  │                 ⣀⠤⠒⠉|     │  │             ⣀⠤⠒⠉|     │  │         ⣀⠤⠒⠉|     │  │     ⣀⠤⠒⠉|     │  │ ⣀⠤⠒⠉|0.96 │  ⠐⠉|     └────────────────────────────────────────────────────────────────|      0.9727                                                     2.056|2 points; the x axis goes by powers of ten
+-e	semilogx("text")	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(true)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(-7/3)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogx(0.5)	error: semilogx([y values]), semilogx([x values], [y values]) or semilogx([[x, y], ...])
+-e	semilogy(0)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(1)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(-1)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(1/2)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(2)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(i)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(inf)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(-inf)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(undefined)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(10^20)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(10^(-20))	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(x)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy([])	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy([1, 2])	 2.056 │                                                            ⣀⠄|       │                                                        ⣀⠤⠒⠉|       │                                                    ⣀⠤⠒⠉|       │                                                ⣀⠤⠒⠉|       │                                            ⣀⠤⠒⠉|       │                                        ⣀⠤⠒⠉|       │                                    ⣀⠤⠒⠉|       │                                ⣀⠤⠒⠉|       │                            ⣀⠤⠒⠉⠁|       │                        ⣀⠤⠒⠉|       │                    ⣀⠤⠒⠉|       │                ⣀⠤⠒⠉|       │            ⣀⠤⠒⠉|       │        ⣀⠤⠒⠉|       │    ⣀⠤⠒⠉|0.9727 │──⠐⠉────────────────────────────────────────────────────────────|       └────────────────────────────────────────────────────────────────|        0.96                                                        2.04|2 points; the y axis goes by powers of ten
+-e	semilogy("text")	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(true)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(-7/3)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	semilogy(0.5)	error: semilogy([y values]), semilogy([x values], [y values]) or semilogy([[x, y], ...])
+-e	contour(0)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(1)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(-1)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(1/2)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(2)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(i)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(-inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(undefined)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(10^20)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(10^(-20))	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(x)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour([])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour([1, 2])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour("text")	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(true)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(-7/3)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(0.5)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	plot3(0)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(1/2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(undefined)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(10^20)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(10^(-20))	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(x)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3([])	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3([1, 2])	error: plot3 needs lists of numbers, 1 is none
+-e	plot3("text")	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(true)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-7/3)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(0.5)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	scatter3(0)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-1)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(1/2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(2)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(i)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-inf)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(undefined)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(10^20)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(10^(-20))	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(x)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3([])	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3([1, 2])	error: scatter3 needs lists of numbers, 1 is none
+-e	scatter3("text")	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(true)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(-7/3)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	scatter3(0.5)	error: scatter3([x values], [y values], [z values]) or scatter3([[x, y, z], ...])
+-e	surf(0)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-1)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(1/2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(2)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(i)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-inf)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(undefined)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(10^20)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(10^(-20))	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(x)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf([])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf([1, 2])	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf("text")	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(true)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(-7/3)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	surf(0.5)	error: surf(matrix of heights) or surf([x values], [y values], matrix): a row of the matrix for every y
+-e	spy(0)	error: spy(matrix)
+-e	spy(1)	error: spy(matrix)
+-e	spy(-1)	error: spy(matrix)
+-e	spy(1/2)	error: spy(matrix)
+-e	spy(2)	error: spy(matrix)
+-e	spy(i)	error: spy(matrix)
+-e	spy(inf)	error: spy(matrix)
+-e	spy(-inf)	error: spy(matrix)
+-e	spy(undefined)	error: spy(matrix)
+-e	spy(10^20)	error: spy(matrix)
+-e	spy(10^(-20))	error: spy(matrix)
+-e	spy(x)	error: spy(matrix)
+-e	spy([])	error: spy(matrix)
+-e	spy([1, 2])	error: spy(matrix)
+-e	spy("text")	error: spy(matrix)
+-e	spy(true)	error: spy(matrix)
+-e	spy(-7/3)	error: spy(matrix)
+-e	spy(0.5)	error: spy(matrix)
+-e	boxplot(0)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(1)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(-1)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(1/2)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(2)	error: boxplot([values]) or boxplot([[values], [values], ...])

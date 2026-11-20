@@ -3,6 +3,9 @@
 //! The constants and the functions of the `tet` / `tet-line` expression grammar keep their names
 //! and meanings here.
 
+use std::collections::HashMap;
+use std::sync::OnceLock;
+
 pub struct Const {
     pub name: &'static str,
     pub aliases: &'static str,
@@ -191,6 +194,35 @@ pub const CONSTANTS: &[Const] = &[
     c("niven", "", "", "", "Niven's constant"),
     c("mertens", "", "", "", "Meissel-Mertens constant"),
     c("twinprime", "", "", "", "twin prime constant"),
+    c(
+        "flintmax",
+        "",
+        "",
+        "2^53",
+        "2^53: up to it every whole number is a double of MATLAB",
+    ),
+    c(
+        "realmax",
+        "",
+        "",
+        "(2 - 2^(-52))*2^1023",
+        "the largest double of MATLAB",
+    ),
+    c(
+        "realmin",
+        "",
+        "",
+        "2^(-1022)",
+        "the least normal positive double of MATLAB",
+    ),
+    c(
+        "intmax",
+        "",
+        "",
+        "2^31 - 1",
+        "the largest 32-bit whole number",
+    ),
+    c("intmin", "", "", "-2^31", "the least 32-bit whole number"),
 ];
 
 pub struct Func {
@@ -1457,7 +1489,14 @@ pub const FUNCTIONS: &[Func] = &[
         ANY,
         "vector product; of n - 1 vectors with n coordinates in general",
     ),
-    f("identity", "eye", "", 1, 1, "identity matrix"),
+    f(
+        "identity",
+        "eye",
+        "",
+        1,
+        2,
+        "identity matrix; identity(m, n): m rows and n columns",
+    ),
     f(
         "linsolve",
         "",
@@ -1968,8 +2007,8 @@ pub const FUNCTIONS: &[Func] = &[
         "",
         "",
         1,
-        1,
-        "diag([a, b, ...]): diagonal matrix; diag(A): the diagonal",
+        2,
+        "diag([a, b, ...]): diagonal matrix; diag(A): the diagonal; diag(x, k): diagonal k above",
     ),
     f("zeros", "", "", 1, 2, "matrix of zeros"),
     f("ones", "", "", 1, 2, "matrix of ones"),
@@ -2190,7 +2229,55 @@ pub const FUNCTIONS: &[Func] = &[
         "",
         2,
         2,
-        "frombase([digits], b): the number with these digits in base b",
+        "frombase([digits], b): the number with these digits in base b; frombase([[whole digits], [digits after the point], [digits that repeat]], b) and frombase(\"ff.8(3)\", 16) for fractions; in base 256 a text is read character by character",
+    ),
+    f(
+        "base_conv",
+        "baseconv convbase base_convert baseconvert convert_base",
+        "",
+        2,
+        4,
+        "base_conv(x, from, to): the number x that is written in base from, written in base to: base_conv(fe, 16, 10) is 254, base_conv(15, 10, 16) is f; base_conv(x, to) takes a value that has no base: base_conv(pi, 16); base_conv(x, from, to, n) writes the first n digits. Digits: 0-9 and a-z up to base 36, then A-Z, @ and _ up to base 64, from base 65 on a number after # for each digit: base_conv(1234, 10, 1000) is #001#234",
+    ),
+    f(
+        "tobase",
+        "inbase baseform",
+        "",
+        1,
+        3,
+        "tobase(x, b): the digits of x in base b with a point, the digits that repeat in parentheses: tobase(1/7) is 0.(142857), tobase(1/3, 2) is 0.(01); tobase(x, b, n) writes the first n digits; with the base and # in front the answer is a number that can be typed: 2#0.(01)",
+    ),
+    f(
+        "tofraction",
+        "basefraction",
+        "",
+        1,
+        2,
+        "tofraction(x, b): the fraction x with numerator and denominator written in base b: tofraction(2#0.(01), 2) is 1/11",
+    ),
+    f(
+        "digits",
+        "realdigits digitlist",
+        "",
+        1,
+        3,
+        "digits(x, b): [digits of the whole part, digits after the point, digits that repeat] of a fraction in any base b from 2 on; digits(x, b, n): the first n digits as [before the point, after it]",
+    ),
+    f(
+        "period",
+        "periodlength repetend",
+        "",
+        1,
+        2,
+        "period(x, b): how many digits of the fraction x repeat in base b, 0 when its digits end",
+    ),
+    f(
+        "digitcounts",
+        "digitcount",
+        "",
+        1,
+        3,
+        "digitcounts(x, b, n): how often each digit 0 .. b-1 stands among the first n digits of x in base b",
     ),
     f(
         "digitsum",
@@ -2340,9 +2427,9 @@ pub const FUNCTIONS: &[Func] = &[
         "table",
         "",
         "",
-        2,
+        0,
         ANY,
-        "table(expr, [i, a, b]): the values of expr for i = a, ..., b; also [i, a, b, step], [i, list], a count, several iterators",
+        "table(expr, [i, a, b]): the values of expr for i = a, ..., b; also [i, a, b, step], [i, list], a count, several iterators; table(\"name\", [values], ...): a table of named columns (also table([values], ..., \"VariableNames\", [names]))",
     ),
     f("length", "", "", 1, 1, "number of entries of a list"),
     f("first", "", "", 1, 1, "first entry of a list"),
@@ -2379,8 +2466,8 @@ pub const FUNCTIONS: &[Func] = &[
         "",
         "",
         1,
-        1,
-        "numbers in rising order, other entries after them",
+        3,
+        "numbers in rising order, other entries after them; sort(x, \"descend\"), sort(A, 1 | 2)",
     ),
     f(
         "sortby",
@@ -2467,8 +2554,8 @@ pub const FUNCTIONS: &[Func] = &[
         "deleteduplicates",
         "",
         1,
-        1,
-        "the distinct entries in their order",
+        2,
+        "the distinct entries in their order; unique(x, \"sorted\"): in rising order",
     ),
     f(
         "contains",
@@ -3850,6 +3937,143 @@ pub const FUNCTIONS: &[Func] = &[
         ANY,
         "implicitplot(x^2 + y^2 = 1, x, -1, 1, y, -1, 1): the points where an equation holds",
     ),
+    // pictures
+    f(
+        "walk",
+        "digitwalk numberwalk",
+        "",
+        1,
+        ANY,
+        "walk(x, base, digits): a walk along the digits of a real number: the digit d is a step of length 1 at 360*d/base degrees; walk(pi, 10, 1000); base 10 and 1000 digits when they are left out; a number whose digits end gives a walk that ends",
+    ),
+    f(
+        "walk3d",
+        "digitwalk3d numberwalk3d",
+        "",
+        1,
+        ANY,
+        "walk3d(z, base, digits): a walk in space along the digits of a complex number: the digits of the real part turn the step around the z-axis, the digits of the imaginary part lift it above the plane; walk3d(e + pi*i, 12, 10000)",
+    ),
+    f(
+        "primewalk",
+        "primes_walk prime_walk primeswalk",
+        "",
+        1,
+        ANY,
+        "primewalk(n, m, k): a step for every whole number from 2 to the n-th prime, at every prime a turn by k/m of a full turn (m = 4, k = 1 when left out): the sides are the gaps between the primes",
+    ),
+    f(
+        "primewalk3d",
+        "primes_walk3d prime_walk3d primeswalk3d primes3d_xyz primes3d",
+        "",
+        1,
+        ANY,
+        "primewalk3d(n, m): as primewalk in space: at every prime the next of m directions: 3 (x, y, z), 4 (the corners of a tetrahedron) or 6 (x, y, z, -x, -y, -z; when m is left out)",
+    ),
+    f(
+        "primemodwalk",
+        "primes_modwalk prime_modwalk primesmodwalk primeresiduewalk",
+        "",
+        1,
+        ANY,
+        "primemodwalk(n, m): a step for each of the first n primes p at 360*(p mod m)/m degrees (m = 8 when left out); a modulus with a square factor (4, 8, 9, 12 ...) has no direction that it prefers",
+    ),
+    f(
+        "primemodwalk3d",
+        "primes_modwalk3d prime_modwalk3d primesmodwalk3d primeresiduewalk3d",
+        "",
+        1,
+        ANY,
+        "primemodwalk3d(n, m, k): a step in space for each of the first n primes p: 360*(p mod m)/m degrees around the z-axis, 360*(p mod k)/k degrees above the plane (m = 8, k = 12 when left out)",
+    ),
+    f(
+        "ulamspiral",
+        "ulam primespiral",
+        "",
+        1,
+        ANY,
+        "ulamspiral(n): the first n primes on the square spiral of the whole numbers",
+    ),
+    f(
+        "sacksspiral",
+        "sacks",
+        "",
+        1,
+        ANY,
+        "sacksspiral(n): the first n primes on the spiral of Sacks: the whole number k is sqrt(k) away from the middle after sqrt(k) turns",
+    ),
+    f(
+        "complexplot",
+        "domainplot domaincoloring",
+        "",
+        2,
+        ANY,
+        "complexplot(f, z, a, b): the values of f in the box of the complex plane with the corners a and b as colours: the colour is the argument (red: positive, cyan: negative), the lightness the absolute value (zeros dark, poles light); complexplot(f, z) is from -2 - 2i to 2 + 2i",
+    ),
+    f(
+        "densityplot",
+        "heatmap",
+        "",
+        7,
+        ANY,
+        "densityplot(f, x, a, b, y, c, d): the values of f(x, y) as the colours of a palette",
+    ),
+    f(
+        "plot3d",
+        "surfaceplot",
+        "",
+        7,
+        ANY,
+        "plot3d(f, x, a, b, y, c, d): the surface z = f(x, y), seen from a point",
+    ),
+    f(
+        "parametricplot3d",
+        "spacecurve",
+        "",
+        4,
+        ANY,
+        "parametricplot3d([x(t), y(t), z(t)], t, a, b): a curve of space",
+    ),
+    f(
+        "graphplot",
+        "drawgraph",
+        "",
+        1,
+        ANY,
+        "graphplot(g): the vertices of a graph on a circle, with its edges",
+    ),
+    f(
+        "matrixplot",
+        "arrayplot",
+        "",
+        1,
+        ANY,
+        "matrixplot(m): the entries of a matrix as the colours of a palette",
+    ),
+    f(
+        "save_png",
+        "savepng",
+        "",
+        2,
+        ANY,
+        "save_png(\"name.png\", drawing, choices): saves a drawing (walk, walk3d, primewalk ..., plot, plot3d, complexplot ...) as a PNG file. Choices: width = 1024, height, bits = 8 or 16, gray, alpha, channels = 1 to 4, level = 0 to 9 (9 packs hardest), frames = n (a moving picture), fps; and for every picture: thickness, margin, palette, reverse, color, background, axes, noaxes, grid; in space: azimuth, elevation, roll, zoom, scale, center, viewpoint, perspective, fog, turn, grow, slices",
+    ),
+    f(
+        "save_jxl",
+        "savejxl",
+        "",
+        2,
+        ANY,
+        "save_jxl(\"name.jxl\", drawing, choices): saves a drawing as a JPEG XL file. Choices as for save_png, and: bits = 1 to 16, lossless (the usual), quality = 0 to 100 or distance = 0 to 25 for a lossy picture, effort = 1 to 10, depth (a channel with the depth of every pixel), frames = n, slices = n (the drawing cut into slabs of depth, one frame each)",
+    ),
+    f(
+        "save",
+        "saveimage export",
+        "",
+        2,
+        ANY,
+        "save(\"name.png\", drawing, choices) or save(\"name.jxl\", ...): save_png or save_jxl by the end of the name",
+    ),
     // units
     f(
         "convert",
@@ -3899,6 +4123,81 @@ fn names_of<'a>(name: &'a str, aliases: &'a str) -> impl Iterator<Item = &'a str
     std::iter::once(name).chain(aliases.split_whitespace())
 }
 
+/// More functions, one a line: `name|other names|fewest arguments|most arguments|meaning`,
+/// with `*` for any number of arguments. A line `+name|other names` gives more names to a
+/// function of the table above, a line `!name|fewest|most|meaning` other numbers of arguments
+/// and, when it is not empty, another meaning.
+const MORE: &str = include_str!("names.tbl");
+
+struct Index {
+    funcs: Vec<Func>,
+    /// More names of the functions of `FUNCTIONS`, by their first name.
+    also: HashMap<&'static str, &'static str>,
+    by_name: HashMap<&'static str, usize>,
+    by_sign: HashMap<&'static str, usize>,
+}
+
+fn index() -> &'static Index {
+    static INDEX: OnceLock<Index> = OnceLock::new();
+    INDEX.get_or_init(|| {
+        let mut funcs: Vec<Func> = FUNCTIONS
+            .iter()
+            .map(|x| f(x.name, x.aliases, x.unicode, x.min, x.max, x.meaning))
+            .collect();
+        let mut also = HashMap::new();
+        for line in MORE.lines() {
+            let line = line.trim();
+            if line.is_empty() || line.starts_with('#') {
+                continue;
+            }
+            let parts: Vec<&'static str> = line.splitn(5, '|').collect();
+            if let Some(name) = parts[0].strip_prefix('+') {
+                also.insert(name, parts[1]);
+                continue;
+            }
+            let count = |text: &str| match text {
+                "*" => ANY,
+                digits => digits.parse().expect("a number of arguments in names.tbl"),
+            };
+            if let Some(name) = parts[0].strip_prefix('!') {
+                let old = funcs
+                    .iter_mut()
+                    .find(|x| x.name == name)
+                    .expect("a known function after ! in names.tbl");
+                (old.min, old.max) = (count(parts[1]), count(parts[2]));
+                if !parts[3].is_empty() {
+                    old.meaning = parts[3];
+                }
+                continue;
+            }
+            funcs.push(f(
+                parts[0],
+                parts[1],
+                "",
+                count(parts[2]),
+                count(parts[3]),
+                parts[4],
+            ));
+        }
+        let (mut by_name, mut by_sign) = (HashMap::new(), HashMap::new());
+        for (k, x) in funcs.iter().enumerate() {
+            let more = also.get(x.name).copied().unwrap_or("");
+            for name in names_of(x.name, x.aliases).chain(more.split_whitespace()) {
+                by_name.entry(name).or_insert(k);
+            }
+            for sign in x.unicode.split_whitespace() {
+                by_sign.entry(sign).or_insert(k);
+            }
+        }
+        Index {
+            funcs,
+            also,
+            by_name,
+            by_sign,
+        }
+    })
+}
+
 pub fn constant(name: &str) -> Option<&'static Const> {
     let lower = name.to_ascii_lowercase();
     CONSTANTS
@@ -3912,21 +4211,19 @@ pub fn constant(name: &str) -> Option<&'static Const> {
 }
 
 pub fn function(name: &str) -> Option<&'static Func> {
-    if let Some(hit) = FUNCTIONS
-        .iter()
-        .find(|f| names_of(f.name, f.aliases).any(|n| n == name))
-    {
-        return Some(hit);
+    let index = index();
+    if let Some(k) = index.by_name.get(name) {
+        return Some(&index.funcs[*k]);
     }
     if name.chars().count() == 1 && name != "W" {
-        return FUNCTIONS
-            .iter()
-            .find(|f| f.unicode.split_whitespace().any(|u| u == name));
+        return index.by_sign.get(name).map(|k| &index.funcs[*k]);
     }
     let lower = name.to_ascii_lowercase();
-    FUNCTIONS
-        .iter()
-        .find(|f| f.name.len() > 1 && names_of(f.name, f.aliases).any(|n| n == lower))
+    index
+        .by_name
+        .get(lower.as_str())
+        .map(|k| &index.funcs[*k])
+        .filter(|f| f.name.len() > 1)
 }
 
 const GREEK: &[(char, &str)] = &[
@@ -4091,10 +4388,73 @@ pub fn constants_help() -> String {
 /// Text of `--functions`.
 pub fn functions_help() -> String {
     let mut out = String::from("Functions (names with the same meaning share a line):\n");
-    for func in FUNCTIONS {
+    let index = index();
+    for func in &index.funcs {
         let mut names: Vec<&str> = names_of(func.name, func.aliases).collect();
+        if let Some(more) = index.also.get(func.name) {
+            names.extend(more.split_whitespace());
+        }
         names.extend(func.unicode.split_whitespace());
         out.push_str(&format!("    {:<40} {}\n", names.join(", "), func.meaning));
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashSet;
+
+    #[test]
+    fn the_table_of_more_names_is_sound() {
+        let first: HashSet<&str> = FUNCTIONS.iter().map(|x| x.name).collect();
+        let mut added: HashSet<&str> = HashSet::new();
+        let (mut more, mut changed) = (HashSet::new(), HashSet::new());
+        for line in MORE
+            .lines()
+            .filter(|l| !l.is_empty() && !l.starts_with('#'))
+        {
+            // only the meaning of a new function may hold a bar
+            let parts: Vec<&str> = match line.starts_with(['+', '!']) {
+                true => line.split('|').collect(),
+                false => line.splitn(5, '|').collect(),
+            };
+            if let Some(name) = parts[0].strip_prefix('+') {
+                // more names for a function that is there, given once
+                assert_eq!(parts.len(), 2, "{line}");
+                assert!(first.contains(name) || added.contains(name), "{line}");
+                assert!(more.insert(name), "{name} gets more names twice");
+                assert!(!parts[1].trim().is_empty(), "{line}");
+            } else if let Some(name) = parts[0].strip_prefix('!') {
+                assert_eq!(parts.len(), 4, "{line}");
+                assert!(first.contains(name) || added.contains(name), "{line}");
+                assert!(changed.insert(name), "{name} is changed twice");
+            } else {
+                assert_eq!(parts.len(), 5, "{line}");
+                assert!(!first.contains(parts[0]), "{} is there already", parts[0]);
+                assert!(added.insert(parts[0]), "{} stands twice", parts[0]);
+                assert!(!parts[4].is_empty(), "{} has no meaning", parts[0]);
+                let most = parts[3];
+                assert!(
+                    most == "*"
+                        || most
+                            .parse::<usize>()
+                            .is_ok_and(|m| m >= parts[2].parse().unwrap_or(99)),
+                    "{line}"
+                );
+            }
+        }
+        // no name stands for two functions
+        let index = index();
+        let mut seen: HashSet<&str> = HashSet::new();
+        for func in &index.funcs {
+            let other = index.also.get(func.name).copied().unwrap_or("");
+            for name in names_of(func.name, func.aliases).chain(other.split_whitespace()) {
+                assert!(seen.insert(name), "{name} names two functions");
+                assert_eq!(function(name).map(|x| x.name), Some(func.name), "{name}");
+            }
+        }
+        assert!(seen.len() > 1500, "{} names", seen.len());
+        assert!(function("no_such_function").is_none());
+    }
 }

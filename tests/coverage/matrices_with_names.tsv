@@ -1,0 +1,320 @@
+-e	det([[a, b], [c, d]])	a*d - b*c
+-e	simplify([[a, b], [c, d]]*inv([[a, b], [c, d]]))	[[1, 0], [0, 1]]
+-e	trace([[a, b], [c, d]])	a + d
+-e	transpose([[a, b], [c, d]])	[[a, c], [b, d]]
+-e	expand(det([[a, b], [c, d]] - x*identity(2)) - (x^2 - (a + d)*x + a*d - b*c))	0
+-e	adjugate([[a, b], [c, d]])	[[d, -b], [-c, a]]
+-e	simplify(ctranspose(chol([[2, 1], [1, 3]]))*chol([[2, 1], [1, 3]]) - [[2, 1], [1, 3]])	[[0, 0], [0, 0]]
+-e	simplify(chol([[2, 1], [1, 3]], "lower")*ctranspose(chol([[2, 1], [1, 3]], "lower")) - [[2, 1], [1, 3]])	[[0, 0], [0, 0]]
+-e	ishermitian([[2, 1], [1, 3]])	true
+-e	istriu(chol([[2, 1], [1, 3]]))	true
+-e	istril(chol([[2, 1], [1, 3]], "lower"))	true
+-e	simplify(sum(eig([[2, 1], [1, 3]])) - trace([[2, 1], [1, 3]]))	0
+-e	simplify(prod(eig([[2, 1], [1, 3]])) - det([[2, 1], [1, 3]]))	0
+-e	norm(part(schurdecomposition([[2, 1], [1, 3]]), 1)*part(schurdecomposition([[2, 1], [1, 3]]), 2)*ctranspose(part(schurdecomposition([[2, 1], [1, 3]]), 1)) - [[2, 1], [1, 3]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[2, 1], [1, 3]]), 1)*part(singularvaluedecomposition([[2, 1], [1, 3]]), 2)*ctranspose(part(singularvaluedecomposition([[2, 1], [1, 3]]), 3)) - [[2, 1], [1, 3]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[2, 1], [1, 3]]), 1)*part(hessenbergdecomposition([[2, 1], [1, 3]]), 2)*ctranspose(part(hessenbergdecomposition([[2, 1], [1, 3]]), 1)) - [[2, 1], [1, 3]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[2, 1], [1, 3]]))*orth([[2, 1], [1, 3]]) - identity(2)) < 10^(-25)	true
+-e	abs(N(cond([[2, 1], [1, 3]])) - N(max(svd([[2, 1], [1, 3]]))/min(svd([[2, 1], [1, 3]])))) < 10^(-25)	true
+-e	abs(N(norm([[2, 1], [1, 3]])) - N(max(svd([[2, 1], [1, 3]])))) < 10^(-25)	true
+-e	[[2, 1], [1, 3]]*part(diagonalize([[2, 1], [1, 3]]), 1) == part(diagonalize([[2, 1], [1, 3]]), 1)*part(diagonalize([[2, 1], [1, 3]]), 2)	true
+-e	simplify(ctranspose(chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))*chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]]) - [[4, 1, 2], [1, 3, 0], [2, 0, 5]])	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	simplify(chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]], "lower")*ctranspose(chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]], "lower")) - [[4, 1, 2], [1, 3, 0], [2, 0, 5]])	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	ishermitian([[4, 1, 2], [1, 3, 0], [2, 0, 5]])	true
+-e	istriu(chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))	true
+-e	istril(chol([[4, 1, 2], [1, 3, 0], [2, 0, 5]], "lower"))	true
+-e	simplify(sum(eig([[4, 1, 2], [1, 3, 0], [2, 0, 5]])) - trace([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))	0
+-e	simplify(prod(eig([[4, 1, 2], [1, 3, 0], [2, 0, 5]])) - det([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))	0
+-e	norm(part(schurdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 1)*part(schurdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 2)*ctranspose(part(schurdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 1)) - [[4, 1, 2], [1, 3, 0], [2, 0, 5]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 1)*part(singularvaluedecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 2)*ctranspose(part(singularvaluedecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 3)) - [[4, 1, 2], [1, 3, 0], [2, 0, 5]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 1)*part(hessenbergdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 2)*ctranspose(part(hessenbergdecomposition([[4, 1, 2], [1, 3, 0], [2, 0, 5]]), 1)) - [[4, 1, 2], [1, 3, 0], [2, 0, 5]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))*orth([[4, 1, 2], [1, 3, 0], [2, 0, 5]]) - identity(3)) < 10^(-25)	true
+-e	abs(N(cond([[4, 1, 2], [1, 3, 0], [2, 0, 5]])) - N(max(svd([[4, 1, 2], [1, 3, 0], [2, 0, 5]]))/min(svd([[4, 1, 2], [1, 3, 0], [2, 0, 5]])))) < 10^(-25)	true
+-e	abs(N(norm([[4, 1, 2], [1, 3, 0], [2, 0, 5]])) - N(max(svd([[4, 1, 2], [1, 3, 0], [2, 0, 5]])))) < 10^(-25)	true
+-e	simplify(ctranspose(chol([[1, 1/2], [1/2, 1/3]]))*chol([[1, 1/2], [1/2, 1/3]]) - [[1, 1/2], [1/2, 1/3]])	[[0, 0], [0, 0]]
+-e	simplify(chol([[1, 1/2], [1/2, 1/3]], "lower")*ctranspose(chol([[1, 1/2], [1/2, 1/3]], "lower")) - [[1, 1/2], [1/2, 1/3]])	[[0, 0], [0, 0]]
+-e	ishermitian([[1, 1/2], [1/2, 1/3]])	true
+-e	istriu(chol([[1, 1/2], [1/2, 1/3]]))	true
+-e	istril(chol([[1, 1/2], [1/2, 1/3]], "lower"))	true
+-e	simplify(sum(eig([[1, 1/2], [1/2, 1/3]])) - trace([[1, 1/2], [1/2, 1/3]]))	0
+-e	simplify(prod(eig([[1, 1/2], [1/2, 1/3]])) - det([[1, 1/2], [1/2, 1/3]]))	0
+-e	norm(part(schurdecomposition([[1, 1/2], [1/2, 1/3]]), 1)*part(schurdecomposition([[1, 1/2], [1/2, 1/3]]), 2)*ctranspose(part(schurdecomposition([[1, 1/2], [1/2, 1/3]]), 1)) - [[1, 1/2], [1/2, 1/3]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[1, 1/2], [1/2, 1/3]]), 1)*part(singularvaluedecomposition([[1, 1/2], [1/2, 1/3]]), 2)*ctranspose(part(singularvaluedecomposition([[1, 1/2], [1/2, 1/3]]), 3)) - [[1, 1/2], [1/2, 1/3]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[1, 1/2], [1/2, 1/3]]), 1)*part(hessenbergdecomposition([[1, 1/2], [1/2, 1/3]]), 2)*ctranspose(part(hessenbergdecomposition([[1, 1/2], [1/2, 1/3]]), 1)) - [[1, 1/2], [1/2, 1/3]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[1, 1/2], [1/2, 1/3]]))*orth([[1, 1/2], [1/2, 1/3]]) - identity(2)) < 10^(-25)	true
+-e	abs(N(cond([[1, 1/2], [1/2, 1/3]])) - N(max(svd([[1, 1/2], [1/2, 1/3]]))/min(svd([[1, 1/2], [1/2, 1/3]])))) < 10^(-25)	true
+-e	abs(N(norm([[1, 1/2], [1/2, 1/3]])) - N(max(svd([[1, 1/2], [1/2, 1/3]])))) < 10^(-25)	true
+-e	[[1, 1/2], [1/2, 1/3]]*part(diagonalize([[1, 1/2], [1/2, 1/3]]), 1) == part(diagonalize([[1, 1/2], [1/2, 1/3]]), 1)*part(diagonalize([[1, 1/2], [1/2, 1/3]]), 2)	true
+-e	simplify(ctranspose(chol([[5, -2], [-2, 1]]))*chol([[5, -2], [-2, 1]]) - [[5, -2], [-2, 1]])	[[0, 0], [0, 0]]
+-e	simplify(chol([[5, -2], [-2, 1]], "lower")*ctranspose(chol([[5, -2], [-2, 1]], "lower")) - [[5, -2], [-2, 1]])	[[0, 0], [0, 0]]
+-e	ishermitian([[5, -2], [-2, 1]])	true
+-e	istriu(chol([[5, -2], [-2, 1]]))	true
+-e	istril(chol([[5, -2], [-2, 1]], "lower"))	true
+-e	simplify(sum(eig([[5, -2], [-2, 1]])) - trace([[5, -2], [-2, 1]]))	0
+-e	simplify(prod(eig([[5, -2], [-2, 1]])) - det([[5, -2], [-2, 1]]))	0
+-e	norm(part(schurdecomposition([[5, -2], [-2, 1]]), 1)*part(schurdecomposition([[5, -2], [-2, 1]]), 2)*ctranspose(part(schurdecomposition([[5, -2], [-2, 1]]), 1)) - [[5, -2], [-2, 1]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[5, -2], [-2, 1]]), 1)*part(singularvaluedecomposition([[5, -2], [-2, 1]]), 2)*ctranspose(part(singularvaluedecomposition([[5, -2], [-2, 1]]), 3)) - [[5, -2], [-2, 1]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[5, -2], [-2, 1]]), 1)*part(hessenbergdecomposition([[5, -2], [-2, 1]]), 2)*ctranspose(part(hessenbergdecomposition([[5, -2], [-2, 1]]), 1)) - [[5, -2], [-2, 1]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[5, -2], [-2, 1]]))*orth([[5, -2], [-2, 1]]) - identity(2)) < 10^(-25)	true
+-e	abs(N(cond([[5, -2], [-2, 1]])) - N(max(svd([[5, -2], [-2, 1]]))/min(svd([[5, -2], [-2, 1]])))) < 10^(-25)	true
+-e	abs(N(norm([[5, -2], [-2, 1]])) - N(max(svd([[5, -2], [-2, 1]])))) < 10^(-25)	true
+-e	[[5, -2], [-2, 1]]*part(diagonalize([[5, -2], [-2, 1]]), 1) == part(diagonalize([[5, -2], [-2, 1]]), 1)*part(diagonalize([[5, -2], [-2, 1]]), 2)	true
+-e	simplify(ctranspose(chol([[2, i], [-i, 2]]))*chol([[2, i], [-i, 2]]) - [[2, i], [-i, 2]])	[[0, 0], [0, 0]]
+-e	simplify(chol([[2, i], [-i, 2]], "lower")*ctranspose(chol([[2, i], [-i, 2]], "lower")) - [[2, i], [-i, 2]])	[[0, 0], [0, 0]]
+-e	ishermitian([[2, i], [-i, 2]])	true
+-e	istriu(chol([[2, i], [-i, 2]]))	true
+-e	istril(chol([[2, i], [-i, 2]], "lower"))	true
+-e	simplify(sum(eig([[2, i], [-i, 2]])) - trace([[2, i], [-i, 2]]))	0
+-e	simplify(prod(eig([[2, i], [-i, 2]])) - det([[2, i], [-i, 2]]))	0
+-e	norm(part(schurdecomposition([[2, i], [-i, 2]]), 1)*part(schurdecomposition([[2, i], [-i, 2]]), 2)*ctranspose(part(schurdecomposition([[2, i], [-i, 2]]), 1)) - [[2, i], [-i, 2]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[2, i], [-i, 2]]), 1)*part(singularvaluedecomposition([[2, i], [-i, 2]]), 2)*ctranspose(part(singularvaluedecomposition([[2, i], [-i, 2]]), 3)) - [[2, i], [-i, 2]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[2, i], [-i, 2]]), 1)*part(hessenbergdecomposition([[2, i], [-i, 2]]), 2)*ctranspose(part(hessenbergdecomposition([[2, i], [-i, 2]]), 1)) - [[2, i], [-i, 2]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[2, i], [-i, 2]]))*orth([[2, i], [-i, 2]]) - identity(2)) < 10^(-25)	true
+-e	abs(N(cond([[2, i], [-i, 2]])) - N(max(svd([[2, i], [-i, 2]]))/min(svd([[2, i], [-i, 2]])))) < 10^(-25)	true
+-e	abs(N(norm([[2, i], [-i, 2]])) - N(max(svd([[2, i], [-i, 2]])))) < 10^(-25)	true
+-e	simplify(ctranspose(chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))*chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]]) - [[6, 2, 1], [2, 5, 2], [1, 2, 4]])	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	simplify(chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]], "lower")*ctranspose(chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]], "lower")) - [[6, 2, 1], [2, 5, 2], [1, 2, 4]])	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	ishermitian([[6, 2, 1], [2, 5, 2], [1, 2, 4]])	true
+-e	istriu(chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))	true
+-e	istril(chol([[6, 2, 1], [2, 5, 2], [1, 2, 4]], "lower"))	true
+-e	simplify(sum(eig([[6, 2, 1], [2, 5, 2], [1, 2, 4]])) - trace([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))	0
+-e	simplify(prod(eig([[6, 2, 1], [2, 5, 2], [1, 2, 4]])) - det([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))	0
+-e	norm(part(schurdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 1)*part(schurdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 2)*ctranspose(part(schurdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 1)) - [[6, 2, 1], [2, 5, 2], [1, 2, 4]]) < 10^(-25)	true
+-e	norm(part(singularvaluedecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 1)*part(singularvaluedecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 2)*ctranspose(part(singularvaluedecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 3)) - [[6, 2, 1], [2, 5, 2], [1, 2, 4]]) < 10^(-25)	true
+-e	norm(part(hessenbergdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 1)*part(hessenbergdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 2)*ctranspose(part(hessenbergdecomposition([[6, 2, 1], [2, 5, 2], [1, 2, 4]]), 1)) - [[6, 2, 1], [2, 5, 2], [1, 2, 4]]) < 10^(-25)	true
+-e	norm(ctranspose(orth([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))*orth([[6, 2, 1], [2, 5, 2], [1, 2, 4]]) - identity(3)) < 10^(-25)	true
+-e	abs(N(cond([[6, 2, 1], [2, 5, 2], [1, 2, 4]])) - N(max(svd([[6, 2, 1], [2, 5, 2], [1, 2, 4]]))/min(svd([[6, 2, 1], [2, 5, 2], [1, 2, 4]])))) < 10^(-25)	true
+-e	abs(N(norm([[6, 2, 1], [2, 5, 2], [1, 2, 4]])) - N(max(svd([[6, 2, 1], [2, 5, 2], [1, 2, 4]])))) < 10^(-25)	true
+-e	simplify([[2, 1], [0, 2]]*part(jordandecomposition([[2, 1], [0, 2]]), 1) - part(jordandecomposition([[2, 1], [0, 2]]), 1)*part(jordandecomposition([[2, 1], [0, 2]]), 2))	[[0, 0], [0, 0]]
+-e	istriu(jordan([[2, 1], [0, 2]]))	true
+-e	simplify(trace(jordan([[2, 1], [0, 2]])) - trace([[2, 1], [0, 2]]))	0
+-e	simplify(expm([[2, 1], [0, 2]])*expm(-[[2, 1], [0, 2]]))	[[1, 0], [0, 1]]
+-e	simplify(funm([[2, 1], [0, 2]], @(t) t^2) - [[2, 1], [0, 2]]*[[2, 1], [0, 2]])	[[0, 0], [0, 0]]
+-e	simplify(sqrtm([[2, 1], [0, 2]]*[[2, 1], [0, 2]])^2 - [[2, 1], [0, 2]]*[[2, 1], [0, 2]])	[[0, 0], [0, 0]]
+-e	simplify([[3, 1], [-1, 1]]*part(jordandecomposition([[3, 1], [-1, 1]]), 1) - part(jordandecomposition([[3, 1], [-1, 1]]), 1)*part(jordandecomposition([[3, 1], [-1, 1]]), 2))	[[0, 0], [0, 0]]
+-e	istriu(jordan([[3, 1], [-1, 1]]))	true
+-e	simplify(trace(jordan([[3, 1], [-1, 1]])) - trace([[3, 1], [-1, 1]]))	0
+-e	simplify(expm([[3, 1], [-1, 1]])*expm(-[[3, 1], [-1, 1]]))	[[1, 0], [0, 1]]
+-e	simplify(funm([[3, 1], [-1, 1]], @(t) t^2) - [[3, 1], [-1, 1]]*[[3, 1], [-1, 1]])	[[0, 0], [0, 0]]
+-e	minpoly([[3, 1], [-1, 1]], x) == charpoly([[3, 1], [-1, 1]], x)	true
+-e	simplify([[1, 2], [3, 4]]*part(jordandecomposition([[1, 2], [3, 4]]), 1) - part(jordandecomposition([[1, 2], [3, 4]]), 1)*part(jordandecomposition([[1, 2], [3, 4]]), 2))	[[0, 0], [0, 0]]
+-e	istriu(jordan([[1, 2], [3, 4]]))	true
+-e	simplify(trace(jordan([[1, 2], [3, 4]])) - trace([[1, 2], [3, 4]]))	0
+-e	simplify(expm([[1, 2], [3, 4]])*expm(-[[1, 2], [3, 4]]))	[[1, 0], [0, 1]]
+-e	simplify(funm([[1, 2], [3, 4]], @(t) t^2) - [[1, 2], [3, 4]]*[[1, 2], [3, 4]])	[[0, 0], [0, 0]]
+-e	minpoly([[1, 2], [3, 4]], x) == charpoly([[1, 2], [3, 4]], x)	true
+-e	simplify([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]*part(jordandecomposition([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]), 1) - part(jordandecomposition([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]), 1)*part(jordandecomposition([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]), 2))	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	istriu(jordan([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]))	true
+-e	simplify(trace(jordan([[5, 4, 2], [0, 1, -1], [-1, -1, 3]])) - trace([[5, 4, 2], [0, 1, -1], [-1, -1, 3]]))	0
+-e	simplify(expm([[5, 4, 2], [0, 1, -1], [-1, -1, 3]])*expm(-[[5, 4, 2], [0, 1, -1], [-1, -1, 3]]))	[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+-e	simplify(funm([[5, 4, 2], [0, 1, -1], [-1, -1, 3]], @(t) t^2) - [[5, 4, 2], [0, 1, -1], [-1, -1, 3]]*[[5, 4, 2], [0, 1, -1], [-1, -1, 3]])	[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+-e	minpoly([[5, 4, 2], [0, 1, -1], [-1, -1, 3]], x) == charpoly([[5, 4, 2], [0, 1, -1], [-1, -1, 3]], x)	true
+-e	simplify([[0, 1], [-1, 0]]*part(jordandecomposition([[0, 1], [-1, 0]]), 1) - part(jordandecomposition([[0, 1], [-1, 0]]), 1)*part(jordandecomposition([[0, 1], [-1, 0]]), 2))	[[0, 0], [0, 0]]
+-e	istriu(jordan([[0, 1], [-1, 0]]))	true
+-e	simplify(trace(jordan([[0, 1], [-1, 0]])) - trace([[0, 1], [-1, 0]]))	0
+-e	simplify(expm([[0, 1], [-1, 0]])*expm(-[[0, 1], [-1, 0]]))	[[1, 0], [0, 1]]
+-e	simplify(funm([[0, 1], [-1, 0]], @(t) t^2) - [[0, 1], [-1, 0]]*[[0, 1], [-1, 0]])	[[0, 0], [0, 0]]
+-e	minpoly([[0, 1], [-1, 0]], x) == charpoly([[0, 1], [-1, 0]], x)	true
+-e	hilb(1)*invhilb(1) == identity(1)	true
+-e	det(pascal(1))	1
+-e	issymmetric(pascal(1))	true
+-e	pascal(1, 1)^2 == identity(1)	true
+-e	det(vander([1]))	1
+-e	issymmetric(toeplitz([1]))	true
+-e	issymmetric(hankel([1]))	true
+-e	issymmetric(wilkinson(1))	true
+-e	size(identity(1, 2))	[1, 2]
+-e	trace(identity(1))	1
+-e	size(perms([1]))	[1, 1]
+-e	numel(nchoosek([1, 2], 2))	2
+-e	sum(1:1) == 1*(1 + 1)/2	true
+-e	numel(linspace(0, 1, 2))	2
+-e	linspace(0, 1, 2) == 0:1	true
+-e	logspace(0, 1, 2) == 10 .^ (0:1)	true
+-e	colon(1, 1) == 1:1	true
+-e	numel(0:1/2:1)	3
+-e	sort(roots(poly([1]))) == [1]	true
+-e	hilb(2)*invhilb(2) == identity(2)	true
+-e	det(pascal(2))	1
+-e	issymmetric(pascal(2))	true
+-e	pascal(2, 1)^2 == identity(2)	true
+-e	det(vander([1, 2]))	-1
+-e	issymmetric(toeplitz([1, 2]))	true
+-e	issymmetric(hankel([1, 2]))	true
+-e	issymmetric(wilkinson(2))	true
+-e	size(identity(2, 3))	[2, 3]
+-e	trace(identity(2))	2
+-e	size(perms([1, 2]))	[2, 2]
+-e	numel(nchoosek([1, 2, 3], 2))	6
+-e	sum(1:2) == 2*(2 + 1)/2	true
+-e	numel(linspace(0, 1, 3))	3
+-e	linspace(0, 2, 3) == 0:2	true
+-e	logspace(0, 2, 3) == 10 .^ (0:2)	true
+-e	colon(1, 2) == 1:2	true
+-e	numel(0:1/2:2)	5
+-e	sort(roots(poly([1, 2]))) == [1, 2]	true
+-e	sort(eig(compan(poly([1, 2])))) == [1, 2]	true
+-e	hilb(3)*invhilb(3) == identity(3)	true
+-e	det(pascal(3))	1
+-e	issymmetric(pascal(3))	true
+-e	pascal(3, 1)^2 == identity(3)	true
+-e	det(vander([1, 2, 3]))	-2
+-e	issymmetric(toeplitz([1, 2, 3]))	true
+-e	issymmetric(hankel([1, 2, 3]))	true
+-e	issymmetric(wilkinson(3))	true
+-e	size(identity(3, 4))	[3, 4]
+-e	trace(identity(3))	3
+-e	size(perms([1, 2, 3]))	[6, 3]
+-e	numel(nchoosek([1, 2, 3, 4], 2))	12
+-e	sum(1:3) == 3*(3 + 1)/2	true
+-e	numel(linspace(0, 1, 4))	4
+-e	linspace(0, 3, 4) == 0:3	true
+-e	logspace(0, 3, 4) == 10 .^ (0:3)	true
+-e	colon(1, 3) == 1:3	true
+-e	numel(0:1/2:3)	7
+-e	sort(roots(poly([1, 2, 3]))) == [1, 2, 3]	true
+-e	sort(eig(compan(poly([1, 2, 3])))) == [1, 2, 3]	true
+-e	hilb(4)*invhilb(4) == identity(4)	true
+-e	det(pascal(4))	1
+-e	issymmetric(pascal(4))	true
+-e	pascal(4, 1)^2 == identity(4)	true
+-e	det(vander([1, 2, 3, 4]))	12
+-e	issymmetric(toeplitz([1, 2, 3, 4]))	true
+-e	issymmetric(hankel([1, 2, 3, 4]))	true
+-e	issymmetric(wilkinson(4))	true
+-e	size(identity(4, 5))	[4, 5]
+-e	trace(identity(4))	4
+-e	size(perms([1, 2, 3, 4]))	[24, 4]
+-e	numel(nchoosek([1, 2, 3, 4, 5], 2))	20
+-e	sum(1:4) == 4*(4 + 1)/2	true
+-e	numel(linspace(0, 1, 5))	5
+-e	linspace(0, 4, 5) == 0:4	true
+-e	logspace(0, 4, 5) == 10 .^ (0:4)	true
+-e	colon(1, 4) == 1:4	true
+-e	numel(0:1/2:4)	9
+-e	sort(roots(poly([1, 2, 3, 4]))) == [1, 2, 3, 4]	true
+-e	sort(eig(compan(poly([1, 2, 3, 4])))) == [1, 2, 3, 4]	true
+-e	hilb(5)*invhilb(5) == identity(5)	true
+-e	det(pascal(5))	1
+-e	issymmetric(pascal(5))	true
+-e	pascal(5, 1)^2 == identity(5)	true
+-e	det(vander([1, 2, 3, 4, 5]))	288
+-e	issymmetric(toeplitz([1, 2, 3, 4, 5]))	true
+-e	issymmetric(hankel([1, 2, 3, 4, 5]))	true
+-e	issymmetric(wilkinson(5))	true
+-e	size(identity(5, 6))	[5, 6]
+-e	trace(identity(5))	5
+-e	size(perms([1, 2, 3, 4, 5]))	[120, 5]
+-e	numel(nchoosek([1, 2, 3, 4, 5, 6], 2))	30
+-e	sum(1:5) == 5*(5 + 1)/2	true
+-e	numel(linspace(0, 1, 6))	6
+-e	linspace(0, 5, 6) == 0:5	true
+-e	logspace(0, 5, 6) == 10 .^ (0:5)	true
+-e	colon(1, 5) == 1:5	true
+-e	numel(0:1/2:5)	11
+-e	sort(roots(poly([1, 2, 3, 4, 5]))) == [1, 2, 3, 4, 5]	true
+-e	sort(eig(compan(poly([1, 2, 3, 4, 5])))) == [1, 2, 3, 4, 5]	true
+-e	hilb(6)*invhilb(6) == identity(6)	true
+-e	det(pascal(6))	1
+-e	issymmetric(pascal(6))	true
+-e	pascal(6, 1)^2 == identity(6)	true
+-e	det(vander([1, 2, 3, 4, 5, 6]))	-34560
+-e	issymmetric(toeplitz([1, 2, 3, 4, 5, 6]))	true
+-e	issymmetric(hankel([1, 2, 3, 4, 5, 6]))	true
+-e	issymmetric(wilkinson(6))	true
+-e	size(identity(6, 7))	[6, 7]
+-e	trace(identity(6))	6
+-e	size(perms([1, 2, 3, 4, 5, 6]))	[720, 6]
+-e	numel(nchoosek([1, 2, 3, 4, 5, 6, 7], 2))	42
+-e	sum(1:6) == 6*(6 + 1)/2	true
+-e	numel(linspace(0, 1, 7))	7
+-e	linspace(0, 6, 7) == 0:6	true
+-e	logspace(0, 6, 7) == 10 .^ (0:6)	true
+-e	colon(1, 6) == 1:6	true
+-e	numel(0:1/2:6)	13
+-e	sort(roots(poly([1, 2, 3, 4, 5, 6]))) == [1, 2, 3, 4, 5, 6]	true
+-e	hilb(7)*invhilb(7) == identity(7)	true
+-e	det(pascal(7))	1
+-e	issymmetric(pascal(7))	true
+-e	pascal(7, 1)^2 == identity(7)	true
+-e	det(vander([1, 2, 3, 4, 5, 6, 7]))	-24883200
+-e	issymmetric(toeplitz([1, 2, 3, 4, 5, 6, 7]))	true
+-e	issymmetric(hankel([1, 2, 3, 4, 5, 6, 7]))	true
+-e	issymmetric(wilkinson(7))	true
+-e	size(identity(7, 8))	[7, 8]
+-e	trace(identity(7))	7
+-e	numel(nchoosek([1, 2, 3, 4, 5, 6, 7, 8], 2))	56
+-e	sum(1:7) == 7*(7 + 1)/2	true
+-e	numel(linspace(0, 1, 8))	8
+-e	linspace(0, 7, 8) == 0:7	true
+-e	logspace(0, 7, 8) == 10 .^ (0:7)	true
+-e	colon(1, 7) == 1:7	true
+-e	numel(0:1/2:7)	15
+-e	hilb(8)*invhilb(8) == identity(8)	true
+-e	det(pascal(8))	1
+-e	issymmetric(pascal(8))	true
+-e	pascal(8, 1)^2 == identity(8)	true
+-e	det(vander([1, 2, 3, 4, 5, 6, 7, 8]))	125411328000
+-e	issymmetric(toeplitz([1, 2, 3, 4, 5, 6, 7, 8]))	true
+-e	issymmetric(hankel([1, 2, 3, 4, 5, 6, 7, 8]))	true
+-e	issymmetric(wilkinson(8))	true
+-e	size(identity(8, 9))	[8, 9]
+-e	trace(identity(8))	8
+-e	numel(nchoosek([1, 2, 3, 4, 5, 6, 7, 8, 9], 2))	72
+-e	sum(1:8) == 8*(8 + 1)/2	true
+-e	numel(linspace(0, 1, 9))	9
+-e	linspace(0, 8, 9) == 0:8	true
+-e	logspace(0, 8, 9) == 10 .^ (0:8)	true
+-e	colon(1, 8) == 1:8	true
+-e	numel(0:1/2:8)	17
+-e	sum(magic(3)) == sum(magic(3), 2)	true
+-e	sum(magic(3))	[15, 15, 15]
+-e	trace(magic(3))	15
+-e	trace(fliplr(magic(3)))	15
+-e	sort(flatten(magic(3))) == 1:9	true
+-e	sum(magic(4)) == sum(magic(4), 2)	true
+-e	sum(magic(4))	[34, 34, 34, 34]
+-e	trace(magic(4))	34
+-e	trace(fliplr(magic(4)))	34
+-e	sort(flatten(magic(4))) == 1:16	true
+-e	sum(magic(5)) == sum(magic(5), 2)	true
+-e	sum(magic(5))	[65, 65, 65, 65, 65]
+-e	trace(magic(5))	65
+-e	trace(fliplr(magic(5)))	65
+-e	sort(flatten(magic(5))) == 1:25	true
+-e	sum(magic(6)) == sum(magic(6), 2)	true
+-e	sum(magic(6))	[111, 111, 111, 111, 111, 111]
+-e	trace(magic(6))	111
+-e	trace(fliplr(magic(6)))	111
+-e	sort(flatten(magic(6))) == 1:36	true
+-e	sum(magic(7)) == sum(magic(7), 2)	true
+-e	sum(magic(7))	[175, 175, 175, 175, 175, 175, 175]
+-e	trace(magic(7))	175
+-e	trace(fliplr(magic(7)))	175
+-e	sort(flatten(magic(7))) == 1:49	true
+-e	sum(magic(8)) == sum(magic(8), 2)	true
+-e	sum(magic(8))	[260, 260, 260, 260, 260, 260, 260, 260]
+-e	trace(magic(8))	260
+-e	trace(fliplr(magic(8)))	260
+-e	sort(flatten(magic(8))) == 1:64	true
+-e	sum(magic(9)) == sum(magic(9), 2)	true
+-e	sum(magic(9))	[369, 369, 369, 369, 369, 369, 369, 369, 369]
+-e	trace(magic(9))	369
+-e	trace(fliplr(magic(9)))	369
+-e	sort(flatten(magic(9))) == 1:81	true
+-e	sum(magic(10)) == sum(magic(10), 2)	true
+-e	sum(magic(10))	[505, 505, 505, 505, 505, 505, 505, 505, 505, 505]
+-e	trace(magic(10))	505
+-e	trace(fliplr(magic(10)))	505
+-e	sort(flatten(magic(10))) == 1:100	true
+-e	hadamard(1)*transpose(hadamard(1)) == 1*identity(1)	true
+-e	hadamard(2)*transpose(hadamard(2)) == 2*identity(2)	true
+-e	hadamard(4)*transpose(hadamard(4)) == 4*identity(4)	true
+-e	hadamard(8)*transpose(hadamard(8)) == 8*identity(8)	true
+-e	hadamard(12)*transpose(hadamard(12)) == 12*identity(12)	true
+-e	hadamard(16)*transpose(hadamard(16)) == 16*identity(16)	true
+-e	hadamard(20)*transpose(hadamard(20)) == 20*identity(20)	true
+-e	hadamard(24)*transpose(hadamard(24)) == 24*identity(24)	true
+-e	hadamard(32)*transpose(hadamard(32)) == 32*identity(32)	true
+-e	sum(eig(rosser()))	4040
+-e	det(rosser())	0

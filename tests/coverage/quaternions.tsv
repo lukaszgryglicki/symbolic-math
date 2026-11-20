@@ -1,0 +1,28 @@
+-q	i*j	k
+-q	j*i	-k
+-q	j*k	i
+-q	k*i	j
+-q	i*j*k	-1
+-q	i^2 + j^2 + k^2	-3
+-q	(1 + 2i + 3j + 4k)*(1 - 2i - 3j - 4k)	30
+-q	(1 + 2i + 3j + 4k)^2	-28 + 4i + 6j + 8k
+-q	conj(1 + 2i + 3j + 4k)	1 - 2i - 3j - 4k
+-q	abs(1 + 2i + 3j + 4k)	sqrt(30)|  ~ 5.477225575051661134569697828008
+-q	abs(1 + i + j + k)	2
+-q	inv(1 + i + j + k)	1/4 - i/4 - j/4 - k/4
+-q	(1 + i + j + k)*inv(1 + i + j + k)	1
+-q	(1 + 2i + 3j + 4k)/(1 + i)	3/2 + i/2 - j/2 + 7k/2
+-q	(1 + i)*(1 + j) - (1 + j)*(1 + i)	2k
+-q	re(1 + 2i + 3j + 4k)	1
+-q	exp(pi*i/2)	i
+-q	exp(pi*j/2)	j
+-q	ln(i*j)	pi*k/2
+-q	sqrt(-1 + 0*j)	i
+-q	(i + j)/sqrt(2)*(i + j)/sqrt(2)	-1
+-q	quat(1, 2, 3, 4) + quat(4, 3, 2, 1)	5 + 5i + 5j + 5k
+-q	quat(1, 2, 3, 4)*quat(0, 1, 0, 0)	-2 + i + 4j - 3k
+-q	quat(0, 1, 0, 0)*quat(1, 2, 3, 4)	-2 + i - 4j + 3k
+-q	norm(quat(1, 2, 3, 4))	sqrt(30)|  ~ 5.477225575051661134569697828008
+-q	x*i = j	x = k
+-q	i*x = j	x = -k
+-q	x^2 = -1	x = u, u is any unit pure quaternion|note: a unit pure quaternion is a*i + b*j + c*k with a^2 + b^2 + c^2 = 1; its square is -1

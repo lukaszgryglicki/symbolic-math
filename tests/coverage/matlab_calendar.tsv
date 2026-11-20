@@ -1,0 +1,136 @@
+-e	datenum(2026, 11, 20)	740306
+-e	datenum(2026, 11, 20, 13, 45, 10)	6396248791/8640
+-e	datenum([2026, 11, 20])	740306
+-e	datenum([2026, 11, 20, 12, 0, 0])	1480613/2
+-e	datenum([[2026, 11, 20], [1970, 1, 1], [0, 1, 1]])	[740306, 719529, 1]
+-e	datenum("2026-11-20")	740306
+-e	datenum("2026-11-20 13:45:10")	6396248791/8640
+-e	datenum("2026-11-20T06:00:00")	2961225/4
+-e	datenum("20-Nov-2026")	740306
+-e	datenum("20-nov-2026 12:00")	1480613/2
+-e	datenum("11/20/2026")	740306
+-e	datenum("Nov.20,2026")	740306
+-e	datenum("November 20, 2026")	740306
+-e	datenum("20 November 2026")	740306
+-e	datenum("20261120T180000")	2961227/4
+-e	datenum("20.11.2026", "dd.mm.yyyy")	740306
+-e	datenum("5.2.99", "dd.mm.yy")	730156
+-e	datenum("03:30 PM 11/20/2026", "HH:MM PM mm/dd/yyyy")	35534719/48
+-e	datenum(["2026-11-20", "2000-01-01"])	[740306, 730486]
+-e	datenum(2026, 14, 1)	740379
+-e	datenum(2026, 0, 1)	739983
+-e	datenum(2026, 1, 0)	739982
+-e	datenum(2026, 1, 1, 25, 0, 0)	17759617/24
+-e	datenum(2026, 11, 20.5)	740306.5
+-e	datenum(0, 1, 1)	1
+-e	datenum(-1, 12, 31)	0
+-e	datenum(2460000.5, "juliandate")	738942
+-e	datenum(60000, "modifiedjuliandate")	738942
+-e	datenum(1000000000, "posixtime")	19739783/27
+-e	datenum(45000, "excel")	738960
+-e	datenum(20261120, "yyyymmdd")	740306
+-e	datetime(2000, 1, 1)	730486
+-e	datevec(740306)	[2026, 11, 20, 0, 0, 0]
+-e	datevec(740306.5)	[2026, 11, 20, 12, 0, 0]
+-e	datevec(740306 + 1/3)	[2026, 11, 20, 8, 0, 0]
+-e	datevec("2026-11-20 13:45:10")	[2026, 11, 20, 13, 45, 10]
+-e	datevec("20.11.2026", "dd.mm.yyyy")	[2026, 11, 20, 0, 0, 0]
+-e	datevec([740306, 1])	[[2026, 11, 20, 0, 0, 0], [0, 1, 1, 0, 0, 0]]
+-e	datevec(1/1000)	[-1, 12, 31, 0, 1, 132/5]
+-e	datestr(740306)	"20-Nov-2026"
+-e	datestr(740306.5)	"20-Nov-2026 12:00:00"
+-e	datestr(740306.5, 31)	"2026-11-20 12:00:00"
+-e	datestr(740306.5, "yyyy-mm-dd HH:MM:SS")	"2026-11-20 12:00:00"
+-e	datestr(740306.573, "dddd, dd mmmm yyyy, HH:MM:SS.FFF")	"Friday, 20 November 2026, 13:45:07.200"
+-e	datestr(740306.573, "HH:MM PM")	" 1:45 PM"
+-e	datestr(740306.073, 14)	" 1:45:07 AM"
+-e	datestr(740306, "QQ-yyyy, ddd d, mmm m, yy")	"Q4-2026, Fri F, Nov N, 26"
+-e	datestr([2026, 11, 20])	"20-Nov-2026"
+-e	datestr([2026, 11, 20, 13, 45, 10])	"20-Nov-2026 13:45:10"
+-e	datestr("2026-11-20", 1)	"20-Nov-2026"
+-e	datestr([740306, 740307], 29)	["2026-11-20", "2026-11-21"]
+-e	datestr(datenum(2026, 11, 20) + (0:2), 8)	["Fri", "Sat", "Sun"]
+-e	datestr(1)	"01-Jan-0000"
+-e	datestr(730486, 30)	"20000101T000000"
+-e	weekday(740306)	6
+-e	weekday("2026-11-20")	6
+-e	weekday([2026, 11, 20])	6
+-e	weekday(740306, "long")	"Friday"
+-e	weekday(740306, "short")	"Fri"
+-e	weekday(datenum(2026, 11, 15) + (0:6))	[1, 2, 3, 4, 5, 6, 7]
+-e	weekday(719529)	5
+-e	eomday(2024, 2)	29
+-e	eomday(2026, 2)	28
+-e	eomday(1900, 2)	28
+-e	eomday(2000, 2)	29
+-e	eomday(2026, 1:12)	[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+-e	eomday([2023, 2024], [2, 2])	[28, 29]
+-e	calendar(2026, 11)	[[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14], [15, 16, 17, 18, 19, 20, 21], [22, 23, 24, 25, 26, 27, 28], [29, 30, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(2024, 2)	[[0, 0, 0, 0, 1, 2, 3], [4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17], [18, 19, 20, 21, 22, 23, 24], [25, 26, 27, 28, 29, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar("2026-02-01")	[[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14], [15, 16, 17, 18, 19, 20, 21], [22, 23, 24, 25, 26, 27, 28], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	calendar(740306)	[[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14], [15, 16, 17, 18, 19, 20, 21], [22, 23, 24, 25, 26, 27, 28], [29, 30, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+-e	addtodate(740306, 1, "month")	740336
+-e	addtodate(datenum(2024, 1, 31), 1, "month")	739311
+-e	addtodate(datenum(2024, 2, 29), 1, "year")	739676
+-e	addtodate(datenum(2024, 2, 29), 4, "year")	740772
+-e	addtodate(740306, -11, "month")	739971
+-e	addtodate(740306, 36, "hour")	1480615/2
+-e	addtodate(740306, 90, "minute")	11844897/16
+-e	addtodate(740306, 1, "second")	63962438401/86400
+-e	addtodate(740306, 500, "millisecond")	127924876801/172800
+-e	addtodate(740306, 7, "day")	740313
+-e	datestr(addtodate(datenum("2026-01-31"), 1, "month"))	"28-Feb-2026"
+-e	etime([2026, 11, 20, 13, 0, 0], [2026, 11, 20, 12, 0, 0])	3600
+-e	etime([2027, 1, 1, 0, 0, 0], [2026, 1, 1, 0, 0, 0])	31536000
+-e	etime([2026, 3, 1, 0, 0, 1/2], [2026, 2, 28, 23, 59, 59])	3/2
+-e	juliandate(740306)	4922729/2
+-e	juliandate([2000, 1, 1, 12, 0, 0])	2451545
+-e	juliandate("2026-11-20")	4922729/2
+-e	mjuliandate(740306)	61364
+-e	mjuliandate("1858-11-17")	0
+-e	posixtime(740306)	1795132800
+-e	posixtime("1970-01-01")	0
+-e	posixtime("2001-09-09 01:46:40")	1000000000
+-e	dayofyear(740306)	324
+-e	dayofyear("2024-12-31")	366
+-e	dayofyear("2026-01-01")	1
+-e	isweekend(740306)	false
+-e	isweekend("2026-11-21")	true
+-e	isweekend(datenum(2026, 11, 16) + (0:6))	[false, false, false, false, false, true, true]
+-e	leapyear(2024)	true
+-e	leapyear([1900, 2000, 2023, 2024])	[false, true, false, true]
+-e	yeardays(2024)	366
+-e	yeardays(2026)	365
+-e	now() > datenum(2026, 1, 1)	true
+-e	length(clock())	6
+-e	first(clock()) >= 2026	true
+-e	strlength(date())	11
+-e	datenum(date()) == floor(now())	true
+-e	cputime() >= 0	true
+-e	datestr(datenum("2026-11-20 13:45:10") + 1/2)	"21-Nov-2026 01:45:10"
+-e	datevec(datenum(2026, 11, 20, 13, 45, 10))	[2026, 11, 20, 13, 45, 10]
+-e	datenum(datevec(740306.123))	740306.123
+-e	datenum(datestr(740306.5)) - 740306	0.5
+-e	weekday(datenum(2000, 1, 1))	7
+-e	datestr(datenum(1, 1, 1))	"01-Jan-0001"
+-e	datestr(0)	"31-Dec--001"
+-e	datestr(-1)	"30-Dec--001"
+-e	datenum(2026, 11)	error: datenum(year, month, day) needs the day, datenum(date, form) the form in quotes
+-e	datenum("yesterday")	error: datenum: "yesterday" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datenum("20.11.2026", "dd.mm.yyyy")
+-e	datenum("2026-13-01")	error: datenum: "2026-13-01" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datenum("20.11.2026", "dd.mm.yyyy")
+-e	datenum("2026-02-29")	error: datenum: "2026-02-29" is no date as "2026-11-20", "2026-11-20 13:45:10", "20-Nov-2026" or "11/20/2026"; another form is given as in datenum("20.11.2026", "dd.mm.yyyy")
+-e	datenum(2026.5, 1, 1)	error: datenum needs a whole year, 4053/2 is none
+-e	datenum(x, 1, 1)	error: datenum needs real numbers, x is none
+-e	datestr(740306, 32)	error: the number of a form of dates must be a whole number from 0 to 31, not 32
+-e	datestr(740306, x)	error: the number of a form of dates must be a whole number from 0 to 31, not x
+-e	datestr(i)	error: datestr needs real numbers, i is none
+-e	weekday(740306, "name")	error: weekday(date, "long" | "short")
+-e	eomday(2026, 13)	error: the month must be a whole number from 1 to 12, not 13
+-e	eomday(2026)	error: eomday takes 2 argument(s), 1 given
+-e	calendar(2026, 0)	error: the month must be a whole number from 1 to 12, not 0
+-e	addtodate(740306, 1, "week")	error: addtodate(date, number, part): the part is "year", "month", "day", "hour", "minute", "second" or "millisecond"
+-e	addtodate(740306, 1/2, "month")	error: addtodate needs a whole number of years or months, 1/2 is none
+-e	etime([2026, 11, 20], 5)	63962006400
+-e	datevec(10^30)	error: datevec: the calendar does not reach that far
+-e	datenum(10^12, 1, 1)	error: datenum: the calendar does not reach that far
+-e	datenum(5, "weeks")	error: datenum(number, kind): the kind is "juliandate", "modifiedjuliandate", "posixtime", "excel", "yyyymmdd" or "datenum"

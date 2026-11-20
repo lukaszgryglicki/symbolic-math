@@ -607,7 +607,13 @@ pub fn lambert_w(k: i64, z: &Complex) -> Option<Complex> {
         let e = Float::with_val(prec, 1).exp();
         let near = Complex::with_val(prec, &zz * &e) + 1u32;
         let near_branch_point = Float::with_val(prec, near.abs_ref()) < 0.3;
-        if near_branch_point
+        // (left of the branch point on the real axis the value is not real: the start must
+        // leave the axis, which the steps from a real start never do)
+        let left_of_it = k == 0
+            && z.imag().is_zero()
+            && near.real().is_sign_negative()
+            && Float::with_val(prec, zz.abs_ref()) < 1.5;
+        if (near_branch_point || left_of_it)
             && (k == 0
                 || (k == -1 && !z.imag().is_sign_positive())
                 || (k == 1 && z.imag().is_sign_negative()))
@@ -674,4 +680,26 @@ pub fn lambert_w(k: i64, z: &Complex) -> Option<Complex> {
         }
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn lambert_w_left_of_its_branch_point() {
+        // w*e^w = z on the principal branch, also where w is not real although z is
+        let check = |z: f64, re: f64, im: f64| {
+            let w = lambert_w(0, &Complex::with_val(128, (z, 0))).expect("a value");
+            assert!((w.real().to_f64() - re).abs() < 1e-12, "W({z}) = {w}");
+            assert!((w.imag().to_f64() - im).abs() < 1e-12, "W({z}) = {w}");
+            let back = Complex::with_val(128, &w * w.clone().exp());
+            assert!((back.real().to_f64() - z).abs() < 1e-25 && back.imag().to_f64().abs() < 1e-25);
+        };
+        check(-1.0, -0.318_131_505_204_764_1, 1.337_235_701_430_689_4);
+        check(-0.4, -0.944_089_738_264_935_7, 0.407_267_964_032_857_7);
+        check(-100.0, 3.205_380_786_307_449_4, 2.482_590_531_815_924);
+        check(-0.2, -0.259_171_101_819_073_7, 0.0);
+        check(2.0, 0.852_605_502_013_725_5, 0.0);
+    }
 }

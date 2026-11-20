@@ -1,0 +1,700 @@
+-e	farey(10^20)	farey(100000000000000000000)
+-e	farey(10^(-20))	farey(1/100000000000000000000)
+-e	farey(x)	farey(x)
+-e	farey([])	[]
+-e	farey([1, 2])	[[0, 1], [0, 1/2, 1]]
+-e	farey("text")	farey("text")
+-e	farey(true)	farey(true)
+-e	farey(-7/3)	farey(-7/3)
+-e	farey(0.5)	farey(0.5)
+-e	partitionsq(0)	1
+-e	partitionsq(1)	1
+-e	partitionsq(-1)	partitionsq(-1)
+-e	partitionsq(1/2)	partitionsq(1/2)
+-e	partitionsq(2)	1
+-e	partitionsq(i)	partitionsq(i)
+-e	partitionsq(inf)	partitionsq(inf)
+-e	partitionsq(-inf)	partitionsq(-inf)
+-e	partitionsq(undefined)	undefined
+-e	partitionsq(10^20)	partitionsq(100000000000000000000)
+-e	partitionsq(10^(-20))	partitionsq(1/100000000000000000000)
+-e	partitionsq(x)	partitionsq(x)
+-e	partitionsq([])	[]
+-e	partitionsq([1, 2])	[1, 1]
+-e	partitionsq("text")	partitionsq("text")
+-e	partitionsq(true)	partitionsq(true)
+-e	partitionsq(-7/3)	partitionsq(-7/3)
+-e	partitionsq(0.5)	partitionsq(0.5)
+-e	superfactorial(0)	1
+-e	superfactorial(1)	1
+-e	superfactorial(-1)	superfactorial(-1)
+-e	superfactorial(1/2)	superfactorial(1/2)
+-e	superfactorial(2)	2
+-e	superfactorial(i)	superfactorial(i)
+-e	superfactorial(inf)	superfactorial(inf)
+-e	superfactorial(-inf)	superfactorial(-inf)
+-e	superfactorial(undefined)	undefined
+-e	superfactorial(10^20)	superfactorial(100000000000000000000)
+-e	superfactorial(10^(-20))	superfactorial(1/100000000000000000000)
+-e	superfactorial(x)	superfactorial(x)
+-e	superfactorial([])	[]
+-e	superfactorial([1, 2])	[1, 2]
+-e	superfactorial("text")	superfactorial("text")
+-e	superfactorial(true)	superfactorial(true)
+-e	superfactorial(-7/3)	superfactorial(-7/3)
+-e	superfactorial(0.5)	superfactorial(0.5)
+-e	hyperfactorial(0)	1
+-e	hyperfactorial(1)	1
+-e	hyperfactorial(-1)	hyperfactorial(-1)
+-e	hyperfactorial(1/2)	hyperfactorial(1/2)
+-e	hyperfactorial(2)	4
+-e	hyperfactorial(i)	hyperfactorial(i)
+-e	hyperfactorial(inf)	hyperfactorial(inf)
+-e	hyperfactorial(-inf)	hyperfactorial(-inf)
+-e	hyperfactorial(undefined)	undefined
+-e	hyperfactorial(10^20)	hyperfactorial(100000000000000000000)
+-e	hyperfactorial(10^(-20))	hyperfactorial(1/100000000000000000000)
+-e	hyperfactorial(x)	hyperfactorial(x)
+-e	hyperfactorial([])	[]
+-e	hyperfactorial([1, 2])	[1, 4]
+-e	hyperfactorial("text")	hyperfactorial("text")
+-e	hyperfactorial(true)	hyperfactorial(true)
+-e	hyperfactorial(-7/3)	hyperfactorial(-7/3)
+-e	hyperfactorial(0.5)	hyperfactorial(0.5)
+-e	pell(0)	undefined
+-e	pell(1)	undefined
+-e	pell(-1)	undefined
+-e	pell(1/2)	pell(1/2)
+-e	pell(2)	[3, 2]
+-e	pell(i)	pell(i)
+-e	pell(inf)	pell(inf)
+-e	pell(-inf)	pell(-inf)
+-e	pell(undefined)	undefined
+-e	pell(10^20)	undefined
+-e	pell(10^(-20))	pell(1/100000000000000000000)
+-e	pell(x)	pell(x)
+-e	pell([])	[]
+-e	pell([1, 2])	[undefined, [3, 2]]
+-e	pell("text")	pell("text")
+-e	pell(true)	pell(true)
+-e	pell(-7/3)	pell(-7/3)
+-e	pell(0.5)	pell(0.5)
+-e	egyptian(0)	[]
+-e	egyptian(1)	[1]
+-e	egyptian(-1)	egyptian(-1)
+-e	egyptian(1/2)	[1/2]
+-e	egyptian(2)	[2]
+-e	egyptian(i)	egyptian(i)
+-e	egyptian(inf)	egyptian(inf)
+-e	egyptian(-inf)	egyptian(-inf)
+-e	egyptian(undefined)	undefined
+-e	egyptian(10^20)	[100000000000000000000]
+-e	egyptian(10^(-20))	[1/100000000000000000000]
+-e	egyptian(x)	egyptian(x)
+-e	egyptian([])	[]
+-e	egyptian([1, 2])	[[1], [2]]
+-e	egyptian("text")	egyptian("text")
+-e	egyptian(true)	egyptian(true)
+-e	egyptian(-7/3)	egyptian(-7/3)
+-e	egyptian(0.5)	[0.5]
+-e	primitiveroots(0)	primitiveroots(0)
+-e	primitiveroots(1)	[0]
+-e	primitiveroots(-1)	[0]
+-e	primitiveroots(1/2)	primitiveroots(1/2)
+-e	primitiveroots(2)	[1]
+-e	primitiveroots(i)	primitiveroots(i)
+-e	primitiveroots(inf)	primitiveroots(inf)
+-e	primitiveroots(-inf)	primitiveroots(-inf)
+-e	primitiveroots(undefined)	undefined
+-e	primitiveroots(10^20)	[]
+-e	primitiveroots(10^(-20))	primitiveroots(1/100000000000000000000)
+-e	primitiveroots(x)	primitiveroots(x)
+-e	primitiveroots([])	[]
+-e	primitiveroots([1, 2])	[[0], [1]]
+-e	primitiveroots("text")	primitiveroots("text")
+-e	primitiveroots(true)	primitiveroots(true)
+-e	primitiveroots(-7/3)	primitiveroots(-7/3)
+-e	primitiveroots(0.5)	primitiveroots(0.5)
+-e	nextprime(0)	2
+-e	nextprime(1)	2
+-e	nextprime(-1)	2
+-e	nextprime(1/2)	2
+-e	nextprime(2)	3
+-e	nextprime(i)	nextprime(i)
+-e	nextprime(inf)	nextprime(inf)
+-e	nextprime(-inf)	nextprime(-inf)
+-e	nextprime(undefined)	undefined
+-e	nextprime(10^20)	100000000000000000039
+-e	nextprime(10^(-20))	2
+-e	nextprime(x)	nextprime(x)
+-e	nextprime([])	[]
+-e	nextprime([1, 2])	[2, 3]
+-e	nextprime("text")	nextprime("text")
+-e	nextprime(true)	nextprime(true)
+-e	nextprime(-7/3)	2
+-e	nextprime(0.5)	2
+-e	prevprime(0)	undefined
+-e	prevprime(1)	undefined
+-e	prevprime(-1)	undefined
+-e	prevprime(1/2)	undefined
+-e	prevprime(2)	undefined
+-e	prevprime(i)	prevprime(i)
+-e	prevprime(inf)	prevprime(inf)
+-e	prevprime(-inf)	prevprime(-inf)
+-e	prevprime(undefined)	undefined
+-e	prevprime(10^20)	99999999999999999989
+-e	prevprime(10^(-20))	undefined
+-e	prevprime(x)	prevprime(x)
+-e	prevprime([])	[]
+-e	prevprime([1, 2])	[undefined, undefined]
+-e	prevprime("text")	prevprime("text")
+-e	prevprime(true)	prevprime(true)
+-e	prevprime(-7/3)	undefined
+-e	prevprime(0.5)	undefined
+-e	prime(0)	prime(0)
+-e	prime(1)	2
+-e	prime(-1)	prime(-1)
+-e	prime(1/2)	prime(1/2)
+-e	prime(2)	3
+-e	prime(i)	prime(i)
+-e	prime(inf)	prime(inf)
+-e	prime(-inf)	prime(-inf)
+-e	prime(undefined)	undefined
+-e	prime(10^20)	prime(100000000000000000000)
+-e	prime(10^(-20))	prime(1/100000000000000000000)
+-e	prime(x)	prime(x)
+-e	prime([])	[]
+-e	prime([1, 2])	[2, 3]
+-e	prime("text")	prime("text")
+-e	prime(true)	prime(true)
+-e	prime(-7/3)	prime(-7/3)
+-e	prime(0.5)	prime(0.5)
+-e	primepi(0)	0
+-e	primepi(1)	0
+-e	primepi(-1)	0
+-e	primepi(1/2)	0
+-e	primepi(2)	1
+-e	primepi(i)	primepi(i)
+-e	primepi(inf)	primepi(inf)
+-e	primepi(-inf)	primepi(-inf)
+-e	primepi(undefined)	undefined
+-e	primepi(10^20)	primepi(100000000000000000000)
+-e	primepi(10^(-20))	0
+-e	primepi(x)	primepi(x)
+-e	primepi([])	[]
+-e	primepi([1, 2])	[0, 1]
+-e	primepi("text")	primepi("text")
+-e	primepi(true)	primepi(true)
+-e	primepi(-7/3)	0
+-e	primepi(0.5)	0
+-e	divisors(0)	divisors(0)
+-e	divisors(1)	[1]
+-e	divisors(-1)	[1]
+-e	divisors(1/2)	divisors(1/2)
+-e	divisors(2)	[1, 2]
+-e	divisors(i)	divisors(i)
+-e	divisors(inf)	divisors(inf)
+-e	divisors(-inf)	divisors(-inf)
+-e	divisors(undefined)	undefined
+-e	divisors(10^20)	[1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256, 320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600, 2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250, 6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384, 20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960, 50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000, 102400, 125000, 128000, 131072, 156250, 160000, 163840, 200000, 204800, 250000, 256000, 262144, 312500, 320000, 327680, 390625, 400000, 409600, 500000, 512000, 524288, 625000, 640000, 655360, 781250, 800000, 819200, 1000000, 1024000, 1048576, 1250000, 1280000, 1310720, 1562500, 1600000, 1638400, 1953125, 2000000, 2048000, 2500000, 2560000, 2621440, 3125000, 3200000, 3276800, 3906250, 4000000, 4096000, 5000000, 5120000, 5242880, 6250000, 6400000, 6553600, 7812500, 8000000, 8192000, 9765625, 10000000, 10240000, 12500000, 12800000, 13107200, 15625000, 16000000, 16384000, 19531250, 20000000, 20480000, 25000000, 25600000, 26214400, 31250000, 32000000, 32768000, 39062500, 40000000, 40960000, 48828125, 50000000, 51200000, 62500000, 64000000, 65536000, 78125000, 80000000, 81920000, 97656250, 100000000, 102400000, 125000000, 128000000, 131072000, 156250000, 160000000, 163840000, 195312500, 200000000, 204800000, 244140625, 250000000, 256000000, 312500000, 320000000, 327680000, 390625000, 400000000, 409600000, 488281250, 500000000, 512000000, 625000000, 640000000, 655360000, 781250000, 800000000, 819200000, 976562500, 1000000000, 1024000000, 1220703125, 1250000000, 1280000000, 1562500000, 1600000000, 1638400000, 1953125000, 2000000000, 2048000000, 2441406250, 2500000000, 2560000000, 3125000000, 3200000000, 3276800000, 3906250000, 4000000000, 4096000000, 4882812500, 5000000000, 5120000000, 6103515625, 6250000000, 6400000000, 7812500000, 8000000000, 8192000000, 9765625000, 10000000000, 10240000000, 12207031250, 12500000000, 12800000000, 15625000000, 16000000000, 16384000000, 19531250000, 20000000000, 20480000000, 24414062500, 25000000000, 25600000000, 30517578125, 31250000000, 32000000000, 39062500000, 40000000000, 40960000000, 48828125000, 50000000000, 51200000000, 61035156250, 62500000000, 64000000000, 78125000000, 80000000000, 81920000000, 97656250000, 100000000000, 102400000000, 122070312500, 125000000000, 128000000000, 152587890625, 156250000000, 160000000000, 195312500000, 200000000000, 204800000000, 244140625000, 250000000000, 256000000000, 305175781250, 312500000000, 320000000000, 390625000000, 400000000000, 409600000000, 488281250000, 500000000000, 512000000000, 610351562500, 625000000000, 640000000000, 762939453125, 781250000000, 800000000000, 976562500000, 1000000000000, 1024000000000, 1220703125000, 1250000000000, 1280000000000, 1525878906250, 1562500000000, 1600000000000, 1953125000000, 2000000000000, 2048000000000, 2441406250000, 2500000000000, 2560000000000, 3051757812500, 3125000000000, 3200000000000, 3814697265625, 3906250000000, 4000000000000, 4882812500000, 5000000000000, 5120000000000, 6103515625000, 6250000000000, 6400000000000, 7629394531250, 7812500000000, 8000000000000, 9765625000000, 10000000000000, 10240000000000, 12207031250000, 12500000000000, 12800000000000, 15258789062500, 15625000000000, 16000000000000, 19073486328125, 19531250000000, 20000000000000, 24414062500000, 25000000000000, 25600000000000, 30517578125000, 31250000000000, 32000000000000, 38146972656250, 39062500000000, 40000000000000, 48828125000000, 50000000000000, 51200000000000, 61035156250000, 62500000000000, 64000000000000, 76293945312500, 78125000000000, 80000000000000, 95367431640625, 97656250000000, 100000000000000, 122070312500000, 125000000000000, 128000000000000, 152587890625000, 156250000000000, 160000000000000, 190734863281250, 195312500000000, 200000000000000, 244140625000000, 250000000000000, 256000000000000, 305175781250000, 312500000000000, 320000000000000, 381469726562500, 390625000000000, 400000000000000, 488281250000000, 500000000000000, 610351562500000, 625000000000000, 640000000000000, 762939453125000, 781250000000000, 800000000000000, 976562500000000, 1000000000000000, 1220703125000000, 1250000000000000, 1280000000000000, 1525878906250000, 1562500000000000, 1600000000000000, 1953125000000000, 2000000000000000, 2441406250000000, 2500000000000000, 3051757812500000, 3125000000000000, 3200000000000000, 3906250000000000, 4000000000000000, 4882812500000000, 5000000000000000, 6103515625000000, 6250000000000000, 6400000000000000, 7812500000000000, 8000000000000000, 9765625000000000, 10000000000000000, 12207031250000000, 12500000000000000, 15625000000000000, 16000000000000000, 19531250000000000, 20000000000000000, 24414062500000000, 25000000000000000, 31250000000000000, 32000000000000000, 39062500000000000, 40000000000000000, 48828125000000000, 50000000000000000, 62500000000000000, 78125000000000000, 80000000000000000, 97656250000000000, 100000000000000000, 125000000000000000, 156250000000000000, 160000000000000000, 195312500000000000, 200000000000000000, 250000000000000000, 312500000000000000, 390625000000000000, 400000000000000000, 500000000000000000, 625000000000000000, 781250000000000000, 800000000000000000, 1000000000000000000, 1250000000000000000, 1562500000000000000, 2000000000000000000, 2500000000000000000, 3125000000000000000, 4000000000000000000, 5000000000000000000, 6250000000000000000, 10000000000000000000, 12500000000000000000, 20000000000000000000, 25000000000000000000, 50000000000000000000, 100000000000000000000]
+-e	divisors(10^(-20))	divisors(1/100000000000000000000)
+-e	divisors(x)	divisors(x)
+-e	divisors([])	[]
+-e	divisors([1, 2])	[[1], [1, 2]]
+-e	divisors("text")	divisors("text")
+-e	divisors(true)	divisors(true)
+-e	divisors(-7/3)	divisors(-7/3)
+-e	divisors(0.5)	divisors(0.5)
+-e	totient(0)	0
+-e	totient(1)	1
+-e	totient(-1)	1
+-e	totient(1/2)	totient(1/2)
+-e	totient(2)	1
+-e	totient(i)	totient(i)
+-e	totient(inf)	totient(inf)
+-e	totient(-inf)	totient(-inf)
+-e	totient(undefined)	undefined
+-e	totient(10^20)	40000000000000000000
+-e	totient(10^(-20))	totient(1/100000000000000000000)
+-e	totient(x)	totient(x)
+-e	totient([])	[]
+-e	totient([1, 2])	[1, 1]
+-e	totient("text")	totient("text")
+-e	totient(true)	totient(true)
+-e	totient(-7/3)	totient(-7/3)
+-e	totient(0.5)	totient(0.5)
+-e	sigma(0)	sigma(0)
+-e	sigma(1)	1
+-e	sigma(-1)	1
+-e	sigma(1/2)	sigma(1/2)
+-e	sigma(2)	3
+-e	sigma(i)	sigma(i)
+-e	sigma(inf)	sigma(inf)
+-e	sigma(-inf)	sigma(-inf)
+-e	sigma(undefined)	undefined
+-e	sigma(10^20)	249999880790709924931
+-e	sigma(10^(-20))	sigma(1/100000000000000000000)
+-e	sigma(x)	sigma(x)
+-e	sigma([])	[]
+-e	sigma([1, 2])	[1, 3]
+-e	sigma("text")	sigma("text")
+-e	sigma(true)	sigma(true)
+-e	sigma(-7/3)	sigma(-7/3)
+-e	sigma(0.5)	sigma(0.5)
+-e	mobius(0)	0
+-e	mobius(1)	1
+-e	mobius(-1)	1
+-e	mobius(1/2)	mobius(1/2)
+-e	mobius(2)	-1
+-e	mobius(i)	mobius(i)
+-e	mobius(inf)	mobius(inf)
+-e	mobius(-inf)	mobius(-inf)
+-e	mobius(undefined)	undefined
+-e	mobius(10^20)	0
+-e	mobius(10^(-20))	mobius(1/100000000000000000000)
+-e	mobius(x)	mobius(x)
+-e	mobius([])	[]
+-e	mobius([1, 2])	[1, -1]
+-e	mobius("text")	mobius("text")
+-e	mobius(true)	mobius(true)
+-e	mobius(-7/3)	mobius(-7/3)
+-e	mobius(0.5)	mobius(0.5)
+-e	fibonacci(0)	0
+-e	fibonacci(1)	1
+-e	fibonacci(-1)	1
+-e	fibonacci(1/2)	fibonacci(1/2)
+-e	fibonacci(2)	1
+-e	fibonacci(i)	fibonacci(i)
+-e	fibonacci(inf)	fibonacci(inf)
+-e	fibonacci(-inf)	fibonacci(-inf)
+-e	fibonacci(undefined)	undefined
+-e	fibonacci(10^20)	fibonacci(100000000000000000000)
+-e	fibonacci(10^(-20))	fibonacci(1/100000000000000000000)
+-e	fibonacci(x)	fibonacci(x)
+-e	fibonacci([])	[]
+-e	fibonacci([1, 2])	[1, 1]
+-e	fibonacci("text")	fibonacci("text")
+-e	fibonacci(true)	fibonacci(true)
+-e	fibonacci(-7/3)	fibonacci(-7/3)
+-e	fibonacci(0.5)	fibonacci(0.5)
+-e	lucas(0)	2
+-e	lucas(1)	1
+-e	lucas(-1)	-1
+-e	lucas(1/2)	lucas(1/2)
+-e	lucas(2)	3
+-e	lucas(i)	lucas(i)
+-e	lucas(inf)	lucas(inf)
+-e	lucas(-inf)	lucas(-inf)
+-e	lucas(undefined)	undefined
+-e	lucas(10^20)	lucas(100000000000000000000)
+-e	lucas(10^(-20))	lucas(1/100000000000000000000)
+-e	lucas(x)	lucas(x)
+-e	lucas([])	[]
+-e	lucas([1, 2])	[1, 3]
+-e	lucas("text")	lucas("text")
+-e	lucas(true)	lucas(true)
+-e	lucas(-7/3)	lucas(-7/3)
+-e	lucas(0.5)	lucas(0.5)
+-e	bernoulli(0)	1
+-e	bernoulli(1)	-1/2
+-e	bernoulli(-1)	bernoulli(-1)
+-e	bernoulli(1/2)	bernoulli(1/2)
+-e	bernoulli(2)	1/6
+-e	bernoulli(i)	bernoulli(i)
+-e	bernoulli(inf)	bernoulli(inf)
+-e	bernoulli(-inf)	bernoulli(-inf)
+-e	bernoulli(undefined)	undefined
+-e	bernoulli(10^20)	bernoulli(100000000000000000000)
+-e	bernoulli(10^(-20))	bernoulli(1/100000000000000000000)
+-e	bernoulli(x)	bernoulli(x)
+-e	bernoulli([])	[]
+-e	bernoulli([1, 2])	[-1/2, 1/6]
+-e	bernoulli("text")	bernoulli("text")
+-e	bernoulli(true)	bernoulli(true)
+-e	bernoulli(-7/3)	bernoulli(-7/3)
+-e	bernoulli(0.5)	bernoulli(0.5)
+-e	eulernumber(0)	1
+-e	eulernumber(1)	0
+-e	eulernumber(-1)	eulernumber(-1)
+-e	eulernumber(1/2)	eulernumber(1/2)
+-e	eulernumber(2)	-1
+-e	eulernumber(i)	eulernumber(i)
+-e	eulernumber(inf)	eulernumber(inf)
+-e	eulernumber(-inf)	eulernumber(-inf)
+-e	eulernumber(undefined)	undefined
+-e	eulernumber(10^20)	eulernumber(100000000000000000000)
+-e	eulernumber(10^(-20))	eulernumber(1/100000000000000000000)
+-e	eulernumber(x)	eulernumber(x)
+-e	eulernumber([])	[]
+-e	eulernumber([1, 2])	[0, -1]
+-e	eulernumber("text")	eulernumber("text")
+-e	eulernumber(true)	eulernumber(true)
+-e	eulernumber(-7/3)	eulernumber(-7/3)
+-e	eulernumber(0.5)	eulernumber(0.5)
+-e	catalannumber(0)	1
+-e	catalannumber(1)	1
+-e	catalannumber(-1)	catalannumber(-1)
+-e	catalannumber(1/2)	catalannumber(1/2)
+-e	catalannumber(2)	2
+-e	catalannumber(i)	catalannumber(i)
+-e	catalannumber(inf)	catalannumber(inf)
+-e	catalannumber(-inf)	catalannumber(-inf)
+-e	catalannumber(undefined)	undefined
+-e	catalannumber(10^20)	catalannumber(100000000000000000000)
+-e	catalannumber(10^(-20))	catalannumber(1/100000000000000000000)
+-e	catalannumber(x)	catalannumber(x)
+-e	catalannumber([])	[]
+-e	catalannumber([1, 2])	[1, 2]
+-e	catalannumber("text")	catalannumber("text")
+-e	catalannumber(true)	catalannumber(true)
+-e	catalannumber(-7/3)	catalannumber(-7/3)
+-e	catalannumber(0.5)	catalannumber(0.5)
+-e	isqrt(0)	0
+-e	isqrt(1)	1
+-e	isqrt(-1)	isqrt(-1)
+-e	isqrt(1/2)	0
+-e	isqrt(2)	1
+-e	isqrt(i)	isqrt(i)
+-e	isqrt(inf)	isqrt(inf)
+-e	isqrt(-inf)	isqrt(-inf)
+-e	isqrt(undefined)	undefined
+-e	isqrt(10^20)	10000000000
+-e	isqrt(10^(-20))	0
+-e	isqrt(x)	isqrt(x)
+-e	isqrt([])	[]
+-e	isqrt([1, 2])	[1, 1]
+-e	isqrt("text")	isqrt("text")
+-e	isqrt(true)	isqrt(true)
+-e	isqrt(-7/3)	isqrt(-7/3)
+-e	isqrt(0.5)	0
+-e	cfrac(0)	[0]
+-e	cfrac(1)	[1]
+-e	cfrac(-1)	[-1]
+-e	cfrac(1/2)	[0, 2]
+-e	cfrac(2)	[2]
+-e	cfrac(i)	error: cfrac needs a real number, got i
+-e	cfrac(inf)	error: cfrac needs a real number, got inf
+-e	cfrac(-inf)	error: cfrac needs a real number, got -inf
+-e	cfrac(undefined)	error: cfrac needs a real number, got undefined
+-e	cfrac(10^20)	[100000000000000000000]
+-e	cfrac(10^(-20))	[0, 100000000000000000000]
+-e	cfrac(x)	error: cfrac needs a real number, got x
+-e	cfrac([])	error: cfrac needs a real number, got []
+-e	cfrac([1, 2])	error: cfrac needs a real number, got [1, 2]
+-e	cfrac("text")	error: cfrac needs a real number, got "text"
+-e	cfrac(true)	error: cfrac needs a real number, got true
+-e	cfrac(-7/3)	[-3, 1, 2]
+-e	cfrac(0.5)	[0, 2]
+-e	tobase(0)	0
+-e	tobase(1)	1
+-e	tobase(-1)	-1
+-e	tobase(1/2)	0.5
+-e	tobase(2)	2
+-e	tobase(i)	1*i
+-e	tobase(inf)	error: inf is no number
+-e	tobase(-inf)	error: -inf is no number
+-e	tobase(undefined)	error: undefined is no number
+-e	tobase(10^20)	100000000000000000000
+-e	tobase(10^(-20))	0.00000000000000000001
+-e	tobase(x)	error: x is no number
+-e	tobase([])	[]
+-e	tobase([1, 2])	[1, 2]
+-e	tobase("text")	error: "text" is no number
+-e	tobase(true)	error: true is no number
+-e	tobase(-7/3)	-2.(3)
+-e	tobase(0.5)	0.5
+-e	tofraction(0)	0
+-e	tofraction(1)	1
+-e	tofraction(-1)	-1
+-e	tofraction(1/2)	1/2
+-e	tofraction(2)	2
+-e	tofraction(i)	1*i
+-e	tofraction(inf)	error: inf is no number
+-e	tofraction(-inf)	error: -inf is no number
+-e	tofraction(undefined)	error: undefined is no number
+-e	tofraction(10^20)	100000000000000000000
+-e	tofraction(10^(-20))	1/100000000000000000000
+-e	tofraction(x)	error: x is no number
+-e	tofraction([])	[]
+-e	tofraction([1, 2])	[1, 2]
+-e	tofraction("text")	error: "text" is no number
+-e	tofraction(true)	error: true is no number
+-e	tofraction(-7/3)	-7/3
+-e	tofraction(0.5)	1/2
+-e	digits(0)	[[0], [], []]
+-e	digits(1)	[[1], [], []]
+-e	digits(-1)	[[1], [], []]
+-e	digits(1/2)	[[0], [5], []]
+-e	digits(2)	[[2], [], []]
+-e	digits(i)	error: i is no real number: digits takes re and im one by one
+-e	digits(inf)	error: inf is no number
+-e	digits(-inf)	error: -inf is no number
+-e	digits(undefined)	error: undefined is no number
+-e	digits(10^20)	[[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [], []]
+-e	digits(10^(-20))	[[0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], []]
+-e	digits(x)	error: x is no number
+-e	digits([])	error: [] is no number
+-e	digits([1, 2])	error: [1, 2] is no number
+-e	digits("text")	error: "text" is no number
+-e	digits(true)	error: true is no number
+-e	digits(-7/3)	[[2], [], [3]]
+-e	digits(0.5)	[[0], [5], []]
+-e	period(0)	0
+-e	period(1)	0
+-e	period(-1)	0
+-e	period(1/2)	0
+-e	period(2)	0
+-e	period(i)	error: i is no real number
+-e	period(inf)	error: inf is no number
+-e	period(-inf)	error: -inf is no number
+-e	period(undefined)	error: undefined is no number
+-e	period(10^20)	0
+-e	period(10^(-20))	0
+-e	period(x)	error: x is no number
+-e	period([])	error: [] is no number
+-e	period([1, 2])	error: [1, 2] is no number
+-e	period("text")	error: "text" is no number
+-e	period(true)	error: true is no number
+-e	period(-7/3)	1
+-e	period(0.5)	0
+-e	digitcounts(0)	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(1)	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(-1)	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(1/2)	[1, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+-e	digitcounts(2)	[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(i)	error: i is no real number
+-e	digitcounts(inf)	error: inf is no number
+-e	digitcounts(-inf)	error: -inf is no number
+-e	digitcounts(undefined)	error: undefined is no number
+-e	digitcounts(10^20)	[20, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(10^(-20))	[20, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+-e	digitcounts(x)	error: x is no number
+-e	digitcounts([])	error: [] is no number
+-e	digitcounts([1, 2])	error: [1, 2] is no number
+-e	digitcounts("text")	error: "text" is no number
+-e	digitcounts(true)	error: true is no number
+-e	digitcounts(-7/3)	error: the digits do not end: digitcounts(x, b, n) counts the first n
+-e	digitcounts(0.5)	[1, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+-e	digitsum(0)	0
+-e	digitsum(1)	1
+-e	digitsum(-1)	1
+-e	digitsum(1/2)	digitsum(1/2)
+-e	digitsum(2)	2
+-e	digitsum(i)	digitsum(i)
+-e	digitsum(inf)	digitsum(inf)
+-e	digitsum(-inf)	digitsum(-inf)
+-e	digitsum(undefined)	undefined
+-e	digitsum(10^20)	1
+-e	digitsum(10^(-20))	digitsum(1/100000000000000000000)
+-e	digitsum(x)	digitsum(x)
+-e	digitsum([])	[]
+-e	digitsum([1, 2])	[1, 2]
+-e	digitsum("text")	digitsum("text")
+-e	digitsum(true)	digitsum(true)
+-e	digitsum(-7/3)	digitsum(-7/3)
+-e	digitsum(0.5)	digitsum(0.5)
+-e	issquare(0)	true
+-e	issquare(1)	true
+-e	issquare(-1)	false
+-e	issquare(1/2)	false
+-e	issquare(2)	false
+-e	issquare(i)	false
+-e	issquare(inf)	issquare(inf)
+-e	issquare(-inf)	issquare(-inf)
+-e	issquare(undefined)	undefined
+-e	issquare(10^20)	true
+-e	issquare(10^(-20))	false
+-e	issquare(x)	issquare(x)
+-e	issquare([])	[]
+-e	issquare([1, 2])	[true, false]
+-e	issquare("text")	issquare("text")
+-e	issquare(true)	issquare(true)
+-e	issquare(-7/3)	false
+-e	issquare(0.5)	false
+-e	issquarefree(0)	false
+-e	issquarefree(1)	true
+-e	issquarefree(-1)	true
+-e	issquarefree(1/2)	issquarefree(1/2)
+-e	issquarefree(2)	true
+-e	issquarefree(i)	issquarefree(i)
+-e	issquarefree(inf)	issquarefree(inf)
+-e	issquarefree(-inf)	issquarefree(-inf)
+-e	issquarefree(undefined)	undefined
+-e	issquarefree(10^20)	false
+-e	issquarefree(10^(-20))	issquarefree(1/100000000000000000000)
+-e	issquarefree(x)	issquarefree(x)
+-e	issquarefree([])	[]
+-e	issquarefree([1, 2])	[true, true]
+-e	issquarefree("text")	issquarefree("text")
+-e	issquarefree(true)	issquarefree(true)
+-e	issquarefree(-7/3)	issquarefree(-7/3)
+-e	issquarefree(0.5)	issquarefree(0.5)
+-e	perfectpower(0)	[0, 1]
+-e	perfectpower(1)	[1, 1]
+-e	perfectpower(-1)	[-1, 1]
+-e	perfectpower(1/2)	perfectpower(1/2)
+-e	perfectpower(2)	[2, 1]
+-e	perfectpower(i)	perfectpower(i)
+-e	perfectpower(inf)	perfectpower(inf)
+-e	perfectpower(-inf)	perfectpower(-inf)
+-e	perfectpower(undefined)	undefined
+-e	perfectpower(10^20)	[10, 20]
+-e	perfectpower(10^(-20))	perfectpower(1/100000000000000000000)
+-e	perfectpower(x)	perfectpower(x)
+-e	perfectpower([])	[]
+-e	perfectpower([1, 2])	[[1, 1], [2, 1]]
+-e	perfectpower("text")	perfectpower("text")
+-e	perfectpower(true)	perfectpower(true)
+-e	perfectpower(-7/3)	perfectpower(-7/3)
+-e	perfectpower(0.5)	perfectpower(0.5)
+-e	primenu(0)	primenu(0)
+-e	primenu(1)	0
+-e	primenu(-1)	0
+-e	primenu(1/2)	primenu(1/2)
+-e	primenu(2)	1
+-e	primenu(i)	primenu(i)
+-e	primenu(inf)	primenu(inf)
+-e	primenu(-inf)	primenu(-inf)
+-e	primenu(undefined)	undefined
+-e	primenu(10^20)	2
+-e	primenu(10^(-20))	primenu(1/100000000000000000000)
+-e	primenu(x)	primenu(x)
+-e	primenu([])	[]
+-e	primenu([1, 2])	[0, 1]
+-e	primenu("text")	primenu("text")
+-e	primenu(true)	primenu(true)
+-e	primenu(-7/3)	primenu(-7/3)
+-e	primenu(0.5)	primenu(0.5)
+-e	primeomega(0)	primeomega(0)
+-e	primeomega(1)	0
+-e	primeomega(-1)	0
+-e	primeomega(1/2)	primeomega(1/2)
+-e	primeomega(2)	1
+-e	primeomega(i)	primeomega(i)
+-e	primeomega(inf)	primeomega(inf)
+-e	primeomega(-inf)	primeomega(-inf)
+-e	primeomega(undefined)	undefined
+-e	primeomega(10^20)	40
+-e	primeomega(10^(-20))	primeomega(1/100000000000000000000)
+-e	primeomega(x)	primeomega(x)
+-e	primeomega([])	[]
+-e	primeomega([1, 2])	[0, 1]
+-e	primeomega("text")	primeomega("text")
+-e	primeomega(true)	primeomega(true)
+-e	primeomega(-7/3)	primeomega(-7/3)
+-e	primeomega(0.5)	primeomega(0.5)
+-e	radical(0)	radical(0)
+-e	radical(1)	1
+-e	radical(-1)	1
+-e	radical(1/2)	radical(1/2)
+-e	radical(2)	2
+-e	radical(i)	radical(i)
+-e	radical(inf)	radical(inf)
+-e	radical(-inf)	radical(-inf)
+-e	radical(undefined)	undefined
+-e	radical(10^20)	10
+-e	radical(10^(-20))	radical(1/100000000000000000000)
+-e	radical(x)	radical(x)
+-e	radical([])	[]
+-e	radical([1, 2])	[1, 2]
+-e	radical("text")	radical("text")
+-e	radical(true)	radical(true)
+-e	radical(-7/3)	radical(-7/3)
+-e	radical(0.5)	radical(0.5)
+-e	primitiveroot(0)	undefined
+-e	primitiveroot(1)	0
+-e	primitiveroot(-1)	0
+-e	primitiveroot(1/2)	primitiveroot(1/2)
+-e	primitiveroot(2)	1
+-e	primitiveroot(i)	primitiveroot(i)
+-e	primitiveroot(inf)	primitiveroot(inf)
+-e	primitiveroot(-inf)	primitiveroot(-inf)
+-e	primitiveroot(undefined)	undefined
+-e	primitiveroot(10^20)	undefined
+-e	primitiveroot(10^(-20))	primitiveroot(1/100000000000000000000)
+-e	primitiveroot(x)	primitiveroot(x)
+-e	primitiveroot([])	[]
+-e	primitiveroot([1, 2])	[0, 1]
+-e	primitiveroot("text")	primitiveroot("text")
+-e	primitiveroot(true)	primitiveroot(true)
+-e	primitiveroot(-7/3)	primitiveroot(-7/3)
+-e	primitiveroot(0.5)	primitiveroot(0.5)
+-e	sumoftwosquares(0)	[0, 0]
+-e	sumoftwosquares(1)	[0, 1]
+-e	sumoftwosquares(-1)	undefined
+-e	sumoftwosquares(1/2)	sumoftwosquares(1/2)
+-e	sumoftwosquares(2)	[1, 1]
+-e	sumoftwosquares(i)	sumoftwosquares(i)
+-e	sumoftwosquares(inf)	sumoftwosquares(inf)
+-e	sumoftwosquares(-inf)	sumoftwosquares(-inf)
+-e	sumoftwosquares(undefined)	undefined
+-e	sumoftwosquares(10^20)	[1512431616, 9884965888]
+-e	sumoftwosquares(10^(-20))	sumoftwosquares(1/100000000000000000000)
+-e	sumoftwosquares(x)	sumoftwosquares(x)
+-e	sumoftwosquares([])	[]
+-e	sumoftwosquares([1, 2])	[[0, 1], [1, 1]]
+-e	sumoftwosquares("text")	sumoftwosquares("text")
+-e	sumoftwosquares(true)	sumoftwosquares(true)
+-e	sumoftwosquares(-7/3)	sumoftwosquares(-7/3)
+-e	sumoftwosquares(0.5)	sumoftwosquares(0.5)
+-e	bell(0)	1
+-e	bell(1)	1
+-e	bell(-1)	bell(-1)
+-e	bell(1/2)	bell(1/2)
+-e	bell(2)	2
+-e	bell(i)	bell(i)
+-e	bell(inf)	bell(inf)
+-e	bell(-inf)	bell(-inf)
+-e	bell(undefined)	undefined
+-e	bell(10^20)	bell(100000000000000000000)
+-e	bell(10^(-20))	bell(1/100000000000000000000)
+-e	bell(x)	bell(x)
+-e	bell([])	[]
+-e	bell([1, 2])	[1, 2]
+-e	bell("text")	bell("text")
+-e	bell(true)	bell(true)
+-e	bell(-7/3)	bell(-7/3)
+-e	bell(0.5)	bell(0.5)
+-e	partitions(0)	1
+-e	partitions(1)	1
+-e	partitions(-1)	partitions(-1)
+-e	partitions(1/2)	partitions(1/2)
+-e	partitions(2)	2
+-e	partitions(i)	partitions(i)
+-e	partitions(inf)	partitions(inf)
+-e	partitions(-inf)	partitions(-inf)
+-e	partitions(undefined)	undefined
+-e	partitions(10^20)	partitions(100000000000000000000)
+-e	partitions(10^(-20))	partitions(1/100000000000000000000)
+-e	partitions(x)	partitions(x)
+-e	partitions([])	[]
+-e	partitions([1, 2])	[1, 2]
+-e	partitions("text")	partitions("text")
+-e	partitions(true)	partitions(true)
+-e	partitions(-7/3)	partitions(-7/3)
+-e	partitions(0.5)	partitions(0.5)
+-e	derangements(0)	1
+-e	derangements(1)	0
+-e	derangements(-1)	derangements(-1)
+-e	derangements(1/2)	derangements(1/2)
+-e	derangements(2)	1
+-e	derangements(i)	derangements(i)
+-e	derangements(inf)	derangements(inf)
+-e	derangements(-inf)	derangements(-inf)
+-e	derangements(undefined)	undefined
+-e	derangements(10^20)	derangements(100000000000000000000)
+-e	derangements(10^(-20))	derangements(1/100000000000000000000)
+-e	derangements(x)	derangements(x)
+-e	derangements([])	[]
+-e	derangements([1, 2])	[0, 1]
+-e	derangements("text")	derangements("text")
+-e	derangements(true)	derangements(true)
+-e	derangements(-7/3)	derangements(-7/3)
+-e	derangements(0.5)	derangements(0.5)
+-e	multinomial(0)	1
+-e	multinomial(1)	1
+-e	multinomial(-1)	multinomial(-1)
+-e	multinomial(1/2)	multinomial(1/2)
+-e	multinomial(2)	1
+-e	multinomial(i)	multinomial(i)
+-e	multinomial(inf)	multinomial(inf)

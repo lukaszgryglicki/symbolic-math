@@ -26,3 +26,6 @@ rustc-ice-*.txt
 *.secret
 /symbolic-math
 /symbolic-math.static
+._*
+*.jxl
+*.png

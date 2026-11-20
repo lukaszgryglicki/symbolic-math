@@ -1,0 +1,700 @@
+-e	isprime(0)	false
+-e	isprime(1)	false
+-e	isprime(2)	true
+-e	isprime(3)	true
+-e	isprime(4)	false
+-e	isprime(5)	true
+-e	isprime(6)	false
+-e	isprime(7)	true
+-e	isprime(8)	false
+-e	isprime(9)	false
+-e	isprime(10)	false
+-e	isprime(11)	true
+-e	isprime(12)	false
+-e	isprime(13)	true
+-e	isprime(14)	false
+-e	isprime(15)	false
+-e	isprime(16)	false
+-e	isprime(17)	true
+-e	isprime(18)	false
+-e	isprime(19)	true
+-e	isprime(20)	false
+-e	isprime(21)	false
+-e	isprime(22)	false
+-e	isprime(23)	true
+-e	isprime(24)	false
+-e	isprime(25)	false
+-e	isprime(26)	false
+-e	isprime(27)	false
+-e	isprime(28)	false
+-e	isprime(29)	true
+-e	isprime(30)	false
+-e	isprime(31)	true
+-e	isprime(32)	false
+-e	isprime(33)	false
+-e	isprime(34)	false
+-e	isprime(35)	false
+-e	isprime(36)	false
+-e	isprime(37)	true
+-e	isprime(38)	false
+-e	isprime(39)	false
+-e	isprime(40)	false
+-e	isprime(41)	true
+-e	isprime(42)	false
+-e	isprime(43)	true
+-e	isprime(44)	false
+-e	isprime(45)	false
+-e	isprime(46)	false
+-e	isprime(47)	true
+-e	isprime(48)	false
+-e	isprime(49)	false
+-e	isprime(50)	false
+-e	isprime(51)	false
+-e	isprime(52)	false
+-e	isprime(53)	true
+-e	isprime(54)	false
+-e	isprime(55)	false
+-e	isprime(56)	false
+-e	isprime(57)	false
+-e	isprime(58)	false
+-e	isprime(59)	true
+-e	isprime(60)	false
+-e	isprime(61)	true
+-e	isprime(62)	false
+-e	isprime(63)	false
+-e	isprime(64)	false
+-e	isprime(65)	false
+-e	isprime(66)	false
+-e	isprime(67)	true
+-e	isprime(68)	false
+-e	isprime(69)	false
+-e	isprime(70)	false
+-e	isprime(71)	true
+-e	isprime(72)	false
+-e	isprime(73)	true
+-e	isprime(74)	false
+-e	isprime(75)	false
+-e	isprime(76)	false
+-e	isprime(77)	false
+-e	isprime(78)	false
+-e	isprime(79)	true
+-e	isprime(80)	false
+-e	isprime(81)	false
+-e	isprime(82)	false
+-e	isprime(83)	true
+-e	isprime(84)	false
+-e	isprime(85)	false
+-e	isprime(86)	false
+-e	isprime(87)	false
+-e	isprime(88)	false
+-e	isprime(89)	true
+-e	isprime(90)	false
+-e	isprime(91)	false
+-e	isprime(92)	false
+-e	isprime(93)	false
+-e	isprime(94)	false
+-e	isprime(95)	false
+-e	isprime(96)	false
+-e	isprime(97)	true
+-e	isprime(98)	false
+-e	isprime(99)	false
+-e	isprime(100)	false
+-e	isprime(101)	true
+-e	isprime(102)	false
+-e	isprime(103)	true
+-e	isprime(104)	false
+-e	isprime(105)	false
+-e	isprime(106)	false
+-e	isprime(107)	true
+-e	isprime(108)	false
+-e	isprime(109)	true
+-e	isprime(110)	false
+-e	isprime(111)	false
+-e	isprime(112)	false
+-e	isprime(113)	true
+-e	isprime(114)	false
+-e	isprime(115)	false
+-e	isprime(116)	false
+-e	isprime(117)	false
+-e	isprime(118)	false
+-e	isprime(119)	false
+-e	isprime(120)	false
+-e	isprime(121)	false
+-e	isprime(122)	false
+-e	isprime(123)	false
+-e	isprime(124)	false
+-e	isprime(125)	false
+-e	isprime(126)	false
+-e	isprime(127)	true
+-e	isprime(128)	false
+-e	isprime(129)	false
+-e	isprime(997)	true
+-e	isprime(1000)	false
+-e	isprime(1001)	false
+-e	isprime(2047)	false
+-e	isprime(2999)	true
+-e	nthprime(1)	2
+-e	primepi(2)	1
+-e	nthprime(2)	3
+-e	primepi(3)	2
+-e	nthprime(3)	5
+-e	primepi(5)	3
+-e	nthprime(10)	29
+-e	primepi(29)	10
+-e	nthprime(25)	97
+-e	primepi(97)	25
+-e	nthprime(100)	541
+-e	primepi(541)	100
+-e	nthprime(168)	997
+-e	primepi(997)	168
+-e	nthprime(300)	1987
+-e	primepi(1987)	300
+-e	nthprime(430)	2999
+-e	primepi(2999)	430
+-e	nextprime(2)	3
+-e	numel(primes(2))	1
+-e	primepi(10)	4
+-e	nextprime(10)	11
+-e	numel(primes(10))	4
+-e	primepi(30)	10
+-e	nextprime(30)	31
+-e	numel(primes(30))	10
+-e	primepi(100)	25
+-e	nextprime(100)	101
+-e	numel(primes(100))	25
+-e	primepi(1000)	168
+-e	nextprime(1000)	1009
+-e	numel(primes(1000))	168
+-e	nextprime(2999)	3001
+-e	numel(primes(2999))	430
+-e	divisors(1)	[1]
+-e	sum(divisors(1)) == divisorsigma(1, 1)	true
+-e	numel(divisors(1)) == divisorsigma(1, 0)	true
+-e	divisorsigma(1)	1
+-e	eulerphi(1)	1
+-e	expand(factor(1)) == 1	true
+-e	isqrt(1^2)	1
+-e	issquare(1^2)	true
+-e	divisors(2)	[1, 2]
+-e	sum(divisors(2)) == divisorsigma(2, 1)	true
+-e	numel(divisors(2)) == divisorsigma(2, 0)	true
+-e	divisorsigma(2)	3
+-e	eulerphi(2)	1
+-e	expand(factor(2)) == 2	true
+-e	isqrt(2^2)	2
+-e	issquare(2^2)	true
+-e	divisors(3)	[1, 3]
+-e	sum(divisors(3)) == divisorsigma(3, 1)	true
+-e	numel(divisors(3)) == divisorsigma(3, 0)	true
+-e	divisorsigma(3)	4
+-e	eulerphi(3)	2
+-e	expand(factor(3)) == 3	true
+-e	isqrt(3^2)	3
+-e	issquare(3^2)	true
+-e	divisors(4)	[1, 2, 4]
+-e	sum(divisors(4)) == divisorsigma(4, 1)	true
+-e	numel(divisors(4)) == divisorsigma(4, 0)	true
+-e	divisorsigma(4)	7
+-e	eulerphi(4)	2
+-e	expand(factor(4)) == 4	true
+-e	isqrt(4^2)	4
+-e	issquare(4^2)	true
+-e	divisors(5)	[1, 5]
+-e	sum(divisors(5)) == divisorsigma(5, 1)	true
+-e	numel(divisors(5)) == divisorsigma(5, 0)	true
+-e	divisorsigma(5)	6
+-e	eulerphi(5)	4
+-e	expand(factor(5)) == 5	true
+-e	isqrt(5^2)	5
+-e	issquare(5^2)	true
+-e	divisors(6)	[1, 2, 3, 6]
+-e	sum(divisors(6)) == divisorsigma(6, 1)	true
+-e	numel(divisors(6)) == divisorsigma(6, 0)	true
+-e	divisorsigma(6)	12
+-e	eulerphi(6)	2
+-e	expand(factor(6)) == 6	true
+-e	isqrt(6^2)	6
+-e	issquare(6^2)	true
+-e	divisors(7)	[1, 7]
+-e	sum(divisors(7)) == divisorsigma(7, 1)	true
+-e	numel(divisors(7)) == divisorsigma(7, 0)	true
+-e	divisorsigma(7)	8
+-e	eulerphi(7)	6
+-e	expand(factor(7)) == 7	true
+-e	isqrt(7^2)	7
+-e	issquare(7^2)	true
+-e	divisors(8)	[1, 2, 4, 8]
+-e	sum(divisors(8)) == divisorsigma(8, 1)	true
+-e	numel(divisors(8)) == divisorsigma(8, 0)	true
+-e	divisorsigma(8)	15
+-e	eulerphi(8)	4
+-e	expand(factor(8)) == 8	true
+-e	isqrt(8^2)	8
+-e	issquare(8^2)	true
+-e	divisors(9)	[1, 3, 9]
+-e	sum(divisors(9)) == divisorsigma(9, 1)	true
+-e	numel(divisors(9)) == divisorsigma(9, 0)	true
+-e	divisorsigma(9)	13
+-e	eulerphi(9)	6
+-e	expand(factor(9)) == 9	true
+-e	isqrt(9^2)	9
+-e	issquare(9^2)	true
+-e	divisors(10)	[1, 2, 5, 10]
+-e	sum(divisors(10)) == divisorsigma(10, 1)	true
+-e	numel(divisors(10)) == divisorsigma(10, 0)	true
+-e	divisorsigma(10)	18
+-e	eulerphi(10)	4
+-e	expand(factor(10)) == 10	true
+-e	isqrt(10^2)	10
+-e	issquare(10^2)	true
+-e	divisors(11)	[1, 11]
+-e	sum(divisors(11)) == divisorsigma(11, 1)	true
+-e	numel(divisors(11)) == divisorsigma(11, 0)	true
+-e	divisorsigma(11)	12
+-e	eulerphi(11)	10
+-e	expand(factor(11)) == 11	true
+-e	isqrt(11^2)	11
+-e	issquare(11^2)	true
+-e	divisors(12)	[1, 2, 3, 4, 6, 12]
+-e	sum(divisors(12)) == divisorsigma(12, 1)	true
+-e	numel(divisors(12)) == divisorsigma(12, 0)	true
+-e	divisorsigma(12)	28
+-e	eulerphi(12)	4
+-e	expand(factor(12)) == 12	true
+-e	isqrt(12^2)	12
+-e	issquare(12^2)	true
+-e	divisors(13)	[1, 13]
+-e	sum(divisors(13)) == divisorsigma(13, 1)	true
+-e	numel(divisors(13)) == divisorsigma(13, 0)	true
+-e	divisorsigma(13)	14
+-e	eulerphi(13)	12
+-e	expand(factor(13)) == 13	true
+-e	isqrt(13^2)	13
+-e	issquare(13^2)	true
+-e	divisors(14)	[1, 2, 7, 14]
+-e	sum(divisors(14)) == divisorsigma(14, 1)	true
+-e	numel(divisors(14)) == divisorsigma(14, 0)	true
+-e	divisorsigma(14)	24
+-e	eulerphi(14)	6
+-e	expand(factor(14)) == 14	true
+-e	isqrt(14^2)	14
+-e	issquare(14^2)	true
+-e	divisors(15)	[1, 3, 5, 15]
+-e	sum(divisors(15)) == divisorsigma(15, 1)	true
+-e	numel(divisors(15)) == divisorsigma(15, 0)	true
+-e	divisorsigma(15)	24
+-e	eulerphi(15)	8
+-e	expand(factor(15)) == 15	true
+-e	isqrt(15^2)	15
+-e	issquare(15^2)	true
+-e	divisors(16)	[1, 2, 4, 8, 16]
+-e	sum(divisors(16)) == divisorsigma(16, 1)	true
+-e	numel(divisors(16)) == divisorsigma(16, 0)	true
+-e	divisorsigma(16)	31
+-e	eulerphi(16)	8
+-e	expand(factor(16)) == 16	true
+-e	isqrt(16^2)	16
+-e	issquare(16^2)	true
+-e	divisors(17)	[1, 17]
+-e	sum(divisors(17)) == divisorsigma(17, 1)	true
+-e	numel(divisors(17)) == divisorsigma(17, 0)	true
+-e	divisorsigma(17)	18
+-e	eulerphi(17)	16
+-e	expand(factor(17)) == 17	true
+-e	isqrt(17^2)	17
+-e	issquare(17^2)	true
+-e	divisors(18)	[1, 2, 3, 6, 9, 18]
+-e	sum(divisors(18)) == divisorsigma(18, 1)	true
+-e	numel(divisors(18)) == divisorsigma(18, 0)	true
+-e	divisorsigma(18)	39
+-e	eulerphi(18)	6
+-e	expand(factor(18)) == 18	true
+-e	isqrt(18^2)	18
+-e	issquare(18^2)	true
+-e	divisors(19)	[1, 19]
+-e	sum(divisors(19)) == divisorsigma(19, 1)	true
+-e	numel(divisors(19)) == divisorsigma(19, 0)	true
+-e	divisorsigma(19)	20
+-e	eulerphi(19)	18
+-e	expand(factor(19)) == 19	true
+-e	isqrt(19^2)	19
+-e	issquare(19^2)	true
+-e	divisors(20)	[1, 2, 4, 5, 10, 20]
+-e	sum(divisors(20)) == divisorsigma(20, 1)	true
+-e	numel(divisors(20)) == divisorsigma(20, 0)	true
+-e	divisorsigma(20)	42
+-e	eulerphi(20)	8
+-e	expand(factor(20)) == 20	true
+-e	isqrt(20^2)	20
+-e	issquare(20^2)	true
+-e	divisors(21)	[1, 3, 7, 21]
+-e	sum(divisors(21)) == divisorsigma(21, 1)	true
+-e	numel(divisors(21)) == divisorsigma(21, 0)	true
+-e	divisorsigma(21)	32
+-e	eulerphi(21)	12
+-e	expand(factor(21)) == 21	true
+-e	isqrt(21^2)	21
+-e	issquare(21^2)	true
+-e	divisors(22)	[1, 2, 11, 22]
+-e	sum(divisors(22)) == divisorsigma(22, 1)	true
+-e	numel(divisors(22)) == divisorsigma(22, 0)	true
+-e	divisorsigma(22)	36
+-e	eulerphi(22)	10
+-e	expand(factor(22)) == 22	true
+-e	isqrt(22^2)	22
+-e	issquare(22^2)	true
+-e	divisors(23)	[1, 23]
+-e	sum(divisors(23)) == divisorsigma(23, 1)	true
+-e	numel(divisors(23)) == divisorsigma(23, 0)	true
+-e	divisorsigma(23)	24
+-e	eulerphi(23)	22
+-e	expand(factor(23)) == 23	true
+-e	isqrt(23^2)	23
+-e	issquare(23^2)	true
+-e	divisors(24)	[1, 2, 3, 4, 6, 8, 12, 24]
+-e	sum(divisors(24)) == divisorsigma(24, 1)	true
+-e	numel(divisors(24)) == divisorsigma(24, 0)	true
+-e	divisorsigma(24)	60
+-e	eulerphi(24)	8
+-e	expand(factor(24)) == 24	true
+-e	isqrt(24^2)	24
+-e	issquare(24^2)	true
+-e	divisors(25)	[1, 5, 25]
+-e	sum(divisors(25)) == divisorsigma(25, 1)	true
+-e	numel(divisors(25)) == divisorsigma(25, 0)	true
+-e	divisorsigma(25)	31
+-e	eulerphi(25)	20
+-e	expand(factor(25)) == 25	true
+-e	isqrt(25^2)	25
+-e	issquare(25^2)	true
+-e	divisors(26)	[1, 2, 13, 26]
+-e	sum(divisors(26)) == divisorsigma(26, 1)	true
+-e	numel(divisors(26)) == divisorsigma(26, 0)	true
+-e	divisorsigma(26)	42
+-e	eulerphi(26)	12
+-e	expand(factor(26)) == 26	true
+-e	isqrt(26^2)	26
+-e	issquare(26^2)	true
+-e	divisors(27)	[1, 3, 9, 27]
+-e	sum(divisors(27)) == divisorsigma(27, 1)	true
+-e	numel(divisors(27)) == divisorsigma(27, 0)	true
+-e	divisorsigma(27)	40
+-e	eulerphi(27)	18
+-e	expand(factor(27)) == 27	true
+-e	isqrt(27^2)	27
+-e	issquare(27^2)	true
+-e	divisors(28)	[1, 2, 4, 7, 14, 28]
+-e	sum(divisors(28)) == divisorsigma(28, 1)	true
+-e	numel(divisors(28)) == divisorsigma(28, 0)	true
+-e	divisorsigma(28)	56
+-e	eulerphi(28)	12
+-e	expand(factor(28)) == 28	true
+-e	isqrt(28^2)	28
+-e	issquare(28^2)	true
+-e	divisors(29)	[1, 29]
+-e	sum(divisors(29)) == divisorsigma(29, 1)	true
+-e	numel(divisors(29)) == divisorsigma(29, 0)	true
+-e	divisorsigma(29)	30
+-e	eulerphi(29)	28
+-e	expand(factor(29)) == 29	true
+-e	isqrt(29^2)	29
+-e	issquare(29^2)	true
+-e	divisors(30)	[1, 2, 3, 5, 6, 10, 15, 30]
+-e	sum(divisors(30)) == divisorsigma(30, 1)	true
+-e	numel(divisors(30)) == divisorsigma(30, 0)	true
+-e	divisorsigma(30)	72
+-e	eulerphi(30)	8
+-e	expand(factor(30)) == 30	true
+-e	isqrt(30^2)	30
+-e	issquare(30^2)	true
+-e	divisors(31)	[1, 31]
+-e	sum(divisors(31)) == divisorsigma(31, 1)	true
+-e	numel(divisors(31)) == divisorsigma(31, 0)	true
+-e	divisorsigma(31)	32
+-e	eulerphi(31)	30
+-e	expand(factor(31)) == 31	true
+-e	isqrt(31^2)	31
+-e	issquare(31^2)	true
+-e	divisors(32)	[1, 2, 4, 8, 16, 32]
+-e	sum(divisors(32)) == divisorsigma(32, 1)	true
+-e	numel(divisors(32)) == divisorsigma(32, 0)	true
+-e	divisorsigma(32)	63
+-e	eulerphi(32)	16
+-e	expand(factor(32)) == 32	true
+-e	isqrt(32^2)	32
+-e	issquare(32^2)	true
+-e	divisors(33)	[1, 3, 11, 33]
+-e	sum(divisors(33)) == divisorsigma(33, 1)	true
+-e	numel(divisors(33)) == divisorsigma(33, 0)	true
+-e	divisorsigma(33)	48
+-e	eulerphi(33)	20
+-e	expand(factor(33)) == 33	true
+-e	isqrt(33^2)	33
+-e	issquare(33^2)	true
+-e	divisors(34)	[1, 2, 17, 34]
+-e	sum(divisors(34)) == divisorsigma(34, 1)	true
+-e	numel(divisors(34)) == divisorsigma(34, 0)	true
+-e	divisorsigma(34)	54
+-e	eulerphi(34)	16
+-e	expand(factor(34)) == 34	true
+-e	isqrt(34^2)	34
+-e	issquare(34^2)	true
+-e	divisors(35)	[1, 5, 7, 35]
+-e	sum(divisors(35)) == divisorsigma(35, 1)	true
+-e	numel(divisors(35)) == divisorsigma(35, 0)	true
+-e	divisorsigma(35)	48
+-e	eulerphi(35)	24
+-e	expand(factor(35)) == 35	true
+-e	isqrt(35^2)	35
+-e	issquare(35^2)	true
+-e	divisors(36)	[1, 2, 3, 4, 6, 9, 12, 18, 36]
+-e	sum(divisors(36)) == divisorsigma(36, 1)	true
+-e	numel(divisors(36)) == divisorsigma(36, 0)	true
+-e	divisorsigma(36)	91
+-e	eulerphi(36)	12
+-e	expand(factor(36)) == 36	true
+-e	isqrt(36^2)	36
+-e	issquare(36^2)	true
+-e	divisors(37)	[1, 37]
+-e	sum(divisors(37)) == divisorsigma(37, 1)	true
+-e	numel(divisors(37)) == divisorsigma(37, 0)	true
+-e	divisorsigma(37)	38
+-e	eulerphi(37)	36
+-e	expand(factor(37)) == 37	true
+-e	isqrt(37^2)	37
+-e	issquare(37^2)	true
+-e	divisors(38)	[1, 2, 19, 38]
+-e	sum(divisors(38)) == divisorsigma(38, 1)	true
+-e	numel(divisors(38)) == divisorsigma(38, 0)	true
+-e	divisorsigma(38)	60
+-e	eulerphi(38)	18
+-e	expand(factor(38)) == 38	true
+-e	isqrt(38^2)	38
+-e	issquare(38^2)	true
+-e	divisors(39)	[1, 3, 13, 39]
+-e	sum(divisors(39)) == divisorsigma(39, 1)	true
+-e	numel(divisors(39)) == divisorsigma(39, 0)	true
+-e	divisorsigma(39)	56
+-e	eulerphi(39)	24
+-e	expand(factor(39)) == 39	true
+-e	isqrt(39^2)	39
+-e	issquare(39^2)	true
+-e	divisors(40)	[1, 2, 4, 5, 8, 10, 20, 40]
+-e	sum(divisors(40)) == divisorsigma(40, 1)	true
+-e	numel(divisors(40)) == divisorsigma(40, 0)	true
+-e	divisorsigma(40)	90
+-e	eulerphi(40)	16
+-e	expand(factor(40)) == 40	true
+-e	isqrt(40^2)	40
+-e	issquare(40^2)	true
+-e	divisors(41)	[1, 41]
+-e	sum(divisors(41)) == divisorsigma(41, 1)	true
+-e	numel(divisors(41)) == divisorsigma(41, 0)	true
+-e	divisorsigma(41)	42
+-e	eulerphi(41)	40
+-e	expand(factor(41)) == 41	true
+-e	isqrt(41^2)	41
+-e	issquare(41^2)	true
+-e	divisors(42)	[1, 2, 3, 6, 7, 14, 21, 42]
+-e	sum(divisors(42)) == divisorsigma(42, 1)	true
+-e	numel(divisors(42)) == divisorsigma(42, 0)	true
+-e	divisorsigma(42)	96
+-e	eulerphi(42)	12
+-e	expand(factor(42)) == 42	true
+-e	isqrt(42^2)	42
+-e	issquare(42^2)	true
+-e	divisors(43)	[1, 43]
+-e	sum(divisors(43)) == divisorsigma(43, 1)	true
+-e	numel(divisors(43)) == divisorsigma(43, 0)	true
+-e	divisorsigma(43)	44
+-e	eulerphi(43)	42
+-e	expand(factor(43)) == 43	true
+-e	isqrt(43^2)	43
+-e	issquare(43^2)	true
+-e	divisors(44)	[1, 2, 4, 11, 22, 44]
+-e	sum(divisors(44)) == divisorsigma(44, 1)	true
+-e	numel(divisors(44)) == divisorsigma(44, 0)	true
+-e	divisorsigma(44)	84
+-e	eulerphi(44)	20
+-e	expand(factor(44)) == 44	true
+-e	isqrt(44^2)	44
+-e	issquare(44^2)	true
+-e	divisors(45)	[1, 3, 5, 9, 15, 45]
+-e	sum(divisors(45)) == divisorsigma(45, 1)	true
+-e	numel(divisors(45)) == divisorsigma(45, 0)	true
+-e	divisorsigma(45)	78
+-e	eulerphi(45)	24
+-e	expand(factor(45)) == 45	true
+-e	isqrt(45^2)	45
+-e	issquare(45^2)	true
+-e	divisors(46)	[1, 2, 23, 46]
+-e	sum(divisors(46)) == divisorsigma(46, 1)	true
+-e	numel(divisors(46)) == divisorsigma(46, 0)	true
+-e	divisorsigma(46)	72
+-e	eulerphi(46)	22
+-e	expand(factor(46)) == 46	true
+-e	isqrt(46^2)	46
+-e	issquare(46^2)	true
+-e	divisors(47)	[1, 47]
+-e	sum(divisors(47)) == divisorsigma(47, 1)	true
+-e	numel(divisors(47)) == divisorsigma(47, 0)	true
+-e	divisorsigma(47)	48
+-e	eulerphi(47)	46
+-e	expand(factor(47)) == 47	true
+-e	isqrt(47^2)	47
+-e	issquare(47^2)	true
+-e	divisors(48)	[1, 2, 3, 4, 6, 8, 12, 16, 24, 48]
+-e	sum(divisors(48)) == divisorsigma(48, 1)	true
+-e	numel(divisors(48)) == divisorsigma(48, 0)	true
+-e	divisorsigma(48)	124
+-e	eulerphi(48)	16
+-e	expand(factor(48)) == 48	true
+-e	isqrt(48^2)	48
+-e	issquare(48^2)	true
+-e	divisors(49)	[1, 7, 49]
+-e	sum(divisors(49)) == divisorsigma(49, 1)	true
+-e	numel(divisors(49)) == divisorsigma(49, 0)	true
+-e	divisorsigma(49)	57
+-e	eulerphi(49)	42
+-e	expand(factor(49)) == 49	true
+-e	isqrt(49^2)	49
+-e	issquare(49^2)	true
+-e	divisors(50)	[1, 2, 5, 10, 25, 50]
+-e	sum(divisors(50)) == divisorsigma(50, 1)	true
+-e	numel(divisors(50)) == divisorsigma(50, 0)	true
+-e	divisorsigma(50)	93
+-e	eulerphi(50)	20
+-e	expand(factor(50)) == 50	true
+-e	isqrt(50^2)	50
+-e	issquare(50^2)	true
+-e	divisors(51)	[1, 3, 17, 51]
+-e	sum(divisors(51)) == divisorsigma(51, 1)	true
+-e	numel(divisors(51)) == divisorsigma(51, 0)	true
+-e	divisorsigma(51)	72
+-e	eulerphi(51)	32
+-e	expand(factor(51)) == 51	true
+-e	isqrt(51^2)	51
+-e	issquare(51^2)	true
+-e	divisors(52)	[1, 2, 4, 13, 26, 52]
+-e	sum(divisors(52)) == divisorsigma(52, 1)	true
+-e	numel(divisors(52)) == divisorsigma(52, 0)	true
+-e	divisorsigma(52)	98
+-e	eulerphi(52)	24
+-e	expand(factor(52)) == 52	true
+-e	isqrt(52^2)	52
+-e	issquare(52^2)	true
+-e	divisors(53)	[1, 53]
+-e	sum(divisors(53)) == divisorsigma(53, 1)	true
+-e	numel(divisors(53)) == divisorsigma(53, 0)	true
+-e	divisorsigma(53)	54
+-e	eulerphi(53)	52
+-e	expand(factor(53)) == 53	true
+-e	isqrt(53^2)	53
+-e	issquare(53^2)	true
+-e	divisors(54)	[1, 2, 3, 6, 9, 18, 27, 54]
+-e	sum(divisors(54)) == divisorsigma(54, 1)	true
+-e	numel(divisors(54)) == divisorsigma(54, 0)	true
+-e	divisorsigma(54)	120
+-e	eulerphi(54)	18
+-e	expand(factor(54)) == 54	true
+-e	isqrt(54^2)	54
+-e	issquare(54^2)	true
+-e	divisors(55)	[1, 5, 11, 55]
+-e	sum(divisors(55)) == divisorsigma(55, 1)	true
+-e	numel(divisors(55)) == divisorsigma(55, 0)	true
+-e	divisorsigma(55)	72
+-e	eulerphi(55)	40
+-e	expand(factor(55)) == 55	true
+-e	isqrt(55^2)	55
+-e	issquare(55^2)	true
+-e	divisors(56)	[1, 2, 4, 7, 8, 14, 28, 56]
+-e	sum(divisors(56)) == divisorsigma(56, 1)	true
+-e	numel(divisors(56)) == divisorsigma(56, 0)	true
+-e	divisorsigma(56)	120
+-e	eulerphi(56)	24
+-e	expand(factor(56)) == 56	true
+-e	isqrt(56^2)	56
+-e	issquare(56^2)	true
+-e	divisors(57)	[1, 3, 19, 57]
+-e	sum(divisors(57)) == divisorsigma(57, 1)	true
+-e	numel(divisors(57)) == divisorsigma(57, 0)	true
+-e	divisorsigma(57)	80
+-e	eulerphi(57)	36
+-e	expand(factor(57)) == 57	true
+-e	isqrt(57^2)	57
+-e	issquare(57^2)	true
+-e	divisors(58)	[1, 2, 29, 58]
+-e	sum(divisors(58)) == divisorsigma(58, 1)	true
+-e	numel(divisors(58)) == divisorsigma(58, 0)	true
+-e	divisorsigma(58)	90
+-e	eulerphi(58)	28
+-e	expand(factor(58)) == 58	true
+-e	isqrt(58^2)	58
+-e	issquare(58^2)	true
+-e	divisors(59)	[1, 59]
+-e	sum(divisors(59)) == divisorsigma(59, 1)	true
+-e	numel(divisors(59)) == divisorsigma(59, 0)	true
+-e	divisorsigma(59)	60
+-e	eulerphi(59)	58
+-e	expand(factor(59)) == 59	true
+-e	isqrt(59^2)	59
+-e	issquare(59^2)	true
+-e	divisors(360)	[1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360]
+-e	sum(divisors(360)) == divisorsigma(360, 1)	true
+-e	numel(divisors(360)) == divisorsigma(360, 0)	true
+-e	divisorsigma(360)	1170
+-e	eulerphi(360)	96
+-e	expand(factor(360)) == 360	true
+-e	isqrt(360^2)	360
+-e	issquare(360^2)	true
+-e	divisors(1001)	[1, 7, 11, 13, 77, 91, 143, 1001]
+-e	sum(divisors(1001)) == divisorsigma(1001, 1)	true
+-e	numel(divisors(1001)) == divisorsigma(1001, 0)	true
+-e	divisorsigma(1001)	1344
+-e	eulerphi(1001)	720
+-e	expand(factor(1001)) == 1001	true
+-e	isqrt(1001^2)	1001
+-e	issquare(1001^2)	true
+-e	divisors(9973)	[1, 9973]
+-e	sum(divisors(9973)) == divisorsigma(9973, 1)	true
+-e	numel(divisors(9973)) == divisorsigma(9973, 0)	true
+-e	divisorsigma(9973)	9974
+-e	eulerphi(9973)	9972
+-e	expand(factor(9973)) == 9973	true
+-e	isqrt(9973^2)	9973
+-e	issquare(9973^2)	true
+-e	expand(factor(1000000)) == 1000000	true
+-e	isqrt(1000000^2)	1000000
+-e	issquare(1000000^2)	true
+-e	expand(factor(1048576)) == 1048576	true
+-e	isqrt(1048576^2)	1048576
+-e	issquare(1048576^2)	true
+-e	expand(factor(413343)) == 413343	true
+-e	isqrt(413343^2)	413343
+-e	issquare(413343^2)	true
+-e	gcd(12, 18)*lcm(12, 18) == abs(12*18)	true
+-e	gcd(12, 18)	6
+-e	gcd(17, 5)*lcm(17, 5) == abs(17*5)	true
+-e	gcd(17, 5)	1
+-e	gcd(100, 75)*lcm(100, 75) == abs(100*75)	true
+-e	gcd(100, 75)	25
+-e	gcd(1048576, 59049)*lcm(1048576, 59049) == abs(1048576*59049)	true
+-e	gcd(1048576, 59049)	1
+-e	gcd(123456, 7890)*lcm(123456, 7890) == abs(123456*7890)	true
+-e	gcd(123456, 7890)	6
+-e	gcd(0, 5)*lcm(0, 5) == abs(0*5)	true
+-e	gcd(0, 5)	5
+-e	gcd(-12, 18)*lcm(-12, 18) == abs(-12*18)	true
+-e	gcd(-12, 18)	6
+-e	powmod(3, eulerphi(7), 7)	1
+-e	mod(3*modinv(3, 7), 7)	1
+-e	powmod(2, eulerphi(11), 11)	1
+-e	mod(2*modinv(2, 11), 11)	1
+-e	powmod(5, eulerphi(12), 12)	1
+-e	mod(5*modinv(5, 12), 12)	1
+-e	powmod(7, eulerphi(100), 100)	1
+-e	mod(7*modinv(7, 100), 100)	1
+-e	powmod(10, eulerphi(9973), 9973)	1
+-e	mod(10*modinv(10, 9973), 9973)	1
+-e	powmod(2, eulerphi(8191), 8191)	1
+-e	mod(2*modinv(2, 8191), 8191)	1

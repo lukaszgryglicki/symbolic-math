@@ -1,0 +1,700 @@
+-e	complementgraph(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph([])	[]
+-e	complementgraph([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	complementgraph(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph([])	[]
+-e	linegraph([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	linegraph(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank([])	[]
+-e	pagerank([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	pagerank(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	completegraph(0)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(1)	[[1]]
+-e	completegraph(-1)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(1/2)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(2)	[[1, 2]]
+-e	completegraph(i)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(inf)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(-inf)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(undefined)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(10^20)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(10^(-20))	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(x)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph([])	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph([1, 2])	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph("text")	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(true)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(-7/3)	error: completegraph takes a whole number from 1 to 2000
+-e	completegraph(0.5)	error: completegraph takes a whole number from 1 to 2000
+-e	cyclegraph(0)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(1)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(-1)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(1/2)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(2)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(i)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(inf)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(-inf)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(undefined)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(10^20)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(10^(-20))	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(x)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph([])	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph([1, 2])	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph("text")	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(true)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(-7/3)	error: cyclegraph takes a whole number from 3 to 2000
+-e	cyclegraph(0.5)	error: cyclegraph takes a whole number from 3 to 2000
+-e	pathgraph(0)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(1)	[[1]]
+-e	pathgraph(-1)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(1/2)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(2)	[[1, 2]]
+-e	pathgraph(i)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(inf)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(-inf)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(undefined)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(10^20)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(10^(-20))	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(x)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph([])	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph([1, 2])	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph("text")	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(true)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(-7/3)	error: pathgraph takes a whole number from 1 to 2000
+-e	pathgraph(0.5)	error: pathgraph takes a whole number from 1 to 2000
+-e	stargraph(0)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(1)	[[1]]
+-e	stargraph(-1)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(1/2)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(2)	[[1, 2]]
+-e	stargraph(i)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(inf)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(-inf)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(undefined)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(10^20)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(10^(-20))	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(x)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph([])	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph([1, 2])	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph("text")	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(true)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(-7/3)	error: stargraph takes a whole number from 1 to 2000
+-e	stargraph(0.5)	error: stargraph takes a whole number from 1 to 2000
+-e	wheelgraph(0)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(1)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(-1)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(1/2)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(2)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(i)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(inf)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(-inf)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(undefined)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(10^20)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(10^(-20))	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(x)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph([])	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph([1, 2])	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph("text")	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(true)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(-7/3)	error: wheelgraph takes a whole number from 4 to 2000
+-e	wheelgraph(0.5)	error: wheelgraph takes a whole number from 4 to 2000
+-e	hypercubegraph(0)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(1)	[[0, 1]]
+-e	hypercubegraph(-1)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(1/2)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(2)	[[0, 1], [0, 2], [1, 3], [2, 3]]
+-e	hypercubegraph(i)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(inf)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(-inf)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(undefined)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(10^20)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(10^(-20))	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(x)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph([])	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph([1, 2])	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph("text")	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(true)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(-7/3)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	hypercubegraph(0.5)	error: hypercubegraph takes a whole number from 1 to 2000
+-e	listplot(0)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(1)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(-1)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(1/2)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(2)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(i)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(inf)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(-inf)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(undefined)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(10^20)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(10^(-20))	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(x)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot([])	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot([1, 2])	2 │                                                               ⠙|  │|  │|  │|  │|  │|  │|  │|  │|  │|  │|  │|  │|  │|  │|1 │⣄|  └────────────────────────────────────────────────────────────────|   1                                                              2
+-e	listplot("text")	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(true)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(-7/3)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	listplot(0.5)	error: listplot([y1, y2, ...]) or listplot([[x1, y1], [x2, y2], ...])
+-e	histogram(0)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(1)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(-1)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(1/2)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(2)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(i)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(inf)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(-inf)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(undefined)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(10^20)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(10^(-20))	error: histogram([values]) or histogram([values], bins)
+-e	histogram(x)	error: histogram([values]) or histogram([values], bins)
+-e	histogram([])	error: histogram([values]) or histogram([values], bins)
+-e	histogram([1, 2])	  1 .. 1.5 │████████████████████████████████████████████████ 1|1.5 .. 2   │████████████████████████████████████████████████ 1
+-e	histogram("text")	error: histogram([values]) or histogram([values], bins)
+-e	histogram(true)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(-7/3)	error: histogram([values]) or histogram([values], bins)
+-e	histogram(0.5)	error: histogram([values]) or histogram([values], bins)
+-e	walk(0)	 1.05 │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|    0 │──────────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁──────────────────────|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|-1.05 │                      │|      └────────────────────────────────────────────────────────────────|       -1.18                                                       2.18|1 step along the digits 0 of 0 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (1, 0), 1 away; x from 0 to 1, y from 0 to 0
+-e	walk(1)	  0.6025 │     │                                                   ⣀⠄|         │     │                                                ⢀⠔⠊|         │     │                                             ⢀⠤⠊⠁|         │     │                                          ⢀⡠⠒⠁|         │     │                                        ⡠⠔⠁|         │     │                                     ⣀⠔⠊|         │     │                                  ⢀⠤⠊|         │     │                               ⢀⡠⠊⠁|         │     │                             ⡠⠒⠁|         │     │                          ⡠⠔⠉|         │     │                       ⣀⠔⠊|         │     │                    ⢀⠤⠊|         │     │                 ⢀⡠⠊⠁|         │     │               ⡠⠒⠁|         │     │            ⡠⠔⠉|         │     │         ⢀⠔⠊|         │     │      ⢀⠤⠊⠁|         │     │   ⢀⡠⠒⠁|         │     │ ⡠⠔⠁|-0.01469 │─────⠐⠉─────────────────────────────────────────────────────────|         └────────────────────────────────────────────────────────────────|          -0.08923                                                  0.8982|1 step along the digits 1 of 1 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (0.809, 0.5878), 1 away; x from 0 to 0.809, y from 0 to 0.5878
+-e	walk(-1)	  0.6025 │     │                                                   ⣀⠄|         │     │                                                ⢀⠔⠊|         │     │                                             ⢀⠤⠊⠁|         │     │                                          ⢀⡠⠒⠁|         │     │                                        ⡠⠔⠁|         │     │                                     ⣀⠔⠊|         │     │                                  ⢀⠤⠊|         │     │                               ⢀⡠⠊⠁|         │     │                             ⡠⠒⠁|         │     │                          ⡠⠔⠉|         │     │                       ⣀⠔⠊|         │     │                    ⢀⠤⠊|         │     │                 ⢀⡠⠊⠁|         │     │               ⡠⠒⠁|         │     │            ⡠⠔⠉|         │     │         ⢀⠔⠊|         │     │      ⢀⠤⠊⠁|         │     │   ⢀⡠⠒⠁|         │     │ ⡠⠔⠁|-0.01469 │─────⠐⠉─────────────────────────────────────────────────────────|         └────────────────────────────────────────────────────────────────|          -0.08923                                                  0.8982|1 step along the digits 1 of -1 without its sign in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (0.809, 0.5878), 1 away; x from 0 to 0.809, y from 0 to 0.5878
+-e	walk(1/2)	 1.05 │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|    0 │──────────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁──────────────────────|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|-1.05 │                      │|      └────────────────────────────────────────────────────────────────|       -1.18                                                       2.18|2 steps along the digits 0.5 of 1/2 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (0, 0), 0 away; x from 0 to 1, y from 0 to 0
+-e	walk(2)	  0.9748 │                         │           ⢀⠄|         │                         │           ⡜|         │                         │          ⢠⠃|         │                         │          ⡎|         │                         │         ⡸|         │                         │        ⢠⠃|         │                         │        ⡎|         │                         │       ⡸|         │                         │      ⢠⠃|         │                         │      ⡎|         │                         │     ⡸⠁|         │                         │    ⢠⠃|         │                         │    ⡎|         │                         │   ⡸|         │                         │  ⢠⠃|         │                         │  ⡎|         │                         │ ⡸|         │                         │⢠⠃|         │                         │⡜|-0.02378 │─────────────────────────⠐⠁─────────────────────────────────────|         └────────────────────────────────────────────────────────────────|          -0.6444                                                   0.9534|1 step along the digits 2 of 2 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (0.309, 0.9511), 1 away; x from 0 to 0.309, y from 0 to 0.9511
+-e	walk(i)	error: i is no real number: walk3d(z, base, digits) walks along a complex number
+-e	walk(inf)	error: inf is no number
+-e	walk(-inf)	error: -inf is no number
+-e	walk(undefined)	error: undefined is no number
+-e	walk(10^20)	 7.122 │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │ ⡠⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠄|     0 │─⠐⠊─────────────────────────────────────────────────────────────|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|-6.534 │ │|       └────────────────────────────────────────────────────────────────|        -0.5202                                                    21.33|21 steps along the digits 100000000000000000000 of 100000000000000000000 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (20.81, 0.5878), 20.82 away; x from 0 to 20.81, y from 0 to 0.5878
+-e	walk(10^(-20))	 7.122 │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │                                                           ⡠⠄|     0 │─⠐⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠊───|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|       │ │|-6.534 │ │|       └────────────────────────────────────────────────────────────────|        -0.5202                                                    21.33|21 steps along the digits 0.00000000000000000001 of 1/100000000000000000000 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (20.81, 0.5878), 20.82 away; x from 0 to 20.81, y from 0 to 0.5878
+-e	walk(x)	error: x is no number
+-e	walk([])	error: [] is no number
+-e	walk([1, 2])	error: [1, 2] is no number
+-e	walk("text")	error: "text" is no number
+-e	walk(true)	error: true is no number
+-e	walk(-7/3)	 974.8 │                         ⢠⡀           │|       │                          ⢧           │|       │                          ⠘⡆          │|       │                           ⢹⡀         │|       │                            ⢧         │|       │                            ⠘⡆        │|       │                             ⢹⡀       │|       │                              ⢧       │|       │                              ⠘⡆      │|       │                               ⢹⡀     │|       │                                ⣇     │|       │                                ⠸⡄    │|       │                                 ⢳    │|       │                                 ⠈⣇   │|       │                                  ⠸⡄  │|       │                                   ⢳  │|       │                                   ⠈⣇ │|       │                                    ⠸⡄│|       │                                     ⢳│|-23.78 │─────────────────────────────────────⠈⠃─────────────────────────|       └────────────────────────────────────────────────────────────────|        -952.9                                                     644.8|1000 steps along the digits 2.33333333333333333333333... of -7/3 without its sign in base 10: the digit d is a step at 36*d degrees|from the origin to (-308.4, 951.1), 999.8 away; x from -308.4 to 0.309, y from 0 to 951.1
+-e	walk(0.5)	 1.05 │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|    0 │──────────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁──────────────────────|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|-1.05 │                      │|      └────────────────────────────────────────────────────────────────|       -1.18                                                       2.18|2 steps along the digits 0.5 of 1/2 in base 10, which end there: the digit d is a step at 36*d degrees|from the origin to (0, 0), 0 away; x from 0 to 1, y from 0 to 0
+-e	walk3d(0)	||||||⠐⠒⠢⠤⢄⣀⡀|      ⠈⠉⠑⠒⠢⠤⠤⣀⣀|               ⠉⠉⠒⠒⠤⠤⣀⣀|                       ⠉⠉⠒⠒⠤⠤⣀⣀|                               ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                                       ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                                               ⠈⠉⠑⠒⠢⠤⠤⣀⣀|                                                        ⠉⠉⠒⠒⠤⠤⣀⣀|||||||1 step along the digits 0 of the real part and 0 of the imaginary part of 0 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (1, 0, 0), 1 away; x from 0 to 1, y from 0 to 0, z from 0 to 0
+-e	walk3d(1)	|||||||||                                      ⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠒|⢀⣀⣀⣀⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠊⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉||||||||||1 step along the digits 1 of the real part and 0 of the imaginary part of 1 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0.809, 0.5878, 0), 1 away; x from 0 to 0.809, y from 0 to 0.5878, z from 0 to 0
+-e	walk3d(-1)	|||||||||                                      ⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠒|⢀⣀⣀⣀⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠊⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉||||||||||1 step along the digits 1 of the real part and 0 of the imaginary part of -1 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0.809, 0.5878, 0), 1 away; x from 0 to 0.809, y from 0 to 0.5878, z from 0 to 0
+-e	walk3d(1/2)	||||||⠐⠒⠢⠤⢄⣀⡀|      ⠈⠉⠑⠒⠢⠤⠤⣀⣀|               ⠉⠉⠒⠒⠤⠤⣀⣀|                       ⠉⠉⠒⠒⠤⠤⣀⣀|                               ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                                       ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                                               ⠈⠉⠑⠒⠢⠤⠤⣀⣀|                                                        ⠉⠉⠒⠒⠤⠤⣀⣀|||||||2 steps along the digits 0.5 of the real part and 0 of the imaginary part of 1/2 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0, 0, 0), 0 away; x from 0 to 1, y from 0 to 0, z from 0 to 0
+-e	walk3d(2)	||||                                                           ⣀⡠⠤⠒⠉|                                                      ⣀⠤⠔⠒⠉|                                                ⢀⣀⠤⠔⠊⠉|                                           ⢀⡠⠤⠒⠊⠁|                                      ⣀⡠⠤⠒⠉⠁|                                 ⣀⠤⠔⠒⠉|                           ⢀⣀⠤⠔⠊⠉|                      ⢀⡠⠤⠒⠊⠁|                 ⣀⡠⠤⠒⠉⠁|            ⣀⠤⠔⠒⠉|      ⢀⣀⠤⠔⠊⠉| ⢀⡠⠤⠒⠊⠁|⠈⠁||||1 step along the digits 2 of the real part and 0 of the imaginary part of 2 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0.309, 0.9511, 0), 1 away; x from 0 to 0.309, y from 0 to 0.9511, z from 0 to 0
+-e	walk3d(i)	|                                                               ⢀|                                                            ⣀⠤⠒⠁|                                                        ⣀⠤⠒⠉|                                                    ⣀⠤⠒⠉|                                                ⣀⠤⠒⠉|                                            ⢀⡠⠔⠊|                                        ⢀⡠⠔⠊⠁|                                    ⢀⡠⠔⠊⠁|                                ⢀⡠⠔⠊⠁|                             ⣀⠤⠒⠁|                         ⣀⠤⠒⠉|                     ⣀⠤⠒⠉|                 ⣀⠤⠒⠉|             ⢀⡠⠔⠊|         ⢀⡠⠔⠊⠁|     ⢀⡠⠔⠊⠁| ⢀⡠⠔⠊⠁|⠐⠁||1 step along the digits 0 of the real part and 1 of the imaginary part of i in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0.809, 0, 0.5878), 1 away; x from 0 to 0.809, y from 0 to 0, z from 0 to 0.5878
+-e	walk3d(inf)	error: inf is no number
+-e	walk3d(-inf)	error: -inf is no number
+-e	walk3d(undefined)	error: undefined is no number
+-e	walk3d(10^20)	||||||⠠⠤⠤⠤⠢⠤⢄⣀⡀|        ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                ⠈⠉⠉⠒⠒⠤⠤⣀⣀|                         ⠉⠉⠒⠢⠤⢄⣀⡀|                                ⠈⠉⠉⠒⠒⠤⠤⣀⣀|                                         ⠉⠉⠒⠒⠤⠤⣀⣀|                                                 ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                                                         ⠈⠉⠑⠒⠢⠤⢄|||||||21 steps along the digits 100000000000000000000 of the real part and 000000000000000000000 of the imaginary part of 100000000000000000000 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (20.81, 0.5878, 0), 20.82 away; x from 0 to 20.81, y from 0 to 0.5878, z from 0 to 0
+-e	walk3d(10^(-20))	||||||⠐⠤⠤⣀⣀|     ⠉⠉⠒⠒⠤⠤⣀⣀|             ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                     ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                             ⠈⠉⠉⠒⠒⠤⠤⣀⡀|                                     ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                                             ⠈⠉⠉⠒⠒⠤⠤⣀⣀|                                                      ⠉⠉⠒⠒⠤⠤⡠⠤⠤⠤|||||||21 steps along the digits 0.00000000000000000001 of the real part and 0 of the imaginary part of 1/100000000000000000000 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (20.81, 0.5878, 0), 20.82 away; x from 0 to 20.81, y from 0 to 0.5878, z from 0 to 0
+-e	walk3d(x)	error: x is no number
+-e	walk3d([])	error: [] is no number
+-e	walk3d([1, 2])	error: [1, 2] is no number
+-e	walk3d("text")	error: "text" is no number
+-e	walk3d(true)	error: true is no number
+-e	walk3d(-7/3)	                                         ⣰⠂|                                        ⣰⠃|                                       ⣰⠃|                                      ⣰⠃|                                     ⣰⠃|                                    ⣰⠃|                                   ⣰⠃|                                  ⣰⠃|                                 ⣰⠃|                                ⣰⠃|                               ⣰⠃|                              ⣰⠃|                             ⣰⠃|                            ⣰⠃|                           ⣰⠃|                          ⣰⠃|                         ⣰⠃|                        ⣰⠃|                       ⣰⠃|                      ⣰⠃|1000 steps along the digits 2.33333333333333333333333... of the real part and 0 of the imaginary part of -7/3 in base 10: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (-308.4, 951.1, 0), 999.8 away; x from -308.4 to 0.309, y from 0 to 951.1, z from 0 to 0
+-e	walk3d(0.5)	||||||⠐⠒⠢⠤⢄⣀⡀|      ⠈⠉⠑⠒⠢⠤⠤⣀⣀|               ⠉⠉⠒⠒⠤⠤⣀⣀|                       ⠉⠉⠒⠒⠤⠤⣀⣀|                               ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                                       ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                                               ⠈⠉⠑⠒⠢⠤⠤⣀⣀|                                                        ⠉⠉⠒⠒⠤⠤⣀⣀|||||||2 steps along the digits 0.5 of the real part and 0 of the imaginary part of 1/2 in base 10, which end there: the digits a and c of a place are a step at 36*a degrees around the z-axis, 36*c degrees above the plane|from the origin to (0, 0, 0), 0 away; x from 0 to 1, y from 0 to 0, z from 0 to 0
+-e	primewalk(0)	error: the number of primes is a whole number from 2 to 5000000, not 0
+-e	primewalk(1)	error: the number of primes is a whole number from 2 to 5000000, not 1
+-e	primewalk(-1)	error: the number of primes is a whole number from 2 to 5000000, not -1
+-e	primewalk(1/2)	error: the number of primes is a whole number from 2 to 5000000, not 1/2
+-e	primewalk(2)	 1.05 │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|    0 │──────────────────────⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁──────────────────────|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|      │                      │|-1.05 │                      │|      └────────────────────────────────────────────────────────────────|       -1.18                                                       2.18|1 side along the first 2 primes, from 2 to 3: a step for every whole number, at every prime a turn to the left by 90 degrees, so that every side is as long as the gap between two primes|from the origin to (1, 0), 1 away; x from 0 to 1, y from 0 to 0
+-e	primewalk(i)	error: the number of primes is a whole number from 2 to 5000000, not i
+-e	primewalk(inf)	error: the number of primes is a whole number from 2 to 5000000, not inf
+-e	primewalk(-inf)	error: the number of primes is a whole number from 2 to 5000000, not -inf
+-e	primewalk(undefined)	error: the number of primes is a whole number from 2 to 5000000, not undefined
+-e	primewalk(10^20)	error: the number of primes is a whole number from 2 to 5000000, not 100000000000000000000
+-e	primewalk(10^(-20))	error: the number of primes is a whole number from 2 to 5000000, not 1/100000000000000000000
+-e	primewalk(x)	error: the number of primes is a whole number from 2 to 5000000, not x
+-e	primewalk([])	error: the number of primes is a whole number from 2 to 5000000, not []
+-e	primewalk([1, 2])	error: the number of primes is a whole number from 2 to 5000000, not [1, 2]
+-e	primewalk("text")	error: the number of primes is a whole number from 2 to 5000000, not "text"
+-e	primewalk(true)	error: the number of primes is a whole number from 2 to 5000000, not true
+-e	primewalk(-7/3)	error: the number of primes is a whole number from 2 to 5000000, not -7/3
+-e	primewalk(0.5)	error: the number of primes is a whole number from 2 to 5000000, not 1/2
+-e	primewalk3d(0)	error: the number of primes is a whole number from 2 to 5000000, not 0
+-e	primewalk3d(1)	error: the number of primes is a whole number from 2 to 5000000, not 1
+-e	primewalk3d(-1)	error: the number of primes is a whole number from 2 to 5000000, not -1
+-e	primewalk3d(1/2)	error: the number of primes is a whole number from 2 to 5000000, not 1/2
+-e	primewalk3d(2)	||||||⠐⠒⠢⠤⢄⣀⡀|      ⠈⠉⠑⠒⠢⠤⠤⣀⣀|               ⠉⠉⠒⠒⠤⠤⣀⣀|                       ⠉⠉⠒⠒⠤⠤⣀⣀|                               ⠉⠉⠑⠒⠢⠤⢄⣀⡀|                                       ⠈⠉⠑⠒⠢⠤⢄⣀⡀|                                               ⠈⠉⠑⠒⠢⠤⠤⣀⣀|                                                        ⠉⠉⠒⠒⠤⠤⣀⣀|||||||1 side along the first 2 primes, from 2 to 3: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (1, 0, 0), 1 away; x from 0 to 1, y from 0 to 0, z from 0 to 0
+-e	primewalk3d(i)	error: the number of primes is a whole number from 2 to 5000000, not i
+-e	primewalk3d(inf)	error: the number of primes is a whole number from 2 to 5000000, not inf
+-e	primewalk3d(-inf)	error: the number of primes is a whole number from 2 to 5000000, not -inf
+-e	primewalk3d(undefined)	error: the number of primes is a whole number from 2 to 5000000, not undefined
+-e	primewalk3d(10^20)	error: the number of primes is a whole number from 2 to 5000000, not 100000000000000000000
+-e	primewalk3d(10^(-20))	error: the number of primes is a whole number from 2 to 5000000, not 1/100000000000000000000
+-e	primewalk3d(x)	error: the number of primes is a whole number from 2 to 5000000, not x
+-e	primewalk3d([])	error: the number of primes is a whole number from 2 to 5000000, not []
+-e	primewalk3d([1, 2])	error: the number of primes is a whole number from 2 to 5000000, not [1, 2]
+-e	primewalk3d("text")	error: the number of primes is a whole number from 2 to 5000000, not "text"
+-e	primewalk3d(true)	error: the number of primes is a whole number from 2 to 5000000, not true
+-e	primewalk3d(-7/3)	error: the number of primes is a whole number from 2 to 5000000, not -7/3
+-e	primewalk3d(0.5)	error: the number of primes is a whole number from 2 to 5000000, not 1/2
+-e	primemodwalk(0)	error: the number of primes is a whole number from 1 to 5000000, not 0
+-e	primemodwalk(1)	  1.156 │                                │|        │                                │|        │                                ⡆|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|        │                                ⡇|      0 │────────────────────────────────⠇───────────────────────────────|        │                                │|-0.1562 │                                │|        └────────────────────────────────────────────────────────────────|         -1.05                                                       1.05|1 step, one for every prime p up to 2: at 45*(p mod 8) degrees|from the origin to (0, 1), 1 away; x from 0 to 0, y from 0 to 1
+-e	primemodwalk(-1)	error: the number of primes is a whole number from 1 to 5000000, not -1
+-e	primemodwalk(1/2)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	primemodwalk(2)	    1.75 │                        ⢄              │|         │                         ⠑⢄            │|         │                           ⠑⢄          │|         │                             ⠑⢄        │|         │                               ⠙⢄      │|         │                                 ⠑⢄    │|         │                                   ⠑⢄  │|         │                                     ⠑⢄│|         │                                       ⢱|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|         │                                       ⢸|-0.04268 │───────────────────────────────────────⠘────────────────────────|         └────────────────────────────────────────────────────────────────|          -1.788                                                      1.08|2 steps, one for every prime p up to 3: at 45*(p mod 8) degrees|from the origin to (-0.7071, 1.707), 1.848 away; x from -0.7071 to 0, y from 0 to 1.707
+-e	primemodwalk(i)	error: the number of primes is a whole number from 1 to 5000000, not i
+-e	primemodwalk(inf)	error: the number of primes is a whole number from 1 to 5000000, not inf
+-e	primemodwalk(-inf)	error: the number of primes is a whole number from 1 to 5000000, not -inf
+-e	primemodwalk(undefined)	error: the number of primes is a whole number from 1 to 5000000, not undefined
+-e	primemodwalk(10^20)	error: the number of primes is a whole number from 1 to 5000000, not 100000000000000000000
+-e	primemodwalk(10^(-20))	error: the number of primes is a whole number from 1 to 5000000, not 1/100000000000000000000
+-e	primemodwalk(x)	error: the number of primes is a whole number from 1 to 5000000, not x
+-e	primemodwalk([])	error: the number of primes is a whole number from 1 to 5000000, not []
+-e	primemodwalk([1, 2])	error: the number of primes is a whole number from 1 to 5000000, not [1, 2]
+-e	primemodwalk("text")	error: the number of primes is a whole number from 1 to 5000000, not "text"
+-e	primemodwalk(true)	error: the number of primes is a whole number from 1 to 5000000, not true
+-e	primemodwalk(-7/3)	error: the number of primes is a whole number from 1 to 5000000, not -7/3
+-e	primemodwalk(0.5)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	primemodwalk3d(0)	error: the number of primes is a whole number from 1 to 5000000, not 0
+-e	primemodwalk3d(1)	                                     ⡆|                                    ⢸|                                   ⢀⠇|                                   ⡸|                                  ⢀⠇|                                  ⡸|                                 ⢀⠇|                                 ⡸|                                ⢀⠇|                                ⡸|                               ⢠⠃|                               ⡜|                              ⢠⠃|                              ⡜|                             ⢠⠃|                             ⡜|                            ⢠⠃|                            ⡜|                           ⢰⠁|                           ⡎|1 step, one for every prime p up to 2: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (0, 0.5, 0.866), 1 away; x from 0 to 0, y from 0 to 0.5, z from 0 to 0.866
+-e	primemodwalk3d(-1)	error: the number of primes is a whole number from 1 to 5000000, not -1
+-e	primemodwalk3d(1/2)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	primemodwalk3d(2)	                                  ⢰|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⢸|                                  ⡜|                                 ⢠⠃|                                 ⡜|                                ⢰⠁|                                ⡎|                               ⢰⠁|                               ⡎|                              ⢰⠁|                              ⡎|                             ⢰⠁|2 steps, one for every prime p up to 3: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (0, 0.5, 1.866), 1.932 away; x from 0 to 0, y from 0 to 0.5, z from 0 to 1.866
+-e	primemodwalk3d(i)	error: the number of primes is a whole number from 1 to 5000000, not i
+-e	primemodwalk3d(inf)	error: the number of primes is a whole number from 1 to 5000000, not inf
+-e	primemodwalk3d(-inf)	error: the number of primes is a whole number from 1 to 5000000, not -inf
+-e	primemodwalk3d(undefined)	error: the number of primes is a whole number from 1 to 5000000, not undefined
+-e	primemodwalk3d(10^20)	error: the number of primes is a whole number from 1 to 5000000, not 100000000000000000000
+-e	primemodwalk3d(10^(-20))	error: the number of primes is a whole number from 1 to 5000000, not 1/100000000000000000000
+-e	primemodwalk3d(x)	error: the number of primes is a whole number from 1 to 5000000, not x
+-e	primemodwalk3d([])	error: the number of primes is a whole number from 1 to 5000000, not []
+-e	primemodwalk3d([1, 2])	error: the number of primes is a whole number from 1 to 5000000, not [1, 2]
+-e	primemodwalk3d("text")	error: the number of primes is a whole number from 1 to 5000000, not "text"
+-e	primemodwalk3d(true)	error: the number of primes is a whole number from 1 to 5000000, not true
+-e	primemodwalk3d(-7/3)	error: the number of primes is a whole number from 1 to 5000000, not -7/3
+-e	primemodwalk3d(0.5)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	ulamspiral(0)	error: the number of primes is a whole number from 1 to 5000000, not 0
+-e	ulamspiral(1)	 0.525 │             ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|     0 │─────────────⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿─────────────|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.525 │             ⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛|       └────────────────────────────────────────────────────────────────|        0.16                                                        1.84|the first 1 prime up to 2 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
+-e	ulamspiral(-1)	error: the number of primes is a whole number from 1 to 5000000, not -1
+-e	ulamspiral(1/2)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	ulamspiral(2)	 1.55 │             │        ⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⡄|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|    0 │─────────────┼────────⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇──────────────────────|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|      │             │        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇|-0.55 │             │        ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃|      └────────────────────────────────────────────────────────────────|       -0.68                                                       2.68|the first 2 primes up to 3 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
+-e	ulamspiral(i)	error: the number of primes is a whole number from 1 to 5000000, not i
+-e	ulamspiral(inf)	error: the number of primes is a whole number from 1 to 5000000, not inf
+-e	ulamspiral(-inf)	error: the number of primes is a whole number from 1 to 5000000, not -inf
+-e	ulamspiral(undefined)	error: the number of primes is a whole number from 1 to 5000000, not undefined
+-e	ulamspiral(10^20)	error: the number of primes is a whole number from 1 to 5000000, not 100000000000000000000
+-e	ulamspiral(10^(-20))	error: the number of primes is a whole number from 1 to 5000000, not 1/100000000000000000000
+-e	ulamspiral(x)	error: the number of primes is a whole number from 1 to 5000000, not x
+-e	ulamspiral([])	error: the number of primes is a whole number from 1 to 5000000, not []
+-e	ulamspiral([1, 2])	error: the number of primes is a whole number from 1 to 5000000, not [1, 2]
+-e	ulamspiral("text")	error: the number of primes is a whole number from 1 to 5000000, not "text"
+-e	ulamspiral(true)	error: the number of primes is a whole number from 1 to 5000000, not true
+-e	ulamspiral(-7/3)	error: the number of primes is a whole number from 1 to 5000000, not -7/3
+-e	ulamspiral(0.5)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	sacksspiral(0)	error: the number of primes is a whole number from 1 to 5000000, not 0
+-e	sacksspiral(1)	 1.251 │|       │|       │|       │|       │|       │|       │|       │|       │|       │                               ⢀⣄|       │                                ⠁|       │|       │|       │|       │|       │|       │|       │|       │|0.2009 │|       └────────────────────────────────────────────────────────────────|        -2.054                                                   -0.3737|the first 1 prime up to 2 on the spiral of Sacks: the whole number k is sqrt(k) away from the middle after sqrt(k) turns, so that the squares lie on the x-axis
+-e	sacksspiral(-1)	error: the number of primes is a whole number from 1 to 5000000, not -1
+-e	sacksspiral(1/2)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	sacksspiral(2)	 1.312 │                                       │|       │                                       │|       │                                       │|       │                         ⠐⠗            │|       │                                       │|       │                                       │|       │                                       │|     0 │───────────────────────────────────────┼────────────────────────|       │                                       │|       │                                       │|       │                                       │|       │                                       │|       │                                       │|       │                                       │|       │                                       │|       │                                       │|       │                                     ⢴⠄│|       │                                       │|       │                                       │|-2.307 │                                       │|       └────────────────────────────────────────────────────────────────|        -3.6                                                       2.191|the first 2 primes up to 3 on the spiral of Sacks: the whole number k is sqrt(k) away from the middle after sqrt(k) turns, so that the squares lie on the x-axis
+-e	sacksspiral(i)	error: the number of primes is a whole number from 1 to 5000000, not i
+-e	sacksspiral(inf)	error: the number of primes is a whole number from 1 to 5000000, not inf
+-e	sacksspiral(-inf)	error: the number of primes is a whole number from 1 to 5000000, not -inf
+-e	sacksspiral(undefined)	error: the number of primes is a whole number from 1 to 5000000, not undefined
+-e	sacksspiral(10^20)	error: the number of primes is a whole number from 1 to 5000000, not 100000000000000000000
+-e	sacksspiral(10^(-20))	error: the number of primes is a whole number from 1 to 5000000, not 1/100000000000000000000
+-e	sacksspiral(x)	error: the number of primes is a whole number from 1 to 5000000, not x
+-e	sacksspiral([])	error: the number of primes is a whole number from 1 to 5000000, not []
+-e	sacksspiral([1, 2])	error: the number of primes is a whole number from 1 to 5000000, not [1, 2]
+-e	sacksspiral("text")	error: the number of primes is a whole number from 1 to 5000000, not "text"
+-e	sacksspiral(true)	error: the number of primes is a whole number from 1 to 5000000, not true
+-e	sacksspiral(-7/3)	error: the number of primes is a whole number from 1 to 5000000, not -7/3
+-e	sacksspiral(0.5)	error: the number of primes is a whole number from 1 to 5000000, not 1/2
+-e	graphplot(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot([])	error: the graph has no vertex
+-e	graphplot([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	graphplot(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	matrixplot(0)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(1)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(-1)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(1/2)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(2)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(i)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(inf)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(-inf)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(undefined)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(10^20)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(10^(-20))	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(x)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot([])	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot([1, 2])	 1.025 │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.025 │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       └────────────────────────────────────────────────────────────────|        -0.05                                                       2.05|1 by 2 entries, the first row at the top; the colours of the palette run from the entry 1 to 2
+-e	matrixplot("text")	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(true)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(-7/3)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	matrixplot(0.5)	error: matrixplot(m): matrixplot([[1, 2], [3, 4]])
+-e	siunits(0)	0
+-e	siunits(1)	1
+-e	siunits(-1)	-1
+-e	siunits(1/2)	1/2
+-e	siunits(2)	2
+-e	siunits(i)	i
+-e	siunits(inf)	inf
+-e	siunits(-inf)	-inf
+-e	siunits(undefined)	undefined
+-e	siunits(10^20)	100000000000000000000
+-e	siunits(10^(-20))	1/100000000000000000000
+-e	siunits(x)	x|note: x is taken as a number, not as a unit
+-e	siunits([])	error: [] is no quantity
+-e	siunits([1, 2])	error: [1, 2] is no quantity
+-e	siunits("text")	"text"|note: text is taken as a number, not as a unit
+-e	siunits(true)	error: true is no quantity
+-e	siunits(-7/3)	-7/3
+-e	siunits(0.5)	0.5
+-e	dimension(0)	1
+-e	dimension(1)	1
+-e	dimension(-1)	1
+-e	dimension(1/2)	1
+-e	dimension(2)	1
+-e	dimension(i)	1
+-e	dimension(inf)	1
+-e	dimension(-inf)	1
+-e	dimension(undefined)	1
+-e	dimension(10^20)	1
+-e	dimension(10^(-20))	1
+-e	dimension(x)	1|note: x is taken as a number, not as a unit
+-e	dimension([])	error: [] is no quantity
+-e	dimension([1, 2])	error: [1, 2] is no quantity
+-e	dimension("text")	1|note: text is taken as a number, not as a unit
+-e	dimension(true)	error: true is no quantity
+-e	dimension(-7/3)	1
+-e	dimension(0.5)	1
+-e	assume(0)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(1)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(-1)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(1/2)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(2)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(i)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(inf)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(-inf)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(undefined)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(10^20)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(10^(-20))	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(x)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume([])	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume([1, 2])	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume("text")	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(true)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(-7/3)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	assume(0.5)	error: assume(x > 0), assume(x, real), assume(n, integer)
+-e	forget(0)	true
+-e	forget(1)	true
+-e	forget(-1)	true
+-e	forget(1/2)	true
+-e	forget(2)	true
+-e	forget(i)	true
+-e	forget(inf)	true
+-e	forget(-inf)	true
+-e	forget(undefined)	true
+-e	forget(10^20)	true
+-e	forget(10^(-20))	true
+-e	forget(x)	true
+-e	forget([])	true
+-e	forget([1, 2])	true
+-e	forget("text")	true
+-e	forget(true)	true
+-e	forget(-7/3)	true
+-e	forget(0.5)	true
+-e	uminus(0)	0
+-e	uminus(1)	-1
+-e	uminus(-1)	1
+-e	uminus(1/2)	-1/2
+-e	uminus(2)	-2
+-e	uminus(i)	-i
+-e	uminus(inf)	-inf
+-e	uminus(-inf)	inf
+-e	uminus(undefined)	undefined
+-e	uminus(10^20)	-100000000000000000000
+-e	uminus(10^(-20))	-1/100000000000000000000
+-e	uminus(x)	-x
+-e	uminus([])	[]
+-e	uminus([1, 2])	[-1, -2]
+-e	uminus("text")	-"text"
+-e	uminus(true)	-true
+-e	uminus(-7/3)	7/3
+-e	uminus(0.5)	-0.5
+-e	uplus(0)	0
+-e	uplus(1)	1
+-e	uplus(-1)	-1
+-e	uplus(1/2)	1/2
+-e	uplus(2)	2
+-e	uplus(i)	i
+-e	uplus(inf)	inf
+-e	uplus(-inf)	-inf
+-e	uplus(undefined)	undefined
+-e	uplus(10^20)	100000000000000000000
+-e	uplus(10^(-20))	1/100000000000000000000
+-e	uplus(x)	x
+-e	uplus([])	[]
+-e	uplus([1, 2])	[1, 2]
+-e	uplus("text")	"text"
+-e	uplus(true)	true
+-e	uplus(-7/3)	-7/3
+-e	uplus(0.5)	0.5
+-e	meshgrid(0)	error: meshgrid needs lists
+-e	meshgrid(1)	error: meshgrid needs lists
+-e	meshgrid(-1)	error: meshgrid needs lists
+-e	meshgrid(1/2)	error: meshgrid needs lists
+-e	meshgrid(2)	error: meshgrid needs lists
+-e	meshgrid(i)	error: meshgrid needs lists
+-e	meshgrid(inf)	error: meshgrid needs lists
+-e	meshgrid(-inf)	error: meshgrid needs lists
+-e	meshgrid(undefined)	error: meshgrid needs lists
+-e	meshgrid(10^20)	error: meshgrid needs lists
+-e	meshgrid(10^(-20))	error: meshgrid needs lists
+-e	meshgrid(x)	error: meshgrid needs lists
+-e	meshgrid([])	[[], []]
+-e	meshgrid([1, 2])	[[[1, 2], [1, 2]], [[1, 1], [2, 2]]]
+-e	meshgrid("text")	error: meshgrid needs lists
+-e	meshgrid(true)	error: meshgrid needs lists
+-e	meshgrid(-7/3)	error: meshgrid needs lists
+-e	meshgrid(0.5)	error: meshgrid needs lists
+-e	ndgrid(0)	error: ndgrid needs lists
+-e	ndgrid(1)	error: ndgrid needs lists
+-e	ndgrid(-1)	error: ndgrid needs lists
+-e	ndgrid(1/2)	error: ndgrid needs lists
+-e	ndgrid(2)	error: ndgrid needs lists
+-e	ndgrid(i)	error: ndgrid needs lists
+-e	ndgrid(inf)	error: ndgrid needs lists
+-e	ndgrid(-inf)	error: ndgrid needs lists
+-e	ndgrid(undefined)	error: ndgrid needs lists
+-e	ndgrid(10^20)	error: ndgrid needs lists
+-e	ndgrid(10^(-20))	error: ndgrid needs lists
+-e	ndgrid(x)	error: ndgrid needs lists
+-e	ndgrid([])	[[], []]
+-e	ndgrid([1, 2])	[[[1, 1], [2, 2]], [[1, 2], [1, 2]]]
+-e	ndgrid("text")	error: ndgrid needs lists
+-e	ndgrid(true)	error: ndgrid needs lists
+-e	ndgrid(-7/3)	error: ndgrid needs lists
+-e	ndgrid(0.5)	error: ndgrid needs lists
+-e	horzcat(0)	[0]
+-e	horzcat(1)	[1]
+-e	horzcat(-1)	[-1]
+-e	horzcat(1/2)	[1/2]
+-e	horzcat(2)	[2]
+-e	horzcat(i)	[i]
+-e	horzcat(inf)	[inf]
+-e	horzcat(-inf)	[-inf]
+-e	horzcat(undefined)	[undefined]
+-e	horzcat(10^20)	[100000000000000000000]
+-e	horzcat(10^(-20))	[1/100000000000000000000]
+-e	horzcat(x)	[x]
+-e	horzcat([])	[]
+-e	horzcat([1, 2])	[1, 2]
+-e	horzcat("text")	["text"]
+-e	horzcat(true)	[true]
+-e	horzcat(-7/3)	[-7/3]
+-e	horzcat(0.5)	[0.5]
+-e	vertcat(0)	[0]
+-e	vertcat(1)	[1]
+-e	vertcat(-1)	[-1]
+-e	vertcat(1/2)	[1/2]
+-e	vertcat(2)	[2]
+-e	vertcat(i)	[i]
+-e	vertcat(inf)	[inf]
+-e	vertcat(-inf)	[-inf]
+-e	vertcat(undefined)	[undefined]
+-e	vertcat(10^20)	[100000000000000000000]
+-e	vertcat(10^(-20))	[1/100000000000000000000]
+-e	vertcat(x)	[x]
+-e	vertcat([])	[]
+-e	vertcat([1, 2])	[1, 2]
+-e	vertcat("text")	["text"]
+-e	vertcat(true)	[true]
+-e	vertcat(-7/3)	[-7/3]
+-e	vertcat(0.5)	[0.5]
+-e	blkdiag(0)	[[0]]
+-e	blkdiag(1)	[[1]]
+-e	blkdiag(-1)	[[-1]]
+-e	blkdiag(1/2)	[[1/2]]
+-e	blkdiag(2)	[[2]]
+-e	blkdiag(i)	[[i]]
+-e	blkdiag(inf)	[[inf]]
+-e	blkdiag(-inf)	[[-inf]]
+-e	blkdiag(undefined)	[[undefined]]
+-e	blkdiag(10^20)	[[100000000000000000000]]
+-e	blkdiag(10^(-20))	[[1/100000000000000000000]]
+-e	blkdiag(x)	[[x]]
+-e	blkdiag([])	[[]]
+-e	blkdiag([1, 2])	[[1, 2]]
+-e	blkdiag("text")	[["text"]]
+-e	blkdiag(true)	[[true]]
+-e	blkdiag(-7/3)	[[-7/3]]
+-e	blkdiag(0.5)	[[0.5]]
+-e	flip(0)	0
+-e	flip(1)	1
+-e	flip(-1)	-1
+-e	flip(1/2)	1/2
+-e	flip(2)	2
+-e	flip(i)	i
+-e	flip(inf)	inf
+-e	flip(-inf)	-inf
+-e	flip(undefined)	undefined
+-e	flip(10^20)	100000000000000000000
+-e	flip(10^(-20))	1/100000000000000000000
+-e	flip(x)	x
+-e	flip([])	[]
+-e	flip([1, 2])	[2, 1]
+-e	flip("text")	"txet"
+-e	flip(true)	true
+-e	flip(-7/3)	-7/3
+-e	flip(0.5)	0.5
+-e	fliplr(0)	0
+-e	fliplr(1)	1
+-e	fliplr(-1)	-1
+-e	fliplr(1/2)	1/2
+-e	fliplr(2)	2
+-e	fliplr(i)	i
+-e	fliplr(inf)	inf
+-e	fliplr(-inf)	-inf
+-e	fliplr(undefined)	undefined
+-e	fliplr(10^20)	100000000000000000000
+-e	fliplr(10^(-20))	1/100000000000000000000
+-e	fliplr(x)	x
+-e	fliplr([])	[]
+-e	fliplr([1, 2])	[2, 1]
+-e	fliplr("text")	"txet"
+-e	fliplr(true)	true
+-e	fliplr(-7/3)	-7/3
+-e	fliplr(0.5)	0.5
+-e	flipud(0)	0
+-e	flipud(1)	1
+-e	flipud(-1)	-1
+-e	flipud(1/2)	1/2
+-e	flipud(2)	2
+-e	flipud(i)	i
+-e	flipud(inf)	inf
+-e	flipud(-inf)	-inf
+-e	flipud(undefined)	undefined
+-e	flipud(10^20)	100000000000000000000
+-e	flipud(10^(-20))	1/100000000000000000000
+-e	flipud(x)	x
+-e	flipud([])	[]
+-e	flipud([1, 2])	[1, 2]
+-e	flipud("text")	"text"
+-e	flipud(true)	true
+-e	flipud(-7/3)	-7/3
+-e	flipud(0.5)	0.5
+-e	rot90(0)	[0]
+-e	rot90(1)	[1]
+-e	rot90(-1)	[-1]
+-e	rot90(1/2)	[1/2]
+-e	rot90(2)	[2]
+-e	rot90(i)	[i]
+-e	rot90(inf)	[inf]
+-e	rot90(-inf)	[-inf]
+-e	rot90(undefined)	[undefined]
+-e	rot90(10^20)	[100000000000000000000]
+-e	rot90(10^(-20))	[1/100000000000000000000]
+-e	rot90(x)	[x]
+-e	rot90([])	[]
+-e	rot90([1, 2])	[[2], [1]]
+-e	rot90("text")	["text"]
+-e	rot90(true)	[true]
+-e	rot90(-7/3)	[-7/3]
+-e	rot90(0.5)	[0.5]
+-e	tril(0)	[0]
+-e	tril(1)	[1]
+-e	tril(-1)	[-1]
+-e	tril(1/2)	[1/2]
+-e	tril(2)	[2]
+-e	tril(i)	[i]
+-e	tril(inf)	[inf]
+-e	tril(-inf)	[-inf]
+-e	tril(undefined)	[undefined]
+-e	tril(10^20)	[100000000000000000000]
+-e	tril(10^(-20))	[1/100000000000000000000]
+-e	tril(x)	[x]
+-e	tril([])	[]
+-e	tril([1, 2])	[1, 0]
+-e	tril("text")	["text"]
+-e	tril(true)	[true]
+-e	tril(-7/3)	[-7/3]
+-e	tril(0.5)	[0.5]
+-e	triu(0)	[0]
+-e	triu(1)	[1]
+-e	triu(-1)	[-1]
+-e	triu(1/2)	[1/2]
+-e	triu(2)	[2]
+-e	triu(i)	[i]
+-e	triu(inf)	[inf]
+-e	triu(-inf)	[-inf]
+-e	triu(undefined)	[undefined]
+-e	triu(10^20)	[100000000000000000000]
+-e	triu(10^(-20))	[1/100000000000000000000]
+-e	triu(x)	[x]
+-e	triu([])	[]
+-e	triu([1, 2])	[1, 2]
+-e	triu("text")	["text"]
+-e	triu(true)	[true]
+-e	triu(-7/3)	[-7/3]
+-e	triu(0.5)	[0.5]
+-e	sortrows(0)	error: sortrows needs a matrix
+-e	sortrows(1)	error: sortrows needs a matrix
+-e	sortrows(-1)	error: sortrows needs a matrix
+-e	sortrows(1/2)	error: sortrows needs a matrix
+-e	sortrows(2)	error: sortrows needs a matrix
+-e	sortrows(i)	error: sortrows needs a matrix
+-e	sortrows(inf)	error: sortrows needs a matrix
+-e	sortrows(-inf)	error: sortrows needs a matrix
+-e	sortrows(undefined)	error: sortrows needs a matrix
+-e	sortrows(10^20)	error: sortrows needs a matrix
+-e	sortrows(10^(-20))	error: sortrows needs a matrix
+-e	sortrows(x)	error: sortrows needs a matrix
+-e	sortrows([])	error: sortrows needs a matrix
+-e	sortrows([1, 2])	error: sortrows needs a matrix
+-e	sortrows("text")	error: sortrows needs a matrix
+-e	sortrows(true)	error: sortrows needs a matrix
+-e	sortrows(-7/3)	error: sortrows needs a matrix

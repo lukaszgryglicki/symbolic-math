@@ -18,20 +18,20 @@ pub fn is_plot(name: &str) -> bool {
     )
 }
 
-struct Options {
-    width: usize,
-    height: usize,
+pub(crate) struct Options {
+    pub(crate) width: usize,
+    pub(crate) height: usize,
     /// A width or a height was given.
-    sized: bool,
-    ascii: bool,
-    range: Option<(f64, f64)>,
+    pub(crate) sized: bool,
+    pub(crate) ascii: bool,
+    pub(crate) range: Option<(f64, f64)>,
 }
 
-fn number(e: &Expr) -> Option<f64> {
+pub(crate) fn number(e: &Expr) -> Option<f64> {
     numeric::real_value(e, 20).map(|v| v.to_f64())
 }
 
-fn options(rest: &[Expr]) -> Result<Options, String> {
+pub(crate) fn options(rest: &[Expr]) -> Result<Options, String> {
     let mut o = Options {
         width: 64,
         height: 16,
@@ -73,7 +73,7 @@ fn options(rest: &[Expr]) -> Result<Options, String> {
 }
 
 /// The value of `f` where the variable is `x`: a real number, or nothing.
-fn value(f: &Expr, var: &Rc<str>, x: f64) -> Option<f64> {
+pub(crate) fn value(f: &Expr, var: &Rc<str>, x: f64) -> Option<f64> {
     let mut env = Env::new();
     env.insert(var.clone(), rug::Complex::with_val(64, (x, 0.0)));
     let v = numeric::evalf_env(f, 64, &env).ok()?;
@@ -83,7 +83,7 @@ fn value(f: &Expr, var: &Rc<str>, x: f64) -> Option<f64> {
 }
 
 /// The value of `f` at two variables.
-fn value2(f: &Expr, vars: &(Rc<str>, Rc<str>), x: f64, y: f64) -> Option<f64> {
+pub(crate) fn value2(f: &Expr, vars: &(Rc<str>, Rc<str>), x: f64, y: f64) -> Option<f64> {
     let mut env = Env::new();
     env.insert(vars.0.clone(), rug::Complex::with_val(64, (x, 0.0)));
     env.insert(vars.1.clone(), rug::Complex::with_val(64, (y, 0.0)));
@@ -92,18 +92,22 @@ fn value2(f: &Expr, vars: &(Rc<str>, Rc<str>), x: f64, y: f64) -> Option<f64> {
     (im.abs() <= 1e-12 * (re.abs() + 1.0) && re.is_finite()).then_some(re)
 }
 
-struct Canvas {
-    w: usize,
-    h: usize,
-    ascii: bool,
+pub(crate) struct Canvas {
+    pub(crate) w: usize,
+    pub(crate) h: usize,
+    pub(crate) ascii: bool,
     /// The dots of each cell (Braille bits), or its mark.
-    cells: Vec<u32>,
-    x: (f64, f64),
-    y: (f64, f64),
+    pub(crate) cells: Vec<u32>,
+    pub(crate) x: (f64, f64),
+    pub(crate) y: (f64, f64),
+    /// The lines of the axes run through the cells without dots.
+    pub(crate) axes: bool,
+    /// The y axis holds logarithms to base 10: its numbers are the powers of ten.
+    pub(crate) log_y: bool,
 }
 
 impl Canvas {
-    fn new(o: &Options, x: (f64, f64), y: (f64, f64)) -> Canvas {
+    pub(crate) fn new(o: &Options, x: (f64, f64), y: (f64, f64)) -> Canvas {
         Canvas {
             w: o.width,
             h: o.height,
@@ -111,11 +115,13 @@ impl Canvas {
             cells: vec![0; o.width * o.height],
             x,
             y,
+            axes: true,
+            log_y: false,
         }
     }
 
     /// Dots across and down.
-    fn dots(&self) -> (i64, i64) {
+    pub(crate) fn dots(&self) -> (i64, i64) {
         if self.ascii {
             (self.w as i64, self.h as i64)
         } else {
@@ -123,7 +129,7 @@ impl Canvas {
         }
     }
 
-    fn set(&mut self, i: i64, j: i64, mark: char) {
+    pub(crate) fn set(&mut self, i: i64, j: i64, mark: char) {
         let (dw, dh) = self.dots();
         if i < 0 || j < 0 || i >= dw || j >= dh {
             return;
@@ -189,8 +195,24 @@ impl Canvas {
         }
     }
 
+    /// The rows alone, without axes and labels.
+    pub(crate) fn bare(&self) -> Vec<String> {
+        (0..self.h)
+            .map(|r| {
+                let line: String = (0..self.w)
+                    .map(|c| match self.cells[r * self.w + c] {
+                        0 => ' ',
+                        cell if self.ascii => char::from_u32(cell).unwrap_or('*'),
+                        cell => char::from_u32(0x2800 + cell).unwrap_or('.'),
+                    })
+                    .collect();
+                line.trim_end().to_string()
+            })
+            .collect()
+    }
+
     /// The rows with the axes and the labels.
-    fn render(&self, left: &str, right: &str) -> Vec<String> {
+    pub(crate) fn render(&self, left: &str, right: &str) -> Vec<String> {
         let (dw, dh) = self.dots();
         let (bar, rule, cross, corner) = if self.ascii {
             ('|', '-', '+', '+')
@@ -200,11 +222,14 @@ impl Canvas {
         let per = if self.ascii { (1, 1) } else { (2, 4) };
         // the cells of the axes, when zero is in the ranges
         let zero = self.place(0.0, 0.0);
-        let column = (self.x.0 < 0.0 && self.x.1 > 0.0)
+        let column = (self.axes && self.x.0 < 0.0 && self.x.1 > 0.0)
             .then(|| (zero.0.round() as i64).clamp(0, dw - 1) as usize / per.0);
-        let row = (self.y.0 < 0.0 && self.y.1 > 0.0)
+        let row = (self.axes && self.y.0 < 0.0 && self.y.1 > 0.0)
             .then(|| (zero.1.round() as i64).clamp(0, dh - 1) as usize / per.1);
-        let (top, bottom) = (label(self.y.1), label(self.y.0));
+        let (top, bottom) = (
+            crate::scene::mark(self.y.1, self.log_y),
+            crate::scene::mark(self.y.0, self.log_y),
+        );
         let margin = top.len().max(bottom.len()).max(1);
         let mut out = Vec::new();
         for r in 0..self.h {
@@ -213,7 +238,7 @@ impl Canvas {
             } else if r == self.h - 1 {
                 bottom.as_str()
             } else if row == Some(r) {
-                "0"
+                if self.log_y { "1" } else { "0" }
             } else {
                 ""
             };
@@ -252,7 +277,7 @@ impl Canvas {
 }
 
 /// A number of an axis with four digits.
-fn label(v: f64) -> String {
+pub(crate) fn label(v: f64) -> String {
     if v == 0.0 {
         return "0".to_string();
     }
@@ -276,7 +301,7 @@ fn label(v: f64) -> String {
 }
 
 /// The text of an end of the range: the expression when it is short, else its number.
-fn end(e: &Expr, v: f64) -> String {
+pub(crate) fn end(e: &Expr, v: f64) -> String {
     let text = e.to_string();
     let fraction = e.as_rat().is_some_and(|r| !r.is_integer());
     if text.chars().count() <= 12 && !fraction {
@@ -288,7 +313,7 @@ fn end(e: &Expr, v: f64) -> String {
 
 /// A range for the values: all of them, or the middle of them when a few are far away (as
 /// next to a pole).
-fn spread(values: &mut [f64]) -> Option<(f64, f64)> {
+pub(crate) fn spread(values: &mut [f64]) -> Option<(f64, f64)> {
     values.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let (first, last) = (*values.first()?, *values.last()?);
     let n = values.len();
@@ -306,13 +331,13 @@ fn spread(values: &mut [f64]) -> Option<(f64, f64)> {
     Some((lo, hi))
 }
 
-fn variable(e: &Expr) -> Result<Rc<str>, String> {
+pub(crate) fn variable(e: &Expr) -> Result<Rc<str>, String> {
     e.sym_name()
         .map(Rc::from)
         .ok_or_else(|| format!("{e} is not a variable"))
 }
 
-fn ends(a: &Expr, b: &Expr) -> Result<(f64, f64), String> {
+pub(crate) fn ends(a: &Expr, b: &Expr) -> Result<(f64, f64), String> {
     match (number(a), number(b)) {
         (Some(a), Some(b)) if a < b => Ok((a, b)),
         _ => Err(format!("from {a} to {b} is no range of real numbers")),
@@ -387,7 +412,7 @@ fn curves(a: &[Expr]) -> Result<Vec<String>, String> {
 }
 
 /// The same step along both axes around the points, for the shape of the cells.
-fn square(o: &Options, x: (f64, f64), y: (f64, f64)) -> ((f64, f64), (f64, f64)) {
+pub(crate) fn square(o: &Options, x: (f64, f64), y: (f64, f64)) -> ((f64, f64), (f64, f64)) {
     // (a Braille dot is as wide as it is high, a character is twice as high as wide)
     let (dw, dh) = if o.ascii {
         (o.width as f64, 2.0 * o.height as f64)

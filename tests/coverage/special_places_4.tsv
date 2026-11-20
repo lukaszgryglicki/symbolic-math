@@ -1,0 +1,700 @@
+-e	dsolve([])	error: dsolve(equation, y, x), for example dsolve(y'' + y = 0, y, x) or dsolve([y' = y, y(0) = 1], y, x)
+-e	dsolve([1, 2])	error: dsolve takes one equation (and conditions like y(0) = 1)
+-e	dsolve("text")	error: the equation has no derivative of y
+-e	dsolve(true)	error: the equation has no derivative of y
+-e	dsolve(-7/3)	error: the equation has no derivative of y
+-e	dsolve(0.5)	error: the equation has no derivative of y
+-e	diff(0)	error: the expression has no variable
+-e	diff(1)	error: the expression has no variable
+-e	diff(-1)	error: the expression has no variable
+-e	diff(1/2)	error: the expression has no variable
+-e	diff(2)	error: the expression has no variable
+-e	diff(i)	error: the expression has no variable
+-e	diff(inf)	error: the expression has no variable
+-e	diff(-inf)	error: the expression has no variable
+-e	diff(undefined)	error: the expression has no variable
+-e	diff(10^20)	error: the expression has no variable
+-e	diff(10^(-20))	error: the expression has no variable
+-e	diff(x)	1
+-e	diff([])	[]
+-e	diff([1, 2])	[1]
+-e	diff("text")	diff("text", text)
+-e	diff(true)	error: the expression has no variable
+-e	diff(-7/3)	error: the expression has no variable
+-e	diff(0.5)	error: the expression has no variable
+-e	D(0)	error: the expression has no variable
+-e	D(1)	error: the expression has no variable
+-e	D(-1)	error: the expression has no variable
+-e	D(1/2)	error: the expression has no variable
+-e	D(2)	error: the expression has no variable
+-e	D(i)	error: the expression has no variable
+-e	D(inf)	error: the expression has no variable
+-e	D(-inf)	error: the expression has no variable
+-e	D(undefined)	error: the expression has no variable
+-e	D(10^20)	error: the expression has no variable
+-e	D(10^(-20))	error: the expression has no variable
+-e	D(x)	1
+-e	D([])	[]
+-e	D([1, 2])	[1]
+-e	D("text")	diff("text", text)
+-e	D(true)	error: the expression has no variable
+-e	D(-7/3)	error: the expression has no variable
+-e	D(0.5)	error: the expression has no variable
+-e	integrate(0)	error: the expression has no variable
+-e	integrate(1)	error: the expression has no variable
+-e	integrate(-1)	error: the expression has no variable
+-e	integrate(1/2)	error: the expression has no variable
+-e	integrate(2)	error: the expression has no variable
+-e	integrate(i)	error: the expression has no variable
+-e	integrate(inf)	error: the expression has no variable
+-e	integrate(-inf)	error: the expression has no variable
+-e	integrate(undefined)	error: the expression has no variable
+-e	integrate(10^20)	error: the expression has no variable
+-e	integrate(10^(-20))	error: the expression has no variable
+-e	integrate(x)	x^2/2
+-e	integrate([])	error: the expression has no variable
+-e	integrate([1, 2])	error: the expression has no variable
+-e	integrate("text")	integrate("text", text)
+-e	integrate(true)	error: the expression has no variable
+-e	integrate(-7/3)	error: the expression has no variable
+-e	integrate(0.5)	error: the expression has no variable
+-e	area(0)	error: 0 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(1)	error: 1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(-1)	error: -1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(1/2)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(2)	error: 2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(i)	error: i is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(inf)	error: inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(-inf)	error: -inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(undefined)	error: undefined is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(10^20)	error: 100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(10^(-20))	error: 1/100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(x)	error: x is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area([])	error: [] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area([1, 2])	error: [1, 2] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area("text")	error: "text" is not a region: see --functions for rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder and cone
+-e	area(true)	error: true is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(-7/3)	error: -7/3 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	area(0.5)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(0)	error: 0 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(1)	error: 1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(-1)	error: -1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(1/2)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(2)	error: 2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(i)	error: i is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(inf)	error: inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(-inf)	error: -inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(undefined)	error: undefined is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(10^20)	error: 100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(10^(-20))	error: 1/100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(x)	error: x is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume([])	error: [] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume([1, 2])	error: [1, 2] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume("text")	error: "text" is not a region: see --functions for rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder and cone
+-e	volume(true)	error: true is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(-7/3)	error: -7/3 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	volume(0.5)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(0)	error: 0 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(1)	error: 1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(-1)	error: -1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(1/2)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(2)	error: 2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(i)	error: i is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(inf)	error: inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(-inf)	error: -inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(undefined)	error: undefined is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(10^20)	error: 100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(10^(-20))	error: 1/100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(x)	error: x is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter([])	error: [] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter([1, 2])	error: [1, 2] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter("text")	error: no boundary measure is known for "text"
+-e	perimeter(true)	error: true is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(-7/3)	error: -7/3 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	perimeter(0.5)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(0)	error: 0 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(1)	error: 1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(-1)	error: -1 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(1/2)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(2)	error: 2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(i)	error: i is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(inf)	error: inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(-inf)	error: -inf is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(undefined)	error: undefined is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(10^20)	error: 100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(10^(-20))	error: 1/100000000000000000000 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(x)	error: x is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea([])	error: [] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea([1, 2])	error: [1, 2] is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea("text")	error: no boundary measure is known for "text"
+-e	surfacearea(true)	error: true is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(-7/3)	error: -7/3 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	surfacearea(0.5)	error: 1/2 is not a region (rectangle, disk, annulus, sector, ellipse, triangle, polygon, box, ball, shell, ellipsoid, simplex, cylinder, cone)
+-e	centroid(0)	centroid(0)
+-e	centroid(1)	centroid(1)
+-e	centroid(-1)	centroid(-1)
+-e	centroid(1/2)	centroid(1/2)
+-e	centroid(2)	centroid(2)
+-e	centroid(i)	centroid(i)
+-e	centroid(inf)	centroid(inf)
+-e	centroid(-inf)	centroid(-inf)
+-e	centroid(undefined)	undefined
+-e	centroid(10^20)	centroid(100000000000000000000)
+-e	centroid(10^(-20))	centroid(1/100000000000000000000)
+-e	centroid(x)	centroid(x)
+-e	centroid([])	error: centroid needs points with the same number of coordinates
+-e	centroid([1, 2])	[3/2, 0]
+-e	centroid("text")	centroid("text")
+-e	centroid(true)	centroid(true)
+-e	centroid(-7/3)	centroid(-7/3)
+-e	centroid(0.5)	centroid(0.5)
+-e	disk(0)	disk(0)
+-e	disk(1)	disk(1)
+-e	disk(-1)	disk(-1)
+-e	disk(1/2)	disk(1/2)
+-e	disk(2)	disk(2)
+-e	disk(i)	disk(i)
+-e	disk(inf)	disk(inf)
+-e	disk(-inf)	disk(-inf)
+-e	disk(undefined)	undefined
+-e	disk(10^20)	disk(100000000000000000000)
+-e	disk(10^(-20))	disk(1/100000000000000000000)
+-e	disk(x)	disk(x)
+-e	disk([])	disk([])
+-e	disk([1, 2])	disk([1, 2])
+-e	disk("text")	disk("text")
+-e	disk(true)	disk(true)
+-e	disk(-7/3)	disk(-7/3)
+-e	disk(0.5)	disk(0.5)
+-e	polygon(0)	polygon(0)
+-e	polygon(1)	polygon(1)
+-e	polygon(-1)	polygon(-1)
+-e	polygon(1/2)	polygon(1/2)
+-e	polygon(2)	polygon(2)
+-e	polygon(i)	polygon(i)
+-e	polygon(inf)	polygon(inf)
+-e	polygon(-inf)	polygon(-inf)
+-e	polygon(undefined)	undefined
+-e	polygon(10^20)	polygon(100000000000000000000)
+-e	polygon(10^(-20))	polygon(1/100000000000000000000)
+-e	polygon(x)	polygon(x)
+-e	polygon([])	polygon([])
+-e	polygon([1, 2])	polygon([1, 2])
+-e	polygon("text")	polygon("text")
+-e	polygon(true)	polygon(true)
+-e	polygon(-7/3)	polygon(-7/3)
+-e	polygon(0.5)	polygon(0.5)
+-e	simplex(0)	simplex(0)
+-e	simplex(1)	simplex(1)
+-e	simplex(-1)	simplex(-1)
+-e	simplex(1/2)	simplex(1/2)
+-e	simplex(2)	simplex(2)
+-e	simplex(i)	simplex(i)
+-e	simplex(inf)	simplex(inf)
+-e	simplex(-inf)	simplex(-inf)
+-e	simplex(undefined)	undefined
+-e	simplex(10^20)	simplex(100000000000000000000)
+-e	simplex(10^(-20))	simplex(1/100000000000000000000)
+-e	simplex(x)	simplex(x)
+-e	simplex([])	simplex([])
+-e	simplex([1, 2])	simplex([1, 2])
+-e	simplex("text")	simplex("text")
+-e	simplex(true)	simplex(true)
+-e	simplex(-7/3)	simplex(-7/3)
+-e	simplex(0.5)	simplex(0.5)
+-e	sum(0)	error: sum needs a list, 0 is none
+-e	sum(1)	error: sum needs a list, 1 is none
+-e	sum(-1)	error: sum needs a list, -1 is none
+-e	sum(1/2)	error: sum needs a list, 1/2 is none
+-e	sum(2)	error: sum needs a list, 2 is none
+-e	sum(i)	error: sum needs a list, i is none
+-e	sum(inf)	error: sum needs a list, inf is none
+-e	sum(-inf)	error: sum needs a list, -inf is none
+-e	sum(undefined)	error: sum needs a list, undefined is none
+-e	sum(10^20)	error: sum needs a list, 100000000000000000000 is none
+-e	sum(10^(-20))	error: sum needs a list, 1/100000000000000000000 is none
+-e	sum(x)	error: sum needs a list, x is none
+-e	sum([])	0
+-e	sum([1, 2])	3
+-e	sum("text")	error: sum needs a list, "text" is none
+-e	sum(true)	error: sum needs a list, true is none
+-e	sum(-7/3)	error: sum needs a list, -7/3 is none
+-e	sum(0.5)	error: sum needs a list, 1/2 is none
+-e	product(0)	error: product needs a list, 0 is none
+-e	product(1)	error: product needs a list, 1 is none
+-e	product(-1)	error: product needs a list, -1 is none
+-e	product(1/2)	error: product needs a list, 1/2 is none
+-e	product(2)	error: product needs a list, 2 is none
+-e	product(i)	error: product needs a list, i is none
+-e	product(inf)	error: product needs a list, inf is none
+-e	product(-inf)	error: product needs a list, -inf is none
+-e	product(undefined)	error: product needs a list, undefined is none
+-e	product(10^20)	error: product needs a list, 100000000000000000000 is none
+-e	product(10^(-20))	error: product needs a list, 1/100000000000000000000 is none
+-e	product(x)	error: product needs a list, x is none
+-e	product([])	1
+-e	product([1, 2])	2
+-e	product("text")	error: product needs a list, "text" is none
+-e	product(true)	error: product needs a list, true is none
+-e	product(-7/3)	error: product needs a list, -7/3 is none
+-e	product(0.5)	error: product needs a list, 1/2 is none
+-e	grad(0)	[]
+-e	grad(1)	[]
+-e	grad(-1)	[]
+-e	grad(1/2)	[]
+-e	grad(2)	[]
+-e	grad(i)	[]
+-e	grad(inf)	[]
+-e	grad(-inf)	[]
+-e	grad(undefined)	[]
+-e	grad(10^20)	[]
+-e	grad(10^(-20))	[]
+-e	grad(x)	[1]
+-e	grad([])	[]
+-e	grad([1, 2])	[1, 1]
+-e	grad("text")	[diff("text", text)]
+-e	grad(true)	[]
+-e	grad(-7/3)	[]
+-e	grad(0.5)	[]
+-e	laplacian(0)	0
+-e	laplacian(1)	0
+-e	laplacian(-1)	0
+-e	laplacian(1/2)	0
+-e	laplacian(2)	0
+-e	laplacian(i)	0
+-e	laplacian(inf)	0
+-e	laplacian(-inf)	0
+-e	laplacian(undefined)	0
+-e	laplacian(10^20)	0
+-e	laplacian(10^(-20))	0
+-e	laplacian(x)	0
+-e	laplacian([])	0
+-e	laplacian([1, 2])	0
+-e	laplacian("text")	diff(diff("text", text), text)
+-e	laplacian(true)	0
+-e	laplacian(-7/3)	0
+-e	laplacian(0.5)	0
+-e	hessian(0)	[]
+-e	hessian(1)	[]
+-e	hessian(-1)	[]
+-e	hessian(1/2)	[]
+-e	hessian(2)	[]
+-e	hessian(i)	[]
+-e	hessian(inf)	[]
+-e	hessian(-inf)	[]
+-e	hessian(undefined)	[]
+-e	hessian(10^20)	[]
+-e	hessian(10^(-20))	[]
+-e	hessian(x)	[[0]]
+-e	hessian([])	[]
+-e	hessian([1, 2])	[]
+-e	hessian("text")	[[diff(diff("text", text), text)]]
+-e	hessian(true)	[]
+-e	hessian(-7/3)	[]
+-e	hessian(0.5)	[]
+-e	minimize(0)	error: the expression has no variable
+-e	minimize(1)	error: the expression has no variable
+-e	minimize(-1)	error: the expression has no variable
+-e	minimize(1/2)	error: the expression has no variable
+-e	minimize(2)	error: the expression has no variable
+-e	minimize(i)	error: the expression has no variable
+-e	minimize(inf)	error: the expression has no variable
+-e	minimize(-inf)	error: the expression has no variable
+-e	minimize(undefined)	error: the expression has no variable
+-e	minimize(10^20)	error: the expression has no variable
+-e	minimize(10^(-20))	error: the expression has no variable
+-e	minimize(x)	-inf|note: x is unbounded below (x -> -inf)
+-e	minimize([])	error: the expression has no variable
+-e	minimize([1, 2])	error: the expression has no variable
+-e	minimize("text")	error: no minimum found for "text"
+-e	minimize(true)	error: the expression has no variable
+-e	minimize(-7/3)	error: the expression has no variable
+-e	minimize(0.5)	error: the expression has no variable
+-e	maximize(0)	error: the expression has no variable
+-e	maximize(1)	error: the expression has no variable
+-e	maximize(-1)	error: the expression has no variable
+-e	maximize(1/2)	error: the expression has no variable
+-e	maximize(2)	error: the expression has no variable
+-e	maximize(i)	error: the expression has no variable
+-e	maximize(inf)	error: the expression has no variable
+-e	maximize(-inf)	error: the expression has no variable
+-e	maximize(undefined)	error: the expression has no variable
+-e	maximize(10^20)	error: the expression has no variable
+-e	maximize(10^(-20))	error: the expression has no variable
+-e	maximize(x)	inf|note: x is unbounded above (x -> inf)
+-e	maximize([])	error: the expression has no variable
+-e	maximize([1, 2])	error: the expression has no variable
+-e	maximize("text")	error: no maximum found for "text"
+-e	maximize(true)	error: the expression has no variable
+-e	maximize(-7/3)	error: the expression has no variable
+-e	maximize(0.5)	error: the expression has no variable
+-e	det(0)	error: det needs a matrix
+-e	det(1)	error: det needs a matrix
+-e	det(-1)	error: det needs a matrix
+-e	det(1/2)	error: det needs a matrix
+-e	det(2)	error: det needs a matrix
+-e	det(i)	error: det needs a matrix
+-e	det(inf)	error: det needs a matrix
+-e	det(-inf)	error: det needs a matrix
+-e	det(undefined)	error: det needs a matrix
+-e	det(10^20)	error: det needs a matrix
+-e	det(10^(-20))	error: det needs a matrix
+-e	det(x)	error: det needs a matrix
+-e	det([])	error: det needs a matrix
+-e	det([1, 2])	error: det needs a matrix
+-e	det("text")	error: det needs a matrix
+-e	det(true)	error: det needs a matrix
+-e	det(-7/3)	error: det needs a matrix
+-e	det(0.5)	error: det needs a matrix
+-e	transpose(0)	error: transpose needs a matrix
+-e	transpose(1)	error: transpose needs a matrix
+-e	transpose(-1)	error: transpose needs a matrix
+-e	transpose(1/2)	error: transpose needs a matrix
+-e	transpose(2)	error: transpose needs a matrix
+-e	transpose(i)	error: transpose needs a matrix
+-e	transpose(inf)	error: transpose needs a matrix
+-e	transpose(-inf)	error: transpose needs a matrix
+-e	transpose(undefined)	error: transpose needs a matrix
+-e	transpose(10^20)	error: transpose needs a matrix
+-e	transpose(10^(-20))	error: transpose needs a matrix
+-e	transpose(x)	error: transpose needs a matrix
+-e	transpose([])	error: transpose needs a matrix
+-e	transpose([1, 2])	[[1], [2]]
+-e	transpose("text")	error: transpose needs a matrix
+-e	transpose(true)	error: transpose needs a matrix
+-e	transpose(-7/3)	error: transpose needs a matrix
+-e	transpose(0.5)	error: transpose needs a matrix
+-e	trace(0)	error: trace needs a matrix
+-e	trace(1)	error: trace needs a matrix
+-e	trace(-1)	error: trace needs a matrix
+-e	trace(1/2)	error: trace needs a matrix
+-e	trace(2)	error: trace needs a matrix
+-e	trace(i)	error: trace needs a matrix
+-e	trace(inf)	error: trace needs a matrix
+-e	trace(-inf)	error: trace needs a matrix
+-e	trace(undefined)	error: trace needs a matrix
+-e	trace(10^20)	error: trace needs a matrix
+-e	trace(10^(-20))	error: trace needs a matrix
+-e	trace(x)	error: trace needs a matrix
+-e	trace([])	error: trace needs a matrix
+-e	trace([1, 2])	error: trace needs a matrix
+-e	trace("text")	error: trace needs a matrix
+-e	trace(true)	error: trace needs a matrix
+-e	trace(-7/3)	error: trace needs a matrix
+-e	trace(0.5)	error: trace needs a matrix
+-e	rank(0)	error: rank needs a matrix
+-e	rank(1)	error: rank needs a matrix
+-e	rank(-1)	error: rank needs a matrix
+-e	rank(1/2)	error: rank needs a matrix
+-e	rank(2)	error: rank needs a matrix
+-e	rank(i)	error: rank needs a matrix
+-e	rank(inf)	error: rank needs a matrix
+-e	rank(-inf)	error: rank needs a matrix
+-e	rank(undefined)	error: rank needs a matrix
+-e	rank(10^20)	error: rank needs a matrix
+-e	rank(10^(-20))	error: rank needs a matrix
+-e	rank(x)	error: rank needs a matrix
+-e	rank([])	error: rank needs a matrix
+-e	rank([1, 2])	error: rank needs a matrix
+-e	rank("text")	error: rank needs a matrix
+-e	rank(true)	error: rank needs a matrix
+-e	rank(-7/3)	error: rank needs a matrix
+-e	rank(0.5)	error: rank needs a matrix
+-e	rref(0)	error: rref needs a matrix
+-e	rref(1)	error: rref needs a matrix
+-e	rref(-1)	error: rref needs a matrix
+-e	rref(1/2)	error: rref needs a matrix
+-e	rref(2)	error: rref needs a matrix
+-e	rref(i)	error: rref needs a matrix
+-e	rref(inf)	error: rref needs a matrix
+-e	rref(-inf)	error: rref needs a matrix
+-e	rref(undefined)	error: rref needs a matrix
+-e	rref(10^20)	error: rref needs a matrix
+-e	rref(10^(-20))	error: rref needs a matrix
+-e	rref(x)	error: rref needs a matrix
+-e	rref([])	error: rref needs a matrix
+-e	rref([1, 2])	error: rref needs a matrix
+-e	rref("text")	error: rref needs a matrix
+-e	rref(true)	error: rref needs a matrix
+-e	rref(-7/3)	error: rref needs a matrix
+-e	rref(0.5)	error: rref needs a matrix
+-e	nullspace(0)	error: nullspace needs a matrix
+-e	nullspace(1)	error: nullspace needs a matrix
+-e	nullspace(-1)	error: nullspace needs a matrix
+-e	nullspace(1/2)	error: nullspace needs a matrix
+-e	nullspace(2)	error: nullspace needs a matrix
+-e	nullspace(i)	error: nullspace needs a matrix
+-e	nullspace(inf)	error: nullspace needs a matrix
+-e	nullspace(-inf)	error: nullspace needs a matrix
+-e	nullspace(undefined)	error: nullspace needs a matrix
+-e	nullspace(10^20)	error: nullspace needs a matrix
+-e	nullspace(10^(-20))	error: nullspace needs a matrix
+-e	nullspace(x)	error: nullspace needs a matrix
+-e	nullspace([])	error: nullspace needs a matrix
+-e	nullspace([1, 2])	error: nullspace needs a matrix
+-e	nullspace("text")	error: nullspace needs a matrix
+-e	nullspace(true)	error: nullspace needs a matrix
+-e	nullspace(-7/3)	error: nullspace needs a matrix
+-e	nullspace(0.5)	error: nullspace needs a matrix
+-e	eigenvalues(0)	error: eigenvalues needs a matrix
+-e	eigenvalues(1)	error: eigenvalues needs a matrix
+-e	eigenvalues(-1)	error: eigenvalues needs a matrix
+-e	eigenvalues(1/2)	error: eigenvalues needs a matrix
+-e	eigenvalues(2)	error: eigenvalues needs a matrix
+-e	eigenvalues(i)	error: eigenvalues needs a matrix
+-e	eigenvalues(inf)	error: eigenvalues needs a matrix
+-e	eigenvalues(-inf)	error: eigenvalues needs a matrix
+-e	eigenvalues(undefined)	error: eigenvalues needs a matrix
+-e	eigenvalues(10^20)	error: eigenvalues needs a matrix
+-e	eigenvalues(10^(-20))	error: eigenvalues needs a matrix
+-e	eigenvalues(x)	error: eigenvalues needs a matrix
+-e	eigenvalues([])	error: eigenvalues needs a matrix
+-e	eigenvalues([1, 2])	error: eigenvalues needs a matrix
+-e	eigenvalues("text")	error: eigenvalues needs a matrix
+-e	eigenvalues(true)	error: eigenvalues needs a matrix
+-e	eigenvalues(-7/3)	error: eigenvalues needs a matrix
+-e	eigenvalues(0.5)	error: eigenvalues needs a matrix
+-e	eigenvectors(0)	error: eigenvectors needs a matrix
+-e	eigenvectors(1)	error: eigenvectors needs a matrix
+-e	eigenvectors(-1)	error: eigenvectors needs a matrix
+-e	eigenvectors(1/2)	error: eigenvectors needs a matrix
+-e	eigenvectors(2)	error: eigenvectors needs a matrix
+-e	eigenvectors(i)	error: eigenvectors needs a matrix
+-e	eigenvectors(inf)	error: eigenvectors needs a matrix
+-e	eigenvectors(-inf)	error: eigenvectors needs a matrix
+-e	eigenvectors(undefined)	error: eigenvectors needs a matrix
+-e	eigenvectors(10^20)	error: eigenvectors needs a matrix
+-e	eigenvectors(10^(-20))	error: eigenvectors needs a matrix
+-e	eigenvectors(x)	error: eigenvectors needs a matrix
+-e	eigenvectors([])	error: eigenvectors needs a matrix
+-e	eigenvectors([1, 2])	error: eigenvectors needs a matrix
+-e	eigenvectors("text")	error: eigenvectors needs a matrix
+-e	eigenvectors(true)	error: eigenvectors needs a matrix
+-e	eigenvectors(-7/3)	error: eigenvectors needs a matrix
+-e	eigenvectors(0.5)	error: eigenvectors needs a matrix
+-e	charpoly(0)	error: charpoly needs a matrix
+-e	charpoly(1)	error: charpoly needs a matrix
+-e	charpoly(-1)	error: charpoly needs a matrix
+-e	charpoly(1/2)	error: charpoly needs a matrix
+-e	charpoly(2)	error: charpoly needs a matrix
+-e	charpoly(i)	error: charpoly needs a matrix
+-e	charpoly(inf)	error: charpoly needs a matrix
+-e	charpoly(-inf)	error: charpoly needs a matrix
+-e	charpoly(undefined)	error: charpoly needs a matrix
+-e	charpoly(10^20)	error: charpoly needs a matrix
+-e	charpoly(10^(-20))	error: charpoly needs a matrix
+-e	charpoly(x)	error: charpoly needs a matrix
+-e	charpoly([])	error: charpoly needs a matrix
+-e	charpoly([1, 2])	error: charpoly needs a matrix
+-e	charpoly("text")	error: charpoly needs a matrix
+-e	charpoly(true)	error: charpoly needs a matrix
+-e	charpoly(-7/3)	error: charpoly needs a matrix
+-e	charpoly(0.5)	error: charpoly needs a matrix
+-e	cross(0)	[0, 0]
+-e	cross(1)	[0, 1]
+-e	cross(-1)	[0, -1]
+-e	cross(1/2)	[0, 1/2]
+-e	cross(2)	[0, 2]
+-e	cross(i)	[-1, 0]
+-e	cross(inf)	[0, inf]
+-e	cross(-inf)	[0, -inf]
+-e	cross(undefined)	error: undefined is not a point
+-e	cross(10^20)	[0, 100000000000000000000]
+-e	cross(10^(-20))	[0, 1/100000000000000000000]
+-e	cross(x)	error: x is not a point
+-e	cross([])	error: [] is not a point
+-e	cross([1, 2])	[-2, 1]
+-e	cross("text")	error: "text" is not a point
+-e	cross(true)	error: true is not a point
+-e	cross(-7/3)	[0, -7/3]
+-e	cross(0.5)	[0, 0.5]
+-e	identity(0)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(1)	[[1]]
+-e	identity(-1)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(1/2)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(2)	[[1, 0], [0, 1]]
+-e	identity(i)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(inf)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(-inf)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(undefined)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(10^20)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(10^(-20))	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(x)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity([])	error: identity(n): n must be a whole number from 1 to 200
+-e	identity([1, 2])	error: identity(n): n must be a whole number from 1 to 200
+-e	identity("text")	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(true)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(-7/3)	error: identity(n): n must be a whole number from 1 to 200
+-e	identity(0.5)	error: identity(n): n must be a whole number from 1 to 200
+-e	complexexpand(0)	0
+-e	complexexpand(1)	1
+-e	complexexpand(-1)	-1
+-e	complexexpand(1/2)	1/2
+-e	complexexpand(2)	2
+-e	complexexpand(i)	i
+-e	complexexpand(inf)	inf
+-e	complexexpand(-inf)	-inf
+-e	complexexpand(undefined)	undefined
+-e	complexexpand(10^20)	100000000000000000000
+-e	complexexpand(10^(-20))	1/100000000000000000000
+-e	complexexpand(x)	x
+-e	complexexpand([])	[]
+-e	complexexpand([1, 2])	[1, 2]
+-e	complexexpand("text")	"text"
+-e	complexexpand(true)	true
+-e	complexexpand(-7/3)	-7/3
+-e	complexexpand(0.5)	0.5
+-e	funsolve(0)	error: the equation has no call of f
+-e	funsolve(1)	error: the equation has no call of f
+-e	funsolve(-1)	error: the equation has no call of f
+-e	funsolve(1/2)	error: the equation has no call of f
+-e	funsolve(2)	error: the equation has no call of f
+-e	funsolve(i)	error: the equation has no call of f
+-e	funsolve(inf)	error: the equation has no call of f
+-e	funsolve(-inf)	error: the equation has no call of f
+-e	funsolve(undefined)	error: the equation has no call of f
+-e	funsolve(10^20)	error: the equation has no call of f
+-e	funsolve(10^(-20))	error: the equation has no call of f
+-e	funsolve(x)	error: the equation has no call of f
+-e	funsolve([])	error: the equation has no call of f
+-e	funsolve([1, 2])	error: the equation has no call of f
+-e	funsolve("text")	error: the equation has no call of f
+-e	funsolve(true)	error: the equation has no call of f
+-e	funsolve(-7/3)	error: the equation has no call of f
+-e	funsolve(0.5)	error: the equation has no call of f
+-e	dimensions(0)	[]
+-e	dimensions(1)	[]
+-e	dimensions(-1)	[]
+-e	dimensions(1/2)	[]
+-e	dimensions(2)	[]
+-e	dimensions(i)	[]
+-e	dimensions(inf)	[]
+-e	dimensions(-inf)	[]
+-e	dimensions(undefined)	[]
+-e	dimensions(10^20)	[]
+-e	dimensions(10^(-20))	[]
+-e	dimensions(x)	[]
+-e	dimensions([])	[0]
+-e	dimensions([1, 2])	[2]
+-e	dimensions("text")	[]
+-e	dimensions(true)	[]
+-e	dimensions(-7/3)	[]
+-e	dimensions(0.5)	[]
+-e	tensorrank(0)	0
+-e	tensorrank(1)	0
+-e	tensorrank(-1)	0
+-e	tensorrank(1/2)	0
+-e	tensorrank(2)	0
+-e	tensorrank(i)	0
+-e	tensorrank(inf)	0
+-e	tensorrank(-inf)	0
+-e	tensorrank(undefined)	0
+-e	tensorrank(10^20)	0
+-e	tensorrank(10^(-20))	0
+-e	tensorrank(x)	0
+-e	tensorrank([])	1
+-e	tensorrank([1, 2])	1
+-e	tensorrank("text")	0
+-e	tensorrank(true)	0
+-e	tensorrank(-7/3)	0
+-e	tensorrank(0.5)	0
+-e	flatten(0)	[0]
+-e	flatten(1)	[1]
+-e	flatten(-1)	[-1]
+-e	flatten(1/2)	[1/2]
+-e	flatten(2)	[2]
+-e	flatten(i)	[i]
+-e	flatten(inf)	[inf]
+-e	flatten(-inf)	[-inf]
+-e	flatten(undefined)	[undefined]
+-e	flatten(10^20)	[100000000000000000000]
+-e	flatten(10^(-20))	[1/100000000000000000000]
+-e	flatten(x)	[x]
+-e	flatten([])	[]
+-e	flatten([1, 2])	[1, 2]
+-e	flatten("text")	["text"]
+-e	flatten(true)	[true]
+-e	flatten(-7/3)	[-7/3]
+-e	flatten(0.5)	[0.5]
+-e	levicivita(0)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(1)	[1]
+-e	levicivita(-1)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(1/2)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(2)	[[0, 1], [-1, 0]]
+-e	levicivita(i)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(inf)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(-inf)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(undefined)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(10^20)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(10^(-20))	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(x)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita([])	1
+-e	levicivita([1, 2])	1
+-e	levicivita("text")	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(true)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(-7/3)	error: levicivita(n) needs a dimension from 1 to 6
+-e	levicivita(0.5)	error: levicivita(n) needs a dimension from 1 to 6
+-e	signature(0)	1
+-e	signature(1)	1
+-e	signature(-1)	error: the entries must be whole numbers
+-e	signature(1/2)	error: the entries must be whole numbers
+-e	signature(2)	1
+-e	signature(i)	error: the entries must be whole numbers
+-e	signature(inf)	error: the entries must be whole numbers
+-e	signature(-inf)	error: the entries must be whole numbers
+-e	signature(undefined)	error: the entries must be whole numbers
+-e	signature(10^20)	error: the entries must be whole numbers
+-e	signature(10^(-20))	error: the entries must be whole numbers
+-e	signature(x)	error: the entries must be whole numbers
+-e	signature([])	1
+-e	signature([1, 2])	1
+-e	signature("text")	error: the entries must be whole numbers
+-e	signature(true)	error: the entries must be whole numbers
+-e	signature(-7/3)	error: the entries must be whole numbers
+-e	signature(0.5)	error: the entries must be whole numbers
+-e	kroneckerdelta(0)	1
+-e	kroneckerdelta(1)	0
+-e	kroneckerdelta(-1)	0
+-e	kroneckerdelta(1/2)	0
+-e	kroneckerdelta(2)	0
+-e	kroneckerdelta(i)	0
+-e	kroneckerdelta(inf)	0
+-e	kroneckerdelta(-inf)	0
+-e	kroneckerdelta(undefined)	0
+-e	kroneckerdelta(10^20)	0
+-e	kroneckerdelta(10^(-20))	0
+-e	kroneckerdelta(x)	kroneckerdelta(x, 0)
+-e	kroneckerdelta([])	0
+-e	kroneckerdelta([1, 2])	0
+-e	kroneckerdelta("text")	kroneckerdelta("text", 0)
+-e	kroneckerdelta(true)	0
+-e	kroneckerdelta(-7/3)	0
+-e	kroneckerdelta(0.5)	0
+-e	symmetrize(0)	0
+-e	symmetrize(1)	1
+-e	symmetrize(-1)	-1
+-e	symmetrize(1/2)	1/2
+-e	symmetrize(2)	2
+-e	symmetrize(i)	i
+-e	symmetrize(inf)	inf
+-e	symmetrize(-inf)	-inf
+-e	symmetrize(undefined)	undefined
+-e	symmetrize(10^20)	100000000000000000000
+-e	symmetrize(10^(-20))	1/100000000000000000000
+-e	symmetrize(x)	x
+-e	symmetrize([])	[]
+-e	symmetrize([1, 2])	[1, 2]
+-e	symmetrize("text")	"text"
+-e	symmetrize(true)	true
+-e	symmetrize(-7/3)	-7/3
+-e	symmetrize(0.5)	0.5
+-e	antisymmetrize(0)	0
+-e	antisymmetrize(1)	1
+-e	antisymmetrize(-1)	-1
+-e	antisymmetrize(1/2)	1/2
+-e	antisymmetrize(2)	2
+-e	antisymmetrize(i)	i
+-e	antisymmetrize(inf)	inf
+-e	antisymmetrize(-inf)	-inf
+-e	antisymmetrize(undefined)	undefined
+-e	antisymmetrize(10^20)	100000000000000000000

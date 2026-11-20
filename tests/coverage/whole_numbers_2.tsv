@@ -1,0 +1,36 @@
+-e	binomial(13, 6)	1716
+-e	nchoosek(13, 6)	1716
+-e	binomial(13, 9)	715
+-e	nchoosek(13, 9)	715
+-e	binomial(13, 12)	13
+-e	nchoosek(13, 12)	13
+-e	binomial(14, 0)	1
+-e	nchoosek(14, 0)	1
+-e	binomial(14, 3)	364
+-e	nchoosek(14, 3)	364
+-e	binomial(14, 6)	3003
+-e	nchoosek(14, 6)	3003
+-e	binomial(14, 9)	2002
+-e	nchoosek(14, 9)	2002
+-e	binomial(14, 12)	91
+-e	nchoosek(14, 12)	91
+-e	binomial(15, 0)	1
+-e	nchoosek(15, 0)	1
+-e	binomial(15, 3)	455
+-e	nchoosek(15, 3)	455
+-e	binomial(15, 6)	5005
+-e	nchoosek(15, 6)	5005
+-e	binomial(15, 9)	5005
+-e	nchoosek(15, 9)	5005
+-e	binomial(15, 12)	455
+-e	nchoosek(15, 12)	455
+-e	binomial(15, 15)	1
+-e	nchoosek(15, 15)	1
+-e	isqrt(0)	0
+-e	isqrt(1)	1
+-e	isqrt(2)	1
+-e	isqrt(3)	1
+-e	isqrt(10)	3
+-e	isqrt(99)	9
+-e	isqrt(100)	10
+-e	isqrt(12345678901234567890)	3513641828

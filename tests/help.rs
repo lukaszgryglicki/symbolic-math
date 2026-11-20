@@ -7,9 +7,29 @@ fn program() -> Command {
     Command::new(env!("CARGO_BIN_EXE_symbolic-math"))
 }
 
+/// A directory for the pictures that examples save: nothing is written into the repository.
+/// Every test has its own, and removes it at its end.
+fn scratch() -> std::path::PathBuf {
+    let thread: String = format!("{:?}", std::thread::current().id())
+        .chars()
+        .filter(char::is_ascii_digit)
+        .collect();
+    let dir = std::env::temp_dir().join(format!(
+        "symbolic-math-help-{}-{thread}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&dir).expect("a directory for the pictures");
+    dir
+}
+
+fn tidy() {
+    let _ = std::fs::remove_dir_all(scratch());
+}
+
 fn output(args: &[&str]) -> (String, String, bool) {
     let out = program()
         .args(args)
+        .current_dir(scratch())
         .stdin(Stdio::null())
         .output()
         .expect("symbolic-math runs");
@@ -88,6 +108,7 @@ fn both_spellings_print_the_same_text() {
     // (lines fit a terminal of 100 columns)
     let wide: Vec<&str> = long.lines().filter(|l| l.chars().count() > 100).collect();
     assert!(wide.is_empty(), "lines longer than 100 columns: {wide:?}");
+    tidy();
 }
 
 #[test]
@@ -112,6 +133,34 @@ fn every_example_runs() {
         lines.len(),
         failures.join("\n")
     );
+    // the examples that save a picture wrote a file each
+    let saved: Vec<String> = std::fs::read_dir(scratch())
+        .expect("the directory of the pictures")
+        .filter_map(|entry| entry.ok()?.file_name().into_string().ok())
+        .collect();
+    for name in [
+        "walk.png",
+        "walk.jxl",
+        "turn.png",
+        "slices.jxl",
+        "plot.png",
+        "complex.png",
+        "bar.png",
+        "pie.png",
+        "p11.png",
+        "log.jxl",
+        "gray.png",
+        "rgb.jxl",
+        "deep.png",
+        "m.csv",
+    ] {
+        assert!(
+            saved.iter().any(|s| s == name),
+            "{name} was not saved: {saved:?}"
+        );
+    }
+    assert!(saved.iter().all(|s| !s.ends_with(".part")), "{saved:?}");
+    tidy();
 }
 
 #[test]
@@ -142,6 +191,7 @@ fn every_function_and_constant_has_an_example() {
         missing.is_empty(),
         "constants without an example: {missing:?}"
     );
+    tidy();
 }
 
 #[test]
@@ -156,10 +206,80 @@ fn the_options_and_the_forms_of_input_have_examples() {
     }
     let text: String = lines.iter().flatten().map(|a| format!("{a} ")).collect();
     for form in [
-        ":=", "->", ";", "[[", "==", "!=", "<=", ">=", "^^", "+/-", "±", "!", "!!", "%", "'(", "°",
-        "|", "[1/2](", " and ", " or ", "∑", "∏", "∫", "∂", "√", "π", "∞", "²", "≤", "0x", "0b",
-        "0.(3)", "d/dx", "**", " mod ", "∈",
+        ":=",
+        "->",
+        ";",
+        "[[",
+        "==",
+        "!=",
+        "<=",
+        ">=",
+        "^^",
+        "+/-",
+        "±",
+        "!",
+        "!!",
+        "%",
+        "'(",
+        "°",
+        "|",
+        "[1/2](",
+        " and ",
+        " or ",
+        "∑",
+        "∏",
+        "∫",
+        "∂",
+        "√",
+        "π",
+        "∞",
+        "²",
+        "≤",
+        "0x",
+        "0b",
+        "0.(3)",
+        "d/dx",
+        "**",
+        " mod ",
+        "∈",
+        "0o",
+        "16#",
+        "1000#001#234",
+        ".(#",
+        "\"#",
+        ".*",
+        "./",
+        ".^",
+        ".\\",
+        "1:5",
+        "0:0.25:1",
+        "] \\ [",
+        "[1, 2; 3, 4]",
+        "@(x)",
+        "@plus",
+        "~=",
+        "~(",
+        "!true",
+        " & ",
+        " || ",
     ] {
         assert!(text.contains(form), "no example with {form}");
     }
+    // everything that is chosen for a picture
+    for name in symbolic_math::picture::NAMED {
+        assert!(
+            has_word(&text, name, &[' ']) && text.contains(&format!("{name} = ")),
+            "no example with {name} = ..."
+        );
+    }
+    for word in symbolic_math::picture::WORDS {
+        assert!(has_word(&text, word, &[')', ',']), "no example with {word}");
+    }
+    for (palette, _) in symbolic_math::raster::PALETTES {
+        assert!(
+            *palette == "rainbow" || *palette == "grey" || has_word(&help, palette, &[]),
+            "the palette {palette} is not named"
+        );
+    }
+    tidy();
 }

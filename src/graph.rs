@@ -31,6 +31,21 @@ pub struct Graph {
     weighted: bool,
 }
 
+/// The vertices of a graph as they are written, and its edges: from, to, whether it is an
+/// arrow, and its weight when the graph has weights.
+pub type Parts = (Vec<String>, Vec<(usize, usize, bool, Option<String>)>);
+
+pub fn parts(e: &Expr) -> Result<Parts, String> {
+    let g = Graph::read(e)?;
+    let names = g.verts.iter().map(|v| v.to_string()).collect();
+    let edges = g
+        .edges
+        .iter()
+        .map(|e| (e.a, e.b, e.arrow, g.weighted.then(|| e.weight.to_string())))
+        .collect();
+    Ok((names, edges))
+}
+
 fn rule(e: &Expr) -> Option<(&Expr, &Expr)> {
     match e.fn_args("rule") {
         Some([a, b]) => Some((a, b)),
@@ -1283,7 +1298,7 @@ pub fn call(name: &str, a: &[Expr]) -> Option<Res> {
     if let Some(r) = named(name, a) {
         return Some(r);
     }
-    if !NAMES.contains(&name) {
+    if !NAMES.contains(&name) && !MORE.contains(&name) {
         return None;
     }
     Some(crate::budget::with_limit(Duration::from_secs(20), || {
@@ -1293,6 +1308,10 @@ pub fn call(name: &str, a: &[Expr]) -> Option<Res> {
 
 fn command(name: &str, a: &[Expr]) -> Res {
     let g = Graph::read(a.first().ok_or(USAGE)?)?;
+    if MORE.contains(&name) {
+        return more(&g, name, a)?
+            .ok_or_else(|| format!("{name}: the arguments do not fit (see --functions)"));
+    }
     let n = g.n();
     let usage = |text: &str| Err(format!("{name}{text}"));
     Ok(match (name, &a[1..]) {
@@ -1656,4 +1675,477 @@ fn command(name: &str, a: &[Expr]) -> Res {
         }
         _ => return usage(": the arguments do not fit (see --functions)"),
     })
+}
+
+/// What a search for the parts that hold together without a single vertex keeps.
+struct Blocks {
+    seen: Vec<usize>,
+    low: Vec<usize>,
+    time: usize,
+    stack: Vec<(usize, usize)>,
+    parts: Vec<Vec<usize>>,
+    cuts: Vec<bool>,
+    bridges: Vec<(usize, usize)>,
+}
+
+fn blocks(adj: &[Vec<(usize, usize)>], v: usize, came: Option<usize>, s: &mut Blocks) {
+    s.time += 1;
+    s.seen[v] = s.time;
+    s.low[v] = s.time;
+    let mut children = 0;
+    for &(w, k) in &adj[v] {
+        if Some(k) == came || w == v {
+            continue;
+        }
+        if s.seen[w] == 0 {
+            children += 1;
+            s.stack.push((v, w));
+            blocks(adj, w, Some(k), s);
+            s.low[v] = s.low[v].min(s.low[w]);
+            if s.low[w] >= s.seen[v] {
+                if came.is_some() || children > 1 {
+                    s.cuts[v] = true;
+                }
+                let mut part = Vec::new();
+                while let Some((a, b)) = s.stack.pop() {
+                    part.extend([a, b]);
+                    if (a, b) == (v, w) {
+                        break;
+                    }
+                }
+                part.sort_unstable();
+                part.dedup();
+                s.parts.push(part);
+            }
+            if s.low[w] > s.seen[v] {
+                s.bridges.push((v.min(w), v.max(w)));
+            }
+        } else if s.seen[w] < s.seen[v] {
+            s.stack.push((v, w));
+            s.low[v] = s.low[v].min(s.seen[w]);
+        }
+    }
+}
+
+const MORE: &[&str] = &[
+    "bfsearch",
+    "dfsearch",
+    "successors",
+    "predecessors",
+    "nearest",
+    "allpaths",
+    "hascycles",
+    "isdag",
+    "transclosure",
+    "transreduction",
+    "biconncomp",
+    "cutvertices",
+    "bridges",
+    "centrality",
+    "addedge",
+    "rmedge",
+    "addnode",
+    "rmnode",
+    "findedge",
+    "flipedge",
+];
+
+/// Searches, centralities and changes of a graph.
+fn more(g: &Graph, name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
+    let n = g.n();
+    let rest = &a[1..];
+    let near = |adj: Vec<Vec<(usize, usize)>>| -> Vec<Vec<usize>> {
+        adj.into_iter()
+            .map(|l| {
+                let mut v: Vec<usize> = l.into_iter().map(|(w, _)| w).collect();
+                v.sort_unstable();
+                v.dedup();
+                v
+            })
+            .collect()
+    };
+    let out = near(g.out());
+    // the steps to every vertex along the edges, without weights
+    let steps = |adj: &[Vec<usize>], start: usize| -> Vec<Option<usize>> {
+        let mut dist = vec![None; n];
+        dist[start] = Some(0);
+        let mut queue = VecDeque::from([start]);
+        while let Some(v) = queue.pop_front() {
+            for &w in &adj[v] {
+                if dist[w].is_none() {
+                    dist[w] = dist[v].map(|d| d + 1);
+                    queue.push_back(w);
+                }
+            }
+        }
+        dist
+    };
+    let arrows = |pairs: &[(usize, usize)], skip: Option<usize>| -> Expr {
+        let mut items: Vec<Expr> = pairs
+            .iter()
+            .map(|(p, q)| Expr::call("rule", vec![g.verts[*p].clone(), g.verts[*q].clone()]))
+            .collect();
+        for (k, v) in g.verts.iter().enumerate() {
+            if Some(k) != skip && !pairs.iter().any(|(p, q)| *p == k || *q == k) {
+                items.push(Expr::list(vec![v.clone()]));
+            }
+        }
+        Expr::list(items)
+    };
+    let kept = |edges: &[Edge], skip: Option<usize>| -> Expr {
+        let mut items: Vec<Expr> = edges.iter().map(|e| g.edge_expr(e)).collect();
+        for (k, v) in g.verts.iter().enumerate() {
+            if Some(k) != skip && !edges.iter().any(|e| e.a == k || e.b == k) {
+                items.push(Expr::list(vec![v.clone()]));
+            }
+        }
+        Expr::list(items)
+    };
+    Ok(Some(match (name, rest) {
+        ("bfsearch", [v]) => {
+            let start = g.index(v)?;
+            let mut order = vec![start];
+            let mut seen = vec![false; n];
+            seen[start] = true;
+            let mut at = 0;
+            while at < order.len() {
+                for &w in &out[order[at]] {
+                    if !seen[w] {
+                        seen[w] = true;
+                        order.push(w);
+                    }
+                }
+                at += 1;
+            }
+            g.list(&order)
+        }
+        ("dfsearch", [v]) => {
+            let start = g.index(v)?;
+            let mut order = Vec::new();
+            let mut seen = vec![false; n];
+            let mut stack = vec![start];
+            while let Some(v) = stack.pop() {
+                if seen[v] {
+                    continue;
+                }
+                seen[v] = true;
+                order.push(v);
+                stack.extend(out[v].iter().rev().filter(|w| !seen[**w]));
+            }
+            g.list(&order)
+        }
+        ("successors", [v]) => g.list(&out[g.index(v)?]),
+        ("predecessors", [v]) => {
+            let v = g.index(v)?;
+            let list: Vec<usize> = (0..n).filter(|u| out[*u].contains(&v)).collect();
+            g.list(&list)
+        }
+        ("nearest", [v, d]) => {
+            let start = g.index(v)?;
+            let reach =
+                numeric::real_value(d, 20).ok_or("nearest(graph, v, d): d is a real number")?;
+            let (dist, _) = g.paths(start)?;
+            let mut found: Vec<(Float, usize)> = dist
+                .into_iter()
+                .enumerate()
+                .filter(|(k, _)| *k != start)
+                .filter_map(|(k, x)| x.filter(|x| *x <= reach).map(|x| (x, k)))
+                .collect();
+            found.sort_by(|p, q| {
+                p.0.partial_cmp(&q.0)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+                    .then(p.1.cmp(&q.1))
+            });
+            g.list(&found.into_iter().map(|p| p.1).collect::<Vec<_>>())
+        }
+        ("allpaths", [s, t]) => {
+            let (start, end) = (g.index(s)?, g.index(t)?);
+            let mut found: Vec<Vec<usize>> = Vec::new();
+            let mut path = vec![start];
+            let mut next = vec![0usize];
+            while let Some(k) = next.last().copied() {
+                let v = path[path.len() - 1];
+                if v == end && path.len() > 1 || k >= out[v].len() {
+                    if v == end && path.len() > 1 && k == 0 {
+                        found.push(path.clone());
+                        if found.len() > 100_000 {
+                            return Err("allpaths: more than 100000 ways".into());
+                        }
+                    }
+                    path.pop();
+                    next.pop();
+                    continue;
+                }
+                *next.last_mut().expect("a level") += 1;
+                let w = out[v][k];
+                if !path.contains(&w) {
+                    path.push(w);
+                    next.push(0);
+                }
+            }
+            if start == end {
+                found.insert(0, vec![start]);
+            }
+            Expr::list(found.iter().map(|p| g.list(p)).collect())
+        }
+        ("hascycles", []) => truth(g.cycle().is_some()),
+        ("isdag", []) => {
+            truth(!g.edges.is_empty() && g.edges.iter().all(|e| e.arrow) && g.cycle().is_none())
+        }
+        ("transclosure", []) => {
+            let mut pairs = Vec::new();
+            for u in 0..n {
+                let dist = steps(&out, u);
+                pairs.extend(
+                    (0..n)
+                        .filter(|w| *w != u && dist[*w].is_some())
+                        .map(|w| (u, w)),
+                );
+            }
+            arrows(&pairs, None)
+        }
+        ("transreduction", []) => {
+            if g.edges.iter().any(|e| !e.arrow) || g.cycle().is_some() {
+                return Err(
+                    "transreduction is for graphs with directions and without cycles".into(),
+                );
+            }
+            let mut pairs: Vec<(usize, usize)> = g.edges.iter().map(|e| (e.a, e.b)).collect();
+            pairs.sort_unstable();
+            pairs.dedup();
+            let needed: Vec<(usize, usize)> = pairs
+                .iter()
+                .filter(|(u, v)| {
+                    // no way from u to v through another vertex
+                    !out[*u]
+                        .iter()
+                        .any(|w| w != v && steps(&out, *w)[*v].is_some())
+                })
+                .copied()
+                .collect();
+            arrows(&needed, None)
+        }
+        ("biconncomp" | "cutvertices" | "bridges", []) => {
+            let adj = g.both();
+            let mut s = Blocks {
+                seen: vec![0; n],
+                low: vec![0; n],
+                time: 0,
+                stack: Vec::new(),
+                parts: Vec::new(),
+                cuts: vec![false; n],
+                bridges: Vec::new(),
+            };
+            for v in 0..n {
+                if s.seen[v] == 0 {
+                    blocks(&adj, v, None, &mut s);
+                }
+            }
+            match name {
+                "biconncomp" => {
+                    s.parts.sort();
+                    Expr::list(s.parts.iter().map(|p| g.list(p)).collect())
+                }
+                "cutvertices" => g.list(&(0..n).filter(|v| s.cuts[*v]).collect::<Vec<_>>()),
+                _ => {
+                    s.bridges.sort_unstable();
+                    Expr::list(s.bridges.iter().map(|(p, q)| g.list(&[*p, *q])).collect())
+                }
+            }
+        }
+        ("centrality", [kind]) => {
+            let kind = crate::arrays::word(kind).unwrap_or_default();
+            let back: Vec<Vec<usize>> = (0..n)
+                .map(|v| (0..n).filter(|u| out[*u].contains(&v)).collect())
+                .collect();
+            let closeness = |adj: &[Vec<usize>]| -> Expr {
+                Expr::list(
+                    (0..n)
+                        .map(|v| {
+                            let dist = steps(adj, v);
+                            let reached = dist.iter().flatten().filter(|d| **d > 0).count() as i64;
+                            let total: i64 = dist.iter().flatten().map(|d| *d as i64).sum();
+                            if reached == 0 || n < 2 {
+                                Expr::zero()
+                            } else {
+                                Expr::rational(Rational::from((
+                                    reached * reached,
+                                    (n as i64 - 1) * (n as i64 - 1) * total,
+                                )))
+                            }
+                        })
+                        .collect(),
+                )
+            };
+            match kind.as_str() {
+                "degree" => Expr::list(g.degrees().into_iter().map(int).collect()),
+                "outdegree" => Expr::list(out.iter().map(|l| int(l.len())).collect()),
+                "indegree" => Expr::list(back.iter().map(|l| int(l.len())).collect()),
+                "closeness" | "outcloseness" => closeness(&out),
+                "incloseness" => closeness(&back),
+                "betweenness" => {
+                    let mut score = vec![Rational::new(); n];
+                    for s in 0..n {
+                        // the shortest ways from s: how many reach each vertex, and from where
+                        let mut ways = vec![Integer::new(); n];
+                        let mut dist: Vec<Option<usize>> = vec![None; n];
+                        let mut from: Vec<Vec<usize>> = vec![Vec::new(); n];
+                        let mut order = Vec::new();
+                        ways[s] = Integer::from(1);
+                        dist[s] = Some(0);
+                        let mut queue = VecDeque::from([s]);
+                        while let Some(v) = queue.pop_front() {
+                            order.push(v);
+                            for &w in &out[v] {
+                                if dist[w].is_none() {
+                                    dist[w] = dist[v].map(|d| d + 1);
+                                    queue.push_back(w);
+                                }
+                                if dist[w] == dist[v].map(|d| d + 1) {
+                                    let more = ways[v].clone();
+                                    ways[w] += more;
+                                    from[w].push(v);
+                                }
+                            }
+                        }
+                        let mut share = vec![Rational::new(); n];
+                        for &w in order.iter().rev() {
+                            for &v in &from[w] {
+                                let part = Rational::from((ways[v].clone(), ways[w].clone()))
+                                    * (Rational::from(1) + &share[w]);
+                                share[v] += part;
+                            }
+                            if w != s {
+                                score[w] += &share[w];
+                            }
+                        }
+                    }
+                    Expr::list(
+                        score
+                            .into_iter()
+                            .map(|x| Expr::rational(if g.directed { x } else { x / 2 }))
+                            .collect(),
+                    )
+                }
+                "pagerank" => return command("pagerank", &a[..1]).map(Some),
+                "eigenvector" => {
+                    let prec = numeric::bits_for(numeric::digits()) + 32;
+                    let mut x = vec![Float::with_val(prec, 1) / (n.max(1) as u32); n];
+                    let tiny = Float::with_val(prec, 1) >> (prec - 8);
+                    for _ in 0..100_000 {
+                        // (the matrix plus one keeps graphs with two sides from swinging)
+                        let mut y: Vec<Float> = x.clone();
+                        for (v, list) in back.iter().enumerate() {
+                            for &u in list {
+                                y[v] += &x[u];
+                            }
+                        }
+                        let mut total = Float::new(prec);
+                        for t in &y {
+                            total += t;
+                        }
+                        if total.is_zero() {
+                            break;
+                        }
+                        let mut change = Float::new(prec);
+                        for (t, old) in y.iter_mut().zip(&x) {
+                            *t /= &total;
+                            change += Float::with_val(prec, &*t - old).abs();
+                        }
+                        x = y;
+                        if change <= tiny {
+                            break;
+                        }
+                    }
+                    Expr::list(
+                        x.into_iter()
+                            .map(|t| {
+                                numeric::to_float_expr(
+                                    rug::Complex::with_val(prec, t),
+                                    numeric::digits(),
+                                )
+                            })
+                            .collect(),
+                    )
+                }
+                _ => {
+                    return Err(
+                        "centrality(graph, kind): the kinds are \"degree\", \"indegree\", \"outdegree\", \"closeness\", \"incloseness\", \"outcloseness\", \"betweenness\", \"pagerank\", \"eigenvector\""
+                            .into(),
+                    );
+                }
+            }
+        }
+        ("addedge", [s, t]) | ("addedge", [s, t, _]) => {
+            let mut items = match kept(&g.edges, None) {
+                Expr::List(items) => items.to_vec(),
+                _ => Vec::new(),
+            };
+            let pair = if g.directed {
+                Expr::call("rule", vec![s.clone(), t.clone()])
+            } else {
+                Expr::list(vec![s.clone(), t.clone()])
+            };
+            items.push(match (rest.get(2), g.directed) {
+                (Some(w), true) => Expr::list(vec![pair, w.clone()]),
+                (Some(w), false) => Expr::list(vec![s.clone(), t.clone(), w.clone()]),
+                (None, _) => pair,
+            });
+            // a vertex that stood alone and now has an edge is not listed twice
+            items.retain(|x| !matches!(x.as_list(), Some([v]) if v == s || v == t));
+            Expr::list(items)
+        }
+        ("rmedge", [s, t]) => {
+            let (p, q) = (g.index(s)?, g.index(t)?);
+            let edges: Vec<Edge> = g
+                .edges
+                .iter()
+                .filter(|e| !((e.a == p && e.b == q) || (!e.arrow && e.a == q && e.b == p)))
+                .cloned()
+                .collect();
+            kept(&edges, None)
+        }
+        ("addnode", [v]) => {
+            let mut items = match kept(&g.edges, None) {
+                Expr::List(items) => items.to_vec(),
+                _ => Vec::new(),
+            };
+            if g.index(v).is_err() {
+                items.push(Expr::list(vec![v.clone()]));
+            }
+            Expr::list(items)
+        }
+        ("rmnode", [v]) => {
+            let k = g.index(v)?;
+            let edges: Vec<Edge> = g
+                .edges
+                .iter()
+                .filter(|e| e.a != k && e.b != k)
+                .cloned()
+                .collect();
+            kept(&edges, Some(k))
+        }
+        ("findedge", [s, t]) => {
+            let (p, q) = (g.index(s)?, g.index(t)?);
+            int(g
+                .edges
+                .iter()
+                .position(|e| (e.a == p && e.b == q) || (!e.arrow && e.a == q && e.b == p))
+                .map_or(0, |k| k + 1))
+        }
+        ("flipedge", []) => {
+            let edges: Vec<Edge> = g
+                .edges
+                .iter()
+                .map(|e| Edge {
+                    a: e.b,
+                    b: e.a,
+                    weight: e.weight.clone(),
+                    arrow: e.arrow,
+                })
+                .collect();
+            kept(&edges, None)
+        }
+        _ => return Ok(None),
+    }))
 }

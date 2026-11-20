@@ -1,0 +1,236 @@
+-e	norm(pol2cart(part(cart2pol(3, 4), 1), part(cart2pol(3, 4), 2)) - [3, 4]) < 10^(-25)	true
+-e	part(cart2pol(3, 4), 2)^2	25
+-e	atan2d(4, 3) == rad2deg(atan2(4, 3))	true
+-e	norm(sph2cart(part(cart2sph(3, 4, 2), 1), part(cart2sph(3, 4, 2), 2), part(cart2sph(3, 4, 2), 3)) - [3, 4, 2]) < 10^(-25)	true
+-e	part(cart2sph(3, 4, 2), 3)^2	29
+-e	part(cart2pol(3, 4, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(3, 4, -3), 1), part(cart2sph(3, 4, -3), 2), part(cart2sph(3, 4, -3), 3)) - [3, 4, -3]) < 10^(-25)	true
+-e	part(cart2sph(3, 4, -3), 3)^2	34
+-e	part(cart2pol(3, 4, -3), 3)	-3
+-e	norm(pol2cart(part(cart2pol(1, 1), 1), part(cart2pol(1, 1), 2)) - [1, 1]) < 10^(-25)	true
+-e	part(cart2pol(1, 1), 2)^2	2
+-e	atan2d(1, 1) == rad2deg(atan2(1, 1))	true
+-e	norm(sph2cart(part(cart2sph(1, 1, 2), 1), part(cart2sph(1, 1, 2), 2), part(cart2sph(1, 1, 2), 3)) - [1, 1, 2]) < 10^(-25)	true
+-e	part(cart2sph(1, 1, 2), 3)^2	6
+-e	part(cart2pol(1, 1, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(1, 1, -3), 1), part(cart2sph(1, 1, -3), 2), part(cart2sph(1, 1, -3), 3)) - [1, 1, -3]) < 10^(-25)	true
+-e	part(cart2sph(1, 1, -3), 3)^2	11
+-e	part(cart2pol(1, 1, -3), 3)	-3
+-e	norm(pol2cart(part(cart2pol(-2, 5), 1), part(cart2pol(-2, 5), 2)) - [-2, 5]) < 10^(-25)	true
+-e	part(cart2pol(-2, 5), 2)^2	29
+-e	atan2d(5, -2) == rad2deg(atan2(5, -2))	true
+-e	norm(sph2cart(part(cart2sph(-2, 5, 2), 1), part(cart2sph(-2, 5, 2), 2), part(cart2sph(-2, 5, 2), 3)) - [-2, 5, 2]) < 10^(-25)	true
+-e	part(cart2sph(-2, 5, 2), 3)^2	33
+-e	part(cart2pol(-2, 5, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(-2, 5, -3), 1), part(cart2sph(-2, 5, -3), 2), part(cart2sph(-2, 5, -3), 3)) - [-2, 5, -3]) < 10^(-25)	true
+-e	part(cart2sph(-2, 5, -3), 3)^2	38
+-e	part(cart2pol(-2, 5, -3), 3)	-3
+-e	norm(pol2cart(part(cart2pol(0, 3), 1), part(cart2pol(0, 3), 2)) - [0, 3]) < 10^(-25)	true
+-e	part(cart2pol(0, 3), 2)^2	9
+-e	atan2d(3, 0) == rad2deg(atan2(3, 0))	true
+-e	norm(sph2cart(part(cart2sph(0, 3, 2), 1), part(cart2sph(0, 3, 2), 2), part(cart2sph(0, 3, 2), 3)) - [0, 3, 2]) < 10^(-25)	true
+-e	part(cart2sph(0, 3, 2), 3)^2	13
+-e	part(cart2pol(0, 3, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(0, 3, -3), 1), part(cart2sph(0, 3, -3), 2), part(cart2sph(0, 3, -3), 3)) - [0, 3, -3]) < 10^(-25)	true
+-e	part(cart2sph(0, 3, -3), 3)^2	18
+-e	part(cart2pol(0, 3, -3), 3)	-3
+-e	norm(pol2cart(part(cart2pol(-1, -1), 1), part(cart2pol(-1, -1), 2)) - [-1, -1]) < 10^(-25)	true
+-e	part(cart2pol(-1, -1), 2)^2	2
+-e	atan2d(-1, -1) == rad2deg(atan2(-1, -1))	true
+-e	norm(sph2cart(part(cart2sph(-1, -1, 2), 1), part(cart2sph(-1, -1, 2), 2), part(cart2sph(-1, -1, 2), 3)) - [-1, -1, 2]) < 10^(-25)	true
+-e	part(cart2sph(-1, -1, 2), 3)^2	6
+-e	part(cart2pol(-1, -1, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(-1, -1, -3), 1), part(cart2sph(-1, -1, -3), 2), part(cart2sph(-1, -1, -3), 3)) - [-1, -1, -3]) < 10^(-25)	true
+-e	part(cart2sph(-1, -1, -3), 3)^2	11
+-e	part(cart2pol(-1, -1, -3), 3)	-3
+-e	norm(pol2cart(part(cart2pol(5, 0), 1), part(cart2pol(5, 0), 2)) - [5, 0]) < 10^(-25)	true
+-e	part(cart2pol(5, 0), 2)^2	25
+-e	atan2d(0, 5) == rad2deg(atan2(0, 5))	true
+-e	norm(sph2cart(part(cart2sph(5, 0, 2), 1), part(cart2sph(5, 0, 2), 2), part(cart2sph(5, 0, 2), 3)) - [5, 0, 2]) < 10^(-25)	true
+-e	part(cart2sph(5, 0, 2), 3)^2	29
+-e	part(cart2pol(5, 0, 2), 3)	2
+-e	norm(sph2cart(part(cart2sph(5, 0, -3), 1), part(cart2sph(5, 0, -3), 2), part(cart2sph(5, 0, -3), 3)) - [5, 0, -3]) < 10^(-25)	true
+-e	part(cart2sph(5, 0, -3), 3)^2	34
+-e	part(cart2pol(5, 0, -3), 3)	-3
+-e	rad2deg(deg2rad(0))	0
+-e	sind(0) == sin(deg2rad(0))	true
+-e	cosd(0) == cos(0*pi/180)	true
+-e	simplify(sind(0)^2 + cosd(0)^2)	1
+-e	sinpi(0/180) == sind(0)	true
+-e	cospi(0/180) == cosd(0)	true
+-e	rad2deg(deg2rad(30))	30
+-e	sind(30) == sin(deg2rad(30))	true
+-e	cosd(30) == cos(30*pi/180)	true
+-e	simplify(sind(30)^2 + cosd(30)^2)	1
+-e	sinpi(30/180) == sind(30)	true
+-e	cospi(30/180) == cosd(30)	true
+-e	rad2deg(deg2rad(45))	45
+-e	sind(45) == sin(deg2rad(45))	true
+-e	cosd(45) == cos(45*pi/180)	true
+-e	simplify(sind(45)^2 + cosd(45)^2)	1
+-e	sinpi(45/180) == sind(45)	true
+-e	cospi(45/180) == cosd(45)	true
+-e	rad2deg(deg2rad(60))	60
+-e	sind(60) == sin(deg2rad(60))	true
+-e	cosd(60) == cos(60*pi/180)	true
+-e	simplify(sind(60)^2 + cosd(60)^2)	1
+-e	sinpi(60/180) == sind(60)	true
+-e	cospi(60/180) == cosd(60)	true
+-e	rad2deg(deg2rad(90))	90
+-e	sind(90) == sin(deg2rad(90))	true
+-e	cosd(90) == cos(90*pi/180)	true
+-e	simplify(sind(90)^2 + cosd(90)^2)	1
+-e	sinpi(90/180) == sind(90)	true
+-e	cospi(90/180) == cosd(90)	true
+-e	rad2deg(deg2rad(120))	120
+-e	sind(120) == sin(deg2rad(120))	true
+-e	cosd(120) == cos(120*pi/180)	true
+-e	simplify(sind(120)^2 + cosd(120)^2)	1
+-e	sinpi(120/180) == sind(120)	true
+-e	cospi(120/180) == cosd(120)	true
+-e	rad2deg(deg2rad(180))	180
+-e	sind(180) == sin(deg2rad(180))	true
+-e	cosd(180) == cos(180*pi/180)	true
+-e	simplify(sind(180)^2 + cosd(180)^2)	1
+-e	sinpi(180/180) == sind(180)	true
+-e	cospi(180/180) == cosd(180)	true
+-e	rad2deg(deg2rad(270))	270
+-e	sind(270) == sin(deg2rad(270))	true
+-e	cosd(270) == cos(270*pi/180)	true
+-e	simplify(sind(270)^2 + cosd(270)^2)	1
+-e	sinpi(270/180) == sind(270)	true
+-e	cospi(270/180) == cosd(270)	true
+-e	rad2deg(deg2rad(360))	360
+-e	sind(360) == sin(deg2rad(360))	true
+-e	cosd(360) == cos(360*pi/180)	true
+-e	simplify(sind(360)^2 + cosd(360)^2)	1
+-e	sinpi(360/180) == sind(360)	true
+-e	cospi(360/180) == cosd(360)	true
+-e	rad2deg(deg2rad(-45))	-45
+-e	sind(-45) == sin(deg2rad(-45))	true
+-e	cosd(-45) == cos(-45*pi/180)	true
+-e	simplify(sind(-45)^2 + cosd(-45)^2)	1
+-e	sinpi(-45/180) == sind(-45)	true
+-e	cospi(-45/180) == cosd(-45)	true
+-e	rad2deg(deg2rad(15))	15
+-e	sind(15) == sin(deg2rad(15))	true
+-e	cosd(15) == cos(15*pi/180)	true
+-e	simplify(sind(15)^2 + cosd(15)^2)	1
+-e	sinpi(15/180) == sind(15)	true
+-e	cospi(15/180) == cosd(15)	true
+-e	rad2deg(deg2rad(1))	1
+-e	sind(1) == sin(deg2rad(1))	true
+-e	cosd(1) == cos(1*pi/180)	true
+-e	simplify(sind(1)^2 + cosd(1)^2)	1
+-e	sinpi(1/180) == sind(1)	true
+-e	cospi(1/180) == cosd(1)	true
+-e	sind(asind(1/2))	1/2
+-e	cosd(acosd(1/2))	1/2
+-e	asind(1/2) + acosd(1/2)	90
+-e	sind(asind(sqrt(2)/2))	sqrt(2)/2
+-e	cosd(acosd(sqrt(2)/2))	sqrt(2)/2
+-e	asind(sqrt(2)/2) + acosd(sqrt(2)/2)	90
+-e	sind(asind(1))	1
+-e	cosd(acosd(1))	1
+-e	asind(1) + acosd(1)	90
+-e	sind(asind(0))	0
+-e	cosd(acosd(0))	0
+-e	asind(0) + acosd(0)	90
+-e	sind(asind(-1/2))	-1/2
+-e	cosd(acosd(-1/2))	-1/2
+-e	asind(-1/2) + acosd(-1/2)	90
+-e	sind(asind(sqrt(3)/2))	sqrt(3)/2
+-e	cosd(acosd(sqrt(3)/2))	sqrt(3)/2
+-e	asind(sqrt(3)/2) + acosd(sqrt(3)/2)	90
+-e	rat(1/3)	1/3
+-e	str2num(tostring(1/3))	1/3
+-e	str2num(rats(1/3))	1/3
+-e	numer(1/3)/denom(1/3)	1/3
+-e	tofraction(tobase(1/3))	1/3
+-e	rat(22/7)	22/7
+-e	str2num(tostring(22/7))	22/7
+-e	str2num(rats(22/7))	22/7
+-e	numer(22/7)/denom(22/7)	22/7
+-e	tofraction(tobase(22/7))	22/7
+-e	rat(-5/8)	-5/8
+-e	str2num(tostring(-5/8))	-5/8
+-e	str2num(rats(-5/8))	-5/8
+-e	numer(-5/8)/denom(-5/8)	-5/8
+-e	tofraction(tobase(-5/8))	-5/8
+-e	rat(355/113)	355/113
+-e	str2num(tostring(355/113))	355/113
+-e	str2num(rats(355/113))	355/113
+-e	numer(355/113)/denom(355/113)	355/113
+-e	tofraction(tobase(355/113))	355/113
+-e	rat(1/1000)	1/1000
+-e	str2num(tostring(1/1000))	1/1000
+-e	str2num(rats(1/1000))	1/1000
+-e	numer(1/1000)/denom(1/1000)	1/1000
+-e	tofraction(tobase(1/1000))	1/1000
+-e	rat(17)	17
+-e	str2num(tostring(17))	17
+-e	str2num(rats(17))	17
+-e	numer(17)/denom(17)	17
+-e	tofraction(tobase(17))	17
+-e	rat(0)	0
+-e	str2num(tostring(0))	0
+-e	str2num(rats(0))	0
+-e	numer(0)/denom(0)	0
+-e	tofraction(tobase(0))	0
+-e	rat(-9/16)	-9/16
+-e	str2num(tostring(-9/16))	-9/16
+-e	str2num(rats(-9/16))	-9/16
+-e	numer(-9/16)/denom(-9/16)	-9/16
+-e	tofraction(tobase(-9/16))	-9/16
+-e	isequal(str2num(tostring(x^2 + 1/3)), x^2 + 1/3)	true
+-e	isequal(str2num(tostring(sin(x)*cos(y))), sin(x)*cos(y))	true
+-e	isequal(str2num(tostring((a + b)^3)), (a + b)^3)	true
+-e	isequal(str2num(tostring(sqrt(2) + pi)), sqrt(2) + pi)	true
+-e	isequal(str2num(tostring(x -> x^2)), x -> x^2)	true
+-e	isequal(str2num(tostring(e^(i*pi/3))), e^(i*pi/3))	true
+-e	isequal(str2num(tostring(integrate(f(x), x))), integrate(f(x), x))	true
+-e	isequal(str2num(tostring(2^(1/3))), 2^(1/3))	true
+-e	isequal(str2num(tostring(a*b/c)), a*b/c)	true
+-e	isequal(str2num(tostring(-x)), -x)	true
+-e	isequal(str2num(tostring(1/(x + 1))), 1/(x + 1))	true
+-e	isequal(str2num(tostring(x == y)), x == y)	true
+-e	convert(convert(5 km, mile), km)	5 km
+-e	convert(convert(1 mile, km), mile)	1 mile
+-e	convert(convert(5 m, ft), m)	5 m
+-e	convert(convert(1 ft, m), ft)	1 ft
+-e	convert(convert(5 kg, lb), kg)	5 kg
+-e	convert(convert(1 lb, kg), lb)	1 lb
+-e	convert(convert(5 h, s), h)	5 h
+-e	convert(convert(1 s, h), s)	1 s
+-e	convert(convert(5 J, cal), J)	5 J
+-e	convert(convert(1 cal, J), cal)	1 cal
+-e	convert(convert(5 Pa, atm), Pa)	5 Pa
+-e	convert(convert(1 atm, Pa), atm)	1 atm
+-e	convert(convert(5 L, gal), L)	5 L
+-e	convert(convert(1 gal, L), gal)	1 gal
+-e	convert(convert(5 N, lbf), N)	5 N
+-e	convert(convert(1 lbf, N), lbf)	1 lbf
+-e	convert(convert(5 W, hp), W)	5 W
+-e	convert(convert(1 hp, W), hp)	1 hp
+-e	convert(convert(5 inch, cm), inch)	5 inch
+-e	convert(convert(1 cm, inch), cm)	1 cm
+-e	convert(convert(5 yd, m), yd)	5 yd
+-e	convert(convert(1 m, yd), m)	1 m
+-e	convert(convert(5 oz, g), oz)	5 oz
+-e	convert(convert(1 g, oz), g)	1 g
+-e	convert(convert(5 bar, psi), bar)	5 bar
+-e	convert(convert(1 psi, bar), psi)	1 psi
+-e	convert(convert(5 day, min), day)	5 day
+-e	convert(convert(1 min, day), min)	1 min
+-e	convert(convert(5 eV, J), eV)	5 eV
+-e	convert(convert(1 J, eV), J)	1 J
+-e	convert(convert(5 acre, m^2), acre)	5 acre
+-e	convert(convert(1 m^2, acre), m^2)	1 m^2
+-e	convert(convert(5 knot, m/s), knot)	5 knot
+-e	convert(convert(1 m/s, knot), m/s)	1 m/s
+-e	convert(convert(5 kWh, J), kWh)	5 kWh
+-e	convert(convert(1 J, kWh), J)	1 J
+-e	convert(convert(-40 degC, degF), degC)	-40 degC
+-e	convert(convert(0 degC, degF), degC)	0 degC
+-e	convert(convert(37 degC, degF), degC)	37 degC
+-e	convert(convert(100 degC, degF), degC)	100 degC

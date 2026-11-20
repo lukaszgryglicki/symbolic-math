@@ -1,0 +1,300 @@
+-e	rem(-45, 4)	-1
+-e	mod(-45, 4)	3
+-e	idivide(-45, 4)	-11
+-e	idivide(-45, 4, "floor")	-12
+-e	idivide(-45, 4, "ceil")	-11
+-e	rem(-12, 3)	0
+-e	mod(-12, 3)	0
+-e	idivide(-12, 3)	-4
+-e	idivide(-12, 3, "floor")	-4
+-e	idivide(-12, 3, "ceil")	-4
+-e	rem(-50, 3)	-2
+-e	mod(-50, 3)	1
+-e	idivide(-50, 3)	-16
+-e	idivide(-50, 3, "floor")	-17
+-e	idivide(-50, 3, "ceil")	-16
+-e	rem(16, 2)	0
+-e	mod(16, 2)	0
+-e	idivide(16, 2)	8
+-e	idivide(16, 2, "floor")	8
+-e	idivide(16, 2, "ceil")	8
+-e	rem(-19, 5)	-4
+-e	mod(-19, 5)	1
+-e	idivide(-19, 5)	-3
+-e	idivide(-19, 5, "floor")	-4
+-e	idivide(-19, 5, "ceil")	-3
+-e	rem(30, 4)	2
+-e	mod(30, 4)	2
+-e	idivide(30, 4)	7
+-e	idivide(30, 4, "floor")	7
+-e	idivide(30, 4, "ceil")	8
+-e	rem(34, 4)	2
+-e	mod(34, 4)	2
+-e	idivide(34, 4)	8
+-e	idivide(34, 4, "floor")	8
+-e	idivide(34, 4, "ceil")	9
+-e	rem(41, 2)	1
+-e	mod(41, 2)	1
+-e	idivide(41, 2)	20
+-e	idivide(41, 2, "floor")	20
+-e	idivide(41, 2, "ceil")	21
+-e	rem(46, 5)	1
+-e	mod(46, 5)	1
+-e	idivide(46, 5)	9
+-e	idivide(46, 5, "floor")	9
+-e	idivide(46, 5, "ceil")	10
+-e	rem(-29, -9)	-2
+-e	mod(-29, -9)	-2
+-e	idivide(-29, -9)	3
+-e	idivide(-29, -9, "floor")	3
+-e	idivide(-29, -9, "ceil")	4
+-e	rem(-8, 9)	-8
+-e	mod(-8, 9)	1
+-e	idivide(-8, 9)	0
+-e	idivide(-8, 9, "floor")	-1
+-e	idivide(-8, 9, "ceil")	0
+-e	rem(-1, 1)	0
+-e	mod(-1, 1)	0
+-e	idivide(-1, 1)	-1
+-e	idivide(-1, 1, "floor")	-1
+-e	idivide(-1, 1, "ceil")	-1
+-e	rem(40, 5)	0
+-e	mod(40, 5)	0
+-e	idivide(40, 5)	8
+-e	idivide(40, 5, "floor")	8
+-e	idivide(40, 5, "ceil")	8
+-e	rem(25, 6)	1
+-e	mod(25, 6)	1
+-e	idivide(25, 6)	4
+-e	idivide(25, 6, "floor")	4
+-e	idivide(25, 6, "ceil")	5
+-e	rem(38, -4)	2
+-e	mod(38, -4)	-2
+-e	idivide(38, -4)	-9
+-e	idivide(38, -4, "floor")	-10
+-e	idivide(38, -4, "ceil")	-9
+-e	rem(-2, -1)	0
+-e	mod(-2, -1)	0
+-e	idivide(-2, -1)	2
+-e	idivide(-2, -1, "floor")	2
+-e	idivide(-2, -1, "ceil")	2
+-e	rem(30, -9)	3
+-e	mod(30, -9)	-6
+-e	idivide(30, -9)	-3
+-e	idivide(30, -9, "floor")	-4
+-e	idivide(30, -9, "ceil")	-3
+-e	rem(36, -6)	0
+-e	mod(36, -6)	0
+-e	idivide(36, -6)	-6
+-e	idivide(36, -6, "floor")	-6
+-e	idivide(36, -6, "ceil")	-6
+-e	rem(21, -8)	5
+-e	mod(21, -8)	-3
+-e	idivide(21, -8)	-2
+-e	idivide(21, -8, "floor")	-3
+-e	idivide(21, -8, "ceil")	-2
+-e	rem(-11, 3)	-2
+-e	mod(-11, 3)	1
+-e	idivide(-11, 3)	-3
+-e	idivide(-11, 3, "floor")	-4
+-e	idivide(-11, 3, "ceil")	-3
+-e	rem(11, -3)	2
+-e	mod(11, -3)	-1
+-e	idivide(11, -3)	-3
+-e	idivide(11, -3, "floor")	-4
+-e	idivide(11, -3, "ceil")	-3
+-e	rem(42, -8)	2
+-e	mod(42, -8)	-6
+-e	idivide(42, -8)	-5
+-e	idivide(42, -8, "floor")	-6
+-e	idivide(42, -8, "ceil")	-5
+-e	rem(27, 4)	3
+-e	mod(27, 4)	3
+-e	idivide(27, 4)	6
+-e	idivide(27, 4, "floor")	6
+-e	idivide(27, 4, "ceil")	7
+-e	rem(-14, -8)	-6
+-e	mod(-14, -8)	-6
+-e	idivide(-14, -8)	1
+-e	idivide(-14, -8, "floor")	1
+-e	idivide(-14, -8, "ceil")	2
+-e	rem(1, -7)	1
+-e	mod(1, -7)	-6
+-e	idivide(1, -7)	0
+-e	idivide(1, -7, "floor")	-1
+-e	idivide(1, -7, "ceil")	0
+-e	rem(49, 8)	1
+-e	mod(49, 8)	1
+-e	idivide(49, 8)	6
+-e	idivide(49, 8, "floor")	6
+-e	idivide(49, 8, "ceil")	7
+-e	rem(11, 4)	3
+-e	mod(11, 4)	3
+-e	idivide(11, 4)	2
+-e	idivide(11, 4, "floor")	2
+-e	idivide(11, 4, "ceil")	3
+-e	rem(29, 7)	1
+-e	mod(29, 7)	1
+-e	idivide(29, 7)	4
+-e	idivide(29, 7, "floor")	4
+-e	idivide(29, 7, "ceil")	5
+-e	rem(45, -2)	1
+-e	mod(45, -2)	-1
+-e	idivide(45, -2)	-22
+-e	idivide(45, -2, "floor")	-23
+-e	idivide(45, -2, "ceil")	-22
+-e	rem(17, 8)	1
+-e	mod(17, 8)	1
+-e	idivide(17, 8)	2
+-e	idivide(17, 8, "floor")	2
+-e	idivide(17, 8, "ceil")	3
+-e	rem(28, 6)	4
+-e	mod(28, 6)	4
+-e	idivide(28, 6)	4
+-e	idivide(28, 6, "floor")	4
+-e	idivide(28, 6, "ceil")	5
+-e	rem(-22, 9)	-4
+-e	mod(-22, 9)	5
+-e	idivide(-22, 9)	-2
+-e	idivide(-22, 9, "floor")	-3
+-e	idivide(-22, 9, "ceil")	-2
+-e	rem(19, -2)	1
+-e	mod(19, -2)	-1
+-e	idivide(19, -2)	-9
+-e	idivide(19, -2, "floor")	-10
+-e	idivide(19, -2, "ceil")	-9
+-e	rem(-47, 4)	-3
+-e	mod(-47, 4)	1
+-e	idivide(-47, 4)	-11
+-e	idivide(-47, 4, "floor")	-12
+-e	idivide(-47, 4, "ceil")	-11
+-e	rem(3, 8)	3
+-e	mod(3, 8)	3
+-e	idivide(3, 8)	0
+-e	idivide(3, 8, "floor")	0
+-e	idivide(3, 8, "ceil")	1
+-e	rem(-47, -5)	-2
+-e	mod(-47, -5)	-2
+-e	idivide(-47, -5)	9
+-e	idivide(-47, -5, "floor")	9
+-e	idivide(-47, -5, "ceil")	10
+-e	rem(-31, -5)	-1
+-e	mod(-31, -5)	-1
+-e	idivide(-31, -5)	6
+-e	idivide(-31, -5, "floor")	6
+-e	idivide(-31, -5, "ceil")	7
+-e	rem(-21, -6)	-3
+-e	mod(-21, -6)	-3
+-e	idivide(-21, -6)	3
+-e	idivide(-21, -6, "floor")	3
+-e	idivide(-21, -6, "ceil")	4
+-e	rem(-38, 1)	0
+-e	mod(-38, 1)	0
+-e	idivide(-38, 1)	-38
+-e	idivide(-38, 1, "floor")	-38
+-e	idivide(-38, 1, "ceil")	-38
+-e	rem(32, 1)	0
+-e	mod(32, 1)	0
+-e	idivide(32, 1)	32
+-e	idivide(32, 1, "floor")	32
+-e	idivide(32, 1, "ceil")	32
+-e	rem(-41, 1)	0
+-e	mod(-41, 1)	0
+-e	idivide(-41, 1)	-41
+-e	idivide(-41, 1, "floor")	-41
+-e	idivide(-41, 1, "ceil")	-41
+-e	rem(-35, 5)	0
+-e	mod(-35, 5)	0
+-e	idivide(-35, 5)	-7
+-e	idivide(-35, 5, "floor")	-7
+-e	idivide(-35, 5, "ceil")	-7
+-e	rem(-5, 8)	-5
+-e	mod(-5, 8)	3
+-e	idivide(-5, 8)	0
+-e	idivide(-5, 8, "floor")	-1
+-e	idivide(-5, 8, "ceil")	0
+-e	rem(-14, -5)	-4
+-e	mod(-14, -5)	-4
+-e	idivide(-14, -5)	2
+-e	idivide(-14, -5, "floor")	2
+-e	idivide(-14, -5, "ceil")	3
+-e	rem(-26, 6)	-2
+-e	mod(-26, 6)	4
+-e	idivide(-26, 6)	-4
+-e	idivide(-26, 6, "floor")	-5
+-e	idivide(-26, 6, "ceil")	-4
+-e	rem(-27, -6)	-3
+-e	mod(-27, -6)	-3
+-e	idivide(-27, -6)	4
+-e	idivide(-27, -6, "floor")	4
+-e	idivide(-27, -6, "ceil")	5
+-e	rem(-42, -6)	0
+-e	mod(-42, -6)	0
+-e	idivide(-42, -6)	7
+-e	idivide(-42, -6, "floor")	7
+-e	idivide(-42, -6, "ceil")	7
+-e	rem(23, -1)	0
+-e	mod(23, -1)	0
+-e	idivide(23, -1)	-23
+-e	idivide(23, -1, "floor")	-23
+-e	idivide(23, -1, "ceil")	-23
+-e	rem(46, 9)	1
+-e	mod(46, 9)	1
+-e	idivide(46, 9)	5
+-e	idivide(46, 9, "floor")	5
+-e	idivide(46, 9, "ceil")	6
+-e	rem(3, 1)	0
+-e	mod(3, 1)	0
+-e	idivide(3, 1)	3
+-e	idivide(3, 1, "floor")	3
+-e	idivide(3, 1, "ceil")	3
+-e	rem(-4, -9)	-4
+-e	mod(-4, -9)	-4
+-e	idivide(-4, -9)	0
+-e	idivide(-4, -9, "floor")	0
+-e	idivide(-4, -9, "ceil")	1
+-e	rem(-41, 9)	-5
+-e	mod(-41, 9)	4
+-e	idivide(-41, 9)	-4
+-e	idivide(-41, 9, "floor")	-5
+-e	idivide(-41, 9, "ceil")	-4
+-e	rem(47, 9)	2
+-e	mod(47, 9)	2
+-e	idivide(47, 9)	5
+-e	idivide(47, 9, "floor")	5
+-e	idivide(47, 9, "ceil")	6
+-e	rem(-22, 6)	-4
+-e	mod(-22, 6)	2
+-e	idivide(-22, 6)	-3
+-e	idivide(-22, 6, "floor")	-4
+-e	idivide(-22, 6, "ceil")	-3
+-e	rem(-1, -4)	-1
+-e	mod(-1, -4)	-1
+-e	idivide(-1, -4)	0
+-e	idivide(-1, -4, "floor")	0
+-e	idivide(-1, -4, "ceil")	1
+-e	rem(40, -2)	0
+-e	mod(40, -2)	0
+-e	idivide(40, -2)	-20
+-e	idivide(40, -2, "floor")	-20
+-e	idivide(40, -2, "ceil")	-20
+-e	rem(-4, -4)	0
+-e	mod(-4, -4)	0
+-e	idivide(-4, -4)	1
+-e	idivide(-4, -4, "floor")	1
+-e	idivide(-4, -4, "ceil")	1
+-e	rem(-20, 3)	-2
+-e	mod(-20, 3)	1
+-e	idivide(-20, 3)	-6
+-e	idivide(-20, 3, "floor")	-7
+-e	idivide(-20, 3, "ceil")	-6
+-e	rem(-45, -3)	0
+-e	mod(-45, -3)	0
+-e	idivide(-45, -3)	15
+-e	idivide(-45, -3, "floor")	15
+-e	idivide(-45, -3, "ceil")	15
+-e	rem(-50, 9)	-5
+-e	mod(-50, 9)	4
+-e	idivide(-50, 9)	-5
+-e	idivide(-50, 9, "floor")	-6
+-e	idivide(-50, 9, "ceil")	-5

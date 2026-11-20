@@ -1283,7 +1283,7 @@ fn multiplicity(cs: &[Expr], root: &Root) -> u32 {
                 ])
             })
             .collect());
-        let zero = if root.approx {
+        let zero = if root.approx || value.has_float() {
             numeric::relative_size(&value, bits + 64, &Env::new())
                 .is_some_and(|size| size <= 24 - i64::from(bits))
         } else {
@@ -1298,6 +1298,16 @@ fn multiplicity(cs: &[Expr], root: &Root) -> u32 {
             .collect();
     }
     count
+}
+
+/// The size of the equation at a root against its largest term there. Decimal numbers in the
+/// equation or in the root leave their rounding, so that nothing is exactly zero.
+fn rounding(f: &Expr, var: &str, value: &Expr, env: &Env) -> Option<i64> {
+    let prec = numeric::bits_for(numeric::digits()) + 64;
+    let at = numeric::evalf_env(value, prec, env).ok()?;
+    let mut point = env.clone();
+    point.insert(Rc::from(var), at);
+    numeric::relative_size(f, prec, &point)
 }
 
 fn verify(f: &Expr, var: &str, root: &Root, params: &[String]) -> bool {
@@ -1340,9 +1350,14 @@ fn verify(f: &Expr, var: &str, root: &Root, params: &[String]) -> bool {
         for (j, p) in used.iter().enumerate() {
             env.insert(Rc::from(p.as_str()), Complex::with_val(512, *k + j as i64));
         }
-        if root.approx {
+        if root.approx || g.has_float() {
             let bits = i64::from(numeric::bits_for(numeric::digits()));
-            match numeric::relative_size(&g, numeric::bits_for(numeric::digits()) + 64, &env) {
+            let prec = numeric::bits_for(numeric::digits()) + 64;
+            let size = match root.approx {
+                true => numeric::relative_size(&g, prec, &env),
+                false => rounding(f, var, &root.value, &env).or_else(|| numeric::relative_size(&g, prec, &env)),
+            };
+            match size {
                 Some(size) if size > -bits + 24 => return false,
                 Some(_) => checked = true,
                 None => return false,
@@ -1420,6 +1435,14 @@ fn left_out(f: &Expr, var: &str, root: &Root, params: &[String]) -> Vec<i64> {
         }
         if g.is_infinite() || g.any(&|x| x.is_infinite()) {
             out.push(n);
+            continue;
+        }
+        if g.has_float()
+            && let Some(size) = rounding(f, var, &member, &Env::new())
+        {
+            if size > 24 - i64::from(numeric::bits_for(numeric::digits())) {
+                out.push(n);
+            }
             continue;
         }
         match numeric::is_zero_const(&g) {

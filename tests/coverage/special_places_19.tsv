@@ -1,0 +1,179 @@
+-e	values(1)	error: values needs a table made by dictionary(keys, values), 1 is none
+-e	values(-1)	error: values needs a table made by dictionary(keys, values), -1 is none
+-e	values(1/2)	error: values needs a table made by dictionary(keys, values), 1/2 is none
+-e	values(2)	error: values needs a table made by dictionary(keys, values), 2 is none
+-e	values(i)	error: values needs a table made by dictionary(keys, values), i is none
+-e	values(inf)	error: values needs a table made by dictionary(keys, values), inf is none
+-e	values(-inf)	error: values needs a table made by dictionary(keys, values), -inf is none
+-e	values(undefined)	error: values needs a table made by dictionary(keys, values), undefined is none
+-e	values(10^20)	error: values needs a table made by dictionary(keys, values), 100000000000000000000 is none
+-e	values(10^(-20))	error: values needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
+-e	values(x)	error: values needs a table made by dictionary(keys, values), x is none
+-e	values([])	error: values needs a table made by dictionary(keys, values), [] is none
+-e	values([1, 2])	error: values needs a table made by dictionary(keys, values), [1, 2] is none
+-e	values("text")	error: values needs a table made by dictionary(keys, values), "text" is none
+-e	values(true)	error: values needs a table made by dictionary(keys, values), true is none
+-e	values(-7/3)	error: values needs a table made by dictionary(keys, values), -7/3 is none
+-e	values(0.5)	error: values needs a table made by dictionary(keys, values), 1/2 is none
+-e	entries(0)	error: entries needs a table made by dictionary(keys, values), 0 is none
+-e	entries(1)	error: entries needs a table made by dictionary(keys, values), 1 is none
+-e	entries(-1)	error: entries needs a table made by dictionary(keys, values), -1 is none
+-e	entries(1/2)	error: entries needs a table made by dictionary(keys, values), 1/2 is none
+-e	entries(2)	error: entries needs a table made by dictionary(keys, values), 2 is none
+-e	entries(i)	error: entries needs a table made by dictionary(keys, values), i is none
+-e	entries(inf)	error: entries needs a table made by dictionary(keys, values), inf is none
+-e	entries(-inf)	error: entries needs a table made by dictionary(keys, values), -inf is none
+-e	entries(undefined)	error: entries needs a table made by dictionary(keys, values), undefined is none
+-e	entries(10^20)	error: entries needs a table made by dictionary(keys, values), 100000000000000000000 is none
+-e	entries(10^(-20))	error: entries needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
+-e	entries(x)	error: entries needs a table made by dictionary(keys, values), x is none
+-e	entries([])	error: entries needs a table made by dictionary(keys, values), [] is none
+-e	entries([1, 2])	error: entries needs a table made by dictionary(keys, values), [1, 2] is none
+-e	entries("text")	error: entries needs a table made by dictionary(keys, values), "text" is none
+-e	entries(true)	error: entries needs a table made by dictionary(keys, values), true is none
+-e	entries(-7/3)	error: entries needs a table made by dictionary(keys, values), -7/3 is none
+-e	entries(0.5)	error: entries needs a table made by dictionary(keys, values), 1/2 is none
+-e	numentries(0)	error: numentries needs a table made by dictionary(keys, values), 0 is none
+-e	numentries(1)	error: numentries needs a table made by dictionary(keys, values), 1 is none
+-e	numentries(-1)	error: numentries needs a table made by dictionary(keys, values), -1 is none
+-e	numentries(1/2)	error: numentries needs a table made by dictionary(keys, values), 1/2 is none
+-e	numentries(2)	error: numentries needs a table made by dictionary(keys, values), 2 is none
+-e	numentries(i)	error: numentries needs a table made by dictionary(keys, values), i is none
+-e	numentries(inf)	error: numentries needs a table made by dictionary(keys, values), inf is none
+-e	numentries(-inf)	error: numentries needs a table made by dictionary(keys, values), -inf is none
+-e	numentries(undefined)	error: numentries needs a table made by dictionary(keys, values), undefined is none
+-e	numentries(10^20)	error: numentries needs a table made by dictionary(keys, values), 100000000000000000000 is none
+-e	numentries(10^(-20))	error: numentries needs a table made by dictionary(keys, values), 1/100000000000000000000 is none
+-e	numentries(x)	error: numentries needs a table made by dictionary(keys, values), x is none
+-e	numentries([])	error: numentries needs a table made by dictionary(keys, values), [] is none
+-e	numentries([1, 2])	error: numentries needs a table made by dictionary(keys, values), [1, 2] is none
+-e	numentries("text")	error: numentries needs a table made by dictionary(keys, values), "text" is none
+-e	numentries(true)	error: numentries needs a table made by dictionary(keys, values), true is none
+-e	numentries(-7/3)	error: numentries needs a table made by dictionary(keys, values), -7/3 is none
+-e	numentries(0.5)	error: numentries needs a table made by dictionary(keys, values), 1/2 is none
+-e	iscell(0)	false
+-e	iscell(1)	false
+-e	iscell(-1)	false
+-e	iscell(1/2)	false
+-e	iscell(2)	false
+-e	iscell(i)	false
+-e	iscell(inf)	false
+-e	iscell(-inf)	false
+-e	iscell(undefined)	false
+-e	iscell(10^20)	false
+-e	iscell(10^(-20))	false
+-e	iscell(x)	false
+-e	iscell([])	false
+-e	iscell([1, 2])	false
+-e	iscell("text")	false
+-e	iscell(true)	false
+-e	iscell(-7/3)	false
+-e	iscell(0.5)	false
+-e	iscellstr(0)	false
+-e	iscellstr(1)	false
+-e	iscellstr(-1)	false
+-e	iscellstr(1/2)	false
+-e	iscellstr(2)	false
+-e	iscellstr(i)	false
+-e	iscellstr(inf)	false
+-e	iscellstr(-inf)	false
+-e	iscellstr(undefined)	false
+-e	iscellstr(10^20)	false
+-e	iscellstr(10^(-20))	false
+-e	iscellstr(x)	false
+-e	iscellstr([])	true
+-e	iscellstr([1, 2])	false
+-e	iscellstr("text")	false
+-e	iscellstr(true)	false
+-e	iscellstr(-7/3)	false
+-e	iscellstr(0.5)	false
+-e	cell(0)	[]
+-e	cell(1)	[[]]
+-e	cell(-1)	error: the size must be a whole number from 0 to 100000, not -1
+-e	cell(1/2)	error: the size must be a whole number from 0 to 100000, not 1/2
+-e	cell(2)	[[], []]
+-e	cell(i)	error: the size must be a whole number from 0 to 100000, not i
+-e	cell(inf)	error: the size must be a whole number from 0 to 100000, not inf
+-e	cell(-inf)	error: the size must be a whole number from 0 to 100000, not -inf
+-e	cell(undefined)	error: the size must be a whole number from 0 to 100000, not undefined
+-e	cell(10^20)	error: the size must be a whole number from 0 to 100000, not 100000000000000000000
+-e	cell(10^(-20))	error: the size must be a whole number from 0 to 100000, not 1/100000000000000000000
+-e	cell(x)	error: the size must be a whole number from 0 to 100000, not x
+-e	cell([])	error: the size must be a whole number from 0 to 100000, not []
+-e	cell([1, 2])	error: the size must be a whole number from 0 to 100000, not [1, 2]
+-e	cell("text")	error: the size must be a whole number from 0 to 100000, not "text"
+-e	cell(true)	error: the size must be a whole number from 0 to 100000, not true
+-e	cell(-7/3)	error: the size must be a whole number from 0 to 100000, not -7/3
+-e	cell(0.5)	error: the size must be a whole number from 0 to 100000, not 1/2
+-e	functionalderivative(0)	0
+-e	functionalderivative(1)	0
+-e	functionalderivative(-1)	0
+-e	functionalderivative(1/2)	0
+-e	functionalderivative(2)	0
+-e	functionalderivative(i)	0
+-e	functionalderivative(inf)	0
+-e	functionalderivative(-inf)	0
+-e	functionalderivative(undefined)	0
+-e	functionalderivative(10^20)	0
+-e	functionalderivative(10^(-20))	0
+-e	functionalderivative(x)	0
+-e	functionalderivative([])	error: functionalderivative(f, y, x), for example functionalderivative(y'^2/2 - y^2/2, y, x)
+-e	functionalderivative([1, 2])	error: functionalderivative(f, y, x), for example functionalderivative(y'^2/2 - y^2/2, y, x)
+-e	functionalderivative("text")	0
+-e	functionalderivative(true)	0
+-e	functionalderivative(-7/3)	0
+-e	functionalderivative(0.5)	0
+-e	odetovectorfield(0)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(1)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(-1)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(1/2)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(2)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(i)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(inf)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(-inf)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(undefined)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(10^20)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(10^(-20))	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(x)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield([])	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x)
+-e	odetovectorfield([1, 2])	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x)
+-e	odetovectorfield("text")	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(true)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(-7/3)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(0.5)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	peaks(0)	error: the size must be a whole number from 2 to 1000, not 0
+-e	peaks(1)	error: the size must be a whole number from 2 to 1000, not 1
+-e	peaks(-1)	error: the size must be a whole number from 2 to 1000, not -1
+-e	peaks(1/2)	error: the size must be a whole number from 2 to 1000, not 1/2
+-e	peaks(2)	[[0.000066712802967174435188812805027248, -0.0000058641878725895229379221429872557], [0.000032235359612692720023732056920946, 0.00004102972745826757892052568354234]]
+-e	peaks(i)	error: the size must be a whole number from 2 to 1000, not i
+-e	peaks(inf)	error: the size must be a whole number from 2 to 1000, not inf
+-e	peaks(-inf)	error: the size must be a whole number from 2 to 1000, not -inf
+-e	peaks(undefined)	error: the size must be a whole number from 2 to 1000, not undefined
+-e	peaks(10^20)	error: the size must be a whole number from 2 to 1000, not 100000000000000000000
+-e	peaks(10^(-20))	error: the size must be a whole number from 2 to 1000, not 1/100000000000000000000
+-e	peaks(x)	error: the size must be a whole number from 2 to 1000, not x
+-e	peaks([])	error: the size must be a whole number from 2 to 1000, not []
+-e	peaks([1, 2])	error: the size must be a whole number from 2 to 1000, not [1, 2]
+-e	peaks("text")	error: the size must be a whole number from 2 to 1000, not "text"
+-e	peaks(true)	error: the size must be a whole number from 2 to 1000, not true
+-e	peaks(-7/3)	error: the size must be a whole number from 2 to 1000, not -7/3
+-e	peaks(0.5)	error: the size must be a whole number from 2 to 1000, not 1/2
+-e	colormap(0)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(1)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(-1)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(1/2)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(2)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(i)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(inf)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(-inf)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(undefined)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(10^20)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(10^(-20))	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(x)	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap([])	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap([1, 2])	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap("text")	error: colormap(name, count): the palettes are rainbow, fire, ice, viridis, plasma, heat, ocean, sunset, parula, turbo, jet, hot, hsv, bone, copper, pink, spring, summer, autumn, winter, gray, grey, ink, cool, warm
+-e	colormap(true)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(-7/3)	error: colormap(name, count) needs the name of a palette in quotes
+-e	colormap(0.5)	error: colormap(name, count) needs the name of a palette in quotes

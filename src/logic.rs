@@ -11,6 +11,16 @@ fn relation(op: Rel, l: &Expr, r: &Expr) -> Option<bool> {
     if let (Expr::Bool(a), Expr::Bool(b)) = (l, r) {
         return equality.then(|| as_equal(a == b));
     }
+    if let (Some(a), Some(b)) = (crate::radix::text_of(l), crate::radix::text_of(r)) {
+        return Some(match op {
+            Rel::Eq => a == b,
+            Rel::Ne => a != b,
+            Rel::Lt => a < b,
+            Rel::Le => a <= b,
+            Rel::Gt => a > b,
+            Rel::Ge => a >= b,
+        });
+    }
     match (l.as_list(), r.as_list()) {
         (Some(a), Some(b)) => {
             if !equality {

@@ -1,0 +1,973 @@
+# The names of MATLAB. See names.rs for the form of a line.
+
+# operators by their names
+times||2|2|a .* b: the product entry by entry
+rdivide||2|2|a ./ b: the quotient entry by entry
+ldivide||2|2|a .\ b: b divided by a entry by entry
+power||2|2|a .^ b: the power entry by entry
+plus||2|*|a + b
+minus||2|2|a - b
+uminus||1|1|-a
+uplus||1|1|+a
+mtimes||2|*|a*b: the product of matrices
+mpower||2|2|A^k: the power of a matrix
+mldivide||2|2|A \ b: the solution x of A*x = b (of least squares when A is not square)
+mrdivide||2|2|b / A: the solution x of x*A = b
+colon||2|3|a:b and a:step:b: the numbers from a to b
+
+# arrays
+linspace||2|3|linspace(a, b, n): n numbers from a to b in equal steps (100 without n)
+logspace||2|3|logspace(a, b, n): n powers of ten from 10^a to 10^b, the exponents in equal steps (50 without n)
+meshgrid||1|2|meshgrid(x, y): the matrices [X, Y] of a grid: the rows of X are x, the columns of Y are y
+ndgrid||1|2|ndgrid(x, y): the matrices [X, Y] of a grid: the columns of X are x, the rows of Y are y
+repmat||2|3|repmat(A, m, n): m by n copies of A; repmat(A, n): n by n
+repelem||2|3|repelem(list, n): every entry n times; repelem(A, r, c): every entry as r by c entries
+horzcat||1|*|arrays side by side
+vertcat||1|*|arrays one above the other
+cat||2|*|cat(1, A, B): one above the other; cat(2, A, B): side by side
+blkdiag||1|*|the matrix with the given blocks along its diagonal
+flip||1|2|a list in the opposite order; flip(A): the rows; flip(A, 2): the columns
+fliplr||1|1|the columns in the opposite order
+flipud||1|1|the rows in the opposite order
+rot90||1|2|rot90(A, k): k quarter turns against the clock (one without k)
+circshift||2|3|circshift(list, k): moved k places round; circshift(A, k): the rows; circshift(A, k, 2): the columns; circshift(A, [down, right])
+tril||1|2|tril(A, k): the entries on and below diagonal k (the main one without k), zeros elsewhere
+triu||1|2|triu(A, k): the entries on and above diagonal k, zeros elsewhere
+sortrows||1|4|the rows in rising order; sortrows(A, k): by column k; sortrows(A, -k): falling; sortrows(A, [k, m]); sortrows(table[, [names]][, "ascend" | "descend"]): the rows of a table by its variables
+issorted||1|2|whether a list rises; issorted(x, "descend"), issorted(x, "either"); a matrix: every column
+setxor||2|2|the entries that are in one of two lists only, in rising order
+ismember||2|2|ismember(x, list): whether x is an entry; for a list x one answer for each entry
+isequal||2|*|whether the arguments are equal as values
+numel||1|1|the number of entries of an array
+size||1|2|the sizes of an array as MATLAB counts them: [1, n] for a flat list; size(A, k): size k
+ndims||1|1|the number of sizes of an array: 2 for numbers, lists and matrices
+isempty||1|1|whether a list or a text is empty
+isrow||1|1|whether an array is one row
+iscolumn||1|1|whether an array is one column
+isvector||1|1|whether an array is one row or one column
+isscalar||1|1|whether an array is one entry
+ismatrix||1|1|whether an array has two sizes
+isdiag||1|1|whether a matrix is diagonal
+istril||1|1|whether a matrix is lower triangular
+istriu||1|1|whether a matrix is upper triangular
+bandwidth||1|2|[lower, upper]: how far below and above the diagonal the entries of a matrix reach; bandwidth(A, "lower") or "upper": one of them; bandwidth(system[, drop]): the first frequency where the gain has fallen 3 dB (or by the drop, as -6) below its value at frequency 0
+isbanded||3|3|isbanded(A, lower, upper): whether A reaches no farther from its diagonal
+issymmetric||1|2|whether A = transpose(A); issymmetric(A, "skew"): A = -transpose(A)
+ishermitian||1|2|whether A is its own conjugate transpose; ishermitian(A, "skew")
+nnz||1|1|the number of entries that are not zero, or of conditions that hold: nnz([1, 5, 9] > 2)
+nonzeros||1|1|the entries that are not zero, column after column
+find||1|2|the places of the entries that are not zero, or where a condition holds: find(x > 2); [row, column] in a matrix; find(x, n): the first n
+any||1|2|whether an entry is not zero or a condition holds; a matrix column by column; any(A, 2): row by row; any(A, "all")
+all||1|2|whether no entry is zero or a condition holds everywhere; a matrix column by column; all(A, 2); all(A, "all")
+ind2sub||2|2|ind2sub([rows, columns], k): [row, column] of entry k counted down the columns
+sub2ind||3|3|sub2ind([rows, columns], row, column): the number of the entry counted down the columns
+magic||1|1|the magic square of MATLAB: all rows, all columns and both diagonals have one sum
+invhilb||1|1|the inverse of the Hilbert matrix, exactly
+pascal||1|2|the matrix of Pascal's triangle; pascal(n, 1): its lower triangular root; pascal(n, 2): a cube root of the identity
+rosser||0|0|Rosser's matrix: 8 by 8, with eigenvalues that are hard to tell apart
+wilkinson||1|1|Wilkinson's matrix: tridiagonal, with pairs of nearly equal eigenvalues
+toeplitz||1|2|toeplitz(c, r): constant along every diagonal, first column c, first row r; toeplitz(r): symmetric
+hankel||1|2|hankel(c): constant along every antidiagonal, first column c, zeros below; hankel(c, r): last row r
+compan||1|1|the companion matrix of the polynomial with the given coefficients (the highest first): its eigenvalues are the roots
+hadamard||1|1|a matrix of 1 and -1 with orthogonal rows; the size is a power of two, or 12 or 20 times one
+vander||1|1|the Vandermonde matrix of MATLAB: the powers fall from left to right
+ctranspose||1|1|the conjugate transpose
+nchoosek||2|2|nchoosek(n, k): the binomial coefficient; nchoosek(list, k): all choices of k entries
+perms||1|1|all orders of a list, the last one first, as MATLAB lists them
+
+# sums and statistics of data
+!total|1|2|the sum of the entries; also sum(list); sum(A): of every column; sum(A, 2): of every row; sum(A, "all")
+!accumulate|1|2|the running sums of a list; of a matrix down its columns; cumsum(A, 2): along its rows
+!median|1|2|
+!mode|1|2|
+!variance|1|3|sample variance: squared distances from the mean, summed, over n - 1; variance of a distribution; var(x, 1): over n
+!stddev|1|3|sample standard deviation, the root of the variance; of a distribution too; std(x, 1): of the population
++variance|var
++stddev|std
++geometricmean|geomean
++harmonicmean|harmmean
+cumprod||1|2|the running products of a list; of a matrix down its columns; cumprod(A, 2): along its rows
+cummax||1|2|the largest entry so far
+cummin||1|2|the smallest entry so far
+bounds||1|2|[smallest, largest]
+peak2peak||1|2|the largest entry less the smallest
+maxk||2|2|maxk(list, k): the k largest entries
+mink||2|2|mink(list, k): the k smallest entries
+movmean||2|3|movmean(x, k): the mean of the k entries about every entry (fewer at the ends); movmean(x, [back, ahead])
+movsum||2|3|the sum over a moving window, as movmean
+movmedian||2|3|the median over a moving window, as movmean
+movmax||2|3|the largest entry of a moving window, as movmean
+movmin||2|3|the smallest entry of a moving window, as movmean
+movstd||2|3|the standard deviation over a moving window, as movmean
+movvar||2|3|the variance over a moving window, as movmean
+movprod||2|3|the product over a moving window, as movmean
+movmad||2|3|the median distance from the median over a moving window, as movmean
+trapz||1|2|trapz(y): the area under the points by the rule of trapezes, one unit apart; trapz(x, y): at the places x
+cumtrapz||1|2|the running areas of trapz
+prctile|percentile|2|3|prctile(x, p): the value at p percent of the data as MATLAB takes it; p may be a list
+zscore||1|3|every entry less the mean, over the standard deviation; zscore(x, 1): the one of the population
+rescale||1|3|the entries moved and scaled to run from 0 to 1; rescale(x, a, b): from a to b
+trimmean||2|3|trimmean(x, p): the mean without the p percent of the entries that lie farthest out, half at each end
+mad||1|3|the mean distance of the entries from their mean; mad(x, 1): the median distance from the median
+cov||1|3|cov(x): the variance; cov(x, y): the matrix of the variances and the covariance; cov(A): of the columns of A
+corrcoef||1|3|corrcoef(x, y): the matrix [[1, r], [r, 1]] of the correlation; corrcoef(A): of the columns of A
+histcounts||1|2|histcounts(x, edges): how many entries fall between every two edges; histcounts(x, n): in n bins of one width; histcounts(c): how many values made by categorical are of every kind
+detrend||1|2|the data less its straight line of least squares; detrend(x, n): less the polynomial of degree n
+unwrap||1|2|angles with the jumps of pi or more taken out by adding whole turns
+accumarray||2|3|accumarray(places, values): entry k is the sum of the values whose place is k
+tabulate||1|1|the rows [value, how often, percent] of the distinct entries
+tiedrank||1|1|the ranks of the entries, equal entries sharing the mean of their ranks
+
+# matrices taken apart
+!norm|1|2|absolute value of a number, Euclidean length of a vector; norm(v, p): the p-norm, p = inf the largest entry; of a matrix the largest singular value; norm(A, 1), norm(A, inf), norm(A, "fro"); norm(system) as h2norm, norm(system, inf) as hinfnorm
+!eigenvalues|1|2|eigenvalues of a matrix; eig(A, B): the numbers x with det(A - x*B) = 0
++eigenvalues|eig
++singularvalues|svd
++nullspace|null
++adjugate|adjoint
++hilbert|hilb
+cond||1|2|the condition number of a matrix: the largest singular value over the smallest; cond(A, 1), cond(A, inf), cond(A, "fro")
+rcond||1|1|one over the condition number in the 1-norm
+vecnorm||1|3|the lengths of the columns of a matrix; vecnorm(A, p): their p-norms; vecnorm(A, p, 2): of the rows
+orth||1|1|a matrix whose columns are orthonormal and span the columns of A
+colspace||1|1|a matrix whose columns are a basis of the span of the columns of A
+lu||1|1|[L, U, P] with P*A = L*U: L lower triangular with ones, U upper triangular, P swaps rows
+chol||1|2|the upper triangular R with R'*R = A for a positive definite A; chol(A, "lower"): L with L*L' = A
+jordan||1|1|the Jordan form of a matrix
+jordandecomposition||1|1|[S, J] with A*S = S*J and J the Jordan form
+diagonalize||1|1|[V, D] with A*V = V*D: the columns of V are eigenvectors, D is diagonal
+smithform||1|1|the Smith form of a matrix of whole numbers: diagonal, every entry dividing the next
+smithdecomposition||1|1|[U, V, S] with U*A*V = S the Smith form, U and V of determinant 1 or -1
+hermiteform||1|1|the Hermite form of a matrix of whole numbers: upper triangular, reached by whole steps with rows
+hermitedecomposition||1|1|[U, H] with U*A = H the Hermite form, U of determinant 1 or -1
+schur||1|1|the upper triangular T of the Schur form A = Q*T*Q', in decimals
+schurdecomposition||1|1|[Q, T] with A = Q*T*Q', Q unitary and T upper triangular, in decimals
+hess||1|1|the Hessenberg form of a matrix: zero below the first subdiagonal, in decimals
+hessenbergdecomposition||1|1|[P, H] with A = P*H*P', P unitary, in decimals
+singularvaluedecomposition||1|1|[U, S, V] with A = U*S*V': U and V unitary, S diagonal with the singular values, in decimals
+sylvester||3|3|sylvester(A, B, C): the matrix X with A*X + X*B = C
+subspace||2|2|the angle between the spans of the columns of two matrices
+planerot||1|1|planerot([x, y]): [G, [r, 0]] with the turn G that takes [x, y] to [r, 0]
+
+# polynomials as lists of coefficients, the highest first
+!roots|1|2|roots of a polynomial; roots([1, -3, 2]): of the one with these coefficients, the highest first
+!residue|2|3|residue(f, z, a): the residue of f at z = a; residue(b, a) with lists of coefficients: [residues, poles, polynomial part] of b(s)/a(s); residue(r, p, k): back to [b, a]
++degree|polynomialdegree
+poly||1|1|poly([roots]): the coefficients of the polynomial with these roots; poly(A): of the characteristic polynomial of a matrix
+polyval||2|2|polyval(p, x): the value at x of the polynomial with the coefficients p; x may be a list
+polyvalm||2|2|polyvalm(p, A): the polynomial with the coefficients p of the matrix A
+polyfit||3|3|polyfit(x, y, n): the coefficients of the polynomial of degree n that fits the points best (least squares)
+polyder||1|2|the coefficients of the derivative; polyder(a, b): of the derivative of the product
+polyint||1|2|the coefficients of the integral; polyint(p, c): with the constant c
+conv||2|3|conv(a, b): the coefficients of the product of two polynomials, the convolution of two lists; conv(a, b, "same"), conv(a, b, "valid")
+deconv||2|2|deconv(u, v): [quotient, remainder] of the division of polynomials given by their coefficients
+poly2sym||1|2|poly2sym(c, x): the polynomial in x with the coefficients c
+sym2poly||1|2|sym2poly(p, x): all coefficients of a polynomial, the highest first
+coeffs||1|3|coeffs(p, x): the coefficients that are not zero, the lowest first; coeffs(p, x, "all"): all, the highest first
+horner||1|2|a polynomial in nested form: ((a*x + b)*x + c)*x + d
+numden||1|1|[numerator, denominator] without fractions in either
+quorem||2|3|quorem(a, b): [quotient, remainder] of whole numbers or, with a variable, of polynomials
+interp1||2|5|interp1(x, y, q): the value at q of the straight lines through the points; interp1(x, y, q, method): "nearest", "next", "previous", "pchip", "spline", "makima"; "extrap" after it goes on outside the points; q may be a list or a name
+spline||3|3|spline(x, y, q): the value at q of the cubic spline through the points (smooth to the second derivative)
+pchip||3|3|pchip(x, y, q): the value at q of the cubic pieces through the points that keep the shape of the data
+makima||3|3|makima(x, y, q): the value at q of Akima's cubic pieces through the points, without overshoot
+interp2||5|6|interp2(x, y, Z, xq, yq): the value between the points of a grid, straight in both directions; "nearest" as a sixth argument
+gbasis|groebnerbasis|1|2|gbasis([polynomials], [variables]): a reduced Groebner basis in the lexicographic order of the variables
+
+# signals
+!select|2|3|select(list, f): the entries for which f is true; filter(b, a, x) with three lists: the filter of lfilter
+fft||1|2|the discrete Fourier transform of a list: entry k is the sum of x[j]*e^(-2 pi i j k/n); fft(x, n): of n points; of a matrix column by column
+ifft||1|2|the inverse of fft
+fft2||1|1|the Fourier transform of a matrix in both directions
+ifft2||1|1|the inverse of fft2
+fftshift||1|1|the halves of a list swapped, so that the middle of a transform comes first
+ifftshift||1|1|the inverse of fftshift
+dct||1|2|the discrete cosine transform (the second kind, with orthonormal waves)
+idct||1|2|the inverse of dct
+lfilter||3|3|lfilter(b, a, x): the output y of the filter a[1]*y[n] = b[1]*x[n] + b[2]*x[n-1] + ... - a[2]*y[n-1] - ...
+conv2||2|3|conv2(A, B): the convolution of two matrices; conv2(A, B, "same"), conv2(A, B, "valid")
+xcorr||1|2|xcorr(x, y): the correlation of two lists at every shift, 2n - 1 values; xcorr(x): of x with itself
+upsample||2|2|upsample(x, n): n - 1 zeros after every entry
+downsample||2|3|downsample(x, n): every n-th entry; downsample(x, n, k): from entry k + 1 on
+
+# functions of numbers by the names of MATLAB
+!round|1|3|nearest whole number, halves away from zero, of each part; round(x, n): to n digits after the point; round(x, n, "significant"): to n digits
+!rem|2|3|polynomial remainder; rem(a, b) of numbers: a - b*fix(a/b), with the sign of a
+!expint|1|2|expint(n, z): exponential integral E_n(z), the integral of e^(-z t)/t^n from 1 on; expint(z) = E_1(z)
+!digamma|1|2|digamma function; psi(k, z): its k-th derivative, the polygamma function
+!kroneckerdelta|1|*|1 when the arguments are equal, else 0; kroneckerdelta(m): 1 when m = 0
+!angle|1|3|angle between two vectors, lines or planes; angle(a, b, c): at the vertex b; angle(z): the argument of a complex number
++trunc|fix
++lgamma|gammaln
++si|sinint
++ci|cosint
++shi|sinhint
++chi|coshint
++li|logint
++hypergeometric|hypergeom
++uppergamma|igamma
++jacobi|jacobisymbol
++powmod|powermod
++eulernumber|euler
+expm1||1|1|e^x - 1
+log1p||1|1|ln(1 + x)
+nthroot||2|2|nthroot(x, n): the real n-th root of a real number: nthroot(-8, 3) = -2
+realsqrt||1|1|the square root, an error when it is not real
+reallog||1|1|the natural logarithm, an error when it is not real
+realpow||2|2|realpow(x, y): x^y, an error when it is not real
+nextpow2||1|1|the least whole p with 2^p >= abs(x)
+pow2||1|2|pow2(x) = 2^x; pow2(f, e) = f*2^e
+idivide||2|3|idivide(a, b): a/b rounded toward zero; idivide(a, b, "round" | "floor" | "ceil")
+sind||1|1|sine of an angle in degrees
+cosd||1|1|cosine of an angle in degrees
+tand||1|1|tangent of an angle in degrees
+cotd||1|1|cotangent of an angle in degrees
+secd||1|1|secant of an angle in degrees
+cscd||1|1|cosecant of an angle in degrees
+asind||1|1|inverse sine in degrees
+acosd||1|1|inverse cosine in degrees
+atand||1|1|inverse tangent in degrees
+acotd||1|1|inverse cotangent in degrees
+asecd||1|1|inverse secant in degrees
+acscd||1|1|inverse cosecant in degrees
+atan2d||2|2|atan2d(y, x): the angle of the point (x, y) in degrees
+sinpi||1|1|sin(pi*x)
+cospi||1|1|cos(pi*x)
+deg2rad||1|1|degrees as radians
+rad2deg||1|1|radians as degrees
+cart2pol||2|3|cart2pol(x, y): [angle, radius]; cart2pol(x, y, z): [angle, radius, z]
+pol2cart||2|3|pol2cart(angle, radius): [x, y]; pol2cart(angle, radius, z): [x, y, z]
+cart2sph||3|3|cart2sph(x, y, z): [azimuth, elevation, radius]
+sph2cart||3|3|sph2cart(azimuth, elevation, radius): [x, y, z]
+rat||1|2|rat(x): a fraction within a millionth of x, by continued fractions; rat(x, tol): within tol
+bitand||2|2|the bits that both whole numbers have
+bitor||2|2|the bits that either whole number has
+bitxor||2|2|the bits that one of two whole numbers has
+bitshift||2|3|bitshift(a, k): a*2^k, bits lost on the right when k is negative; bitshift(a, k, n): the low n bits of it
+bitcmp||1|2|bitcmp(a): every bit of the 64 turned; bitcmp(a, n) or bitcmp(a, "uint8"): of that many bits
+bitget||2|2|bitget(a, k): bit k of a, counted from 1 at the lowest
+bitset||2|3|bitset(a, k): a with bit k set; bitset(a, k, 0): cleared
+erfcx||1|1|the scaled complementary error function e^(x^2)*erfc(x)
+dawson||1|1|Dawson's integral e^(-x^2) times the integral of e^(t^2) from 0 to x
+betaln||2|2|the logarithm of the beta function
+ssinint||1|1|the shifted sine integral Si(x) - pi/2
+airy||1|2|airy(x) = Ai(x); airy(k, x): Ai for k = 0, Ai' for 1, Bi for 2, Bi' for 3
+besselh||2|3|besselh(nu, x): the Hankel function of the first kind; besselh(nu, k, x): of kind k = 1 or 2
+whittakerm||3|3|whittakerm(a, b, z): Whittaker's function M
+whittakerw||3|3|whittakerw(a, b, z): Whittaker's function W
+wrightomega||1|1|Wright's omega function: the solution w of w + ln(w) = x
+rectangularpulse||1|3|rectangularpulse(a, b, x): 1 between a and b, 1/2 at the ends, 0 outside; rectangularpulse(x): between -1/2 and 1/2
+triangularpulse||1|4|triangularpulse(a, b, c, x): rises from 0 at a to 1 at b and falls to 0 at c; triangularpulse(a, c, x): b in the middle; triangularpulse(x): -1, 0, 1
+jacobicd||2|2|the Jacobi elliptic function cd = cn/dn
+jacobisd||2|2|the Jacobi elliptic function sd = sn/dn
+jacobind||2|2|the Jacobi elliptic function nd = 1/dn
+jacobidc||2|2|the Jacobi elliptic function dc = dn/cn
+jacobinc||2|2|the Jacobi elliptic function nc = 1/cn
+jacobisc||2|2|the Jacobi elliptic function sc = sn/cn
+jacobins||2|2|the Jacobi elliptic function ns = 1/sn
+jacobids||2|2|the Jacobi elliptic function ds = dn/sn
+jacobics||2|2|the Jacobi elliptic function cs = cn/sn
+jacobiam||2|2|jacobiam(u, m): the amplitude of Jacobi's elliptic functions, for real u and m from 0 to under 1
+jacobizeta||2|2|jacobizeta(u, m): Jacobi's zeta function, for real u and m from 0 to under 1
+ellipticck||1|1|the complementary complete elliptic integral of the first kind K(1 - m)
+ellipticce||1|1|the complementary complete elliptic integral of the second kind E(1 - m)
+ellipticcpi||2|2|the complementary complete elliptic integral of the third kind Pi(n, 1 - m)
+ellipke||1|1|ellipke(m): [K(m), E(m)], the complete elliptic integrals of the first and second kind
+ellipj||2|2|ellipj(u, m): [sn, cn, dn], Jacobi's elliptic functions
+gammaincinv||2|2|gammaincinv(p, a): the x with gammap(a, x) = p
+betaincinv||3|3|betaincinv(p, a, b): the x with betaregularized(x, a, b) = p
+
+# texts
+!length|1|1|number of entries of a list, of characters of a text
+!reverse|1|1|a list or a text in the opposite order
+!join|1|*|the entries of several lists as one list; several texts as one
+!contains|2|2|contains(list, x): whether x is an entry; contains(text, part): whether the part stands in the text
+!count|2|2|count(list, x): how often x is an entry; count(text, part): how often the part stands in the text
+num2str||1|2|a number as a text, with about five digits; num2str(x, n): with n digits
+int2str||1|1|a number rounded to a whole one, as a text
+mat2str||1|2|a matrix as the text that MATLAB reads: [1 2;3 4]; mat2str(A, n): with n digits
+tostring|string|1|1|a value as the text that prints it
+dec2bin||1|2|a whole number as a text of binary digits; dec2bin(n, k): of k digits or more
+dec2hex||1|2|a whole number as a text of hexadecimal digits; dec2hex(n, k): of k digits or more
+dec2base||2|3|dec2base(n, b): a whole number as a text of digits of base b up to 36; dec2base(n, b, k): of k digits or more
+bin2dec||1|1|the number that a text of binary digits writes
+hex2dec||1|1|the number that a text of hexadecimal digits writes
+base2dec||2|2|base2dec(text, b): the number that a text of digits of base b writes
+char||1|*|the text of the characters with the given numbers; several texts as one
+double||1|1|the numbers of the characters of a text; of a value its number in decimals
+strcat||1|*|texts and numbers as one text
+strlength|strlen|1|1|the number of characters of a text
+upper|toupper|1|1|a text in capital letters
+lower|tolower|1|1|a text in small letters
+strtrim|strip|1|1|a text without the blanks at its ends
+strrep||3|3|strrep(text, old, new): the text with every old part replaced by the new one
+strfind||2|2|strfind(text, part): the places where the part stands in the text
+strsplit||1|2|the parts of a text between blanks; strsplit(text, between): between that text
+strjoin||1|2|strjoin([texts], between): the texts as one, with blanks or the given text between them
+strcmp||2|2|whether two texts are the same
+strcmpi||2|2|whether two texts are the same but for capitals
+strncmp||3|3|strncmp(a, b, n): whether the first n characters of two texts are the same
+strncmpi||3|3|strncmpi(a, b, n): as strncmp, but for capitals
+startswith||2|2|whether a text starts with another
+endswith||2|2|whether a text ends with another
+blanks||1|1|a text of n blanks
+isletter||1|1|for every character of a text whether it is a letter
+isspace||1|1|for every character of a text whether it is a blank
+ischar|isstring|1|1|whether a value is a text
+isnumeric||1|1|whether a value is a number or an array of numbers
+islogical||1|1|whether a value is true or false, or an array of such
+logical||1|1|true for numbers other than zero and for conditions that hold, entry by entry
+sprintf||1|*|sprintf(format, values): a text with the values in the forms %d %i %u %f %e %g %s %c %x %o, as in C; \n is a new line
+rats||1|2|a fraction near a number, as a text
+
+# the distribution functions of MATLAB
+!inv|1|3|reciprocal, inverse of a matrix; inv(system): the system the other way round; finv(p, v1, v2): the place where the F distribution reaches the probability p
++quantile|icdf
+normpdf||1|3|normpdf(x, mu, sigma): density or probability at x of the normal distribution with the mean mu (0) and the deviation sigma (1)
+normcdf||1|4|normcdf(x, mu, sigma): probability of a value up to x of the normal distribution with the mean mu (0) and the deviation sigma (1); "upper" as the last argument: of a value above x
+norminv||1|3|norminv(p, mu, sigma): the place where the probability p is reached of the normal distribution with the mean mu (0) and the deviation sigma (1)
+normrnd||0|2|normrnd(mu, sigma): a random number of the normal distribution with the mean mu (0) and the deviation sigma (1)
+normstat||0|2|normstat(mu, sigma): [mean, variance] of the normal distribution with the mean mu (0) and the deviation sigma (1)
+unifpdf||1|3|unifpdf(x, a, b): density or probability at x of the uniform distribution from a (0) to b (1)
+unifcdf||1|4|unifcdf(x, a, b): probability of a value up to x of the uniform distribution from a (0) to b (1); "upper" as the last argument: of a value above x
+unifinv||1|3|unifinv(p, a, b): the place where the probability p is reached of the uniform distribution from a (0) to b (1)
+unifrnd||0|2|unifrnd(a, b): a random number of the uniform distribution from a (0) to b (1)
+unifstat||0|2|unifstat(a, b): [mean, variance] of the uniform distribution from a (0) to b (1)
+exppdf||1|2|exppdf(x, mu): density or probability at x of the exponential distribution with the mean mu (1)
+expcdf||1|3|expcdf(x, mu): probability of a value up to x of the exponential distribution with the mean mu (1); "upper" as the last argument: of a value above x
+expinv||1|2|expinv(p, mu): the place where the probability p is reached of the exponential distribution with the mean mu (1)
+exprnd||0|1|exprnd(mu): a random number of the exponential distribution with the mean mu (1)
+expstat||0|1|expstat(mu): [mean, variance] of the exponential distribution with the mean mu (1)
+gampdf||2|3|gampdf(x, a, b): density or probability at x of the gamma distribution with the shape a and the scale b (1)
+gamcdf||2|4|gamcdf(x, a, b): probability of a value up to x of the gamma distribution with the shape a and the scale b (1); "upper" as the last argument: of a value above x
+gaminv||2|3|gaminv(p, a, b): the place where the probability p is reached of the gamma distribution with the shape a and the scale b (1)
+gamrnd||1|2|gamrnd(a, b): a random number of the gamma distribution with the shape a and the scale b (1)
+gamstat||1|2|gamstat(a, b): [mean, variance] of the gamma distribution with the shape a and the scale b (1)
+betapdf||3|3|betapdf(x, a, b): density or probability at x of the beta distribution
+betacdf||3|4|betacdf(x, a, b): probability of a value up to x of the beta distribution; "upper" as the last argument: of a value above x
+betainv||3|3|betainv(p, a, b): the place where the probability p is reached of the beta distribution
+betarnd||2|2|betarnd(a, b): a random number of the beta distribution
+betastat||2|2|betastat(a, b): [mean, variance] of the beta distribution
+chi2pdf||2|2|chi2pdf(x, v): density or probability at x of the chi-square distribution with v degrees of freedom
+chi2cdf||2|3|chi2cdf(x, v): probability of a value up to x of the chi-square distribution with v degrees of freedom; "upper" as the last argument: of a value above x
+chi2inv||2|2|chi2inv(p, v): the place where the probability p is reached of the chi-square distribution with v degrees of freedom
+chi2rnd||1|1|chi2rnd(v): a random number of the chi-square distribution with v degrees of freedom
+chi2stat||1|1|chi2stat(v): [mean, variance] of the chi-square distribution with v degrees of freedom
+tpdf||2|2|tpdf(x, v): density or probability at x of Student's t distribution with v degrees of freedom
+tcdf||2|3|tcdf(x, v): probability of a value up to x of Student's t distribution with v degrees of freedom; "upper" as the last argument: of a value above x
+tinv||2|2|tinv(p, v): the place where the probability p is reached of Student's t distribution with v degrees of freedom
+trnd||1|1|trnd(v): a random number of Student's t distribution with v degrees of freedom
+tstat||1|1|tstat(v): [mean, variance] of Student's t distribution with v degrees of freedom
+fpdf||3|3|fpdf(x, v1, v2): density or probability at x of the F distribution with v1 and v2 degrees of freedom
+fcdf||3|4|fcdf(x, v1, v2): probability of a value up to x of the F distribution with v1 and v2 degrees of freedom; "upper" as the last argument: of a value above x
+frnd||2|2|frnd(v1, v2): a random number of the F distribution with v1 and v2 degrees of freedom
+fstat||2|2|fstat(v1, v2): [mean, variance] of the F distribution with v1 and v2 degrees of freedom
+lognpdf||1|3|lognpdf(x, mu, sigma): density or probability at x of the lognormal distribution: the logarithm is normal with mu (0) and sigma (1)
+logncdf||1|4|logncdf(x, mu, sigma): probability of a value up to x of the lognormal distribution: the logarithm is normal with mu (0) and sigma (1); "upper" as the last argument: of a value above x
+logninv||1|3|logninv(p, mu, sigma): the place where the probability p is reached of the lognormal distribution: the logarithm is normal with mu (0) and sigma (1)
+lognrnd||0|2|lognrnd(mu, sigma): a random number of the lognormal distribution: the logarithm is normal with mu (0) and sigma (1)
+lognstat||0|2|lognstat(mu, sigma): [mean, variance] of the lognormal distribution: the logarithm is normal with mu (0) and sigma (1)
+wblpdf||1|3|wblpdf(x, a, b): density or probability at x of the Weibull distribution with the scale a (1) and the shape b (1)
+wblcdf||1|4|wblcdf(x, a, b): probability of a value up to x of the Weibull distribution with the scale a (1) and the shape b (1); "upper" as the last argument: of a value above x
+wblinv||1|3|wblinv(p, a, b): the place where the probability p is reached of the Weibull distribution with the scale a (1) and the shape b (1)
+wblrnd||0|2|wblrnd(a, b): a random number of the Weibull distribution with the scale a (1) and the shape b (1)
+wblstat||0|2|wblstat(a, b): [mean, variance] of the Weibull distribution with the scale a (1) and the shape b (1)
+raylpdf||2|2|raylpdf(x, b): density or probability at x of the Rayleigh distribution with the scale b
+raylcdf||2|3|raylcdf(x, b): probability of a value up to x of the Rayleigh distribution with the scale b; "upper" as the last argument: of a value above x
+raylinv||2|2|raylinv(p, b): the place where the probability p is reached of the Rayleigh distribution with the scale b
+raylrnd||1|1|raylrnd(b): a random number of the Rayleigh distribution with the scale b
+raylstat||1|1|raylstat(b): [mean, variance] of the Rayleigh distribution with the scale b
+binopdf||3|3|binopdf(x, n, p): density or probability at x of the binomial distribution: successes in n trials of probability p
+binocdf||3|4|binocdf(x, n, p): probability of a value up to x of the binomial distribution: successes in n trials of probability p; "upper" as the last argument: of a value above x
+binoinv||3|3|binoinv(p, n, p): the place where the probability p is reached of the binomial distribution: successes in n trials of probability p
+binornd||2|2|binornd(n, p): a random number of the binomial distribution: successes in n trials of probability p
+binostat||2|2|binostat(n, p): [mean, variance] of the binomial distribution: successes in n trials of probability p
+poisspdf||2|2|poisspdf(x, lambda): density or probability at x of the Poisson distribution with the mean lambda
+poisscdf||2|3|poisscdf(x, lambda): probability of a value up to x of the Poisson distribution with the mean lambda; "upper" as the last argument: of a value above x
+poissinv||2|2|poissinv(p, lambda): the place where the probability p is reached of the Poisson distribution with the mean lambda
+poissrnd||1|1|poissrnd(lambda): a random number of the Poisson distribution with the mean lambda
+poissstat||1|1|poissstat(lambda): [mean, variance] of the Poisson distribution with the mean lambda
+geopdf||2|2|geopdf(x, p): density or probability at x of the geometric distribution: failures before the first success of probability p
+geocdf||2|3|geocdf(x, p): probability of a value up to x of the geometric distribution: failures before the first success of probability p; "upper" as the last argument: of a value above x
+geoinv||2|2|geoinv(p, p): the place where the probability p is reached of the geometric distribution: failures before the first success of probability p
+geornd||1|1|geornd(p): a random number of the geometric distribution: failures before the first success of probability p
+geostat||1|1|geostat(p): [mean, variance] of the geometric distribution: failures before the first success of probability p
+nbinpdf||3|3|nbinpdf(x, r, p): density or probability at x of the negative binomial distribution: failures before the r-th success
+nbincdf||3|4|nbincdf(x, r, p): probability of a value up to x of the negative binomial distribution: failures before the r-th success; "upper" as the last argument: of a value above x
+nbininv||3|3|nbininv(p, r, p): the place where the probability p is reached of the negative binomial distribution: failures before the r-th success
+nbinrnd||2|2|nbinrnd(r, p): a random number of the negative binomial distribution: failures before the r-th success
+nbinstat||2|2|nbinstat(r, p): [mean, variance] of the negative binomial distribution: failures before the r-th success
+hygepdf||4|4|hygepdf(x, m, k, n): density or probability at x of the hypergeometric distribution: marked things among n drawn from m of which k are marked
+hygecdf||4|5|hygecdf(x, m, k, n): probability of a value up to x of the hypergeometric distribution: marked things among n drawn from m of which k are marked; "upper" as the last argument: of a value above x
+hygeinv||4|4|hygeinv(p, m, k, n): the place where the probability p is reached of the hypergeometric distribution: marked things among n drawn from m of which k are marked
+hygernd||3|3|hygernd(m, k, n): a random number of the hypergeometric distribution: marked things among n drawn from m of which k are marked
+hygestat||3|3|hygestat(m, k, n): [mean, variance] of the hypergeometric distribution: marked things among n drawn from m of which k are marked
+unidpdf||2|2|unidpdf(x, n): density or probability at x of the whole numbers from 1 to n, equally likely
+unidcdf||2|3|unidcdf(x, n): probability of a value up to x of the whole numbers from 1 to n, equally likely; "upper" as the last argument: of a value above x
+unidinv||2|2|unidinv(p, n): the place where the probability p is reached of the whole numbers from 1 to n, equally likely
+unidrnd||1|1|unidrnd(n): a random number of the whole numbers from 1 to n, equally likely
+unidstat||1|1|unidstat(n): [mean, variance] of the whole numbers from 1 to n, equally likely
+
+# random numbers
+rng||0|1|rng(seed): starts the random numbers anew; rng(0) or rng("default"): the stream that MATLAB starts with; rng("shuffle") or rng(): from the clock
+rand|randomreal|0|2|a random number from 0 to under 1; rand(n): an n by n matrix; rand(m, n)
+randn||0|2|a random number of the standard normal distribution; randn(n), randn(m, n)
+randi|randominteger|1|3|randi(n): a random whole number from 1 to n; randi([a, b]): from a to b; randi(n, m, k): an m by k matrix
+randperm||1|2|randperm(n): the numbers from 1 to n in a random order; randperm(n, k): k of them
+randsample||2|2|randsample(n, k) or randsample(list, k): k entries taken at random, none twice
+shuffle||1|1|a list in a random order
+random||1|*|random(dist): a random number of a distribution; random(dist, n): n of them; random("Normal", mu, sigma): by the name MATLAB gives it
+
+# optimisation with exact numbers
+linprog||3|7|linprog(f, A, b): the x that makes f*x least with A*x <= b; linprog(f, A, b, Aeq, beq): and Aeq*x = beq; linprog(f, A, b, Aeq, beq, lb, ub): and lb <= x <= ub; exact, by the simplex method; [] leaves a part out
+intlinprog||4|8|intlinprog(f, whole, A, b, Aeq, beq, lb, ub): as linprog, with the unknowns numbered in `whole` whole numbers
+lsqnonneg||2|2|lsqnonneg(C, d): the x without negative entries that makes the length of C*x - d least
+
+# zeros, minima, integrals and differential equations of functions
+!pdf|2|*|pdf(dist, x): density of a distribution at x, or the probability of the value x; pdf("Normal", x, mu, sigma): by the name MATLAB gives it
+!cdf|2|*|cdf(dist, x): probability of a value up to x; cdf("Normal", x, mu, sigma)
+!quantile|2|*|quantile(list, q): the value at the fraction q of the sorted data, on a straight line between two entries; quantile(dist, q): the place where a distribution reaches the probability q; icdf("Normal", q, mu, sigma)
+fzero||2|2|fzero(f, start): a zero of a real function near the start; fzero(f, [a, b]): between two ends where the signs differ; f is an expression, @(x) expr, x -> expr or the name of a function
+fminbnd||3|3|fminbnd(f, a, b): the place between a and b where a real function is least
+fminsearch|fminunc|2|2|fminsearch(f, start): a place near the start where a function of one or more real numbers is least: fminsearch(@(x, y) ..., [x0, y0])
+lsqcurvefit||4|4|lsqcurvefit(@(a, b, x) model, [a0, b0], [x values], [y values]): the parameters with which the model fits the points best
+quad|quadgk quadl quadv|3|3|quad(f, a, b): the integral of a function from a to b
+integral2|quad2d dblquad|5|5|integral2(f, xa, xb, ya, yb): the integral of f(x, y); ya and yb may be functions of x
+integral3|triplequad|7|7|integral3(f, xa, xb, ya, yb, za, zb): the integral of f(x, y, z)
+ode45|ode23 ode113 ode78 ode89 ode15s ode23s ode23t ode23tb|3|3|ode45(@(t, y) slope, [t0, t1], y0): the rows [t, y] of the solution of y' = slope at ten equal steps; with more times in the list at those; ode45(@(t, x, y) [slopes], [t0, t1], [x0, y0]) for several unknowns
+fsolve||2|2|fsolve(f, start): a zero of a function, or of a list of functions of as many unknowns, near the start
+feval||1|*|feval(f, x, ...): the value of a function at its arguments
+bsxfun||3|3|bsxfun(f, a, b): f of the entries of two arrays, pair by pair; a number goes with every entry
+funm||2|2|funm(A, f): the function f of the matrix A
+lsqminnorm||2|2|lsqminnorm(A, b): the shortest x that makes the length of A*x - b least
+str2num|str2sym|1|1|the value of the expression that a text writes
+str2double||1|1|the number that a text writes, undefined when it writes none
+finverse||1|2|finverse(f, x): the inverse function of f, in x
+compose||2|5|compose(f, g): f of g; compose(f, g, z): in the variable z; compose(f, g, x, z), compose(f, g, x, y, z): with the variables of f and g named
+symvar||1|2|the names of an expression; symvar(expr, n): the n names nearest to x
+has||2|2|has(expr, part): whether the part stands in the expression
+children||1|1|the parts of an expression: the terms of a sum, the factors of a product, the arguments of a function
+lhs||1|1|the left side of an equation
+rhs||1|1|the right side of an equation
+isalways||1|1|whether a condition holds for all values of its names, as far as can be shown
+combine||1|2|combine(expr): powers put together; combine(expr, "sincos"): products of sines and cosines as sums; combine(expr, "log"): logarithms of positive things as one
+rewrite||2|2|rewrite(expr, target): in terms of "exp", "sincos", "sinhcosh", "tan", "sin", "cos", "log", "heaviside", "piecewise", "gamma", "factorial", "erf", "sqrt"
+potential||2|3|potential([field], [variables]): the function whose gradient the field is, undefined when there is none; potential(field, variables, [base point]): zero there
+vectorpotential||2|2|vectorpotential([field], [x, y, z]): a field whose curl the field is, undefined when there is none
+equationstomatrix||1|2|equationstomatrix([equations], [variables]): [A, b] with A*variables = b
+eliminate||2|2|eliminate([equations], [variables]): equations that hold without those variables
+isolate||2|2|isolate(equation, expr): the equation solved for the expression
+assumptions||0|0|what is assumed about the names
+ttest||1|2|ttest(x): [h, p] of the t test that the mean is 0; ttest(x, m): that it is m; ttest(x, y): of the paired differences; h is 1 when p is under 5%
+ttest2||2|2|ttest2(x, y): [h, p] of the t test that two samples have one mean (with one variance)
+ztest||3|3|ztest(x, m, sigma): [h, p] of the z test that the mean is m when the deviation sigma is known
+vartest||2|2|vartest(x, v): [h, p] of the chi-square test that the variance is v
+vartest2||2|2|vartest2(x, y): [h, p] of the F test that two samples have one variance
+splitapply||3|3|splitapply(f, values, groups): f of the values of every group
+assert||1|2|assert(condition): true, or an error when the condition does not hold; assert(condition, text): with that text
+error||1|*|error(text): stops with the text as the error; error(format, values) as sprintf
++map|arrayfun cellfun
++nsolve|vpasolve
++N|vpa
++sum|symsum
++product|symprod
++subst|subs
++together|simplifyfraction
++apart|partfrac
++ztransform|ztrans
++invztransform|iztrans
+
+# data with gaps and outliers, groups
+!correlation|2|4|correlation(x, y): Pearson's coefficient of two lists; corr(x, y, "spearman"): of their ranks; corr(x, y, "kendall"): Kendall's tau
++correlation|corr
+isoutlier||1|2|for every entry whether it lies far out: more than three scaled median distances from the median; isoutlier(x, "mean"): three deviations from the mean; isoutlier(x, "quartiles"): 1.5 times the middle half beyond it
+rmoutliers||1|2|a list without the entries that isoutlier marks
+ismissing||1|1|for every entry whether it is undefined
+rmmissing||1|1|a list without its undefined entries, a matrix without the rows that have one
+fillmissing||2|3|fillmissing(x, "previous" | "next" | "nearest" | "linear"): the undefined entries filled from their neighbours; fillmissing(x, "constant", v): with v
+discretize||2|2|discretize(x, edges): the number of the bin between two edges that every entry falls in
+findgroups||1|1|for every entry the number of its value among the distinct values in rising order
+ecdf||1|1|[values, shares]: the share of the data up to every distinct value
+cplxpair||1|1|complex numbers sorted into pairs of conjugates, the real ones last
+regress||2|2|regress(y, X): the coefficients b that make the length of X*b - y least
+
+# more on graphs
++components|conncomp
++spanningtree|minspantree
++distancematrix|distances
++vertexcount|numnodes
++edgecount|numedges
++adjacencymatrix|adjacency
++incidencematrix|incidence
++indegrees|indegree
++outdegrees|outdegree
+bfsearch||2|2|bfsearch(graph, v): the vertices in the order in which a search by breadth from v reaches them
+dfsearch||2|2|dfsearch(graph, v): the vertices in the order in which a search by depth from v reaches them
+successors||2|2|successors(graph, v): the vertices that the edges from v lead to
+predecessors||2|2|predecessors(graph, v): the vertices with an edge to v
+nearest||3|3|nearest(graph, v, d): the vertices within the distance d of v, the nearest first
+allpaths||3|3|allpaths(graph, a, b): all ways from a to b that pass no vertex twice
+hascycles||1|1|whether a graph has a cycle
+isdag||1|1|whether a graph has directions and no cycle
+transclosure||1|1|the graph with an arrow from every vertex to every vertex that it reaches
+transreduction||1|1|the fewest arrows of a graph without cycles that keep what reaches what
+biconncomp||1|1|the parts of a graph that stay in one piece when any one vertex goes
+cutvertices|articulationvertices|1|1|the vertices whose removal splits a graph
+bridges||1|1|the edges whose removal splits a graph
+centrality||2|2|centrality(graph, kind): how central every vertex is: "degree", "indegree", "outdegree", "closeness", "incloseness", "outcloseness", "betweenness", "pagerank", "eigenvector"
+addedge||3|4|addedge(graph, a, b): the graph with one more edge; addedge(graph, a, b, w): with the weight w
+rmedge||3|3|rmedge(graph, a, b): the graph without the edges between a and b
+addnode||2|2|addnode(graph, v): the graph with one more vertex
+rmnode||2|2|rmnode(graph, v): the graph without a vertex and its edges
+findedge||3|3|findedge(graph, a, b): the number of the edge between a and b in the list, 0 when there is none
+flipedge||1|1|a graph with every arrow turned round
+
+# geometry of points
+polyarea||1|2|polyarea([x values], [y values]) or polyarea([[x, y], ...]): the area of the polygon with these corners
+inpolygon||4|4|inpolygon(x, y, [corner x values], [corner y values]): whether a point lies in a polygon or on its edge; lists of points give lists
+convhull||1|2|convhull([x values], [y values]): the numbers of the points at the corners of the convex hull, against the clock, the first again at the end
+convexhull||1|2|the corners of the convex hull of points, against the clock
+delaunay||1|2|delaunay([x values], [y values]): the triangles of Delaunay as triples of the numbers of the points
+voronoi||1|2|voronoi([x values], [y values]): the corners of the Voronoi cells of the points
+rectint||2|2|rectint([x, y, w, h], [x, y, w, h]): the area that two rectangles share
+dsearchn||2|2|dsearchn([points], point): the number of the nearest of the points; a list of points gives a list
+rotx||1|1|the matrix of the turn about the x axis by an angle in degrees
+roty||1|1|the matrix of the turn about the y axis by an angle in degrees
+rotz||1|1|the matrix of the turn about the z axis by an angle in degrees
+
+# kinds of whole numbers, values of the largest size, the session
+int8||1|1|rounded to a whole number from -128 to 127
+int16||1|1|rounded to a whole number from -32768 to 32767
+int32||1|1|rounded to a whole number from -2^31 to 2^31 - 1
+int64||1|1|rounded to a whole number from -2^63 to 2^63 - 1
+uint8||1|1|rounded to a whole number from 0 to 255
+uint16||1|1|rounded to a whole number from 0 to 65535
+uint32||1|1|rounded to a whole number from 0 to 2^32 - 1
+uint64||1|1|rounded to a whole number from 0 to 2^64 - 1
+eigs||1|2|eigs(A, k): the k eigenvalues of the largest size (6 without k)
+svds||1|2|svds(A, k): the k largest singular values (6 without k)
+disp||1|1|disp(x): shows a value: a text without quotes, a matrix row by row
+fprintf||1|*|fprintf(format, values): shows the text that sprintf makes
+readmatrix|csvread dlmread|1|1|readmatrix("file.csv"): the matrix of the numbers of a file: lines of numbers with commas, semicolons, tabs or blanks between them
+writematrix|csvwrite dlmwrite|2|2|writematrix(A, "file.csv"): writes a matrix as lines of numbers with commas between them
+tic||0|0|starts the clock of toc
+toc||0|0|the seconds since tic()
+who||0|0|the names that have a value or are defined as functions
+clear||0|*|clear(): forgets all names that were given values or defined; clear(x, f): those names
+
+# charts of data (they take what is chosen for a picture, and save_png / save_jxl save them)
+lineplot|dataplot|1|*|lineplot([y values]), lineplot([x values], [y values]) or lineplot([[x, y], ...]): a line through points
+scatter||1|*|scatter([x values], [y values]): points as dots
+bar||1|*|bar([values]) or bar([x values], [values]): upright bars
+barh||1|*|barh([values]): bars that lie
+stairs||1|*|stairs([x values], [y values]): steps: every value holds until the next x
+stem||1|*|stem([x values], [y values]): a stalk with a dot for every value
+errorbar||2|*|errorbar([x values], [y values], [errors]): points with bars of their errors
+pie||1|*|pie([values]) or pie([values], ["names"]): the shares of a sum as pieces of a circle
+loglog||1|*|loglog([x values], [y values]): a line through points, both axes by logarithms
+semilogx||1|*|semilogx([x values], [y values]): a line through points, the x axis by logarithms
+semilogy||1|*|semilogy([x values], [y values]): a line through points, the y axis by logarithms
+contour|fcontour|1|*|contour(f(x, y), x, a, b, y, c, d[, heights]) or contour(matrix[, heights]): lines of equal height
+quiver||4|*|quiver([u(x, y), v(x, y)], x, a, b, y, c, d) or quiver([x], [y], [u], [v]): the arrows of a field
+plot3||1|*|plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...]): a line through points of space
+scatter3||1|*|scatter3([x values], [y values], [z values]): points of space
+surf|mesh|1|*|surf(matrix of heights) or surf([x values], [y values], matrix): a surface over a grid
+spy||1|*|spy(matrix): where the entries of a matrix are not zero
+boxplot||1|*|boxplot([values]) or boxplot([[values], ...]): boxes of the quartiles with whiskers and outliers
+imread||1|1|imread("picture.png"): the samples of a PNG or JPEG XL picture as a matrix (gray) or as a list of the matrices of its channels
+imwrite||2|3|imwrite(A, "picture.png"[, bits]): writes a matrix of numbers from 0 to 1 (or whole numbers up to 255 or 65535) as a gray picture, a list of 3 or 4 matrices as RGB or RGBA
++matrixplot|imagesc imshow pcolor
++plot|fplot ezplot
++plot3d|fsurf fmesh ezsurf
++implicitplot|fimplicit
++parametricplot3d|fplot3
++densityplot|contourf
+
+# more of MATLAB: arrays of more sizes, matrices by the places of their entries, data with gaps
+!reshape|2|3|
++intersection|intersect
++complement|setdiff
++assume|assumealso
++nintegrate|vpaintegral
++strsplit|split
++fft2|fftn
++ifft2|ifftn
++conv2|convn
+condest||1|1|the condition number of a matrix in the 1-norm, exactly
+normest||1|1|the largest singular value of a matrix, exactly
+filter2||2|3|filter2(h, X): the matrix X filtered with the weights h, as large as X; filter2(h, X, "full"), filter2(h, X, "valid")
+newline||0|0|the text of a new line
+meanabs||1|1|the mean of the absolute values of the entries
+nansum||1|2|the sum of the entries that are not undefined; of a matrix down its columns; nansum(A, 2): along its rows
+nanmean||1|2|the mean of the entries that are not undefined
+nanmax||1|2|the largest of the entries that are not undefined
+nanmin||1|2|the smallest of the entries that are not undefined
+nanstd||1|2|the standard deviation of the entries that are not undefined
+nanvar||1|2|the variance of the entries that are not undefined
+nanmedian||1|2|the median of the entries that are not undefined
+single||1|1|the nearest number with 24 bits, as MATLAB's single numbers are
+cast||2|2|cast(x, "int8"): a value as the kind named: int8 to uint64, single, double, logical, char
+class||1|1|the kind of a value by the names of MATLAB: "double", "char", "logical", "sym", "function_handle", "cell"
+isa||2|2|isa(x, kind): whether a value is of a kind: those of class, "numeric", "float"
+sparse||1|5|sparse(i, j, values): the matrix with the values at the rows i and the columns j, the values at one place added; sparse(i, j, values, rows, columns); sparse(rows, columns): zeros; sparse(A): A itself
+full||1|1|a matrix itself (all matrices are full here)
+issparse||1|1|false: all matrices are full here
+nzmax||1|1|the number of entries that are not zero
+spones||1|1|1 where an entry is not zero, 0 elsewhere
+speye||1|2|the identity matrix; speye(rows, columns)
+spdiags||4|4|spdiags(B, d, rows, columns): the matrix with the columns of B along the diagonals d
+squeeze||1|1|an array of three or more sizes without the sizes that are 1
+permute||2|2|permute(array, order): the sizes of an array in another order: permute(A, [2, 1]) is the transpose
+ipermute||2|2|ipermute(array, order): what permute with that order turned
+num2cell||1|1|a list itself (lists stand for the cells of MATLAB)
+cell2mat||1|1|a list of matrices as one matrix, side by side; a list of rows of matrices as blocks
+signim||1|1|the sign of the imaginary part of a number; of a real number the opposite of its sign
+padecoef||1|2|padecoef(T, n): [numerator, denominator] of Pade's fraction of order n (1 without n) for e^(-T*s), the highest power first
+crosstab||2|2|crosstab(x, y): how often every value of x comes with every value of y
+pdist||1|1|the distances between the rows of a matrix: 1 and 2, 1 and 3, ..., 2 and 3, ...
+squareform||1|1|the distances of pdist as a symmetric matrix, or such a matrix as the list
+normfit||1|1|[mean, standard deviation] of data
+expfit||1|1|the mean of data: the scale of the exponential distribution that fits it
+partialcorr||1|1|the correlations of every two columns of a matrix with the other columns held fixed
+del2||1|2|del2(U): the discrete Laplacian of a list or a matrix over 4, the ends on straight lines; del2(U, h): for the step h
+interpft||2|2|interpft(x, n): n values of the waves through the entries of a list, at equal steps
+datasample||2|2|datasample(list, k): k entries taken at random, some perhaps more than once
+quadprog||2|8|quadprog(H, f, A, b, Aeq, beq, lb, ub): the x that makes x'*H*x/2 + f*x least with A*x <= b, Aeq*x = beq, lb <= x <= ub, for an H without negative eigenvalues; exact
+lsqlin||2|8|lsqlin(C, d, A, b, Aeq, beq, lb, ub): the x that makes the length of C*x - d least with A*x <= b, Aeq*x = beq, lb <= x <= ub; exact
+lsqnonlin||2|2|lsqnonlin(@(a, b) [expressions], [start of a, of b]): the a and b that make the sum of the squares of the expressions least
+mellin||3|3|mellin(f, x, s): the Mellin transform, the integral of x^(s - 1)*f(x) from 0 on
+anova1||1|1|anova1([[values of a group], ...]): the probability that groups with one mean differ as much as these (analysis of variance)
+polyeig||2|*|polyeig(A0, A1, ..., Ap): the numbers x with det(A0 + x*A1 + ... + x^p*Ap) = 0
+pca||1|1|pca(X): [directions, scores, variances] of the principal components of data with an observation in every row, in decimals
+mkpp||2|2|mkpp(breaks, coefficients): pieces of polynomials: between two breaks the polynomial with a row of coefficients, the highest first, in the distance from the break before
+unmkpp||1|1|[breaks, coefficients, number of pieces, number of coefficients, 1] of pieces of polynomials
+ppval||2|2|ppval(pieces, x): the value of pieces of polynomials at x; the first and the last piece go on outside
+polynomialreduce||2|3|polynomialreduce(p, [divisors], [variables]): what is left of p after division by the divisors
+griddata||5|6|griddata(x, y, values, xq, yq): the value at a point between scattered points, on the triangles of Delaunay; "nearest" as a sixth argument: of the nearest point
+tsearchn||3|3|tsearchn([points], [triangles], point): the number of the triangle that holds a point, undefined when none does
+erase||2|2|erase(text, part): the text without the part, wherever it stands
+extractbefore||2|2|extractbefore(text, part): what stands before the part; extractbefore(text, n): before character n
+extractafter||2|2|extractafter(text, part): what stands after the part; extractafter(text, n): after character n
+extractbetween||3|3|extractbetween(text, start, end): what stands between two parts (a list when it does so more than once); with two numbers: the characters from one to the other
+insertafter||3|3|insertafter(text, part, new): the new text after every such part; insertafter(text, n, new): after character n
+insertbefore||3|3|insertbefore(text, part, new): the new text before every such part; insertbefore(text, n, new): before character n
+pad||2|4|pad(text, n): the text with blanks after it up to n characters; pad(text, n, "left" | "both"); pad(text, n, "left", "0"): with another character
+isstrprop||2|2|isstrprop(text, kind): for every character whether it is of a kind: "alpha", "digit", "alphanum", "upper", "lower", "wspace", "punct", "xdigit"
+!spline|2|3|spline(x, y, q): the value at q of the cubic spline through the points (smooth to the second derivative); spline(x, y): its pieces for ppval
+!pchip|2|3|pchip(x, y, q): the value at q of the cubic pieces through the points that keep the shape of the data; pchip(x, y): the pieces for ppval
+!makima|2|3|makima(x, y, q): the value at q of Akima's cubic pieces through the points, without overshoot; makima(x, y): the pieces for ppval
+
+# more charts, and pictures as matrices
+stem3||1|*|stem3([x values], [y values], [z values]): a stalk from the plane z = 0 to every point of space
+quiver3||6|*|quiver3([x], [y], [z], [u], [v], [w]): an arrow by (u, v, w) from every point (x, y, z)
+contour3||1|*|contour3(f(x, y), x, a, b, y, c, d[, heights]) or contour3(matrix[, heights]): the lines of equal height, each at its height in space
+waterfall||1|*|waterfall(matrix) or waterfall([x values], [y values], matrix): the rows of a matrix as lines of space, one behind the other
+compass||1|*|compass([u values], [v values]) or compass([complex numbers]): arrows from the origin
+feather||1|*|feather([u values], [v values]) or feather([complex numbers]): arrows from the places 1, 2, 3 ... on the x axis
+polarscatter||2|*|polarscatter([angles], [radii]): points at their angles (in radians) and distances around the origin
+rgb2gray||1|1|rgb2gray([R, G, B]): the gray picture 0.2989*R + 0.587*G + 0.114*B of the matrices of three colours; whole samples stay whole
+im2double||1|2|im2double(A): the samples 0 to 255 of a picture as shares from 0 to 1; im2double(A, 16): of 16 bits
+im2uint8||1|1|the shares from 0 to 1 of a picture as whole samples from 0 to 255
+im2uint16||1|1|the shares from 0 to 1 of a picture as whole samples from 0 to 65535
+imcomplement||1|1|the negative of a picture: 1 - x for shares, 255 - x (or 65535 - x) for samples
+imcrop||2|2|imcrop(A, [x, y, width, height]): the columns from x to x + width and the rows from y to y + height of a picture
+imresize||2|3|imresize(A, scale) or imresize(A, [rows, columns]): a picture of another size, by straight lines between the middles of the pixels (nothing is smoothed first); imresize(A, s, "nearest"): the nearest pixel
+imrotate||2|2|imrotate(A, degrees): a picture turned against the clock about its middle: quarter turns exactly, other angles by the nearest pixel in a picture as large as it has to be
+imfilter||2|3|imfilter(A, h): a picture with the weights h laid on every pixel, as large as it was, zeros around it; imfilter(A, h, "conv"): the weights turned round
+imhist||1|2|imhist(A): how many pixels have every sample from 0 to 255; imhist(A, bits): of that many bits
+imbinarize||1|2|imbinarize(A, level): 1 where a pixel is above the level, else 0; without a level: the middle between the darkest and the lightest pixel
++rescale|mat2gray
+htrans||3|3|htrans(f, x, t): the Hilbert transform of f(x), the integral of f(x)/(t - x) over all x, over pi: of waves, of 1/(x^2 + c), x/(x^2 + c), sin(x)/x, 1/x and diracdelta
+ihtrans||3|3|ihtrans(f, x, t): the function whose Hilbert transform f is
+# the calendar
+datenum|datetime|1|6|datenum(year, month, day) with or without (hour, minute, second), datenum([year, month, day]), datenum("2026-11-20 13:45:10"): the days since the year 0 began, as MATLAB counts them; datenum(text, "dd.mm.yyyy") reads another form; datenum(number, "juliandate" | "modifiedjuliandate" | "posixtime" | "excel" | "yyyymmdd")
+datevec||1|2|datevec(date): [year, month, day, hour, minute, second] of a day number or of a date in quotes; datevec(text, form)
+datestr||1|2|datestr(date): the date in words, as "20-Nov-2026 13:45:10"; datestr(date, form): with yyyy yy mmmm mmm mm m dddd ddd dd d HH MM SS FFF AM PM QQ, or one of MATLAB's forms 0 to 31
+weekday||1|2|weekday(date): the day of the week, 1 for Sunday to 7 for Saturday; weekday(date, "long" | "short"): its name
+eomday||2|2|eomday(year, month): the last day of the month
+calendar||0|2|calendar(year, month), calendar(date): the days of the month in six weeks that begin on Sunday, 0 where the month has no day; calendar(): of this month
+addtodate||3|3|addtodate(date, number, "year" | "month" | "day" | "hour" | "minute" | "second" | "millisecond"): the day number moved; with years and months the day stays within its month
+etime||2|2|etime(later, sooner): the seconds between two dates [year, month, day, hour, minute, second]
+juliandate||1|1|juliandate(date): the Julian date of a day number, a date in quotes or [year, month, day]
+mjuliandate|modifiedjuliandate|1|1|mjuliandate(date): the modified Julian date, the Julian date less 2400000.5
+posixtime||1|1|posixtime(date): the seconds since 1970 began
+dayofyear||1|1|dayofyear(date): the place of the day in its year, from 1
+isweekend||1|1|isweekend(date): whether the day is a Saturday or a Sunday
+leapyear|isleapyear is_leap_year|1|1|leapyear(year): whether the year has a 29th of February
+yeardays||1|1|yeardays(year): the days of the year, 365 or 366
+now||0|0|now(): this moment as a day number, by the clock of this place
+clock||0|0|clock(): this moment as [year, month, day, hour, minute, second]
+date|today|0|0|date(): this day in words, as "20-Nov-2026"
+cputime||0|0|cputime(): the seconds for which this run has kept a processor busy
+# patterns of texts
+regexp||2|*|regexp(text, pattern): the places where the pattern begins in the text; with "match", "tokens", "names", "start", "end", "split", "tokenextents": the matches, their parts in brackets, ..., several of them as a list in that order; "once": the first match only; "ignorecase", "emptymatch", "lineanchors", "dotexceptnewline". A pattern has . [a-z] [^a-z] \d \w \s \D \W \S, * + ? {2,5} with ? for the fewest and + for no way back, ( ) (?: ) (?<name> ) |, ^ $ \< \>, (?= ) (?! ) (?<= ) (?<! ) (?> ), \1 \k<name>, (?i)
+regexpi||2|*|regexpi(text, pattern, ...): regexp that takes capitals for small letters
+regexprep||3|*|regexprep(text, pattern, new): the text with every match replaced; in the new text $0 is the match, $1 its first part in brackets, $<name> a part by its name; "once", "ignorecase", or the number of the match to replace; lists of patterns are replaced one after the other
+regexptranslate||2|2|regexptranslate("escape", text): the pattern that matches just the text; regexptranslate("wildcard", text): with * for any signs and ? for one
+strjust||1|2|strjust(text, "right" | "left" | "center"): the blanks at the ends of a text moved to the other side
+validatestring||2|2|validatestring(text, [words]): the word that the text is or begins, capitals or not
+# tests of ranks and counts, groups of points
+ranksum||2|3|ranksum(x, y): [p, h] of Wilcoxon's test that two samples have one median, by the sum of the ranks; every case is counted (p is a fraction) for small samples, or with "exact"; else, or with "approximate", by the normal law
+signrank||1|3|signrank(x), signrank(x, y), signrank(x, m): [p, h] of Wilcoxon's test of signed ranks that the median is 0, that of x - y is 0, or is m; "exact" or "approximate" as the last argument
+signtest||1|3|signtest(x), signtest(x, y), signtest(x, m): [p, h] of the test of signs that the median is 0, that of x - y is 0, or is m
+kruskalwallis||1|1|kruskalwallis([[group], [group], ...]): the probability that groups of one distribution have ranks as far apart
+friedman||1|1|friedman(matrix): the probability that columns alike differ as much by their ranks within the rows
+vartestn|bartlett|1|1|vartestn([[group], [group], ...]): the probability, by Bartlett's test, that groups of one variance differ as much
+fishertest||1|1|fishertest([[a, b], [c, d]]): [h, p, odds ratio] of Fisher's exact test of a table of counts; p is a fraction
+chi2gof||2|3|chi2gof(counts, expected): [h, p, statistic] of the chi-square test that counts follow the expected counts or shares; chi2gof(counts, expected, k): with k parameters fitted
+kstest||1|2|kstest(x): [h, p, distance] of the Kolmogorov-Smirnov test that a sample is standard normal; kstest(x, distribution): that it has that distribution
+kstest2||2|2|kstest2(x, y): [h, p, distance] of the Kolmogorov-Smirnov test that two samples have one distribution
+jbtest||1|1|jbtest(x): [h, p, statistic] of the Jarque-Bera test that a sample is normal, by the chi-square law of 2 degrees
+anova2||1|2|anova2(matrix): the probabilities [of the columns, of the rows] that such means are alike; anova2(matrix, repeats): every so many rows are one group, [columns, rows, both together]
+mahal||2|2|mahal(points, sample): the squared Mahalanobis distance of every point (a row) from a sample of rows
+mvnpdf||1|3|mvnpdf(x, mean, covariance): the density of the normal distribution of several coordinates at x, or at every row of x
+mvnrnd||2|3|mvnrnd(mean, covariance, count): random points of the normal distribution of several coordinates
+ksdensity||1|3|ksdensity(x, points): the density of a sample smoothed with normal bells, at the points; ksdensity(x): [densities, points] at 100 points; ksdensity(x, points, width)
+jackknife||2|2|jackknife(f, list): f of the list without its first entry, without its second, ...
+bootstrp||3|3|bootstrp(count, f, list): f of so many random samples of the list, drawn with returns
+grpstats||2|3|grpstats(values, groups): the mean of the values of every group, the groups in order; grpstats(values, groups, "std" | ["mean", "numel"]): "mean" "std" "var" "sem" "min" "max" "median" "range" "sum" "numel"
+linkage||1|2|linkage(points, way): the steps [group, group, distance] of gathering points (rows) into ever larger groups; the points are groups 1 to n, every step makes the next; "single" (default), "complete", "average", "weighted", "centroid", "median", "ward"; a flat list holds the distances of the pairs as pdist gives them
+cluster||2|2|cluster(steps, count): the group of every point when the steps of linkage stop at so many groups
+kmeans||2|2|kmeans(points, count): [the group of every point, the means of the groups]; starts from the points farthest apart
+fitlm||2|2|fitlm(x, y): the straight fit y = b0 + b1*x1 + ... as a record: coefficients (the constant first), se, tstat, pvalue, rsquared, adjusted, rmse, dfe, fstat, p; x is a list or a matrix with a row for every y
+# records and tables
+struct||0|*|struct(name, value, ...): a record of named fields; getfield, setfield, fieldnames, rmfield, isfield work with it
+isstruct||1|1|isstruct(x): whether x is a record
+fieldnames||1|1|fieldnames(record): the names of its fields
+numfields||1|1|numfields(record): how many fields it has; 0 for what is no record
+getfield||2|*|getfield(record, name): the value of a field; getfield(record, name, name): of a field of a record within
+setfield||3|*|setfield(record, name, value): the record with a field set or added; setfield(record, name, name, value): in a record within
+rmfield||2|2|rmfield(record, name | [names]): the record without those fields
+isfield||2|2|isfield(record, name | [names]): whether it has the field
+orderfields||1|1|orderfields(record): the fields in the order of their names
+struct2cell||1|1|struct2cell(record): the values of its fields
+cell2struct||2|2|cell2struct([values], [names]): the record with those fields
+structfun||2|2|structfun(f, record): f of the value of every field
+dictionary||0|*|dictionary(keys, values), dictionary(key, value, ...): a table that finds a value by its key (a number or a text); keys, values, lookup, insert, remove, iskey work with it
+keys||1|1|keys(table): its keys, in the order they came
+values||1|2|values(table): its values; values(table, [keys]): those of the keys
+entries||1|1|entries(table): [key, value] of every entry
+numentries||1|1|numentries(table): how many entries it has
+iskey||2|2|iskey(table, key | [keys]): whether the key is there
+lookup||2|3|lookup(table, key | [keys]): the value of a key; lookup(table, key, fallback): the fallback when the key is not there
+remove||2|2|remove(table, key | [keys]): the table without those keys
+iscell||1|1|iscell(x): whether x is a list of unlike things or of texts
+iscellstr||1|1|iscellstr(x): whether x is a list of texts
+cell||1|2|cell(n): a list of n empty lists; cell(rows, columns)
+!insert|3|3|insert(list, x, i): the list with x as entry i; insert(table, key, value): the table with a key set
+# more special functions
+meijerg||5|5|meijerg([a1, ..., an], [more a], [b1, ..., bm], [more b], z): Meijer's G function, the integral of a quotient of gamma functions that holds most special functions; a number where its series converge
+lerchphi|lerch|3|3|lerchphi(z, s, a): Lerch's transcendent, the sum of z^k/(k + a)^s over k from 0; a number inside the unit circle and at z = 1 and z = -1
+# expressions in an unknown function and its derivatives
+functionalderivative|eulerlagrange|1|3|functionalderivative(f, y, x): the derivative of the functional that integrates f(x, y, y', y'', ...) over x, by its function y; where it is zero the functional is stationary (the equation of Euler and Lagrange)
+odetovectorfield||1|3|odetovectorfield(equation, y, x): an equation of order n as the derivatives of [y, y', ..., y^(n-1)], the highest derivative solved for
+# the least value under conditions
+fmincon||2|9|fmincon(f, start, A, b, Aeq, beq, lower, upper, conditions): the least value of f where conditions hold: A*x <= b, Aeq*x = beq, lower <= x <= upper and conditions(x) = [[values that are <= 0], [values that are 0]]; [] leaves a part out; the point is given
+# matrices with names, a surface, colours, counts of pairs
+gallery||2|5|gallery(kind, n, ...): a matrix with a name: "minij", "moler" (n, alpha), "lehmer", "fiedler" (n or a list), "frank" (n, k), "tridiag" (n, below, on, above), "ris", "kms" (n, rho), "parter", "pei" (n, alpha), "clement" (n, k), "grcar" (n, k), "jordbloc" (n, lambda), "circul" (a list), "cauchy" (x, y), "lotkin"
+peaks||0|2|peaks(n): the surface with three peaks of MATLAB over n by n places from -3 to 3 (49 without n); peaks(x, y): its value at a place
+colormap||1|2|colormap(name, count): so many colours of a palette as rows [red, green, blue] from 0 to 1 (256 without a count)
+histcounts2||3|4|histcounts2(x, y, cells): how many pairs fall into every cell of a grid, a row for every cell of x; histcounts2(x, y, [cells of x, cells of y]); histcounts2(x, y, edges of x, edges of y)
+pcg|gmres bicg bicgstab cgs minres qmr symmlq tfqmr|2|*|pcg(A, b), gmres(A, b), ...: the solution of A*x = b; the methods of MATLAB that come near it step by step give it here at once
+lsqr||2|*|lsqr(A, b): the x with the least |A*x - b|
++pie|pie3
++lineplot|comet
++plot3|comet3
+# pairs of matrices, forms in another order
+balance||1|1|balance(A): [T, B] with B = T^-1*A*T: rows and columns exchanged where that sets an eigenvalue apart, then scaled by powers of two until every row is about as large as its column
+qz||2|2|qz(A, B): [AA, BB, Q, Z] with Q*A*Z = AA and Q*B*Z = BB zero below their diagonals and unitary Q and Z (the Schur form of a pair); AA[i][i]/BB[i][i] are the eigenvalues of the pair
+ordqz||5|5|ordqz(AA, BB, Q, Z, select): the Schur form of a pair with the chosen eigenvalues first; select as for ordschur
+gsvd||2|2|gsvd(A, B): the generalized singular values of two matrices with as many columns, the least first
+gsvddecomposition||2|2|gsvddecomposition(A, B): [U, V, X, C, S] with A = U*C*X^H, B = V*S*X^H, unitary U and V and C^H*C + S^H*S = 1
+ordschur||3|3|ordschur(U, T, select): [U, T] of a Schur form in another order: the eigenvalues that a list of truths chooses come first; "lhp", "rhp" (the left and the right half of the plane), "udi", "udo" (inside and outside the unit circle); a list of numbers: the greater, the sooner
+ordeig||1|2|ordeig(T): the eigenvalues in the order of the diagonal of a Schur form (two for a block of two); ordeig(AA, BB): of a pair
+rsf2csf||2|2|rsf2csf(U, T): [U, T] of the complex Schur form (zero below the diagonal) from a real one with blocks of two
+cdf2rdf||2|2|cdf2rdf(V, D): [V, D] with real numbers only, from eigenvectors V and a diagonal D with pairs of conjugate numbers: every pair becomes a block of two
+# runs and spreads of samples, the normal law of several variables, laws fitted to data
+runstest||1|4|runstest(x[, level | "ud"][, "exact" | "approximate"]): [h, p, runs] of the runs of values above and below a level (the mean when none is given; values at the level are left out), with "ud" of the runs up and down (equal neighbours count once); every order is counted (p is a fraction) unless "approximate" asks for the normal law with the count moved half a step towards its mean, which runs up and down of more than 50 values use
+ansaribradley||2|3|ansaribradley(x, y[, "exact" | "approximate"]): [h, p, W] of the test that two samples spread alike: W adds the places of x counted from both ends; up to 25 values every choice is counted (p is a fraction), beyond that the normal law
+lillietest||1|1|lillietest(x): [h, p, D] of the test of Lilliefors that the values follow a normal law with the mean and the spread of the data; p (four digits) by the formulas of Dallal and Wilkinson and of Stephens
+mvncdf||1|4|mvncdf(x), mvncdf(x, mu), mvncdf(x, mu, sigma), mvncdf(lower, upper, mu, sigma): the chance that normal variables with the means mu and the covariances sigma (a matrix, or a list of variances) are all below x, or in a box; x a list or a matrix with a point in every row; up to four variables to the digits of the session (integrals of Plackett's identity), from five by shifted lattices of points (some five digits, as many as the lattices agree in)
+cmdscale||1|1|cmdscale(D): [Y, e]: points (in the rows of Y) whose distances are those of the symmetric matrix D (or of the list that pdist gives), from the eigenvalues e of the centred squares; the largest entry of every column of Y is positive
+procrustes||2|6|procrustes(X, Y[, "scaling", false][, "reflection", true | false | "best"]): [d, Z, struct("T", T, "b", b, "c", c)]: the points of Y turned, scaled and moved onto those of X: Z = b*Y*T + c, and d the squares of what is left over the squares of X about its middle
+canoncorr||2|2|canoncorr(X, Y): [A, B, r, U, V]: the weights A and B of the columns of X and Y whose sums U = (X - mean)*A and V = (Y - mean)*B correlate most, the correlations r from the largest; the largest weight of every column of A is positive
+nnmf||2|2|nnmf(A, k): [W, H, D] with W*H near A, all entries zero or more, k columns in W: least squares one factor at a time from the leading singular pairs; rows of H of length 1, columns of W from the longest, D the root of the mean square that is left
+poissfit||1|1|poissfit(x): the mean of the Poisson law that makes the counts likeliest
+unifit||1|1|unifit(x): [a, b], the ends of the uniform law that makes the data likeliest
+raylfit||1|1|raylfit(x): the parameter of the Rayleigh law that makes the data likeliest, sqrt(sum(x^2)/(2n))
+lognfit||1|1|lognfit(x): [mu, sigma] of the lognormal law: the mean and the spread (dividing by n - 1) of the logarithms
+binofit||2|2|binofit(successes, trials): the chance of success that makes the counts likeliest
+gamfit||1|1|gamfit(x): [shape, scale] of the gamma law that makes the data likeliest
+wblfit||1|1|wblfit(x): [scale, shape] of the law of Weibull that makes the data likeliest
+betafit||1|1|betafit(x): [a, b] of the beta law that makes the data (between 0 and 1) likeliest
+nbinfit||1|1|nbinfit(x): [r, p] of the negative binomial law that makes the counts likeliest
+mle||1|5|mle(x[, "distribution", name][, "ntrials", n]): the parameters that make the data likeliest, as MATLAB orders them; the normal law without a name (its spread divides by n); normal, exponential, poisson, rayleigh, lognormal, gamma, weibull, beta, uniform, "discrete uniform", geometric, binomial, bernoulli, "negative binomial"
+fitdist||2|4|fitdist(x, name[, "ntrials", n]): the law of that name fitted to the data, as a distribution that pdf, cdf, quantile, avg, random take; the names of mle
+# values at both ends, equations that look back, heat in one dimension, least values without slopes
+bvp4c|bvp5c|3|5|bvp4c(f, conditions, mesh, guess[, parameters]): the functions with the slopes f(x, y, ...) whose values at the two ends of the mesh make the conditions(ya, ..., yb, ...) zero; rows [x, y, ...] at the points of the mesh, to the digits of the session (shooting from many points, the steps of Newton); the guess: numbers, a function of x, or a row for every point; with unknown parameters f(x, y, ..., p) and conditions(ya, ..., yb, ..., p) give [rows, parameters]; bvp4c(f, conditions, bvpinit(mesh, guess))
+bvpinit||2|3|bvpinit(mesh, guess[, parameters]): the start of bvp4c as a struct with the fields x, y and parameters
+deval||2|3|deval(rows, x): the solution between the rows [t, y, ...] of ode45, bvp4c or dde23 by a spline; deval(rows, x, f): by the slopes f(t, y, ...) themselves from the row before, to all digits
+dde23||4|4|dde23(f, lags, history, [t0, t1]): rows [t, y, ...] of the functions with the slopes f(t, y, ..., z, ...), where z, ... are the values of y, ... at t minus the lags (all functions at the first lag, then at the next); the history before t0 is numbers or a function of t; eleven rows, or a row for every time of a longer list
+pdepe||6|6|pdepe(m, pde, start, ends, mesh, times): the equation c*u_t = x^-m*(x^m*f)_x + s in one dimension of space (m = 0 a slab, 1 a cylinder, 2 a ball), with pde(x, t, u, ux) giving [c, f, s], start(x) the values at the first time and ends(xl, ul, xr, ur, t) giving [pl, ql, pr, qr] of the conditions p + q*f = 0 at both ends; a matrix with a row for every time and a column for every point of the mesh (cells about the points, second order in the mesh; the times by steps that stiff equations allow, twelve digits); several unknowns: pde(x, t, u, v, ux, vx) gives [[c...], [f...], [s...]] and a matrix comes for each
+patternsearch||2|8|patternsearch(f, start[, lower, upper]) or patternsearch(f, start, A, b, [], [], lower, upper): a point where the function is least, sought without slopes (so kinks do no harm): steps along the axes, strides along the way that helped, half the step when nothing helps (Hooke and Jeeves), to the digits of the session
+particleswarm||2|8|particleswarm(f, number of unknowns[, lower, upper]): the least point that a swarm of points finds, each drawn towards its own best and the best of all (from -10 to 10 without bounds), then polished as patternsearch does; the numbers drawn are the same every time unless rng gave a seed
+simulannealbnd||2|8|simulannealbnd(f, start[, lower, upper]): the least point of a walk that takes worse points too while it is hot and cools slowly, then polished as patternsearch does
+ga||2|8|ga(f, number of unknowns[, lower, upper]) or ga(f, number, A, b, [], [], lower, upper): the least point of generations of points: the best stay, the others blend two parents and now and then change by chance; then polished as patternsearch does
+globalsearch|multistart|2|8|globalsearch(f, start[, lower, upper]): the least of the points that patternsearch finds from the best of 200 starts drawn in the box (from -10 to 10 without bounds) and from the start
+fminimax||2|8|fminimax(@(x, y) [f, g, ...], start[, A, b, Aeq, beq, lower, upper]): the point where the largest of the functions is least (fmincon with one unknown more that bounds them all)
+fgoalattain||4|10|fgoalattain(@(x, y) [f, g, ...], start, goals, weights[, A, b, Aeq, beq, lower, upper]): the point where the functions come as far below their goals as can be, each measured by its weight
+pdeval||4|4|pdeval(m, mesh, values, x): [u, ux], the values of a row of pdepe at places between the points of the mesh and the slopes there (straight lines between the points, as the cells of pdepe take them)
+# tables of named columns, tables with times, values of a few kinds
+istable||1|1|istable(x): whether x is a table made by table("name", [values], ...) (a timetable is none)
+timetable||1|*|timetable([times], "name", [values], ...): a table with a time for every row (the times are numbers: days as datetime counts them, or any other measure); also timetable([times], [values], ..., "VariableNames", [names]) and "RowTimes", [times] at the end
+istimetable||1|1|istimetable(x): whether x is a table with times
+height||1|1|height(table): the number of its rows; of a matrix too
+width||1|1|width(table): the number of its variables; the columns of a matrix
+head||1|2|head(table[, k]): its first k rows (8 without k); the first entries of a list
+tail||1|2|tail(table[, k]): its last k rows (8 without k); the last entries of a list
+varnames||1|1|varnames(table): the names of its variables (fieldnames gives them too; getfield(table, name) is a variable as a list, setfield(table, name, [values]) sets one)
+takerows||2|2|takerows(table, [numbers of rows]) or takerows(table, [truths]): the table of those rows; of values made by categorical too
+takevars||2|2|takevars(table, [names]): the table of those variables, in that order
+addvars||3|*|addvars(table, "name", [values]): one variable more; addvars(table, [values], ..., "NewVariableNames", [names][, "Before" | "After", name])
+removevars||2|2|removevars(table, [names]): the table without those variables
+renamevars||3|3|renamevars(table, [old names], [new names])
+movevars||4|4|movevars(table, [names], "Before" | "After", name): those variables at another place
+topkrows||2|4|topkrows(table, k[, names][, "ascend" | "descend"]): the k rows with the largest values of the named variables (the smallest with "ascend")
+table2array|table2cell|1|1|table2array(table): its rows as a matrix
+array2table|cell2table|1|3|array2table(matrix[, "VariableNames", [names]]): a table with a variable for every column
+struct2table||1|1|struct2table(struct of lists) or struct2table([struct, ...]): a table with a variable for every field
+table2struct||1|3|table2struct(table): a list with a struct for every row; table2struct(table, "ToScalar", true): one struct of lists
+timetable2table||1|1|timetable2table(timetable): the table with the times as its first variable
+table2timetable||1|3|table2timetable(table): the first variable becomes the times; table2timetable(table, "RowTimes", name or [times])
+innerjoin||2|4|innerjoin(left, right[, "Keys", [names]]): the rows of both tables side by side where the keys (the variables that both have) agree, in rising order of the keys; variables of one name get _left and _right
+outerjoin||2|6|outerjoin(left, right[, "Keys", [names]][, "Type", "left" | "right" | "full"]): as innerjoin, with the rows that have no partner too (what is not there is missing; the keys are merged)
+varfun||2|2|varfun(f, table): the table of f applied to every variable (a list of values goes in, a value or a list comes out)
+rowfun||2|2|rowfun(f, table): a table with the values of f for every row, the variables being its arguments
+groupsummary||2|4|groupsummary(table, [group names][, method or [methods]][, [names]]): a row for every group with GroupCount and method_name for the variables of numbers; methods: sum mean median mode min max std var range numunique nummissing
+groupcounts||2|2|groupcounts(table, [group names]): a row for every group with GroupCount and Percent
+summary||1|1|summary(table): a table with Variable, Type, Min, Median, Max, NumMissing for every variable; of values made by categorical: Category and Count
+stack||2|2|stack(table, [names]): those variables one under another: a row for every value, with name1_name2_Indicator saying which variable it was
+unstack||3|3|unstack(table, value name, indicator name): a variable for every value of the indicator (several values of one group and indicator add up)
+readtable||1|1|readtable("file.csv"): the table of a file with names in the first line (Var1, Var2, ... when that line holds numbers); numbers stay exact, other entries are texts, empty ones are missing
+writetable||2|2|writetable(table, "file.csv"): the names, then a line for every row, commas between the entries
+isregular||1|1|isregular(timetable or [times]): whether the times are one step apart
+lag||1|2|lag(timetable[, k]): the values k rows later (1 without k), the times staying; what moves in from outside is missing
+retime||2|5|retime(timetable, [new times][, method]): the table at other times; methods: fillwithmissing (as given), previous, next, nearest, linear, spline, pchip, or gathered over the stretch from a time to the next: mean sum min max median count firstvalue lastvalue; retime(timetable, "regular", method, "TimeStep", step)
+synchronize||2|4|synchronize(timetable, timetable[, "union" | "intersection" | "first" | "last"][, method]): both tables at the times of both (or of one), with the methods of retime
+categorical||1|5|categorical([values][, [kinds][, [names of the kinds]]][, "ordinal"]): values of a few kinds (those that differ, in rising order, when no kinds are given; a value of no kind is undefined)
+iscategorical||1|1|iscategorical(x): whether x was made by categorical
+categories||1|1|categories(c): the kinds of values made by categorical, in their order
+countcats||1|1|countcats(c): how many values are of every kind (histcounts(c) too)
+isundefined||1|1|isundefined(c): a truth for every value: whether it is of no kind
+isordinal||1|1|isordinal(c): whether the kinds are in an order that means something
+iscategory||2|2|iscategory(c, kind or [kinds]): whether c has that kind
+addcats||2|2|addcats(c, [kinds]): more kinds at the end
+removecats||1|2|removecats(c, [kinds]): without those kinds (their values become undefined); removecats(c): without the kinds that no value has
+renamecats||2|3|renamecats(c, [new names]) or renamecats(c, [old], [new])
+reordercats||1|2|reordercats(c, [kinds in a new order]); reordercats(c): in rising order
+mergecats||2|3|mergecats(c, [kinds][, new name]): those kinds become one (the first, or the new name)
+setcats||2|2|setcats(c, [kinds]): exactly those kinds; values of other kinds become undefined
+grp2idx||1|1|grp2idx([values] or c): [numbers of the groups from 1, the groups]
+cellstr||1|1|cellstr(c): the values made by categorical as a list of their kinds (double(c) gives the numbers of the kinds)
+# more charts of data
+bar3||1|*|bar3(matrix of heights): a bar of space for every entry, a row of the matrix along y
+histogram2||2|*|histogram2([x values], [y values][, cells or [cells of x, cells of y]]): how many pairs fall into every cell of a grid, as bars of space (ten cells a side without a number)
+surfc|meshc|1|*|surfc(matrix of heights) or surfc([x values], [y values], matrix): the surface of surf with its lines of equal height on the floor below it
+streamline||7|*|streamline([u(x, y), v(x, y)], x, a, b, y, c, d[, [[x, y], ...]]): the lines that follow a field from the points given (from a grid of 36 points without them), each from the first colour of the palette to the last
+polarhistogram|rose|1|*|polarhistogram([angles in radians][, parts]): how many angles fall into every part of the circle (12 parts without a number), as pieces that reach as far as their counts
+dendrogram||1|*|dendrogram(tree): the tree of a clustering from the rows [group, group, height] that linkage gives; under every leaf its number
+bubblechart||3|*|bubblechart([x values], [y values], [sizes]): dots whose widths show a third value
+fimplicit3||10|*|fimplicit3(f(x, y, z), x, a, b, y, c, d, z, e, g): the surface where a function of three variables is zero (an equation will do), from a grid of space
+isosurface||2|*|isosurface([matrix, matrix, ...], level): the surface where the numbers of a grid of space (a matrix for every z) pass a level
+triplot||2|*|triplot(triangles, [x values], [y values]) or triplot(triangles, [[x, y], ...]): the sides of triangles given as rows of three numbers of points, as delaunay gives them
+trisurf|trimesh|4|*|trisurf(triangles, [x values], [y values], [z values]): a surface of triangles of space
+pareto||1|*|pareto([values]): the values as bars from the largest, and their running sum
+fill|patch|1|*|fill([x values], [y values]) or fill([[x, y], ...]): a shape with those corners, filled; its area is told
+ribbon||1|*|ribbon(matrix): the columns of a matrix as strips of space, one beside the other
+normplot|qqplot probplot|1|*|normplot([values]): the sorted values against the places that a standard normal law gives their ranks, with the line through the quarters; values of a normal law lie along it
+parallelplot||1|*|parallelplot(matrix): every row as a line across an axis for every column, each axis from its least value to its largest
+swarmchart||1|*|swarmchart([values]) or swarmchart([[values], [values], ...]): the values of every group as dots that step aside for one another
+violinplot||1|*|violinplot([values]) or violinplot([[values], ...]): the smooth density of every group to both sides of its place, with the median
+histfit||1|*|histfit([values][, bins]): the counts of the values in bins and the normal law of their mean and spread
+gscatter||3|*|gscatter([x values], [y values], [groups]): dots in the colour of their group
+andrewsplot||1|*|andrewsplot(matrix): every row as the curve x1/sqrt(2) + x2*sin(t) + x3*cos(t) + x4*sin(2t) + ... from -pi to pi
++matrixplot|image
++boxplot|boxchart
++surf|surfl
+bar3h||1|*|bar3h(matrix of lengths): the bars of bar3 lying along x
+cdfplot||1|*|cdfplot([values]): the share of the values at or below every value, in steps
+plotmatrix||1|*|plotmatrix(matrix): every column against every other as dots, a chart for each pair; in its own cell the counts of a column
+stackedplot||1|*|stackedplot(matrix): the columns as lines, each in a chart of its own, one above the other
+biplot||1|*|biplot(matrix): an arrow from the origin for every variable by its weights in two directions, as the first two columns of pca give them
+silhouette||2|3|silhouette(points, [groups][, "euclidean" | "sqeuclidean"]): for every point how well it sits in its group: (b - a)/max(a, b) with a the mean distance to its own group and b to the nearest other group (squared distances unless told otherwise; a point alone in its group gets 0)
+# expressions as code, their shared parts, and as a picture of text
+ccode||1|2|ccode(expression[, "name"]): the expression as a line of C that sets t0 (or the name): numbers as doubles, x*x for a square, pow, sqrt, exp, log, fabs, M_PI; a list or a matrix gives a line for every entry (t0[0], t0[1][2])
+fortran||1|2|fortran(expression[, "name"]): the expression as a line of Fortran: 2.0D0, x**2, sqrt, exp, log; a list or a matrix gives a line for every entry (t0(1), t0(2,3))
+matlabcode|octavecode|1|1|matlabcode(expression): the expression as code of MATLAB and Octave that works on arrays entry by entry (.* ./ .^); a matrix as [a, b; c, d]
+matlabfunction||1|3|matlabfunction(expression[, "Vars", [x, y]]): the function @(x, y) expression of its variables (in the order of the alphabet unless they are given), to call or to hand to fzero, integral, ode45 and the like
+subexpr||1|2|subexpr(expression[, name]): [the expression with sigma (or the name) for the part that it has more than once and that saves most, sigma = that part]
+cse||1|1|cse(expression or [expressions]): [[sigma1 = part, sigma2 = part, ...], what is left]: every part that comes more than once named once, those that others use first
+pretty||1|1|pretty(expression): the expression as text in several lines, as on paper: fractions over a bar, powers raised, brackets as tall as what they hold
+# systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)
+!series|2|4|series(f, x, a, n): power series around a up to order n; series(G, H): two systems one after the other, G*H
+!pade|2|5|pade(f, x, m, n): the ratio of polynomials of degrees m and n that agrees with f at 0 as far as possible; pade(f, x, x0, m, n) at x0; pade(T, n): [numerator, denominator] for the delay e^(-T*s) as padecoef
+tf||1|3|tf([numerator], [denominator][, Ts]): the system with that transfer function, the highest power first; Ts the time between samples of a sampled system (-1: not said); tf("s"), tf("z", Ts): the variable itself; tf(system or a ratio of polynomials in s or z): written as tf
+zpk||1|4|zpk([zeros], [poles], gain[, Ts]): the system by its zeros and poles; zpk(system): a system written that way
+ss||1|5|ss(A, B, C, D[, Ts]): the system x' = A*x + B*u, y = C*x + D*u (sampled with Ts: x at the next sample); ss(system): a system written that way (the companion form of tf2ss)
+tfdata||1|1|tfdata(system): [numerator, denominator], the highest power first
+zpkdata||1|1|zpkdata(system): [zeros, poles, gain]
+ssdata||1|1|ssdata(system): [A, B, C, D]
+tf2sym||1|1|tf2sym(system): its transfer function as an expression in s, or z for a sampled system
+tf2ss||2|2|tf2ss([numerator], [denominator]): [A, B, C, D] in the companion form that has the coefficients in the first row of A
+ss2tf||4|4|ss2tf(A, B, C, D): [numerator, denominator] of C*inv(s*I - A)*B + D
+tf2zp|tf2zpk|2|2|tf2zp([numerator], [denominator]): [zeros, poles, gain]
+zp2tf||3|3|zp2tf([zeros], [poles], gain): [numerator, denominator]
+ss2zp||4|4|ss2zp(A, B, C, D): [zeros, poles, gain]
+zp2ss||3|3|zp2ss([zeros], [poles], gain): [A, B, C, D]
+isct||1|1|isct(system): whether its time runs (it is not sampled)
+isdt||1|1|isdt(system): whether it is sampled
+isproper||1|1|isproper(system): whether the numerator has no higher degree than the denominator
+isstable||1|1|isstable(system): whether every pole is in the left half of the plane (inside the unit circle for a sampled system)
+pole||1|1|pole(system): the zeros of its denominator
+zero|tzero|1|1|zero(system): the zeros of its numerator
+dcgain||1|1|dcgain(system): the gain at frequency 0: the transfer function at s = 0, or at z = 1 for a sampled system
+damp||1|1|damp(system): [natural frequencies, damping ratios, poles], the slowest pole first
+parallel||2|2|parallel(G, H): two systems side by side with their outputs added, G + H
+feedback||2|3|feedback(G, H[, sign]): G with H from its output back to its input, G/(1 + G*H); with the sign +1 the fed back signal is added, G/(1 - G*H)
+minreal||1|1|minreal(system): the same system without the zeros and poles that cancel
+evalfr||2|2|evalfr(system, s): the transfer function at that complex place
+freqresp||2|2|freqresp(system, w or [w]): the transfer function at the frequency w: at s = i*w, or at z = e^(i*w*Ts) for a sampled system
+bode||1|2|bode(system, [w]): [gains, phases in degrees] at those frequencies, the phase without jumps of 360; bode(system): [gains, phases, frequencies] at frequencies that it chooses
+nyquist||1|2|nyquist(system, [w]): [real parts, imaginary parts] of the response at those frequencies; without them [real, imaginary, frequencies]
+margin||1|1|margin(system): [gain margin, phase margin in degrees, frequency where the phase crosses -180, frequency where the gain crosses 1] of the loop; inf where nothing crosses
+allmargin||1|1|allmargin(system): the record of every gain margin and phase margin with their frequencies, the delay margins, and whether the closed loop is stable
+hinfnorm|getpeakgain|1|1|hinfnorm(system): [the largest gain over all frequencies, the frequency where it is]
+h2norm||1|1|h2norm(system): the root of the energy of its impulse response; inf for a system that is not stable or not strictly proper
+step||1|2|step(system): its answer to a step of height 1 as an expression in t (for a sampled system the first samples); step(system, t or [t]): the values at those times
+impulse||1|2|impulse(system): its answer to an impulse as an expression in t (for a sampled system the first samples); impulse(system, t or [t]): the values at those times
+lsim||2|3|lsim(system, u(t)): its answer to the input u, an expression in t; lsim(system, u(t), t or [t]): the values; lsim(sampled system, [samples of the input]): the samples of the output
+stepinfo||1|1|stepinfo(system): the record of the step response: RiseTime (10% to 90%), SettlingTime (within 2%), SettlingMin, SettlingMax, Overshoot and Undershoot in percent, Peak, PeakTime
+c2d||2|3|c2d(system, Ts[, "zoh" | "tustin" | "matched" | "impulse"]): the sampled system for the time Ts between samples; "zoh" (the usual) holds the input between samples
+d2c||1|2|d2c(sampled system[, "zoh" | "tustin"]): the system of running time that c2d turns back into it
+pid||1|4|pid(Kp, Ki, Kd, Tf): the controller Kp + Ki/s + Kd*s/(Tf*s + 1); what is left out is 0
+rlocus||1|2|rlocus(system, k or [k]): the poles of the closed loop with the gain k, the roots of denominator + k*numerator; rlocus(system): [the poles for gains that it chooses, the gains]
+esort||1|1|esort([poles]): by their real parts, the largest first
+dsort||1|1|dsort([poles]): by their absolute values, the largest first
+ctrb||2|2|ctrb(A, B): the matrix [B, A*B, A^2*B, ...]; of full rank when the input reaches every state
+obsv||2|2|obsv(A, C): the matrix [C; C*A; C*A^2; ...]; of full rank when the output shows every state
+lyap||2|3|lyap(A, Q): the X with A*X + X*A' + Q = 0; lyap(A, B, C): with A*X + X*B + C = 0
+dlyap||2|2|dlyap(A, Q): the X with A*X*A' - X + Q = 0
+gram||2|3|gram(system, "c" or "o"): the Gramian of steering or of watching; gram(A, B) = integral of e^(A*t)*B*B'*e^(A'*t), gram(A, C, "o") the other
+care|icare|4|4|care(A, B, Q, R): [X, K, poles] with A'*X + X*A - X*B*inv(R)*B'*X + Q = 0, the gain K = inv(R)*B'*X and the eigenvalues of A - B*K
+dare|idare|4|4|dare(A, B, Q, R): [X, K, poles] with A'*X*A - X - A'*X*B*inv(R + B'*X*B)*B'*X*A + Q = 0, the gain K and the eigenvalues of A - B*K
+lqr||4|5|lqr(A, B, Q, R[, N]): [K, X, poles]: the feedback u = -K*x that makes the integral of x'*Q*x + u'*R*u + 2*x'*N*u least
+dlqr||4|5|dlqr(A, B, Q, R[, N]): [K, X, poles]: the same for a sampled system and the sum over all samples
+lqe||5|5|lqe(A, G, C, Q, R): [L, P, poles]: the gain of the watcher (Kalman's filter) for x' = A*x + G*w, y = C*x + v with the spreads Q of w and R of v
+acker||3|3|acker(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places, for one input (the formula of Ackermann)
+place||3|3|place(A, B, [poles]): the gain K that puts the eigenvalues of A - B*K at those places
+bodeplot||1|*|bodeplot(system[, [frequencies]]): the gain in decibels above and the phase in degrees below, along the frequency by powers of ten
+nyquistplot||1|*|nyquistplot(system[, [frequencies]]): the response in the plane as the frequency grows, with its mirror for the frequencies below zero and a cross at -1
+pzplot|pzmap|1|*|pzplot(system): a cross at every pole and a circle at every zero; with the unit circle for a sampled system
+rlocusplot||1|*|rlocusplot(system[, [gains]]): where the poles of the closed loop go as the gain grows from 0: from the poles (crosses) to the zeros (circles) or away without end
+stepplot||1|*|stepplot(system[, the last time]): the answer to a step along the time (for a sampled system: the number of samples)
+impulseplot||1|*|impulseplot(system[, the last time]): the answer to an impulse along the time (for a sampled system: the number of samples)

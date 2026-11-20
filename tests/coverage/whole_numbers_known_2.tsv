@@ -1,0 +1,79 @@
+-e	fibonacci(0)	0
+-e	fibonacci(1)	1
+-e	fibonacci(2)	1
+-e	fibonacci(3)	2
+-e	fibonacci(10)	55
+-e	fibonacci(20)	6765
+-e	fibonacci(50)	12586269025
+-e	fibonacci(90)	2880067194370816120
+-e	fibonacci(99)	218922995834555169026
+-e	fibonacci(2 + 2) == fibonacci(2 + 1) + fibonacci(2)	true
+-e	fibonacci(2)^2 - fibonacci(2 - 1)*fibonacci(2 + 1)	-1
+-e	factorial(2) == gamma(2 + 1)	true
+-e	binomial(2, 2) == 2!/(2!*(2 - 2)!)	true
+-e	sum(binomial(2, k), k, 0, 2) == 2^2	true
+-e	nchoosek(2, 1)	2
+-e	fibonacci(5 + 2) == fibonacci(5 + 1) + fibonacci(5)	true
+-e	fibonacci(5)^2 - fibonacci(5 - 1)*fibonacci(5 + 1)	1
+-e	factorial(5) == gamma(5 + 1)	true
+-e	binomial(5, 2) == 5!/(2!*(5 - 2)!)	true
+-e	sum(binomial(5, k), k, 0, 5) == 2^5	true
+-e	nchoosek(5, 3) == nchoosek(5, 5 - 3)	true
+-e	fibonacci(8 + 2) == fibonacci(8 + 1) + fibonacci(8)	true
+-e	fibonacci(8)^2 - fibonacci(8 - 1)*fibonacci(8 + 1)	-1
+-e	factorial(8) == gamma(8 + 1)	true
+-e	binomial(8, 2) == 8!/(2!*(8 - 2)!)	true
+-e	sum(binomial(8, k), k, 0, 8) == 2^8	true
+-e	nchoosek(8, 3) == nchoosek(8, 8 - 3)	true
+-e	fibonacci(11 + 2) == fibonacci(11 + 1) + fibonacci(11)	true
+-e	fibonacci(11)^2 - fibonacci(11 - 1)*fibonacci(11 + 1)	1
+-e	factorial(11) == gamma(11 + 1)	true
+-e	binomial(11, 2) == 11!/(2!*(11 - 2)!)	true
+-e	sum(binomial(11, k), k, 0, 11) == 2^11	true
+-e	nchoosek(11, 3) == nchoosek(11, 11 - 3)	true
+-e	fibonacci(14 + 2) == fibonacci(14 + 1) + fibonacci(14)	true
+-e	fibonacci(14)^2 - fibonacci(14 - 1)*fibonacci(14 + 1)	-1
+-e	factorial(14) == gamma(14 + 1)	true
+-e	binomial(14, 2) == 14!/(2!*(14 - 2)!)	true
+-e	sum(binomial(14, k), k, 0, 14) == 2^14	true
+-e	nchoosek(14, 3) == nchoosek(14, 14 - 3)	true
+-e	fibonacci(17 + 2) == fibonacci(17 + 1) + fibonacci(17)	true
+-e	fibonacci(17)^2 - fibonacci(17 - 1)*fibonacci(17 + 1)	1
+-e	factorial(17) == gamma(17 + 1)	true
+-e	binomial(17, 2) == 17!/(2!*(17 - 2)!)	true
+-e	sum(binomial(17, k), k, 0, 17) == 2^17	true
+-e	nchoosek(17, 3) == nchoosek(17, 17 - 3)	true
+-e	fibonacci(20 + 2) == fibonacci(20 + 1) + fibonacci(20)	true
+-e	fibonacci(20)^2 - fibonacci(20 - 1)*fibonacci(20 + 1)	-1
+-e	factorial(20) == gamma(20 + 1)	true
+-e	binomial(20, 2) == 20!/(2!*(20 - 2)!)	true
+-e	sum(binomial(20, k), k, 0, 20) == 2^20	true
+-e	nchoosek(20, 3) == nchoosek(20, 20 - 3)	true
+-e	fibonacci(23 + 2) == fibonacci(23 + 1) + fibonacci(23)	true
+-e	fibonacci(23)^2 - fibonacci(23 - 1)*fibonacci(23 + 1)	1
+-e	factorial(23) == gamma(23 + 1)	true
+-e	binomial(23, 2) == 23!/(2!*(23 - 2)!)	true
+-e	sum(binomial(23, k), k, 0, 23) == 2^23	true
+-e	nchoosek(23, 3) == nchoosek(23, 23 - 3)	true
+-e	fibonacci(26 + 2) == fibonacci(26 + 1) + fibonacci(26)	true
+-e	fibonacci(26)^2 - fibonacci(26 - 1)*fibonacci(26 + 1)	-1
+-e	factorial(26) == gamma(26 + 1)	true
+-e	binomial(26, 2) == 26!/(2!*(26 - 2)!)	true
+-e	sum(binomial(26, k), k, 0, 26) == 2^26	true
+-e	nchoosek(26, 3) == nchoosek(26, 26 - 3)	true
+-e	fibonacci(29 + 2) == fibonacci(29 + 1) + fibonacci(29)	true
+-e	fibonacci(29)^2 - fibonacci(29 - 1)*fibonacci(29 + 1)	1
+-e	factorial(29) == gamma(29 + 1)	true
+-e	binomial(29, 2) == 29!/(2!*(29 - 2)!)	true
+-e	sum(binomial(29, k), k, 0, 29) == 2^29	true
+-e	nchoosek(29, 3) == nchoosek(29, 29 - 3)	true
+-e	dec2bin(255)	"11111111"
+-e	dec2bin(5)	"101"
+-e	dec2bin(0)	"0"
+-e	dec2bin(1023)	"1111111111"
+-e	quorem(17, 5)	[3, 2]
+-e	quorem(-17, 5)	[-3, -2]
+-e	quorem(17, -5)	[-3, 2]
+-e	quorem(-17, -5)	[3, -2]
+-e	quorem(0, 3)	[0, 0]
+-e	quorem(15, 3)	[5, 0]

@@ -1,0 +1,30 @@
+-e	functionalderivative(y'^2/2 - y^2/2, y, x)	-y - y''
+-e	functionalderivative(y'^2/2 - y^2/2)	-y - y''
+-e	functionalderivative(sqrt(1 + y'^2), y, x)	-y''/((y')^2 + 1)^(3/2)
+-e	functionalderivative(y*sqrt(1 + y'^2), y, x)	(-y*y''*sqrt((y')^2 + 1) + (y')^2*sqrt((y')^2 + 1) + sqrt((y')^2 + 1))/(2(y')^2 + (y')^4 + 1)
+-e	functionalderivative(y''^2/2, y, x)	y''''
+-e	functionalderivative(y''^2/2 - y'^2 + y^2 + x*y, y, x)	x + 2y + 2y'' + y''''
+-e	functionalderivative(y^2 + x, y, x)	2y
+-e	functionalderivative(x^2*y'^2, y, x)	-2x*(x*y'' + 2y')
+-e	functionalderivative(m*u'^2/2 - k*u^2/2, u, t)	-k*u - m*u''
+-e	functionalderivative(diff(y, x)^2 + y^2, y, x)	2y - 2y''
+-e	functionalderivative(diff(y(x), x, 2)^2, y, x)	2y''''
+-e	functionalderivative(y(x)*y'(x), y, x)	0
+-e	functionalderivative(sin(y)*y', y, x)	0
+-e	functionalderivative(y'^2*y''^2, y, x)	2(y'')^3 + 2(y')^2*y'''' + 8y'*y''*y'''
+-e	eulerlagrange(y'^2 - y^2, y, x)	-2y - 2y''
+-e	functionalderivative(1/2*y'^2 - (1 - cos(y)), y, t)	-sin(y) - y''
+-e	odetovectorfield(y'' + y = 0, y, x)	[y', -y]|note: the derivatives of [y, y']
+-e	odetovectorfield(y'' + y = 0)	[y', -y]|note: the derivatives of [y, y']
+-e	odetovectorfield(y''' + 2y'' - x*y' + y = sin(x), y, x)	[y', y'', -y + x*y' + sin(x) - 2y'']|note: the derivatives of [y, y', y'']
+-e	odetovectorfield(2*y'' = -3*y' + x, y, x)	[y', x/2 - 3y'/2]|note: the derivatives of [y, y']
+-e	odetovectorfield(u'' + sin(u) = 0, u, t)	[u', -sin(u)]|note: the derivatives of [u, u']
+-e	odetovectorfield(y' = x*y, y, x)	[x*y]|note: the derivatives of [y]
+-e	odetovectorfield(x^2*y'' + x*y' + (x^2 - 1)*y = 0, y, x)	[y', -y + y/x^2 - y'/x]|note: the derivatives of [y, y']
+-e	odetovectorfield(diff(y, x, 2) = -y, y, x)	[y', -y]|note: the derivatives of [y, y']
+-e	functionalderivative()	error: functionalderivative takes 1 to 3 argument(s), 0 given
+-e	functionalderivative(y'^2, 3, x)	error: functionalderivative(f, y, x), for example functionalderivative(y'^2/2 - y^2/2, y, x)
+-e	functionalderivative([y'], y, x)	error: functionalderivative(f, y, x), for example functionalderivative(y'^2/2 - y^2/2, y, x)
+-e	odetovectorfield(y^2 = x, y, x)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x): the equation holds no derivative of y
+-e	odetovectorfield(y''^2 = y, y, x)	error: odetovectorfield: the highest derivative of y must stand to the first power
+-e	odetovectorfield(y'' = y, 2)	error: odetovectorfield(equation, y, x), for example odetovectorfield(y'' + y = 0, y, x)

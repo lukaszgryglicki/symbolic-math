@@ -794,7 +794,7 @@ pub fn pure(name: &str, a: &[Expr]) -> Option<Res> {
 }
 
 impl Session {
-    fn is_function(&self, e: &Expr) -> bool {
+    pub(crate) fn is_function(&self, e: &Expr) -> bool {
         if lambda(e).is_some() {
             return true;
         }
@@ -1242,7 +1242,16 @@ impl Session {
                 }
                 Ok(last)
             })(),
-            "table" | "do" if n >= 2 => self.loop_form(name == "table", &raw[0], &raw[1..]),
+            "table" | "do" if n >= 2 => {
+                let columns = match name {
+                    "table" => self.table_args(raw),
+                    _ => None,
+                };
+                match columns {
+                    Some(args) => args.and_then(|a| crate::tables::make(&a)),
+                    None => self.loop_form(name == "table", &raw[0], &raw[1..]),
+                }
+            }
             "for" if (3..=5).contains(&n) => {
                 let spec = Expr::list(raw[..n - 1].to_vec());
                 self.loop_form(false, &raw[n - 1], &[spec])

@@ -1,0 +1,84 @@
+-e	num2str(pi)	"3.1416"
+-e	num2str(pi, 10)	"3.141592654"
+-e	num2str(42)	"42"
+-e	num2str(1/3)	"0.33333"
+-e	num2str([1, 2, 3])	["1", "2", "3"]
+-e	int2str(2.7)	"3"
+-e	mat2str([[1, 2], [3, 4]])	"[1 2;3 4]"
+-e	mat2str([1.5, 2.25])	"[1.5 2.25]"
+-e	mat2str([[pi, e]], 4)	"[3.142 2.718]"
+-e	tostring(x^2 + 1)	"x^2 + 1"
+-e	string(1/3)	"1/3"
+-e	dec2bin(10)	"1010"
+-e	dec2bin(5, 8)	"00000101"
+-e	dec2hex(255)	"FF"
+-e	dec2hex(255, 4)	"00FF"
+-e	dec2base(100, 7)	"202"
+-e	dec2base(35, 36)	"Z"
+-e	bin2dec("1010")	10
+-e	hex2dec("FF")	255
+-e	base2dec("202", 7)	100
+-e	char(72, 105)	"Hi"
+-e	char([72, 101, 108, 108, 111])	"Hello"
+-e	char("ab", "cd")	"abcd"
+-e	double("Hi")	[72, 105]
+-e	double(1/3)	0.33333333333333333333333333333333
+-e	strcat("ab", "cd", 12)	"abcd12"
+-e	strlength("hello")	5
+-e	length("hello")	5
+-e	upper("abc")	"ABC"
+-e	lower("ABC")	"abc"
+-e	strtrim("  a b  ")	"a b"
+-e	strrep("banana", "an", "AN")	"bANANa"
+-e	strfind("banana", "an")	[2, 4]
+-e	strsplit("a b  c")	["a", "b", "c"]
+-e	strsplit("a,b,c", ",")	["a", "b", "c"]
+-e	strjoin(["a", "b", "c"])	"a b c"
+-e	strjoin(["a", "b", "c"], "-")	"a-b-c"
+-e	strcmp("abc", "abc")	true
+-e	strcmp("abc", "ABC")	false
+-e	strcmpi("abc", "ABC")	true
+-e	strncmp("abcdef", "abcxyz", 3)	true
+-e	strncmpi("ABcdef", "abCxyz", 3)	true
+-e	startswith("hello", "he")	true
+-e	endswith("hello", "lo")	true
+-e	blanks(3)	"   "
+-e	strcat("[", blanks(3), "]")	"[   ]"
+-e	isletter("a1b")	[true, false, true]
+-e	isspace("a b")	[false, true, false]
+-e	ischar("a")	true
+-e	ischar(1)	false
+-e	isstring("a")	true
+-e	isnumeric(3)	true
+-e	isnumeric("3")	false
+-e	isnumeric([1, 2])	true
+-e	islogical(true)	true
+-e	islogical([true, false])	true
+-e	logical([0, 1, 2])	[false, true, true]
+-e	logical([1, 5, 9] > 2)	[false, true, true]
+-e	sprintf("%d apples", 3)	"3 apples"
+-e	sprintf("%5.2f|%e|%g", pi, 12345.678, 0.0001)	" 3.14|1.234568e+04|0.0001"
+-e	sprintf("%s has %d letters", "word", 4)	"word has 4 letters"
+-e	sprintf("%x %o %c", 255, 8, 65)	"ff 10 A"
+-e	sprintf("%05d|%-5d|%+d", 42, 42, 42)	"00042|42   |+42"
+-e	sprintf("%d, ", [1, 2, 3])	"1, 2, 3, "
+-e	sprintf("a\nb")	"a|b"
+-e	rats(0.75)	"3/4"
+-e	rats(pi)	"355/113"
+-e	str2num("2^10 + 1")	1025
+-e	str2sym("x^2 + 1")	x^2 + 1
+-e	str2double("3.5")	3.5
+-e	str2double("abc")	undefined
+-e	reverse("abc")	"cba"
+-e	join("ab", "cd")	"abcd"
+-e	contains("banana", "nan")	true
+-e	count("banana", "an")	2
+-e	"abc" == "abc"	true
+-e	"abc" < "abd"	true
+-e	disp("hello")	hello
+-e	disp(pi)	pi
+-e	disp([[1, 22], [333, 4]])	  1  22|333   4
+-e	disp([1, 2, 3])	1  2  3
+-e	fprintf("%d + %d = %d\n", 1, 2, 3)	1 + 2 = 3
+-e	fprintf("no newline")	no newline
+-e	fprintf("%s\n", "text")	text

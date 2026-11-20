@@ -1,0 +1,114 @@
+-e	abs(N(normcdf(norminv(1/10, 1, 2), 1, 2)) - 1/10) < 10^(-20)	true
+-e	abs(N(normcdf(norminv(3/10, 1, 2), 1, 2)) - 3/10) < 10^(-20)	true
+-e	abs(N(normcdf(norminv(1/2, 1, 2), 1, 2)) - 1/2) < 10^(-20)	true
+-e	abs(N(normcdf(norminv(4/5, 1, 2), 1, 2)) - 4/5) < 10^(-20)	true
+-e	abs(N(normcdf(norminv(99/100, 1, 2), 1, 2)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(normpdf(x, 1, 2), x, norminv(1/10, 1, 2), norminv(9/10, 1, 2))) - 4/5) < 10^(-12)	true
+-e	abs(N(unifcdf(unifinv(1/10, 1, 5), 1, 5)) - 1/10) < 10^(-20)	true
+-e	abs(N(unifcdf(unifinv(3/10, 1, 5), 1, 5)) - 3/10) < 10^(-20)	true
+-e	abs(N(unifcdf(unifinv(1/2, 1, 5), 1, 5)) - 1/2) < 10^(-20)	true
+-e	abs(N(unifcdf(unifinv(4/5, 1, 5), 1, 5)) - 4/5) < 10^(-20)	true
+-e	abs(N(unifcdf(unifinv(99/100, 1, 5), 1, 5)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(unifpdf(x, 1, 5), x, unifinv(1/10, 1, 5), unifinv(9/10, 1, 5))) - 4/5) < 10^(-12)	true
+-e	abs(N(expcdf(expinv(1/10, 2), 2)) - 1/10) < 10^(-20)	true
+-e	abs(N(expcdf(expinv(3/10, 2), 2)) - 3/10) < 10^(-20)	true
+-e	abs(N(expcdf(expinv(1/2, 2), 2)) - 1/2) < 10^(-20)	true
+-e	abs(N(expcdf(expinv(4/5, 2), 2)) - 4/5) < 10^(-20)	true
+-e	abs(N(expcdf(expinv(99/100, 2), 2)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(exppdf(x, 2), x, expinv(1/10, 2), expinv(9/10, 2))) - 4/5) < 10^(-12)	true
+-e	abs(N(gamcdf(gaminv(1/10, 2, 3), 2, 3)) - 1/10) < 10^(-20)	true
+-e	abs(N(gamcdf(gaminv(3/10, 2, 3), 2, 3)) - 3/10) < 10^(-20)	true
+-e	abs(N(gamcdf(gaminv(1/2, 2, 3), 2, 3)) - 1/2) < 10^(-20)	true
+-e	abs(N(gamcdf(gaminv(4/5, 2, 3), 2, 3)) - 4/5) < 10^(-20)	true
+-e	abs(N(gamcdf(gaminv(99/100, 2, 3), 2, 3)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(gampdf(x, 2, 3), x, gaminv(1/10, 2, 3), gaminv(9/10, 2, 3))) - 4/5) < 10^(-12)	true
+-e	abs(N(betacdf(betainv(1/10, 2, 3), 2, 3)) - 1/10) < 10^(-20)	true
+-e	abs(N(betacdf(betainv(3/10, 2, 3), 2, 3)) - 3/10) < 10^(-20)	true
+-e	abs(N(betacdf(betainv(1/2, 2, 3), 2, 3)) - 1/2) < 10^(-20)	true
+-e	abs(N(betacdf(betainv(4/5, 2, 3), 2, 3)) - 4/5) < 10^(-20)	true
+-e	abs(N(betacdf(betainv(99/100, 2, 3), 2, 3)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(betapdf(x, 2, 3), x, betainv(1/10, 2, 3), betainv(9/10, 2, 3))) - 4/5) < 10^(-12)	true
+-e	abs(N(chi2cdf(chi2inv(1/10, 4), 4)) - 1/10) < 10^(-20)	true
+-e	abs(N(chi2cdf(chi2inv(3/10, 4), 4)) - 3/10) < 10^(-20)	true
+-e	abs(N(chi2cdf(chi2inv(1/2, 4), 4)) - 1/2) < 10^(-20)	true
+-e	abs(N(chi2cdf(chi2inv(4/5, 4), 4)) - 4/5) < 10^(-20)	true
+-e	abs(N(chi2cdf(chi2inv(99/100, 4), 4)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(chi2pdf(x, 4), x, chi2inv(1/10, 4), chi2inv(9/10, 4))) - 4/5) < 10^(-12)	true
+-e	abs(N(tcdf(tinv(1/10, 7), 7)) - 1/10) < 10^(-20)	true
+-e	abs(N(tcdf(tinv(3/10, 7), 7)) - 3/10) < 10^(-20)	true
+-e	abs(N(tcdf(tinv(1/2, 7), 7)) - 1/2) < 10^(-20)	true
+-e	abs(N(tcdf(tinv(4/5, 7), 7)) - 4/5) < 10^(-20)	true
+-e	abs(N(tcdf(tinv(99/100, 7), 7)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(tpdf(x, 7), x, tinv(1/10, 7), tinv(9/10, 7))) - 4/5) < 10^(-12)	true
+-e	abs(N(fcdf(finv(1/10, 3, 9), 3, 9)) - 1/10) < 10^(-20)	true
+-e	abs(N(fcdf(finv(3/10, 3, 9), 3, 9)) - 3/10) < 10^(-20)	true
+-e	abs(N(fcdf(finv(1/2, 3, 9), 3, 9)) - 1/2) < 10^(-20)	true
+-e	abs(N(fcdf(finv(4/5, 3, 9), 3, 9)) - 4/5) < 10^(-20)	true
+-e	abs(N(fcdf(finv(99/100, 3, 9), 3, 9)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(fpdf(x, 3, 9), x, finv(1/10, 3, 9), finv(9/10, 3, 9))) - 4/5) < 10^(-12)	true
+-e	abs(N(logncdf(logninv(1/10, 0, 1), 0, 1)) - 1/10) < 10^(-20)	true
+-e	abs(N(logncdf(logninv(3/10, 0, 1), 0, 1)) - 3/10) < 10^(-20)	true
+-e	abs(N(logncdf(logninv(1/2, 0, 1), 0, 1)) - 1/2) < 10^(-20)	true
+-e	abs(N(logncdf(logninv(4/5, 0, 1), 0, 1)) - 4/5) < 10^(-20)	true
+-e	abs(N(logncdf(logninv(99/100, 0, 1), 0, 1)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(lognpdf(x, 0, 1), x, logninv(1/10, 0, 1), logninv(9/10, 0, 1))) - 4/5) < 10^(-12)	true
+-e	abs(N(wblcdf(wblinv(1/10, 2, 3), 2, 3)) - 1/10) < 10^(-20)	true
+-e	abs(N(wblcdf(wblinv(3/10, 2, 3), 2, 3)) - 3/10) < 10^(-20)	true
+-e	abs(N(wblcdf(wblinv(1/2, 2, 3), 2, 3)) - 1/2) < 10^(-20)	true
+-e	abs(N(wblcdf(wblinv(4/5, 2, 3), 2, 3)) - 4/5) < 10^(-20)	true
+-e	abs(N(wblcdf(wblinv(99/100, 2, 3), 2, 3)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(wblpdf(x, 2, 3), x, wblinv(1/10, 2, 3), wblinv(9/10, 2, 3))) - 4/5) < 10^(-12)	true
+-e	abs(N(raylcdf(raylinv(1/10, 2), 2)) - 1/10) < 10^(-20)	true
+-e	abs(N(raylcdf(raylinv(3/10, 2), 2)) - 3/10) < 10^(-20)	true
+-e	abs(N(raylcdf(raylinv(1/2, 2), 2)) - 1/2) < 10^(-20)	true
+-e	abs(N(raylcdf(raylinv(4/5, 2), 2)) - 4/5) < 10^(-20)	true
+-e	abs(N(raylcdf(raylinv(99/100, 2), 2)) - 99/100) < 10^(-20)	true
+-e	abs(N(integrate(raylpdf(x, 2), x, raylinv(1/10, 2), raylinv(9/10, 2))) - 4/5) < 10^(-12)	true
+-e	simplify(binocdf(1, 12, 1/3) - binocdf(0, 12, 1/3) - binopdf(1, 12, 1/3))	0
+-e	binoinv(binocdf(1, 12, 1/3), 12, 1/3) <= 1	true
+-e	simplify(binocdf(2, 12, 1/3) - binocdf(1, 12, 1/3) - binopdf(2, 12, 1/3))	0
+-e	binoinv(binocdf(2, 12, 1/3), 12, 1/3) <= 2	true
+-e	simplify(binocdf(3, 12, 1/3) - binocdf(2, 12, 1/3) - binopdf(3, 12, 1/3))	0
+-e	binoinv(binocdf(3, 12, 1/3), 12, 1/3) <= 3	true
+-e	simplify(binocdf(6, 12, 1/3) - binocdf(5, 12, 1/3) - binopdf(6, 12, 1/3))	0
+-e	binoinv(binocdf(6, 12, 1/3), 12, 1/3) <= 6	true
+-e	simplify(poisscdf(1, 4) - poisscdf(0, 4) - poisspdf(1, 4))	0
+-e	poissinv(poisscdf(1, 4), 4) <= 1	true
+-e	simplify(poisscdf(2, 4) - poisscdf(1, 4) - poisspdf(2, 4))	0
+-e	poissinv(poisscdf(2, 4), 4) <= 2	true
+-e	simplify(poisscdf(3, 4) - poisscdf(2, 4) - poisspdf(3, 4))	0
+-e	poissinv(poisscdf(3, 4), 4) <= 3	true
+-e	simplify(poisscdf(6, 4) - poisscdf(5, 4) - poisspdf(6, 4))	0
+-e	poissinv(poisscdf(6, 4), 4) <= 6	true
+-e	simplify(geocdf(1, 1/4) - geocdf(0, 1/4) - geopdf(1, 1/4))	0
+-e	geoinv(geocdf(1, 1/4), 1/4) <= 1	true
+-e	simplify(geocdf(2, 1/4) - geocdf(1, 1/4) - geopdf(2, 1/4))	0
+-e	geoinv(geocdf(2, 1/4), 1/4) <= 2	true
+-e	simplify(geocdf(3, 1/4) - geocdf(2, 1/4) - geopdf(3, 1/4))	0
+-e	geoinv(geocdf(3, 1/4), 1/4) <= 3	true
+-e	simplify(geocdf(6, 1/4) - geocdf(5, 1/4) - geopdf(6, 1/4))	0
+-e	geoinv(geocdf(6, 1/4), 1/4) <= 6	true
+-e	simplify(nbincdf(1, 3, 1/2) - nbincdf(0, 3, 1/2) - nbinpdf(1, 3, 1/2))	0
+-e	nbininv(nbincdf(1, 3, 1/2), 3, 1/2) <= 1	true
+-e	simplify(nbincdf(2, 3, 1/2) - nbincdf(1, 3, 1/2) - nbinpdf(2, 3, 1/2))	0
+-e	nbininv(nbincdf(2, 3, 1/2), 3, 1/2) <= 2	true
+-e	simplify(nbincdf(3, 3, 1/2) - nbincdf(2, 3, 1/2) - nbinpdf(3, 3, 1/2))	0
+-e	nbininv(nbincdf(3, 3, 1/2), 3, 1/2) <= 3	true
+-e	simplify(nbincdf(6, 3, 1/2) - nbincdf(5, 3, 1/2) - nbinpdf(6, 3, 1/2))	0
+-e	nbininv(nbincdf(6, 3, 1/2), 3, 1/2) <= 6	true
+-e	simplify(hygecdf(1, 20, 7, 5) - hygecdf(0, 20, 7, 5) - hygepdf(1, 20, 7, 5))	0
+-e	hygeinv(hygecdf(1, 20, 7, 5), 20, 7, 5) <= 1	true
+-e	simplify(hygecdf(2, 20, 7, 5) - hygecdf(1, 20, 7, 5) - hygepdf(2, 20, 7, 5))	0
+-e	hygeinv(hygecdf(2, 20, 7, 5), 20, 7, 5) <= 2	true
+-e	simplify(hygecdf(3, 20, 7, 5) - hygecdf(2, 20, 7, 5) - hygepdf(3, 20, 7, 5))	0
+-e	hygeinv(hygecdf(3, 20, 7, 5), 20, 7, 5) <= 3	true
+-e	simplify(hygecdf(6, 20, 7, 5) - hygecdf(5, 20, 7, 5) - hygepdf(6, 20, 7, 5))	0
+-e	hygeinv(hygecdf(6, 20, 7, 5), 20, 7, 5) <= 6	true
+-e	simplify(unidcdf(1, 9) - unidcdf(0, 9) - unidpdf(1, 9))	0
+-e	unidinv(unidcdf(1, 9), 9) <= 1	true
+-e	simplify(unidcdf(2, 9) - unidcdf(1, 9) - unidpdf(2, 9))	0
+-e	unidinv(unidcdf(2, 9), 9) <= 2	true
+-e	simplify(unidcdf(3, 9) - unidcdf(2, 9) - unidpdf(3, 9))	0
+-e	unidinv(unidcdf(3, 9), 9) <= 3	true
+-e	simplify(unidcdf(6, 9) - unidcdf(5, 9) - unidpdf(6, 9))	0
+-e	unidinv(unidcdf(6, 9), 9) <= 6	true

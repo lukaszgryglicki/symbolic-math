@@ -1,0 +1,700 @@
+-e	cumtrapz(true)	0
+-e	cumtrapz(-7/3)	0
+-e	cumtrapz(0.5)	0
+-e	zscore(0)	0
+-e	zscore(1)	0
+-e	zscore(-1)	0
+-e	zscore(1/2)	0
+-e	zscore(2)	0
+-e	zscore(i)	0
+-e	zscore(inf)	undefined
+-e	zscore(-inf)	undefined
+-e	zscore(undefined)	undefined
+-e	zscore(10^20)	0
+-e	zscore(10^(-20))	0
+-e	zscore(x)	0
+-e	zscore([])	[]
+-e	zscore([1, 2])	[-sqrt(2)/2, sqrt(2)/2]
+-e	zscore("text")	0
+-e	zscore(true)	0
+-e	zscore(-7/3)	0
+-e	zscore(0.5)	0
+-e	rescale(0)	1
+-e	rescale(1)	1
+-e	rescale(-1)	1
+-e	rescale(1/2)	1
+-e	rescale(2)	1
+-e	rescale(i)	1
+-e	rescale(inf)	undefined
+-e	rescale(-inf)	undefined
+-e	rescale(undefined)	undefined
+-e	rescale(10^20)	1
+-e	rescale(10^(-20))	1
+-e	rescale(x)	1
+-e	rescale([])	[]
+-e	rescale([1, 2])	[0, 1]
+-e	rescale("text")	1
+-e	rescale(true)	1
+-e	rescale(-7/3)	1
+-e	rescale(0.5)	1
+-e	mad(0)	0
+-e	mad(1)	0
+-e	mad(-1)	0
+-e	mad(1/2)	0
+-e	mad(2)	0
+-e	mad(i)	0
+-e	mad(inf)	undefined
+-e	mad(-inf)	undefined
+-e	mad(undefined)	undefined
+-e	mad(10^20)	0
+-e	mad(10^(-20))	0
+-e	mad(x)	0
+-e	mad([])	undefined
+-e	mad([1, 2])	1/2
+-e	mad("text")	0
+-e	mad(true)	0
+-e	mad(-7/3)	0
+-e	mad(0.5)	0
+-e	cov(0)	0
+-e	cov(1)	0
+-e	cov(-1)	0
+-e	cov(1/2)	0
+-e	cov(2)	0
+-e	cov(i)	0
+-e	cov(inf)	undefined
+-e	cov(-inf)	undefined
+-e	cov(undefined)	undefined
+-e	cov(10^20)	0
+-e	cov(10^(-20))	0
+-e	cov(x)	0
+-e	cov([])	error: cov needs columns of one length that are not empty
+-e	cov([1, 2])	1/2
+-e	cov("text")	0
+-e	cov(true)	0
+-e	cov(-7/3)	0
+-e	cov(0.5)	0
+-e	corrcoef(0)	1
+-e	corrcoef(1)	1
+-e	corrcoef(-1)	1
+-e	corrcoef(1/2)	1
+-e	corrcoef(2)	1
+-e	corrcoef(i)	1
+-e	corrcoef(inf)	1
+-e	corrcoef(-inf)	1
+-e	corrcoef(undefined)	1
+-e	corrcoef(10^20)	1
+-e	corrcoef(10^(-20))	1
+-e	corrcoef(x)	1
+-e	corrcoef([])	error: cov needs columns of one length that are not empty
+-e	corrcoef([1, 2])	1
+-e	corrcoef("text")	1
+-e	corrcoef(true)	1
+-e	corrcoef(-7/3)	1
+-e	corrcoef(0.5)	1
+-e	detrend(0)	0
+-e	detrend(1)	0
+-e	detrend(-1)	0
+-e	detrend(1/2)	0
+-e	detrend(2)	0
+-e	detrend(i)	0
+-e	detrend(inf)	0
+-e	detrend(-inf)	0
+-e	detrend(undefined)	0
+-e	detrend(10^20)	0
+-e	detrend(10^(-20))	0
+-e	detrend(x)	0
+-e	detrend([])	[]
+-e	detrend([1, 2])	[0, 0]
+-e	detrend("text")	0
+-e	detrend(true)	0
+-e	detrend(-7/3)	0
+-e	detrend(0.5)	0
+-e	unwrap(0)	0
+-e	unwrap(1)	1
+-e	unwrap(-1)	-1
+-e	unwrap(1/2)	1/2
+-e	unwrap(2)	2
+-e	unwrap(i)	i
+-e	unwrap(inf)	inf
+-e	unwrap(-inf)	-inf
+-e	unwrap(undefined)	undefined
+-e	unwrap(10^20)	100000000000000000000
+-e	unwrap(10^(-20))	1/100000000000000000000
+-e	unwrap(x)	x
+-e	unwrap([])	[]
+-e	unwrap([1, 2])	[1, 2]
+-e	unwrap("text")	"text"
+-e	unwrap(true)	true
+-e	unwrap(-7/3)	-7/3
+-e	unwrap(0.5)	0.5
+-e	tabulate(0)	error: tabulate needs a list
+-e	tabulate(1)	error: tabulate needs a list
+-e	tabulate(-1)	error: tabulate needs a list
+-e	tabulate(1/2)	error: tabulate needs a list
+-e	tabulate(2)	error: tabulate needs a list
+-e	tabulate(i)	error: tabulate needs a list
+-e	tabulate(inf)	error: tabulate needs a list
+-e	tabulate(-inf)	error: tabulate needs a list
+-e	tabulate(undefined)	error: tabulate needs a list
+-e	tabulate(10^20)	error: tabulate needs a list
+-e	tabulate(10^(-20))	error: tabulate needs a list
+-e	tabulate(x)	error: tabulate needs a list
+-e	tabulate([])	[]
+-e	tabulate([1, 2])	[[1, 1, 50], [2, 1, 50]]
+-e	tabulate("text")	error: tabulate needs a list
+-e	tabulate(true)	error: tabulate needs a list
+-e	tabulate(-7/3)	error: tabulate needs a list
+-e	tabulate(0.5)	error: tabulate needs a list
+-e	tiedrank(0)	error: tiedrank needs a list
+-e	tiedrank(1)	error: tiedrank needs a list
+-e	tiedrank(-1)	error: tiedrank needs a list
+-e	tiedrank(1/2)	error: tiedrank needs a list
+-e	tiedrank(2)	error: tiedrank needs a list
+-e	tiedrank(i)	error: tiedrank needs a list
+-e	tiedrank(inf)	error: tiedrank needs a list
+-e	tiedrank(-inf)	error: tiedrank needs a list
+-e	tiedrank(undefined)	error: tiedrank needs a list
+-e	tiedrank(10^20)	error: tiedrank needs a list
+-e	tiedrank(10^(-20))	error: tiedrank needs a list
+-e	tiedrank(x)	error: tiedrank needs a list
+-e	tiedrank([])	[]
+-e	tiedrank([1, 2])	[1, 2]
+-e	tiedrank("text")	error: tiedrank needs a list
+-e	tiedrank(true)	error: tiedrank needs a list
+-e	tiedrank(-7/3)	error: tiedrank needs a list
+-e	tiedrank(0.5)	error: tiedrank needs a list
+-e	cond(0)	error: cond needs a matrix
+-e	cond(1)	error: cond needs a matrix
+-e	cond(-1)	error: cond needs a matrix
+-e	cond(1/2)	error: cond needs a matrix
+-e	cond(2)	error: cond needs a matrix
+-e	cond(i)	error: cond needs a matrix
+-e	cond(inf)	error: cond needs a matrix
+-e	cond(-inf)	error: cond needs a matrix
+-e	cond(undefined)	error: cond needs a matrix
+-e	cond(10^20)	error: cond needs a matrix
+-e	cond(10^(-20))	error: cond needs a matrix
+-e	cond(x)	error: cond needs a matrix
+-e	cond([])	error: cond needs a matrix
+-e	cond([1, 2])	error: cond needs a matrix
+-e	cond("text")	error: cond needs a matrix
+-e	cond(true)	error: cond needs a matrix
+-e	cond(-7/3)	error: cond needs a matrix
+-e	cond(0.5)	error: cond needs a matrix
+-e	rcond(0)	error: rcond needs a matrix
+-e	rcond(1)	error: rcond needs a matrix
+-e	rcond(-1)	error: rcond needs a matrix
+-e	rcond(1/2)	error: rcond needs a matrix
+-e	rcond(2)	error: rcond needs a matrix
+-e	rcond(i)	error: rcond needs a matrix
+-e	rcond(inf)	error: rcond needs a matrix
+-e	rcond(-inf)	error: rcond needs a matrix
+-e	rcond(undefined)	error: rcond needs a matrix
+-e	rcond(10^20)	error: rcond needs a matrix
+-e	rcond(10^(-20))	error: rcond needs a matrix
+-e	rcond(x)	error: rcond needs a matrix
+-e	rcond([])	error: rcond needs a matrix
+-e	rcond([1, 2])	error: rcond needs a matrix
+-e	rcond("text")	error: rcond needs a matrix
+-e	rcond(true)	error: rcond needs a matrix
+-e	rcond(-7/3)	error: rcond needs a matrix
+-e	rcond(0.5)	error: rcond needs a matrix
+-e	vecnorm(0)	0
+-e	vecnorm(1)	1
+-e	vecnorm(-1)	1
+-e	vecnorm(1/2)	1/2
+-e	vecnorm(2)	2
+-e	vecnorm(i)	1
+-e	vecnorm(inf)	inf
+-e	vecnorm(-inf)	inf
+-e	vecnorm(undefined)	undefined
+-e	vecnorm(10^20)	100000000000000000000
+-e	vecnorm(10^(-20))	1/100000000000000000000
+-e	vecnorm(x)	abs(x)
+-e	vecnorm([])	0
+-e	vecnorm([1, 2])	sqrt(5)
+-e	vecnorm("text")	abs("text")
+-e	vecnorm(true)	abs(true)
+-e	vecnorm(-7/3)	7/3
+-e	vecnorm(0.5)	0.5
+-e	orth(0)	error: orth needs a matrix
+-e	orth(1)	error: orth needs a matrix
+-e	orth(-1)	error: orth needs a matrix
+-e	orth(1/2)	error: orth needs a matrix
+-e	orth(2)	error: orth needs a matrix
+-e	orth(i)	error: orth needs a matrix
+-e	orth(inf)	error: orth needs a matrix
+-e	orth(-inf)	error: orth needs a matrix
+-e	orth(undefined)	error: orth needs a matrix
+-e	orth(10^20)	error: orth needs a matrix
+-e	orth(10^(-20))	error: orth needs a matrix
+-e	orth(x)	error: orth needs a matrix
+-e	orth([])	error: orth needs a matrix
+-e	orth([1, 2])	error: orth needs a matrix
+-e	orth("text")	error: orth needs a matrix
+-e	orth(true)	error: orth needs a matrix
+-e	orth(-7/3)	error: orth needs a matrix
+-e	orth(0.5)	error: orth needs a matrix
+-e	colspace(0)	error: colspace needs a matrix
+-e	colspace(1)	error: colspace needs a matrix
+-e	colspace(-1)	error: colspace needs a matrix
+-e	colspace(1/2)	error: colspace needs a matrix
+-e	colspace(2)	error: colspace needs a matrix
+-e	colspace(i)	error: colspace needs a matrix
+-e	colspace(inf)	error: colspace needs a matrix
+-e	colspace(-inf)	error: colspace needs a matrix
+-e	colspace(undefined)	error: colspace needs a matrix
+-e	colspace(10^20)	error: colspace needs a matrix
+-e	colspace(10^(-20))	error: colspace needs a matrix
+-e	colspace(x)	error: colspace needs a matrix
+-e	colspace([])	error: colspace needs a matrix
+-e	colspace([1, 2])	error: colspace needs a matrix
+-e	colspace("text")	error: colspace needs a matrix
+-e	colspace(true)	error: colspace needs a matrix
+-e	colspace(-7/3)	error: colspace needs a matrix
+-e	colspace(0.5)	error: colspace needs a matrix
+-e	lu(0)	error: lu needs a matrix
+-e	lu(1)	error: lu needs a matrix
+-e	lu(-1)	error: lu needs a matrix
+-e	lu(1/2)	error: lu needs a matrix
+-e	lu(2)	error: lu needs a matrix
+-e	lu(i)	error: lu needs a matrix
+-e	lu(inf)	error: lu needs a matrix
+-e	lu(-inf)	error: lu needs a matrix
+-e	lu(undefined)	error: lu needs a matrix
+-e	lu(10^20)	error: lu needs a matrix
+-e	lu(10^(-20))	error: lu needs a matrix
+-e	lu(x)	error: lu needs a matrix
+-e	lu([])	error: lu needs a matrix
+-e	lu([1, 2])	error: lu needs a matrix
+-e	lu("text")	error: lu needs a matrix
+-e	lu(true)	error: lu needs a matrix
+-e	lu(-7/3)	error: lu needs a matrix
+-e	lu(0.5)	error: lu needs a matrix
+-e	chol(0)	error: chol needs a matrix
+-e	chol(1)	error: chol needs a matrix
+-e	chol(-1)	error: chol needs a matrix
+-e	chol(1/2)	error: chol needs a matrix
+-e	chol(2)	error: chol needs a matrix
+-e	chol(i)	error: chol needs a matrix
+-e	chol(inf)	error: chol needs a matrix
+-e	chol(-inf)	error: chol needs a matrix
+-e	chol(undefined)	error: chol needs a matrix
+-e	chol(10^20)	error: chol needs a matrix
+-e	chol(10^(-20))	error: chol needs a matrix
+-e	chol(x)	error: chol needs a matrix
+-e	chol([])	error: chol needs a matrix
+-e	chol([1, 2])	error: chol needs a matrix
+-e	chol("text")	error: chol needs a matrix
+-e	chol(true)	error: chol needs a matrix
+-e	chol(-7/3)	error: chol needs a matrix
+-e	chol(0.5)	error: chol needs a matrix
+-e	jordan(0)	error: jordan needs a matrix
+-e	jordan(1)	error: jordan needs a matrix
+-e	jordan(-1)	error: jordan needs a matrix
+-e	jordan(1/2)	error: jordan needs a matrix
+-e	jordan(2)	error: jordan needs a matrix
+-e	jordan(i)	error: jordan needs a matrix
+-e	jordan(inf)	error: jordan needs a matrix
+-e	jordan(-inf)	error: jordan needs a matrix
+-e	jordan(undefined)	error: jordan needs a matrix
+-e	jordan(10^20)	error: jordan needs a matrix
+-e	jordan(10^(-20))	error: jordan needs a matrix
+-e	jordan(x)	error: jordan needs a matrix
+-e	jordan([])	error: jordan needs a matrix
+-e	jordan([1, 2])	error: jordan needs a matrix
+-e	jordan("text")	error: jordan needs a matrix
+-e	jordan(true)	error: jordan needs a matrix
+-e	jordan(-7/3)	error: jordan needs a matrix
+-e	jordan(0.5)	error: jordan needs a matrix
+-e	jordandecomposition(0)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(1)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(-1)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(1/2)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(2)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(i)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(inf)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(-inf)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(undefined)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(10^20)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(10^(-20))	error: jordandecomposition needs a matrix
+-e	jordandecomposition(x)	error: jordandecomposition needs a matrix
+-e	jordandecomposition([])	error: jordandecomposition needs a matrix
+-e	jordandecomposition([1, 2])	error: jordandecomposition needs a matrix
+-e	jordandecomposition("text")	error: jordandecomposition needs a matrix
+-e	jordandecomposition(true)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(-7/3)	error: jordandecomposition needs a matrix
+-e	jordandecomposition(0.5)	error: jordandecomposition needs a matrix
+-e	diagonalize(0)	error: diagonalize needs a matrix
+-e	diagonalize(1)	error: diagonalize needs a matrix
+-e	diagonalize(-1)	error: diagonalize needs a matrix
+-e	diagonalize(1/2)	error: diagonalize needs a matrix
+-e	diagonalize(2)	error: diagonalize needs a matrix
+-e	diagonalize(i)	error: diagonalize needs a matrix
+-e	diagonalize(inf)	error: diagonalize needs a matrix
+-e	diagonalize(-inf)	error: diagonalize needs a matrix
+-e	diagonalize(undefined)	error: diagonalize needs a matrix
+-e	diagonalize(10^20)	error: diagonalize needs a matrix
+-e	diagonalize(10^(-20))	error: diagonalize needs a matrix
+-e	diagonalize(x)	error: diagonalize needs a matrix
+-e	diagonalize([])	error: diagonalize needs a matrix
+-e	diagonalize([1, 2])	error: diagonalize needs a matrix
+-e	diagonalize("text")	error: diagonalize needs a matrix
+-e	diagonalize(true)	error: diagonalize needs a matrix
+-e	diagonalize(-7/3)	error: diagonalize needs a matrix
+-e	diagonalize(0.5)	error: diagonalize needs a matrix
+-e	smithform(0)	error: smithform needs a matrix
+-e	smithform(1)	error: smithform needs a matrix
+-e	smithform(-1)	error: smithform needs a matrix
+-e	smithform(1/2)	error: smithform needs a matrix
+-e	smithform(2)	error: smithform needs a matrix
+-e	smithform(i)	error: smithform needs a matrix
+-e	smithform(inf)	error: smithform needs a matrix
+-e	smithform(-inf)	error: smithform needs a matrix
+-e	smithform(undefined)	error: smithform needs a matrix
+-e	smithform(10^20)	error: smithform needs a matrix
+-e	smithform(10^(-20))	error: smithform needs a matrix
+-e	smithform(x)	error: smithform needs a matrix
+-e	smithform([])	error: smithform needs a matrix
+-e	smithform([1, 2])	error: smithform needs a matrix
+-e	smithform("text")	error: smithform needs a matrix
+-e	smithform(true)	error: smithform needs a matrix
+-e	smithform(-7/3)	error: smithform needs a matrix
+-e	smithform(0.5)	error: smithform needs a matrix
+-e	smithdecomposition(0)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(1)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(-1)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(1/2)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(2)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(i)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(inf)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(-inf)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(undefined)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(10^20)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(10^(-20))	error: smithdecomposition needs a matrix
+-e	smithdecomposition(x)	error: smithdecomposition needs a matrix
+-e	smithdecomposition([])	error: smithdecomposition needs a matrix
+-e	smithdecomposition([1, 2])	error: smithdecomposition needs a matrix
+-e	smithdecomposition("text")	error: smithdecomposition needs a matrix
+-e	smithdecomposition(true)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(-7/3)	error: smithdecomposition needs a matrix
+-e	smithdecomposition(0.5)	error: smithdecomposition needs a matrix
+-e	hermiteform(0)	error: hermiteform needs a matrix
+-e	hermiteform(1)	error: hermiteform needs a matrix
+-e	hermiteform(-1)	error: hermiteform needs a matrix
+-e	hermiteform(1/2)	error: hermiteform needs a matrix
+-e	hermiteform(2)	error: hermiteform needs a matrix
+-e	hermiteform(i)	error: hermiteform needs a matrix
+-e	hermiteform(inf)	error: hermiteform needs a matrix
+-e	hermiteform(-inf)	error: hermiteform needs a matrix
+-e	hermiteform(undefined)	error: hermiteform needs a matrix
+-e	hermiteform(10^20)	error: hermiteform needs a matrix
+-e	hermiteform(10^(-20))	error: hermiteform needs a matrix
+-e	hermiteform(x)	error: hermiteform needs a matrix
+-e	hermiteform([])	error: hermiteform needs a matrix
+-e	hermiteform([1, 2])	error: hermiteform needs a matrix
+-e	hermiteform("text")	error: hermiteform needs a matrix
+-e	hermiteform(true)	error: hermiteform needs a matrix
+-e	hermiteform(-7/3)	error: hermiteform needs a matrix
+-e	hermiteform(0.5)	error: hermiteform needs a matrix
+-e	hermitedecomposition(0)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(1)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(-1)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(1/2)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(2)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(i)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(inf)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(-inf)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(undefined)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(10^20)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(10^(-20))	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(x)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition([])	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition([1, 2])	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition("text")	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(true)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(-7/3)	error: hermitedecomposition needs a matrix
+-e	hermitedecomposition(0.5)	error: hermitedecomposition needs a matrix
+-e	schur(0)	error: schur needs a matrix
+-e	schur(1)	error: schur needs a matrix
+-e	schur(-1)	error: schur needs a matrix
+-e	schur(1/2)	error: schur needs a matrix
+-e	schur(2)	error: schur needs a matrix
+-e	schur(i)	error: schur needs a matrix
+-e	schur(inf)	error: schur needs a matrix
+-e	schur(-inf)	error: schur needs a matrix
+-e	schur(undefined)	error: schur needs a matrix
+-e	schur(10^20)	error: schur needs a matrix
+-e	schur(10^(-20))	error: schur needs a matrix
+-e	schur(x)	error: schur needs a matrix
+-e	schur([])	error: schur needs a matrix
+-e	schur([1, 2])	error: schur needs a matrix
+-e	schur("text")	error: schur needs a matrix
+-e	schur(true)	error: schur needs a matrix
+-e	schur(-7/3)	error: schur needs a matrix
+-e	schur(0.5)	error: schur needs a matrix
+-e	schurdecomposition(0)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(1)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(-1)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(1/2)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(2)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(i)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(inf)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(-inf)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(undefined)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(10^20)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(10^(-20))	error: schurdecomposition needs a matrix
+-e	schurdecomposition(x)	error: schurdecomposition needs a matrix
+-e	schurdecomposition([])	error: schurdecomposition needs a matrix
+-e	schurdecomposition([1, 2])	error: schurdecomposition needs a matrix
+-e	schurdecomposition("text")	error: schurdecomposition needs a matrix
+-e	schurdecomposition(true)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(-7/3)	error: schurdecomposition needs a matrix
+-e	schurdecomposition(0.5)	error: schurdecomposition needs a matrix
+-e	hess(0)	error: hess needs a matrix
+-e	hess(1)	error: hess needs a matrix
+-e	hess(-1)	error: hess needs a matrix
+-e	hess(1/2)	error: hess needs a matrix
+-e	hess(2)	error: hess needs a matrix
+-e	hess(i)	error: hess needs a matrix
+-e	hess(inf)	error: hess needs a matrix
+-e	hess(-inf)	error: hess needs a matrix
+-e	hess(undefined)	error: hess needs a matrix
+-e	hess(10^20)	error: hess needs a matrix
+-e	hess(10^(-20))	error: hess needs a matrix
+-e	hess(x)	error: hess needs a matrix
+-e	hess([])	error: hess needs a matrix
+-e	hess([1, 2])	error: hess needs a matrix
+-e	hess("text")	error: hess needs a matrix
+-e	hess(true)	error: hess needs a matrix
+-e	hess(-7/3)	error: hess needs a matrix
+-e	hess(0.5)	error: hess needs a matrix
+-e	hessenbergdecomposition(0)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(1)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(-1)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(1/2)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(2)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(i)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(inf)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(-inf)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(undefined)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(10^20)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(10^(-20))	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(x)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition([])	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition([1, 2])	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition("text")	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(true)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(-7/3)	error: hessenbergdecomposition needs a matrix
+-e	hessenbergdecomposition(0.5)	error: hessenbergdecomposition needs a matrix
+-e	singularvaluedecomposition(0)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(1)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(-1)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(1/2)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(2)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(i)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(inf)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(-inf)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(undefined)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(10^20)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(10^(-20))	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(x)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition([])	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition([1, 2])	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition("text")	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(true)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(-7/3)	error: singularvaluedecomposition needs a matrix
+-e	singularvaluedecomposition(0.5)	error: singularvaluedecomposition needs a matrix
+-e	planerot(0)	error: planerot([x, y])
+-e	planerot(1)	error: planerot([x, y])
+-e	planerot(-1)	error: planerot([x, y])
+-e	planerot(1/2)	error: planerot([x, y])
+-e	planerot(2)	error: planerot([x, y])
+-e	planerot(i)	error: planerot([x, y])
+-e	planerot(inf)	error: planerot([x, y])
+-e	planerot(-inf)	error: planerot([x, y])
+-e	planerot(undefined)	error: planerot([x, y])
+-e	planerot(10^20)	error: planerot([x, y])
+-e	planerot(10^(-20))	error: planerot([x, y])
+-e	planerot(x)	error: planerot([x, y])
+-e	planerot([])	error: planerot([x, y])
+-e	planerot([1, 2])	[[[sqrt(5)/5, 2sqrt(5)/5], [-2sqrt(5)/5, sqrt(5)/5]], [sqrt(5), 0]]
+-e	planerot("text")	error: planerot([x, y])
+-e	planerot(true)	error: planerot([x, y])
+-e	planerot(-7/3)	error: planerot([x, y])
+-e	planerot(0.5)	error: planerot([x, y])
+-e	poly(0)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(1)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(-1)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(1/2)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(2)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(i)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(inf)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(-inf)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(undefined)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(10^20)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(10^(-20))	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(x)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly([])	[1]
+-e	poly([1, 2])	[1, -3, 2]
+-e	poly("text")	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(true)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(-7/3)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	poly(0.5)	error: poly needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(0)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(1)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(-1)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(1/2)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(2)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(i)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(inf)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(-inf)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(undefined)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(10^20)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(10^(-20))	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(x)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder([])	[0]
+-e	polyder([1, 2])	[1]
+-e	polyder("text")	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(true)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(-7/3)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyder(0.5)	error: polyder needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(0)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(1)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(-1)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(1/2)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(2)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(i)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(inf)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(-inf)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(undefined)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(10^20)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(10^(-20))	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(x)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint([])	[0]
+-e	polyint([1, 2])	[1/2, 2, 0]
+-e	polyint("text")	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(true)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(-7/3)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	polyint(0.5)	error: polyint needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(0)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(1)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(-1)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(1/2)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(2)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(i)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(inf)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(-inf)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(undefined)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(10^20)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(10^(-20))	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(x)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym([])	0
+-e	poly2sym([1, 2])	x + 2
+-e	poly2sym("text")	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(true)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(-7/3)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	poly2sym(0.5)	error: poly2sym needs the coefficients of a polynomial as a list, the highest first
+-e	sym2poly(0)	[0]
+-e	sym2poly(1)	[1]
+-e	sym2poly(-1)	[-1]
+-e	sym2poly(1/2)	[1/2]
+-e	sym2poly(2)	[2]
+-e	sym2poly(i)	[i]
+-e	sym2poly(inf)	[inf]
+-e	sym2poly(-inf)	[-inf]
+-e	sym2poly(undefined)	[undefined]
+-e	sym2poly(10^20)	[100000000000000000000]
+-e	sym2poly(10^(-20))	[1/100000000000000000000]
+-e	sym2poly(x)	[1, 0]
+-e	sym2poly([])	[[]]
+-e	sym2poly([1, 2])	[[1, 2]]
+-e	sym2poly("text")	error: sym2poly: "text" is no polynomial in text
+-e	sym2poly(true)	[true]
+-e	sym2poly(-7/3)	[-7/3]
+-e	sym2poly(0.5)	[0.5]
+-e	coeffs(0)	[]
+-e	coeffs(1)	[1]
+-e	coeffs(-1)	[-1]
+-e	coeffs(1/2)	[1/2]
+-e	coeffs(2)	[2]
+-e	coeffs(i)	[i]
+-e	coeffs(inf)	[inf]
+-e	coeffs(-inf)	[-inf]
+-e	coeffs(undefined)	[undefined]
+-e	coeffs(10^20)	[100000000000000000000]
+-e	coeffs(10^(-20))	[1/100000000000000000000]
+-e	coeffs(x)	[1]
+-e	coeffs([])	[[]]
+-e	coeffs([1, 2])	[[1, 2]]
+-e	coeffs("text")	error: coeffs: "text" is no polynomial in text
+-e	coeffs(true)	[true]
+-e	coeffs(-7/3)	[-7/3]
+-e	coeffs(0.5)	[0.5]
+-e	horner(0)	0
+-e	horner(1)	1
+-e	horner(-1)	-1
+-e	horner(1/2)	1/2
+-e	horner(2)	2
+-e	horner(i)	i
+-e	horner(inf)	inf
+-e	horner(-inf)	-inf
+-e	horner(undefined)	undefined
+-e	horner(10^20)	100000000000000000000
+-e	horner(10^(-20))	1/100000000000000000000
+-e	horner(x)	x
+-e	horner([])	[]
+-e	horner([1, 2])	[1, 2]
+-e	horner("text")	error: horner: "text" is no polynomial in text
+-e	horner(true)	true
+-e	horner(-7/3)	-7/3
+-e	horner(0.5)	0.5
+-e	numden(0)	[0, 1]
+-e	numden(1)	[1, 1]
+-e	numden(-1)	[-1, 1]
+-e	numden(1/2)	[1, 2]
+-e	numden(2)	[2, 1]
+-e	numden(i)	[i, 1]
+-e	numden(inf)	[inf, 1]
+-e	numden(-inf)	[-inf, 1]
+-e	numden(undefined)	[undefined, 1]
+-e	numden(10^20)	[100000000000000000000, 1]
+-e	numden(10^(-20))	[1, 100000000000000000000]
+-e	numden(x)	[x, 1]
+-e	numden([])	[[], 1]
+-e	numden([1, 2])	[[1, 2], 1]
+-e	numden("text")	["text", 1]
+-e	numden(true)	[true, 1]
+-e	numden(-7/3)	[-7, 3]
+-e	numden(0.5)	[1, 2]
+-e	gbasis(0)	error: gbasis([polynomials], [variables])
+-e	gbasis(1)	error: gbasis([polynomials], [variables])
+-e	gbasis(-1)	error: gbasis([polynomials], [variables])
+-e	gbasis(1/2)	error: gbasis([polynomials], [variables])
+-e	gbasis(2)	error: gbasis([polynomials], [variables])
+-e	gbasis(i)	error: gbasis([polynomials], [variables])
+-e	gbasis(inf)	error: gbasis([polynomials], [variables])
+-e	gbasis(-inf)	error: gbasis([polynomials], [variables])
+-e	gbasis(undefined)	error: gbasis([polynomials], [variables])
+-e	gbasis(10^20)	error: gbasis([polynomials], [variables])
+-e	gbasis(10^(-20))	error: gbasis([polynomials], [variables])
+-e	gbasis(x)	error: gbasis([polynomials], [variables])
+-e	gbasis([])	[]
+-e	gbasis([1, 2])	[1]
+-e	gbasis("text")	error: gbasis([polynomials], [variables])
+-e	gbasis(true)	error: gbasis([polynomials], [variables])
+-e	gbasis(-7/3)	error: gbasis([polynomials], [variables])
+-e	gbasis(0.5)	error: gbasis([polynomials], [variables])
+-e	fft(0)	[0]
+-e	fft(1)	[1]
+-e	fft(-1)	[-1]
+-e	fft(1/2)	[1/2]
+-e	fft(2)	[2]
+-e	fft(i)	[i]
+-e	fft(inf)	[inf]
+-e	fft(-inf)	[-inf]
+-e	fft(undefined)	[undefined]
+-e	fft(10^20)	[100000000000000000000]
+-e	fft(10^(-20))	[1/100000000000000000000]
+-e	fft(x)	[x]
+-e	fft([])	[]

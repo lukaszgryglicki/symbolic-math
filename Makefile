@@ -24,12 +24,18 @@ debug:
 	@$(M4_ENV) PATH="$(BUILD_PATH)" $(CARGO) build --locked -j $(JOBS)
 
 # macOS has no static executables: there the release is built for the native target and
-# must need nothing but the libraries of the system.
+# must need nothing but the libraries of the system. On Linux the bindings of libjxl ask for
+# the shared C++ library: a directory that holds only its archive gives the static one.
 static:
 	@$(M4_ENV) target="$(STATIC_TARGET)"; \
 		flags="$(RUSTFLAGS) -C target-feature=+crt-static"; \
 		case "$$target" in \
 			*-freebsd) flags="$$flags -C link-arg=-Wno-unused-command-line-argument" ;; \
+			*-linux-*) \
+				archive="$$($${CXX:-c++} -print-file-name=libstdc++.a)"; \
+				[ -f "$$archive" ] || { printf '%s\n' "error: no libstdc++.a for a static executable" >&2; exit 1; }; \
+				mkdir -p target/static-c++ && ln -sf "$$archive" target/static-c++/libstdc++.a; \
+				flags="$$flags -L native=$$(pwd)/target/static-c++" ;; \
 			*-apple-darwin) flags="$(RUSTFLAGS)" ;; \
 		esac; \
 		PATH="$(BUILD_PATH)" RUSTFLAGS="$$flags" $(CARGO) build --locked --release -j $(JOBS) --target "$$target"

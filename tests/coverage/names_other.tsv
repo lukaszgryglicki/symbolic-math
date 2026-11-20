@@ -1,0 +1,472 @@
+	√(8)	2sqrt(2)|  ~ 2.8284271247461900976033774484194
+	∛(54)	3*2^(1/3)|  ~ 3.7797631496846194943016318218347
+	square(3)	9
+	powc(2, 10)	1024
+	powf(2, 10)	1024
+	powi(2, 10)	1024
+	powu(2, 10)	1024
+	㏑(-1)	i*pi|  ~ 3.1415926535897932384626433832795i
+	㏒(8, 2)	3
+	lb(1024)	10
+	lg(1000)	3
+	tg(pi/4)	1
+	ctg(pi/3)	sqrt(3)/3|  ~ 0.57735026918962576450914878050196
+	cotan(pi/3)	sqrt(3)/3|  ~ 0.57735026918962576450914878050196
+	cosec(pi/6)	2
+	arcsin(1/2)	pi/6|  ~ 0.52359877559829887307710723054658
+	arccos(1/2)	pi/3|  ~ 1.0471975511965977461542144610932
+	arctan(1)	pi/4|  ~ 0.78539816339744830961566084581988
+	arctg(1)	pi/4|  ~ 0.78539816339744830961566084581988
+	arccot(1)	pi/4|  ~ 0.78539816339744830961566084581988
+	arcctg(1)	pi/4|  ~ 0.78539816339744830961566084581988
+	arcsec(2)	pi/3|  ~ 1.0471975511965977461542144610932
+	arccsc(2)	pi/6|  ~ 0.52359877559829887307710723054658
+	arcsinh(0)	0
+	arsinh(0)	0
+	arccosh(1)	0
+	arcosh(1)	0
+	arctanh(1/2)	atanh(1/2)|  ~ 0.54930614433405484569762261846126
+	artanh(1/2)	atanh(1/2)|  ~ 0.54930614433405484569762261846126
+	arccoth(2)	atanh(1/2)|  ~ 0.54930614433405484569762261846126
+	arcoth(2)	atanh(1/2)|  ~ 0.54930614433405484569762261846126
+	arcsech(1)	0
+	arsech(1)	0
+	arccsch(1)	asinh(1)|  ~ 0.88137358701954302523260932497979
+	arcsch(1)	asinh(1)|  ~ 0.88137358701954302523260932497979
+	mag(3+4i)	5
+	polar_r(3+4i)	5
+	radius(3+4i)	5
+	mag2(3+4i)	25
+	norm_sqr(3+4i)	25
+	normsq(3+4i)	25
+	l1(3+4i)	7
+	manhattan(3+4i)	7
+	taxicab(3+4i)	7
+	phase(1+i)	pi/4|  ~ 0.78539816339744830961566084581988
+	polar_theta(1+i)	pi/4|  ~ 0.78539816339744830961566084581988
+	theta(1+i)	pi/4|  ~ 0.78539816339744830961566084581988
+	real((1+2i)^2)	-3
+	ℜ((1+2i)^2)	-3
+	imag((1+2i)^2)	4
+	ℑ((1+2i)^2)	4
+	conjugate(1+2i)	1 - 2i
+	recip(1+i)	1/2 - i/2|  ~ 0.5 - 0.5i
+	inverse(1+i)	1/2 - i/2|  ~ 0.5 - 0.5i
+	finv(1+i)	1/2 - i/2|  ~ 0.5 - 0.5i
+	sgn(-3+4i)	-3/5 + 4i/5|  ~ -0.6 + 0.8i
+	signum(-3+4i)	-3/5 + 4i/5|  ~ -0.6 + 0.8i
+	new(1, 2)	1 + 2i
+	rectform(1, 2)	1 + 2i
+	from_polar(2, pi/2)	2i
+	polarform(2, pi/2)	2i
+	ceiling(3.2)	4
+	fix(-3.7)	-3
+	fract(3.75)	0.75
+	mean(1, 2, 6)	3
+	average(1, 2, 6)	3
+	isnan(0/0)	1
+	isinf(1/0)	1
+	isinfinite(1/0)	1
+	isfinite(1)	1
+	isnormal(0)	0
+	tgamma(5)	24
+	Γ(5)	24
+	loggamma(10)	7ln(2) + 4ln(3) + ln(5) + ln(7)|  ~ 12.801827480081469611207717874567
+	lngamma(10)	7ln(2) + 4ln(3) + ln(5) + ln(7)|  ~ 12.801827480081469611207717874567
+	gammaln(10)	7ln(2) + 4ln(3) + ln(5) + ln(7)|  ~ 12.801827480081469611207717874567
+	fact(5)	120
+	doublefactorial(7)	105
+	choose(10, 3)	120
+	psi(1)	-eulergamma|  ~ -0.5772156649015328606065120900824
+	ψ(1)	-eulergamma|  ~ -0.5772156649015328606065120900824
+	hurwitzzeta(2)	pi^2/6|  ~ 1.644934066848226436472415166646
+	ζ(2)	pi^2/6|  ~ 1.644934066848226436472415166646
+	logint(2)	li(2)|  ~ 1.0451637801174927848445888891946
+	dilog(1/2)	pi^2/12 - ln(2)^2/2|  ~ 0.58224052646501250590265632015968
+	sinint(1)	si(1)|  ~ 0.94608307036718301494135331382318
+	cosint(1)	ci(1)|  ~ 0.33740392290096813466264620388915
+	sinhint(1)	shi(1)|  ~ 1.0572508753757285145718423548959
+	coshint(1)	chi(1)|  ~ 0.83786694098020824089467857943576
+	w(1)	lambertw(1)|  ~ 0.56714329040978387299996866221036
+	productlog(1)	lambertw(1)|  ~ 0.56714329040978387299996866221036
+	gammainc(2, 1)	2/e|  ~ 0.73575888234288464319104754032292
+	incgamma(2, 1)	2/e|  ~ 0.73575888234288464319104754032292
+	igamma(2, 1)	2/e|  ~ 0.73575888234288464319104754032292
+	gammaregularized(2, 1)	2/e|  ~ 0.73575888234288464319104754032292
+	expintegrale(1)	expint(1, 1)|  ~ 0.21938393439552027367716377546012
+	inverseerf(1/2)	erfinv(1/2)|  ~ 0.47693627620446987338141835364313
+	inverseerfc(1/2)	erfcinv(1/2)|  ~ 0.47693627620446987338141835364313
+	hankelh1(0, 1)	hankel1(0, 1)|  ~ 0.76519768655796655144971752610266 + 0.088256964215676957982926766023515i
+	hankelh2(0, 1)	hankel2(0, 1)|  ~ 0.76519768655796655144971752610266 - 0.088256964215676957982926766023515i
+	hypergeometric0f1(1, 1)	hyp0f1(1, 1)|  ~ 2.2795853023360672674372044408115
+	hypergeometric1f1(1, 2, 1)	e - 1|  ~ 1.7182818284590452353602874713527
+	kummerm(1, 2, 1)	e - 1|  ~ 1.7182818284590452353602874713527
+	hypergeometricu(1, 2, 1)	1
+	kummeru(1, 2, 1)	1
+	hypergeometric2f1(1, 1, 2, 1/2)	2ln(2)|  ~ 1.3862943611198906188344642429164
+	hypergeometricpfq([1, 1], [2], 1/2)	2ln(2)|  ~ 1.3862943611198906188344642429164
+	pfq([1, 1], [2], 1/2)	2ln(2)|  ~ 1.3862943611198906188344642429164
+	hypergeom([1, 1], [2], 1/2)	2ln(2)|  ~ 1.3862943611198906188344642429164
+	ellipk(1/2)	gamma(1/4)^2/(4sqrt(pi))|  ~ 1.8540746773013719184338503471953
+	ellipe(1/2)	elliptice(1/2)|  ~ 1.3506438810476755025201747353387
+	ellipf(1, 1/2)	ellipticf(1, 1/2)|  ~ 1.0832167728451687504441324515653
+	ellippi(1/3, 1/2)	ellipticpi(1/3, 1/2)|  ~ 2.3107949907542818154423146842782
+	nome(1/2)	e^(-pi)|  ~ 0.043213918263772249774417737171728
+	jtheta(3, 0, 1/10)	elliptictheta(3, 0, 1/10)|  ~ 1.2002000020000002000000002
+	hermite(3, x)	8x^3 - 12x
+	laguerre(2, x)	x^2/2 - 2x + 1
+	gegenbauer(2, a, x)	2a^2*x^2 + 2a*x^2 - a
+	sphericalharmonic(1, 0, t, p)	sqrt(3)*cos(t)/(2sqrt(pi))
+	ylm(1, 0, t, p)	sqrt(3)*cos(t)/(2sqrt(pi))
+	heavisidetheta(2)	1
+	dirac(x - 1)	diracdelta(x - 1)
+	ate(2, 100)	slog(2, 100)|note: could not run tet: No such file or directory (os error 2); ensure the tet executable is on PATH
+	sroot(2, 3)	ssrt(2, 3)|note: could not run tet: No such file or directory (os error 2); ensure the tet executable is on PATH
+	simplifyfraction(1/x + 1/y)	(x + y)/(x*y)
+	partfrac(1/(x^2-1))	1/(2(x - 1)) - 1/(2(x + 1))
+	numerator((x+1)/(x-1))	x + 1
+	denominator((x+1)/(x-1))	x - 1
+	substitute(x^2 + y, x, 3)	y + 9
+	replace(x^2 + y, x, 3)	y + 9
+	subs(x^2 + y, x, 3)	y + 9
+	coefficient(3x^2 + 2x, x, 2)	3
+	polynomialdegree(x^5 + x, x)	5
+	quotient(x^3 - 1, x - 1)	x^2 + x + 1
+	remainder(-7, 3)	-1
+	expand_trig(sin(2x))	2cos(x)*sin(x)
+	toexp(cos(x))	e^(-i*x)/2 + e^(i*x)/2
+	evalf(pi, 50)	3.1415926535897932384626433832795028841971693993751
+	approx(pi, 50)	3.1415926535897932384626433832795028841971693993751
+	numeric(pi, 50)	3.1415926535897932384626433832795028841971693993751
+	vpa(pi, 50)	3.1415926535897932384626433832795028841971693993751
+	quatsolve(x^2 = -1)	x = u, u is any unit pure quaternion|note: a unit pure quaternion is a*i + b*j + c*k with a^2 + b^2 + c^2 = 1; its square is -1
+	vpasolve(cos(x) = x, x, 1)	0.73908513321516064165531208767387
+	derivative(sin(x)^2, x)	2cos(x)*sin(x)
+	∂(sin(x)^2, x)	2cos(x)*sin(x)
+	int(x*e^x, x)	e^x*(x - 1)
+	integral(x*e^x, x)	e^x*(x - 1)
+	∫(x*e^x, x)	e^x*(x - 1)
+	nint(sin(x^2), x, 0, 1)	0.3102683017233811018081524231654
+	vpaintegral(sin(x^2), x, 0, 1)	0.3102683017233811018081524231654
+	circumference(disk(1))	2pi|  ~ 6.283185307179586476925286766559
+	area(disc(2))	4pi|  ~ 12.566370614359172953850573533118
+	volume(cuboid([0, 0, 0], [1, 2, 3]))	6
+	lim(1/x, x, 0, +)	inf
+	taylor(e^x, x, 0, 5)	1 + x + x^2/2 + x^3/6 + x^4/24 + x^5/120 + O(x^6)
+	summation([1, 2, 3])	6
+	symsum([1, 2, 3])	6
+	∑([1, 2, 3])	6
+	prod(k, k, 1, 5)	120
+	symprod(k, k, 1, 5)	120
+	∏(k, k, 1, 5)	120
+	gradient(x^2*y, [x, y])	[2x*y, x^2]
+	∇(x^2*y, [x, y])	[2x*y, x^2]
+	determinant([[1, 2], [3, 4]])	-2
+	tr([[1, 2], [3, 4]])	5
+	kernel([[1, 2], [2, 4]])	[[-2, 1]]
+	null([[1, 2], [2, 4]])	[[-2, 1]]
+	eigvals([[2, 1], [1, 2]])	[1, 3]
+	eig([[2, 1], [1, 2]])	[1, 3]
+	eigvecs([[2, 1], [1, 2]])	[[1, [[-1, 1]]], [3, [[1, 1]]]]
+	eye(2)	[[1, 0], [0, 1]]
+	functionalsolve(f(2x) = 2f(x), f)	f(x) = C1*x|note: the constants may also be functions unchanged when x is multiplied by 2
+	fiterate(x^2, x, t)	x^(2^t)
+	dims([[1, 2, 3], [4, 5, 6]])	[2, 3]
+	shape([[1, 2, 3], [4, 5, 6]])	[2, 3]
+	arraydepth([[1, 2], [3, 4]])	2
+	tensorproduct([1, 2], [3, 4])	[[3, 4], [6, 8]]
+	tensorcontract([[1, 2], [3, 4]], 1, 2)	5
+	kroneckerproduct([[1, 2], [3, 4]], [[0, 1], [1, 0]])	[[0, 1, 0, 2], [1, 0, 2, 0], [0, 3, 0, 4], [3, 0, 4, 0]]
+	hodgestar([1, 0, 0])	[[0, 0, 0], [0, 0, 1], [0, -1, 0]]
+	intersect([1, 2, 3], [2, 3, 4])	[2, 3]
+	unit([3, 4])	[3/5, 4/5]
+	circumsphere([0, 0], [2, 0], [0, 2])	[[1, 1], sqrt(2)]
+	tospherical([1, 1])	[sqrt(2), pi/4]
+	fromspherical([2, pi/2])	[0, 2]
+	adj([[1, 2], [3, 4]])	[[4, -2], [-3, 1]]
+	adjoint([[1, 2], [3, 4]])	[[4, -2], [-3, 1]]
+	expm([[0, 1], [-1, 0]], t)	[[cos(t), sin(t)], [-sin(t), cos(t)]]
+	sqrtm([[4, 0], [0, 9]])	[[2, 0], [0, 3]]
+	logm([[1, 1], [0, 1]])	[[0, 1], [0, 0]]
+	orthogonalize([[1, 1], [1, 0]])	[[1, 1], [1/2, -1/2]]
+	pseudoinverse([[1, 2], [2, 4]])	[[1/25, 2/25], [2/25, 4/25]]
+	svd([[3, 0], [0, 4]])	[4, 3]
+	hilb(3)	[[1, 1/2, 1/3], [1/2, 1/3, 1/4], [1/3, 1/4, 1/5]]
+	inv(quaternion(1, 1, 1, 1))	quat(1/4, -1/4, -1/4, -1/4)
+	is_prime(2^61 - 1)	true
+	primeq(2^61 - 1)	true
+	compositeq(91)	true
+	primepowerq(81)	true
+	perfectnumberq(28)	true
+	coprime(8, 9)	true
+	coprimeq(8, 9)	true
+	factorinteger(360)	[[2, 3], [3, 2], [5, 1]]
+	carmichaellambda(36)	6
+	liouvillelambda(12)	-1
+	mangoldtlambda(27)	ln(3)|  ~ 1.0986122886681096913952452369225
+	legendresymbol(2, 7)	1
+	fareysequence(4)	[0, 1/4, 1/3, 1/2, 2/3, 3/4, 1]
+	primitiverootlist(7)	[3, 5]
+	sqrtmods(1, 8)	[1, 3, 5, 7]
+	rising(3, 4)	360
+	risingfactorial(3, 4)	360
+	falling(5, 2)	20
+	factorialpower(5, 2)	20
+	nthprime(100)	541
+	eulerphi(36)	12
+	divisorsigma(28)	56
+	moebius(30)	-1
+	fib(100)	354224848179261915075
+	euler(4)	5
+	powermod(2, 100, 7)	2
+	jacobisymbol(2, 15)	1
+	baseconv(e, 2)	10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+	convbase(e, 2)	10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+	base_convert(e, 2)	10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+	baseconvert(e, 2)	10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+	convert_base(e, 2)	10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+	inbase(1/7)	0.(142857)
+	baseform(1/7)	0.(142857)
+	basefraction(0.75, 16)	3/4
+	realdigits(1/7)	[[0], [], [1, 4, 2, 8, 5, 7]]
+	digitlist(1/7)	[[0], [], [1, 4, 2, 8, 5, 7]]
+	periodlength(1/7)	6
+	repetend(1/7)	6
+	digitcount(pi, 10, 1000)	[93, 116, 103, 103, 93, 97, 94, 95, 101, 105]
+	multiplicativeorder(2, 7)	3
+	dlog(3, 13, 17)	4
+	gcdex(12, 18)	[6, -1, 1]
+	subfactorial(5)	44
+	concat([1, 2], [3], [4, 5])	[1, 2, 3, 4, 5]
+	setminus([1, 2, 3, 4], [2, 4])	[1, 3]
+	setdiff([1, 2, 3, 4], [2, 4])	[1, 3]
+	deleteduplicates([1, 1, 2, 3, 3])	[1, 2, 3]
+	memberq([1, 2, 3], 2)	true
+	cumsum([1, 2, 3, 4])	[1, 3, 6, 10]
+	chunks([1, 2, 3, 4], 2)	[[1, 2], [3, 4]]
+	arrayfun(sin, [0, pi/2])	[0, 1]
+	cellfun(sin, [0, pi/2])	[0, 1]
+	filter([1, 2, 3, 4, 5, 6], isprime)	[2, 3, 5]
+	reduce((a, b) -> a + b, 0, [1, 2, 3])	6
+	listq([1])	true
+	numberq(pi)	true
+	integerq(4/2)	true
+	evenq(4)	true
+	oddq(4)	false
+	commonest([1, 2, 2, 3])	2
+	var([1, 2, 3, 4])	5/3|  ~ 1.6666666666666666666666666666667
+	standarddeviation([1, 2, 3, 4])	sqrt(15)/3|  ~ 1.2909944487358056283930884665941
+	std([1, 2, 3, 4])	sqrt(15)/3|  ~ 1.2909944487358056283930884665941
+	corr([1, 2, 3], [2, 4, 7])	5sqrt(57)/38|  ~ 0.99339926779878285489956379038765
+	inversecdf([1, 2, 3, 4, 5], 1/4)	2
+	icdf([1, 2, 3, 4, 5], 1/4)	2
+	interquartilerange([1, 2, 3, 4, 5, 6, 7, 8])	7/2|  ~ 3.5
+	geomean([1, 2, 4])	2
+	harmmean([1, 2, 4])	12/7|  ~ 1.7142857142857142857142857142857
+	rootmeansquare([3, 4])	5sqrt(2)/2|  ~ 3.5355339059327376220042218105242
+	pmf("Normal", 0, 0, 1)	sqrt(2)/(2sqrt(pi))|  ~ 0.39894228040143267793994605993438
+	probabilitydensity("Normal", 0, 0, 1)	sqrt(2)/(2sqrt(pi))|  ~ 0.39894228040143267793994605993438
+	momentgeneratingfunction(normaldist(m, s), t)	e^(s^2*t^2/2 + m*t)
+	expectedvalue(x^2, x, normaldist(0, 1))	1
+	pdf(normaldistribution(0, 1), x)	sqrt(2)*e^(-x^2/2)/(2sqrt(pi))
+	variance(uniformdistribution(a, b))	(b - a)^2/12
+	mean(exponentialdistribution(r))	1/r
+	mean(gammadistribution(a, b))	a*b
+	mean(chisquaredistribution(k))	k
+	variance(studenttdistribution(5))	5/3|  ~ 1.6666666666666666666666666666667
+	mean(betadistribution(2, 3))	2/5|  ~ 0.4
+	pdf(cauchydistribution(0, 1), x)	1/(pi*x^2 + pi)
+	median(lognormaldistribution(m, s))	e^m
+	mean(weibulldistribution(2, 1))	sqrt(pi)/2|  ~ 0.88622692545275801364908374167057
+	variance(laplacedistribution(0, b))	2b^2
+	mean(rayleighdistribution(s))	sqrt(2)*sqrt(pi)*s/2
+	cdf(logisticdistribution(0, 1), x)	e^x/(e^x + 1)
+	mean(paretodistribution(1, 3))	3/2|  ~ 1.5
+	mean(fratiodistribution(3, 5))	5/3|  ~ 1.6666666666666666666666666666667
+	pdf(binomialdistribution(10, 1/3), 4)	4480/19683|  ~ 0.22760758014530305339633185998069
+	cdf(poissondistribution(3), 2)	17/(2e^3)|  ~ 0.42319008112684351532441053302553
+	mean(geometricdistribution(p))	1/p - 1
+	variance(bernoullidistribution(p))	p - p^2
+	pdf(discreteuniformdistribution(1, 6), 3)	1/6|  ~ 0.16666666666666666666666666666667
+	mean(negativebinomialdistribution(3, 1/2))	3
+	pdf(hypergeometricdistribution(3, 4, 10), 1)	1/2|  ~ 0.5
+	lll([[1, 1, 1], [-1, 0, 2], [3, 5, 6]])	[[0, 1, 0], [1, 0, 1], [-1, 0, 2]]
+	findintegerrelation([ln(2), ln(3), ln(6)])	[1, 1, -1]
+	pslq([ln(2), ln(3), ln(6)])	[1, 1, -1]
+	minimalpolynomial(sqrt(2) + sqrt(3), x)	x^4 - 10x^2 + 1|note: the polynomial was found with numbers and confirmed with twice the digits
+	interpolatingpolynomial([[0, 1], [1, 3], [2, 7]], x)	x^2 + x + 1
+	stationarypoints(x^3 - 3x, x)	[[-1, 2, maximum], [1, -2, minimum]]
+	solvemod(x^2 = 1, x, 8)	[1, 3, 5, 7]
+	laplacetransform(t*sin(t), t, s)	2s/(s^2 + 1)^2
+	inverselaplace(1/(s^2 + 1), s, t)	sin(t)
+	ilaplace(1/(s^2 + 1), s, t)	sin(t)
+	inverselaplacetransform(1/(s^2 + 1), s, t)	sin(t)
+	fouriertransform(e^(-x^2), x, w)	sqrt(pi)*e^(-w^2/4)
+	inversefourier(e^(-w^2/4), w, x)	e^(-x^2)/sqrt(pi)
+	ifourier(e^(-w^2/4), w, x)	e^(-x^2)/sqrt(pi)
+	inversefouriertransform(e^(-w^2/4), w, x)	e^(-x^2)/sqrt(pi)
+	ztrans(2^n, n, z)	z/(z - 2)
+	inverseztransform(z/(z - 2), z, n)	2^n
+	iztransform(z/(z - 2), z, n)	2^n
+	iztrans(z/(z - 2), z, n)	2^n
+	padeapproximant(e^x, x, 2, 2)	(x^2 + 6x + 12)/(x^2 - 6x + 12)
+	seriescoefficient(tan(x), x, 7)	17/315|  ~ 0.053968253968253968253968253968254
+	vertices([[1, 2], [2, 3], [3, 1], [3, 4]])	[1, 2, 3, 4]
+	numnodes([[1, 2], [3]])	3
+	numedges([[1, 2], [2, 3]])	2
+	adjacency(cyclegraph(4))	[[0, 1, 0, 1], [1, 0, 1, 0], [0, 1, 0, 1], [1, 0, 1, 0]]
+	weightedadjacencymatrix([[a, b, 7], [b, c, 2]])	[[0, 7, 0], [7, 0, 2], [0, 2, 0]]
+	incidence(pathgraph(3))	[[1, 0], [1, 1], [0, 1]]
+	kirchhoffmatrix(pathgraph(3))	[[1, -1, 0], [-1, 2, -1], [0, -1, 1]]
+	degreesequence([[1, 2], [2, 3], [3, 1], [3, 4]])	[2, 2, 3, 1]
+	vertexdegrees([[1, 2], [2, 3], [3, 1], [3, 4]])	[2, 2, 3, 1]
+	indegree([1 -> 2, 2 -> 3, 1 -> 3])	[0, 1, 2]
+	outdegree([1 -> 2, 2 -> 3, 1 -> 3])	[2, 1, 0]
+	neighbours([[1, 2], [2, 3]], 2)	[1, 3]
+	adjacentvertices([[1, 2], [2, 3]], 2)	[1, 3]
+	connectedcomponents([[1, 2], [3, 4], [5]])	[[1, 2], [3, 4], [5]]
+	conncomp([[1, 2], [3, 4], [5]])	[[1, 2], [3, 4], [5]]
+	stronglyconnectedcomponents([1 -> 2, 2 -> 3, 3 -> 1, 3 -> 4])	[[1, 2, 3], [4]]
+	connectedq([[1, 2], [3, 4]])	false
+	findshortestpath([[a, b, 7], [b, c, 1], [a, c, 3]], a, b)	[a, c, b]
+	graphdistancematrix(pathgraph(4))	[[0, 1, 2, 3], [1, 0, 1, 2], [2, 1, 0, 1], [3, 2, 1, 0]]
+	distances(pathgraph(4))	[[0, 1, 2, 3], [1, 0, 1, 2], [2, 1, 0, 1], [3, 2, 1, 0]]
+	vertexeccentricity(pathgraph(5), 1)	4
+	graphdiameter(petersengraph())	2
+	graphcentre(pathgraph(5))	[3]
+	minimumspanningtree([[a, b, 7], [b, c, 1], [a, c, 3], [c, d, 2]])	[[b, c, 1], [a, c, 3], [c, d, 2]]
+	mst([[a, b, 7], [b, c, 1], [a, c, 3], [c, d, 2]])	[[b, c, 1], [a, c, 3], [c, d, 2]]
+	minspantree([[a, b, 7], [b, c, 1], [a, c, 3], [c, d, 2]])	[[b, c, 1], [a, c, 3], [c, d, 2]]
+	treecount(completegraph(5))	125
+	bipartiteq(cyclegraph(6))	true
+	treeq(stargraph(5))	true
+	acyclicq([1 -> 2, 2 -> 3])	true
+	toposort([a -> b, b -> c, d -> a])	[d, a, b, c]
+	vertexcoloring(wheelgraph(6))	[[1], [2, 4], [3, 5], [6]]
+	eulerianq(completegraph(5))	true
+	euleriancycle([[1, 2], [2, 3], [3, 1], [3, 4]])	[3, 2, 1, 3, 4]
+	eulertour([[1, 2], [2, 3], [3, 1], [3, 4]])	[3, 2, 1, 3, 4]
+	hamiltonianq(petersengraph())	false
+	findhamiltoniancycle(hypercubegraph(3))	[0, 1, 3, 2, 6, 7, 5, 4, 0]
+	maximumflow([[s -> a, 3], [s -> b, 2], [a -> b, 1], [a -> t, 2], [b -> t, 3]], s, t)	5
+	maximummatching(petersengraph())	[[1, 2], [3, 4], [5, 10], [6, 8], [7, 9]]
+	findclique(wheelgraph(6))	[1, 2, 3]
+	independentset(petersengraph())	[3, 5, 6, 7]
+	minvertexcover(cyclegraph(5))	[2, 4, 5]
+	graphcomplement(cyclegraph(5))	[[1, 3], [1, 4], [2, 4], [2, 5], [3, 5]]
+	inducedsubgraph(completegraph(5), [1, 2, 3])	[[1, 2], [1, 3], [2, 3]]
+	isomorphicq(cyclegraph(5), complementgraph(cyclegraph(5)))	true
+	graphisomorphic(cyclegraph(5), complementgraph(cyclegraph(5)))	true
+	completebipartitegraph(2, 3)	[[1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5]]
+	fplot(sin(x), x, 0, 2pi)	 1 │           ⣀⡤⠒⠋⠉⠉⠙⠒⠦⣄|   │         ⡠⠞⠁        ⠈⠙⢦⡀|   │       ⣠⠎              ⠙⢦|   │     ⢀⠞⠁                 ⠱⣄|   │    ⡰⠋                    ⠈⢦⡀|   │  ⢀⡜⠁                       ⠳⡄|   │ ⢠⠎                          ⠘⢆|   │⡰⠃                            ⠈⢧⡀| 0 │⠁───────────────────────────────⢳⡀────────────────────────────⢠⠎|   │                                 ⠱⡄                          ⡰⠃|   │                                  ⠘⢦                       ⢀⡜⠁|   │                                   ⠈⠳⡀                    ⣠⠎|   │                                     ⠙⢆                 ⢀⡴⠁|   │                                       ⠳⣄              ⡰⠋|   │                                        ⠈⠳⣄⡀        ⢀⡴⠊|-1 │                                           ⠙⠲⠤⣄⣀⣀⣠⠤⠚⠉|   └────────────────────────────────────────────────────────────────|    0                                                            2pi
+	ezplot(sin(x), x, 0, 2pi)	 1 │           ⣀⡤⠒⠋⠉⠉⠙⠒⠦⣄|   │         ⡠⠞⠁        ⠈⠙⢦⡀|   │       ⣠⠎              ⠙⢦|   │     ⢀⠞⠁                 ⠱⣄|   │    ⡰⠋                    ⠈⢦⡀|   │  ⢀⡜⠁                       ⠳⡄|   │ ⢠⠎                          ⠘⢆|   │⡰⠃                            ⠈⢧⡀| 0 │⠁───────────────────────────────⢳⡀────────────────────────────⢠⠎|   │                                 ⠱⡄                          ⡰⠃|   │                                  ⠘⢦                       ⢀⡜⠁|   │                                   ⠈⠳⡀                    ⣠⠎|   │                                     ⠙⢆                 ⢀⡴⠁|   │                                       ⠳⣄              ⡰⠋|   │                                        ⠈⠳⣄⡀        ⢀⡴⠊|-1 │                                           ⠙⠲⠤⣄⣀⣀⣠⠤⠚⠉|   └────────────────────────────────────────────────────────────────|    0                                                            2pi
+	pointplot([1, 4, 9, 16, 25])	25 │                                                               ⠙|   │|   │|   │|   │|   │                                               ⢀|   │                                               ⠙⠁|   │|   │|   │|   │                               ⠠⡦|   │|   │|   │               ⢀⣄|   │                ⠁| 1 │⣄|   └────────────────────────────────────────────────────────────────|    1                                                              5
+	scatterplot([1, 4, 9, 16, 25])	25 │                                                               ⠙|   │|   │|   │|   │|   │                                               ⢀|   │                                               ⠙⠁|   │|   │|   │|   │                               ⠠⡦|   │|   │|   │               ⢀⣄|   │                ⠁| 1 │⣄|   └────────────────────────────────────────────────────────────────|    1                                                              5
+	hist([1, 2, 2, 3, 3, 3, 4, 4, 5])	  1 .. 1.8 │████████████████ 1|1.8 .. 2.6 │████████████████████████████████ 2|2.6 .. 3.4 │████████████████████████████████████████████████ 3|3.4 .. 4.2 │████████████████████████████████ 2|4.2 .. 5   │████████████████ 1
+	contourplot(x^2 + y^2 = 1, x, -1.5, 1.5, y, -1.5, 1.5)	 1.5 │                │|     │                │|     │            ⢀⣀⣀⣠⣄⣀⣀⡀|     │         ⣠⠴⠚⠉   │  ⠉⠓⠦⣄|     │       ⣠⠞⠁      │     ⠈⠳⣄|     │      ⣰⠃        │       ⠘⣆|     │     ⢰⠃         │        ⠘⡆|     │     ⣸          │         ⣇|   0 │─────⢹──────────┼─────────⡏─────|     │     ⠸⡄         │        ⢠⠇|     │      ⠹⡄        │       ⢠⠏|     │       ⠙⢦⡀      │     ⢀⡴⠋|     │         ⠙⠲⢤⣀   │  ⣀⡤⠖⠋|     │            ⠈⠉⠉⠙⠋⠉⠉⠁|     │                │|-1.5 │                │|     └────────────────────────────────|      -1.5                         1.5
+	fimplicit(x^2 + y^2 = 1, x, -1.5, 1.5, y, -1.5, 1.5)	 1.5 │                │|     │                │|     │            ⢀⣀⣀⣠⣄⣀⣀⡀|     │         ⣠⠴⠚⠉   │  ⠉⠓⠦⣄|     │       ⣠⠞⠁      │     ⠈⠳⣄|     │      ⣰⠃        │       ⠘⣆|     │     ⢰⠃         │        ⠘⡆|     │     ⣸          │         ⣇|   0 │─────⢹──────────┼─────────⡏─────|     │     ⠸⡄         │        ⢠⠇|     │      ⠹⡄        │       ⢠⠏|     │       ⠙⢦⡀      │     ⢀⡴⠋|     │         ⠙⠲⢤⣀   │  ⣀⡤⠖⠋|     │            ⠈⠉⠉⠙⠋⠉⠉⠁|     │                │|-1.5 │                │|     └────────────────────────────────|      -1.5                         1.5
+	digitwalk(2^100, 7)	 2.631 │                                     ⡄    │|       │                                     ⢏⠢⡀  │|       │                                     ⠘⡄⡇  │|       │                               ⢀⡠⠔⠊⠉⠒⠤⣿⠁  │|       │                               ⡎      ⠘⠢⢄⡀│|     0 │──────────────────────────────⢠⠃─────────⠈⠁─────────────────────|       │                              ⡜           │|       │                             ⢀⠇           │|       │                             ⡸            │|       │                            ⢀⠇            │|       │                            ⢸             │|       │                            ⠣⡀  ⡠⠒⣒⠶⠒     │|       │                             ⠑⢄⠎ ⠉⣉⠭⠛⠁    │|       │                             ⢀⡠⠔⠊⠉        │|       │                     ⢠    ⢠⠔⠊⠁            │|       │                      ⡇   ⡸⡠⡇             │|       │                      ⠘⠤⣀ ⠯⣼⠤⠤⢤           │|       │                        ⢀⣩⠂⡀⠫⡒⡮⣀          │|       │                       ⠠⢧⢿⡏ ⣀⠬⠓⠒⠛⠒        │|-7.746 │                        ⠘⠁⠓⠉              │|       └────────────────────────────────────────────────────────────────|        -10.97                                                     5.632|36 steps along the digits 322653455556104044451560... of 1267650600228229401496703205376 in base 7, which end there: the digit d is a step at 51.43*d degrees|from the origin to (-5.34, -4.961), 7.289 away; x from -5.34 to 0, y from -7.499 to 2.384
+	numberwalk(2^100, 7)	 2.631 │                                     ⡄    │|       │                                     ⢏⠢⡀  │|       │                                     ⠘⡄⡇  │|       │                               ⢀⡠⠔⠊⠉⠒⠤⣿⠁  │|       │                               ⡎      ⠘⠢⢄⡀│|     0 │──────────────────────────────⢠⠃─────────⠈⠁─────────────────────|       │                              ⡜           │|       │                             ⢀⠇           │|       │                             ⡸            │|       │                            ⢀⠇            │|       │                            ⢸             │|       │                            ⠣⡀  ⡠⠒⣒⠶⠒     │|       │                             ⠑⢄⠎ ⠉⣉⠭⠛⠁    │|       │                             ⢀⡠⠔⠊⠉        │|       │                     ⢠    ⢠⠔⠊⠁            │|       │                      ⡇   ⡸⡠⡇             │|       │                      ⠘⠤⣀ ⠯⣼⠤⠤⢤           │|       │                        ⢀⣩⠂⡀⠫⡒⡮⣀          │|       │                       ⠠⢧⢿⡏ ⣀⠬⠓⠒⠛⠒        │|-7.746 │                        ⠘⠁⠓⠉              │|       └────────────────────────────────────────────────────────────────|        -10.97                                                     5.632|36 steps along the digits 322653455556104044451560... of 1267650600228229401496703205376 in base 7, which end there: the digit d is a step at 51.43*d degrees|from the origin to (-5.34, -4.961), 7.289 away; x from -5.34 to 0, y from -7.499 to 2.384
+	digitwalk3d(e + pi*i, 12, 2000)	                                ⣆|                            ⢤⣆ ⡀⣿⣄|                            ⢀⣾⣌⣻⣫⡾⠁|                        ⢀⠤⢤⣴⡎⣴⣾⣿⣿⣿⣾⣿⣽⣶⡀|                     ⢠⣤⣴⣾⡆⠘⣿⣿⢻⣯⣿⣿⣾⣿⣿⣿⠋⠛⡄|                     ⠸⣿⢿⢿⠈⣸⣎⡩⣟⢿⣿⣿⣟⣿⣿⣷⣿⣾|                      ⠘⠚⠉⣿⣿⣤⣴⠈⣿⣿⣿⣿⣿⢿⣿⡎⠽⠇|                         ⢘⣛⢻⣻⡏⡿⢺⢿⣿⣿⠿⣽⡿⠗⣷⠂|                         ⠿⢄⣉⣿⢻⡿⣯⣾⣾⣿⣮⡗⠃ ⠉⡆|                          ⠚⠻⠟⢿⣧⣿⣿⣿⣿⡿⣷⣇⣄⢀⡬⠂|                             ⣿⡻⣹⢽⣿⣷⣿⣿⣿⠿⠋|                             ⠿⡏⣻⣤⣻⣿⣿⣿⡻⣆|                           ⢰⣴⣆⡧⣨⢧⣿⣿⣿⣿⣷⣟⡾|                            ⡯⣟⡟⣯⡦⠇⠛⠃⠙⡏⡽⡧⣶⣇|                           ⠰⠗⠣⡄⢸ ⢀ ⢠⠠⣜⡿⠁ ⢧⡀|                             ⠠⣗⣸⣼⣿⣿⣿⡆⣄⣤⣷⢒⣿⡦|                            ⢠⢲⡼⣆⡍⡽⠿⣿⡏⠁⣿⣷⠟⠹⠋|                           ⠠⣼⡏ ⢀⡡⣿⢹⣿⡇ ⢹⠏⠃|                            ⠻⣷⣿⠉⠈⠙⢳⣿  ⠈|                            ⠈⠈⣿   ⠘⠙⠃|2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane|from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+	numberwalk3d(e + pi*i, 12, 2000)	                                ⣆|                            ⢤⣆ ⡀⣿⣄|                            ⢀⣾⣌⣻⣫⡾⠁|                        ⢀⠤⢤⣴⡎⣴⣾⣿⣿⣿⣾⣿⣽⣶⡀|                     ⢠⣤⣴⣾⡆⠘⣿⣿⢻⣯⣿⣿⣾⣿⣿⣿⠋⠛⡄|                     ⠸⣿⢿⢿⠈⣸⣎⡩⣟⢿⣿⣿⣟⣿⣿⣷⣿⣾|                      ⠘⠚⠉⣿⣿⣤⣴⠈⣿⣿⣿⣿⣿⢿⣿⡎⠽⠇|                         ⢘⣛⢻⣻⡏⡿⢺⢿⣿⣿⠿⣽⡿⠗⣷⠂|                         ⠿⢄⣉⣿⢻⡿⣯⣾⣾⣿⣮⡗⠃ ⠉⡆|                          ⠚⠻⠟⢿⣧⣿⣿⣿⣿⡿⣷⣇⣄⢀⡬⠂|                             ⣿⡻⣹⢽⣿⣷⣿⣿⣿⠿⠋|                             ⠿⡏⣻⣤⣻⣿⣿⣿⡻⣆|                           ⢰⣴⣆⡧⣨⢧⣿⣿⣿⣿⣷⣟⡾|                            ⡯⣟⡟⣯⡦⠇⠛⠃⠙⡏⡽⡧⣶⣇|                           ⠰⠗⠣⡄⢸ ⢀ ⢠⠠⣜⡿⠁ ⢧⡀|                             ⠠⣗⣸⣼⣿⣿⣿⡆⣄⣤⣷⢒⣿⡦|                            ⢠⢲⡼⣆⡍⡽⠿⣿⡏⠁⣿⣷⠟⠹⠋|                           ⠠⣼⡏ ⢀⡡⣿⢹⣿⡇ ⢹⠏⠃|                            ⠻⣷⣿⠉⠈⠙⢳⣿  ⠈|                            ⠈⠈⣿   ⠘⠙⠃|2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane|from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+	primes_walk(2000)	547.5 │                           │ ⢠⣤⣀⡀⢀⢀⣤⡀|      │                           │ ⠘⠺⢿⣷⣿⣟⣿⠁|      │                           │    ⡀⣼⣿⠯⣤⣤⣀|      │                           │ ⢀⣀⣸⡏⠉⠉⢠⣼⣟⣀⣀|      │                          ⢠⣶⣶⣾⡿  ⢀⣸⣿⣿⠉⠙⠛|      │                          ⠈⠻⢷⣷⢴⣿⣿⣿⣿⣿⣛⣀⣠⣄⣀⡀|      │                         ⢠⢤⣤⠤⠿⠿⣿⣟⠈⠿⢿⣿⣿⠙⠯⢤⣿|      │                         ⣏⣋⣀⡀⢀⣀⡛⠋   ⠏⠽⡄  ⠿|      │                         ⡻⣿⣟⠓⠚⢻⡇⣀⣀ ⢀⣠⣿⡷⠂|      │                        ⢛⣿⠿⠿⠻⣧⣀⠙⠛⢻⢿⣿⣿⣿⠇|      │                        ⣿⣿⣷│⠈⣹⡉  ⠘⠛⠿⠟⠉|      │                        ⢿⣿⣷⠆⢠⣍⡇|      │                        ⠸⣿⡟⣲⡾⠁|      │                        ⠠⣶⣛⣿⠃|      │                      ⣀⣤⣶⣷⣄⣀|      │                      ⢿⢿⣿⢻⣿⡿⣿|      │                         ⢐⡟⣷⡶⢶⣖⡆|      │                        ⠻⣿⣵⡆⠁⠈⠉|      │                         ⠉⠿⣇|-19.5 │───────────────────────────⠛⠃───────────────────────────────────|      └────────────────────────────────────────────────────────────────|       -391.6                                                     515.6|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime a turn to the left by 90 degrees, so that every side is as long as the gap between two primes|from the origin to (-19, 238), 238.8 away; x from -77 to 201, y from -6 to 534
+	prime_walk(2000)	547.5 │                           │ ⢠⣤⣀⡀⢀⢀⣤⡀|      │                           │ ⠘⠺⢿⣷⣿⣟⣿⠁|      │                           │    ⡀⣼⣿⠯⣤⣤⣀|      │                           │ ⢀⣀⣸⡏⠉⠉⢠⣼⣟⣀⣀|      │                          ⢠⣶⣶⣾⡿  ⢀⣸⣿⣿⠉⠙⠛|      │                          ⠈⠻⢷⣷⢴⣿⣿⣿⣿⣿⣛⣀⣠⣄⣀⡀|      │                         ⢠⢤⣤⠤⠿⠿⣿⣟⠈⠿⢿⣿⣿⠙⠯⢤⣿|      │                         ⣏⣋⣀⡀⢀⣀⡛⠋   ⠏⠽⡄  ⠿|      │                         ⡻⣿⣟⠓⠚⢻⡇⣀⣀ ⢀⣠⣿⡷⠂|      │                        ⢛⣿⠿⠿⠻⣧⣀⠙⠛⢻⢿⣿⣿⣿⠇|      │                        ⣿⣿⣷│⠈⣹⡉  ⠘⠛⠿⠟⠉|      │                        ⢿⣿⣷⠆⢠⣍⡇|      │                        ⠸⣿⡟⣲⡾⠁|      │                        ⠠⣶⣛⣿⠃|      │                      ⣀⣤⣶⣷⣄⣀|      │                      ⢿⢿⣿⢻⣿⡿⣿|      │                         ⢐⡟⣷⡶⢶⣖⡆|      │                        ⠻⣿⣵⡆⠁⠈⠉|      │                         ⠉⠿⣇|-19.5 │───────────────────────────⠛⠃───────────────────────────────────|      └────────────────────────────────────────────────────────────────|       -391.6                                                     515.6|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime a turn to the left by 90 degrees, so that every side is as long as the gap between two primes|from the origin to (-19, 238), 238.8 away; x from -77 to 201, y from -6 to 534
+	primeswalk(2000)	547.5 │                           │ ⢠⣤⣀⡀⢀⢀⣤⡀|      │                           │ ⠘⠺⢿⣷⣿⣟⣿⠁|      │                           │    ⡀⣼⣿⠯⣤⣤⣀|      │                           │ ⢀⣀⣸⡏⠉⠉⢠⣼⣟⣀⣀|      │                          ⢠⣶⣶⣾⡿  ⢀⣸⣿⣿⠉⠙⠛|      │                          ⠈⠻⢷⣷⢴⣿⣿⣿⣿⣿⣛⣀⣠⣄⣀⡀|      │                         ⢠⢤⣤⠤⠿⠿⣿⣟⠈⠿⢿⣿⣿⠙⠯⢤⣿|      │                         ⣏⣋⣀⡀⢀⣀⡛⠋   ⠏⠽⡄  ⠿|      │                         ⡻⣿⣟⠓⠚⢻⡇⣀⣀ ⢀⣠⣿⡷⠂|      │                        ⢛⣿⠿⠿⠻⣧⣀⠙⠛⢻⢿⣿⣿⣿⠇|      │                        ⣿⣿⣷│⠈⣹⡉  ⠘⠛⠿⠟⠉|      │                        ⢿⣿⣷⠆⢠⣍⡇|      │                        ⠸⣿⡟⣲⡾⠁|      │                        ⠠⣶⣛⣿⠃|      │                      ⣀⣤⣶⣷⣄⣀|      │                      ⢿⢿⣿⢻⣿⡿⣿|      │                         ⢐⡟⣷⡶⢶⣖⡆|      │                        ⠻⣿⣵⡆⠁⠈⠉|      │                         ⠉⠿⣇|-19.5 │───────────────────────────⠛⠃───────────────────────────────────|      └────────────────────────────────────────────────────────────────|       -391.6                                                     515.6|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime a turn to the left by 90 degrees, so that every side is as long as the gap between two primes|from the origin to (-19, 238), 238.8 away; x from -77 to 201, y from -6 to 534
+	primes_walk3d(2000)	                                          ⣰⡆|                                        ⢀⣀⣹⣭⣽⣇⡀|                                       ⢀⣸⣿⣿⣿⣿⣿⣿|                                       ⣸⡼⣿⣿⣿⣿⣿⠛|                ⢀⡀                    ⣶⡿⠯⣽⣿⣿⣿⣿⣯⢿|               ⣀⣿⡃       ⣠⣤⣤⢀⣰⡦⣯⣿   ⣴⣶⣸⣷⡾⣛⣿⣿⣟⣿⡁|              ⠻⢿⣿⣿⣿⢀  ⠶⣾⣿⣿⣿⣿⠼⠼⠃⠿⢷⡶⢲⣿⣿⣿⣷⣿⣄⣤⣿⣿⣿⡯⠇|                ⠉⢻⣿⡾⠆⣠⡀⢮⣷⣾⣿⣻    ⣼⡢⣀ ⣸⣿⣿⣿⣿⣇⣛⣉⠉ ⣰⣶⣲⡄|                 ⣸⣿⡇ ⣿⡿⡾⠿⢿⣿⣿⠇   ⡇⢰⣿⠑⠛⣿⣿⣿⣇⣹ ⢸⣿⣾⣿⣿⠋⠁|                 ⠻⠿⣆⣴⣤⢳⢷ ⠸⣿⡏    ⠓⠚⠃  ⠈⠁⣧⣷⣿⣛⣿⣿⣻⣿⣧|                 ⣠⣶⣿⣿⡟⠒⠁              ⠮⠝⢿⣿⢿⣿⣿⡟⡗⠊|                ⠈⢿⣿⣿⡷                     ⢸⣯⣾⣹⣆|                   ⠁                       ⠈⣿⣿⣿⣀⣀⡀|                                        ⣠⣤⣸⣗⣿⣯⣤⠊⠛⠫⠃|                                       ⣸⣟⣿⢿⣿⣚⢿⠿⠓|                                       ⠙⠋⠘⠚⢻⠛⠁|                                           ⣸⡶|                                        ⣶⣖⣼⡌⠁|                                        ⢷⣾⣾⣷|                                        ⠈⢹⡟⠋|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (295, -94, -158), 347.6 away; x from -21 to 331, y from -98 to 104, z from -174 to 116
+	prime_walk3d(2000)	                                          ⣰⡆|                                        ⢀⣀⣹⣭⣽⣇⡀|                                       ⢀⣸⣿⣿⣿⣿⣿⣿|                                       ⣸⡼⣿⣿⣿⣿⣿⠛|                ⢀⡀                    ⣶⡿⠯⣽⣿⣿⣿⣿⣯⢿|               ⣀⣿⡃       ⣠⣤⣤⢀⣰⡦⣯⣿   ⣴⣶⣸⣷⡾⣛⣿⣿⣟⣿⡁|              ⠻⢿⣿⣿⣿⢀  ⠶⣾⣿⣿⣿⣿⠼⠼⠃⠿⢷⡶⢲⣿⣿⣿⣷⣿⣄⣤⣿⣿⣿⡯⠇|                ⠉⢻⣿⡾⠆⣠⡀⢮⣷⣾⣿⣻    ⣼⡢⣀ ⣸⣿⣿⣿⣿⣇⣛⣉⠉ ⣰⣶⣲⡄|                 ⣸⣿⡇ ⣿⡿⡾⠿⢿⣿⣿⠇   ⡇⢰⣿⠑⠛⣿⣿⣿⣇⣹ ⢸⣿⣾⣿⣿⠋⠁|                 ⠻⠿⣆⣴⣤⢳⢷ ⠸⣿⡏    ⠓⠚⠃  ⠈⠁⣧⣷⣿⣛⣿⣿⣻⣿⣧|                 ⣠⣶⣿⣿⡟⠒⠁              ⠮⠝⢿⣿⢿⣿⣿⡟⡗⠊|                ⠈⢿⣿⣿⡷                     ⢸⣯⣾⣹⣆|                   ⠁                       ⠈⣿⣿⣿⣀⣀⡀|                                        ⣠⣤⣸⣗⣿⣯⣤⠊⠛⠫⠃|                                       ⣸⣟⣿⢿⣿⣚⢿⠿⠓|                                       ⠙⠋⠘⠚⢻⠛⠁|                                           ⣸⡶|                                        ⣶⣖⣼⡌⠁|                                        ⢷⣾⣾⣷|                                        ⠈⢹⡟⠋|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (295, -94, -158), 347.6 away; x from -21 to 331, y from -98 to 104, z from -174 to 116
+	primeswalk3d(2000)	                                          ⣰⡆|                                        ⢀⣀⣹⣭⣽⣇⡀|                                       ⢀⣸⣿⣿⣿⣿⣿⣿|                                       ⣸⡼⣿⣿⣿⣿⣿⠛|                ⢀⡀                    ⣶⡿⠯⣽⣿⣿⣿⣿⣯⢿|               ⣀⣿⡃       ⣠⣤⣤⢀⣰⡦⣯⣿   ⣴⣶⣸⣷⡾⣛⣿⣿⣟⣿⡁|              ⠻⢿⣿⣿⣿⢀  ⠶⣾⣿⣿⣿⣿⠼⠼⠃⠿⢷⡶⢲⣿⣿⣿⣷⣿⣄⣤⣿⣿⣿⡯⠇|                ⠉⢻⣿⡾⠆⣠⡀⢮⣷⣾⣿⣻    ⣼⡢⣀ ⣸⣿⣿⣿⣿⣇⣛⣉⠉ ⣰⣶⣲⡄|                 ⣸⣿⡇ ⣿⡿⡾⠿⢿⣿⣿⠇   ⡇⢰⣿⠑⠛⣿⣿⣿⣇⣹ ⢸⣿⣾⣿⣿⠋⠁|                 ⠻⠿⣆⣴⣤⢳⢷ ⠸⣿⡏    ⠓⠚⠃  ⠈⠁⣧⣷⣿⣛⣿⣿⣻⣿⣧|                 ⣠⣶⣿⣿⡟⠒⠁              ⠮⠝⢿⣿⢿⣿⣿⡟⡗⠊|                ⠈⢿⣿⣿⡷                     ⢸⣯⣾⣹⣆|                   ⠁                       ⠈⣿⣿⣿⣀⣀⡀|                                        ⣠⣤⣸⣗⣿⣯⣤⠊⠛⠫⠃|                                       ⣸⣟⣿⢿⣿⣚⢿⠿⠓|                                       ⠙⠋⠘⠚⢻⠛⠁|                                           ⣸⡶|                                        ⣶⣖⣼⡌⠁|                                        ⢷⣾⣾⣷|                                        ⠈⢹⡟⠋|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (295, -94, -158), 347.6 away; x from -21 to 331, y from -98 to 104, z from -174 to 116
+	primes3d_xyz(2000)	                                          ⣰⡆|                                        ⢀⣀⣹⣭⣽⣇⡀|                                       ⢀⣸⣿⣿⣿⣿⣿⣿|                                       ⣸⡼⣿⣿⣿⣿⣿⠛|                ⢀⡀                    ⣶⡿⠯⣽⣿⣿⣿⣿⣯⢿|               ⣀⣿⡃       ⣠⣤⣤⢀⣰⡦⣯⣿   ⣴⣶⣸⣷⡾⣛⣿⣿⣟⣿⡁|              ⠻⢿⣿⣿⣿⢀  ⠶⣾⣿⣿⣿⣿⠼⠼⠃⠿⢷⡶⢲⣿⣿⣿⣷⣿⣄⣤⣿⣿⣿⡯⠇|                ⠉⢻⣿⡾⠆⣠⡀⢮⣷⣾⣿⣻    ⣼⡢⣀ ⣸⣿⣿⣿⣿⣇⣛⣉⠉ ⣰⣶⣲⡄|                 ⣸⣿⡇ ⣿⡿⡾⠿⢿⣿⣿⠇   ⡇⢰⣿⠑⠛⣿⣿⣿⣇⣹ ⢸⣿⣾⣿⣿⠋⠁|                 ⠻⠿⣆⣴⣤⢳⢷ ⠸⣿⡏    ⠓⠚⠃  ⠈⠁⣧⣷⣿⣛⣿⣿⣻⣿⣧|                 ⣠⣶⣿⣿⡟⠒⠁              ⠮⠝⢿⣿⢿⣿⣿⡟⡗⠊|                ⠈⢿⣿⣿⡷                     ⢸⣯⣾⣹⣆|                   ⠁                       ⠈⣿⣿⣿⣀⣀⡀|                                        ⣠⣤⣸⣗⣿⣯⣤⠊⠛⠫⠃|                                       ⣸⣟⣿⢿⣿⣚⢿⠿⠓|                                       ⠙⠋⠘⠚⢻⠛⠁|                                           ⣸⡶|                                        ⣶⣖⣼⡌⠁|                                        ⢷⣾⣾⣷|                                        ⠈⢹⡟⠋|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (295, -94, -158), 347.6 away; x from -21 to 331, y from -98 to 104, z from -174 to 116
+	primes3d(2000)	                                          ⣰⡆|                                        ⢀⣀⣹⣭⣽⣇⡀|                                       ⢀⣸⣿⣿⣿⣿⣿⣿|                                       ⣸⡼⣿⣿⣿⣿⣿⠛|                ⢀⡀                    ⣶⡿⠯⣽⣿⣿⣿⣿⣯⢿|               ⣀⣿⡃       ⣠⣤⣤⢀⣰⡦⣯⣿   ⣴⣶⣸⣷⡾⣛⣿⣿⣟⣿⡁|              ⠻⢿⣿⣿⣿⢀  ⠶⣾⣿⣿⣿⣿⠼⠼⠃⠿⢷⡶⢲⣿⣿⣿⣷⣿⣄⣤⣿⣿⣿⡯⠇|                ⠉⢻⣿⡾⠆⣠⡀⢮⣷⣾⣿⣻    ⣼⡢⣀ ⣸⣿⣿⣿⣿⣇⣛⣉⠉ ⣰⣶⣲⡄|                 ⣸⣿⡇ ⣿⡿⡾⠿⢿⣿⣿⠇   ⡇⢰⣿⠑⠛⣿⣿⣿⣇⣹ ⢸⣿⣾⣿⣿⠋⠁|                 ⠻⠿⣆⣴⣤⢳⢷ ⠸⣿⡏    ⠓⠚⠃  ⠈⠁⣧⣷⣿⣛⣿⣿⣻⣿⣧|                 ⣠⣶⣿⣿⡟⠒⠁              ⠮⠝⢿⣿⢿⣿⣿⡟⡗⠊|                ⠈⢿⣿⣿⡷                     ⢸⣯⣾⣹⣆|                   ⠁                       ⠈⣿⣿⣿⣀⣀⡀|                                        ⣠⣤⣸⣗⣿⣯⣤⠊⠛⠫⠃|                                       ⣸⣟⣿⢿⣿⣚⢿⠿⠓|                                       ⠙⠋⠘⠚⢻⠛⠁|                                           ⣸⡶|                                        ⣶⣖⣼⡌⠁|                                        ⢷⣾⣾⣷|                                        ⠈⢹⡟⠋|1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime the next of the directions x, y, z, -x, -y, -z, so that every side is as long as the gap between two primes|from the origin to (295, -94, -158), 347.6 away; x from -21 to 331, y from -98 to 104, z from -174 to 116
+	primes_modwalk(5000)	 4.624 │                                      ⢄              │|       │                                   ⢀⠔⡭⠪⡱⢀⠔⡤⠪⡩⢆⠔⢄ ⡀⢆ ⢀│|     0 │───────────────────────────────────⠠⡓⣍⠊⢜⡣⡓⣟⢚⢜⡣⡒⡫⠊⢜⡣⡓⠫⡆──────────|       │                        ⢀         ⢈⠦⢎⠆⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡱⠴⡧⠊ │|       │                        ⣃⡕     ⣀⢀⣀ ⠑⣁⣋⣀⢀⡕⣅⣯⣨⢪⡕⣅⣽⣨⢪⡕⢄ │|       │                     ⢠⢑⢄⡣⡊⣢⢀⠄ ⠈⣲⠑⢔⢱⠈⡢⣑⢔⢱⡊⡢⣓⢔⢑⡎⡢⣚⢔⢑⡄⡠ │|       │                     ⠘⡩⠢⡕⢍⠴⡩⠂⡔⢍⠽⡩⠪⡹⢍⠕⡭⠪⡹⢍⠕⡭⠪⡩⢏⠕⢭⠪⡩⠋⠑⠉│|       │                  ⢠⡒⡢⣀⠜⢒⠕⡣⡛⢜⢒⡗⡣⣚⢜⢚⢜⡣⡓⣟⢚⢜⡣⡓⣟⢚⢜⡣⡓⣻⠚⠜⠢  │|       │                  ⠱⢎⠦⢈⠴⡁⢌⠦⢮⠤⡱⢎⠦⢾⠴⡱⢼⠦⢎⠶⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡁    │|       │                  ⠐⢅⠕⢥⠪⡨⢇⠕⢉⠪⡨⢇⠕⢭⠪⡨⢪⠕⢅⠯⡨⢪⠕⢅⠯⡨⠪⡕⢅⠽⡨⠂   │|       │            ⢀⢜⡢⠈⡖⢑⢄⠠⡋⣻⢙⢌⡡⡋⣻⢙⢜⡣⡋⣻⢙⢜⢹⡋⡣⣛⢜⢹⡋⡣⣛⢜⢙⡌⡡⡉     │|       │          ⢀⠖⡁⠈⠒⠊ ⠁⢺⠔⢎⠶⡱⠲⡗⢎⠶⡱⠲⡗⢎⠶⡱⠲⡱⢎⠖⡷⠲⡱⢎⠖⡷⠢⡡⢊⠖⢊     │|       │          ⠠⣯⠬⠂    ⠠⠕⡥⠽⠬⠪⡔⡥⣽⢬⢪⡕⡥⣽⢬⢪⢼⡥⡕⢭⢪⢼  ⠈⠊⠈⠧⠕⠁     │|       │           ⣑⢔⣱⣀ ⣀⢄⡱⠊⠢   ⠈⠢⣚⢔⣑⣎⡢⣚⢔⣑⢜⡢⣊⡖⠑⢌             │|       │           ⠈⠊⡸⢅⠑⡬⠪⡀      ⠐⠉⠪⡨⢇⠑⢍⠪⡨⢪⠕⢅⠧⡀              │|       │            ⢙⢜⡣⡋⡏⠉         ⠙⢜⡣⡈⣻⢙⢜⢹⡋⡣⢛⢜⢱             │|       │           ⠲⡡⢺⠖⢎ ⡱⢢ ⢀⠰⡀      ⠑⢎⠖⠑⠒⡱⢎ ⡁ ⡱⢎            │|       │           ⢀⢌⢢⡕⡥⣯⢬⢪⠕⠥⠽⠄       ⠠⣕⢄  ⠠⡑⣬⢪⢼⡥⡔           │|       │           ⠑⠔⠱⠊⠢⣓⠔⠁           ⠠⣚⠔⡁⢀⡠⣈⡔⠑⢜⡢⠊           │|-28.79 │                               ⠈⠊⠈⠊⠑                 │|       └────────────────────────────────────────────────────────────────|        -44.76                                                     8.697|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees|from the origin to (-30.41, -22.33), 37.73 away; x from -36.06 to 0, y from -27.99 to 3.828
+	prime_modwalk(5000)	 4.624 │                                      ⢄              │|       │                                   ⢀⠔⡭⠪⡱⢀⠔⡤⠪⡩⢆⠔⢄ ⡀⢆ ⢀│|     0 │───────────────────────────────────⠠⡓⣍⠊⢜⡣⡓⣟⢚⢜⡣⡒⡫⠊⢜⡣⡓⠫⡆──────────|       │                        ⢀         ⢈⠦⢎⠆⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡱⠴⡧⠊ │|       │                        ⣃⡕     ⣀⢀⣀ ⠑⣁⣋⣀⢀⡕⣅⣯⣨⢪⡕⣅⣽⣨⢪⡕⢄ │|       │                     ⢠⢑⢄⡣⡊⣢⢀⠄ ⠈⣲⠑⢔⢱⠈⡢⣑⢔⢱⡊⡢⣓⢔⢑⡎⡢⣚⢔⢑⡄⡠ │|       │                     ⠘⡩⠢⡕⢍⠴⡩⠂⡔⢍⠽⡩⠪⡹⢍⠕⡭⠪⡹⢍⠕⡭⠪⡩⢏⠕⢭⠪⡩⠋⠑⠉│|       │                  ⢠⡒⡢⣀⠜⢒⠕⡣⡛⢜⢒⡗⡣⣚⢜⢚⢜⡣⡓⣟⢚⢜⡣⡓⣟⢚⢜⡣⡓⣻⠚⠜⠢  │|       │                  ⠱⢎⠦⢈⠴⡁⢌⠦⢮⠤⡱⢎⠦⢾⠴⡱⢼⠦⢎⠶⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡁    │|       │                  ⠐⢅⠕⢥⠪⡨⢇⠕⢉⠪⡨⢇⠕⢭⠪⡨⢪⠕⢅⠯⡨⢪⠕⢅⠯⡨⠪⡕⢅⠽⡨⠂   │|       │            ⢀⢜⡢⠈⡖⢑⢄⠠⡋⣻⢙⢌⡡⡋⣻⢙⢜⡣⡋⣻⢙⢜⢹⡋⡣⣛⢜⢹⡋⡣⣛⢜⢙⡌⡡⡉     │|       │          ⢀⠖⡁⠈⠒⠊ ⠁⢺⠔⢎⠶⡱⠲⡗⢎⠶⡱⠲⡗⢎⠶⡱⠲⡱⢎⠖⡷⠲⡱⢎⠖⡷⠢⡡⢊⠖⢊     │|       │          ⠠⣯⠬⠂    ⠠⠕⡥⠽⠬⠪⡔⡥⣽⢬⢪⡕⡥⣽⢬⢪⢼⡥⡕⢭⢪⢼  ⠈⠊⠈⠧⠕⠁     │|       │           ⣑⢔⣱⣀ ⣀⢄⡱⠊⠢   ⠈⠢⣚⢔⣑⣎⡢⣚⢔⣑⢜⡢⣊⡖⠑⢌             │|       │           ⠈⠊⡸⢅⠑⡬⠪⡀      ⠐⠉⠪⡨⢇⠑⢍⠪⡨⢪⠕⢅⠧⡀              │|       │            ⢙⢜⡣⡋⡏⠉         ⠙⢜⡣⡈⣻⢙⢜⢹⡋⡣⢛⢜⢱             │|       │           ⠲⡡⢺⠖⢎ ⡱⢢ ⢀⠰⡀      ⠑⢎⠖⠑⠒⡱⢎ ⡁ ⡱⢎            │|       │           ⢀⢌⢢⡕⡥⣯⢬⢪⠕⠥⠽⠄       ⠠⣕⢄  ⠠⡑⣬⢪⢼⡥⡔           │|       │           ⠑⠔⠱⠊⠢⣓⠔⠁           ⠠⣚⠔⡁⢀⡠⣈⡔⠑⢜⡢⠊           │|-28.79 │                               ⠈⠊⠈⠊⠑                 │|       └────────────────────────────────────────────────────────────────|        -44.76                                                     8.697|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees|from the origin to (-30.41, -22.33), 37.73 away; x from -36.06 to 0, y from -27.99 to 3.828
+	primesmodwalk(5000)	 4.624 │                                      ⢄              │|       │                                   ⢀⠔⡭⠪⡱⢀⠔⡤⠪⡩⢆⠔⢄ ⡀⢆ ⢀│|     0 │───────────────────────────────────⠠⡓⣍⠊⢜⡣⡓⣟⢚⢜⡣⡒⡫⠊⢜⡣⡓⠫⡆──────────|       │                        ⢀         ⢈⠦⢎⠆⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡱⠴⡧⠊ │|       │                        ⣃⡕     ⣀⢀⣀ ⠑⣁⣋⣀⢀⡕⣅⣯⣨⢪⡕⣅⣽⣨⢪⡕⢄ │|       │                     ⢠⢑⢄⡣⡊⣢⢀⠄ ⠈⣲⠑⢔⢱⠈⡢⣑⢔⢱⡊⡢⣓⢔⢑⡎⡢⣚⢔⢑⡄⡠ │|       │                     ⠘⡩⠢⡕⢍⠴⡩⠂⡔⢍⠽⡩⠪⡹⢍⠕⡭⠪⡹⢍⠕⡭⠪⡩⢏⠕⢭⠪⡩⠋⠑⠉│|       │                  ⢠⡒⡢⣀⠜⢒⠕⡣⡛⢜⢒⡗⡣⣚⢜⢚⢜⡣⡓⣟⢚⢜⡣⡓⣟⢚⢜⡣⡓⣻⠚⠜⠢  │|       │                  ⠱⢎⠦⢈⠴⡁⢌⠦⢮⠤⡱⢎⠦⢾⠴⡱⢼⠦⢎⠶⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡁    │|       │                  ⠐⢅⠕⢥⠪⡨⢇⠕⢉⠪⡨⢇⠕⢭⠪⡨⢪⠕⢅⠯⡨⢪⠕⢅⠯⡨⠪⡕⢅⠽⡨⠂   │|       │            ⢀⢜⡢⠈⡖⢑⢄⠠⡋⣻⢙⢌⡡⡋⣻⢙⢜⡣⡋⣻⢙⢜⢹⡋⡣⣛⢜⢹⡋⡣⣛⢜⢙⡌⡡⡉     │|       │          ⢀⠖⡁⠈⠒⠊ ⠁⢺⠔⢎⠶⡱⠲⡗⢎⠶⡱⠲⡗⢎⠶⡱⠲⡱⢎⠖⡷⠲⡱⢎⠖⡷⠢⡡⢊⠖⢊     │|       │          ⠠⣯⠬⠂    ⠠⠕⡥⠽⠬⠪⡔⡥⣽⢬⢪⡕⡥⣽⢬⢪⢼⡥⡕⢭⢪⢼  ⠈⠊⠈⠧⠕⠁     │|       │           ⣑⢔⣱⣀ ⣀⢄⡱⠊⠢   ⠈⠢⣚⢔⣑⣎⡢⣚⢔⣑⢜⡢⣊⡖⠑⢌             │|       │           ⠈⠊⡸⢅⠑⡬⠪⡀      ⠐⠉⠪⡨⢇⠑⢍⠪⡨⢪⠕⢅⠧⡀              │|       │            ⢙⢜⡣⡋⡏⠉         ⠙⢜⡣⡈⣻⢙⢜⢹⡋⡣⢛⢜⢱             │|       │           ⠲⡡⢺⠖⢎ ⡱⢢ ⢀⠰⡀      ⠑⢎⠖⠑⠒⡱⢎ ⡁ ⡱⢎            │|       │           ⢀⢌⢢⡕⡥⣯⢬⢪⠕⠥⠽⠄       ⠠⣕⢄  ⠠⡑⣬⢪⢼⡥⡔           │|       │           ⠑⠔⠱⠊⠢⣓⠔⠁           ⠠⣚⠔⡁⢀⡠⣈⡔⠑⢜⡢⠊           │|-28.79 │                               ⠈⠊⠈⠊⠑                 │|       └────────────────────────────────────────────────────────────────|        -44.76                                                     8.697|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees|from the origin to (-30.41, -22.33), 37.73 away; x from -36.06 to 0, y from -27.99 to 3.828
+	primeresiduewalk(5000)	 4.624 │                                      ⢄              │|       │                                   ⢀⠔⡭⠪⡱⢀⠔⡤⠪⡩⢆⠔⢄ ⡀⢆ ⢀│|     0 │───────────────────────────────────⠠⡓⣍⠊⢜⡣⡓⣟⢚⢜⡣⡒⡫⠊⢜⡣⡓⠫⡆──────────|       │                        ⢀         ⢈⠦⢎⠆⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡱⠴⡧⠊ │|       │                        ⣃⡕     ⣀⢀⣀ ⠑⣁⣋⣀⢀⡕⣅⣯⣨⢪⡕⣅⣽⣨⢪⡕⢄ │|       │                     ⢠⢑⢄⡣⡊⣢⢀⠄ ⠈⣲⠑⢔⢱⠈⡢⣑⢔⢱⡊⡢⣓⢔⢑⡎⡢⣚⢔⢑⡄⡠ │|       │                     ⠘⡩⠢⡕⢍⠴⡩⠂⡔⢍⠽⡩⠪⡹⢍⠕⡭⠪⡹⢍⠕⡭⠪⡩⢏⠕⢭⠪⡩⠋⠑⠉│|       │                  ⢠⡒⡢⣀⠜⢒⠕⡣⡛⢜⢒⡗⡣⣚⢜⢚⢜⡣⡓⣟⢚⢜⡣⡓⣟⢚⢜⡣⡓⣻⠚⠜⠢  │|       │                  ⠱⢎⠦⢈⠴⡁⢌⠦⢮⠤⡱⢎⠦⢾⠴⡱⢼⠦⢎⠶⡱⢼⠦⢎⠶⡱⠴⡧⢎⠶⡁    │|       │                  ⠐⢅⠕⢥⠪⡨⢇⠕⢉⠪⡨⢇⠕⢭⠪⡨⢪⠕⢅⠯⡨⢪⠕⢅⠯⡨⠪⡕⢅⠽⡨⠂   │|       │            ⢀⢜⡢⠈⡖⢑⢄⠠⡋⣻⢙⢌⡡⡋⣻⢙⢜⡣⡋⣻⢙⢜⢹⡋⡣⣛⢜⢹⡋⡣⣛⢜⢙⡌⡡⡉     │|       │          ⢀⠖⡁⠈⠒⠊ ⠁⢺⠔⢎⠶⡱⠲⡗⢎⠶⡱⠲⡗⢎⠶⡱⠲⡱⢎⠖⡷⠲⡱⢎⠖⡷⠢⡡⢊⠖⢊     │|       │          ⠠⣯⠬⠂    ⠠⠕⡥⠽⠬⠪⡔⡥⣽⢬⢪⡕⡥⣽⢬⢪⢼⡥⡕⢭⢪⢼  ⠈⠊⠈⠧⠕⠁     │|       │           ⣑⢔⣱⣀ ⣀⢄⡱⠊⠢   ⠈⠢⣚⢔⣑⣎⡢⣚⢔⣑⢜⡢⣊⡖⠑⢌             │|       │           ⠈⠊⡸⢅⠑⡬⠪⡀      ⠐⠉⠪⡨⢇⠑⢍⠪⡨⢪⠕⢅⠧⡀              │|       │            ⢙⢜⡣⡋⡏⠉         ⠙⢜⡣⡈⣻⢙⢜⢹⡋⡣⢛⢜⢱             │|       │           ⠲⡡⢺⠖⢎ ⡱⢢ ⢀⠰⡀      ⠑⢎⠖⠑⠒⡱⢎ ⡁ ⡱⢎            │|       │           ⢀⢌⢢⡕⡥⣯⢬⢪⠕⠥⠽⠄       ⠠⣕⢄  ⠠⡑⣬⢪⢼⡥⡔           │|       │           ⠑⠔⠱⠊⠢⣓⠔⠁           ⠠⣚⠔⡁⢀⡠⣈⡔⠑⢜⡢⠊           │|-28.79 │                               ⠈⠊⠈⠊⠑                 │|       └────────────────────────────────────────────────────────────────|        -44.76                                                     8.697|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees|from the origin to (-30.41, -22.33), 37.73 away; x from -36.06 to 0, y from -27.99 to 3.828
+	primes_modwalk3d(5000)	                                      ⢴⣆⢠⣤⣄⡀  ⢀⣠|                                      ⢀⢿⣿⣟⣿⣿⡿⣶⣾⣿⣾⣵⡶⠂|                                    ⢄⣰⠬⡋⢽⣿⣿⣿⣷⣭⣿⣿⣿⡿⡇|                   ⣠⣄⡀            ⢀⣤⣾⡷⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⠗⠂|             ⣀⣄⣠⣤⣀⣽⣿⣯⣆        ⣤⣀⣀⢀⣸⣿⣿⡿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣷⡤⢀|            ⠈⠻⣯⣷⣿⣿⣿⣿⣿⣿⣅⣠⣱⣢⣤⣠⣄⡀⢸⣴⣮⣿⣿⣿⠛⣋⣤⣿⣿⣻⣿⣿⣿⣿⣿⡿⣻⣾⣿⣧⣄⣀|           ⡀ ⠈⢹⣿⣿⣿⣿⣿⣿⣿⣷⣿⡿⣟⣿⣿⡋⣾⣿⣿⣿⠿⣿⣿⣿⣿⡿⣿⣥⡂⠁⢺⡷⣫⠅⢹⠜⠯⢺⠿⢯⠔⠉|           ⢻⣯⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣻⣿⡿⣹⣻⣟⡏⢀⡈⠚⢻⣻⣯⡿⣾⣧⣿⣥⡤ ⠉|          ⢀⢽⣿⣟⣻⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⣟⣠⣶⡭⣧⣽⣮⣿⡿⢿⣫⣼⠟⢿⣿⡿⠓|         ⠈⢟⣻⣽⣯⢖⣿⣿⣿⣿⣿⣿⣿⣿⣿⡯⣿⣿⣿⣿⣿⣿⣿⠑⢯⣿⡫⠈⠘⠯⠊⠁|          ⠈⠛⠿⣾⣿⣿⡟⡛⢹⣿⣟⣷⣂⣩⣟⡟⠿⠟⠋⠉⠫⢴⣼⡏⠁⡀|             ⠘⡯⠝⠉⠛⠕⠻⢔⣿⣯⣿⣿⢖⣤⣀⣤⣀⢀⢠⣼⣴⣦⣿⡥|                   ⣀⣼⣿⣿⣿⣿⣿⣿⣟⡿⠛⠁⢸⣶⡿⣽⡿⠟⠁|                ⢀⢠⣿⣿⣙⣯⣿⣿⣿⣿⣿⢽⣿⣿⣃⣼⣿⣿⣿⣷⡶⢦⡄|           ⠠⣄⡀⢦⢄⣸⠯⢿⡟⠋⠛⠉⠉⠃ ⣀⣾⣽⣿⣿⣿⣿⣻⢿⡿⠛⠁|           ⠈⡇⣈⠁⢺⣷⣿⣾⣧⠖   ⣦⠤⡟⠽⣿⣾⣿⣿⣿⣿⡯|          ⡀ ⣟⠕ ⢺⣯⣙⣼⣴⡿⣃⢀ ⢀⣷⢶⣿⣿⣿⣿⣷⣿⣿⣆|          ⠼⣿⠗⢤⣊⢽⣻⠽⠋⣅⡏⢰⣷⣿⣿⣿⣤⣿⢽⣿⣿⣾⡿⠛⠁|           ⢻⡷⢺⠟⠉⠓⠃ ⠉⢹⣸⣿⡷⢢⡤⣹⠝⠻⢿⣯⣿⡃|                     ⢱⡩⠚⠙⠋⠁    ⠁|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (-2.449, -21.55, -11.13), 24.38 away; x from -25.72 to 3.062, y from -33.79 to 4.787, z from -18.63 to 2.866
+	prime_modwalk3d(5000)	                                      ⢴⣆⢠⣤⣄⡀  ⢀⣠|                                      ⢀⢿⣿⣟⣿⣿⡿⣶⣾⣿⣾⣵⡶⠂|                                    ⢄⣰⠬⡋⢽⣿⣿⣿⣷⣭⣿⣿⣿⡿⡇|                   ⣠⣄⡀            ⢀⣤⣾⡷⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⠗⠂|             ⣀⣄⣠⣤⣀⣽⣿⣯⣆        ⣤⣀⣀⢀⣸⣿⣿⡿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣷⡤⢀|            ⠈⠻⣯⣷⣿⣿⣿⣿⣿⣿⣅⣠⣱⣢⣤⣠⣄⡀⢸⣴⣮⣿⣿⣿⠛⣋⣤⣿⣿⣻⣿⣿⣿⣿⣿⡿⣻⣾⣿⣧⣄⣀|           ⡀ ⠈⢹⣿⣿⣿⣿⣿⣿⣿⣷⣿⡿⣟⣿⣿⡋⣾⣿⣿⣿⠿⣿⣿⣿⣿⡿⣿⣥⡂⠁⢺⡷⣫⠅⢹⠜⠯⢺⠿⢯⠔⠉|           ⢻⣯⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣻⣿⡿⣹⣻⣟⡏⢀⡈⠚⢻⣻⣯⡿⣾⣧⣿⣥⡤ ⠉|          ⢀⢽⣿⣟⣻⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⣟⣠⣶⡭⣧⣽⣮⣿⡿⢿⣫⣼⠟⢿⣿⡿⠓|         ⠈⢟⣻⣽⣯⢖⣿⣿⣿⣿⣿⣿⣿⣿⣿⡯⣿⣿⣿⣿⣿⣿⣿⠑⢯⣿⡫⠈⠘⠯⠊⠁|          ⠈⠛⠿⣾⣿⣿⡟⡛⢹⣿⣟⣷⣂⣩⣟⡟⠿⠟⠋⠉⠫⢴⣼⡏⠁⡀|             ⠘⡯⠝⠉⠛⠕⠻⢔⣿⣯⣿⣿⢖⣤⣀⣤⣀⢀⢠⣼⣴⣦⣿⡥|                   ⣀⣼⣿⣿⣿⣿⣿⣿⣟⡿⠛⠁⢸⣶⡿⣽⡿⠟⠁|                ⢀⢠⣿⣿⣙⣯⣿⣿⣿⣿⣿⢽⣿⣿⣃⣼⣿⣿⣿⣷⡶⢦⡄|           ⠠⣄⡀⢦⢄⣸⠯⢿⡟⠋⠛⠉⠉⠃ ⣀⣾⣽⣿⣿⣿⣿⣻⢿⡿⠛⠁|           ⠈⡇⣈⠁⢺⣷⣿⣾⣧⠖   ⣦⠤⡟⠽⣿⣾⣿⣿⣿⣿⡯|          ⡀ ⣟⠕ ⢺⣯⣙⣼⣴⡿⣃⢀ ⢀⣷⢶⣿⣿⣿⣿⣷⣿⣿⣆|          ⠼⣿⠗⢤⣊⢽⣻⠽⠋⣅⡏⢰⣷⣿⣿⣿⣤⣿⢽⣿⣿⣾⡿⠛⠁|           ⢻⡷⢺⠟⠉⠓⠃ ⠉⢹⣸⣿⡷⢢⡤⣹⠝⠻⢿⣯⣿⡃|                     ⢱⡩⠚⠙⠋⠁    ⠁|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (-2.449, -21.55, -11.13), 24.38 away; x from -25.72 to 3.062, y from -33.79 to 4.787, z from -18.63 to 2.866
+	primesmodwalk3d(5000)	                                      ⢴⣆⢠⣤⣄⡀  ⢀⣠|                                      ⢀⢿⣿⣟⣿⣿⡿⣶⣾⣿⣾⣵⡶⠂|                                    ⢄⣰⠬⡋⢽⣿⣿⣿⣷⣭⣿⣿⣿⡿⡇|                   ⣠⣄⡀            ⢀⣤⣾⡷⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⠗⠂|             ⣀⣄⣠⣤⣀⣽⣿⣯⣆        ⣤⣀⣀⢀⣸⣿⣿⡿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣷⡤⢀|            ⠈⠻⣯⣷⣿⣿⣿⣿⣿⣿⣅⣠⣱⣢⣤⣠⣄⡀⢸⣴⣮⣿⣿⣿⠛⣋⣤⣿⣿⣻⣿⣿⣿⣿⣿⡿⣻⣾⣿⣧⣄⣀|           ⡀ ⠈⢹⣿⣿⣿⣿⣿⣿⣿⣷⣿⡿⣟⣿⣿⡋⣾⣿⣿⣿⠿⣿⣿⣿⣿⡿⣿⣥⡂⠁⢺⡷⣫⠅⢹⠜⠯⢺⠿⢯⠔⠉|           ⢻⣯⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣻⣿⡿⣹⣻⣟⡏⢀⡈⠚⢻⣻⣯⡿⣾⣧⣿⣥⡤ ⠉|          ⢀⢽⣿⣟⣻⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⣟⣠⣶⡭⣧⣽⣮⣿⡿⢿⣫⣼⠟⢿⣿⡿⠓|         ⠈⢟⣻⣽⣯⢖⣿⣿⣿⣿⣿⣿⣿⣿⣿⡯⣿⣿⣿⣿⣿⣿⣿⠑⢯⣿⡫⠈⠘⠯⠊⠁|          ⠈⠛⠿⣾⣿⣿⡟⡛⢹⣿⣟⣷⣂⣩⣟⡟⠿⠟⠋⠉⠫⢴⣼⡏⠁⡀|             ⠘⡯⠝⠉⠛⠕⠻⢔⣿⣯⣿⣿⢖⣤⣀⣤⣀⢀⢠⣼⣴⣦⣿⡥|                   ⣀⣼⣿⣿⣿⣿⣿⣿⣟⡿⠛⠁⢸⣶⡿⣽⡿⠟⠁|                ⢀⢠⣿⣿⣙⣯⣿⣿⣿⣿⣿⢽⣿⣿⣃⣼⣿⣿⣿⣷⡶⢦⡄|           ⠠⣄⡀⢦⢄⣸⠯⢿⡟⠋⠛⠉⠉⠃ ⣀⣾⣽⣿⣿⣿⣿⣻⢿⡿⠛⠁|           ⠈⡇⣈⠁⢺⣷⣿⣾⣧⠖   ⣦⠤⡟⠽⣿⣾⣿⣿⣿⣿⡯|          ⡀ ⣟⠕ ⢺⣯⣙⣼⣴⡿⣃⢀ ⢀⣷⢶⣿⣿⣿⣿⣷⣿⣿⣆|          ⠼⣿⠗⢤⣊⢽⣻⠽⠋⣅⡏⢰⣷⣿⣿⣿⣤⣿⢽⣿⣿⣾⡿⠛⠁|           ⢻⡷⢺⠟⠉⠓⠃ ⠉⢹⣸⣿⡷⢢⡤⣹⠝⠻⢿⣯⣿⡃|                     ⢱⡩⠚⠙⠋⠁    ⠁|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (-2.449, -21.55, -11.13), 24.38 away; x from -25.72 to 3.062, y from -33.79 to 4.787, z from -18.63 to 2.866
+	primeresiduewalk3d(5000)	                                      ⢴⣆⢠⣤⣄⡀  ⢀⣠|                                      ⢀⢿⣿⣟⣿⣿⡿⣶⣾⣿⣾⣵⡶⠂|                                    ⢄⣰⠬⡋⢽⣿⣿⣿⣷⣭⣿⣿⣿⡿⡇|                   ⣠⣄⡀            ⢀⣤⣾⡷⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⠗⠂|             ⣀⣄⣠⣤⣀⣽⣿⣯⣆        ⣤⣀⣀⢀⣸⣿⣿⡿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣷⡤⢀|            ⠈⠻⣯⣷⣿⣿⣿⣿⣿⣿⣅⣠⣱⣢⣤⣠⣄⡀⢸⣴⣮⣿⣿⣿⠛⣋⣤⣿⣿⣻⣿⣿⣿⣿⣿⡿⣻⣾⣿⣧⣄⣀|           ⡀ ⠈⢹⣿⣿⣿⣿⣿⣿⣿⣷⣿⡿⣟⣿⣿⡋⣾⣿⣿⣿⠿⣿⣿⣿⣿⡿⣿⣥⡂⠁⢺⡷⣫⠅⢹⠜⠯⢺⠿⢯⠔⠉|           ⢻⣯⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣻⣿⡿⣹⣻⣟⡏⢀⡈⠚⢻⣻⣯⡿⣾⣧⣿⣥⡤ ⠉|          ⢀⢽⣿⣟⣻⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⣟⣠⣶⡭⣧⣽⣮⣿⡿⢿⣫⣼⠟⢿⣿⡿⠓|         ⠈⢟⣻⣽⣯⢖⣿⣿⣿⣿⣿⣿⣿⣿⣿⡯⣿⣿⣿⣿⣿⣿⣿⠑⢯⣿⡫⠈⠘⠯⠊⠁|          ⠈⠛⠿⣾⣿⣿⡟⡛⢹⣿⣟⣷⣂⣩⣟⡟⠿⠟⠋⠉⠫⢴⣼⡏⠁⡀|             ⠘⡯⠝⠉⠛⠕⠻⢔⣿⣯⣿⣿⢖⣤⣀⣤⣀⢀⢠⣼⣴⣦⣿⡥|                   ⣀⣼⣿⣿⣿⣿⣿⣿⣟⡿⠛⠁⢸⣶⡿⣽⡿⠟⠁|                ⢀⢠⣿⣿⣙⣯⣿⣿⣿⣿⣿⢽⣿⣿⣃⣼⣿⣿⣿⣷⡶⢦⡄|           ⠠⣄⡀⢦⢄⣸⠯⢿⡟⠋⠛⠉⠉⠃ ⣀⣾⣽⣿⣿⣿⣿⣻⢿⡿⠛⠁|           ⠈⡇⣈⠁⢺⣷⣿⣾⣧⠖   ⣦⠤⡟⠽⣿⣾⣿⣿⣿⣿⡯|          ⡀ ⣟⠕ ⢺⣯⣙⣼⣴⡿⣃⢀ ⢀⣷⢶⣿⣿⣿⣿⣷⣿⣿⣆|          ⠼⣿⠗⢤⣊⢽⣻⠽⠋⣅⡏⢰⣷⣿⣿⣿⣤⣿⢽⣿⣿⣾⡿⠛⠁|           ⢻⡷⢺⠟⠉⠓⠃ ⠉⢹⣸⣿⡷⢢⡤⣹⠝⠻⢿⣯⣿⡃|                     ⢱⡩⠚⠙⠋⠁    ⠁|5000 steps, one for every prime p up to 48611: at 45*(p mod 8) degrees around the z-axis, 30*(p mod 12) degrees above the plane|from the origin to (-2.449, -21.55, -11.13), 24.38 away; x from -25.72 to 3.062, y from -33.79 to 4.787, z from -18.63 to 2.866
+	ulam(2000)	 69.8 │             ⡀⢀ ⢀ ⡀⢀⡀⢀ ⢤⠠ ⢠ ⡀⢀ ⠠⡀⣀⠄⢀ ⢄ ⡄ ⠄⠠⠠ ⢀ ⡀ ⠄⢠|      │             ⠩⠥⡁⢆ ⠼⢑⢄⠤⡁⠠⡂⢀⣢⠉⡤⠱⠜⢠⡑⠡⠁⠣⢉⣤⡁⠝⡀⡠⠬⢘⠑⡡⡈⠋⠢⡔⡄|      │             ⢠⢱⢴⢉⠉⢐ ⠈⡀⠄⠨⠩⢘ ⣌⠔⠈⢎⠁⡉⠡⢉⡴⢁⢂⡔⢄ ⡯⠌⢡⡀ ⣈⢌⢃⣀⠅|      │             ⠄⠁⠼⡓⢀⣮⠠⣃⠄⠽⠱⡠⢀⠘⣀⠧ ⠨⡠⣠⡑⢁⢃⠨⢁⡁⢀⠆⡍⠃⠬⢪⠄⠉⢥⡁⢬|      │             ⠤⠬⠄⡥⠈⠄⡈⢀⡘⢄⡘⠌⢠⢙ ⠣⡨⢫⢴⣧⠁⡆⠉⠠⢃⡝⢡⡈⡣⡸⣔⡅⣡⡀⢅⠈⢬⡅|      │             ⡱⢀⠠⣰⡨⢉⣄⡺⠵⢂⠡⢔⣁⠄⠰⣋⢤⠑⢈ ⣁⠅⣤⢤⠠⣈⠐⡁⠌⣂⣈⡀⢑⢄⠹⡐⡁⣁|      │             ⣈⡢⠡⢀⣡⣆⢀⢠⠨⣡⢌⢅ ⣃⡔⠝⠘⡔⠨⡪⣀⡆⣥⠢⠘⠂⠱⡉⠶⡕⠈⠊⡂⠐⢤⠃⡑⡄|      │             ⢨⠬⡨⢥ ⠅⠈⠁⠠⡥⠌⠭ ⠥⠉⣦⠑⢸⢱⢝⡀⡈⡍⠰⡸⡥⣉⣥⡭⡉⢧⡀⢬⡃⡠⣀⡁|      │              ⠚⠰⢡⠸⡠ ⢩⠕⡌⡁⠂⣤⣿⣔⢣⢁⠖⣁⢏⡡⣎⣍⠡⢔⡠⢌⢀⠃⠄⠁⡀⢄⡀⡈⣡⢄⠐|      │             ⢤⠁⡐⣡⠔ ⠈⢦⠱⣀⢰⡒⠤⡢⣐⣑⢜⣮⣸⣥⠴⢁⠳⡥⢉⡫⢉⠁⡵⠌⠑ ⡴⣉⢲⠤⢀⠠|    0 │─────────────⠰⡍⠈⡁⠃⠚⠥⢀⣈⢭⡱⢡⠛⣡⠐⠕⢢⣻⢙⠇⡛⡥⠫⡓⣐⠅⡲⠁⣹⢡⠔⡐⢂⡡⡹⡂⢣⡇─────────────|      │             ⡀⣄⢑⡑⠙⡒⠰⣛⣙⢑⣀⣒⡀⢉⢓⡞⢌⡚⢘⢣⣕⠂⡚⢒⡑⢂⢂⣁⣘⢐⡂⠂⠃⡒⣓ ⠐⡃|      │             ⢁⠨⠠⢈⠰⠞⢐⢁⠚⡁⢐⡴⢈⡂⢐⡒⡑⢙⠈⡁⢊⡢⠑⠎⠡⣀⠕⣀⠓⡕⢍⠙⣋⠄⡁⢂⡱⢡|      │             ⡁⢣⠁⢊⠱⢨⠈⣔⠈⠐⢈⡽⠁⠎⡁⠈⠐⡋⠘⣨⢒⡁⢊⠶⣑⠃⡀⡥⡀⡘⠺⠇⣸⠉⢁⣢⢊⠐|      │             ⢸⡉ ⢐⠊⢩⡙⢍⢐⡞⠁⢂⠐⠛⢔⠁⡒⣈⠘⡀⢓⠗⠁⠉⠆⢠⣔⠂⡑⡀⣱⢊⡲⣑⢖⡀⡐⡀|      │             ⠐⠂⢪⣠⢈⠄⣐⡪ ⠛⡢⢐⢐⡃⢘⠓⢘⠬⢀⠜⠑⡌⠂⡍⢄⡀⡠⡁⣓⠂⠠⡥⡱⡀⠡⠱⢠⠘|      │             ⠒⠘⠰⡀⢋⢖⢀⢌⡑⠈⠄⣛⠠⣑⢐⡐⣁⠿⠐⠊⠱⢈⠁⡁⢨⡹⠜⡃⣋⡣⢐⠄⠐⣀⢀⠃⣚⠒|      │             ⡐⡈⢚⡀⢀⡱⡠⢁⠐⠋⠐⣖ ⡉⢂⡍⠁⣨⢘⢢⣐⠃⡑⡍⠑⡀⠡⠓⢈⡀⡫⠂⠔⠄⢊⣐⢑⡃|      │             ⣀⠒ ⣃⡂⠕⠌⠣⣀⠲⠄⠨⢘⠾⢑⡊⢁⢑⠈⠊⣂⡡⠄⡁⣃⡀⠁⠁⡀⢐⡔⡁⠾⠣⣐⠎⠰⠡|-68.8 │             ⠑⠈⠁⠂⠐⠁⠐  ⠁⠁⠈ ⠂⠁⠈⠁⠙│⠙⠈ ⠂ ⠘ ⠑⠉ ⠁⠘⠈  ⠉ ⠑|      └────────────────────────────────────────────────────────────────|       -110.4                                                     111.4|the first 2000 primes up to 17389 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
+	primespiral(2000)	 69.8 │             ⡀⢀ ⢀ ⡀⢀⡀⢀ ⢤⠠ ⢠ ⡀⢀ ⠠⡀⣀⠄⢀ ⢄ ⡄ ⠄⠠⠠ ⢀ ⡀ ⠄⢠|      │             ⠩⠥⡁⢆ ⠼⢑⢄⠤⡁⠠⡂⢀⣢⠉⡤⠱⠜⢠⡑⠡⠁⠣⢉⣤⡁⠝⡀⡠⠬⢘⠑⡡⡈⠋⠢⡔⡄|      │             ⢠⢱⢴⢉⠉⢐ ⠈⡀⠄⠨⠩⢘ ⣌⠔⠈⢎⠁⡉⠡⢉⡴⢁⢂⡔⢄ ⡯⠌⢡⡀ ⣈⢌⢃⣀⠅|      │             ⠄⠁⠼⡓⢀⣮⠠⣃⠄⠽⠱⡠⢀⠘⣀⠧ ⠨⡠⣠⡑⢁⢃⠨⢁⡁⢀⠆⡍⠃⠬⢪⠄⠉⢥⡁⢬|      │             ⠤⠬⠄⡥⠈⠄⡈⢀⡘⢄⡘⠌⢠⢙ ⠣⡨⢫⢴⣧⠁⡆⠉⠠⢃⡝⢡⡈⡣⡸⣔⡅⣡⡀⢅⠈⢬⡅|      │             ⡱⢀⠠⣰⡨⢉⣄⡺⠵⢂⠡⢔⣁⠄⠰⣋⢤⠑⢈ ⣁⠅⣤⢤⠠⣈⠐⡁⠌⣂⣈⡀⢑⢄⠹⡐⡁⣁|      │             ⣈⡢⠡⢀⣡⣆⢀⢠⠨⣡⢌⢅ ⣃⡔⠝⠘⡔⠨⡪⣀⡆⣥⠢⠘⠂⠱⡉⠶⡕⠈⠊⡂⠐⢤⠃⡑⡄|      │             ⢨⠬⡨⢥ ⠅⠈⠁⠠⡥⠌⠭ ⠥⠉⣦⠑⢸⢱⢝⡀⡈⡍⠰⡸⡥⣉⣥⡭⡉⢧⡀⢬⡃⡠⣀⡁|      │              ⠚⠰⢡⠸⡠ ⢩⠕⡌⡁⠂⣤⣿⣔⢣⢁⠖⣁⢏⡡⣎⣍⠡⢔⡠⢌⢀⠃⠄⠁⡀⢄⡀⡈⣡⢄⠐|      │             ⢤⠁⡐⣡⠔ ⠈⢦⠱⣀⢰⡒⠤⡢⣐⣑⢜⣮⣸⣥⠴⢁⠳⡥⢉⡫⢉⠁⡵⠌⠑ ⡴⣉⢲⠤⢀⠠|    0 │─────────────⠰⡍⠈⡁⠃⠚⠥⢀⣈⢭⡱⢡⠛⣡⠐⠕⢢⣻⢙⠇⡛⡥⠫⡓⣐⠅⡲⠁⣹⢡⠔⡐⢂⡡⡹⡂⢣⡇─────────────|      │             ⡀⣄⢑⡑⠙⡒⠰⣛⣙⢑⣀⣒⡀⢉⢓⡞⢌⡚⢘⢣⣕⠂⡚⢒⡑⢂⢂⣁⣘⢐⡂⠂⠃⡒⣓ ⠐⡃|      │             ⢁⠨⠠⢈⠰⠞⢐⢁⠚⡁⢐⡴⢈⡂⢐⡒⡑⢙⠈⡁⢊⡢⠑⠎⠡⣀⠕⣀⠓⡕⢍⠙⣋⠄⡁⢂⡱⢡|      │             ⡁⢣⠁⢊⠱⢨⠈⣔⠈⠐⢈⡽⠁⠎⡁⠈⠐⡋⠘⣨⢒⡁⢊⠶⣑⠃⡀⡥⡀⡘⠺⠇⣸⠉⢁⣢⢊⠐|      │             ⢸⡉ ⢐⠊⢩⡙⢍⢐⡞⠁⢂⠐⠛⢔⠁⡒⣈⠘⡀⢓⠗⠁⠉⠆⢠⣔⠂⡑⡀⣱⢊⡲⣑⢖⡀⡐⡀|      │             ⠐⠂⢪⣠⢈⠄⣐⡪ ⠛⡢⢐⢐⡃⢘⠓⢘⠬⢀⠜⠑⡌⠂⡍⢄⡀⡠⡁⣓⠂⠠⡥⡱⡀⠡⠱⢠⠘|      │             ⠒⠘⠰⡀⢋⢖⢀⢌⡑⠈⠄⣛⠠⣑⢐⡐⣁⠿⠐⠊⠱⢈⠁⡁⢨⡹⠜⡃⣋⡣⢐⠄⠐⣀⢀⠃⣚⠒|      │             ⡐⡈⢚⡀⢀⡱⡠⢁⠐⠋⠐⣖ ⡉⢂⡍⠁⣨⢘⢢⣐⠃⡑⡍⠑⡀⠡⠓⢈⡀⡫⠂⠔⠄⢊⣐⢑⡃|      │             ⣀⠒ ⣃⡂⠕⠌⠣⣀⠲⠄⠨⢘⠾⢑⡊⢁⢑⠈⠊⣂⡡⠄⡁⣃⡀⠁⠁⡀⢐⡔⡁⠾⠣⣐⠎⠰⠡|-68.8 │             ⠑⠈⠁⠂⠐⠁⠐  ⠁⠁⠈ ⠂⠁⠈⠁⠙│⠙⠈ ⠂ ⠘ ⠑⠉ ⠁⠘⠈  ⠉ ⠑|      └────────────────────────────────────────────────────────────────|       -110.4                                                     111.4|the first 2000 primes up to 17389 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
+	sacks(2000)	 137.6 │                          ⢀  ⢀⢄⢀⢠⢄⢀|       │                      ⢀  ⡊⢤⢀⡂⠊⡌⢙⠠⣊⡑⠈⠱⢈⡒⡔⠠⣀|       │                   ⡀⡄⢐⡥⠑ ⠿⡂⠪⢂⠭⠭⢝⠸⢩⡸⢴⡸⠤⡐⡎⠮⢄⢁⡤|       │                 ⢀⡠⠔⠮⣂⣁⣈⢈⡍⠄⡱⠉⠩⠓⠤│⠆⢐⠂⡜⢒⠐⢡⢎⠰⢃⡤⠔⠦⡀|       │                 ⠴⠦⠘⢈⡈⡉⠎⠚⡂⡐⢆⢥⡚⡀⣀⢸⠹⢠⠄⡅⣀⠟⠬⠔⣇⢐⣠⡀⡁⢼|       │               ⣀⡁⢋⣀⢓⢤⢈⢐⠒⠞⢁⠧⠂⢨⡜⢘⠿⢘⢉⠚⡒⠕⡓⠦⢔⡤⡊⡒⢓⠖⢂⠇⡆⠇|       │               ⠨⠉⠅⠐⠲⠒⠖⠄⢘⠙⢩⡵⡩⠢⣬⣄⣍⢨⢛⠨⢀⣨⠆⢫⢒⢰⡭⢰⢥⠬⠵⠂⠒⠱⠂|       │             ⢀⠒⣃⣛⠙⣉⢓⡫⣭⡌⡍⢭⠭⠢⠒⢒⡣⡩⡨⢨⣕⠥⣿⠮⢀⡖⡂⠉⡀⣉⡓⡷⣠⠉⣫⢺⠧⠄|       │             ⠐⠂⡒⢐⢐⣐⢐⣐⠐⡐⡂⣒⣒⡋⣒⢊⣣⡼⢙⢨⢬⠩⠶⢗ ⢛⠑⠧⠂⡒⡅⠡⢀⠒⠜⡓⢓⠡|     0 │─────────────⠭⠭⠬⠁⠥⠬⠭⠍⠭⠭⠥⠬⠭⠥⠡⠭⠦⠶⢾⡸⠝⠴⠼⠩⠧⠍⠢⠕⠫⠳⠠⠥⠪⠌⠦⠫⠼⠴─────────────|       │             ⠅⠈⠡⠉⠩⠠⠁⠩⠩⠉⠉⠍ ⢩⢅⣩⣭⣉⢝⣳⡲⣲⠰⠶⠢⠶⠒⠔⠶⠒⠆⠴⠆⠔⠢⠴⠢⠖|       │             ⠒⠙⡁⠛⡐⠛⢛⠁⣙⠊⠃⠊⣃⢃⠂⠒⠲⡌⢵⠟⡳⡋⢤⠏⠩⠧⠃⠻⠂⠓⠝⠤⠕⠌⠎⠮⠕⠄|       │             ⠐⠒⢂⠂⠒⠂⠢⠰⠒⠲⠒⠺⢭⠉⠛⠣⣁⡡⣕⠭⣤⢣⠱⢁⣻⡑⡒⠸⢀⢎⣬⣢⢨⠄⡄⡷ ⠃|       │              ⠠⠤⠅⡥⡤⣬⡬⣔⢐⡛⠲⠰⠺⢍⠘⡨⡁⡪⣓⢠⡚⠹⡼⢢⣒⢔⠐⠬⡤⣬⠄⢄⠥⡥⡭⠅|       │                ⣁⢂⡀⠢⠢⡔⡈⡙⡲⢒⠊⡄⡫⡡⣌ ⡣⣠⣪⠎⣠⣁⢠⠘⠙⢙⢁⠩⠁⣁⠣⢡⠂|       │                ⠁⡈⠌⣙⢀⠶⣴⢤⣰⢢⠅⢘⡑⢕⠤⢻⠼⠊⡳⠺⠣⢔⡌⣑⠌⠐⢢⡓⠂⠤⡘⠈|       │                  ⠈⣈⢀⡨⠢⡠⠨⠇⠰⣒⡦⠔⣝⠋⠖⠛⠞⢁⡘⠨⣘⠋⢈⠸ ⠨⣰|       │                     ⠥⠡⠑⠶⢋⢋⠨⡄⠢⢤⣈⠗⣨⠴⢅⡔⡪⡚⡐⡣⡈⢐⠒⠁|       │                       ⠘⠨⠋⢑⢰⡠⢎⣂⢌⠍⢪⢆⡚⠖⡨⠈ ⠃⠁|-138.8 │                            ⠈⠁⠑⠈⠊⠐ ⠈|       └────────────────────────────────────────────────────────────────|        -221.4                                                     220.8|the first 2000 primes up to 17389 on the spiral of Sacks: the whole number k is sqrt(k) away from the middle after sqrt(k) turns, so that the squares lie on the x-axis
+	domainplot(1/z, z, 3)	 3.15 │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|-3.15 │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      └────────────────────────────────────────────────────────────────|       -6.3                                                         6.3|the colour is the argument of the value: red for the positive numbers, then yellow, green, cyan for the negative ones, blue, magenta; the lightness is its absolute value: black is 0, the full colour 1, white the infinitely large
+	domaincoloring(1/z, z, 3)	 3.15 │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|-3.15 │⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤|      └────────────────────────────────────────────────────────────────|       -6.3                                                         6.3|the colour is the argument of the value: red for the positive numbers, then yellow, green, cyan for the negative ones, blue, magenta; the lightness is its absolute value: black is 0, the full colour 1, white the infinitely large
+	heatmap(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	 3.142 │⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶|       │⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶|       │⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶|       │⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶|       │⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶|       │⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶|       │⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶|       │⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶|       │⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶|-3.142 │⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶|       └────────────────────────────────────────────────────────────────|        -3.142                                                     3.142|the colours of the palette run from the value -1 to 1
+	contourf(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	 3.142 │⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶|       │⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶|       │⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶|       │⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶|       │⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶|       │⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶|       │⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶|       │⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⠶|       │⠶⠶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠶⠶|       │⠶⠶⡶⡶⡶⣶⣶⣶⣶⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣾⣶⣶⣶⣶⡶⡶⡶⠶⠶⠶⠶⠴⠴⠴⠤⠤⠤⠤⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠤⠤⠤⠤⠴⠴⠴⠶⠶|-3.142 │⠶⡶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⡶⠶⠶⠴⠴⠴⠤⠤⠤⠄⠄⠄⠄          ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠴⠶|       └────────────────────────────────────────────────────────────────|        -3.142                                                     3.142|the colours of the palette run from the value -1 to 1
+	surfaceplot(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	                              ⢀⠤⢒⠖⠤⡀|                             ⣴⡫⢤⣋⡀ ⡸⡄|                           ⢠⣼⠃ ⡜ ⠈⣺⠁⠘⢆|                          ⣰⠟⡞ ⢰⠁ ⢰⠁⠣⡀⠈⣆|                         ⣴⡯⢴⠋⠉⡟⠒⢄⡎  ⢙⡜⠈⡆|                       ⣠⢼⠋ ⡎ ⢰⠁ ⢸⠑⢄⢀⠎⣱⡔⣺⡶⣄⣀|              ⣀⣀⣠   ⢀⡤⣋⣀⠇ ⢰⠁ ⡜  ⡇  ⣝⣞⣰⣹⣣⠸⣈⢶⠣⡀|           ⢀⡠⣊⠶⡎⠉⢻⣶⣚⢣  ⡜⠉⠉⡟⠒⢢⠧⢄⣸⡀ ⣼⣿⠾⣶⡡⠿⣻⣯⠙⣷⠺⡄|          ⢀⣎⣔⠁⢀⣸⡴⢧⢽⣦⡳⡑⡴⠁ ⢰⠁ ⡸  ⡇⢈⣽⣳⢛⠶⡯⢷⣄⣿⢟⣦⢱⢱⡸⣖⡄       ⢀⡀|         ⢠⢋⠎⣨⡗⢏⠘⢼⡘⡄⢟⡎⣳⣏⠢⡀⡎ ⢀⡇ ⢸⢀⣾⡷⡟⠓⢲⠣⠤⣸⠪⣻⡝⣶⢟⢧⢯⣎⣢⡀   ⡠⡶⡝|        ⢀⢧⡮⠊⠁⠈⠉⠻⡚⡷⡵⣜⣼⣏⢿⡢⣸⠣⠤⣸⣀⣀⣧⣿⡟⢱⠁ ⡞  ⡏⠢⡘⣿⡋⣞⡄⢇⢻⢌⠙⣍⡶⠋⡜⡰⠁|        ⠚⠁      ⠈⢞⣧⢻⢱⠸⣟⣽⡞⢶⡤⣧⣔⣹⣳⠟ ⡎ ⢠⠃ ⢸  ⢨⢇⢫⡺⣷⠼⣬⢾⠚⠁⢙⠞⡞⠁|                  ⠈⢦⣱⣇⠸⣿⣣⡤⢻⣧⣼⣷⠏⠉⢲⠓⠤⡼⣀⣀⡇ ⢀⠇ ⠱⣑⣺⣷⡁⠈⣦⡔⡣⠚|                   ⠈⠢⣹⡝⢫⠹⣳⢳⢚⣞⠏  ⡎ ⢀⠇ ⢸⠉⠉⡝⠒⡢⠖⠉ ⠈⠹⠛⠒⠊|                     ⠑⠚⢮⣶⣋⢷⠊⡜⠑⢄⢰⠁ ⢸  ⡇ ⣰⠵⠊⠁|                        ⠈⡆⢀⢟   ⡟⢄⣀⡇ ⣸⠤⣾⠏|                         ⠘⡎⠈⠣⡀⢸  ⢸⠉⢉⣇⣼⠃|                          ⠘⣄ ⢱⡃ ⢀⠇ ⣸⠾⠁|                           ⠈⢦⠋⠈⠒⡺⠤⣲⠏|                            ⠈⠢⢄⣜⡡⠜⠁|the surface z = cos(y)*sin(x) over 24 by 24 cells; z from -1 to 1
+	fsurf(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	                              ⢀⠤⢒⠖⠤⡀|                             ⣴⡫⢤⣋⡀ ⡸⡄|                           ⢠⣼⠃ ⡜ ⠈⣺⠁⠘⢆|                          ⣰⠟⡞ ⢰⠁ ⢰⠁⠣⡀⠈⣆|                         ⣴⡯⢴⠋⠉⡟⠒⢄⡎  ⢙⡜⠈⡆|                       ⣠⢼⠋ ⡎ ⢰⠁ ⢸⠑⢄⢀⠎⣱⡔⣺⡶⣄⣀|              ⣀⣀⣠   ⢀⡤⣋⣀⠇ ⢰⠁ ⡜  ⡇  ⣝⣞⣰⣹⣣⠸⣈⢶⠣⡀|           ⢀⡠⣊⠶⡎⠉⢻⣶⣚⢣  ⡜⠉⠉⡟⠒⢢⠧⢄⣸⡀ ⣼⣿⠾⣶⡡⠿⣻⣯⠙⣷⠺⡄|          ⢀⣎⣔⠁⢀⣸⡴⢧⢽⣦⡳⡑⡴⠁ ⢰⠁ ⡸  ⡇⢈⣽⣳⢛⠶⡯⢷⣄⣿⢟⣦⢱⢱⡸⣖⡄       ⢀⡀|         ⢠⢋⠎⣨⡗⢏⠘⢼⡘⡄⢟⡎⣳⣏⠢⡀⡎ ⢀⡇ ⢸⢀⣾⡷⡟⠓⢲⠣⠤⣸⠪⣻⡝⣶⢟⢧⢯⣎⣢⡀   ⡠⡶⡝|        ⢀⢧⡮⠊⠁⠈⠉⠻⡚⡷⡵⣜⣼⣏⢿⡢⣸⠣⠤⣸⣀⣀⣧⣿⡟⢱⠁ ⡞  ⡏⠢⡘⣿⡋⣞⡄⢇⢻⢌⠙⣍⡶⠋⡜⡰⠁|        ⠚⠁      ⠈⢞⣧⢻⢱⠸⣟⣽⡞⢶⡤⣧⣔⣹⣳⠟ ⡎ ⢠⠃ ⢸  ⢨⢇⢫⡺⣷⠼⣬⢾⠚⠁⢙⠞⡞⠁|                  ⠈⢦⣱⣇⠸⣿⣣⡤⢻⣧⣼⣷⠏⠉⢲⠓⠤⡼⣀⣀⡇ ⢀⠇ ⠱⣑⣺⣷⡁⠈⣦⡔⡣⠚|                   ⠈⠢⣹⡝⢫⠹⣳⢳⢚⣞⠏  ⡎ ⢀⠇ ⢸⠉⠉⡝⠒⡢⠖⠉ ⠈⠹⠛⠒⠊|                     ⠑⠚⢮⣶⣋⢷⠊⡜⠑⢄⢰⠁ ⢸  ⡇ ⣰⠵⠊⠁|                        ⠈⡆⢀⢟   ⡟⢄⣀⡇ ⣸⠤⣾⠏|                         ⠘⡎⠈⠣⡀⢸  ⢸⠉⢉⣇⣼⠃|                          ⠘⣄ ⢱⡃ ⢀⠇ ⣸⠾⠁|                           ⠈⢦⠋⠈⠒⡺⠤⣲⠏|                            ⠈⠢⢄⣜⡡⠜⠁|the surface z = cos(y)*sin(x) over 24 by 24 cells; z from -1 to 1
+	fmesh(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	                              ⢀⠤⢒⠖⠤⡀|                             ⣴⡫⢤⣋⡀ ⡸⡄|                           ⢠⣼⠃ ⡜ ⠈⣺⠁⠘⢆|                          ⣰⠟⡞ ⢰⠁ ⢰⠁⠣⡀⠈⣆|                         ⣴⡯⢴⠋⠉⡟⠒⢄⡎  ⢙⡜⠈⡆|                       ⣠⢼⠋ ⡎ ⢰⠁ ⢸⠑⢄⢀⠎⣱⡔⣺⡶⣄⣀|              ⣀⣀⣠   ⢀⡤⣋⣀⠇ ⢰⠁ ⡜  ⡇  ⣝⣞⣰⣹⣣⠸⣈⢶⠣⡀|           ⢀⡠⣊⠶⡎⠉⢻⣶⣚⢣  ⡜⠉⠉⡟⠒⢢⠧⢄⣸⡀ ⣼⣿⠾⣶⡡⠿⣻⣯⠙⣷⠺⡄|          ⢀⣎⣔⠁⢀⣸⡴⢧⢽⣦⡳⡑⡴⠁ ⢰⠁ ⡸  ⡇⢈⣽⣳⢛⠶⡯⢷⣄⣿⢟⣦⢱⢱⡸⣖⡄       ⢀⡀|         ⢠⢋⠎⣨⡗⢏⠘⢼⡘⡄⢟⡎⣳⣏⠢⡀⡎ ⢀⡇ ⢸⢀⣾⡷⡟⠓⢲⠣⠤⣸⠪⣻⡝⣶⢟⢧⢯⣎⣢⡀   ⡠⡶⡝|        ⢀⢧⡮⠊⠁⠈⠉⠻⡚⡷⡵⣜⣼⣏⢿⡢⣸⠣⠤⣸⣀⣀⣧⣿⡟⢱⠁ ⡞  ⡏⠢⡘⣿⡋⣞⡄⢇⢻⢌⠙⣍⡶⠋⡜⡰⠁|        ⠚⠁      ⠈⢞⣧⢻⢱⠸⣟⣽⡞⢶⡤⣧⣔⣹⣳⠟ ⡎ ⢠⠃ ⢸  ⢨⢇⢫⡺⣷⠼⣬⢾⠚⠁⢙⠞⡞⠁|                  ⠈⢦⣱⣇⠸⣿⣣⡤⢻⣧⣼⣷⠏⠉⢲⠓⠤⡼⣀⣀⡇ ⢀⠇ ⠱⣑⣺⣷⡁⠈⣦⡔⡣⠚|                   ⠈⠢⣹⡝⢫⠹⣳⢳⢚⣞⠏  ⡎ ⢀⠇ ⢸⠉⠉⡝⠒⡢⠖⠉ ⠈⠹⠛⠒⠊|                     ⠑⠚⢮⣶⣋⢷⠊⡜⠑⢄⢰⠁ ⢸  ⡇ ⣰⠵⠊⠁|                        ⠈⡆⢀⢟   ⡟⢄⣀⡇ ⣸⠤⣾⠏|                         ⠘⡎⠈⠣⡀⢸  ⢸⠉⢉⣇⣼⠃|                          ⠘⣄ ⢱⡃ ⢀⠇ ⣸⠾⠁|                           ⠈⢦⠋⠈⠒⡺⠤⣲⠏|                            ⠈⠢⢄⣜⡡⠜⠁|the surface z = cos(y)*sin(x) over 24 by 24 cells; z from -1 to 1
+	ezsurf(sin(x)*cos(y), x, -pi, pi, y, -pi, pi)	                              ⢀⠤⢒⠖⠤⡀|                             ⣴⡫⢤⣋⡀ ⡸⡄|                           ⢠⣼⠃ ⡜ ⠈⣺⠁⠘⢆|                          ⣰⠟⡞ ⢰⠁ ⢰⠁⠣⡀⠈⣆|                         ⣴⡯⢴⠋⠉⡟⠒⢄⡎  ⢙⡜⠈⡆|                       ⣠⢼⠋ ⡎ ⢰⠁ ⢸⠑⢄⢀⠎⣱⡔⣺⡶⣄⣀|              ⣀⣀⣠   ⢀⡤⣋⣀⠇ ⢰⠁ ⡜  ⡇  ⣝⣞⣰⣹⣣⠸⣈⢶⠣⡀|           ⢀⡠⣊⠶⡎⠉⢻⣶⣚⢣  ⡜⠉⠉⡟⠒⢢⠧⢄⣸⡀ ⣼⣿⠾⣶⡡⠿⣻⣯⠙⣷⠺⡄|          ⢀⣎⣔⠁⢀⣸⡴⢧⢽⣦⡳⡑⡴⠁ ⢰⠁ ⡸  ⡇⢈⣽⣳⢛⠶⡯⢷⣄⣿⢟⣦⢱⢱⡸⣖⡄       ⢀⡀|         ⢠⢋⠎⣨⡗⢏⠘⢼⡘⡄⢟⡎⣳⣏⠢⡀⡎ ⢀⡇ ⢸⢀⣾⡷⡟⠓⢲⠣⠤⣸⠪⣻⡝⣶⢟⢧⢯⣎⣢⡀   ⡠⡶⡝|        ⢀⢧⡮⠊⠁⠈⠉⠻⡚⡷⡵⣜⣼⣏⢿⡢⣸⠣⠤⣸⣀⣀⣧⣿⡟⢱⠁ ⡞  ⡏⠢⡘⣿⡋⣞⡄⢇⢻⢌⠙⣍⡶⠋⡜⡰⠁|        ⠚⠁      ⠈⢞⣧⢻⢱⠸⣟⣽⡞⢶⡤⣧⣔⣹⣳⠟ ⡎ ⢠⠃ ⢸  ⢨⢇⢫⡺⣷⠼⣬⢾⠚⠁⢙⠞⡞⠁|                  ⠈⢦⣱⣇⠸⣿⣣⡤⢻⣧⣼⣷⠏⠉⢲⠓⠤⡼⣀⣀⡇ ⢀⠇ ⠱⣑⣺⣷⡁⠈⣦⡔⡣⠚|                   ⠈⠢⣹⡝⢫⠹⣳⢳⢚⣞⠏  ⡎ ⢀⠇ ⢸⠉⠉⡝⠒⡢⠖⠉ ⠈⠹⠛⠒⠊|                     ⠑⠚⢮⣶⣋⢷⠊⡜⠑⢄⢰⠁ ⢸  ⡇ ⣰⠵⠊⠁|                        ⠈⡆⢀⢟   ⡟⢄⣀⡇ ⣸⠤⣾⠏|                         ⠘⡎⠈⠣⡀⢸  ⢸⠉⢉⣇⣼⠃|                          ⠘⣄ ⢱⡃ ⢀⠇ ⣸⠾⠁|                           ⠈⢦⠋⠈⠒⡺⠤⣲⠏|                            ⠈⠢⢄⣜⡡⠜⠁|the surface z = cos(y)*sin(x) over 24 by 24 cells; z from -1 to 1
+	spacecurve([cos(t), sin(t), t/10], t, 0, 20)	                                              ⠢⣀|                                               ⠈⢢|                         ⢀⣀⣀⣀⣀⣀⡀                 ⡇|                 ⢀⣠⠤⠒⠒⠉⠉⠉⠉     ⠈⠉⠉⠉⠑⠒⠒⠤⢤⣀⡀       ⡇|               ⡠⠞⠁                       ⠉⠑⠒⢄  ⢀⠜|               ⡇                             ⡩⠶⢅|               ⠙⠦⣀                      ⢀⣀⠤⠒⠉  ⠈⢣|                  ⠉⠒⠒⠤⠤⢄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠤⠤⠤⠒⠚⠉⠁        ⡇|                 ⣀⠤⠖⠒⠉⠉⠉         ⠈⠉⠉⠙⠒⠒⠤⢄⣀      ⢀⡇|               ⡰⠊                         ⠉⠒⠤⡀ ⢠⠞|               ⡇                            ⢀⡨⠝⢇|               ⠈⠢⢄⡀                     ⣀⡠⠔⠊⠁   ⢳⡀|                  ⠈⠉⠒⠲⣤⣤⣤⣄⣠⣤⣤⣤⣤⣠⣤⣤⣤⠴⠒⠒⠉⠉         ⡇|                ⢀⣠⠤⠒⠉⠉             ⠉⠉⠙⠒⠢⠤⣀⡀     ⢀⠇|               ⡴⠋                         ⠈⠑⠢⢄ ⡠⠊|               ⣇                            ⣀⠤⠛⢦|               ⠈⠳⠤⣀                    ⣀⣠⠤⠒⠋    ⠱⡄|                   ⠉⠙⠒⠒⠦⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠉⠉          ⡇|                                                ⢠⠇|                                               ⡤⠃|the curve for t from 0 to 20; x from -1 to 1, y from -0.9999 to 1, z from 0 to 2
+	fplot3([cos(t), sin(t), t/10], t, 0, 20)	                                              ⠢⣀|                                               ⠈⢢|                         ⢀⣀⣀⣀⣀⣀⡀                 ⡇|                 ⢀⣠⠤⠒⠒⠉⠉⠉⠉     ⠈⠉⠉⠉⠑⠒⠒⠤⢤⣀⡀       ⡇|               ⡠⠞⠁                       ⠉⠑⠒⢄  ⢀⠜|               ⡇                             ⡩⠶⢅|               ⠙⠦⣀                      ⢀⣀⠤⠒⠉  ⠈⢣|                  ⠉⠒⠒⠤⠤⢄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠤⠤⠤⠒⠚⠉⠁        ⡇|                 ⣀⠤⠖⠒⠉⠉⠉         ⠈⠉⠉⠙⠒⠒⠤⢄⣀      ⢀⡇|               ⡰⠊                         ⠉⠒⠤⡀ ⢠⠞|               ⡇                            ⢀⡨⠝⢇|               ⠈⠢⢄⡀                     ⣀⡠⠔⠊⠁   ⢳⡀|                  ⠈⠉⠒⠲⣤⣤⣤⣄⣠⣤⣤⣤⣤⣠⣤⣤⣤⠴⠒⠒⠉⠉         ⡇|                ⢀⣠⠤⠒⠉⠉             ⠉⠉⠙⠒⠢⠤⣀⡀     ⢀⠇|               ⡴⠋                         ⠈⠑⠢⢄ ⡠⠊|               ⣇                            ⣀⠤⠛⢦|               ⠈⠳⠤⣀                    ⣀⣠⠤⠒⠋    ⠱⡄|                   ⠉⠙⠒⠒⠦⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠉⠉          ⡇|                                                ⢠⠇|                                               ⡤⠃|the curve for t from 0 to 20; x from -1 to 1, y from -0.9999 to 1, z from 0 to 2
+	drawgraph(petersengraph())	 1.218 │                                │|       │                               ⢀⣄|       │                                ⣏⠉⠒⠢⠤⢄⣀|       │                     ⠐⡷⡀        ⡟⡄     ⠉⢑⠾⡂|       │                     ⡸⡇⠘⢄       ⡇⢱     ⡠⠃ ⠘⢄|       │                    ⢠⠃⡇ ⠈⠢⡀     ⡇ ⢇  ⢀⠔⠁    ⠣⡀|       │                    ⡜ ⡇   ⠑⡄    ⡇ ⠘⡄⢠⠊       ⠑⡄|       │                ⢺⡦⢄⣰⠁ ⡇    ⠈⢢   ⡇  ⣵⠁       ⣀⡠⠼⡗|       │                ⠈⡞⢄⠇⠉⠑⡗⠤⢄⣀   ⠑⡄ ⡇⢠⠊ ⢇ ⣀⡠⠤⠒⠊⠉   ⡇|       │                 ⠸⡜⠣⡀ ⡇   ⠉⠑⠒⠤⢌⣆⣷⡡⠤⠒⠚⡍         ⡇|     0 │─────────────────⢰⢣─⠑⢄⡇───⣀⡠⠤⠒⢊⠏⡿⡑⠒⠤⢄⣱─────────⡇────────────────|       │                ⢀⠇⠈⡆⣀⡨⣧⠒⠊⠉   ⡠⠃ ⡇⠘⢄   ⡏⠑⠒⠤⢄⣀   ⡇|       │                ⢼⢖⠊⠹⡀ ⡇⠑⡄  ⢀⠜   ⡇  ⠣⡀ ⠸⡀    ⠉⠑⢲⡧|       │                  ⠉⠢⣣ ⡇ ⠈⢢⡠⠃    ⡇   ⠘⢄ ⢣     ⡠⠃|       │                    ⠘⡕⡧⡀⢀⠔⠱⡀    ⡇    ⠈⠢⡈⡆   ⡔⠁|       │                     ⢱⡇⢨⠛⢄⡀⠈⢆   ⡇      ⠑⡼⡀⢠⠊|       │                     ⠠⡷⠁  ⠈⠒⢄⠣⡀ ⡇       ⠈⢷⠅|       │                             ⠉⠺⢄⡇|       │                               ⠈⠋|-1.218 │                                │|       └────────────────────────────────────────────────────────────────|        -1.949                                                     1.949|10 vertices on a circle, the first at the top and the others with the clock; 15 edges
+	arrayplot([[1, 2, 3], [4, 5, 6]])	 2.05 │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.05 │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      └────────────────────────────────────────────────────────────────|       -0.6                                                         3.6|2 by 3 entries, the first row at the top; the colours of the palette run from the entry 1 to 6
+	imagesc([[1, 2, 3], [4, 5, 6]])	 2.05 │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.05 │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      └────────────────────────────────────────────────────────────────|       -0.6                                                         3.6|2 by 3 entries, the first row at the top; the colours of the palette run from the entry 1 to 6
+	imshow([[1, 2, 3], [4, 5, 6]])	 2.05 │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.05 │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      └────────────────────────────────────────────────────────────────|       -0.6                                                         3.6|2 by 3 entries, the first row at the top; the colours of the palette run from the entry 1 to 6
+	pcolor([[1, 2, 3], [4, 5, 6]])	 2.05 │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │                        ⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴⠴|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|-0.05 │         ⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|      └────────────────────────────────────────────────────────────────|       -0.6                                                         3.6|2 by 3 entries, the first row at the top; the colours of the palette run from the entry 1 to 6
+	savepng("gray.png", walk(pi), gray)	1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees|from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53|saved gray.png: PNG, 1024 x 1024 pixels, 8 bits, gray, level 9, 86219 bytes
+	savejxl("walk.jxl", walk(pi, 10, 10000))	10000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees|from the origin to (-65.23, 76.9), 100.8 away; x from -83.73 to 34.73, y from -51.9 to 85.85|saved walk.jxl: JPEG XL, 1024 x 1024 pixels, 8 bits, RGB, lossless, effort 7, N bytes
+	saveimage("walk.jxl", walk(pi))	1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees|from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53|saved walk.jxl: JPEG XL, 1024 x 1024 pixels, 8 bits, RGB, lossless, effort 7, N bytes
+	export("walk.jxl", walk(pi))	1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees|from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53|saved walk.jxl: JPEG XL, 1024 x 1024 pixels, 8 bits, RGB, lossless, effort 7, N bytes
+	unitconvert(c, km/s)	299792.458 km/s
+	tosi(1 N*m)	1 kg*m^2/s^2
+	baseunits(1 N*m)	1 kg*m^2/s^2
+	unitdimension(5 kWh)	length^2*mass/time^2
+	assumealso(t ∈ ℝ); conj(t)	true|t
+	percentile([1, 2, 3, 4, 5], [25, 50, 75])	[7/4, 3, 17/4]
+	mat2gray([1, 2, 5])	[0, 1/4, 1]
+	groebnerbasis([x^2 + y^2 - 1, x - y], [x, y])	[x - y, y^2 - 1/2]
+	fftn([[1, 2], [3, 4]])	[[10, -2], [-4, 0]]
+	ifftn([[10, -2], [-4, 0]])	[[1, 2], [3, 4]]
+	convn([[1, 2], [3, 4]], [[1, 1], [1, 1]])	[[1, 3, 2], [4, 10, 6], [3, 7, 4]]
+	string(x^2 + 1/3)	"x^2 + 1/3"
+	strlen("hello")	5
+	toupper("abc")	"ABC"
+	tolower("ABC")	"abc"
+	strip("  a b  ")	"a b"
+	split("a b  c")	["a", "b", "c"]
+	isstring("a")	true
+	rng(0); randomreal()	0|0.81472368639317893634910205946653
+	rng(1); randominteger([5, 8])	1|6
+	fminunc(@(x, y) (x - 1)^2 + (y + 2)^2, [0, 0])	[1, -2]
+	quadgk(@(x) x^2, 0, 3)	9
+	quadl(@(x) x^2, 0, 3)	9
+	quadv(@(x) x^2, 0, 3)	9
+	quad2d(@(x, y) x*y, 0, 1, 0, 2)	1
+	dblquad(@(x, y) x*y, 0, 1, 0, 2)	1
+	triplequad(@(x, y, z) x*y*z, 0, 1, 0, 1, 0, 1)	1/8|  ~ 0.125
+	ode23(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode113(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode78(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode89(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode15s(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode23s(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode23t(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	ode23tb(@(t, y) -y, [0, 1], 1)	[[0, 1], [1/10, 0.90483741803595957316424905944644], [1/5, 0.81873075307798185866993550861904], [3/10, 0.74081822068171786606687377931782], [2/5, 0.67032004603563930074443292514783], [1/2, 0.60653065971263342360379953499118], [3/5, 0.54881163609402643262845891723257], [7/10, 0.49658530379140951470480009339753], [4/5, 0.44932896411722159143010238501556], [9/10, 0.40656965974059911188345423964563], [1, 0.36787944117144232159552377016146]]
+	str2sym("2^10 + 1")	1025
+	articulationvertices([[1, 2], [2, 3], [3, 1], [3, 4]])	[3]
+	writematrix([[1, 2], [3, 4]], "m.csv"); csvread("m.csv")	saved m.csv: 2 row(s) of 2 number(s), 8 bytes|[[1, 2], [3, 4]]
+	writematrix([[1, 2], [3, 4]], "m.csv"); dlmread("m.csv")	saved m.csv: 2 row(s) of 2 number(s), 8 bytes|[[1, 2], [3, 4]]
+	csvwrite([[1, 2], [3, 4]], "m.csv"); readmatrix("m.csv")	saved m.csv: 2 row(s) of 2 number(s), 8 bytes|[[1, 2], [3, 4]]
+	dlmwrite([[1, 2], [3, 4]], "m.csv"); readmatrix("m.csv")	saved m.csv: 2 row(s) of 2 number(s), 8 bytes|[[1, 2], [3, 4]]
+	dataplot([1, 4, 9, 16, 25])	25.96 │                                                            ⢀⠄|      │                                                         ⢀⡠⠒⠁|      │                                                       ⢀⠔⠁|      │                                                    ⢀⡠⠒⠁|      │                                                  ⡠⠔⠁|      │                                               ⣀⠔⠊|      │                                            ⡠⠔⠊|      │                                        ⢀⠤⠒⠉|      │                                     ⡠⠔⠊⠁|      │                                 ⢀⠤⠒⠉|      │                             ⢀⡠⠴⠊⠁|      │                        ⢀⡠⠤⠒⠉⠁|      │                   ⢀⣀⠤⠒⠊⠁|      │             ⣀⣀⠤⠤⠒⠊⠁|      │     ⣀⣀⠤⠤⠒⠒⠉⠉| 0.04 │  ⠐⠉⠉|      └────────────────────────────────────────────────────────────────|       0.84                                                        5.16|5 points
+	comet([1, 4, 9, 16, 25])	25.96 │                                                            ⢀⠄|      │                                                         ⢀⡠⠒⠁|      │                                                       ⢀⠔⠁|      │                                                    ⢀⡠⠒⠁|      │                                                  ⡠⠔⠁|      │                                               ⣀⠔⠊|      │                                            ⡠⠔⠊|      │                                        ⢀⠤⠒⠉|      │                                     ⡠⠔⠊⠁|      │                                 ⢀⠤⠒⠉|      │                             ⢀⡠⠴⠊⠁|      │                        ⢀⡠⠤⠒⠉⠁|      │                   ⢀⣀⠤⠒⠊⠁|      │             ⣀⣀⠤⠤⠒⠊⠁|      │     ⣀⣀⠤⠤⠒⠒⠉⠉| 0.04 │  ⠐⠉⠉|      └────────────────────────────────────────────────────────────────|       0.84                                                        5.16|5 points
+	pie3([3, 1, 4])	 1.575 │|       │|       │|       │                                ⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                               ⠶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                             ⠶⠶⠶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                           ⠶⠶⠶⠶⠶⣿⣿⣿⣿⣿⣿⣿⣿⣿|       │                         ⠶⠶⠶⠶⠶⠶⠶⣿⣿⣿⣿⣿⣿⣿|       │                           ⠶⠶⠶⠶⠶⣿⣿⣿⣿⣿|       │|       │|-1.575 │|       └────────────────────────────────────────────────────────────────|        -3.15                                                       3.15|3 parts of the sum 8, from the top against the clock: 37.5%, 12.5%, 50%
+	fcontour(magic(6), 4)	6 │⠔⠋⡠⠔⠊  ⠉⠒⠤⣉⠒⢄⣀⡠⠤⠤⠤⠤⠒⠒⠒⠒⠊⠉⡟⡄    ⢇    ⢸      ⠑⠢⢄        ⢀⡰⠁|  │⠒⠉         ⠉⠢⢄⡀         ⡸ ⠸⡀   ⢸    ⢸         ⠉⠒⠤⡀  ⢀⠔⠁|  │⠒⠤⢄      ⣀⡠⠤⢒⠒⠬⣉⠒⠤⣀    ⢠⠃  ⠱⡀   ⡇   ⢸            ⠈⠑⠒⠁       ⣀⣀⡠⠤|  │⠛ ⣠⠝⠂  ⠐⠫⢄⡀⠚⠫⠝⠂⡠⠝⠂⡠⠝⠂⢀⠔⠊    ⢱   ⢱   ⠸⡄                   ⠪⡉⠉|  │⠒⠉        ⠈⠑⠦⠒⢉⡠⠔⠉ ⡠⠒⠁      ⢸   ⠈⢇   ⠱⡀                   ⠈⠑⢄|  │⠢⢄⣀        ⢀⠤⠒⠁ ⢀⠔⠉         ⢸    ⠸⡀   ⠑⠢⣀                    ⠑⢄|  │⠂ ⣀⠭⠖    ⠲⢍⡁   ⠚⠓⠤⠤⠤⠤⠤⠤⢄⣀⣀⡠⠤⠚ ⣀⡠⠤⠔⠃      ⠑⠢⠤⠤⣀⣀⡀       ⢀⣀⣀⣀⠤⠤⠤⠔⠓|  │⠒⠉         ⠈⠒⠒⠒⠒⠒⠒⠒⠒⠒⠤⠤⠤⠤⠤⠒⠒⠉⠉                 ⠈⠉⠉⠒⠒⠊⠉⠉⠁|  │⠒⠤⣀        ⢀⠤⠤⠤⠤⠒⠒⠒⠒⠒⠒⠒⠒⠒⣒⠒⠢⠤⣀⡀               ⢀⣀⣀⣀⠤⠤⣄⣀⡀|  │⡲⠆ ⢉⣱⠄   ⠴⣊⠁  ⠠⢤⠒⠒⠒⠒⠊⠉⠉⠉⠉ ⠉⠑⠒⡄⠈⠑⠒⢢    ⢤⠔⠒⠒⠒⠉⠉⠉⠁       ⠈⠉⠉⠒⠒⠢⠤⡀|  │⠔⠒⠉⠁       ⠉⠒⠤⣀ ⠉⠒⢄⡀        ⡰⠁   ⢸     ⠑⢄                    ⠉⠢⢄|  │⠒⠤⣀        ⡠⠔⠢⢄⡉⠒⠤⣀⠈⠑⠤⣀    ⡰⠁    ⡇       ⠑⢄⡀|  │⠑⢒⡄⠉⢒⡤  ⠠⣔⠊⠠⣔⣢⡄⠈⠑⣢⠄⠉⢒⡤ ⠑⣢⠄⢰⠁    ⢰⠁        ⣀⣈⡢|  │⣉⠥⠒⠊⠁     ⠉⠢⠬⠤⠒⣊⡩⠔⢒⣉⠥⠔⠊⠉  ⢸     ⡜    ⢀⠖⠊⠉⠉        ⡠⠤⡀|  │⠤⣀         ⣠⠔⢒⣉⠤⠒⠊⠁       ⢸    ⢠⠃   ⢠⠎          ⡠⠊  ⠈⠒⠤⣀|1 │⠒⠤⡉⠒⠤⡀ ⢀⠤⠒⣉⠤⠚⠁            ⢸    ⡜   ⢀⠎        ⢀⠔⠉        ⠑⠢⢄|  └────────────────────────────────────────────────────────────────|   1                                                              6|the lines of the heights 8, 15, 22, 29
+	comet3(cos((0:60)/5), sin((0:60)/5), 0:60)	               ⣀⣀⠤⠤⠤⠤⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠤⠤⠤⠤⣀⣀⣀|          ⡠⠔⠒⠉⠉                       ⠉⠉⠒⠒⠤⢄⣀|       ⢀⠖⠉                                   ⠉⠑⠢⢄⡀|      ⢠⠃                                         ⠈⠑⢆⡀|      ⠈⢇⡀                                           ⠈⠑⢄|        ⠑⠤⣀⡀                               ⣀⡀          ⠱⡀|           ⠈⠓⠒⠤⠤⣀⣀⣀              ⣀⣀⣀⡠⠤⠤⠒⠒⠉⠉             ⠱⡄|                   ⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉                        ⢣|                   ⢀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⡀                         ⡜|           ⢀⣀⠤⠔⠒⠒⠉⠉⠁           ⠈⠉⠉⠉⠉⠒⠒⠢⠤⢄⣀              ⢠⠃|        ⢀⠖⠊⠁                              ⠉⠉⠒⠢⢄⣀       ⡰⠃|      ⢀⡎⠁                                       ⠙⠢⢄⡀ ⡠⠊|      ⠸⡀                                         ⢀⡠⠜⠹⣀|       ⠘⠤⡀                                   ⢀⡠⠤⠚⠁    ⠑⡄|         ⠈⠒⠢⢄⣀⡀                       ⢀⣀⡠⠤⠔⠒⠉⠁         ⠈⢣|              ⠈⠉⠑⠒⠒⠒⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠔⠒⠒⠒⠉⠉⠁                  ⢇|                                                         ⢸|                                                        ⢀⡎|                                                       ⢀⠜|                                                      ⡠⠊|61 points of space; x from -0.9997 to 1, y from -1 to 0.9996, z from 0 to 60
+	mesh([[1, 2, 3], [2, 4, 6], [3, 6, 9]])	                                                            ⣀⡠⠤⡖|                                                     ⢀⣀⠤⠔⠒⠊⠉ ⢀⠜|                                               ⣀⡠⠤⠒⠊⠉⠁      ⢀⠎|                                        ⢀⣀⠤⡔⠒⠉⠉            ⢠⠃|                                 ⢀⣀⡠⠤⠒⠊⠉⠁⢠⠊               ⡠⠃|                           ⣀⣀⠤⠔⠒⠉⠁      ⡰⠁               ⡰⠁|                       ⡠⠒⠊⠉           ⢀⠎                ⡜|                     ⡰⠉              ⡠⠃               ⢀⠎|                   ⡠⠊              ⢀⠜                ⢠⠊|                 ⡠⠊               ⡠⠃                ⢠⠃|               ⢠⠊               ⢀⠔⠁   ⣀⣀⣀⣀⠤⠤⠤⠤⠒⠒⠒⠒⠉⡹⠁|             ⢀⠔⠁     ⢀⣀⣀⣀⡠⠤⠤⠤⠔⠒⢲⠚⠒⠉⠉⠉⠉            ⡔⠁|           ⢀⠴⠕⠒⠒⠒⠊⠉⠉⠉⠁        ⡔⠁                ⢀⠜|         ⢀⠔⠁                ⢀⠎                 ⢀⠎|       ⢀⠤⠊                 ⡰⠁                 ⢠⠃|     ⢀⠔⠁                 ⢀⠎                  ⡠⠃|   ⢀⠔⠁                  ⡠⠃                  ⡰⠁|  ⡠⠊                  ⢠⠜                   ⡜|⠠⠮⠤⠤⠤⣀⣀⣀⣀⣀⣀⣀⣀⡀       ⡔⠁                  ⢀⠎|             ⠈⠉⠉⠉⠉⠉⠉⠉⠑⠒⠒⠒⠒⠒⠒⠒⠒⠤⠤⠤⠤⠤⠤⠤⠤⣀⣀⣠⠊|the surface over 3 by 3 points; z from 1 to 9
+	datetime(2026, 11, 20)	740306
+	modifiedjuliandate("2026-11-20")	61364
+	isleapyear([1900, 2000, 2024])	[false, true, true]
+	is_leap_year([1900, 2000, 2024])	[false, true, true]
+	floor(now()) == datenum(today())	true
+	bartlett([[1, 2, 3, 4], [2, 4, 6, 8], [1, 5, 9, 13]])	0.11154436818798645779592004268767
+	lerch(z, s, 1)	polylog(s, z)/z
+	eulerlagrange(y''^2/2, y, x)	y''''
+	gmres([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	bicg([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	bicgstab([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	cgs([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	minres([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	qmr([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	symmlq([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]
+	tfqmr([[4, 1], [1, 3]], [1, 2])	[1/11, 7/11]

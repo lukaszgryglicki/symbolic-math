@@ -1,0 +1,700 @@
+-e	triangularpulse(x)	(1 - x)*(heaviside(x) - heaviside(x - 1)) + (heaviside(x + 1) - heaviside(x))*(x + 1)
+-e	triangularpulse([])	0
+-e	triangularpulse([1, 2])	0
+-e	triangularpulse("text")	("text" + 1)*(heaviside("text" + 1) - heaviside("text")) + (1 - "text")*(heaviside("text") - heaviside("text" - 1))
+-e	triangularpulse(true)	(1 + true)*(heaviside(1 + true) - heaviside(true)) + (1 - true)*(heaviside(true) - heaviside(true - 1))
+-e	triangularpulse(-7/3)	0
+-e	triangularpulse(0.5)	0.5
+-e	ellipticck(0)	inf
+-e	ellipticck(1)	pi/2
+-e	ellipticck(-1)	elliptick(2)
+-e	ellipticck(1/2)	gamma(1/4)^2/(4sqrt(pi))
+-e	ellipticck(2)	sqrt(2)*gamma(1/4)^2/(8sqrt(pi))
+-e	ellipticck(i)	elliptick(1 - i)
+-e	ellipticck(inf)	elliptick(-inf)
+-e	ellipticck(-inf)	elliptick(inf)
+-e	ellipticck(undefined)	undefined
+-e	ellipticck(10^20)	elliptick(-99999999999999999999)
+-e	ellipticck(10^(-20))	elliptick(99999999999999999999/100000000000000000000)
+-e	ellipticck(x)	elliptick(1 - x)
+-e	ellipticck([])	[]
+-e	ellipticck([1, 2])	[pi/2, sqrt(2)*gamma(1/4)^2/(8sqrt(pi))]
+-e	ellipticck("text")	elliptick(1 - "text")
+-e	ellipticck(true)	elliptick(1 - true)
+-e	ellipticck(-7/3)	elliptick(10/3)
+-e	ellipticck(0.5)	1.8540746773013719184338503471953
+-e	ellipticce(0)	1
+-e	ellipticce(1)	pi/2
+-e	ellipticce(-1)	elliptice(2)
+-e	ellipticce(1/2)	elliptice(1/2)
+-e	ellipticce(2)	elliptice(-1)
+-e	ellipticce(i)	elliptice(1 - i)
+-e	ellipticce(inf)	elliptice(-inf)
+-e	ellipticce(-inf)	elliptice(inf)
+-e	ellipticce(undefined)	undefined
+-e	ellipticce(10^20)	elliptice(-99999999999999999999)
+-e	ellipticce(10^(-20))	elliptice(99999999999999999999/100000000000000000000)
+-e	ellipticce(x)	elliptice(1 - x)
+-e	ellipticce([])	[]
+-e	ellipticce([1, 2])	[pi/2, elliptice(-1)]
+-e	ellipticce("text")	elliptice(1 - "text")
+-e	ellipticce(true)	elliptice(1 - true)
+-e	ellipticce(-7/3)	elliptice(10/3)
+-e	ellipticce(0.5)	1.3506438810476755025201747353387
+-e	ellipke(0)	[pi/2, pi/2]
+-e	ellipke(1)	[inf, 1]
+-e	ellipke(-1)	[sqrt(2)*gamma(1/4)^2/(8sqrt(pi)), elliptice(-1)]
+-e	ellipke(1/2)	[gamma(1/4)^2/(4sqrt(pi)), elliptice(1/2)]
+-e	ellipke(2)	[elliptick(2), elliptice(2)]
+-e	ellipke(i)	[elliptick(i), elliptice(i)]
+-e	ellipke(inf)	[elliptick(inf), elliptice(inf)]
+-e	ellipke(-inf)	[elliptick(-inf), elliptice(-inf)]
+-e	ellipke(undefined)	[undefined, undefined]
+-e	ellipke(10^20)	[elliptick(100000000000000000000), elliptice(100000000000000000000)]
+-e	ellipke(10^(-20))	[elliptick(1/100000000000000000000), elliptice(1/100000000000000000000)]
+-e	ellipke(x)	[elliptick(x), elliptice(x)]
+-e	ellipke([])	[[], []]
+-e	ellipke([1, 2])	[[inf, elliptick(2)], [1, elliptice(2)]]
+-e	ellipke("text")	[elliptick("text"), elliptice("text")]
+-e	ellipke(true)	[elliptick(true), elliptice(true)]
+-e	ellipke(-7/3)	[elliptick(-7/3), elliptice(-7/3)]
+-e	ellipke(0.5)	[1.8540746773013719184338503471953, 1.3506438810476755025201747353387]
+-e	num2str(0)	"0"
+-e	num2str(1)	"1"
+-e	num2str(-1)	"-1"
+-e	num2str(1/2)	"0.5"
+-e	num2str(2)	"2"
+-e	num2str(i)	"i"
+-e	num2str(inf)	"inf"
+-e	num2str(-inf)	"-inf"
+-e	num2str(undefined)	"undefined"
+-e	num2str(10^20)	"100000000000000000000"
+-e	num2str(10^(-20))	"1e-20"
+-e	num2str(x)	"x"
+-e	num2str([])	[]
+-e	num2str([1, 2])	["1", "2"]
+-e	num2str("text")	"text"
+-e	num2str(true)	"1"
+-e	num2str(-7/3)	"-2.3333"
+-e	num2str(0.5)	"0.5"
+-e	int2str(0)	"0"
+-e	int2str(1)	"1"
+-e	int2str(-1)	"-1"
+-e	int2str(1/2)	"1"
+-e	int2str(2)	"2"
+-e	int2str(i)	"i"
+-e	int2str(inf)	error: undefined value: inf
+-e	int2str(-inf)	error: undefined value: inf
+-e	int2str(undefined)	"undefined"
+-e	int2str(10^20)	"100000000000000000000"
+-e	int2str(10^(-20))	"0"
+-e	int2str(x)	"round(x)"
+-e	int2str([])	[]
+-e	int2str([1, 2])	["1", "2"]
+-e	int2str("text")	"round("text")"
+-e	int2str(true)	error: no numeric evaluation for true
+-e	int2str(-7/3)	"-2"
+-e	int2str(0.5)	"1"
+-e	mat2str(0)	"0"
+-e	mat2str(1)	"1"
+-e	mat2str(-1)	"-1"
+-e	mat2str(1/2)	"0.5"
+-e	mat2str(2)	"2"
+-e	mat2str(i)	"i"
+-e	mat2str(inf)	"inf"
+-e	mat2str(-inf)	"-inf"
+-e	mat2str(undefined)	"undefined"
+-e	mat2str(10^20)	"100000000000000000000"
+-e	mat2str(10^(-20))	"1e-20"
+-e	mat2str(x)	"x"
+-e	mat2str([])	"[]"
+-e	mat2str([1, 2])	"[1 2]"
+-e	mat2str("text")	"text"
+-e	mat2str(true)	"1"
+-e	mat2str(-7/3)	"-2.33333333333333"
+-e	mat2str(0.5)	"0.5"
+-e	tostring(0)	"0"
+-e	tostring(1)	"1"
+-e	tostring(-1)	"-1"
+-e	tostring(1/2)	"1/2"
+-e	tostring(2)	"2"
+-e	tostring(i)	"i"
+-e	tostring(inf)	"inf"
+-e	tostring(-inf)	"-inf"
+-e	tostring(undefined)	"undefined"
+-e	tostring(10^20)	"100000000000000000000"
+-e	tostring(10^(-20))	"1/100000000000000000000"
+-e	tostring(x)	"x"
+-e	tostring([])	[]
+-e	tostring([1, 2])	["1", "2"]
+-e	tostring("text")	"text"
+-e	tostring(true)	"true"
+-e	tostring(-7/3)	"-7/3"
+-e	tostring(0.5)	"1/2"
+-e	dec2bin(0)	"0"
+-e	dec2bin(1)	"1"
+-e	dec2bin(-1)	error: dec2bin needs whole numbers that are not negative, -1 is none
+-e	dec2bin(1/2)	error: dec2bin needs whole numbers that are not negative, 1/2 is none
+-e	dec2bin(2)	"10"
+-e	dec2bin(i)	error: dec2bin needs whole numbers that are not negative, i is none
+-e	dec2bin(inf)	error: dec2bin needs whole numbers that are not negative, inf is none
+-e	dec2bin(-inf)	error: dec2bin needs whole numbers that are not negative, -inf is none
+-e	dec2bin(undefined)	error: dec2bin needs whole numbers that are not negative, undefined is none
+-e	dec2bin(10^20)	"1010110101111000111010111100010110101100011000100000000000000000000"
+-e	dec2bin(10^(-20))	error: dec2bin needs whole numbers that are not negative, 1/100000000000000000000 is none
+-e	dec2bin(x)	error: dec2bin needs whole numbers that are not negative, x is none
+-e	dec2bin([])	[]
+-e	dec2bin([1, 2])	["01", "10"]
+-e	dec2bin("text")	error: dec2bin needs whole numbers that are not negative, "text" is none
+-e	dec2bin(true)	error: dec2bin needs whole numbers that are not negative, true is none
+-e	dec2bin(-7/3)	error: dec2bin needs whole numbers that are not negative, -7/3 is none
+-e	dec2bin(0.5)	error: dec2bin needs whole numbers that are not negative, 1/2 is none
+-e	dec2hex(0)	"0"
+-e	dec2hex(1)	"1"
+-e	dec2hex(-1)	error: dec2hex needs whole numbers that are not negative, -1 is none
+-e	dec2hex(1/2)	error: dec2hex needs whole numbers that are not negative, 1/2 is none
+-e	dec2hex(2)	"2"
+-e	dec2hex(i)	error: dec2hex needs whole numbers that are not negative, i is none
+-e	dec2hex(inf)	error: dec2hex needs whole numbers that are not negative, inf is none
+-e	dec2hex(-inf)	error: dec2hex needs whole numbers that are not negative, -inf is none
+-e	dec2hex(undefined)	error: dec2hex needs whole numbers that are not negative, undefined is none
+-e	dec2hex(10^20)	"56BC75E2D63100000"
+-e	dec2hex(10^(-20))	error: dec2hex needs whole numbers that are not negative, 1/100000000000000000000 is none
+-e	dec2hex(x)	error: dec2hex needs whole numbers that are not negative, x is none
+-e	dec2hex([])	[]
+-e	dec2hex([1, 2])	["1", "2"]
+-e	dec2hex("text")	error: dec2hex needs whole numbers that are not negative, "text" is none
+-e	dec2hex(true)	error: dec2hex needs whole numbers that are not negative, true is none
+-e	dec2hex(-7/3)	error: dec2hex needs whole numbers that are not negative, -7/3 is none
+-e	dec2hex(0.5)	error: dec2hex needs whole numbers that are not negative, 1/2 is none
+-e	bin2dec(0)	error: bin2dec needs a text in quotes, 0 is none
+-e	bin2dec(1)	error: bin2dec needs a text in quotes, 1 is none
+-e	bin2dec(-1)	error: bin2dec needs a text in quotes, -1 is none
+-e	bin2dec(1/2)	error: bin2dec needs a text in quotes, 1/2 is none
+-e	bin2dec(2)	error: bin2dec needs a text in quotes, 2 is none
+-e	bin2dec(i)	error: bin2dec needs a text in quotes, i is none
+-e	bin2dec(inf)	error: bin2dec needs a text in quotes, inf is none
+-e	bin2dec(-inf)	error: bin2dec needs a text in quotes, -inf is none
+-e	bin2dec(undefined)	error: bin2dec needs a text in quotes, undefined is none
+-e	bin2dec(10^20)	error: bin2dec needs a text in quotes, 100000000000000000000 is none
+-e	bin2dec(10^(-20))	error: bin2dec needs a text in quotes, 1/100000000000000000000 is none
+-e	bin2dec(x)	error: bin2dec needs a text in quotes, x is none
+-e	bin2dec([])	[]
+-e	bin2dec([1, 2])	error: bin2dec needs a text in quotes, 1 is none
+-e	bin2dec("text")	error: bin2dec: "text" is no number written in base 2
+-e	bin2dec(true)	error: bin2dec needs a text in quotes, true is none
+-e	bin2dec(-7/3)	error: bin2dec needs a text in quotes, -7/3 is none
+-e	bin2dec(0.5)	error: bin2dec needs a text in quotes, 1/2 is none
+-e	hex2dec(0)	error: hex2dec needs a text in quotes, 0 is none
+-e	hex2dec(1)	error: hex2dec needs a text in quotes, 1 is none
+-e	hex2dec(-1)	error: hex2dec needs a text in quotes, -1 is none
+-e	hex2dec(1/2)	error: hex2dec needs a text in quotes, 1/2 is none
+-e	hex2dec(2)	error: hex2dec needs a text in quotes, 2 is none
+-e	hex2dec(i)	error: hex2dec needs a text in quotes, i is none
+-e	hex2dec(inf)	error: hex2dec needs a text in quotes, inf is none
+-e	hex2dec(-inf)	error: hex2dec needs a text in quotes, -inf is none
+-e	hex2dec(undefined)	error: hex2dec needs a text in quotes, undefined is none
+-e	hex2dec(10^20)	error: hex2dec needs a text in quotes, 100000000000000000000 is none
+-e	hex2dec(10^(-20))	error: hex2dec needs a text in quotes, 1/100000000000000000000 is none
+-e	hex2dec(x)	error: hex2dec needs a text in quotes, x is none
+-e	hex2dec([])	[]
+-e	hex2dec([1, 2])	error: hex2dec needs a text in quotes, 1 is none
+-e	hex2dec("text")	error: hex2dec: "text" is no number written in base 16
+-e	hex2dec(true)	error: hex2dec needs a text in quotes, true is none
+-e	hex2dec(-7/3)	error: hex2dec needs a text in quotes, -7/3 is none
+-e	hex2dec(0.5)	error: hex2dec needs a text in quotes, 1/2 is none
+-e	char(0)	" "
+-e	char(1)	""
+-e	char(-1)	error: char: -1 is no number of a character
+-e	char(1/2)	error: char: 1/2 is no number of a character
+-e	char(2)	""
+-e	char(i)	error: char: i is no number of a character
+-e	char(inf)	error: char: inf is no number of a character
+-e	char(-inf)	error: char: -inf is no number of a character
+-e	char(undefined)	error: char: undefined is no number of a character
+-e	char(10^20)	error: char: 100000000000000000000 is no number of a character
+-e	char(10^(-20))	error: char: 1/100000000000000000000 is no number of a character
+-e	char(x)	error: char: x is no number of a character
+-e	char([])	""
+-e	char([1, 2])	""
+-e	char("text")	"text"
+-e	char(true)	error: char: true is no number of a character
+-e	char(-7/3)	error: char: -7/3 is no number of a character
+-e	char(0.5)	error: char: 1/2 is no number of a character
+-e	double(0)	0
+-e	double(1)	1
+-e	double(-1)	-1
+-e	double(1/2)	0.5
+-e	double(2)	2
+-e	double(i)	i
+-e	double(inf)	inf
+-e	double(-inf)	-inf
+-e	double(undefined)	undefined
+-e	double(10^20)	100000000000000000000
+-e	double(10^(-20))	1e-20
+-e	double(x)	x
+-e	double([])	[]
+-e	double([1, 2])	[1, 2]
+-e	double("text")	[116, 101, 120, 116]
+-e	double(true)	true
+-e	double(-7/3)	-2.3333333333333333333333333333333
+-e	double(0.5)	0.5
+-e	strcat(0)	"0"
+-e	strcat(1)	"1"
+-e	strcat(-1)	"-1"
+-e	strcat(1/2)	"0.5"
+-e	strcat(2)	"2"
+-e	strcat(i)	"i"
+-e	strcat(inf)	"inf"
+-e	strcat(-inf)	"-inf"
+-e	strcat(undefined)	"undefined"
+-e	strcat(10^20)	"100000000000000000000"
+-e	strcat(10^(-20))	"1e-20"
+-e	strcat(x)	"x"
+-e	strcat([])	error: no numeric evaluation for []
+-e	strcat([1, 2])	error: no numeric evaluation for [1, 2]
+-e	strcat("text")	"text"
+-e	strcat(true)	"1"
+-e	strcat(-7/3)	"-2.3333"
+-e	strcat(0.5)	"0.5"
+-e	strlength(0)	error: strlength needs a text in quotes, 0 is none
+-e	strlength(1)	error: strlength needs a text in quotes, 1 is none
+-e	strlength(-1)	error: strlength needs a text in quotes, -1 is none
+-e	strlength(1/2)	error: strlength needs a text in quotes, 1/2 is none
+-e	strlength(2)	error: strlength needs a text in quotes, 2 is none
+-e	strlength(i)	error: strlength needs a text in quotes, i is none
+-e	strlength(inf)	error: strlength needs a text in quotes, inf is none
+-e	strlength(-inf)	error: strlength needs a text in quotes, -inf is none
+-e	strlength(undefined)	error: strlength needs a text in quotes, undefined is none
+-e	strlength(10^20)	error: strlength needs a text in quotes, 100000000000000000000 is none
+-e	strlength(10^(-20))	error: strlength needs a text in quotes, 1/100000000000000000000 is none
+-e	strlength(x)	error: strlength needs a text in quotes, x is none
+-e	strlength([])	[]
+-e	strlength([1, 2])	error: strlength needs a text in quotes, 1 is none
+-e	strlength("text")	4
+-e	strlength(true)	error: strlength needs a text in quotes, true is none
+-e	strlength(-7/3)	error: strlength needs a text in quotes, -7/3 is none
+-e	strlength(0.5)	error: strlength needs a text in quotes, 1/2 is none
+-e	upper(0)	error: upper needs a text in quotes, 0 is none
+-e	upper(1)	error: upper needs a text in quotes, 1 is none
+-e	upper(-1)	error: upper needs a text in quotes, -1 is none
+-e	upper(1/2)	error: upper needs a text in quotes, 1/2 is none
+-e	upper(2)	error: upper needs a text in quotes, 2 is none
+-e	upper(i)	error: upper needs a text in quotes, i is none
+-e	upper(inf)	error: upper needs a text in quotes, inf is none
+-e	upper(-inf)	error: upper needs a text in quotes, -inf is none
+-e	upper(undefined)	error: upper needs a text in quotes, undefined is none
+-e	upper(10^20)	error: upper needs a text in quotes, 100000000000000000000 is none
+-e	upper(10^(-20))	error: upper needs a text in quotes, 1/100000000000000000000 is none
+-e	upper(x)	error: upper needs a text in quotes, x is none
+-e	upper([])	[]
+-e	upper([1, 2])	error: upper needs a text in quotes, 1 is none
+-e	upper("text")	"TEXT"
+-e	upper(true)	error: upper needs a text in quotes, true is none
+-e	upper(-7/3)	error: upper needs a text in quotes, -7/3 is none
+-e	upper(0.5)	error: upper needs a text in quotes, 1/2 is none
+-e	lower(0)	error: lower needs a text in quotes, 0 is none
+-e	lower(1)	error: lower needs a text in quotes, 1 is none
+-e	lower(-1)	error: lower needs a text in quotes, -1 is none
+-e	lower(1/2)	error: lower needs a text in quotes, 1/2 is none
+-e	lower(2)	error: lower needs a text in quotes, 2 is none
+-e	lower(i)	error: lower needs a text in quotes, i is none
+-e	lower(inf)	error: lower needs a text in quotes, inf is none
+-e	lower(-inf)	error: lower needs a text in quotes, -inf is none
+-e	lower(undefined)	error: lower needs a text in quotes, undefined is none
+-e	lower(10^20)	error: lower needs a text in quotes, 100000000000000000000 is none
+-e	lower(10^(-20))	error: lower needs a text in quotes, 1/100000000000000000000 is none
+-e	lower(x)	error: lower needs a text in quotes, x is none
+-e	lower([])	[]
+-e	lower([1, 2])	error: lower needs a text in quotes, 1 is none
+-e	lower("text")	"text"
+-e	lower(true)	error: lower needs a text in quotes, true is none
+-e	lower(-7/3)	error: lower needs a text in quotes, -7/3 is none
+-e	lower(0.5)	error: lower needs a text in quotes, 1/2 is none
+-e	strtrim(0)	error: strtrim needs a text in quotes, 0 is none
+-e	strtrim(1)	error: strtrim needs a text in quotes, 1 is none
+-e	strtrim(-1)	error: strtrim needs a text in quotes, -1 is none
+-e	strtrim(1/2)	error: strtrim needs a text in quotes, 1/2 is none
+-e	strtrim(2)	error: strtrim needs a text in quotes, 2 is none
+-e	strtrim(i)	error: strtrim needs a text in quotes, i is none
+-e	strtrim(inf)	error: strtrim needs a text in quotes, inf is none
+-e	strtrim(-inf)	error: strtrim needs a text in quotes, -inf is none
+-e	strtrim(undefined)	error: strtrim needs a text in quotes, undefined is none
+-e	strtrim(10^20)	error: strtrim needs a text in quotes, 100000000000000000000 is none
+-e	strtrim(10^(-20))	error: strtrim needs a text in quotes, 1/100000000000000000000 is none
+-e	strtrim(x)	error: strtrim needs a text in quotes, x is none
+-e	strtrim([])	[]
+-e	strtrim([1, 2])	error: strtrim needs a text in quotes, 1 is none
+-e	strtrim("text")	"text"
+-e	strtrim(true)	error: strtrim needs a text in quotes, true is none
+-e	strtrim(-7/3)	error: strtrim needs a text in quotes, -7/3 is none
+-e	strtrim(0.5)	error: strtrim needs a text in quotes, 1/2 is none
+-e	strsplit(0)	error: strsplit needs a text in quotes, 0 is none
+-e	strsplit(1)	error: strsplit needs a text in quotes, 1 is none
+-e	strsplit(-1)	error: strsplit needs a text in quotes, -1 is none
+-e	strsplit(1/2)	error: strsplit needs a text in quotes, 1/2 is none
+-e	strsplit(2)	error: strsplit needs a text in quotes, 2 is none
+-e	strsplit(i)	error: strsplit needs a text in quotes, i is none
+-e	strsplit(inf)	error: strsplit needs a text in quotes, inf is none
+-e	strsplit(-inf)	error: strsplit needs a text in quotes, -inf is none
+-e	strsplit(undefined)	error: strsplit needs a text in quotes, undefined is none
+-e	strsplit(10^20)	error: strsplit needs a text in quotes, 100000000000000000000 is none
+-e	strsplit(10^(-20))	error: strsplit needs a text in quotes, 1/100000000000000000000 is none
+-e	strsplit(x)	error: strsplit needs a text in quotes, x is none
+-e	strsplit([])	error: strsplit needs a text in quotes, [] is none
+-e	strsplit([1, 2])	error: strsplit needs a text in quotes, [1, 2] is none
+-e	strsplit("text")	["text"]
+-e	strsplit(true)	error: strsplit needs a text in quotes, true is none
+-e	strsplit(-7/3)	error: strsplit needs a text in quotes, -7/3 is none
+-e	strsplit(0.5)	error: strsplit needs a text in quotes, 1/2 is none
+-e	strjoin(0)	error: strjoin([texts], between)
+-e	strjoin(1)	error: strjoin([texts], between)
+-e	strjoin(-1)	error: strjoin([texts], between)
+-e	strjoin(1/2)	error: strjoin([texts], between)
+-e	strjoin(2)	error: strjoin([texts], between)
+-e	strjoin(i)	error: strjoin([texts], between)
+-e	strjoin(inf)	error: strjoin([texts], between)
+-e	strjoin(-inf)	error: strjoin([texts], between)
+-e	strjoin(undefined)	error: strjoin([texts], between)
+-e	strjoin(10^20)	error: strjoin([texts], between)
+-e	strjoin(10^(-20))	error: strjoin([texts], between)
+-e	strjoin(x)	error: strjoin([texts], between)
+-e	strjoin([])	""
+-e	strjoin([1, 2])	"1 2"
+-e	strjoin("text")	error: strjoin([texts], between)
+-e	strjoin(true)	error: strjoin([texts], between)
+-e	strjoin(-7/3)	error: strjoin([texts], between)
+-e	strjoin(0.5)	error: strjoin([texts], between)
+-e	blanks(0)	""
+-e	blanks(1)	" "
+-e	blanks(-1)	error: the number of blanks must be a whole number from 0 to 1000000, not -1
+-e	blanks(1/2)	error: the number of blanks must be a whole number from 0 to 1000000, not 1/2
+-e	blanks(2)	"  "
+-e	blanks(i)	error: the number of blanks must be a whole number from 0 to 1000000, not i
+-e	blanks(inf)	error: the number of blanks must be a whole number from 0 to 1000000, not inf
+-e	blanks(-inf)	error: the number of blanks must be a whole number from 0 to 1000000, not -inf
+-e	blanks(undefined)	error: the number of blanks must be a whole number from 0 to 1000000, not undefined
+-e	blanks(10^20)	error: the number of blanks must be a whole number from 0 to 1000000, not 100000000000000000000
+-e	blanks(10^(-20))	error: the number of blanks must be a whole number from 0 to 1000000, not 1/100000000000000000000
+-e	blanks(x)	error: the number of blanks must be a whole number from 0 to 1000000, not x
+-e	blanks([])	error: the number of blanks must be a whole number from 0 to 1000000, not []
+-e	blanks([1, 2])	error: the number of blanks must be a whole number from 0 to 1000000, not [1, 2]
+-e	blanks("text")	error: the number of blanks must be a whole number from 0 to 1000000, not "text"
+-e	blanks(true)	error: the number of blanks must be a whole number from 0 to 1000000, not true
+-e	blanks(-7/3)	error: the number of blanks must be a whole number from 0 to 1000000, not -7/3
+-e	blanks(0.5)	error: the number of blanks must be a whole number from 0 to 1000000, not 1/2
+-e	isletter(0)	error: isletter needs a text in quotes, 0 is none
+-e	isletter(1)	error: isletter needs a text in quotes, 1 is none
+-e	isletter(-1)	error: isletter needs a text in quotes, -1 is none
+-e	isletter(1/2)	error: isletter needs a text in quotes, 1/2 is none
+-e	isletter(2)	error: isletter needs a text in quotes, 2 is none
+-e	isletter(i)	error: isletter needs a text in quotes, i is none
+-e	isletter(inf)	error: isletter needs a text in quotes, inf is none
+-e	isletter(-inf)	error: isletter needs a text in quotes, -inf is none
+-e	isletter(undefined)	error: isletter needs a text in quotes, undefined is none
+-e	isletter(10^20)	error: isletter needs a text in quotes, 100000000000000000000 is none
+-e	isletter(10^(-20))	error: isletter needs a text in quotes, 1/100000000000000000000 is none
+-e	isletter(x)	error: isletter needs a text in quotes, x is none
+-e	isletter([])	error: isletter needs a text in quotes, [] is none
+-e	isletter([1, 2])	error: isletter needs a text in quotes, [1, 2] is none
+-e	isletter("text")	[true, true, true, true]
+-e	isletter(true)	error: isletter needs a text in quotes, true is none
+-e	isletter(-7/3)	error: isletter needs a text in quotes, -7/3 is none
+-e	isletter(0.5)	error: isletter needs a text in quotes, 1/2 is none
+-e	isspace(0)	error: isspace needs a text in quotes, 0 is none
+-e	isspace(1)	error: isspace needs a text in quotes, 1 is none
+-e	isspace(-1)	error: isspace needs a text in quotes, -1 is none
+-e	isspace(1/2)	error: isspace needs a text in quotes, 1/2 is none
+-e	isspace(2)	error: isspace needs a text in quotes, 2 is none
+-e	isspace(i)	error: isspace needs a text in quotes, i is none
+-e	isspace(inf)	error: isspace needs a text in quotes, inf is none
+-e	isspace(-inf)	error: isspace needs a text in quotes, -inf is none
+-e	isspace(undefined)	error: isspace needs a text in quotes, undefined is none
+-e	isspace(10^20)	error: isspace needs a text in quotes, 100000000000000000000 is none
+-e	isspace(10^(-20))	error: isspace needs a text in quotes, 1/100000000000000000000 is none
+-e	isspace(x)	error: isspace needs a text in quotes, x is none
+-e	isspace([])	error: isspace needs a text in quotes, [] is none
+-e	isspace([1, 2])	error: isspace needs a text in quotes, [1, 2] is none
+-e	isspace("text")	[false, false, false, false]
+-e	isspace(true)	error: isspace needs a text in quotes, true is none
+-e	isspace(-7/3)	error: isspace needs a text in quotes, -7/3 is none
+-e	isspace(0.5)	error: isspace needs a text in quotes, 1/2 is none
+-e	ischar(0)	false
+-e	ischar(1)	false
+-e	ischar(-1)	false
+-e	ischar(1/2)	false
+-e	ischar(2)	false
+-e	ischar(i)	false
+-e	ischar(inf)	false
+-e	ischar(-inf)	false
+-e	ischar(undefined)	false
+-e	ischar(10^20)	false
+-e	ischar(10^(-20))	false
+-e	ischar(x)	false
+-e	ischar([])	false
+-e	ischar([1, 2])	false
+-e	ischar("text")	true
+-e	ischar(true)	false
+-e	ischar(-7/3)	false
+-e	ischar(0.5)	false
+-e	isnumeric(0)	true
+-e	isnumeric(1)	true
+-e	isnumeric(-1)	true
+-e	isnumeric(1/2)	true
+-e	isnumeric(2)	true
+-e	isnumeric(i)	true
+-e	isnumeric(inf)	true
+-e	isnumeric(-inf)	true
+-e	isnumeric(undefined)	true
+-e	isnumeric(10^20)	true
+-e	isnumeric(10^(-20))	true
+-e	isnumeric(x)	false
+-e	isnumeric([])	true
+-e	isnumeric([1, 2])	true
+-e	isnumeric("text")	false
+-e	isnumeric(true)	false
+-e	isnumeric(-7/3)	true
+-e	isnumeric(0.5)	true
+-e	islogical(0)	false
+-e	islogical(1)	false
+-e	islogical(-1)	false
+-e	islogical(1/2)	false
+-e	islogical(2)	false
+-e	islogical(i)	false
+-e	islogical(inf)	false
+-e	islogical(-inf)	false
+-e	islogical(undefined)	false
+-e	islogical(10^20)	false
+-e	islogical(10^(-20))	false
+-e	islogical(x)	false
+-e	islogical([])	false
+-e	islogical([1, 2])	false
+-e	islogical("text")	false
+-e	islogical(true)	true
+-e	islogical(-7/3)	false
+-e	islogical(0.5)	false
+-e	logical(0)	false
+-e	logical(1)	true
+-e	logical(-1)	true
+-e	logical(1/2)	true
+-e	logical(2)	true
+-e	logical(i)	true
+-e	logical(inf)	error: whether inf is zero cannot be told
+-e	logical(-inf)	error: whether -inf is zero cannot be told
+-e	logical(undefined)	error: whether undefined is zero cannot be told
+-e	logical(10^20)	true
+-e	logical(10^(-20))	true
+-e	logical(x)	error: x is neither true nor false
+-e	logical([])	[]
+-e	logical([1, 2])	[true, true]
+-e	logical("text")	error: "text" is neither true nor false
+-e	logical(true)	true
+-e	logical(-7/3)	true
+-e	logical(0.5)	true
+-e	sprintf(0)	error: sprintf needs a text in quotes, 0 is none
+-e	sprintf(1)	error: sprintf needs a text in quotes, 1 is none
+-e	sprintf(-1)	error: sprintf needs a text in quotes, -1 is none
+-e	sprintf(1/2)	error: sprintf needs a text in quotes, 1/2 is none
+-e	sprintf(2)	error: sprintf needs a text in quotes, 2 is none
+-e	sprintf(i)	error: sprintf needs a text in quotes, i is none
+-e	sprintf(inf)	error: sprintf needs a text in quotes, inf is none
+-e	sprintf(-inf)	error: sprintf needs a text in quotes, -inf is none
+-e	sprintf(undefined)	error: sprintf needs a text in quotes, undefined is none
+-e	sprintf(10^20)	error: sprintf needs a text in quotes, 100000000000000000000 is none
+-e	sprintf(10^(-20))	error: sprintf needs a text in quotes, 1/100000000000000000000 is none
+-e	sprintf(x)	error: sprintf needs a text in quotes, x is none
+-e	sprintf([])	error: sprintf needs a text in quotes, [] is none
+-e	sprintf([1, 2])	error: sprintf needs a text in quotes, [1, 2] is none
+-e	sprintf("text")	"text"
+-e	sprintf(true)	error: sprintf needs a text in quotes, true is none
+-e	sprintf(-7/3)	error: sprintf needs a text in quotes, -7/3 is none
+-e	sprintf(0.5)	error: sprintf needs a text in quotes, 1/2 is none
+-e	rats(0)	"0"
+-e	rats(1)	"1"
+-e	rats(-1)	"-1"
+-e	rats(1/2)	"1/2"
+-e	rats(2)	"2"
+-e	rats(i)	error: rat: i is not a real number
+-e	rats(inf)	error: rat: inf is not a real number
+-e	rats(-inf)	error: rat: -inf is not a real number
+-e	rats(undefined)	error: rat: undefined is not a real number
+-e	rats(10^20)	"100000000000000000000"
+-e	rats(10^(-20))	"1/100000000000000000000"
+-e	rats(x)	error: rat: x is not a real number
+-e	rats([])	[]
+-e	rats([1, 2])	["1", "2"]
+-e	rats("text")	error: rat: "text" is not a real number
+-e	rats(true)	error: rat: true is not a real number
+-e	rats(-7/3)	"-7/3"
+-e	rats(0.5)	"1/2"
+-e	normpdf(0)	sqrt(2)/(2sqrt(pi))
+-e	normpdf(1)	sqrt(2)/(2sqrt(e)*sqrt(pi))
+-e	normpdf(-1)	sqrt(2)/(2sqrt(e)*sqrt(pi))
+-e	normpdf(1/2)	sqrt(2)/(2e^(1/8)*sqrt(pi))
+-e	normpdf(2)	sqrt(2)/(2e^2*sqrt(pi))
+-e	normpdf(i)	sqrt(2)*sqrt(e)/(2sqrt(pi))
+-e	normpdf(inf)	0
+-e	normpdf(-inf)	0
+-e	normpdf(undefined)	undefined
+-e	normpdf(10^20)	sqrt(2)/(2e^5000000000000000000000000000000000000000*sqrt(pi))
+-e	normpdf(10^(-20))	sqrt(2)/(2e^(1/20000000000000000000000000000000000000000)*sqrt(pi))
+-e	normpdf(x)	sqrt(2)*e^(-x^2/2)/(2sqrt(pi))
+-e	normpdf([])	[]
+-e	normpdf([1, 2])	[sqrt(2)/(2sqrt(e)*sqrt(pi)), sqrt(2)/(2e^2*sqrt(pi))]
+-e	normpdf("text")	sqrt(2)*e^(-"text"^2/2)/(2sqrt(pi))
+-e	normpdf(true)	sqrt(2)*e^(-(true)^2/2)/(2sqrt(pi))
+-e	normpdf(-7/3)	sqrt(2)/(2e^(49/18)*sqrt(pi))
+-e	normpdf(0.5)	0.35206532676429947777468044159652
+-e	normcdf(0)	1/2
+-e	normcdf(1)	1/2 + erf(sqrt(2)/2)/2
+-e	normcdf(-1)	1/2 - erf(sqrt(2)/2)/2
+-e	normcdf(1/2)	1/2 + erf(sqrt(2)/4)/2
+-e	normcdf(2)	1/2 + erf(sqrt(2))/2
+-e	normcdf(i)	1/2 + erf(i*sqrt(2)/2)/2
+-e	normcdf(inf)	1
+-e	normcdf(-inf)	0
+-e	normcdf(undefined)	undefined
+-e	normcdf(10^20)	1/2 + erf(50000000000000000000sqrt(2))/2
+-e	normcdf(10^(-20))	1/2 + erf(sqrt(2)/200000000000000000000)/2
+-e	normcdf(x)	erf(sqrt(2)*x/2)/2 + 1/2
+-e	normcdf([])	[]
+-e	normcdf([1, 2])	[1/2 + erf(sqrt(2)/2)/2, 1/2 + erf(sqrt(2))/2]
+-e	normcdf("text")	erf(sqrt(2)*"text"/2)/2 + 1/2
+-e	normcdf(true)	1/2 + erf(sqrt(2)*true/2)/2
+-e	normcdf(-7/3)	1/2 - erf(7sqrt(2)/6)/2
+-e	normcdf(0.5)	0.69146246127401310363770461060834
+-e	norminv(0)	-inf
+-e	norminv(1)	inf
+-e	norminv(-1)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(1/2)	0
+-e	norminv(2)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(i)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(-inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(undefined)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(10^20)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(10^(-20))	sqrt(2)*erfinv(-49999999999999999999/50000000000000000000)
+-e	norminv(x)	sqrt(2)*erfinv(2x - 1)
+-e	norminv([])	[]
+-e	norminv([1, 2])	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv("text")	sqrt(2)*erfinv(2*"text" - 1)
+-e	norminv(true)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	norminv(0.5)	0
+-e	normstat(0)	[0, 1]
+-e	normstat(1)	[1, 1]
+-e	normstat(-1)	[-1, 1]
+-e	normstat(1/2)	[1/2, 1]
+-e	normstat(2)	[2, 1]
+-e	normstat(i)	[i, 1]
+-e	normstat(inf)	[inf, 1]
+-e	normstat(-inf)	[-inf, 1]
+-e	normstat(undefined)	[undefined, 1]
+-e	normstat(10^20)	[100000000000000000000, 1]
+-e	normstat(10^(-20))	[1/100000000000000000000, 1]
+-e	normstat(x)	[x, 1]
+-e	normstat([])	[[], 1]
+-e	normstat([1, 2])	[[1, 2], 1]
+-e	normstat("text")	["text", 1]
+-e	normstat(true)	[true, 1]
+-e	normstat(-7/3)	[-7/3, 1]
+-e	normstat(0.5)	[0.5, 1]
+-e	unifpdf(0)	1
+-e	unifpdf(1)	1
+-e	unifpdf(-1)	0
+-e	unifpdf(1/2)	1
+-e	unifpdf(2)	0
+-e	unifpdf(i)	piecewise(0 <= i and i <= 1, 1, 0)
+-e	unifpdf(inf)	0
+-e	unifpdf(-inf)	0
+-e	unifpdf(undefined)	piecewise(0 <= undefined and undefined <= 1, 1, 0)
+-e	unifpdf(10^20)	0
+-e	unifpdf(10^(-20))	1
+-e	unifpdf(x)	piecewise(0 <= x and x <= 1, 1, 0)
+-e	unifpdf([])	[]
+-e	unifpdf([1, 2])	[1, 0]
+-e	unifpdf("text")	piecewise(0 <= "text" and "text" <= 1, 1, 0)
+-e	unifpdf(true)	piecewise(0 <= true and true <= 1, 1, 0)
+-e	unifpdf(-7/3)	0
+-e	unifpdf(0.5)	1
+-e	unifcdf(0)	0
+-e	unifcdf(1)	1
+-e	unifcdf(-1)	0
+-e	unifcdf(1/2)	1/2
+-e	unifcdf(2)	1
+-e	unifcdf(i)	piecewise(i < 0, 0, i <= 1, i, 1)
+-e	unifcdf(inf)	1
+-e	unifcdf(-inf)	0
+-e	unifcdf(undefined)	piecewise(undefined < 0, 0, undefined <= 1, undefined, 1)
+-e	unifcdf(10^20)	1
+-e	unifcdf(10^(-20))	1/100000000000000000000
+-e	unifcdf(x)	piecewise(x < 0, 0, x <= 1, x, 1)
+-e	unifcdf([])	[]
+-e	unifcdf([1, 2])	[1, 1]
+-e	unifcdf("text")	piecewise("text" < 0, 0, "text" <= 1, "text", 1)
+-e	unifcdf(true)	piecewise(true < 0, 0, true <= 1, true, 1)
+-e	unifcdf(-7/3)	0
+-e	unifcdf(0.5)	0.5
+-e	unifinv(0)	0
+-e	unifinv(1)	1
+-e	unifinv(-1)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(1/2)	1/2
+-e	unifinv(2)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(i)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(-inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(undefined)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(10^20)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(10^(-20))	1/100000000000000000000
+-e	unifinv(x)	x
+-e	unifinv([])	[]
+-e	unifinv([1, 2])	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv("text")	"text"
+-e	unifinv(true)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	unifinv(0.5)	0.5
+-e	unifstat(0)	[1/2, 1/12]
+-e	unifstat(1)	error: uniformdist(a, b) needs a < b
+-e	unifstat(-1)	[0, 1/3]
+-e	unifstat(1/2)	[3/4, 1/48]
+-e	unifstat(2)	error: uniformdist(a, b) needs a < b
+-e	unifstat(i)	[1/2 + i/2, -i/6]
+-e	unifstat(inf)	error: uniformdist(a, b) needs a < b
+-e	unifstat(-inf)	[-inf, inf]
+-e	unifstat(undefined)	[undefined, undefined]
+-e	unifstat(10^20)	error: uniformdist(a, b) needs a < b
+-e	unifstat(10^(-20))	[100000000000000000001/200000000000000000000, 3333333333333333333266666666666666666667/40000000000000000000000000000000000000000]
+-e	unifstat(x)	[x/2 + 1/2, (1 - x)^2/12]
+-e	unifstat([])	[[], []]
+-e	unifstat([1, 2])	[[1, 3/2], [0, 1/12]]
+-e	unifstat("text")	["text"/2 + 1/2, (1 - "text")^2/12]
+-e	unifstat(true)	[1/2 + true/2, (1 - true)^2/12]
+-e	unifstat(-7/3)	[-2/3, 25/27]
+-e	unifstat(0.5)	[0.75, 0.020833333333333333333333333333333]
+-e	exppdf(0)	1
+-e	exppdf(1)	1/e
+-e	exppdf(-1)	0
+-e	exppdf(1/2)	1/sqrt(e)
+-e	exppdf(2)	1/e^2
+-e	exppdf(i)	piecewise(i >= 0, e^(-i), 0)
+-e	exppdf(inf)	0
+-e	exppdf(-inf)	0
+-e	exppdf(undefined)	piecewise(undefined >= 0, undefined, 0)
+-e	exppdf(10^20)	1/e^100000000000000000000
+-e	exppdf(10^(-20))	1/e^(1/100000000000000000000)
+-e	exppdf(x)	piecewise(x >= 0, e^(-x), 0)
+-e	exppdf([])	[]
+-e	exppdf([1, 2])	[1/e, 1/e^2]
+-e	exppdf("text")	piecewise("text" >= 0, e^(-"text"), 0)
+-e	exppdf(true)	piecewise(true >= 0, e^(-true), 0)
+-e	exppdf(-7/3)	0
+-e	exppdf(0.5)	0.60653065971263342360379953499118
+-e	expcdf(0)	0
+-e	expcdf(1)	1 - 1/e
+-e	expcdf(-1)	0
+-e	expcdf(1/2)	1 - 1/sqrt(e)
+-e	expcdf(2)	1 - 1/e^2
+-e	expcdf(i)	piecewise(i >= 0, 1 - e^(-i), 0)
+-e	expcdf(inf)	1
+-e	expcdf(-inf)	0
+-e	expcdf(undefined)	piecewise(undefined >= 0, undefined, 0)

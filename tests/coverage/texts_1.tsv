@@ -1,0 +1,700 @@
+-e	strlength("banana")	6
+-e	length("banana")	6
+-e	upper("banana")	"BANANA"
+-e	lower("banana")	"banana"
+-e	reverse("banana")	"ananab"
+-e	strtrim("  banana ")	"banana"
+-e	strcat("banana", "!")	"banana!"
+-e	strcat("banana", "banana")	"bananabanana"
+-e	strrep("banana", "a", "A")	"bAnAnA"
+-e	erase("banana", "a")	"bnn"
+-e	strcmp("banana", "banana")	true
+-e	strcmp("banana", "bananax")	false
+-e	strcmpi("banana", "BANANA")	true
+-e	startswith("bananaz", "banana")	true
+-e	endswith("zbanana", "banana")	true
+-e	contains("<banana>", "banana")	true
+-e	count("banana", "a")	3
+-e	char(double("banana")) == "banana"	true
+-e	double("banana")	[98, 97, 110, 97, 110, 97]
+-e	reverse(reverse("banana")) == "banana"	true
+-e	upper(lower("banana")) == upper("banana")	true
+-e	strlength(strcat("banana", "banana")) == 2*strlength("banana")	true
+-e	strlength(pad("banana", 20))	20
+-e	strtrim(pad("banana", 20)) == strtrim("banana")	true
+-e	pad("banana", 14, "left", "*")	"********banana"
+-e	pad("banana", 14, "right", ".")	"banana........"
+-e	isletter("banana")	[true, true, true, true, true, true]
+-e	isspace("banana")	[false, false, false, false, false, false]
+-e	isstrprop("banana", "digit")	[false, false, false, false, false, false]
+-e	isstrprop("banana", "upper")	[false, false, false, false, false, false]
+-e	ischar("banana")	true
+-e	isnumeric("banana")	false
+-e	isempty("banana")	false
+-e	class("banana")	"char"
+-e	strjoin(strsplit("banana", "a"), "a") == "banana"	true
+-e	strsplit("banana")	["banana"]
+-e	strfind("banana", "a")	[2, 4, 6]
+-e	insertafter("banana", 6, "#")	"banana#"
+-e	insertbefore("banana", 1, "#")	"#banana"
+-e	extractbefore("banana|tail", "|")	"banana"
+-e	extractafter("head|banana", "|")	"banana"
+-e	extractbetween("<banana>", "<", ">")	"banana"
+-e	erase(insertafter("banana", 6, "#"), "#") == "banana"	true
+-e	strncmp("banana1", "banana2", 6)	true
+-e	tostring("banana") == "banana"	true
+-e	sprintf("%s", "banana") == "banana"	true
+-e	sprintf("[%s]", "banana")	"[banana]"
+-e	strlength(blanks(6))	6
+-e	strlength("Hello World")	11
+-e	length("Hello World")	11
+-e	upper("Hello World")	"HELLO WORLD"
+-e	lower("Hello World")	"hello world"
+-e	reverse("Hello World")	"dlroW olleH"
+-e	strtrim("  Hello World ")	"Hello World"
+-e	strcat("Hello World", "!")	"Hello World!"
+-e	strcat("Hello World", "Hello World")	"Hello WorldHello World"
+-e	strrep("Hello World", "a", "A")	"Hello World"
+-e	erase("Hello World", "a")	"Hello World"
+-e	strcmp("Hello World", "Hello World")	true
+-e	strcmp("Hello World", "Hello Worldx")	false
+-e	strcmpi("Hello World", "HELLO WORLD")	true
+-e	startswith("Hello Worldz", "Hello World")	true
+-e	endswith("zHello World", "Hello World")	true
+-e	contains("<Hello World>", "Hello World")	true
+-e	count("Hello World", "a")	0
+-e	char(double("Hello World")) == "Hello World"	true
+-e	double("Hello World")	[72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+-e	reverse(reverse("Hello World")) == "Hello World"	true
+-e	upper(lower("Hello World")) == upper("Hello World")	true
+-e	strlength(strcat("Hello World", "Hello World")) == 2*strlength("Hello World")	true
+-e	strlength(pad("Hello World", 20))	20
+-e	strtrim(pad("Hello World", 20)) == strtrim("Hello World")	true
+-e	pad("Hello World", 14, "left", "*")	"***Hello World"
+-e	pad("Hello World", 14, "right", ".")	"Hello World..."
+-e	isletter("Hello World")	[true, true, true, true, true, false, true, true, true, true, true]
+-e	isspace("Hello World")	[false, false, false, false, false, true, false, false, false, false, false]
+-e	isstrprop("Hello World", "digit")	[false, false, false, false, false, false, false, false, false, false, false]
+-e	isstrprop("Hello World", "upper")	[true, false, false, false, false, false, true, false, false, false, false]
+-e	ischar("Hello World")	true
+-e	isnumeric("Hello World")	false
+-e	isempty("Hello World")	false
+-e	class("Hello World")	"char"
+-e	strjoin(strsplit("Hello World", "a"), "a") == "Hello World"	true
+-e	strsplit("Hello World")	["Hello", "World"]
+-e	strfind("Hello World", "a")	[]
+-e	insertafter("Hello World", 11, "#")	"Hello World#"
+-e	insertbefore("Hello World", 1, "#")	"#Hello World"
+-e	extractbefore("Hello World|tail", "|")	"Hello World"
+-e	extractafter("head|Hello World", "|")	"Hello World"
+-e	extractbetween("<Hello World>", "<", ">")	"Hello World"
+-e	erase(insertafter("Hello World", 11, "#"), "#") == "Hello World"	true
+-e	strncmp("Hello World1", "Hello World2", 11)	true
+-e	tostring("Hello World") == "Hello World"	true
+-e	sprintf("%s", "Hello World") == "Hello World"	true
+-e	sprintf("[%s]", "Hello World")	"[Hello World]"
+-e	strlength(blanks(11))	11
+-e	strlength("a")	1
+-e	length("a")	1
+-e	upper("a")	"A"
+-e	lower("a")	"a"
+-e	reverse("a")	"a"
+-e	strtrim("  a ")	"a"
+-e	strcat("a", "!")	"a!"
+-e	strcat("a", "a")	"aa"
+-e	strrep("a", "a", "A")	"A"
+-e	erase("a", "a")	""
+-e	strcmp("a", "a")	true
+-e	strcmp("a", "ax")	false
+-e	strcmpi("a", "A")	true
+-e	startswith("az", "a")	true
+-e	endswith("za", "a")	true
+-e	contains("<a>", "a")	true
+-e	count("a", "a")	1
+-e	char(double("a")) == "a"	true
+-e	reverse(reverse("a")) == "a"	true
+-e	upper(lower("a")) == upper("a")	true
+-e	strlength(strcat("a", "a")) == 2*strlength("a")	true
+-e	strlength(pad("a", 20))	20
+-e	strtrim(pad("a", 20)) == strtrim("a")	true
+-e	pad("a", 14, "left", "*")	"*************a"
+-e	pad("a", 14, "right", ".")	"a............."
+-e	isletter("a")	[true]
+-e	isspace("a")	[false]
+-e	isstrprop("a", "digit")	[false]
+-e	isstrprop("a", "upper")	[false]
+-e	ischar("a")	true
+-e	isnumeric("a")	false
+-e	isempty("a")	false
+-e	class("a")	"char"
+-e	strjoin(strsplit("a", "a"), "a") == "a"	true
+-e	strsplit("a")	["a"]
+-e	strfind("a", "a")	[1]
+-e	insertafter("a", 1, "#")	"a#"
+-e	insertbefore("a", 1, "#")	"#a"
+-e	extractbefore("a|tail", "|")	"a"
+-e	extractafter("head|a", "|")	"a"
+-e	extractbetween("<a>", "<", ">")	"a"
+-e	erase(insertafter("a", 1, "#"), "#") == "a"	true
+-e	strncmp("a1", "a2", 1)	true
+-e	tostring("a") == "a"	true
+-e	sprintf("%s", "a") == "a"	true
+-e	sprintf("[%s]", "a")	"[a]"
+-e	strlength(blanks(1))	1
+-e	strlength("")	0
+-e	length("")	0
+-e	upper("")	""
+-e	lower("")	""
+-e	reverse("")	""
+-e	strtrim("   ")	""
+-e	strcat("", "!")	"!"
+-e	strcat("", "")	""
+-e	strrep("", "a", "A")	""
+-e	erase("", "a")	""
+-e	strcmp("", "")	true
+-e	strcmp("", "x")	false
+-e	strcmpi("", "")	true
+-e	startswith("z", "")	true
+-e	endswith("z", "")	true
+-e	count("", "a")	0
+-e	reverse(reverse("")) == ""	true
+-e	upper(lower("")) == upper("")	true
+-e	strlength(strcat("", "")) == 2*strlength("")	true
+-e	strlength(pad("", 20))	20
+-e	strtrim(pad("", 20)) == strtrim("")	true
+-e	pad("", 14, "left", "*")	"**************"
+-e	pad("", 14, "right", ".")	".............."
+-e	ischar("")	true
+-e	isnumeric("")	false
+-e	isempty("")	true
+-e	class("")	"char"
+-e	strfind("", "a")	[]
+-e	insertafter("", 0, "#")	"#"
+-e	extractbefore("|tail", "|")	""
+-e	extractafter("head|", "|")	""
+-e	extractbetween("<>", "<", ">")	""
+-e	erase(insertafter("", 0, "#"), "#") == ""	true
+-e	strncmp("1", "2", 0)	true
+-e	tostring("") == ""	true
+-e	sprintf("%s", "") == ""	true
+-e	sprintf("[%s]", "")	"[]"
+-e	strlength(blanks(0))	0
+-e	strlength("x y  z")	6
+-e	length("x y  z")	6
+-e	upper("x y  z")	"X Y  Z"
+-e	lower("x y  z")	"x y  z"
+-e	reverse("x y  z")	"z  y x"
+-e	strtrim("  x y  z ")	"x y  z"
+-e	strcat("x y  z", "!")	"x y  z!"
+-e	strcat("x y  z", "x y  z")	"x y  zx y  z"
+-e	strrep("x y  z", "a", "A")	"x y  z"
+-e	erase("x y  z", "a")	"x y  z"
+-e	strcmp("x y  z", "x y  z")	true
+-e	strcmp("x y  z", "x y  zx")	false
+-e	strcmpi("x y  z", "X Y  Z")	true
+-e	startswith("x y  zz", "x y  z")	true
+-e	endswith("zx y  z", "x y  z")	true
+-e	contains("<x y  z>", "x y  z")	true
+-e	count("x y  z", "a")	0
+-e	char(double("x y  z")) == "x y  z"	true
+-e	double("x y  z")	[120, 32, 121, 32, 32, 122]
+-e	reverse(reverse("x y  z")) == "x y  z"	true
+-e	upper(lower("x y  z")) == upper("x y  z")	true
+-e	strlength(strcat("x y  z", "x y  z")) == 2*strlength("x y  z")	true
+-e	strlength(pad("x y  z", 20))	20
+-e	strtrim(pad("x y  z", 20)) == strtrim("x y  z")	true
+-e	pad("x y  z", 14, "left", "*")	"********x y  z"
+-e	pad("x y  z", 14, "right", ".")	"x y  z........"
+-e	isletter("x y  z")	[true, false, true, false, false, true]
+-e	isspace("x y  z")	[false, true, false, true, true, false]
+-e	isstrprop("x y  z", "digit")	[false, false, false, false, false, false]
+-e	isstrprop("x y  z", "upper")	[false, false, false, false, false, false]
+-e	ischar("x y  z")	true
+-e	isnumeric("x y  z")	false
+-e	isempty("x y  z")	false
+-e	class("x y  z")	"char"
+-e	strjoin(strsplit("x y  z", "a"), "a") == "x y  z"	true
+-e	strsplit("x y  z")	["x", "y", "z"]
+-e	strfind("x y  z", "a")	[]
+-e	insertafter("x y  z", 6, "#")	"x y  z#"
+-e	insertbefore("x y  z", 1, "#")	"#x y  z"
+-e	extractbefore("x y  z|tail", "|")	"x y  z"
+-e	extractafter("head|x y  z", "|")	"x y  z"
+-e	extractbetween("<x y  z>", "<", ">")	"x y  z"
+-e	erase(insertafter("x y  z", 6, "#"), "#") == "x y  z"	true
+-e	strncmp("x y  z1", "x y  z2", 6)	true
+-e	tostring("x y  z") == "x y  z"	true
+-e	sprintf("%s", "x y  z") == "x y  z"	true
+-e	sprintf("[%s]", "x y  z")	"[x y  z]"
+-e	strlength("MiXeD Case")	10
+-e	length("MiXeD Case")	10
+-e	upper("MiXeD Case")	"MIXED CASE"
+-e	lower("MiXeD Case")	"mixed case"
+-e	reverse("MiXeD Case")	"esaC DeXiM"
+-e	strtrim("  MiXeD Case ")	"MiXeD Case"
+-e	strcat("MiXeD Case", "!")	"MiXeD Case!"
+-e	strcat("MiXeD Case", "MiXeD Case")	"MiXeD CaseMiXeD Case"
+-e	strrep("MiXeD Case", "a", "A")	"MiXeD CAse"
+-e	erase("MiXeD Case", "a")	"MiXeD Cse"
+-e	strcmp("MiXeD Case", "MiXeD Case")	true
+-e	strcmp("MiXeD Case", "MiXeD Casex")	false
+-e	strcmpi("MiXeD Case", "MIXED CASE")	true
+-e	startswith("MiXeD Casez", "MiXeD Case")	true
+-e	endswith("zMiXeD Case", "MiXeD Case")	true
+-e	contains("<MiXeD Case>", "MiXeD Case")	true
+-e	count("MiXeD Case", "a")	1
+-e	char(double("MiXeD Case")) == "MiXeD Case"	true
+-e	double("MiXeD Case")	[77, 105, 88, 101, 68, 32, 67, 97, 115, 101]
+-e	reverse(reverse("MiXeD Case")) == "MiXeD Case"	true
+-e	upper(lower("MiXeD Case")) == upper("MiXeD Case")	true
+-e	strlength(strcat("MiXeD Case", "MiXeD Case")) == 2*strlength("MiXeD Case")	true
+-e	strlength(pad("MiXeD Case", 20))	20
+-e	strtrim(pad("MiXeD Case", 20)) == strtrim("MiXeD Case")	true
+-e	pad("MiXeD Case", 14, "left", "*")	"****MiXeD Case"
+-e	pad("MiXeD Case", 14, "right", ".")	"MiXeD Case...."
+-e	isletter("MiXeD Case")	[true, true, true, true, true, false, true, true, true, true]
+-e	isspace("MiXeD Case")	[false, false, false, false, false, true, false, false, false, false]
+-e	isstrprop("MiXeD Case", "digit")	[false, false, false, false, false, false, false, false, false, false]
+-e	isstrprop("MiXeD Case", "upper")	[true, false, true, false, true, false, true, false, false, false]
+-e	ischar("MiXeD Case")	true
+-e	isnumeric("MiXeD Case")	false
+-e	isempty("MiXeD Case")	false
+-e	class("MiXeD Case")	"char"
+-e	strjoin(strsplit("MiXeD Case", "a"), "a") == "MiXeD Case"	true
+-e	strsplit("MiXeD Case")	["MiXeD", "Case"]
+-e	strfind("MiXeD Case", "a")	[8]
+-e	insertafter("MiXeD Case", 10, "#")	"MiXeD Case#"
+-e	insertbefore("MiXeD Case", 1, "#")	"#MiXeD Case"
+-e	extractbefore("MiXeD Case|tail", "|")	"MiXeD Case"
+-e	extractafter("head|MiXeD Case", "|")	"MiXeD Case"
+-e	extractbetween("<MiXeD Case>", "<", ">")	"MiXeD Case"
+-e	erase(insertafter("MiXeD Case", 10, "#"), "#") == "MiXeD Case"	true
+-e	strncmp("MiXeD Case1", "MiXeD Case2", 10)	true
+-e	tostring("MiXeD Case") == "MiXeD Case"	true
+-e	sprintf("%s", "MiXeD Case") == "MiXeD Case"	true
+-e	sprintf("[%s]", "MiXeD Case")	"[MiXeD Case]"
+-e	strlength(blanks(10))	10
+-e	strlength("12345")	5
+-e	length("12345")	5
+-e	upper("12345")	"12345"
+-e	lower("12345")	"12345"
+-e	reverse("12345")	"54321"
+-e	strtrim("  12345 ")	"12345"
+-e	strcat("12345", "!")	"12345!"
+-e	strcat("12345", "12345")	"1234512345"
+-e	strrep("12345", "a", "A")	"12345"
+-e	erase("12345", "a")	"12345"
+-e	strcmp("12345", "12345")	true
+-e	strcmp("12345", "12345x")	false
+-e	strcmpi("12345", "12345")	true
+-e	startswith("12345z", "12345")	true
+-e	endswith("z12345", "12345")	true
+-e	contains("<12345>", "12345")	true
+-e	count("12345", "a")	0
+-e	char(double("12345")) == "12345"	true
+-e	double("12345")	[49, 50, 51, 52, 53]
+-e	reverse(reverse("12345")) == "12345"	true
+-e	upper(lower("12345")) == upper("12345")	true
+-e	strlength(strcat("12345", "12345")) == 2*strlength("12345")	true
+-e	strlength(pad("12345", 20))	20
+-e	strtrim(pad("12345", 20)) == strtrim("12345")	true
+-e	pad("12345", 14, "left", "*")	"*********12345"
+-e	pad("12345", 14, "right", ".")	"12345........."
+-e	isletter("12345")	[false, false, false, false, false]
+-e	isspace("12345")	[false, false, false, false, false]
+-e	isstrprop("12345", "digit")	[true, true, true, true, true]
+-e	isstrprop("12345", "upper")	[false, false, false, false, false]
+-e	ischar("12345")	true
+-e	isnumeric("12345")	false
+-e	isempty("12345")	false
+-e	class("12345")	"char"
+-e	strjoin(strsplit("12345", "a"), "a") == "12345"	true
+-e	strsplit("12345")	["12345"]
+-e	strfind("12345", "a")	[]
+-e	insertafter("12345", 5, "#")	"12345#"
+-e	insertbefore("12345", 1, "#")	"#12345"
+-e	extractbefore("12345|tail", "|")	"12345"
+-e	extractafter("head|12345", "|")	"12345"
+-e	extractbetween("<12345>", "<", ">")	"12345"
+-e	erase(insertafter("12345", 5, "#"), "#") == "12345"	true
+-e	strncmp("123451", "123452", 5)	true
+-e	tostring("12345") == "12345"	true
+-e	sprintf("%s", "12345") == "12345"	true
+-e	sprintf("[%s]", "12345")	"[12345]"
+-e	strlength(blanks(5))	5
+-e	strlength("tab-and_dot.")	12
+-e	length("tab-and_dot.")	12
+-e	upper("tab-and_dot.")	"TAB-AND_DOT."
+-e	lower("tab-and_dot.")	"tab-and_dot."
+-e	reverse("tab-and_dot.")	".tod_dna-bat"
+-e	strtrim("  tab-and_dot. ")	"tab-and_dot."
+-e	strcat("tab-and_dot.", "!")	"tab-and_dot.!"
+-e	strcat("tab-and_dot.", "tab-and_dot.")	"tab-and_dot.tab-and_dot."
+-e	strrep("tab-and_dot.", "a", "A")	"tAb-And_dot."
+-e	erase("tab-and_dot.", "a")	"tb-nd_dot."
+-e	strcmp("tab-and_dot.", "tab-and_dot.")	true
+-e	strcmp("tab-and_dot.", "tab-and_dot.x")	false
+-e	strcmpi("tab-and_dot.", "TAB-AND_DOT.")	true
+-e	startswith("tab-and_dot.z", "tab-and_dot.")	true
+-e	endswith("ztab-and_dot.", "tab-and_dot.")	true
+-e	contains("<tab-and_dot.>", "tab-and_dot.")	true
+-e	count("tab-and_dot.", "a")	2
+-e	char(double("tab-and_dot.")) == "tab-and_dot."	true
+-e	double("tab-and_dot.")	[116, 97, 98, 45, 97, 110, 100, 95, 100, 111, 116, 46]
+-e	reverse(reverse("tab-and_dot.")) == "tab-and_dot."	true
+-e	upper(lower("tab-and_dot.")) == upper("tab-and_dot.")	true
+-e	strlength(strcat("tab-and_dot.", "tab-and_dot.")) == 2*strlength("tab-and_dot.")	true
+-e	strlength(pad("tab-and_dot.", 20))	20
+-e	strtrim(pad("tab-and_dot.", 20)) == strtrim("tab-and_dot.")	true
+-e	pad("tab-and_dot.", 14, "left", "*")	"**tab-and_dot."
+-e	pad("tab-and_dot.", 14, "right", ".")	"tab-and_dot..."
+-e	isletter("tab-and_dot.")	[true, true, true, false, true, true, true, false, true, true, true, false]
+-e	isspace("tab-and_dot.")	[false, false, false, false, false, false, false, false, false, false, false, false]
+-e	isstrprop("tab-and_dot.", "digit")	[false, false, false, false, false, false, false, false, false, false, false, false]
+-e	isstrprop("tab-and_dot.", "upper")	[false, false, false, false, false, false, false, false, false, false, false, false]
+-e	ischar("tab-and_dot.")	true
+-e	isnumeric("tab-and_dot.")	false
+-e	isempty("tab-and_dot.")	false
+-e	class("tab-and_dot.")	"char"
+-e	strjoin(strsplit("tab-and_dot.", "a"), "a") == "tab-and_dot."	true
+-e	strsplit("tab-and_dot.")	["tab-and_dot."]
+-e	strfind("tab-and_dot.", "a")	[2, 5]
+-e	insertafter("tab-and_dot.", 12, "#")	"tab-and_dot.#"
+-e	insertbefore("tab-and_dot.", 1, "#")	"#tab-and_dot."
+-e	extractbefore("tab-and_dot.|tail", "|")	"tab-and_dot."
+-e	extractafter("head|tab-and_dot.", "|")	"tab-and_dot."
+-e	extractbetween("<tab-and_dot.>", "<", ">")	"tab-and_dot."
+-e	erase(insertafter("tab-and_dot.", 12, "#"), "#") == "tab-and_dot."	true
+-e	strncmp("tab-and_dot.1", "tab-and_dot.2", 12)	true
+-e	tostring("tab-and_dot.") == "tab-and_dot."	true
+-e	sprintf("%s", "tab-and_dot.") == "tab-and_dot."	true
+-e	sprintf("[%s]", "tab-and_dot.")	"[tab-and_dot.]"
+-e	strlength(blanks(12))	12
+-e	strlength("zażółć")	6
+-e	length("zażółć")	6
+-e	upper("zażółć")	"ZAŻÓŁĆ"
+-e	lower("zażółć")	"zażółć"
+-e	reverse("zażółć")	"ćłóżaz"
+-e	strtrim("  zażółć ")	"zażółć"
+-e	strcat("zażółć", "!")	"zażółć!"
+-e	strcat("zażółć", "zażółć")	"zażółćzażółć"
+-e	strrep("zażółć", "a", "A")	"zAżółć"
+-e	erase("zażółć", "a")	"zżółć"
+-e	strcmp("zażółć", "zażółć")	true
+-e	strcmp("zażółć", "zażółćx")	false
+-e	strcmpi("zażółć", "ZAŻÓŁĆ")	true
+-e	startswith("zażółćz", "zażółć")	true
+-e	endswith("zzażółć", "zażółć")	true
+-e	contains("<zażółć>", "zażółć")	true
+-e	count("zażółć", "a")	1
+-e	char(double("zażółć")) == "zażółć"	true
+-e	double("zażółć")	[122, 97, 380, 243, 322, 263]
+-e	reverse(reverse("zażółć")) == "zażółć"	true
+-e	upper(lower("zażółć")) == upper("zażółć")	true
+-e	strlength(strcat("zażółć", "zażółć")) == 2*strlength("zażółć")	true
+-e	strlength(pad("zażółć", 20))	20
+-e	strtrim(pad("zażółć", 20)) == strtrim("zażółć")	true
+-e	pad("zażółć", 14, "left", "*")	"********zażółć"
+-e	pad("zażółć", 14, "right", ".")	"zażółć........"
+-e	isletter("zażółć")	[true, true, true, true, true, true]
+-e	isspace("zażółć")	[false, false, false, false, false, false]
+-e	isstrprop("zażółć", "digit")	[false, false, false, false, false, false]
+-e	isstrprop("zażółć", "upper")	[false, false, false, false, false, false]
+-e	ischar("zażółć")	true
+-e	isnumeric("zażółć")	false
+-e	isempty("zażółć")	false
+-e	class("zażółć")	"char"
+-e	strjoin(strsplit("zażółć", "a"), "a") == "zażółć"	true
+-e	strsplit("zażółć")	["zażółć"]
+-e	strfind("zażółć", "a")	[2]
+-e	insertafter("zażółć", 6, "#")	"zażółć#"
+-e	insertbefore("zażółć", 1, "#")	"#zażółć"
+-e	extractbefore("zażółć|tail", "|")	"zażółć"
+-e	extractafter("head|zażółć", "|")	"zażółć"
+-e	extractbetween("<zażółć>", "<", ">")	"zażółć"
+-e	erase(insertafter("zażółć", 6, "#"), "#") == "zażółć"	true
+-e	strncmp("zażółć1", "zażółć2", 6)	true
+-e	tostring("zażółć") == "zażółć"	true
+-e	sprintf("%s", "zażółć") == "zażółć"	true
+-e	sprintf("[%s]", "zażółć")	"[zażółć]"
+-e	strlength("the end")	7
+-e	length("the end")	7
+-e	upper("the end")	"THE END"
+-e	lower("the end")	"the end"
+-e	reverse("the end")	"dne eht"
+-e	strtrim("  the end ")	"the end"
+-e	strcat("the end", "!")	"the end!"
+-e	strcat("the end", "the end")	"the endthe end"
+-e	strrep("the end", "a", "A")	"the end"
+-e	erase("the end", "a")	"the end"
+-e	strcmp("the end", "the end")	true
+-e	strcmp("the end", "the endx")	false
+-e	strcmpi("the end", "THE END")	true
+-e	startswith("the endz", "the end")	true
+-e	endswith("zthe end", "the end")	true
+-e	contains("<the end>", "the end")	true
+-e	count("the end", "a")	0
+-e	char(double("the end")) == "the end"	true
+-e	double("the end")	[116, 104, 101, 32, 101, 110, 100]
+-e	reverse(reverse("the end")) == "the end"	true
+-e	upper(lower("the end")) == upper("the end")	true
+-e	strlength(strcat("the end", "the end")) == 2*strlength("the end")	true
+-e	strlength(pad("the end", 20))	20
+-e	strtrim(pad("the end", 20)) == strtrim("the end")	true
+-e	pad("the end", 14, "left", "*")	"*******the end"
+-e	pad("the end", 14, "right", ".")	"the end......."
+-e	isletter("the end")	[true, true, true, false, true, true, true]
+-e	isspace("the end")	[false, false, false, true, false, false, false]
+-e	isstrprop("the end", "digit")	[false, false, false, false, false, false, false]
+-e	isstrprop("the end", "upper")	[false, false, false, false, false, false, false]
+-e	ischar("the end")	true
+-e	isnumeric("the end")	false
+-e	isempty("the end")	false
+-e	class("the end")	"char"
+-e	strjoin(strsplit("the end", "a"), "a") == "the end"	true
+-e	strsplit("the end")	["the", "end"]
+-e	strfind("the end", "a")	[]
+-e	insertafter("the end", 7, "#")	"the end#"
+-e	insertbefore("the end", 1, "#")	"#the end"
+-e	extractbefore("the end|tail", "|")	"the end"
+-e	extractafter("head|the end", "|")	"the end"
+-e	extractbetween("<the end>", "<", ">")	"the end"
+-e	erase(insertafter("the end", 7, "#"), "#") == "the end"	true
+-e	strncmp("the end1", "the end2", 7)	true
+-e	tostring("the end") == "the end"	true
+-e	sprintf("%s", "the end") == "the end"	true
+-e	sprintf("[%s]", "the end")	"[the end]"
+-e	strlength(blanks(7))	7
+-e	str2num(num2str(0))	0
+-e	int2str(0)	"0"
+-e	num2str(0)	"0"
+-e	bin2dec(dec2bin(0))	0
+-e	hex2dec(dec2hex(0))	0
+-e	dec2bin(0)	"0"
+-e	dec2hex(0)	"0"
+-e	sprintf("%d", 0)	"0"
+-e	sprintf("%x", 0)	"0"
+-e	sprintf("%o", 0)	"0"
+-e	sprintf("%8d|", 0)	"       0|"
+-e	sprintf("%-8d|", 0)	"0       |"
+-e	sprintf("%08d", 0)	"00000000"
+-e	sprintf("%+d", 0)	"+0"
+-e	str2double("0")	0
+-e	tostring(0)	"0"
+-e	mat2str([0, 0])	"[0 0]"
+-e	dec2base(0, 2)	"0"
+-e	base2dec("0", 2)	0
+-e	dec2base(0, 3)	"0"
+-e	base2dec("0", 3)	0
+-e	dec2base(0, 7)	"0"
+-e	base2dec("0", 7)	0
+-e	dec2base(0, 8)	"0"
+-e	base2dec("0", 8)	0
+-e	dec2base(0, 16)	"0"
+-e	base2dec("0", 16)	0
+-e	dec2base(0, 36)	"0"
+-e	base2dec("0", 36)	0
+-e	str2num(num2str(1))	1
+-e	int2str(1)	"1"
+-e	num2str(1)	"1"
+-e	bin2dec(dec2bin(1))	1
+-e	hex2dec(dec2hex(1))	1
+-e	dec2bin(1)	"1"
+-e	dec2hex(1)	"1"
+-e	sprintf("%d", 1)	"1"
+-e	sprintf("%x", 1)	"1"
+-e	sprintf("%o", 1)	"1"
+-e	sprintf("%8d|", 1)	"       1|"
+-e	sprintf("%-8d|", 1)	"1       |"
+-e	sprintf("%08d", 1)	"00000001"
+-e	sprintf("%+d", 1)	"+1"
+-e	str2double("1")	1
+-e	tostring(1)	"1"
+-e	mat2str([1, 1])	"[1 1]"
+-e	dec2base(1, 2)	"1"
+-e	base2dec("1", 2)	1
+-e	dec2base(1, 3)	"1"
+-e	base2dec("1", 3)	1
+-e	dec2base(1, 7)	"1"
+-e	base2dec("1", 7)	1
+-e	dec2base(1, 8)	"1"
+-e	base2dec("1", 8)	1
+-e	dec2base(1, 16)	"1"
+-e	base2dec("1", 16)	1
+-e	dec2base(1, 36)	"1"
+-e	base2dec("1", 36)	1
+-e	str2num(num2str(7))	7
+-e	int2str(7)	"7"
+-e	num2str(7)	"7"
+-e	bin2dec(dec2bin(7))	7
+-e	hex2dec(dec2hex(7))	7
+-e	dec2bin(7)	"111"
+-e	dec2hex(7)	"7"
+-e	sprintf("%d", 7)	"7"
+-e	sprintf("%x", 7)	"7"
+-e	sprintf("%o", 7)	"7"
+-e	sprintf("%8d|", 7)	"       7|"
+-e	sprintf("%-8d|", 7)	"7       |"
+-e	sprintf("%08d", 7)	"00000007"
+-e	sprintf("%+d", 7)	"+7"
+-e	str2double("7")	7
+-e	tostring(7)	"7"
+-e	mat2str([7, 7])	"[7 7]"
+-e	dec2base(7, 2)	"111"
+-e	base2dec("111", 2)	7
+-e	dec2base(7, 3)	"21"
+-e	base2dec("21", 3)	7
+-e	dec2base(7, 7)	"10"
+-e	base2dec("10", 7)	7
+-e	dec2base(7, 8)	"7"
+-e	base2dec("7", 8)	7
+-e	dec2base(7, 16)	"7"
+-e	base2dec("7", 16)	7
+-e	dec2base(7, 36)	"7"
+-e	base2dec("7", 36)	7
+-e	str2num(num2str(42))	42
+-e	int2str(42)	"42"
+-e	num2str(42)	"42"
+-e	bin2dec(dec2bin(42))	42
+-e	hex2dec(dec2hex(42))	42
+-e	dec2bin(42)	"101010"
+-e	dec2hex(42)	"2A"
+-e	sprintf("%d", 42)	"42"
+-e	sprintf("%x", 42)	"2a"
+-e	sprintf("%o", 42)	"52"
+-e	sprintf("%8d|", 42)	"      42|"
+-e	sprintf("%-8d|", 42)	"42      |"
+-e	sprintf("%08d", 42)	"00000042"
+-e	sprintf("%+d", 42)	"+42"
+-e	str2double("42")	42
+-e	tostring(42)	"42"
+-e	mat2str([42, 42])	"[42 42]"
+-e	dec2base(42, 2)	"101010"
+-e	base2dec("101010", 2)	42
+-e	dec2base(42, 3)	"1120"
+-e	base2dec("1120", 3)	42
+-e	dec2base(42, 7)	"60"
+-e	base2dec("60", 7)	42
+-e	dec2base(42, 8)	"52"
+-e	base2dec("52", 8)	42
+-e	dec2base(42, 16)	"2A"
+-e	base2dec("2A", 16)	42
+-e	dec2base(42, 36)	"16"
+-e	base2dec("16", 36)	42
+-e	str2num(num2str(255))	255
+-e	int2str(255)	"255"
+-e	num2str(255)	"255"
+-e	bin2dec(dec2bin(255))	255
+-e	hex2dec(dec2hex(255))	255
+-e	dec2bin(255)	"11111111"
+-e	dec2hex(255)	"FF"
+-e	sprintf("%d", 255)	"255"
+-e	sprintf("%x", 255)	"ff"
+-e	sprintf("%o", 255)	"377"
+-e	sprintf("%8d|", 255)	"     255|"
+-e	sprintf("%-8d|", 255)	"255     |"
+-e	sprintf("%08d", 255)	"00000255"
+-e	sprintf("%+d", 255)	"+255"
+-e	str2double("255")	255
+-e	tostring(255)	"255"
+-e	mat2str([255, 255])	"[255 255]"
+-e	dec2base(255, 2)	"11111111"
+-e	base2dec("11111111", 2)	255
+-e	dec2base(255, 3)	"100110"
+-e	base2dec("100110", 3)	255
+-e	dec2base(255, 7)	"513"
+-e	base2dec("513", 7)	255
+-e	dec2base(255, 8)	"377"
+-e	base2dec("377", 8)	255
+-e	dec2base(255, 16)	"FF"
+-e	base2dec("FF", 16)	255
+-e	dec2base(255, 36)	"73"
+-e	base2dec("73", 36)	255
+-e	str2num(num2str(1000))	1000
+-e	int2str(1000)	"1000"
+-e	num2str(1000)	"1000"
+-e	bin2dec(dec2bin(1000))	1000
+-e	hex2dec(dec2hex(1000))	1000
+-e	dec2bin(1000)	"1111101000"
+-e	dec2hex(1000)	"3E8"
+-e	sprintf("%d", 1000)	"1000"
+-e	sprintf("%x", 1000)	"3e8"
+-e	sprintf("%o", 1000)	"1750"
+-e	sprintf("%8d|", 1000)	"    1000|"
+-e	sprintf("%-8d|", 1000)	"1000    |"
+-e	sprintf("%08d", 1000)	"00001000"
+-e	sprintf("%+d", 1000)	"+1000"
+-e	str2double("1000")	1000
+-e	tostring(1000)	"1000"
+-e	mat2str([1000, 1000])	"[1000 1000]"
+-e	dec2base(1000, 2)	"1111101000"
+-e	base2dec("1111101000", 2)	1000
+-e	dec2base(1000, 3)	"1101001"
+-e	base2dec("1101001", 3)	1000
+-e	dec2base(1000, 7)	"2626"
+-e	base2dec("2626", 7)	1000
+-e	dec2base(1000, 8)	"1750"
+-e	base2dec("1750", 8)	1000
+-e	dec2base(1000, 16)	"3E8"
+-e	base2dec("3E8", 16)	1000
+-e	dec2base(1000, 36)	"RS"
+-e	base2dec("RS", 36)	1000
+-e	str2num(num2str(65535))	65535
+-e	int2str(65535)	"65535"
+-e	num2str(65535)	"65535"
+-e	bin2dec(dec2bin(65535))	65535
+-e	hex2dec(dec2hex(65535))	65535
+-e	dec2bin(65535)	"1111111111111111"
+-e	dec2hex(65535)	"FFFF"
+-e	sprintf("%d", 65535)	"65535"
+-e	sprintf("%x", 65535)	"ffff"
+-e	sprintf("%o", 65535)	"177777"
+-e	sprintf("%8d|", 65535)	"   65535|"
+-e	sprintf("%-8d|", 65535)	"65535   |"
+-e	sprintf("%08d", 65535)	"00065535"
+-e	sprintf("%+d", 65535)	"+65535"
+-e	str2double("65535")	65535
+-e	tostring(65535)	"65535"
+-e	mat2str([65535, 65535])	"[65535 65535]"
+-e	dec2base(65535, 2)	"1111111111111111"
+-e	base2dec("1111111111111111", 2)	65535
+-e	dec2base(65535, 3)	"10022220020"
+-e	base2dec("10022220020", 3)	65535
+-e	dec2base(65535, 7)	"362031"
+-e	base2dec("362031", 7)	65535
+-e	dec2base(65535, 8)	"177777"
+-e	base2dec("177777", 8)	65535
+-e	dec2base(65535, 16)	"FFFF"
+-e	base2dec("FFFF", 16)	65535
+-e	dec2base(65535, 36)	"1EKF"
+-e	base2dec("1EKF", 36)	65535
+-e	str2num(num2str(123456789))	123456789
+-e	int2str(123456789)	"123456789"
+-e	num2str(123456789)	"123456789"
+-e	bin2dec(dec2bin(123456789))	123456789
+-e	hex2dec(dec2hex(123456789))	123456789
+-e	dec2bin(123456789)	"111010110111100110100010101"
+-e	dec2hex(123456789)	"75BCD15"
+-e	sprintf("%d", 123456789)	"123456789"
+-e	sprintf("%x", 123456789)	"75bcd15"
+-e	sprintf("%o", 123456789)	"726746425"
+-e	sprintf("%8d|", 123456789)	"123456789|"
+-e	sprintf("%-8d|", 123456789)	"123456789|"
+-e	sprintf("%08d", 123456789)	"123456789"
+-e	sprintf("%+d", 123456789)	"+123456789"
+-e	str2double("123456789")	123456789
+-e	tostring(123456789)	"123456789"
+-e	mat2str([123456789, 123456789])	"[123456789 123456789]"
+-e	dec2base(123456789, 2)	"111010110111100110100010101"
+-e	base2dec("111010110111100110100010101", 2)	123456789
+-e	dec2base(123456789, 3)	"22121022020212200"
+-e	base2dec("22121022020212200", 3)	123456789
+-e	dec2base(123456789, 7)	"3026236221"
+-e	base2dec("3026236221", 7)	123456789
+-e	dec2base(123456789, 8)	"726746425"
+-e	base2dec("726746425", 8)	123456789
+-e	dec2base(123456789, 16)	"75BCD15"
+-e	base2dec("75BCD15", 16)	123456789
+-e	dec2base(123456789, 36)	"21I3V9"
+-e	base2dec("21I3V9", 36)	123456789
+-e	str2num(num2str(1099511627776))	1099511627776

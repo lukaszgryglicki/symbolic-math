@@ -6,32 +6,26 @@ use symbolic_math::{Session, names};
 /// The text of `--help`: the options, and an example of every kind of operation.
 const USAGE: &str = include_str!("help.txt");
 
+/// A long text for the standard output; a reader that stops early (`| head`) is no failure.
+fn shown(text: &str) -> ExitCode {
+    let _ = std::io::stdout().lock().write_all(text.as_bytes());
+    ExitCode::SUCCESS
+}
+
 fn main() -> ExitCode {
     let mut session = Session::new();
     let mut inputs = Vec::new();
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
-            "-h" | "--help" => {
-                print!("{USAGE}");
-                return ExitCode::SUCCESS;
-            }
+            "-h" | "--help" => return shown(USAGE),
             "-V" | "--version" => {
                 println!("symbolic-math {}", env!("CARGO_PKG_VERSION"));
                 return ExitCode::SUCCESS;
             }
-            "--functions" => {
-                print!("{}", names::functions_help());
-                return ExitCode::SUCCESS;
-            }
-            "--constants" => {
-                print!("{}", names::constants_help());
-                return ExitCode::SUCCESS;
-            }
-            "--units" => {
-                print!("{}", symbolic_math::units::help());
-                return ExitCode::SUCCESS;
-            }
+            "--functions" => return shown(&names::functions_help()),
+            "--constants" => return shown(&names::constants_help()),
+            "--units" => return shown(&symbolic_math::units::help()),
             "-r" | "--real" => session.set_domain(Domain::Real),
             "-q" | "--quaternions" => session.set_domain(Domain::Quaternion),
             "-n" | "--numeric" => session.numeric = true,

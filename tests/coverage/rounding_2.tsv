@@ -1,0 +1,260 @@
+-e	sign(-39/73)	-1
+-e	abs(-39/73) == 39/73	true
+-e	numer(-39/73)	-39
+-e	denom(-39/73)	73
+-e	floor(50/181)	0
+-e	ceil(50/181)	1
+-e	trunc(50/181)	0
+-e	round(50/181)	0
+-e	sign(50/181)	1
+-e	abs(50/181) == 50/181	true
+-e	numer(50/181)	50
+-e	denom(50/181)	181
+-e	floor(-117/17)	-7
+-e	ceil(-117/17)	-6
+-e	trunc(-117/17)	-6
+-e	round(-117/17)	-7
+-e	sign(-117/17)	-1
+-e	abs(-117/17) == 117/17	true
+-e	numer(-117/17)	-117
+-e	denom(-117/17)	17
+-e	floor(43/34)	1
+-e	ceil(43/34)	2
+-e	trunc(43/34)	1
+-e	round(43/34)	1
+-e	sign(43/34)	1
+-e	abs(43/34) == 43/34	true
+-e	numer(43/34)	43
+-e	denom(43/34)	34
+-e	floor(39/29)	1
+-e	ceil(39/29)	2
+-e	trunc(39/29)	1
+-e	round(39/29)	1
+-e	sign(39/29)	1
+-e	abs(39/29) == 39/29	true
+-e	numer(39/29)	39
+-e	denom(39/29)	29
+-e	floor(-178/161)	-2
+-e	ceil(-178/161)	-1
+-e	trunc(-178/161)	-1
+-e	round(-178/161)	-1
+-e	sign(-178/161)	-1
+-e	abs(-178/161) == 178/161	true
+-e	numer(-178/161)	-178
+-e	denom(-178/161)	161
+-e	floor(-195/149)	-2
+-e	ceil(-195/149)	-1
+-e	trunc(-195/149)	-1
+-e	round(-195/149)	-1
+-e	sign(-195/149)	-1
+-e	abs(-195/149) == 195/149	true
+-e	numer(-195/149)	-195
+-e	denom(-195/149)	149
+-e	floor(74/183)	0
+-e	ceil(74/183)	1
+-e	trunc(74/183)	0
+-e	round(74/183)	0
+-e	sign(74/183)	1
+-e	abs(74/183) == 74/183	true
+-e	numer(74/183)	74
+-e	denom(74/183)	183
+-e	floor(15/37)	0
+-e	ceil(15/37)	1
+-e	trunc(15/37)	0
+-e	round(15/37)	0
+-e	sign(15/37)	1
+-e	abs(15/37) == 15/37	true
+-e	numer(15/37)	15
+-e	denom(15/37)	37
+-e	floor(-199/194)	-2
+-e	ceil(-199/194)	-1
+-e	trunc(-199/194)	-1
+-e	round(-199/194)	-1
+-e	sign(-199/194)	-1
+-e	abs(-199/194) == 199/194	true
+-e	numer(-199/194)	-199
+-e	denom(-199/194)	194
+-e	floor(-115/2)	-58
+-e	ceil(-115/2)	-57
+-e	trunc(-115/2)	-57
+-e	round(-115/2)	-58
+-e	sign(-115/2)	-1
+-e	abs(-115/2) == 115/2	true
+-e	numer(-115/2)	-115
+-e	denom(-115/2)	2
+-e	floor(-191/160)	-2
+-e	ceil(-191/160)	-1
+-e	trunc(-191/160)	-1
+-e	round(-191/160)	-1
+-e	sign(-191/160)	-1
+-e	abs(-191/160) == 191/160	true
+-e	numer(-191/160)	-191
+-e	denom(-191/160)	160
+-e	floor(-7/8)	-1
+-e	ceil(-7/8)	0
+-e	trunc(-7/8)	0
+-e	round(-7/8)	-1
+-e	sign(-7/8)	-1
+-e	abs(-7/8) == 7/8	true
+-e	numer(-7/8)	-7
+-e	denom(-7/8)	8
+-e	floor(128/13)	9
+-e	ceil(128/13)	10
+-e	trunc(128/13)	9
+-e	round(128/13)	10
+-e	sign(128/13)	1
+-e	abs(128/13) == 128/13	true
+-e	numer(128/13)	128
+-e	denom(128/13)	13
+-e	floor(11/19)	0
+-e	ceil(11/19)	1
+-e	trunc(11/19)	0
+-e	round(11/19)	1
+-e	sign(11/19)	1
+-e	abs(11/19) == 11/19	true
+-e	numer(11/19)	11
+-e	denom(11/19)	19
+-e	floor(63/62)	1
+-e	ceil(63/62)	2
+-e	trunc(63/62)	1
+-e	round(63/62)	1
+-e	sign(63/62)	1
+-e	abs(63/62) == 63/62	true
+-e	numer(63/62)	63
+-e	denom(63/62)	62
+-e	floor(-177/187)	-1
+-e	ceil(-177/187)	0
+-e	trunc(-177/187)	0
+-e	round(-177/187)	-1
+-e	sign(-177/187)	-1
+-e	abs(-177/187) == 177/187	true
+-e	numer(-177/187)	-177
+-e	denom(-177/187)	187
+-e	floor(-174/103)	-2
+-e	ceil(-174/103)	-1
+-e	trunc(-174/103)	-1
+-e	round(-174/103)	-2
+-e	sign(-174/103)	-1
+-e	abs(-174/103) == 174/103	true
+-e	numer(-174/103)	-174
+-e	denom(-174/103)	103
+-e	floor(-163/131)	-2
+-e	ceil(-163/131)	-1
+-e	trunc(-163/131)	-1
+-e	round(-163/131)	-1
+-e	sign(-163/131)	-1
+-e	abs(-163/131) == 163/131	true
+-e	numer(-163/131)	-163
+-e	denom(-163/131)	131
+-e	floor(-167/22)	-8
+-e	ceil(-167/22)	-7
+-e	trunc(-167/22)	-7
+-e	round(-167/22)	-8
+-e	sign(-167/22)	-1
+-e	abs(-167/22) == 167/22	true
+-e	numer(-167/22)	-167
+-e	denom(-167/22)	22
+-e	floor(66/43)	1
+-e	ceil(66/43)	2
+-e	trunc(66/43)	1
+-e	round(66/43)	2
+-e	sign(66/43)	1
+-e	abs(66/43) == 66/43	true
+-e	numer(66/43)	66
+-e	denom(66/43)	43
+-e	floor(1/14)	0
+-e	ceil(1/14)	1
+-e	trunc(1/14)	0
+-e	round(1/14)	0
+-e	sign(1/14)	1
+-e	abs(1/14) == 1/14	true
+-e	numer(1/14)	1
+-e	denom(1/14)	14
+-e	floor(-83/16)	-6
+-e	ceil(-83/16)	-5
+-e	trunc(-83/16)	-5
+-e	round(-83/16)	-5
+-e	sign(-83/16)	-1
+-e	abs(-83/16) == 83/16	true
+-e	numer(-83/16)	-83
+-e	denom(-83/16)	16
+-e	floor(173/101)	1
+-e	ceil(173/101)	2
+-e	trunc(173/101)	1
+-e	round(173/101)	2
+-e	sign(173/101)	1
+-e	abs(173/101) == 173/101	true
+-e	numer(173/101)	173
+-e	denom(173/101)	101
+-e	floor(-29/64)	-1
+-e	ceil(-29/64)	0
+-e	trunc(-29/64)	0
+-e	round(-29/64)	0
+-e	sign(-29/64)	-1
+-e	abs(-29/64) == 29/64	true
+-e	numer(-29/64)	-29
+-e	denom(-29/64)	64
+-e	floor(91/44)	2
+-e	ceil(91/44)	3
+-e	trunc(91/44)	2
+-e	round(91/44)	2
+-e	sign(91/44)	1
+-e	abs(91/44) == 91/44	true
+-e	numer(91/44)	91
+-e	denom(91/44)	44
+-e	floor(-71/28)	-3
+-e	ceil(-71/28)	-2
+-e	trunc(-71/28)	-2
+-e	round(-71/28)	-3
+-e	sign(-71/28)	-1
+-e	abs(-71/28) == 71/28	true
+-e	numer(-71/28)	-71
+-e	denom(-71/28)	28
+-e	floor(33/89)	0
+-e	ceil(33/89)	1
+-e	trunc(33/89)	0
+-e	round(33/89)	0
+-e	sign(33/89)	1
+-e	abs(33/89) == 33/89	true
+-e	numer(33/89)	33
+-e	denom(33/89)	89
+-e	floor(193/49)	3
+-e	ceil(193/49)	4
+-e	trunc(193/49)	3
+-e	round(193/49)	4
+-e	sign(193/49)	1
+-e	abs(193/49) == 193/49	true
+-e	numer(193/49)	193
+-e	denom(193/49)	49
+-e	floor(18/19)	0
+-e	ceil(18/19)	1
+-e	trunc(18/19)	0
+-e	round(18/19)	1
+-e	sign(18/19)	1
+-e	abs(18/19) == 18/19	true
+-e	numer(18/19)	18
+-e	denom(18/19)	19
+-e	floor(41/70)	0
+-e	ceil(41/70)	1
+-e	trunc(41/70)	0
+-e	round(41/70)	1
+-e	sign(41/70)	1
+-e	abs(41/70) == 41/70	true
+-e	numer(41/70)	41
+-e	denom(41/70)	70
+-e	floor(123)	123
+-e	ceil(123)	123
+-e	trunc(123)	123
+-e	round(123)	123
+-e	sign(123)	1
+-e	abs(123) == 123	true
+-e	numer(123)	123
+-e	denom(123)	1
+-e	floor(-86/15)	-6
+-e	ceil(-86/15)	-5
+-e	trunc(-86/15)	-5
+-e	round(-86/15)	-6
+-e	sign(-86/15)	-1
+-e	abs(-86/15) == 86/15	true
+-e	numer(-86/15)	-86
+-e	denom(-86/15)	15

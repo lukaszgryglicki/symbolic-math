@@ -1,0 +1,24 @@
+-e	fmincon(@(x, y) x^2 + y^2, [0, 0], [], [], [1, 1], [1])	[0.5, 0.5]
+-e	fmincon(@(x, y) (x - 1)^2 + (y - 2)^2, [0, 0], [1, 1], [2], [], [], [0, 0], [])	[0.5, 1.5]
+-e	fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [-1, 2], [1, 2], [1])	[0.50220271891906247260450759409731, 0.24889864054046876369774620295134]
+-e	fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [0.5, 0], [1, 2], [1], [2, 1], [1])	[0.41494431548852437223314235496292, 0.17011136902295125553371529007416]
+-e	fmincon(@(x, y) 1 + x/(1 + y) - 3*x*y + y*(1 + x), [0.5, 1], [], [], [], [], [0, 0], [1, 2])	[1, 2]
+-e	fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [1/4, 1/4], [], [], [], [], [0, 0.2], [0.5, 0.8], @(x, y) [[(x - 1/3)^2 + (y - 1/3)^2 - (1/3)^2], []])	[0.5, 0.25]
+-e	fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [0, 0], [], [], [], [], [], [], @(x, y) x^2 + y^2 - 1)	[0.78641515416842783006654594277742, 0.61769831252339348456755553728674]
+-e	fmincon(@(x, y) x + y, [1, 0], [], [], [], [], [], [], @(x, y) [[], [x^2 + y^2 - 2]])	[-1, -1]
+-e	fmincon(@(x) (x - 3)^2, 0, [], [], [], [], [], 2)	2
+-e	fmincon(@(x) (x - 3)^2, 0)	3
+-e	fmincon(@(x, y, z) x*y*z, [1, 1, 1], [], [], [1, 1, 1], [6], [1, 1, 1], [])	[2, 2, 2]
+-e	fmincon(@(x, y, z) -x*y*z, [1, 1, 1], [[-1, -2, -2], [1, 2, 2]], [0, 72])	[24, 12, 12]
+-e	fmincon(@(x, y) exp(x)*(4x^2 + 2y^2 + 4x*y + 2y + 1), [-1, 1], [], [], [], [], [], [], @(x, y) [[x*y - x - y + 3/2, -x*y - 10], []])	[-9.54740502510427269292941473788, 1.04740502510427269292941473788]
+-e	fmincon(@(x, y) x^2 + y^2, [1, 1], [1, 1], [1, 2])	error: fmincon: a matrix of conditions has a column for every one of the 2 unknowns and a number on the right for every row
+-e	fmincon(@(x, y) x + y, [0, 0])	error: fmincon: the function has no least value where the conditions hold
+-e	fmincon(@(x, y) x^2 + y^2, [0, 0], [], [], [1, 1], [1], [2, 2], [])	error: fmincon: no point was found where the conditions hold and the function is least
+-e	fmincon(@(x, y, z) -x*y*z, [10, 10, 10], [[-1, -2, -2], [1, 2, 2]], [0, 72])	error: fmincon: the function has no least value where the conditions hold
+-e	fmincon(@(x) x^3, 1)	error: fmincon: the function has no least value where the conditions hold
+-e	fmincon(@(x) x^3, 1, [], [], [], [], -2, 5)	-2
+-e	fmincon(@(x, y) (x - 2)^4 + (x - 2y)^2, [0, 3], [], [], [], [], [], [], @(x, y) [[], [x^2 - y]])	[0.94558299341596840692939491473365, 0.89412719743750335160850808186903]
+-e	fmincon(@(x) sin(x), 1, [], [], [], [], 0, 10)	10
+-e	fmincon(@(x, y) x^2 + y^2)	error: fmincon takes 2 to 9 argument(s), 1 given
+-e	fmincon(@(x, y) x^2 + y^2, [1, 1], [], [], [], [], [0], [])	error: fmincon: a bound for every one of the 2 unknowns
+-e	fmincon(5, [1, 1])	error: fmincon needs a function of 2 argument(s); 5 has 0 name(s): @(x) ... says which are the arguments

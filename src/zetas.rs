@@ -292,6 +292,61 @@ fn fresnel(sine: bool, z: &Complex, p: u32) -> Out {
     })
 }
 
+/// Lerch's transcendent `sum_{k >= 0} z^k / (k + a)^s`: the series inside the unit circle,
+/// Hurwitz's zeta function at `z = 1` and `z = -1`.
+pub(crate) fn lerch(z: &Complex, s: &Complex, a: &Complex, p: u32) -> Out {
+    if is_int(a).is_some_and(|n| n <= 0) {
+        return Some(None);
+    }
+    let wp = p + 32;
+    let one = Complex::with_val(wp, 1);
+    if Complex::with_val(wp, z - &one).is_zero() {
+        return hurwitz(s, a, p);
+    }
+    if Complex::with_val(wp, z + &one).is_zero() {
+        // 2^(-s) (zeta(s, a/2) - zeta(s, (a + 1)/2))
+        let half = Complex::with_val(wp, a / 2u32);
+        let next = Complex::with_val(wp, &half + Float::with_val(wp, 0.5));
+        let (Some(low), Some(high)) = (hurwitz(s, &half, wp)?, hurwitz(s, &next, wp)?) else {
+            return Some(None);
+        };
+        let scale = (-Complex::with_val(wp, s * Float::with_val(wp, 2).ln())).exp();
+        return Some(Some(Complex::with_val(p, (low - high) * scale)));
+    }
+    if size(z) > 0.9995 {
+        return None;
+    }
+    let whole = is_int(s).and_then(|n| i32::try_from(n).ok());
+    adaptive(p, &mut |wp| {
+        let zz = Complex::with_val(wp, z);
+        let mut power = Complex::with_val(wp, 1);
+        let mut sum = Complex::new(wp);
+        let mut top = -(1i64 << 40);
+        for k in 0..4_000_000u32 {
+            let base = Complex::with_val(wp, a + k);
+            // (a whole power of a real number is real: no logarithm turns it about)
+            let fall = match whole {
+                Some(n) => Complex::with_val(wp, rug::ops::Pow::pow(&base, -n)),
+                None => (-Complex::with_val(wp, s * ln_c(&base, wp))).exp(),
+            };
+            let term = Complex::with_val(wp, &power * fall);
+            top = top.max(expo(&term));
+            sum += &term;
+            power *= &zz;
+            // (the terms fall like z^k once k is past the size of a and s)
+            if f64::from(k) > 2.0 * (size(a) + size(s)) + 8.0
+                && expo(&term) < expo(&sum) - i64::from(wp) - 8
+            {
+                return Some(Some((sum.clone(), (top - expo(&sum)).max(0))));
+            }
+            if power.is_zero() {
+                return Some(Some((sum.clone(), (top - expo(&sum)).max(0))));
+            }
+        }
+        None
+    })
+}
+
 pub fn call(name: &str, a: &[Complex], p: u32) -> Out {
     let z = a.first()?;
     let x = real_arg(z);
@@ -299,6 +354,7 @@ pub fn call(name: &str, a: &[Complex], p: u32) -> Out {
     match (name, a.len()) {
         ("zeta", 2) => hurwitz(&a[0], &a[1], p),
         ("polylog", 2) => polylog(&a[0], &a[1], p),
+        ("lerchphi", 3) => lerch(&a[0], &a[1], &a[2], p),
         ("dirichleteta", 1) => {
             // (1 - 2^(1-s)) zeta(s), ln 2 at s = 1
             let wp = p + 32;

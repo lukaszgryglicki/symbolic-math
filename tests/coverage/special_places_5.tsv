@@ -1,0 +1,700 @@
+-e	antisymmetrize(10^(-20))	1/100000000000000000000
+-e	antisymmetrize(x)	x
+-e	antisymmetrize([])	[]
+-e	antisymmetrize([1, 2])	[1, 2]
+-e	antisymmetrize("text")	"text"
+-e	antisymmetrize(true)	true
+-e	antisymmetrize(-7/3)	-7/3
+-e	antisymmetrize(0.5)	0.5
+-e	hodge(0)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(1)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(-1)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(1/2)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(2)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(i)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(inf)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(-inf)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(undefined)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(10^20)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(10^(-20))	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(x)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge([])	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge([1, 2])	[-2, 1]
+-e	hodge("text")	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(true)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(-7/3)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	hodge(0.5)	error: the Hodge dual needs a tensor with up to 6 indices of one size
+-e	angle(0)	undefined
+-e	angle(1)	0
+-e	angle(-1)	pi
+-e	angle(1/2)	0
+-e	angle(2)	0
+-e	angle(i)	pi/2
+-e	angle(inf)	0
+-e	angle(-inf)	pi
+-e	angle(undefined)	undefined
+-e	angle(10^20)	0
+-e	angle(10^(-20))	0
+-e	angle(x)	arg(x)
+-e	angle([])	[]
+-e	angle([1, 2])	[0, 0]
+-e	angle("text")	arg("text")
+-e	angle(true)	arg(true)
+-e	angle(-7/3)	pi
+-e	angle(0.5)	0
+-e	equation(0)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(1)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(-1)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(1/2)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(2)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(i)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(inf)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(-inf)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(undefined)	error: undefined is not a point
+-e	equation(10^20)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(10^(-20))	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(x)	error: x is not a point
+-e	equation([])	error: [] is not a point
+-e	equation([1, 2])	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation("text")	error: "text" is not a point
+-e	equation(true)	error: true is not a point
+-e	equation(-7/3)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	equation(0.5)	error: equation(line(p, q)), equation(plane(p, q, r)), equation(circle(c, r)) or equation(sphere(c, r))
+-e	normalize(0)	normalize(0)
+-e	normalize(1)	normalize(1)
+-e	normalize(-1)	normalize(-1)
+-e	normalize(1/2)	normalize(1/2)
+-e	normalize(2)	normalize(2)
+-e	normalize(i)	normalize(i)
+-e	normalize(inf)	normalize(inf)
+-e	normalize(-inf)	normalize(-inf)
+-e	normalize(undefined)	undefined
+-e	normalize(10^20)	normalize(100000000000000000000)
+-e	normalize(10^(-20))	normalize(1/100000000000000000000)
+-e	normalize(x)	normalize(x)
+-e	normalize([])	error: [] is not a point
+-e	normalize([1, 2])	[sqrt(5)/5, 2sqrt(5)/5]
+-e	normalize("text")	normalize("text")
+-e	normalize(true)	normalize(true)
+-e	normalize(-7/3)	normalize(-7/3)
+-e	normalize(0.5)	normalize(0.5)
+-e	solidangle(0)	0
+-e	solidangle(1)	2pi*(1 - cos(1))
+-e	solidangle(-1)	2pi*(1 - cos(1))
+-e	solidangle(1/2)	2pi*(1 - cos(1/2))
+-e	solidangle(2)	2pi*(1 - cos(2))
+-e	solidangle(i)	2pi*(1 - cosh(1))
+-e	solidangle(inf)	2pi*(1 - cos(inf))
+-e	solidangle(-inf)	2pi*(1 - cos(-inf))
+-e	solidangle(undefined)	undefined
+-e	solidangle(10^20)	2pi*(1 - cos(100000000000000000000))
+-e	solidangle(10^(-20))	2pi*(1 - cos(1/100000000000000000000))
+-e	solidangle(x)	2pi*(1 - cos(x))
+-e	solidangle([])	2pi*(1 - cos([]))
+-e	solidangle([1, 2])	2pi*(1 - cos([1, 2]))
+-e	solidangle("text")	2pi*(1 - cos("text"))
+-e	solidangle(true)	2pi*(1 - cos(true))
+-e	solidangle(-7/3)	2pi*(1 - cos(7/3))
+-e	solidangle(0.5)	0.76917144847297652176882475777393
+-e	ballvolume(0)	1
+-e	ballvolume(1)	2
+-e	ballvolume(-1)	1/pi
+-e	ballvolume(1/2)	pi^(1/4)/gamma(5/4)
+-e	ballvolume(2)	pi
+-e	ballvolume(i)	pi^(i/2)/gamma(1 + i/2)
+-e	ballvolume(inf)	undefined
+-e	ballvolume(-inf)	undefined
+-e	ballvolume(undefined)	undefined
+-e	ballvolume(10^20)	pi^50000000000000000000/gamma(50000000000000000001)
+-e	ballvolume(10^(-20))	pi^(1/200000000000000000000)/gamma(200000000000000000001/200000000000000000000)
+-e	ballvolume(x)	pi^(x/2)/gamma(x/2 + 1)
+-e	ballvolume([])	pi^([]/2)/gamma(1 + []/2)
+-e	ballvolume([1, 2])	pi^([1, 2]/2)/gamma(1 + [1, 2]/2)
+-e	ballvolume("text")	pi^("text"/2)/gamma("text"/2 + 1)
+-e	ballvolume(true)	pi^(true/2)/gamma(1 + true/2)
+-e	ballvolume(-7/3)	1/(pi^(7/6)*gamma(-1/6))
+-e	ballvolume(0.5)	1.4688125832636093762284486727422
+-e	spherearea(0)	0
+-e	spherearea(1)	2
+-e	spherearea(-1)	-1/pi
+-e	spherearea(1/2)	pi^(1/4)/(2gamma(5/4))
+-e	spherearea(2)	2pi
+-e	spherearea(i)	i*pi^(i/2)/gamma(1 + i/2)
+-e	spherearea(inf)	undefined
+-e	spherearea(-inf)	undefined
+-e	spherearea(undefined)	undefined
+-e	spherearea(10^20)	100000000000000000000pi^50000000000000000000/gamma(50000000000000000001)
+-e	spherearea(10^(-20))	pi^(1/200000000000000000000)/(100000000000000000000gamma(200000000000000000001/200000000000000000000))
+-e	spherearea(x)	x*pi^(x/2)/gamma(x/2 + 1)
+-e	spherearea([])	pi^([]/2)*[]/gamma(1 + []/2)
+-e	spherearea([1, 2])	pi^([1, 2]/2)*[1, 2]/gamma(1 + [1, 2]/2)
+-e	spherearea("text")	pi^("text"/2)*"text"/gamma("text"/2 + 1)
+-e	spherearea(true)	pi^(true/2)*true/gamma(1 + true/2)
+-e	spherearea(-7/3)	-7/(3pi^(7/6)*gamma(-1/6))
+-e	spherearea(0.5)	0.73440629163180468811422433637108
+-e	rotationmatrix(0)	[[1, 0], [0, 1]]
+-e	rotationmatrix(1)	[[cos(1), -sin(1)], [sin(1), cos(1)]]
+-e	rotationmatrix(-1)	[[cos(1), sin(1)], [-sin(1), cos(1)]]
+-e	rotationmatrix(1/2)	[[cos(1/2), -sin(1/2)], [sin(1/2), cos(1/2)]]
+-e	rotationmatrix(2)	[[cos(2), -sin(2)], [sin(2), cos(2)]]
+-e	rotationmatrix(i)	[[cosh(1), -i*sinh(1)], [i*sinh(1), cosh(1)]]
+-e	rotationmatrix(inf)	[[cos(inf), -sin(inf)], [sin(inf), cos(inf)]]
+-e	rotationmatrix(-inf)	[[cos(-inf), -sin(-inf)], [sin(-inf), cos(-inf)]]
+-e	rotationmatrix(undefined)	[[undefined, undefined], [undefined, undefined]]
+-e	rotationmatrix(10^20)	[[cos(100000000000000000000), -sin(100000000000000000000)], [sin(100000000000000000000), cos(100000000000000000000)]]
+-e	rotationmatrix(10^(-20))	[[cos(1/100000000000000000000), -sin(1/100000000000000000000)], [sin(1/100000000000000000000), cos(1/100000000000000000000)]]
+-e	rotationmatrix(x)	[[cos(x), -sin(x)], [sin(x), cos(x)]]
+-e	rotationmatrix([])	[[cos([]), -sin([])], [sin([]), cos([])]]
+-e	rotationmatrix([1, 2])	[[cos([1, 2]), -sin([1, 2])], [sin([1, 2]), cos([1, 2])]]
+-e	rotationmatrix("text")	[[cos("text"), -sin("text")], [sin("text"), cos("text")]]
+-e	rotationmatrix(true)	[[cos(true), -sin(true)], [sin(true), cos(true)]]
+-e	rotationmatrix(-7/3)	[[cos(7/3), sin(7/3)], [-sin(7/3), cos(7/3)]]
+-e	rotationmatrix(0.5)	[[0.87758256189037271611628158260383, -0.47942553860420300027328793521557], [0.47942553860420300027328793521557, 0.87758256189037271611628158260383]]
+-e	topolar(0)	[0, 0]
+-e	topolar(1)	[1, 0]
+-e	topolar(-1)	[1, pi]
+-e	topolar(1/2)	[1/2, 0]
+-e	topolar(2)	[2, 0]
+-e	topolar(i)	[1, pi/2]
+-e	topolar(inf)	[inf, 0]
+-e	topolar(-inf)	[inf, pi]
+-e	topolar(undefined)	error: undefined is not a point
+-e	topolar(10^20)	[100000000000000000000, 0]
+-e	topolar(10^(-20))	[1/100000000000000000000, 0]
+-e	topolar(x)	error: x is not a point
+-e	topolar([])	error: [] is not a point
+-e	topolar([1, 2])	[sqrt(5), atan(2)]
+-e	topolar("text")	error: "text" is not a point
+-e	topolar(true)	error: true is not a point
+-e	topolar(-7/3)	[7/3, pi]
+-e	topolar(0.5)	[0.5, 0]
+-e	frompolar(0)	[0, 0]
+-e	frompolar(1)	[1, 0]
+-e	frompolar(-1)	[-1, 0]
+-e	frompolar(1/2)	[1/2, 0]
+-e	frompolar(2)	[2, 0]
+-e	frompolar(i)	[0, 0]
+-e	frompolar(inf)	[inf, undefined]
+-e	frompolar(-inf)	[-inf, undefined]
+-e	frompolar(undefined)	error: undefined is not a point
+-e	frompolar(10^20)	[100000000000000000000, 0]
+-e	frompolar(10^(-20))	[1/100000000000000000000, 0]
+-e	frompolar(x)	error: x is not a point
+-e	frompolar([])	error: [] is not a point
+-e	frompolar([1, 2])	[cos(2), sin(2)]
+-e	frompolar("text")	error: "text" is not a point
+-e	frompolar(true)	error: true is not a point
+-e	frompolar(-7/3)	[-7/3, 0]
+-e	frompolar(0.5)	[0.5, 0]
+-e	regularpolygon(0)	[sides -> 0, diagonals -> 0, undefined, perimeter -> 0, undefined, undefined, angle -> ComplexInfinity]
+-e	regularpolygon(1)	[sides -> 1, diagonals -> -1, area -> ComplexInfinity, perimeter -> a, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -pi]
+-e	regularpolygon(-1)	[sides -> -1, diagonals -> 2, area -> ComplexInfinity, perimeter -> -a, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> 3pi]
+-e	regularpolygon(1/2)	[sides -> 1/2, diagonals -> -5/8, area -> ComplexInfinity, perimeter -> a/2, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -3pi]
+-e	regularpolygon(2)	[sides -> 2, diagonals -> -1, area -> 0, perimeter -> 2a, circumradius -> a/2, inradius -> 0, angle -> 0]
+-e	regularpolygon(i)	[sides -> i, diagonals -> -1/2 - 3i/2, area -> -a^2/(4tanh(pi)), perimeter -> i*a, circumradius -> i*a/(2sinh(pi)), inradius -> i*a/(2tanh(pi)), angle -> pi + 2i*pi]
+-e	regularpolygon(inf)	[sides -> inf, diagonals -> inf, area -> ComplexInfinity, perimeter -> a*inf, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, undefined]
+-e	regularpolygon(-inf)	[sides -> -inf, diagonals -> inf, area -> ComplexInfinity, perimeter -> -a*inf, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, undefined]
+-e	regularpolygon(undefined)	[undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+-e	regularpolygon(10^20)	[sides -> 100000000000000000000, diagonals -> 4999999999999999999850000000000000000000, area -> 25000000000000000000a^2/tan(pi/100000000000000000000), perimeter -> 100000000000000000000a, circumradius -> a/(2sin(pi/100000000000000000000)), inradius -> a/(2tan(pi/100000000000000000000)), angle -> 49999999999999999999pi/50000000000000000000]
+-e	regularpolygon(10^(-20))	[sides -> 1/100000000000000000000, diagonals -> -299999999999999999999/20000000000000000000000000000000000000000, area -> ComplexInfinity, perimeter -> a/100000000000000000000, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -199999999999999999999pi]
+-e	regularpolygon(x)	[sides -> x, diagonals -> x*(x - 3)/2, area -> a^2*x/(4tan(pi/x)), perimeter -> a*x, circumradius -> a/(2sin(pi/x)), inradius -> a/(2tan(pi/x)), angle -> pi - 2pi/x]
+-e	regularpolygon([])	[sides -> [], diagonals -> ([] - 3)*[]/2, area -> a^2*[]/(4tan(pi/[])), perimeter -> a*[], circumradius -> a/(2sin(pi/[])), inradius -> a/(2tan(pi/[])), angle -> pi - 2pi/[]]
+-e	regularpolygon([1, 2])	[sides -> [1, 2], diagonals -> ([1, 2] - 3)*[1, 2]/2, area -> a^2*[1, 2]/(4tan(pi/[1, 2])), perimeter -> a*[1, 2], circumradius -> a/(2sin(pi/[1, 2])), inradius -> a/(2tan(pi/[1, 2])), angle -> pi - 2pi/[1, 2]]
+-e	regularpolygon("text")	[sides -> "text", diagonals -> "text"*("text" - 3)/2, area -> a^2*"text"/(4tan(pi/"text")), perimeter -> a*"text", circumradius -> a/(2sin(pi/"text")), inradius -> a/(2tan(pi/"text")), angle -> pi - 2pi/"text"]
+-e	regularpolygon(true)	[sides -> true, diagonals -> (true - 3)*true/2, area -> a^2*true/(4tan(pi/true)), perimeter -> a*true, circumradius -> a/(2sin(pi/true)), inradius -> a/(2tan(pi/true)), angle -> pi - 2pi/true]
+-e	regularpolygon(-7/3)	[sides -> -7/3, diagonals -> 56/9, area -> 7a^2/(12tan(3pi/7)), perimeter -> -7a/3, circumradius -> -a/(2sin(3pi/7)), inradius -> -a/(2tan(3pi/7)), angle -> 13pi/7]
+-e	regularpolygon(0.5)	[sides -> 0.5, diagonals -> -0.625, area -> ComplexInfinity, perimeter -> 0.5a, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -9.4247779607693797153879301498385]
+-e	polytope(0)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(1)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(-1)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(1/2)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(2)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(i)	error: polytope(i): the names are tetrahedron, cube, octahedron, dodecahedron, icosahedron; cell5, cell8 (tesseract), cell16, cell24, cell120, cell600; and simplex, cube, orthoplex with the dimension, as in polytope(simplex, 5)
+-e	polytope(inf)	error: polytope(inf): the names are tetrahedron, cube, octahedron, dodecahedron, icosahedron; cell5, cell8 (tesseract), cell16, cell24, cell120, cell600; and simplex, cube, orthoplex with the dimension, as in polytope(simplex, 5)
+-e	polytope(-inf)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(undefined)	error: polytope(undefined): the names are tetrahedron, cube, octahedron, dodecahedron, icosahedron; cell5, cell8 (tesseract), cell16, cell24, cell120, cell600; and simplex, cube, orthoplex with the dimension, as in polytope(simplex, 5)
+-e	polytope(10^20)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(10^(-20))	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(x)	error: polytope(x): the names are tetrahedron, cube, octahedron, dodecahedron, icosahedron; cell5, cell8 (tesseract), cell16, cell24, cell120, cell600; and simplex, cube, orthoplex with the dimension, as in polytope(simplex, 5)
+-e	polytope([])	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope([1, 2])	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope("text")	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(true)	error: polytope(true): the names are tetrahedron, cube, octahedron, dodecahedron, icosahedron; cell5, cell8 (tesseract), cell16, cell24, cell120, cell600; and simplex, cube, orthoplex with the dimension, as in polytope(simplex, 5)
+-e	polytope(-7/3)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	polytope(0.5)	error: polytope(name) needs a name, as in polytope(tesseract)
+-e	adjugate(0)	error: adjugate needs a matrix
+-e	adjugate(1)	error: adjugate needs a matrix
+-e	adjugate(-1)	error: adjugate needs a matrix
+-e	adjugate(1/2)	error: adjugate needs a matrix
+-e	adjugate(2)	error: adjugate needs a matrix
+-e	adjugate(i)	error: adjugate needs a matrix
+-e	adjugate(inf)	error: adjugate needs a matrix
+-e	adjugate(-inf)	error: adjugate needs a matrix
+-e	adjugate(undefined)	error: adjugate needs a matrix
+-e	adjugate(10^20)	error: adjugate needs a matrix
+-e	adjugate(10^(-20))	error: adjugate needs a matrix
+-e	adjugate(x)	error: adjugate needs a matrix
+-e	adjugate([])	error: adjugate needs a matrix
+-e	adjugate([1, 2])	error: adjugate needs a matrix
+-e	adjugate("text")	error: adjugate needs a matrix
+-e	adjugate(true)	error: adjugate needs a matrix
+-e	adjugate(-7/3)	error: adjugate needs a matrix
+-e	adjugate(0.5)	error: adjugate needs a matrix
+-e	matrixexp(0)	error: matrixexp needs a matrix
+-e	matrixexp(1)	error: matrixexp needs a matrix
+-e	matrixexp(-1)	error: matrixexp needs a matrix
+-e	matrixexp(1/2)	error: matrixexp needs a matrix
+-e	matrixexp(2)	error: matrixexp needs a matrix
+-e	matrixexp(i)	error: matrixexp needs a matrix
+-e	matrixexp(inf)	error: matrixexp needs a matrix
+-e	matrixexp(-inf)	error: matrixexp needs a matrix
+-e	matrixexp(undefined)	error: matrixexp needs a matrix
+-e	matrixexp(10^20)	error: matrixexp needs a matrix
+-e	matrixexp(10^(-20))	error: matrixexp needs a matrix
+-e	matrixexp(x)	error: matrixexp needs a matrix
+-e	matrixexp([])	error: matrixexp needs a matrix
+-e	matrixexp([1, 2])	error: matrixexp needs a matrix
+-e	matrixexp("text")	error: matrixexp needs a matrix
+-e	matrixexp(true)	error: matrixexp needs a matrix
+-e	matrixexp(-7/3)	error: matrixexp needs a matrix
+-e	matrixexp(0.5)	error: matrixexp needs a matrix
+-e	matrixsqrt(0)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(1)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(-1)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(1/2)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(2)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(i)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(inf)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(-inf)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(undefined)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(10^20)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(10^(-20))	error: matrixsqrt needs a matrix
+-e	matrixsqrt(x)	error: matrixsqrt needs a matrix
+-e	matrixsqrt([])	error: matrixsqrt needs a matrix
+-e	matrixsqrt([1, 2])	error: matrixsqrt needs a matrix
+-e	matrixsqrt("text")	error: matrixsqrt needs a matrix
+-e	matrixsqrt(true)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(-7/3)	error: matrixsqrt needs a matrix
+-e	matrixsqrt(0.5)	error: matrixsqrt needs a matrix
+-e	matrixlog(0)	error: matrixlog needs a matrix
+-e	matrixlog(1)	error: matrixlog needs a matrix
+-e	matrixlog(-1)	error: matrixlog needs a matrix
+-e	matrixlog(1/2)	error: matrixlog needs a matrix
+-e	matrixlog(2)	error: matrixlog needs a matrix
+-e	matrixlog(i)	error: matrixlog needs a matrix
+-e	matrixlog(inf)	error: matrixlog needs a matrix
+-e	matrixlog(-inf)	error: matrixlog needs a matrix
+-e	matrixlog(undefined)	error: matrixlog needs a matrix
+-e	matrixlog(10^20)	error: matrixlog needs a matrix
+-e	matrixlog(10^(-20))	error: matrixlog needs a matrix
+-e	matrixlog(x)	error: matrixlog needs a matrix
+-e	matrixlog([])	error: matrixlog needs a matrix
+-e	matrixlog([1, 2])	error: matrixlog needs a matrix
+-e	matrixlog("text")	error: matrixlog needs a matrix
+-e	matrixlog(true)	error: matrixlog needs a matrix
+-e	matrixlog(-7/3)	error: matrixlog needs a matrix
+-e	matrixlog(0.5)	error: matrixlog needs a matrix
+-e	gramschmidt(0)	error: gramschmidt needs a matrix
+-e	gramschmidt(1)	error: gramschmidt needs a matrix
+-e	gramschmidt(-1)	error: gramschmidt needs a matrix
+-e	gramschmidt(1/2)	error: gramschmidt needs a matrix
+-e	gramschmidt(2)	error: gramschmidt needs a matrix
+-e	gramschmidt(i)	error: gramschmidt needs a matrix
+-e	gramschmidt(inf)	error: gramschmidt needs a matrix
+-e	gramschmidt(-inf)	error: gramschmidt needs a matrix
+-e	gramschmidt(undefined)	error: gramschmidt needs a matrix
+-e	gramschmidt(10^20)	error: gramschmidt needs a matrix
+-e	gramschmidt(10^(-20))	error: gramschmidt needs a matrix
+-e	gramschmidt(x)	error: gramschmidt needs a matrix
+-e	gramschmidt([])	error: gramschmidt needs a matrix
+-e	gramschmidt([1, 2])	error: gramschmidt needs a matrix
+-e	gramschmidt("text")	error: gramschmidt needs a matrix
+-e	gramschmidt(true)	error: gramschmidt needs a matrix
+-e	gramschmidt(-7/3)	error: gramschmidt needs a matrix
+-e	gramschmidt(0.5)	error: gramschmidt needs a matrix
+-e	cholesky(0)	error: cholesky needs a matrix
+-e	cholesky(1)	error: cholesky needs a matrix
+-e	cholesky(-1)	error: cholesky needs a matrix
+-e	cholesky(1/2)	error: cholesky needs a matrix
+-e	cholesky(2)	error: cholesky needs a matrix
+-e	cholesky(i)	error: cholesky needs a matrix
+-e	cholesky(inf)	error: cholesky needs a matrix
+-e	cholesky(-inf)	error: cholesky needs a matrix
+-e	cholesky(undefined)	error: cholesky needs a matrix
+-e	cholesky(10^20)	error: cholesky needs a matrix
+-e	cholesky(10^(-20))	error: cholesky needs a matrix
+-e	cholesky(x)	error: cholesky needs a matrix
+-e	cholesky([])	error: cholesky needs a matrix
+-e	cholesky([1, 2])	error: cholesky needs a matrix
+-e	cholesky("text")	error: cholesky needs a matrix
+-e	cholesky(true)	error: cholesky needs a matrix
+-e	cholesky(-7/3)	error: cholesky needs a matrix
+-e	cholesky(0.5)	error: cholesky needs a matrix
+-e	qr(0)	error: qr needs a matrix
+-e	qr(1)	error: qr needs a matrix
+-e	qr(-1)	error: qr needs a matrix
+-e	qr(1/2)	error: qr needs a matrix
+-e	qr(2)	error: qr needs a matrix
+-e	qr(i)	error: qr needs a matrix
+-e	qr(inf)	error: qr needs a matrix
+-e	qr(-inf)	error: qr needs a matrix
+-e	qr(undefined)	error: qr needs a matrix
+-e	qr(10^20)	error: qr needs a matrix
+-e	qr(10^(-20))	error: qr needs a matrix
+-e	qr(x)	error: qr needs a matrix
+-e	qr([])	error: qr needs a matrix
+-e	qr([1, 2])	error: qr needs a matrix
+-e	qr("text")	error: qr needs a matrix
+-e	qr(true)	error: qr needs a matrix
+-e	qr(-7/3)	error: qr needs a matrix
+-e	qr(0.5)	error: qr needs a matrix
+-e	pinv(0)	error: pinv needs a matrix
+-e	pinv(1)	error: pinv needs a matrix
+-e	pinv(-1)	error: pinv needs a matrix
+-e	pinv(1/2)	error: pinv needs a matrix
+-e	pinv(2)	error: pinv needs a matrix
+-e	pinv(i)	error: pinv needs a matrix
+-e	pinv(inf)	error: pinv needs a matrix
+-e	pinv(-inf)	error: pinv needs a matrix
+-e	pinv(undefined)	error: pinv needs a matrix
+-e	pinv(10^20)	error: pinv needs a matrix
+-e	pinv(10^(-20))	error: pinv needs a matrix
+-e	pinv(x)	error: pinv needs a matrix
+-e	pinv([])	error: pinv needs a matrix
+-e	pinv([1, 2])	error: pinv needs a matrix
+-e	pinv("text")	error: pinv needs a matrix
+-e	pinv(true)	error: pinv needs a matrix
+-e	pinv(-7/3)	error: pinv needs a matrix
+-e	pinv(0.5)	error: pinv needs a matrix
+-e	singularvalues(0)	[0]
+-e	singularvalues(1)	[1]
+-e	singularvalues(-1)	[1]
+-e	singularvalues(1/2)	[1/2]
+-e	singularvalues(2)	[2]
+-e	singularvalues(i)	[1]
+-e	singularvalues(inf)	[]
+-e	singularvalues(-inf)	[]
+-e	singularvalues(undefined)	[]
+-e	singularvalues(10^20)	[100000000000000000000]
+-e	singularvalues(10^(-20))	[1/100000000000000000000]
+-e	singularvalues(x)	[sqrt(re(x*conj(x)))]
+-e	singularvalues([])	[]
+-e	singularvalues([1, 2])	[sqrt(5)]
+-e	singularvalues("text")	[sqrt(re("text"*conj("text")))]
+-e	singularvalues(true)	[sqrt(re(conj(true)*true))]
+-e	singularvalues(-7/3)	[7/3]
+-e	singularvalues(0.5)	[0.5]
+-e	diag(0)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(1)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(-1)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(1/2)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(2)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(i)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(inf)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(-inf)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(undefined)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(10^20)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(10^(-20))	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(x)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag([])	[]
+-e	diag([1, 2])	[[1, 0], [0, 2]]
+-e	diag("text")	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(true)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(-7/3)	error: diag([a, b, ...]) or diag(matrix)
+-e	diag(0.5)	error: diag([a, b, ...]) or diag(matrix)
+-e	zeros(0)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(1)	[[0]]
+-e	zeros(-1)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(1/2)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(2)	[[0, 0], [0, 0]]
+-e	zeros(i)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(inf)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(-inf)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(undefined)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(10^20)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(10^(-20))	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(x)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros([])	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros([1, 2])	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros("text")	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(true)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(-7/3)	error: the sizes must be whole numbers from 1 to 1000
+-e	zeros(0.5)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(0)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(1)	[[1]]
+-e	ones(-1)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(1/2)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(2)	[[1, 1], [1, 1]]
+-e	ones(i)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(inf)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(-inf)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(undefined)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(10^20)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(10^(-20))	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(x)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones([])	error: the sizes must be whole numbers from 1 to 1000
+-e	ones([1, 2])	error: the sizes must be whole numbers from 1 to 1000
+-e	ones("text")	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(true)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(-7/3)	error: the sizes must be whole numbers from 1 to 1000
+-e	ones(0.5)	error: the sizes must be whole numbers from 1 to 1000
+-e	hilbert(0)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(1)	[[1]]
+-e	hilbert(-1)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(1/2)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(2)	[[1, 1/2], [1/2, 1/3]]
+-e	hilbert(i)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(inf)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(-inf)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(undefined)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(10^20)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(10^(-20))	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(x)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert([])	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert([1, 2])	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert("text")	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(true)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(-7/3)	error: hilbert(n) needs a size from 1 to 200
+-e	hilbert(0.5)	error: hilbert(n) needs a size from 1 to 200
+-e	vandermonde(0)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(1)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(-1)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(1/2)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(2)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(i)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(inf)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(-inf)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(undefined)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(10^20)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(10^(-20))	error: vandermonde([x1, x2, ...])
+-e	vandermonde(x)	error: vandermonde([x1, x2, ...])
+-e	vandermonde([])	[]
+-e	vandermonde([1, 2])	[[1, 1], [1, 2]]
+-e	vandermonde("text")	error: vandermonde([x1, x2, ...])
+-e	vandermonde(true)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(-7/3)	error: vandermonde([x1, x2, ...])
+-e	vandermonde(0.5)	error: vandermonde([x1, x2, ...])
+-e	domain(0)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(1)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(-1)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(1/2)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(2)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(i)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(inf)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(-inf)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(undefined)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(10^20)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(10^(-20))	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(x)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain([])	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain([1, 2])	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain("text")	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(true)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(-7/3)	error: domain(complex), domain(real) or domain(quaternion)
+-e	domain(0.5)	error: domain(complex), domain(real) or domain(quaternion)
+-e	isprime(0)	false
+-e	isprime(1)	false
+-e	isprime(-1)	false
+-e	isprime(1/2)	false
+-e	isprime(2)	true
+-e	isprime(i)	false
+-e	isprime(inf)	isprime(inf)
+-e	isprime(-inf)	isprime(-inf)
+-e	isprime(undefined)	undefined
+-e	isprime(10^20)	false
+-e	isprime(10^(-20))	false
+-e	isprime(x)	isprime(x)
+-e	isprime([])	[]
+-e	isprime([1, 2])	[false, true]
+-e	isprime("text")	isprime("text")
+-e	isprime(true)	isprime(true)
+-e	isprime(-7/3)	false
+-e	isprime(0.5)	false
+-e	iscomposite(0)	false
+-e	iscomposite(1)	false
+-e	iscomposite(-1)	false
+-e	iscomposite(1/2)	false
+-e	iscomposite(2)	false
+-e	iscomposite(i)	false
+-e	iscomposite(inf)	iscomposite(inf)
+-e	iscomposite(-inf)	iscomposite(-inf)
+-e	iscomposite(undefined)	undefined
+-e	iscomposite(10^20)	true
+-e	iscomposite(10^(-20))	false
+-e	iscomposite(x)	iscomposite(x)
+-e	iscomposite([])	[]
+-e	iscomposite([1, 2])	[false, false]
+-e	iscomposite("text")	iscomposite("text")
+-e	iscomposite(true)	iscomposite(true)
+-e	iscomposite(-7/3)	false
+-e	iscomposite(0.5)	false
+-e	isprimepower(0)	false
+-e	isprimepower(1)	false
+-e	isprimepower(-1)	false
+-e	isprimepower(1/2)	isprimepower(1/2)
+-e	isprimepower(2)	true
+-e	isprimepower(i)	isprimepower(i)
+-e	isprimepower(inf)	isprimepower(inf)
+-e	isprimepower(-inf)	isprimepower(-inf)
+-e	isprimepower(undefined)	undefined
+-e	isprimepower(10^20)	false
+-e	isprimepower(10^(-20))	isprimepower(1/100000000000000000000)
+-e	isprimepower(x)	isprimepower(x)
+-e	isprimepower([])	[]
+-e	isprimepower([1, 2])	[false, true]
+-e	isprimepower("text")	isprimepower("text")
+-e	isprimepower(true)	isprimepower(true)
+-e	isprimepower(-7/3)	isprimepower(-7/3)
+-e	isprimepower(0.5)	isprimepower(0.5)
+-e	isperfect(0)	false
+-e	isperfect(1)	false
+-e	isperfect(-1)	false
+-e	isperfect(1/2)	isperfect(1/2)
+-e	isperfect(2)	false
+-e	isperfect(i)	isperfect(i)
+-e	isperfect(inf)	isperfect(inf)
+-e	isperfect(-inf)	isperfect(-inf)
+-e	isperfect(undefined)	undefined
+-e	isperfect(10^20)	false
+-e	isperfect(10^(-20))	isperfect(1/100000000000000000000)
+-e	isperfect(x)	isperfect(x)
+-e	isperfect([])	[]
+-e	isperfect([1, 2])	[false, false]
+-e	isperfect("text")	isperfect("text")
+-e	isperfect(true)	isperfect(true)
+-e	isperfect(-7/3)	isperfect(-7/3)
+-e	isperfect(0.5)	isperfect(0.5)
+-e	primes(0)	[]
+-e	primes(1)	[]
+-e	primes(-1)	[]
+-e	primes(1/2)	[]
+-e	primes(2)	[2]
+-e	primes(i)	primes(i)
+-e	primes(inf)	primes(inf)
+-e	primes(-inf)	primes(-inf)
+-e	primes(undefined)	undefined
+-e	primes(10^(-20))	[]
+-e	primes(x)	primes(x)
+-e	primes([])	[]
+-e	primes([1, 2])	[[], [2]]
+-e	primes("text")	primes("text")
+-e	primes(true)	primes(true)
+-e	primes(-7/3)	[]
+-e	primes(0.5)	[]
+-e	primefactors(0)	primefactors(0)
+-e	primefactors(1)	[]
+-e	primefactors(-1)	[]
+-e	primefactors(1/2)	primefactors(1/2)
+-e	primefactors(2)	[2]
+-e	primefactors(i)	primefactors(i)
+-e	primefactors(inf)	primefactors(inf)
+-e	primefactors(-inf)	primefactors(-inf)
+-e	primefactors(undefined)	undefined
+-e	primefactors(10^20)	[2, 5]
+-e	primefactors(10^(-20))	primefactors(1/100000000000000000000)
+-e	primefactors(x)	primefactors(x)
+-e	primefactors([])	[]
+-e	primefactors([1, 2])	[[], [2]]
+-e	primefactors("text")	primefactors("text")
+-e	primefactors(true)	primefactors(true)
+-e	primefactors(-7/3)	primefactors(-7/3)
+-e	primefactors(0.5)	primefactors(0.5)
+-e	ifactors(0)	ifactors(0)
+-e	ifactors(1)	[]
+-e	ifactors(-1)	[]
+-e	ifactors(1/2)	ifactors(1/2)
+-e	ifactors(2)	[[2, 1]]
+-e	ifactors(i)	ifactors(i)
+-e	ifactors(inf)	ifactors(inf)
+-e	ifactors(-inf)	ifactors(-inf)
+-e	ifactors(undefined)	undefined
+-e	ifactors(10^20)	[[2, 20], [5, 20]]
+-e	ifactors(10^(-20))	ifactors(1/100000000000000000000)
+-e	ifactors(x)	ifactors(x)
+-e	ifactors([])	[]
+-e	ifactors([1, 2])	[[], [[2, 1]]]
+-e	ifactors("text")	ifactors("text")
+-e	ifactors(true)	ifactors(true)
+-e	ifactors(-7/3)	ifactors(-7/3)
+-e	ifactors(0.5)	ifactors(0.5)
+-e	primorial(0)	1
+-e	primorial(1)	1
+-e	primorial(-1)	primorial(-1)
+-e	primorial(1/2)	primorial(1/2)
+-e	primorial(2)	2
+-e	primorial(i)	primorial(i)
+-e	primorial(inf)	primorial(inf)
+-e	primorial(-inf)	primorial(-inf)
+-e	primorial(undefined)	undefined
+-e	primorial(10^20)	primorial(100000000000000000000)
+-e	primorial(10^(-20))	primorial(1/100000000000000000000)
+-e	primorial(x)	primorial(x)
+-e	primorial([])	[]
+-e	primorial([1, 2])	[1, 2]
+-e	primorial("text")	primorial("text")
+-e	primorial(true)	primorial(true)
+-e	primorial(-7/3)	primorial(-7/3)
+-e	primorial(0.5)	primorial(0.5)
+-e	carmichael(0)	carmichael(0)
+-e	carmichael(1)	1
+-e	carmichael(-1)	1
+-e	carmichael(1/2)	carmichael(1/2)
+-e	carmichael(2)	1
+-e	carmichael(i)	carmichael(i)
+-e	carmichael(inf)	carmichael(inf)
+-e	carmichael(-inf)	carmichael(-inf)
+-e	carmichael(undefined)	undefined
+-e	carmichael(10^20)	5000000000000000000
+-e	carmichael(10^(-20))	carmichael(1/100000000000000000000)
+-e	carmichael(x)	carmichael(x)
+-e	carmichael([])	[]
+-e	carmichael([1, 2])	[1, 1]
+-e	carmichael("text")	carmichael("text")
+-e	carmichael(true)	carmichael(true)
+-e	carmichael(-7/3)	carmichael(-7/3)
+-e	carmichael(0.5)	carmichael(0.5)
+-e	liouville(0)	liouville(0)
+-e	liouville(1)	1
+-e	liouville(-1)	1
+-e	liouville(1/2)	liouville(1/2)
+-e	liouville(2)	-1
+-e	liouville(i)	liouville(i)
+-e	liouville(inf)	liouville(inf)
+-e	liouville(-inf)	liouville(-inf)
+-e	liouville(undefined)	undefined
+-e	liouville(10^20)	1
+-e	liouville(10^(-20))	liouville(1/100000000000000000000)
+-e	liouville(x)	liouville(x)
+-e	liouville([])	[]
+-e	liouville([1, 2])	[1, -1]
+-e	liouville("text")	liouville("text")
+-e	liouville(true)	liouville(true)
+-e	liouville(-7/3)	liouville(-7/3)
+-e	liouville(0.5)	liouville(0.5)
+-e	mangoldt(0)	0
+-e	mangoldt(1)	0
+-e	mangoldt(-1)	0
+-e	mangoldt(1/2)	mangoldt(1/2)
+-e	mangoldt(2)	ln(2)
+-e	mangoldt(i)	mangoldt(i)
+-e	mangoldt(inf)	mangoldt(inf)
+-e	mangoldt(-inf)	mangoldt(-inf)
+-e	mangoldt(undefined)	undefined
+-e	mangoldt(10^20)	0
+-e	mangoldt(10^(-20))	mangoldt(1/100000000000000000000)
+-e	mangoldt(x)	mangoldt(x)
+-e	mangoldt([])	[]
+-e	mangoldt([1, 2])	[0, ln(2)]
+-e	mangoldt("text")	mangoldt("text")
+-e	mangoldt(true)	mangoldt(true)
+-e	mangoldt(-7/3)	mangoldt(-7/3)
+-e	mangoldt(0.5)	mangoldt(0.5)
+-e	farey(0)	farey(0)
+-e	farey(1)	[0, 1]
+-e	farey(-1)	farey(-1)
+-e	farey(1/2)	farey(1/2)
+-e	farey(2)	[0, 1/2, 1]
+-e	farey(i)	farey(i)
+-e	farey(inf)	farey(inf)
+-e	farey(-inf)	farey(-inf)
+-e	farey(undefined)	undefined

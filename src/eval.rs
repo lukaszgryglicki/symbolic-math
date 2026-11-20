@@ -60,6 +60,12 @@ const FORM_COMMANDS: &[&str] = &[
     "charpoly",
     "pade",
     "fourierseries",
+    "tobase",
+    "tofraction",
+    "base_conv",
+    "horner",
+    "rewrite",
+    "combine",
 ];
 
 /// Commands whose result stays exact when the input has decimal numbers.
@@ -70,6 +76,7 @@ const EXACT_COMMANDS: &[&str] = &[
     "convergents",
     "findrelation",
     "minpoly",
+    "rat",
 ];
 
 impl Session {
@@ -114,7 +121,8 @@ impl Session {
                 if let Expr::Fn(n, a) = e
                     && &**n == ":="
                     && let [Expr::Sym(f), body] = &**a
-                    && crate::lists::lambda(body).is_some()
+                    && (crate::lists::lambda(body).is_some()
+                        || body.fn_args("matlabfunction").is_some())
                 {
                     // f := x -> expr defines the function f as well
                     unknown.push(f.to_string());
@@ -131,12 +139,20 @@ impl Session {
                     );
                 }
                 if let Expr::Fn(n, a) = e
-                    && matches!(&**n, "dsolve" | "rsolve" | "funsolve" | "ndsolve")
+                    && matches!(
+                        &**n,
+                        "dsolve"
+                            | "rsolve"
+                            | "funsolve"
+                            | "ndsolve"
+                            | "functionalderivative"
+                            | "odetovectorfield"
+                    )
                 {
                     match a.get(1).and_then(Expr::sym_name) {
                         Some(name) => unknown.push(name.to_string()),
                         None if matches!(a.get(1), Some(Expr::List(_))) => {}
-                        None if &**n == "dsolve" || &**n == "ndsolve" => unknown.push(
+                        None if &**n != "rsolve" && &**n != "funsolve" => unknown.push(
                             a.first()
                                 .and_then(primed_name)
                                 .unwrap_or_else(|| "y".to_string()),
@@ -181,11 +197,39 @@ impl Session {
             }
             Expr::Fn(n, a) if &**n == "ndsolve" => return self.ndsolve(a, decimal),
             Expr::Fn(n, a) if &**n == "dsolve" => return self.dsolve(a, decimal),
+            Expr::Fn(n, a) if &**n == "functionalderivative" => {
+                return self.functional_derivative(a, decimal);
+            }
+            Expr::Fn(n, a) if &**n == "odetovectorfield" => return self.vector_field(a, decimal),
             Expr::Fn(n, a) if &**n == "rsolve" => return self.rsolve(a, decimal),
             Expr::Fn(n, a) if &**n == "funsolve" => return self.funsolve(a, decimal),
             Expr::Fn(n, a) if crate::plot::is_plot(n) => {
+                let (plain, words) = crate::picture::words_apart(a);
+                let mut choices = crate::picture::Choices::default();
+                for (name, value) in words {
+                    let value = self.eval(value)?;
+                    choices.set(name, Some(&value))?;
+                }
+                let args = self.eval_args(&plain)?;
+                let lines = crate::picture::worded(crate::plot::draw(n, &args)?, &choices.look);
+                return Ok((Expr::Bool(true), lines));
+            }
+            Expr::Fn(n, a) if crate::picture::is_save(n) => {
+                return Ok((Expr::Bool(true), self.save(n, a)?));
+            }
+            Expr::Fn(n, a)
+                if matches!(
+                    &**n,
+                    "disp" | "fprintf" | "writematrix" | "writetable" | "imwrite" | "pretty"
+                ) =>
+            {
                 let args = self.eval_args(a)?;
-                return Ok((Expr::Bool(true), crate::plot::draw(n, &args)?));
+                return Ok((Expr::Bool(true), self.shown(n, &args)?));
+            }
+            Expr::Fn(n, a) if crate::picture::is_drawing(n) => {
+                let (drawing, choices) = self.drawing(n, a, &[], false)?;
+                let lines = crate::picture::show(n, &drawing, &choices)?;
+                return Ok((Expr::Bool(true), lines));
             }
             Expr::Fn(n, a)
                 if &**n == ":="
@@ -250,7 +294,9 @@ impl Session {
             return Ok(done);
         }
         if let Expr::Rel(op, l, r) = &target
-            && (matches!(**l, Expr::List(_)) || matches!(**r, Expr::List(_)))
+            && (matches!(**l, Expr::List(_))
+                || matches!(**r, Expr::List(_))
+                || (crate::radix::text_of(l).is_some() && crate::radix::text_of(r).is_some()))
         {
             match crate::logic::truth(&target) {
                 Some(truth) => {
@@ -1466,7 +1512,14 @@ impl Session {
             return lines;
         }
         if decimal {
-            return vec![numeric::n(value, digits).to_string()];
+            // (a number that was asked for with more digits keeps them)
+            let mut most = digits;
+            value.walk(&mut |part| {
+                if let Expr::Float(number) = part {
+                    most = most.max(number.digits);
+                }
+            });
+            return vec![numeric::n(value, most).to_string()];
         }
         let mut lines = vec![value.to_string()];
         let plain = value.as_num().is_some_and(|n| n.is_int())
@@ -1530,13 +1583,156 @@ impl Session {
         Ok(answer.value)
     }
 
+    /// The drawing of a command with what is chosen for its picture, in its own arguments
+    /// and in those of the command that saves it. `pixels`: for a picture of pixels.
+    fn drawing(
+        &mut self,
+        name: &str,
+        raw: &[Expr],
+        more: &[Expr],
+        pixels: bool,
+    ) -> Result<(crate::scene::Drawing, crate::picture::Choices), String> {
+        let mut choices = crate::picture::Choices::default();
+        let mut plain = Vec::new();
+        for (k, arg) in raw.iter().chain(more).enumerate() {
+            match crate::picture::choice(arg) {
+                Some((option, value)) => {
+                    let value = match value {
+                        Some(v) => Some(self.eval(v)?),
+                        None => None,
+                    };
+                    choices.set(option, value.as_ref())?;
+                }
+                None if k >= raw.len() => {
+                    return Err(crate::picture::stray(arg).unwrap_or_else(|| {
+                        format!("{arg} is nothing that is chosen for a picture: after the drawing come width = 800, gray and the like")
+                    }));
+                }
+                None => {
+                    // (a name that is no choice is a slip of the pen where no equation stands)
+                    if crate::walks::is_walk(name)
+                        && matches!(arg, Expr::Rel(crate::expr::Rel::Eq, l, _) if l.sym_name().is_some())
+                        && let Some(why) = crate::picture::stray(arg)
+                    {
+                        return Err(why);
+                    }
+                    plain.push(arg.clone());
+                }
+            }
+        }
+        let args = self.eval_args(&plain)?;
+        let args = match crate::morecharts::is_control_chart(name) {
+            true => self.control_chart(name, &args)?,
+            false => args,
+        };
+        let mut notes = Vec::new();
+        let drawing = if crate::walks::is_walk(name) {
+            crate::walks::build(name, &args, &mut notes)?
+        } else {
+            crate::chart::build(name, &args, choices.detail(pixels))?
+        };
+        for note in notes {
+            if !self.notes.contains(&note) {
+                self.notes.push(note);
+            }
+        }
+        Ok((drawing, choices))
+    }
+
+    /// `save_png("name.png", drawing, choices)` and its kin.
+    fn save(&mut self, name: &str, raw: &[Expr]) -> Result<Vec<String>, String> {
+        let usage = || {
+            format!(
+                "{name}(\"name\", drawing, choices): {name}(\"walk.{}\", walk(pi, 10, 1000), width = 800); the drawing is one of walk, walk3d, primewalk, primewalk3d, primemodwalk, primemodwalk3d, ulamspiral, sacksspiral, plot, parametricplot, polarplot, listplot, histogram, implicitplot, complexplot, densityplot, plot3d, parametricplot3d, graphplot, matrixplot, lineplot, scatter, bar, barh, stairs, stem, errorbar, pie, loglog, semilogx, semilogy, contour, quiver, plot3, scatter3, surf, spy, boxplot, stem3, quiver3, contour3, waterfall, compass, feather, polarscatter, bar3, histogram2, surfc, streamline, polarhistogram, dendrogram, bubblechart, fimplicit3, isosurface, triplot, trisurf, pareto, fill, ribbon, normplot, parallelplot, swarmchart, violinplot, histfit, gscatter, andrewsplot, bar3h, cdfplot, plotmatrix, stackedplot, biplot, bodeplot, nyquistplot, pzplot, rlocusplot, stepplot, impulseplot",
+                if name == "save_jxl" { "jxl" } else { "png" }
+            )
+        };
+        let [path, drawn, more @ ..] = raw else {
+            return Err(usage());
+        };
+        let path = self.eval(path)?;
+        let path = crate::radix::text_of(&path)
+            .ok_or_else(|| {
+                format!(
+                    "the name of the file is a text in quotes, not {path}: {}",
+                    usage()
+                )
+            })?
+            .to_string();
+        let format = crate::picture::format_of(name, &path)?;
+        let Expr::Fn(command, args) = drawn else {
+            return Err(usage());
+        };
+        if !crate::picture::is_drawing(command) && !crate::plot::is_plot(command) {
+            return Err(usage());
+        }
+        let (drawing, choices) = self.drawing(command, args, more, true)?;
+        crate::picture::save(&path, format, &drawing, &choices)
+    }
+
+    /// `base_conv(number, from, to)`: the first argument is written in the base `from`, as a
+    /// number, or as an expression whose numbers are written in that base.
+    fn base_conv(&mut self, raw: &[Expr]) -> Res {
+        let from = self.eval(&raw[1])?;
+        let from = crate::radix::base_of(Some(&from))?;
+        let mut notes = Vec::new();
+        let value = match crate::radix::text_of(&raw[0]) {
+            Some(text) => match crate::radix::read(text, from, &mut notes) {
+                Ok(number) => Expr::rational(number),
+                Err(why) => {
+                    let parsed = {
+                        let funcs = &self.funcs;
+                        parser::parse_radix(text, from, &|name| funcs.contains_key(name))
+                    };
+                    // (a number that names its base says itself what is wrong with it)
+                    let named = text
+                        .trim_start_matches([' ', '-', '+'])
+                        .trim_start_matches(|c: char| c.is_ascii_digit())
+                        .starts_with('#')
+                        && text.contains(|c: char| c.is_ascii_digit());
+                    let value = match parsed {
+                        Ok(p) if p.stmts.len() == 1 => self.eval(&p.stmts[0]).ok(),
+                        Err(reason) if named && !text.trim_start().starts_with('#') => {
+                            return Err(reason);
+                        }
+                        _ => None,
+                    };
+                    let number = |v: &Expr| {
+                        let v = crate::radix::plain(v.clone());
+                        v.is_const()
+                            && !v.is_infinite()
+                            && !matches!(v, Expr::Rel(..) | Expr::Bool(_))
+                    };
+                    value.filter(number).ok_or(why)?
+                }
+            },
+            None => self.eval(&raw[0])?,
+        };
+        let mut args = vec![value];
+        for e in &raw[2..] {
+            args.push(self.eval(e)?);
+        }
+        let (value, more) = crate::radix::call("tobase", &args)
+            .ok_or("base_conv(number, from, to) or base_conv(value, to)")??;
+        for note in notes.into_iter().chain(more) {
+            if !self.notes.contains(&note) {
+                self.notes.push(note);
+            }
+        }
+        Ok(value)
+    }
+
+    /// Operands: a number that was written in a base counts as its value.
     pub(crate) fn eval_all(&mut self, items: &[Expr]) -> Result<Vec<Expr>, String> {
-        items.iter().map(|x| self.eval(x)).collect()
+        items
+            .iter()
+            .map(|x| self.eval(x).map(crate::radix::plain))
+            .collect()
     }
 
     /// The arguments of a command; `j` and `k` named as its variable are not quaternion units
     /// inside it.
-    fn eval_args(&mut self, raw: &[Expr]) -> Result<Vec<Expr>, String> {
+    pub(crate) fn eval_args(&mut self, raw: &[Expr]) -> Result<Vec<Expr>, String> {
         let mut bound: Vec<String> = Vec::new();
         if assume::quaternion_mode() {
             for arg in raw.iter().skip(1) {
@@ -1587,13 +1783,15 @@ impl Session {
             Expr::Add(a) => matrix::add(self.eval_all(a)?),
             Expr::Mul(a) => matrix::mul(self.eval_all(a)?),
             Expr::Pow(b, x) => {
-                let base = self.eval(b)?;
-                matrix::pow(base, self.eval(x)?)
+                let base = crate::radix::plain(self.eval(b)?);
+                matrix::pow(base, crate::radix::plain(self.eval(x)?))
             }
-            Expr::List(a) => Ok(Expr::list(self.eval_all(a)?)),
+            Expr::List(a) => Ok(Expr::list(
+                a.iter().map(|x| self.eval(x)).collect::<Result<_, _>>()?,
+            )),
             Expr::Rel(op, a, b) => {
-                let left = self.eval(a)?;
-                Ok(Expr::rel(*op, left, self.eval(b)?))
+                let left = crate::radix::plain(self.eval(a)?);
+                Ok(Expr::rel(*op, left, crate::radix::plain(self.eval(b)?)))
             }
             Expr::Fn(name, args) => self.call(name, args),
         }
@@ -1615,6 +1813,14 @@ impl Session {
                     return Ok(Expr::call(":=", vec![head, inner.clone()]));
                 }
                 let value = self.eval(body)?;
+                if let Some((params, inner)) = crate::lists::lambda(&value) {
+                    // (a function that was worked out, as matlabfunction gives one)
+                    self.vars.remove(&**name);
+                    self.funcs
+                        .insert(name.to_string(), (params.clone(), inner.clone()));
+                    let head = Expr::call(name, params.iter().map(|p| Expr::sym(p)).collect());
+                    return Ok(Expr::call(":=", vec![head, inner.clone()]));
+                }
                 self.vars.insert(name.to_string(), value.clone());
                 Ok(value)
             }
@@ -1668,6 +1874,9 @@ impl Session {
     }
 
     pub(crate) fn call(&mut self, name: &str, raw: &[Expr]) -> Res {
+        if name == "clear" {
+            return self.clear(raw);
+        }
         match name {
             ":=" => return self.define(&raw[0], &raw[1]),
             "rule"
@@ -1717,8 +1926,18 @@ impl Session {
             "dsolve" | "rsolve" | "funsolve" | "ndsolve" | "qsolve" => {
                 return Err(format!("{name} must be a statement of its own"));
             }
+            "string" => return Ok(Expr::call(name, raw.to_vec())),
+            "base_conv" if matches!(raw.len(), 3 | 4) => return self.base_conv(raw),
             _ if crate::plot::is_plot(name) => {
                 return Err(format!("{name} must be a statement of its own"));
+            }
+            _ if crate::picture::is_save(name) => {
+                return Err(format!("{name} must be a statement of its own"));
+            }
+            _ if crate::picture::is_drawing(name) => {
+                return Err(format!(
+                    "{name} must be a statement of its own, or the drawing of save_png(\"name.png\", {name}(...))"
+                ));
             }
             "derivative'" => {
                 // f'(x) for a defined function: the derivative of its body
@@ -1753,7 +1972,24 @@ impl Session {
         if crate::units::takes_units(name) {
             return self.units(name, raw);
         }
-        let a = self.eval_args(raw)?;
+        let a = if parser::FUNCTION_ARGS.contains(&name) {
+            // a function that is written out stays as it is written: it is worked out when
+            // it gets its arguments, which may be lists
+            let written = |r: &Expr| crate::lists::lambda(r).is_some();
+            let staged: Vec<Expr> = raw
+                .iter()
+                .map(|r| if written(r) { Expr::zero() } else { r.clone() })
+                .collect();
+            let mut a = self.eval_args(&staged)?;
+            for (value, r) in a.iter_mut().zip(raw) {
+                if written(r) {
+                    *value = r.clone();
+                }
+            }
+            a
+        } else {
+            self.eval_args(raw)?
+        };
         if matches!(
             name,
             "diff" | "integrate" | "limit" | "sum" | "product" | "series" | "N"
@@ -1769,8 +2005,61 @@ impl Session {
             return Ok(crate::quat::make([x, y, z, w]));
         }
         let digits = numeric::digits();
+        if let Some(r) = self.control(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.table_function(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.table_call(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.matlab(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.hypotest(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.solver(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.code_call(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.record_call(name, &a) {
+            return r;
+        }
+        if let Some(r) = crate::texts::call(name, &a)
+            .or_else(|| crate::arrays::call(name, &a))
+            .or_else(|| crate::datafun::call(name, &a))
+            .or_else(|| crate::decomp::call(name, &a))
+            .or_else(|| crate::polys::call(name, &a))
+            .or_else(|| crate::signal::call(name, &a))
+            .or_else(|| crate::elem::call(name, &a))
+            .or_else(|| crate::random::call(name, &a))
+            .or_else(|| crate::optim::call(name, &a))
+            .or_else(|| crate::compgeom::call(name, &a))
+            .or_else(|| crate::extras::call(name, &a))
+            .or_else(|| crate::imagefun::call(name, &a))
+            .or_else(|| crate::dates::call(name, &a))
+            .or_else(|| crate::patterns::call(name, &a))
+            .or_else(|| crate::gallery::call(name, &a))
+            .or_else(|| crate::pencils::call(name, &a))
+            .or_else(|| crate::multivar::call(name, &a))
+        {
+            return r;
+        }
         if let Some(r) = crate::graph::call(name, &a) {
             return r;
+        }
+        if let Some(r) = crate::radix::call(name, &a) {
+            let (value, notes) = r?;
+            for note in notes {
+                if !self.notes.contains(&note) {
+                    self.notes.push(note);
+                }
+            }
+            return Ok(value);
         }
         if let Some(r) = self.distribution(name, &a) {
             return r;
@@ -2317,6 +2606,9 @@ impl Session {
                 Ok(matrix::from_rows(out))
             })(),
             ("matrixexp", 1 | 2) => (|| {
+                if let Some(found) = crate::matfun::numeric(name, &rows(&a[0], name)?, a.get(1)) {
+                    return found;
+                }
                 let z = Expr::sym("#w");
                 let exponent = match a.get(1) {
                     Some(t) => mul(vec![t.clone(), z]),
@@ -2328,12 +2620,17 @@ impl Session {
                     "#w",
                 ))
             })(),
-            ("matrixpower", 2) => {
-                matrix_out(rows(&a[0], name).and_then(|m| {
-                    matrix::function_of(&m, &pow(Expr::sym("#w"), a[1].clone()), "#w")
-                }))
-            }
+            ("matrixpower", 2) => (|| {
+                let m = rows(&a[0], name)?;
+                if let Some(found) = crate::matfun::numeric(name, &m, a.get(1)) {
+                    return found;
+                }
+                matrix_out(matrix::function_of(&m, &pow(Expr::sym("#w"), a[1].clone()), "#w"))
+            })(),
             ("matrixsqrt" | "matrixlog", 1) => (|| {
+                if let Some(found) = crate::matfun::numeric(name, &rows(&a[0], name)?, None) {
+                    return found;
+                }
                 let f = if name == "matrixsqrt" {
                     canon::sqrt(Expr::sym("#w"))
                 } else {
@@ -3575,7 +3872,7 @@ fn external_failure(value: &Expr) -> Option<String> {
 }
 
 /// The name under the first postfix derivative, as in `y'`.
-fn primed_name(e: &Expr) -> Option<String> {
+pub(crate) fn primed_name(e: &Expr) -> Option<String> {
     let mut found = None;
     e.walk(&mut |x| {
         if let Expr::Fn(n, a) = x

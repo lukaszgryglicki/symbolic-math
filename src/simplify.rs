@@ -65,7 +65,9 @@ fn simplify_parts(e: &Expr) -> Expr {
             crate::canon::pow(simplify(b), simplify(x))
         }
         Expr::Fn(n, a)
-            if !matches!(&**n, "hold" | "ordered" | "quat") && !a.is_empty() && e.size() <= 400 =>
+            if !matches!(&**n, "hold" | "ordered" | "quat" | "based" | "string")
+                && !a.is_empty()
+                && e.size() <= 400 =>
         {
             crate::funcs::func(n, a.iter().map(simplify).collect())
         }
@@ -77,7 +79,7 @@ pub fn simplify(e: &Expr) -> Expr {
     match e {
         Expr::Num(_) | Expr::Float(_) | Expr::Sym(_) | Expr::Bool(_) => return e.clone(),
         Expr::List(_) | Expr::Rel(..) => return crate::canon::rebuild(e, &mut |c| simplify(c)),
-        Expr::Fn(n, _) if &**n == "hold" => return e.clone(),
+        Expr::Fn(n, _) if matches!(&**n, "hold" | "based" | "string") => return e.clone(),
         Expr::Fn(n, _) if &**n == "quat" => {
             return crate::quat::simple(e).unwrap_or_else(|| e.clone());
         }

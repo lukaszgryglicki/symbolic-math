@@ -1014,6 +1014,11 @@ fn abs(x: &Expr) -> Option<Expr> {
             None if assume::is_nonnegative(x) => Some(x.clone()),
             None => {
                 let (re, im) = complex::rect(x).filter(|_| x.is_const())?;
+                // (a real value of an unknown sign stays as it is: its root of a square
+                // would be its absolute value again)
+                if im.is_zero() {
+                    return None;
+                }
                 Some(sqrt(add(vec![powi(re, 2), powi(im, 2)])))
             }
         },
@@ -1544,4 +1549,28 @@ pub fn cos_pi(r: &Rat) -> Expr {
 }
 pub fn sin_pi_value(r: &Rat) -> Expr {
     sin_of_pi(r)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn the_absolute_value_of_what_has_no_sign_stays() {
+        // the real part of something that is no number is real, and its sign is not known:
+        // it must not go round between the absolute value and the root of the square
+        let real = func("re", vec![Expr::Bool(true)]);
+        let abs = func("abs", vec![real.clone()]);
+        assert_eq!(abs, Expr::call("abs", vec![real.clone()]));
+        assert_eq!(func("sqrt", vec![pow(real.clone(), Expr::int(2))]), abs);
+        // what has a sign loses it
+        assert_eq!(func("abs", vec![Expr::int(-3)]), Expr::int(3));
+        assert_eq!(
+            func(
+                "abs",
+                vec![sub(func("sqrt", vec![Expr::int(2)]), Expr::int(2))]
+            ),
+            sub(Expr::int(2), func("sqrt", vec![Expr::int(2)]))
+        );
+    }
 }

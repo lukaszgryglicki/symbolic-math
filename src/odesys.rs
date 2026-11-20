@@ -135,12 +135,25 @@ fn magnitude(z: &Complex) -> i64 {
 
 /// The solution of `y' = f(t, y)` at `t1` from `y(t0)`: steps of the midpoint rule with
 /// 2, 4, 6, ... substeps, extrapolated to step 0, with the step chosen by the error seen.
-fn integrate(
+pub(crate) fn integrate(
     f: Field,
     t0: &Float,
     t1: &Float,
     y0: Vec<Complex>,
     bits: u32,
+) -> Result<Vec<Complex>, String> {
+    integrate_by(f, t0, t1, y0, bits, 16)
+}
+
+/// As `integrate`, the first step being that share of the way (1: the whole way at once,
+/// for short ways between points that lie close).
+pub(crate) fn integrate_by(
+    f: Field,
+    t0: &Float,
+    t1: &Float,
+    y0: Vec<Complex>,
+    bits: u32,
+    share: u32,
 ) -> Result<Vec<Complex>, String> {
     const COLUMNS: usize = 16;
     let prec = bits + 64;
@@ -150,7 +163,7 @@ fn integrate(
     if span.is_zero() {
         return Ok(y);
     }
-    let mut h = Float::with_val(prec, &span / 16u32);
+    let mut h = Float::with_val(prec, &span / share);
     let mut work = 0u64;
     loop {
         let left = Float::with_val(prec, t1 - &t);

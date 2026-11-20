@@ -592,6 +592,21 @@ pub fn value(name: &str, a: &[Expr]) -> Option<Expr> {
             }
         }
         ("polylog", [s, z]) => polylog(s, z),
+        // Lerch's transcendent where it is a function with a name of its own
+        ("lerchphi", [z, s, a]) => {
+            if z.is_zero() {
+                Some(pow(a.clone(), neg(s.clone())))
+            } else if z.is_one() {
+                Some(Expr::call("zeta", vec![s.clone(), a.clone()]))
+            } else if a.is_one() {
+                Some(div(
+                    Expr::call("polylog", vec![s.clone(), z.clone()]),
+                    z.clone(),
+                ))
+            } else {
+                None
+            }
+        }
         ("zeta", [s, a]) => hurwitz(s, a),
         ("dirichleteta", [s]) => Some(if s.is_one() {
             f1("ln", int(2))
@@ -709,6 +724,15 @@ pub fn partial(name: &str, a: &[Expr], at: usize) -> Option<Expr> {
             }
         }
         ("polylog", 2, 1) => div(with(&[(0, shifted(0, -1))]), a[1].clone()),
+        // (phi(z, s - 1, a) - a*phi(z, s, a))/z, and -s*phi(z, s + 1, a)
+        ("lerchphi", 3, 0) => div(
+            sub(
+                with(&[(1, shifted(1, -1))]),
+                mul(vec![a[2].clone(), with(&[])]),
+            ),
+            a[0].clone(),
+        ),
+        ("lerchphi", 3, 2) => neg(mul(vec![a[1].clone(), with(&[(1, shifted(1, 1))])])),
         ("zeta", 2, 1) => neg(mul(vec![a[0].clone(), with(&[(0, shifted(0, 1))])])),
         ("ellipticf", 2, 0) => powi(
             sqrt(sub(

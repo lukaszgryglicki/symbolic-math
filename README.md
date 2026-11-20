@@ -5,8 +5,12 @@ solves equations, inequalities and systems of them, differentiates, integrates, 
 sums series, solves differential, functional and Diophantine equations and recurrences, works
 with matrices, tensors, lists, whole numbers, special functions, integral transforms,
 statistics, geometry, graphs and quantities with units, applies a function a fractional or
-complex number of times, draws plots with characters, and evaluates everything to as many
-digits as asked for.
+complex number of times, writes numbers in any base, draws plots with characters, walks along
+the digits of numbers and along the primes, saves its drawings as PNG and JPEG XL pictures,
+and evaluates everything to as many digits as asked for. Most of what MATLAB computes is here
+too, under MATLAB's names: arrays, statistics and tests, matrices taken apart, polynomials,
+filters, texts and patterns, dates, optimisation, charts of data, records and tables; see
+[What MATLAB has](#what-matlab-has).
 
 Numbers are complex by default. Results are exact wherever an exact form is found, and each
 exact constant is followed by its numeric value with at least 32 significant digits (more when a
@@ -31,9 +35,13 @@ answer is not a plain tower of powers; see [Tetration](#tetration).
 
 ## Build and install
 
-Rust (edition 2024, tested with 1.97 and 1.98), a C compiler and `m4` are needed: the only
-dependency, [rug](https://crates.io/crates/rug), builds GMP, MPFR and MPC from source. FreeBSD,
-Linux and macOS are supported.
+Rust (edition 2024, tested with 1.97 and 1.98), a C and a C++ compiler, `m4`, `cmake` and
+`libclang` are needed: [rug](https://crates.io/crates/rug) builds GMP, MPFR and MPC from
+source, and [jxl-sys](https://crates.io/crates/jxl-sys) builds libjxl (the JPEG XL encoder)
+with cmake and makes its bindings with libclang. The other dependencies are plain Rust:
+[png](https://crates.io/crates/png) and [font8x8](https://crates.io/crates/font8x8) (the
+letters in pictures). FreeBSD, Linux and macOS are supported; the same input gives the same
+PNG file, byte for byte, on all of them.
 
 ```sh
 cargo build --release --locked
@@ -44,7 +52,8 @@ The Makefile builds the same executable and installs it:
 
 ```sh
 make release    # target/release/symbolic-math
-make static     # a static executable (on macOS: one that needs the system libraries only)
+make static     # a static executable (on macOS: one that needs the system libraries only;
+                # on Linux the static C++ library libstdc++.a must be installed)
 make install    # copies it to ./symbolic-math, ./symbolic-math.static and /data/scripts/symbolic-math
 make install INSTALL_DIR="$HOME/bin"
 make test       # unit and integration tests
@@ -1288,6 +1297,691 @@ $ symbolic-math 'histogram([1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7])'
 5.8 .. 7   │████████████████████████████████████ 3
 ```
 
+### Numbers in a base
+
+A number can be written in any base from 2 on: `base#digits`, with a point and with the digits
+that repeat in parentheses. The digits are `0-9` and `a-z` up to base 36 (capitals are the same
+digits there), then `A-Z`, `@` and `_` up to base 64, as in the shell. From base 65 on every
+digit is a number after a `#`, padded with zeros: `1000#001#234` is 1234. `0x`, `0b` and `0o`
+are the bases 16, 2 and 8.
+
+```
+'16#ff'                   255
+'2#101.1'                 11/2
+                            ~ 5.5
+'2#0.(01)'                1/3
+                            ~ 0.33333333333333333333333333333333
+'64#Az@_'                 9584575
+'1000#001#234'            1234
+'1000#000.(#333)'         1/3
+                            ~ 0.33333333333333333333333333333333
+'0x1F.8 + 0b0.1 + 0o17'   47
+```
+
+`base_conv(x, from, to)` takes `x` as it is written in the base `from` (no quotes are needed)
+and writes it in the base `to`; `base_conv(x, to)` takes a value, which has no base until it is
+written: a constant, an expression, a list. The answer shows the digits alone; with the base
+and `#` in front it is a number that can be typed again. A fourth argument (or the third of
+`tobase`) is the number of digits of a number without an end.
+
+```
+'base_conv(15, 10, 16)'               f
+'base_conv(fe, 16, 10)'               254
+'base_conv(64#Hello, 64, 10)'         725177688
+'base_conv(ff.8, 16, 2)'              11111111.1
+'base_conv(0.(3), 10, 3)'             0.1
+'base_conv(11/101, 2, 10)'            0.6
+'base_conv(pi, 16)'                   3.243f6a8885a308d313198a2e03...
+'base_conv(e, 2)'                     10.101101111110000101010001011000101000101011101101001010100110101010111111011100010101100010000000100111001...
+'base_conv(pi, 10, 16, 50)'           3.243f6a8885a308d313198a2e03707344a4093822299f31d00...
+'base_conv(1234, 10, 1000)'           #001#234
+'base_conv(#001#234, 1000, 10)'       1234
+'base_conv(1/3, 10, 1000)'            #000.(#333)
+'base_conv(2^64, 10, 64)'             g0000000000
+'base_conv(Hello, 256, 10)'           310939249775
+                                      note: "Hello" is read character by character: #072#101#108#108#111
+'base_conv(310939249775, 10, 256)'    #072#101#108#108#111
+                                      note: as a text, one character for each digit: "Hello"
+'base_conv([10, 255, 1/3], 10, 16)'   [a, ff, 0.(5)]
+```
+
+With a source base, a first argument that is no number of that base is an expression whose
+numbers are written in that base (a number that names its base, like `64#Hello`, is the same
+in every base): `base_conv(101 + 11, 2, 10)` is 8, and `base_conv(pi, 10, 16)`
+is pi. A word of digits is a number first: `base_conv(e, 16, 2)` is 14 in base 2, and
+`base_conv(e, 10, 2)` is Euler's number. In base 256 a text without `#` is read character by
+character, and an answer whose digits are all characters is also shown as a text.
+
+`tobase(x, b)` writes the digits, `tofraction(x, b)` the fraction with numerator and
+denominator in the base, `digits(x, b)` lists the digits (of the whole part, after the point,
+and those that repeat), `frombase` reads such lists and texts, `period(x, b)` is the number of
+digits that repeat, and `digitcounts(x, b, n)` counts how often each digit stands among the
+first `n`. An answer in a base is a number like any other: `tobase(1/3, 2) + 1` is `4/3`.
+
+```
+'tobase(1/7)'                        0.(142857)
+'tobase(1/3, 2)'                     0.(01)
+'tobase(pi, 2, 40)'                  11.00100100001111110110101010001000100001...
+'tobase(1/3 + i/7, 2)'               0.(01) + 0.(001)*i
+'tofraction(2#0.(01), 2)'            1/11
+'tofraction(0.75, 16)'               3/4
+'digits(1/7)'                        [[0], [], [1, 4, 2, 8, 5, 7]]
+'digits(pi, 60, 5)'                  [[3], [8, 29, 44, 0]]
+'frombase([[3], [8, 29, 44]], 60)'   84823/27000
+                                       ~ 3.1415925925925925925925925925926
+'frombase("ff.8", 16)'               511/2
+                                       ~ 255.5
+'period(1/97)'                       96
+'digitcounts(pi, 10, 1000)'          [93, 116, 103, 103, 93, 97, 94, 95, 101, 105]
+```
+
+### Walks along the digits of a number
+
+`walk(x, base, digits)` takes a step of length 1 for every digit of a real number, the whole
+part first: the digit `d` goes in the direction of `360*d/base` degrees, counted against the
+clock from the x-axis. The base is 10 and the number of digits 1000 when they are left out; a
+number whose digits end gives a walk that ends, and a fraction walks its block of digits again
+and again. As a statement the walk is drawn with characters (`width = 64`, `height = 20` and
+`ascii` change the picture), with what there is to tell about it.
+
+```
+$ symbolic-math 'walk(pi, 10, 1000)'
+ 28.25 │                  │  ⢠⣠⣀  ⢀⡀                     ⢀⡄
+       │                  │  ⠉⠁⡏⣹⣰⠙⢅           ⢀⡠⡀      ⢀⡼⡃
+       │                  │  ⢠⢬⠛⣹⣒⣤⣼⣧⣷⣾⣶⠁    ⡠⣴⣉⡀⢣⢴⡤⠤⣖⣲⣿⡿⡾
+       │                  │⢀⣀⡘⠾⢿⣿⣵⣶⣿⣿⣟⣿⣿⡦    ⠈⣉⣷⣏⣱⣷⠿⠒⡗⢻⣿⡽⠋
+       │                ⣀⣠⢒⠾⣿⣦⣤⣺⣯⢿⣿⣿⣮⣣⣿⣷⣏  ⢀  ⢀⢨⠂⢟⣿⣀⡀⢱⣸⣿⠗
+       │                ⢺⣿⣿⣿⣿⣿⣿⣿⣽⠛⠊  ⠡⠟⠋⢉⣵⡄ ⠉⣾⣟⠋ ⠈⡱⠘⠃
+       │                 ⠘⠛⣿⢿⣻⣿⡊⠉⠁       ⠠⠧⡤⠊⡏⢀⢑⠢⣠⠧⡄⡀
+       │             ⢸⠉⢲⣠ ⠼⢬⣿⣿⣿⣞⠆         ⠐⠁ ⢸⡽⣽⣤⣮⣿⣶⣵  ⢀⣀⣠⢤⡀
+       │            ⣤⢼⣶⣷⣣⠚⣦⣤⣭⣟⣿⠜            ⢀⡏⠟⠊  ⠈⣿⣿⣭⣿⣽⣤⡤ ⠱
+       │            ⢸⣴⣿⠏⣵⣤⣿⡽⡿⡿⠃              ⠓⠒  ⠠⠊⠁⠉⠙⡏⠻⠿⠃
+       │            ⠈⢮⡧⣩⠃⠘⠛⠈⠁
+       │            ⠘⠗⠋⢪  │ ⢠      ⣠
+       │                ⠙⣺⣶⣄⣯⣦⣄⣠⡴⣧⣠⣿⣶⢶⡤⣄
+       │                ⠈⢈⣯⣿⡟⠟⠁⠈⠉⠊⠟⣟⠷⣹⣯⠟⠉⠁
+       │            ⢠ ⡀   │⠹     ⣠⠴⠿⠭⠺⠾
+       │            ⢼⢾⣷⢤  │ ⢀⣀⡀⣴⣖⠟⠿
+       │             ⠣⡬⣾⢿⣼⣽⣄⣠⠝⢿⣿⠁⣤⡤
+       │               ⠉⣽⢫⡿⠿⣧⡀⢿⢿⣿⣝
+     0 │────────────────⠈⠃⠇──⢙⣿⣻⣝⡭⠂─────────────────────────────────────
+-1.981 │                  │  ⠚⠛⠓
+       └────────────────────────────────────────────────────────────────
+        -13.83                                                     34.54
+1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees
+from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53
+$ symbolic-math 'walk(1/7, 10, 60, width = 40, height = 10)'
+  4.251 │      ⣆  ⡀                  │
+        │     ⡸⠘⡄⢠⠻⡀ ⣴  ⢀            │
+        │   ⠒⠒⢗⣒⣛⣜⣀⣣⢰⠁⢇ ⡎⡆ ⢰⡄  ⡀     │
+        │     ⢠⠋⠒⣜⡶⣒⠺⣒⣚⣸⣀⣸⣀⠇⢣ ⡸⢇ ⢠⡆  ⡀
+        │     ⣎⠔⠊⢸⢀⡠⢓⠇⠓⣌⡲⢖⡺⣒⠚⢢⠃⠘⡄⡜⠸⡀⢰⢱  ⣦  ⢀
+        │    ⠈   ⠗⠁ ⣸⡠⠊⢠⠃⣀⠜⡜⠙⢫⣹⢭⡵⢥⡤⠧⡇│⢇⡸⠈⡆⢀⠟⡄
+        │           ⠁  ⠞⠊ ⢰⡡⠒⠁⡎⣀⠜⢺⠉⢫⣙⠯⣭⢧⠤⠵⡜ ⢣
+        │                 ⠁  ⠸⠚ ⢀⣇⠔⠃⡜⢀⡠⢳⠋⠛⣍⠫⣉
+        │                       ⠈  ⠠⠓⠁ ⣎⠔⠊ ⢀⡠⠓
+-0.1037 │────────────────────────────⠠⠤⠥⠤⠤⠔⠊─────
+        └────────────────────────────────────────
+         -6.251                             2.459
+60 steps along the digits 0.14285714285714285714285... of 1/7 in base 10: the digit d is a step at 36*d degrees
+from the origin to (-5.601, 3.196), 6.449 away; x from -5.601 to 1.809, y from 0 to 4.147
+$ symbolic-math 'walk(1/4, 4, 10, width = 24, height = 5, ascii)'
+ 1.025 |       |        *
+       |       |        *
+       |       |        *
+       |       |        *
+-0.025 |-------**********-------
+       +------------------------
+        -0.76               1.76
+2 steps along the digits 0.1 of 1/4 in base 4, which end there: the digit d is a step at 90*d degrees
+from the origin to (1, 1), 1.414 away; x from 0 to 1, y from 0 to 1
+```
+
+`walk3d(z, base, digits)` walks in space along a complex number: at every place the digit `a` of
+the real part turns the step by `360*a/base` degrees around the z-axis and the digit `c` of the
+imaginary part lifts it by `360*c/base` degrees above the plane, so that the step is
+`(cos(c)*cos(a), cos(c)*sin(a), sin(c))`. A real number walks in the plane as `walk` does.
+
+```
+$ symbolic-math 'walk3d(e + pi*i, 12, 2000, width = 60, height = 16)'
+                              ⣆
+                           ⢺⡄⣤⣿⡦
+                          ⣀⡞⣻⣾⣾⣯⣤⣤⣀
+                     ⢠⣀⣴⣯⠙⣷⣿⣿⣻⣿⣿⣿⣿⡟⢶
+                     ⠈⣿⣿⣏⣹⢎⠽⣻⣿⣿⣻⣿⣿⢷⣎
+                      ⠈⠁⠸⣿⣷⣾⢼⣿⣿⣿⣿⣿⣯⣛⡀
+                        ⢰⡖⢺⣿⣼⣽⣽⣿⣿⣿⠍⠙⡇
+                         ⠸⠿⡻⣿⣿⣿⣽⣿⢿⣆⣄⣉⠆
+                           ⢸⣿⣿⢻⣿⣿⣾⣿⠻⠁
+                          ⢀⣈⢻⠸⠿⣿⣿⣿⣽⣄⡄
+                          ⠘⣟⣾⣿⣭⢻⠿⠯⡛⣾⣡⣖
+                          ⠲⠧⢭⢸⠁⡀ ⡤⣽⡟⠈⣯⡀
+                            ⢼⢸⣾⣿⣿⣗⣤⣾⣟⣿⣆
+                           ⣶⡗⠷⠦⣿⣿⣇⠈⣿⡯⠙⠁
+                          ⠈⣯⣧⡔⠛⢻⣿⡃ ⠸
+                           ⠘⢻⡇  ⠛⠻
+2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane
+from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+```
+
+### Walks along the primes
+
+`primewalk(n, m, k)` takes a step for every whole number from 2 to the `n`-th prime and turns
+left by `k/m` of a full turn at every prime (`m = 4` and `k = 1` when they are left out), so
+that its sides are as long as the gaps between the primes. `primewalk3d(n, m)` does the same
+in space: at every prime it takes the next of `m` directions: 3 (x, y, z), 4 (to the corners of
+a tetrahedron) or 6 (x, y, z, -x, -y, -z). `primemodwalk(n, m)` takes one step for each of the
+first `n` primes `p`, in the direction of `360*(p mod m)/m` degrees (`m = 8`: the four odd
+remainders balance; a modulus without a square factor, like 10, has a direction that it
+prefers), and `primemodwalk3d(n, m, k)` uses the remainders by `m` and by `k` as the two angles
+of a step in space. `ulamspiral(n)` and `sacksspiral(n)` mark the first `n` primes on the
+square spiral of the whole numbers and on the spiral where `k` is `sqrt(k)` away from the
+middle after `sqrt(k)` turns. `primes_walk`, `primes3d_xyz` and other spellings are accepted.
+
+```
+$ symbolic-math 'primewalk(2000, width = 60, height = 16)'
+547.5 │                          │ ⣤⣤⣄⣤⣠⡀
+      │                          │ ⠉⠻⠽⣿⣻⡇
+      │                          │  ⢠⡖⠻⠏⣹⣿⠃
+      │                         ⢠⣤⣤⣿⠏⠁⣀⣾⣿⠛⠿⠇
+      │                         ⠈⠛⢻⣷⣿⣿⣿⣿⣿⣠⣶⡤⡄
+      │                        ⢀⣶⠛⠙⠙⣿⡯⠘⠛⡿⢯⠙⠒⣿
+      │                        ⠸⣶⡶⠤⠶⡏   ⢁⣭⣧ ⠉
+      │                       ⠰⣾⣿⣿⣶⣄⠓⠛⡿⣾⣿⣿⠁
+      │                       ⢸⣿⣷│⢨⡏  ⠙⠻⠿⠁
+      │                       ⠘⣿⣯⣁⣶⠃
+      │                        ⣙⣯⣿⡅
+      │                      ⣀⣠⣼⣍⣉
+      │                      ⠻⠿⠏⣿⡿⠷
+      │                       ⢀⣤⣏⡿⠟⣿⠃
+      │                        ⠿⣿⡇
+-19.5 │──────────────────────────⠗─────────────────────────────────
+      └────────────────────────────────────────────────────────────
+       -469.6                                                 593.6
+1999 sides along the first 2000 primes, from 2 to 17389: a step for every whole number, at every prime a turn to the left by 90 degrees, so that every side is as long as the gap between two primes
+from the origin to (-19, 238), 238.8 away; x from -77 to 201, y from -6 to 534
+$ symbolic-math 'primemodwalk(5000, 12, width = 60, height = 14)'
+ 3.404 │                    ⣠⣦⣄⣀⣀⡀                           ⢀⣀⣀⣀⡀
+       │                    ⣀⣅⣐⣭⣒⠯⢖⣠⣀            ⢀ ⢀ ⢀⣀⣔⣪⢽⣺⢭⣒⣭⣒⣭⣒⡽
+     0 │────────────────────⠈⠛⠻⣛⠣⣖⡥⢝⡻⢄⡠⢄⡀───⣒⠦⣐⠦⣐⡧⣗⡧⢟⡻⢟⡻⢟⣺⢼⣚⠿⣛⠿⣛⠻⣓──
+       │                      ⣠⠴⣏⡗⣏⡷⢬⡷⢮⡥⢶⣱⢒⣱⠶⣿⠶⣿⠖⣏⡗⣍⡷⢾⡷⢾⡷⢺⣹⠲⣿⠶⣿⠶⣏│
+       │                  ⢀⢄⣲⣭⣶⣭⡖⡯⠗⣮⣵⣮⣵⣮⣵⢺⢽⢲⣭⣶⣭⣶⡭⡗⡯⡗⣮⣵⣮⣵⣮⢽⢺⢭⣶⡭⠶⠭⠖⠉
+       │                 ⣠⢭⣚⠭⣛⠭⣛⠭⣗⡯⢝⡫⠝⡫⢍⡫⢽⣺⠭⣛⠭⣛⠭⣓⡯⣗⡯⢝⡫⢝⡫⢝⣺⢽⣚⠭⣃⠄  │
+       │                ⣠⢼⣹⠼⣿⠿⣿⠿⣏⡧⣏⡿⢿⡶⢶⡿⢿⣹⢼⣩⠽⣿⠿⣿⠧⣏⡧⣏⡿⢿⡿⢿⡿⢼⡙⠜⠋⠉⠁  │
+       │                ⠈⣩⢺⣹⣶⣿⣶⣿⠖⢏⠗⣾⣷⣾⣷⣾⣷⢺⣹⢲⣿⣶⣿⣶⣏⡗⣍⡗⣾⣁⠈⣷⠮⡙⠂      │
+       │       ⢠⣒⡯⣗⠪⣔⣢⣕⣪⢵⣺⢽⣒⣭⣒⣭⣒⠤⣀⠈⢐⠪⣕⣪⣕⣢⢽⣺⢭⣒⣥⣒⣭⣒⡯⣗⡮⣕⣪⣕⡊⠁        │
+       │       ⣘⠁⣑⡧⢖⡻⢟⡻⢟⣺⢼⣺⠼⣛⠿⣛⠽⣓⡥⣖⡲⢟⡻⢟⡫⢍⣺⢼⣚⠿⣃⠼⣛⠧⣕⡡⠓⠉⠙⠉          │
+       │     ⠰⣾⠦⣉⠧⣋⠷⢾⡓⢾⡷⢼⣹⢼⣩⠤⣵⠶⣯⠤⣏⡧⢀ ⠈⠁ ⠁ ⠉⠴⡏⠴⣿⠶⣎⡥⣏              │
+       │  ⠢⢤⡖⠉ ⠉ ⠈⠓⣪⣑⣮⣵⣮⢽⠺⢽⢲⣭⣶⣭⣶⡭⡕⠉⠑⠤⣤⣦⣤⣊⠝⠚⠉⠲⠭⠴⠭⠔⠯⠁              │
+       │    ⠉⠙⠭⠒⠤⠖⠯ ⠈⠉⠂⠁ ⠉⠺⠭⣛⠭⠛⠭⠑⠩⣗ ⢐⡫⢕⡫⠅                        │
+-19.17 │                         ⠈⠣⠉⠲⠛⠉⠉⠁                        │
+       └────────────────────────────────────────────────────────────
+        -46.2                                                  2.171
+5000 steps, one for every prime p up to 48611: at 30*(p mod 12) degrees
+from the origin to (-27.21, -11.13), 29.4 away; x from -44.53 to 0.5, y from -18.63 to 2.866
+$ symbolic-math 'ulamspiral(2000, width = 50, height = 16)'
+ 69.8 │          ⡄⡀⠠⢀⢄⣄⠠ ⡄⠄⢠ ⣀⠄⡠⡀⡤⡠⢀⡄⡠⡀⠄⠠⡄⢀⠄⡀⠠⢠
+      │          ⢺⡙⡃⡎⡋⠷⠖⠅⢭⣰⠸⠻⢂⢏⡽⢏⣊⠅⡩⡣⡜⠡⣖⢪⠍⠩⠨⠩⡮⠩
+      │          ⡳⢻⠶ ⣔⡠⡂⣵⡅⡑⠠⢯⣄⢨⣂⢂⠷⠯⢐⠖⠋⢢⡟⢅⡷⣂⠲⡇⢖⡊
+      │          ⠤⠦⡱⠿⢁⠊⡰⢄⡮⢊⢴⠃⢦⢶⣥⣯⢣⠃⠣⢯⡗⣕⡧⡰⣴⣓⣄⢎⠣⣷
+      │          ⡃⢄⢲⡪⢹⣜⢗⣢⣓⣪⢠⢒⣥⡎⢪⢀⡙⣤⢶⡠⣅⢪⠌⡦⣥⡨⠢⢓⢮⠨
+      │          ⠞⠦⢂⠞⠖⣒⠒⡜⢖⡂⡱⣎⠪⡙⣜⣭⠺⡖⣎⢩⢤⠵⡹⢎⡈⠑⣬⠒⠡⠑
+      │          ⠩⢏⢍⣇⡁⢐⡮⡩⠫⢁⢾⡨⢭⢨⠚⡷⣶⡏⢚⡍⣓⠚⠏⡢⠑⢈⠒⠓⣒⠠
+      │          ⡔⢐⢢⡝ ⠲⡳⣁⣗⠪⡝⣗⣣⣳⣿⣮⠟⡻⡷⣛⠖⡛⡶⠔⠊⡠⢗⢧⠅⡡
+    0 │──────────⠮⢁⡍⣃⠪⢄⣬⡭⠏⠜⢧⡊⣖⣼⢿⡯⡫⢎⠿⡼⠰⢎⢽⠡⠦⢲⠡⡿⠘⢼──────────
+      │          ⡔⡌⠛⣕⣁⣫⣞⠬⡮⡧⣐⡝⣛⣼⠹⡵⣋⠥⣩⡏⢋⡲⣪⣘⢏⣡⠊⢇⡠⣩
+      │          ⠣⡡⢑⢯⢐⢍⡐⢃⢭⡕⣈⠏⠨⢴⢡⢒⡺⢁⣬⢣⠋⢘ ⢡⣳⢈⡧⠃⣉⢛
+      │          ⣍⠁⠨⡍⢍⠫⣡⡼⠩⡀⠾⡕⢡⢌⠚⡉⡿⠊⠓⠏⣬⡪⡓⡑⡴⣺⣑⣝⣁⢃
+      │          ⠒⡐⠕⣌⠢⢶⡁⢛⢆⡖⢽⠎⢓⢗⡣⢚⠳⡑⡏⢢⡤⣪⣷⡂⠺⠇⠦⠋⡂⡞
+      │          ⡁⢭⡂⠵⢙⠴⢎⡤⣚⡕⠤⡣⠼⠚⢭⡁⣣⠤⡤⡖⠳⢹⠳⢵⢕⠈⡥⡬⡨⣫
+      │          ⡪⠔⡲⣉⢌⠳⡁⢄⡘⡂⣥⡞⠴⡨⠛⠼⣱⣊⡇⠄⡒⠑⡐⢡⡑⣨⢮⣨⡇⣹
+-68.8 │          ⠃⠑⠂⠑ ⠂⠈⠁⠂⠊⠐⠂⠙⠘⠃⠙⠁⠂ ⠙⠘⠚ ⠉⠊⠁ ⠚⠈⠂
+      └──────────────────────────────────────────────────
+       -107.8                                       108.8
+the first 2000 primes up to 17389 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
+```
+
+### Pictures of functions, graphs and matrices
+
+Besides the plots above there are `complexplot(f, z, a, b)` (the values of a complex function
+in the box with the corners `a` and `b`: the colour is the argument, the lightness the absolute
+value, so that zeros are dark and poles light), `densityplot(f, x, a, b, y, c, d)` (the values
+as the colours of a palette), `plot3d(f, x, a, b, y, c, d)` (a surface),
+`parametricplot3d([x(t), y(t), z(t)], t, a, b)` (a curve of space), `graphplot(g)` (a graph
+with its vertices on a circle) and `matrixplot(m)` (the entries of a matrix as colours). As
+statements they are drawn with characters.
+
+```
+$ symbolic-math 'plot3d(sin(x)*cos(y), x, -pi, pi, y, -pi, pi, width = 60, height = 16)'
+                            ⢀⠤⡲⠲⢄
+                           ⣠⠟⢲⠣⣄⡸⢣
+                         ⢀⡼⡟ ⡎ ⣰⠣⡀⠳⡀
+                        ⢠⡿⢵⠓⢺⠤⣀⠇ ⠱⡜⢣
+                      ⢀⡴⡟⠁⡇ ⡎ ⡸⠑⢄⣎⡱⣒⢷⢦⡀
+               ⣤⣤⠶⣄⡀⡠⠖⠳⡼⢥⣰⣁⢰⠁⢀⠇ ⣸⢾⣞⢯⣮⣦⣿⣳⡄
+             ⢠⢫⠚⠘⣄⣜⣿⢪⡢⣠⠃ ⡎ ⡝⠉⡺⠒⣴⡿⣩⣿⣏⢫⢿⡌⡷⣹⣆
+            ⡰⡩⣋⠶⡏⢾⡵⡸⣯⢳⣗⢄⢰⠁⢀⠇ ⣇⣾⣷⠟⢳⠧⣉⣯⣻⡷⣼⢿⢽⣷⣄   ⣠⢲⠁
+           ⢰⡱⠋⠁⠉⠙⢾⣿⢵⣵⢯⣿⡲⡗⠢⣼⣀⣼⣾⡟⡎ ⡜ ⢰⠑⢜⣿⡱⣧⢫⢿⡌⣯⡕⡫⢣⠃
+           ⠁      ⠙⣿⢫⡆⢿⡽⡙⣷⡷⢫⣷⢏⣠⡃⢀⠇ ⡇ ⡰⠣⡻⣹⣖⠟⢎⢁⡸⡹⠁
+                   ⠈⢷⣻⡾⡿⡿⣝⣿⣽⠃ ⡜⠈⢹⠑⢺⠲⢤⢧⣀⡬⠊⠛⢦⡼⠾⠎⠁
+                     ⠉⠳⣼⣜⣫⠚⡞⢄⢠⠃ ⡇ ⡇⢀⣯⠖⠁
+                        ⠱⣀⢯  ⡝⠢⢼⣀⣰⢥⡿⠁
+                         ⢫⡀⠣⣰⠃ ⡎⢀⣧⠟⠁
+                          ⠱⣠⠓⠦⣸⣀⡼⠋
+                           ⠙⢤⣠⡣⠜⠁
+the surface z = cos(y)*sin(x) over 24 by 24 cells; z from -1 to 1
+$ symbolic-math 'densityplot(sin(x)*cos(y), x, -pi, pi, y, -pi, pi, width = 48, height = 8)'
+ 3.142 │⠶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⠶⠶⠴⠴⠤⠤⠤⠄⠄⠄⠄    ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠶
+       │⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶
+       │⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶
+       │⠶⠴⠴⠤⠤⠤⠄⠄⠄⠄    ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠶⠶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⠶
+       │⠶⠴⠴⠤⠤⠤⠄⠄⠄⠄    ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠶⠶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⠶
+       │⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶
+       │⠶⠶⠶⡶⡶⡶⡶⡶⡶⡶⣶⣶⣶⣶⡶⡶⡶⡶⡶⡶⡶⠶⠶⠶⠶⠶⠶⠴⠴⠴⠴⠴⠴⠴⠤⠤⠤⠤⠴⠴⠴⠴⠴⠴⠴⠶⠶⠶
+-3.142 │⠶⡶⡶⣶⣶⣶⣾⣾⣾⣾⣿⣿⣿⣿⣾⣾⣾⣾⣶⣶⣶⡶⡶⠶⠶⠴⠴⠤⠤⠤⠄⠄⠄⠄    ⠄⠄⠄⠄⠤⠤⠤⠴⠴⠶
+       └────────────────────────────────────────────────
+        -3.142                                     3.142
+the colours of the palette run from the value -1 to 1
+$ symbolic-math 'graphplot(cyclegraph(5), width = 40, height = 12)'
+  1.212 │                    │
+        │                  ⣀⠔⠷⣀
+        │               ⢀⠔⠊  │ ⠑⠢⡀
+        │            ⢀⠤⠊⠁    │   ⠈⠑⠤⡀
+        │         ⣠⡠⠊⠁       │      ⠈⠑⢄⣄
+        │         ⠈⡆         │        ⢰⠁
+      0 │──────────⠸⡀────────┼───────⢀⠇──────────
+        │           ⢣        │       ⡜
+        │           ⠈⡆       │      ⢰⠁
+        │            ⠸⡀      │     ⢀⠇
+        │             ⣣⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣜
+-0.9909 │             ⠈      │     ⠁
+        └────────────────────────────────────────
+         -1.836                             1.836
+5 vertices on a circle, the first at the top and the others with the clock; 5 edges
+```
+
+### Pictures as files: PNG and JPEG XL
+
+`save_png("name.png", drawing, choices)` and `save_jxl("name.jxl", drawing, choices)` save a
+drawing as a picture of pixels; `save` takes the kind of file from the end of the name. The
+drawing is any of the walks, spirals, plots and pictures above: `walk`, `walk3d`, `primewalk`,
+`primewalk3d`, `primemodwalk`, `primemodwalk3d`, `ulamspiral`, `sacksspiral`, `plot`,
+`parametricplot`, `polarplot`, `listplot`, `histogram`, `implicitplot`, `complexplot`,
+`densityplot`, `plot3d`, `parametricplot3d`, `graphplot`, `matrixplot`, and the charts of data
+(`bar`, `pie`, `scatter`, `surf`, ...; see [What MATLAB has](#what-matlab-has)). The answer
+tells what was saved.
+
+```
+$ symbolic-math 'save_png("walk.png", walk(pi, 10, 10000))'
+10000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees
+from the origin to (-65.23, 76.9), 100.8 away; x from -83.73 to 34.73, y from -51.9 to 85.85
+saved walk.png: PNG, 1024 x 1024 pixels, 8 bits, RGB, level 9, 256497 bytes
+$ symbolic-math 'save_jxl("walk.jxl", walk(pi, 10, 10000))'
+10000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees
+from the origin to (-65.23, 76.9), 100.8 away; x from -83.73 to 34.73, y from -51.9 to 85.85
+saved walk.jxl: JPEG XL, 1024 x 1024 pixels, 8 bits, RGB, lossless, effort 7, 207176 bytes
+$ symbolic-math 'save_png("walk16.png", walk(pi), width = 800, height = 600, bits = 16, gray, level = 9)'
+1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees
+from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53
+saved walk16.png: PNG, 800 x 600 pixels, 16 bits, gray, level 9, 85054 bytes
+$ symbolic-math 'save_jxl("lossy.jxl", walk(pi), quality = 80, effort = 9)'
+1000 steps along the digits 3.14159265358979323846264... of pi in base 10: the digit d is a step at 36*d degrees
+from the origin to (25.36, 15.39), 29.66 away; x from -4.646 to 25.36, y from -1.261 to 27.53
+saved lossy.jxl: JPEG XL, 1024 x 1024 pixels, 8 bits, RGB, lossy at the distance 1.9, effort 9, 79618 bytes
+$ symbolic-math 'save_png("turn.png", walk3d(e + pi*i, 12, 2000), frames = 12, fps = 6, width = 300)'
+2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane
+from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+saved turn.png: PNG, 300 x 300 pixels, 8 bits, RGB, 12 frames, 6 a second, level 9, 401967 bytes
+$ symbolic-math 'save_jxl("slices.jxl", walk3d(e + pi*i, 12, 2000), slices = 16, depth, width = 300)'
+2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane
+from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+saved slices.jxl: JPEG XL, 300 x 300 pixels, 8 bits, RGB + depth, 16 slices as frames, 12 a second, lossless, effort 7, 71044 bytes
+$ symbolic-math 'save_jxl("views.jxl", walk3d(e + pi*i, 12, 2000), views, width = 300)'
+2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane
+from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+saved views.jxl: JPEG XL, 300 x 300 pixels, 8 bits, RGB, 3 views as frames (from above, from the front, from the right), 12 a second, lossless, effort 7, 74559 bytes
+$ symbolic-math 'save_png("eyes.png", walk3d(e + pi*i, 12, 2000), stereo, width = 600)'
+2000 steps along the digits 2.8752360698219ba71971009... of the real part and 3.184809493b918664573a621... of the imaginary part of e + i*pi in base 12: the digits a and c of a place are a step at 30*a degrees around the z-axis, 30*c degrees above the plane
+from the origin to (-13.58, 8.12, 3.562), 16.22 away; x from -15.3 to 4.397, y from -7.175 to 16.44, z from -8.732 to 32.53
+saved eyes.png: PNG, 600 x 600 pixels, 8 bits, red for the left eye and cyan for the right one, 4 degrees apart, level 9, 128146 bytes
+$ symbolic-math 'save_png("plot.png", plot([sin(x), cos(x)], x, 0, 2pi), grid)'
+saved plot.png: PNG, 1024 x 768 pixels, 8 bits, RGB, level 9, 36843 bytes
+$ symbolic-math 'save_png("surface.png", plot3d(sin(x)*cos(y), x, -pi, pi, y, -pi, pi), azimuth = 45)'
+the surface z = cos(y)*sin(x) over 128 by 128 cells; z from -1 to 1
+saved surface.png: PNG, 1024 x 1024 pixels, 8 bits, RGB, level 9, 230069 bytes
+```
+
+What is chosen follows the drawing as `name = value` or as a word, in any order:
+
+| Choice | Meaning |
+| --- | --- |
+| `width = 1024`, `height` | the size in pixels; the height follows from the drawing when it is left out (16384 a side and 16777216 pixels at most) |
+| `bits = 8` | bits of a sample: 8 or 16 in a PNG file, 1 to 16 in a JPEG XL file |
+| `gray`, `alpha`, `channels = n` | a gray picture; a channel that says how much of each pixel is drawn (no background); 1 gray, 2 gray + alpha, 3 colours, 4 colours + alpha |
+| `level = 9` | PNG: how hard the file is packed, 0 (not at all) to 9 |
+| `lossless`, `quality = q`, `distance = d` | JPEG XL: without loss (the usual), or with loss at a quality from 0 to 100 (90 is the distance 1) or at a distance from 0 to 25 |
+| `effort = 7` | JPEG XL: the effort of the encoder, 1 to 10 |
+| `depth` | JPEG XL: an extra channel with the depth of every pixel, 0 for the nearest thing and 1 for the farthest and for the background |
+| `frames = n`, `fps = 12` | a moving picture (APNG or JPEG XL animation): the eye goes once around the drawing |
+| `turn = degrees` | how far the eye goes around during the frames (360 when left out; 0 with `grow`) |
+| `grow` | the walk grows from frame to frame |
+| `slices = n` | the drawing cut into `n` slabs of depth, the nearest first, a frame each: the frames together are the drawing in space |
+| `views` | three frames with one scale: the drawing from above, from the front and from the right |
+| `stereo`, `stereo = degrees` | a picture for glasses with a red (left) and a cyan (right) glass: two eyes that stand 4 degrees (or as many as given) apart |
+| `thickness = 1`, `margin = 0.04` | the width of a line in pixels; the free rim as a part of the smaller side |
+| `palette = name` | the colours along a walk or of the values: `rainbow`, `fire`, `ice`, `viridis`, `plasma`, `heat`, `ocean`, `sunset`, `gray`, `ink`, `cool`, `warm`, those of MATLAB (`parula`, `turbo`, `jet`, `hot`, `hsv`, `bone`, `copper`, `pink`, `spring`, `summer`, `autumn`, `winter`), or a list of colours; `reverse` turns it around |
+| `color = c`, `background = c` | one colour for what is drawn; the ground. A colour is a name (`black`, `white`, `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `orange`, `purple`, `brown`, `pink`, `gray`, `navy`, `lime`, `gold`, `silver`), `"#rrggbb"`, or `[red, green, blue]` with numbers from 0 to 1 |
+| `title = "text"`, `xlabel`, `ylabel` | a title above any picture; names of the axes of a chart of data |
+| `axes`, `noaxes`, `grid` | axes with numbers (the usual for plots; a box with the ranges in space), none, faint lines at the numbers |
+| `azimuth = 30`, `elevation = 25`, `roll = 0` | in space: the degrees by which the eye stands around the z-axis and above the plane, and by which the picture is turned (a drawing of the plane is seen from above: elevation 90) |
+| `viewpoint = [x, y, z]` | the point of the eye: things that are near it are larger |
+| `perspective = d` | the same from the direction of the angles, the eye `d` radii of the drawing away |
+| `center = [x, y, z]`, `scale = s`, `zoom = z` | the point in the middle of the picture; pixels for a unit instead of a picture that is filled; a factor of the size |
+| `fog = f` | in space: how much the farthest things fade into the background, 0 to 1 (0.5 for walks and curves, 0.2 for surfaces when it is left out) |
+
+Pictures are made with the four operations and the square root of 64-bit floats, and with
+sines and cosines of the arbitrary-precision library, so that a PNG file is the same on every
+system; a JPEG XL file without loss holds the same pixels, and the size of one with loss may
+differ by a few bytes between kinds of processors. A picture of a complex function, of a
+density or of a surface works the function out once for every pixel or cell, with 64 bits.
+
+## What MATLAB has
+
+Most of what MATLAB computes with numbers, matrices, data, texts and functions is here under
+MATLAB's own names (aliases of the names that this program had before, where it had the thing
+already). `--functions` lists every name and `--help` has an example of each. The way of
+writing stays the one of this program; MATLAB's forms `[1, 2; 3, 4]`, `1:5`, `.*`, `A \ b`,
+`@(x) x^2`, `~=` are read too. Numbers are exact where MATLAB rounds to 16 digits: `inv`, `lu`,
+`polyfit`, `linprog` or `ranksum` answer with fractions and roots when the input has them, and
+with 32 digits or more when it has decimals.
+
+### Arrays
+
+A list is a row, a list of rows is a matrix, a list of matrices an array of three sizes; places
+count from 1. The operators work on whole lists, `.*`, `./`, `.^` entry by entry.
+
+```
+'1:5'                                        [1, 2, 3, 4, 5]
+'0:0.25:1'                                   [0, 0.25, 0.5, 0.75, 1]
+'[1, 2; 3, 4] .* [10, 20; 30, 40]'           [[10, 40], [90, 160]]
+'[1, 2; 3, 4] * [10, 20; 30, 40]'            [[70, 100], [150, 220]]
+'reshape(1:6, 2, 3)'                         [[1, 2, 3], [4, 5, 6]]
+'repmat([1, 2], 2, 2)'                       [[1, 2, 1, 2], [1, 2, 1, 2]]
+'cumsum([1, 2, 3, 4])'                       [1, 3, 6, 10]
+'sortrows([[3, 1], [1, 2], [2, 0]])'         [[1, 2], [2, 0], [3, 1]]
+'find([0, 3, 0, 5])'                         [2, 4]
+'kron([[1, 2], [3, 4]], [[0, 1], [1, 0]])'   [[0, 1, 0, 2], [1, 0, 2, 0], [0, 3, 0, 4], [3, 0, 4, 0]]
+'magic(4)'                                   [[16, 2, 3, 13], [5, 11, 10, 8], [9, 7, 6, 12], [4, 14, 15, 1]]
+'circshift([1, 2, 3, 4, 5], 2)'              [4, 5, 1, 2, 3]
+'unique([3, 1, 2, 3, 1])'                    [3, 1, 2]
+'any([0, 0, 1]) && all([1, 1, 0])'           false
+```
+
+### Data, statistics and tests
+
+Sums and statistics of a matrix run down its columns (a second argument 2: along the rows).
+The tests give what MATLAB gives first: `[h, p]` for `ttest`, `[p, h]` for the tests of ranks
+and signs, `p` for the comparisons of groups. A probability that is found by counting every
+case is a fraction.
+
+```
+'mean([[1, 2], [3, 4]])'                      [2, 3]
+'median([3, 1, 4, 1, 5])'                     3
+'std([2, 4, 4, 4, 5, 5, 7, 9])'               4sqrt(14)/7
+                                                ~ 2.138089935299395077476427847038
+'movmean([1, 2, 3, 4, 5], 3)'                 [3/2, 2, 3, 4, 9/2]
+'prctile([1, 2, 3, 4, 5], [25, 50, 75])'      [7/4, 3, 17/4]
+'corrcoef([1, 2, 3, 4], [2, 4, 5, 9])'        [[1, 11sqrt(130)/130], [11sqrt(130)/130, 1]]
+'histcounts([1, 2, 2, 3, 5], 2)'              [3, 2]
+'zscore([1, 2, 3])'                           [-1, 0, 1]
+'ttest([5.1, 4.9, 5.6, 5.8, 6.0], 5)'         [0, 0.082568296745773799057609961263288]
+'ranksum([1, 2, 3], [4, 5, 6])'               [1/10, 0]
+'signrank([1.5, -0.3, 2.2, 3.1, -1.2, 4.4, 0.7, 2.9])'
+                                              [0.0546875, 0]
+'fishertest([[8, 2], [1, 5]])'                [1, 5/143, 20]
+'kruskalwallis([[1, 2, 3, 4], [3, 5, 6, 7], [8, 9, 10, 11]])'
+                                              0.010882339478324631622855533212248
+'kstest([-1.2, -0.5, 0.1, 0.3, 0.8, 1.4, 2.0])'
+                                              [0, 0.66928382647137450666248695037868, 0.2541135515627432671796903325249]
+'anova2([[1, 2, 3], [2, 4, 5], [3, 5, 9], [4, 6, 8]])'
+                                              [0.003723875, 0.0058651509922152968254263305009713]
+'getfield(fitlm([1, 2, 3, 4, 5], [2.1, 3.9, 6.2, 7.8, 10.1]), "coefficients")'
+                                              [0.05, 1.99]
+'cluster(linkage([[0, 0], [1, 0], [0, 3], [5, 5], [6, 5]]), 2)'
+                                              [1, 1, 1, 2, 2]
+'kmeans([1, 2, 3, 10, 11, 12], 2)'            [[1, 1, 1, 2, 2, 2], [2, 11]]
+'normpdf(0)'                                  sqrt(2)/(2sqrt(pi))
+                                                ~ 0.39894228040143267793994605993438
+'norminv(0.975)'                              1.9599639845400542355245944305206
+'rng(0); rand(1, 3)'                          0
+                                              [0.81472368639317893634910205946653, 0.90579193707561922455084868488484, 0.12698681629350605515327288230765]
+```
+
+The distributions have MATLAB's names (`normpdf`, `tcdf`, `chi2inv`, `binornd`, `poisstat`, ...
+and `pdf("Normal", x, mu, sigma)`). After `rng(seed)`, `rand` and `randi` give the numbers
+that MATLAB gives after the same call; `randn` and `randperm` are random, but not MATLAB's.
+
+### Matrices taken apart
+
+```
+'lu([[4, 3], [6, 3]])'        [[[1, 0], [2/3, 1]], [[6, 3], [0, 1]], [[0, 1], [1, 0]]]
+'chol([[4, 2], [2, 3]])'      [[2, 1], [0, sqrt(2)]]
+'svd([[3, 0], [0, 4]])'       [4, 3]
+'null([[1, 2], [2, 4]])'      [[-2, 1]]
+'pinv([[1, 2], [2, 4]])'      [[1/25, 2/25], [2/25, 4/25]]
+'expm([[0, 1], [0, 0]])'      [[1, 1], [0, 1]]
+'[[4, 1], [1, 3]] \ [1, 2]'   [1/11, 7/11]
+'cond([[1, 2], [3, 4]])'      sqrt(15 + sqrt(221))/sqrt(15 - sqrt(221))
+                                ~ 14.933034373659252761306004106966
+'rank(magic(4))'              3
+'gallery("lehmer", 3)'        [[1, 1/2, 1/3], [1/2, 1, 2/3], [1/3, 2/3, 1]]
+```
+
+`qr`, `schur`, `hess`, `eig` with vectors, `svd` with its three factors (`singularvaluedecomposition`),
+`null`, `orth`, `rref`, `kron`, `expm`, `logm`, `sqrtm`, `funm`, `polyeig`, `pca`, norms and
+condition numbers are there; the iterative solvers (`pcg`, `gmres`, `bicgstab`, ...) give the
+solution itself.
+
+### Polynomials, interpolation, filters
+
+A polynomial is the list of its coefficients, the highest first.
+
+```
+'roots([1, -6, 11, -6])'                      [1, 2, 3]
+'polyfit([0, 1, 2, 3], [1, 3, 7, 13], 2)'     [1, 1, 1]
+'polyval([1, 2, 3], 2)'                       11
+'conv([1, 2], [1, 3])'                        [1, 5, 6]
+'deconv([1, 5, 6], [1, 2])'                   [[1, 3], [0, 0, 0]]
+'residue([1, 2], [1, 3, 2])'                  [[0, 1], [-2, -1], []]
+'interp1([1, 2, 3], [10, 20, 40], 5/2)'       30
+'interp1([1, 2, 3, 4], [1, 4, 9, 16], 5/2, "spline")'
+                                              25/4
+                                                ~ 6.25
+'fft([1, 2, 3, 4])'                           [10, -2 + 2i, -2, -2 - 2i]
+'filter([1, 1], [1], [1, 2, 3, 4])'           [1, 3, 5, 7]
+'trapz([0, 1, 3], [1, 2, 4])'                 15/2
+                                                ~ 7.5
+'gradient([1, 4, 9, 16])'                     [3, 4, 6, 7]
+```
+
+### Texts, patterns and dates
+
+A text stands in double quotes. The patterns are regular expressions as MATLAB writes them
+(`\<` and `\>` for the ends of a word, `(?<name>...)`, `$1` in a replacement). A date is a day
+number as MATLAB counts it (day 1 is the first of January of the year 0), a date in quotes or
+`[year, month, day]`; day numbers are exact, so a half day is `1/2`.
+
+```
+'upper("abc")'                                "ABC"
+'strrep("hello world", "o", "0")'             "hell0 w0rld"
+'strsplit("a,b,c", ",")'                      ["a", "b", "c"]
+'strjoin(["a", "b", "c"], "-")'               "a-b-c"
+'sprintf("%5.2f and %d", pi, 42)'             " 3.14 and 42"
+'num2str(pi)'                                 "3.1416"
+'dec2bin(10)'                                 "1010"
+'regexp("a12b345c", "\d+", "match")'          ["12", "345"]
+'regexp("key=value", "(\w+)=(\w+)", "tokens", "once")'
+                                              ["key", "value"]
+'regexprep("hello world", "(\w+) (\w+)", "$2 $1")'
+                                              "world hello"
+'datenum(2026, 11, 20)'                       740306
+'datestr(740306.5)'                           "20-Nov-2026 12:00:00"
+'datestr("2026-11-20", "dddd, dd mmmm yyyy")'
+                                              "Friday, 20 November 2026"
+'weekday("2026-11-20", "long")'               "Friday"
+'addtodate(datenum(2024, 1, 31), 1, "month")'
+                                              739311
+'datenum(2026, 12, 25) - datenum("2026-11-20")'
+                                              35
+```
+
+### Functions as values
+
+`@(x) x^2`, `x -> x^2` and `@sin` are functions that can be given to a command: zeros and
+least values, fits, integrals, differential equations step by step, and `cellfun`, `arrayfun`,
+`feval`. The numeric answers have the digits that are asked for, not 16.
+
+```
+'fzero(@(x) cos(x) - x, 1)'                   0.73908513321516064165531208767387
+'fminsearch(@(x, y) (x - 1)^2 + (y + 2)^2, [0, 0])'
+                                              [1, -2]
+'fmincon(@(x, y) x^2 + y^2, [0, 0], [], [], [1, 1], [1])'
+                                              [0.5, 0.5]
+'fmincon(@(x, y) 100*(y - x^2)^2 + (1 - x)^2, [0, 0], [], [], [], [], [], [], @(x, y) x^2 + y^2 - 1)'
+                                              [0.78641515416842783006654594277742, 0.61769831252339348456755553728674]
+'linprog([-1, -1], [[1, 2], [3, 1]], [4, 6])'
+                                              [8/5, 6/5]
+'quadprog([[2, 0], [0, 2]], [-4, -4], [], [], [], [], [0, 0], [1, 1])'
+                                              [1, 1]
+'lsqcurvefit(@(a, b, x) a*exp(b*x), [1, 1], [0, 1, 2], [2, 2e, 2e^2])'
+                                              [2, 1]
+'integral(@(x) exp(-x^2), 0, inf)'            sqrt(pi)/2
+                                                ~ 0.88622692545275801364908374167057
+'ode45(@(t, y) -y, [0, 1/2, 1], 1)'           [[0, 1], [1/2, 0.60653065971263342360379953499118], [1, 0.36787944117144232159552377016146]]
+'cellfun(@(x) 2x, [1, 2, 3])'                 [2, 4, 6]
+```
+
+### Records and tables
+
+`struct(name, value, ...)` is a record with named fields and `dictionary(keys, values)` a table
+that finds a value by its key. Both are shown as the call that makes them, and the functions
+give new ones: nothing is changed in place.
+
+```
+'s := struct("name", "pi", "value", pi); getfield(s, "value")'
+                                              struct("name", "pi", "value", pi)
+                                              pi
+                                                ~ 3.1415926535897932384626433832795
+'setfield(struct("a", 1), "b", x^2)'          struct("a", 1, "b", x^2)
+'fieldnames(struct("a", 1, "b", 2))'          ["a", "b"]
+'d := dictionary(["a", "b"], [1, 2]); lookup(d, "b")'
+                                              dictionary("a", 1, "b", 2)
+                                              2
+'insert(dictionary("a", 1), "b", 2)'          dictionary("a", 1, "b", 2)
+'keys(dictionary([1, 2], ["x", "y"]))'        [1, 2]
+```
+
+### Charts of data, files, pictures as matrices
+
+`bar`, `barh`, `pie`, `stairs`, `stem`, `errorbar`, `scatter`, `lineplot`, `loglog`, `semilogx`,
+`semilogy`, `contour`, `quiver`, `boxplot`, `spy`, `compass`, `feather`, `polarscatter` and, in
+space, `plot3`, `scatter3`, `stem3`, `surf`, `contour3`, `quiver3`, `waterfall` draw lists and
+matrices of numbers: with characters in the terminal, and as pictures with `save_png` and
+`save_jxl` (all that is chosen for a picture applies, and `title`, `xlabel`, `ylabel`).
+`imread` gives the samples of a PNG or JPEG XL file as a matrix (three matrices for colours),
+`imwrite` saves a matrix as a picture; `readmatrix`, `writematrix`, `dlmread`, `dlmwrite`,
+`csvread`, `csvwrite` read and write numbers in files. Pictures as matrices have `rgb2gray`,
+`imresize`, `imrotate`, `imcrop`, `imfilter`, `imhist`, `imbinarize`, `imcomplement`.
+
+```
+$ symbolic-math 'bar([3, 1, 4, 1, 5], width = 40, height = 8, title = "the digits of pi")'
+the digits of pi
+ 5.2 │                                ⣤⣤⣤⣤⣤⣤
+     │                 ⣀⣀⣀⣀⣀⣀         ⣿⣿⣿⣿⣿⣿
+     │                 ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿
+     │  ⣶⣶⣶⣶⣶⣶         ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿
+     │  ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿
+     │  ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿         ⣿⣿⣿⣿⣿⣿
+     │  ⣿⣿⣿⣿⣿⣿ ⢰⣶⣶⣶⣶⣶⡆ ⣿⣿⣿⣿⣿⣿ ⢰⣶⣶⣶⣶⣶⡆ ⣿⣿⣿⣿⣿⣿
+-0.2 │──⠛⠛⠛⠛⠛⠛─⠘⠛⠛⠛⠛⠛⠃─⠛⠛⠛⠛⠛⠛─⠘⠛⠛⠛⠛⠛⠃─⠛⠛⠛⠛⠛⠛──
+     └────────────────────────────────────────
+      0.4                                  5.6
+5 bars
+$ symbolic-math 'save_png("bar.png", bar([3, 1, 4, 1, 5]), title = "of pi", xlabel = "place", ylabel = "digit")'
+5 bars
+saved bar.png: PNG, 1024 x 768 pixels, 8 bits, RGB, level 9, 5461 bytes
+$ symbolic-math 'imwrite([[0, 128], [255, 64]], "gray.png"); imread("gray.png")'
+saved gray.png: PNG, 2 x 2 pixels, 8 bits, gray, level 9, 84 bytes
+[[0, 128], [255, 64]]
+$ symbolic-math 'writematrix(magic(3), "m.csv"); readmatrix("m.csv")'
+saved m.csv: 3 row(s) of 3 number(s), 18 bytes
+[[8, 1, 6], [3, 5, 7], [4, 9, 2]]
+$ symbolic-math 'rgb2gray([[[255, 0]], [[0, 255]], [[0, 0]]])'
+[[76, 150]]
+```
+
+### More special functions and tools for expressions
+
+```
+'meijerg([], [], [0], [], 0.5)'               0.60653065971263342360379953499118
+'hypergeom([1, 1, 1], [2, 2], -3.5)'          0.61774194259370717002815699860553
+'lerchphi(0.5, 2, 3)'                         0.15792421172010004722125056127744
+'besselh(0, 1, 2.5)'                          -0.048383776468197996327287778851203 + 0.49807035961523188782747235036209i
+"functionalderivative(y'^2/2 - y^2/2, y, x)"
+                                              -y - y''
+"odetovectorfield(y'' + y = 0, y, x)"         [y', -y]
+                                              note: the derivatives of [y, y']
+'ztrans(n, n, z)'                             z/(z - 1)^2
+'rewrite(sin(x)^2, "cos")'                    1 - cos(x)^2
+```
+
+### For users of MATLAB
+
+What is the same thing under another form, and what differs on purpose:
+
+- `x = 3` is an equation; `x := 3` gives a name a value. A name of several letters before a
+  bracket is a function (`x(1)` multiplies); the entry of a list is `list[[i]]`.
+- A function with several outputs gives a list: `lu` gives `[L, U, P]`, `pca` gives
+  `[directions, scores, variances]`, `ttest` gives `[h, p]`, `kmeans` gives
+  `[groups, means]`, `fitlm` gives a record.
+- `0^0` is `undefined` (MATLAB: 1). `eps` is a free name; `sqrt(-1)` and `i` are exact.
+- `reshape` fills along the rows, as lists are written; `unique` keeps the order of first
+  appearance (`"sorted"` sorts); `mode` gives every most frequent value; `length` of a matrix
+  is the number of its rows; `range` is the range of numbers `a..b` (the spread is `peak2peak`).
+- `svd` gives the singular values; the factors are `singularvaluedecomposition`. `gammainc`,
+  `sinc`, `legendre`, `dilog`, `dot`, `normalize` and `quantile` keep the meanings that this program gave
+  them before (see `--functions`).
+- `sprintf("%.2f", 9.995)` is `"10.00"`: decimals are exact and halves round away from zero.
+- `lgamma` of a negative number is `ln|gamma|`; `tostring` shows the exact form and `num2str`
+  the short one of MATLAB.
+- `ode45` gives rows `[t, y]` at the times asked for, worked out with 32 digits or more;
+  `quadprog` needs a matrix without negative directions; `fmincon` goes down from its start
+  and says so when the function has no least value there (MATLAB stops at a point near the
+  start: `-x*y*z` with `0 <= x + 2y + 2z <= 72` has none, from `[1, 1, 1]` the point
+  `[24, 12, 12]` of MATLAB's manual is found).
+- `regexp` gives the whole match as the token when the pattern has no brackets, and `""` for a
+  bracket that matched nothing; `"names"` gives pairs `[name, text]`.
+- A date number is exact: `datevec` has no rounding of seconds. Two-digit years are 1950 to
+  2049. A year after the 29th of February is the 28th.
+- `cluster(steps, n)` numbers the groups as their points first appear; `kmeans` starts from
+  the points farthest apart, not at random. `kstest` counts the exact law up to 1000 values;
+  `jbtest` uses the chi-square law (MATLAB: a table for small samples). `chi2gof` takes
+  counts and expected counts.
+- `imresize` is bilinear or `"nearest"` without smoothing first; `imrotate` is exact for
+  quarter turns.
+- `sparse` and `full` keep every entry: matrices are not stored by their places.
+
+### What is not there
+
+The toolboxes for control, signal design, images beyond the above, maps, deep learning and
+Simulink; tables, timetables and categorical arrays; cell arrays as a type of their own (a
+list holds unlike things); `qz`, `gsvd`, `balance`, `ordschur`, `cdf2rdf`, `rsf2csf`; `bvp4c`,
+`dde23`, `pdepe` and the global searches (`ga`, `patternsearch`, `particleswarm`, ...);
+`lillietest`, `runstest`, `mvncdf`, `cmdscale`, `procrustes`, `canoncorr`, `nnmf`; the charts
+`bar3`, `histogram2`, `surfc`, `streamline`, `polarhistogram`, `fimplicit3`, `dendrogram`;
+`matlabFunction`, `ccode`, `fortran`, `latex`; MATLAB's streams of `randn` and `randperm`;
+graphical user interfaces, objects and files of MATLAB's own formats.
+
 ## Tetration
 
 `b^^h` or `tet(b, h)` is tetration, `slog(b, z)` (or `ate`) is the height `h` with `b^^h = z`,
@@ -1326,8 +2020,9 @@ printed, with a note.
 
 ## Syntax
 
-- **Numbers**: `42`, `3.14`, `1e-3`, `0x1F`, `0b101`, `0o17`, `2+3i`, `¾`. Decimals are exact
-  until a numeric value is needed.
+- **Numbers**: `42`, `3.14`, `1e-3`, `0x1F`, `0b101`, `0o17`, `2+3i`, `¾`; in a base:
+  `16#ff.8`, `2#0.(01)`, `1000#001#234`. Decimals are exact until a numeric value is needed.
+- **Texts**: `"walk.png"`, for the names of files and for numbers as they are written.
 - **Operators**: `+ - * /`, `^` (right to left: `2^3^2` is `2^9`), `^^` (binds tighter than
   `^`), `!` and `!!` (factorials), `%` or `mod` (remainder), `'` (derivative: `f'`, `f''`), `°`
   (degrees), `|x|` (absolute value), `±` or `+/-` (both values: `x = 3 +/- 1`).
@@ -1335,6 +2030,9 @@ printed, with a note.
   letter in front of a bracket multiplies (`x(x+1)`), a longer name must be a function.
 - **Relations**: `=`, `!=`, `<`, `<=`, `>`, `>=`; `x -> a` in `limit`, `0+` and `0-` for one side.
   `and`, `or`, `not` (`&&`, `∧`, `∨`, `¬`) join them.
+- **MATLAB's forms**: `a:b` and `a:step:b` (ranges), `.*`, `./`, `.\`, `.^` (entry by entry),
+  `A \ b` (the solution of `A*x = b`), `@(x) x^2` and `@sin` (functions), `~=`, `~x`, `&`, `|`
+  between relations, `&&`, `||`.
 - **Lists**: `[1, 2, 3]`, matrices `[1, 2; 3, 4]`, an entry `list[[i]]`. An equation between
   two lists is a system; a list on one side of an equation stands for each of its values.
 - **Functions as arguments**: `x -> x^2`, `(a, b) -> a + b`, or a name like `sin`.
@@ -1366,31 +2064,59 @@ printed, with a note.
 Names of constants are accepted in any letter case; a name in brackets is another spelling.
 
 - **Elementary**: `sqrt` (`√`), `cbrt` (`∛`), `root`, `sqr` (`square`), `pow` (`powc`, `powf`, `powi`, `powu`), `exp`, `exp2`, `expf`, `ln` (`㏑`), `log` (`㏒`), `log2` (`lb`), `log10` (`lg`), `sin`, `cos`, `tan` (`tg`), `cot` (`ctg`, `cotan`), `sec`, `csc` (`cosec`), `asin` (`arcsin`), `acos` (`arccos`), `atan` (`arctan`, `arctg`), `acot` (`arccot`, `arcctg`), `asec` (`arcsec`), `acsc` (`arccsc`), `atan2`, `sinh`, `cosh`, `tanh`, `coth`, `sech`, `csch`, `asinh` (`arcsinh`, `arsinh`), `acosh` (`arccosh`, `arcosh`), `atanh` (`arctanh`, `artanh`), `acoth` (`arccoth`, `arcoth`), `asech` (`arcsech`, `arsech`), `acsch` (`arccsch`, `arcsch`).
-- **Complex numbers**: `abs` (`mag`, `polar_r`, `radius`), `mod`, `norm` (`‖`), `abs2` (`mag2`, `norm_sqr`, `normsq`), `l1_norm` (`l1`, `manhattan`, `taxicab`), `arg` (`phase`, `polar_theta`, `theta`), `to_polar`, `re` (`real`, `ℜ`), `im` (`imag`, `ℑ`), `conj` (`conjugate`), `inv` (`recip`, `inverse`, `finv`), `sign` (`sgn`, `signum`), `cis`, `scale`, `unscale`, `fdiv`, `complex` (`new`), `rect` (`rectform`), `polar` (`from_polar`, `polarform`), `floor` (`⌊`), `ceil` (`ceiling`, `⌈`), `round`, `trunc`, `frac` (`fract`), `minabs`, `maxabs`, `avg` (`mean`, `average`), `min`, `max`, `hypot`, `agm`, `is_nan` (`isnan`), `is_infinite` (`isinf`, `isinfinite`), `is_finite` (`isfinite`), `is_normal` (`isnormal`).
-- **Special functions**: `gamma` (`tgamma`, `Γ`), `lgamma` (`loggamma`, `lngamma`), `factorial` (`fact`), `factorial2` (`doublefactorial`), `binomial` (`choose`), `beta`, `digamma` (`psi`, `ψ`), `polygamma`, `harmonic`, `zeta` (`hurwitzzeta`, `ζ`), `erf`, `erfc`, `erfi`, `ei`, `li`, `li2` (`dilog`), `si`, `ci`, `shi`, `chi`, `lambertw` (`w`, `productlog`), `uppergamma` (`gammainc`, `incgamma`), `lowergamma`, `gammaq` (`gammaregularized`), `gammap`, `expint` (`expintegrale`), `betainc`, `betaregularized`, `erfinv` (`inverseerf`), `erfcinv` (`inverseerfc`), `fresnels`, `fresnelc`, `sinc`, `besselj`, `bessely`, `besseli`, `besselk`, `hankel1` (`hankelh1`), `hankel2` (`hankelh2`), `sphericalbesselj`, `sphericalbessely`, `airyai`, `airybi`, `airyaiprime`, `airybiprime`, `struveh`, `struvel`, `hyp0f1` (`hypergeometric0f1`), `hyp1f1` (`hypergeometric1f1`, `kummerm`), `hyperu` (`hypergeometricu`, `kummeru`), `hyp2f1` (`hypergeometric2f1`), `hypergeometric` (`hypergeometricpfq`, `pfq`), `polylog`, `dirichleteta`, `elliptick` (`ellipk`), `elliptice` (`ellipe`), `ellipticf` (`ellipf`), `ellipticpi` (`ellippi`), `ellipticnome` (`nome`), `jacobisn`, `jacobicn`, `jacobidn`, `elliptictheta` (`jtheta`), `legendrep`, `legendreq`, `chebyshevt`, `chebyshevu`, `hermiteh` (`hermite`), `laguerrel` (`laguerre`), `gegenbauerc` (`gegenbauer`), `jacobip`, `sphericalharmonicy` (`sphericalharmonic`, `ylm`), `heaviside` (`heavisidetheta`), `unitstep`, `diracdelta` (`dirac`).
+- **Complex numbers**: `abs` (`mag`, `polar_r`, `radius`), `mod`, `norm` (`‖`), `abs2` (`mag2`, `norm_sqr`, `normsq`), `l1_norm` (`l1`, `manhattan`, `taxicab`), `arg` (`phase`, `polar_theta`, `theta`), `to_polar`, `re` (`real`, `ℜ`), `im` (`imag`, `ℑ`), `conj` (`conjugate`), `inv` (`recip`, `inverse`, `finv`), `sign` (`sgn`, `signum`), `cis`, `scale`, `unscale`, `fdiv`, `complex` (`new`), `rect` (`rectform`), `polar` (`from_polar`, `polarform`), `floor` (`⌊`), `ceil` (`ceiling`, `⌈`), `round`, `trunc` (`fix`), `frac` (`fract`), `minabs`, `maxabs`, `avg` (`mean`, `average`), `min`, `max`, `hypot`, `agm`, `is_nan` (`isnan`), `is_infinite` (`isinf`, `isinfinite`), `is_finite` (`isfinite`), `is_normal` (`isnormal`).
+- **Special functions**: `gamma` (`tgamma`, `Γ`), `lgamma` (`loggamma`, `lngamma`, `gammaln`), `factorial` (`fact`), `factorial2` (`doublefactorial`), `binomial` (`choose`), `beta`, `digamma` (`psi`, `ψ`), `polygamma`, `harmonic`, `zeta` (`hurwitzzeta`, `ζ`), `erf`, `erfc`, `erfi`, `ei`, `li` (`logint`), `li2` (`dilog`), `si` (`sinint`), `ci` (`cosint`), `shi` (`sinhint`), `chi` (`coshint`), `lambertw` (`w`, `productlog`), `uppergamma` (`gammainc`, `incgamma`, `igamma`), `lowergamma`, `gammaq` (`gammaregularized`), `gammap`, `expint` (`expintegrale`), `betainc`, `betaregularized`, `erfinv` (`inverseerf`), `erfcinv` (`inverseerfc`), `fresnels`, `fresnelc`, `sinc`, `besselj`, `bessely`, `besseli`, `besselk`, `hankel1` (`hankelh1`), `hankel2` (`hankelh2`), `sphericalbesselj`, `sphericalbessely`, `airyai`, `airybi`, `airyaiprime`, `airybiprime`, `struveh`, `struvel`, `hyp0f1` (`hypergeometric0f1`), `hyp1f1` (`hypergeometric1f1`, `kummerm`), `hyperu` (`hypergeometricu`, `kummeru`), `hyp2f1` (`hypergeometric2f1`), `hypergeometric` (`hypergeometricpfq`, `pfq`, `hypergeom`), `polylog`, `dirichleteta`, `elliptick` (`ellipk`), `elliptice` (`ellipe`), `ellipticf` (`ellipf`), `ellipticpi` (`ellippi`), `ellipticnome` (`nome`), `jacobisn`, `jacobicn`, `jacobidn`, `elliptictheta` (`jtheta`), `legendrep`, `legendreq`, `chebyshevt`, `chebyshevu`, `hermiteh` (`hermite`), `laguerrel` (`laguerre`), `gegenbauerc` (`gegenbauer`), `jacobip`, `sphericalharmonicy` (`sphericalharmonic`, `ylm`), `heaviside` (`heavisidetheta`), `unitstep`, `diracdelta` (`dirac`).
 - **Tetration**: `tet`, `slog` (`ate`), `ssrt` (`sroot`).
-- **Algebra**: `simplify`, `expand`, `factor`, `collect`, `together`, `cancel`, `apart`, `numer` (`numerator`), `denom` (`denominator`), `subst` (`substitute`, `replace`), `coeff` (`coefficient`), `degree`, `quo` (`quotient`), `rem` (`remainder`), `gcd`, `lcm`, `resultant`, `discriminant`, `roots`, `trigexpand` (`expand_trig`), `trigreduce`, `rewrite_exp` (`toexp`), `N` (`evalf`, `approx`, `numeric`), `rationalize`, `identify`.
-- **Solving**: `solve`, `qsolve` (`quatsolve`), `nsolve`, `dsolve`, `rsolve`.
-- **Calculus**: `diff` (`derivative`, `∂`), `D`, `integrate` (`int`, `integral`, `∫`), `nintegrate` (`nint`).
+- **Algebra**: `simplify`, `expand`, `factor`, `collect`, `together` (`simplifyfraction`), `cancel`, `apart` (`partfrac`), `numer` (`numerator`), `denom` (`denominator`), `subst` (`substitute`, `replace`, `subs`), `coeff` (`coefficient`), `degree` (`polynomialdegree`), `quo` (`quotient`), `rem` (`remainder`), `gcd`, `lcm`, `resultant`, `discriminant`, `roots`, `trigexpand` (`expand_trig`), `trigreduce`, `rewrite_exp` (`toexp`), `N` (`evalf`, `approx`, `numeric`, `vpa`), `rationalize`, `identify`.
+- **Solving**: `solve`, `qsolve` (`quatsolve`), `nsolve` (`vpasolve`), `dsolve`, `rsolve`.
+- **Calculus**: `diff` (`derivative`, `∂`), `D`, `integrate` (`int`, `integral`, `∫`), `nintegrate` (`nint`, `vpaintegral`).
 - **Areas volumes and regions**: `area`, `volume`, `perimeter` (`circumference`), `surfacearea`, `centroid`, `arclength`, `revolutionvolume`, `revolutionarea`, `rectangle`, `disk` (`disc`), `annulus`, `sector`, `ellipse`, `triangle`, `polygon`, `box` (`cuboid`), `ball`, `shell`, `ellipsoid`, `simplex`, `tetrahedron`, `cylinder`, `cone`.
-- **Limits series and sums**: `limit` (`lim`), `series` (`taylor`), `sum` (`summation`, `∑`), `product` (`prod`, `∏`), `grad` (`gradient`, `∇`), `divergence`, `curl`, `laplacian`, `jacobian`, `hessian`, `minimize`, `maximize`.
-- **Linear algebra**: `det` (`determinant`), `transpose`, `trace` (`tr`), `rank`, `rref`, `nullspace` (`kernel`), `eigenvalues` (`eigvals`), `eigenvectors` (`eigvecs`), `charpoly`, `dot`, `cross`, `identity` (`eye`), `linsolve`.
+- **Limits series and sums**: `limit` (`lim`), `series` (`taylor`), `sum` (`summation`, `∑`, `symsum`), `product` (`prod`, `∏`, `symprod`), `grad` (`gradient`, `∇`), `divergence`, `curl`, `laplacian`, `jacobian`, `hessian`, `minimize`, `maximize`.
+- **Linear algebra**: `det` (`determinant`), `transpose`, `trace` (`tr`), `rank`, `rref`, `nullspace` (`kernel`, `null`), `eigenvalues` (`eigvals`, `eig`), `eigenvectors` (`eigvecs`), `charpoly`, `dot`, `cross`, `identity` (`eye`), `linsolve`.
 - **Complex parts functional equations and iterates**: `complexexpand`, `funsolve` (`functionalsolve`), `iterate` (`fiterate`).
 - **Tensors**: `dimensions` (`dims`, `shape`), `tensorrank` (`arraydepth`), `flatten`, `reshape`, `outer` (`tensorproduct`), `contract` (`tensorcontract`), `inner`, `kron` (`kroneckerproduct`), `levicivita`, `signature`, `kroneckerdelta`, `symmetrize`, `antisymmetrize`, `wedge`, `hodge` (`hodgestar`), `christoffel`, `riemann`, `ricci`, `ricciscalar`, `einstein`, `kretschmann`, `geodesics`, `covariant`, `raiseindex`, `lowerindex`.
-- **Geometry**: `line`, `plane`, `circle`, `sphere`, `distance`, `angle`, `projection`, `intersection`, `equation`, `midpoint`, `normalize` (`unit`), `triple`, `collinear`, `coplanar`, `circumcircle` (`circumsphere`), `incircle`, `solidangle`, `ballvolume`, `spherearea`, `rotationmatrix`, `rotationquat`, `rotate`, `reflect`, `topolar` (`tospherical`), `frompolar` (`fromspherical`), `regularpolygon`, `polytope`.
-- **Functions of matrices and decompositions**: `adjugate` (`adj`), `matrixexp` (`expm`), `matrixpower`, `matrixsqrt` (`sqrtm`), `matrixlog` (`logm`), `matrixfunction`, `gramschmidt` (`orthogonalize`), `cholesky`, `qr`, `pinv` (`pseudoinverse`), `singularvalues`, `diag`, `zeros`, `ones`, `hilbert`, `vandermonde`.
+- **Geometry**: `line`, `plane`, `circle`, `sphere`, `distance`, `angle`, `projection`, `intersection` (`intersect`), `equation`, `midpoint`, `normalize` (`unit`), `triple`, `collinear`, `coplanar`, `circumcircle` (`circumsphere`), `incircle`, `solidangle`, `ballvolume`, `spherearea`, `rotationmatrix`, `rotationquat`, `rotate`, `reflect`, `topolar` (`tospherical`), `frompolar` (`fromspherical`), `regularpolygon`, `polytope`.
+- **Functions of matrices and decompositions**: `adjugate` (`adj`, `adjoint`), `matrixexp` (`expm`), `matrixpower`, `matrixsqrt` (`sqrtm`), `matrixlog` (`logm`), `matrixfunction`, `gramschmidt` (`orthogonalize`), `cholesky`, `qr`, `pinv` (`pseudoinverse`), `singularvalues` (`svd`), `diag`, `zeros`, `ones`, `hilbert` (`hilb`), `vandermonde`.
 - **Quaternions and domains**: `quat` (`quaternion`), `domain`.
-- **Number theory**: `isprime` (`is_prime`, `primeq`), `iscomposite` (`compositeq`), `isprimepower` (`primepowerq`), `isperfect` (`perfectnumberq`), `iscoprime` (`coprime`, `coprimeq`), `primes`, `primefactors`, `ifactors` (`factorinteger`), `primorial`, `carmichael` (`carmichaellambda`), `liouville` (`liouvillelambda`), `mangoldt` (`mangoldtlambda`), `legendre` (`legendresymbol`), `farey` (`fareysequence`), `squaresr`, `partitionsq`, `eulerian`, `superfactorial`, `hyperfactorial`, `pell`, `egyptian`, `primitiveroots` (`primitiverootlist`), `sqrtmodall` (`sqrtmods`), `pochhammer` (`rising`, `risingfactorial`), `fallingfactorial` (`falling`, `factorialpower`), `nextprime`, `prevprime`, `prime` (`nthprime`), `primepi`, `divisors`, `totient` (`eulerphi`), `sigma` (`divisorsigma`), `mobius` (`moebius`), `fibonacci` (`fib`), `lucas`, `bernoulli`, `eulernumber`, `catalannumber`, `powmod`, `modinv`, `jacobi`, `isqrt`, `cfrac`, `base`, `frombase`, `digitsum`, `issquare`, `issquarefree`, `perfectpower`, `primenu`, `primeomega`, `radical`, `kronecker`, `sqrtmod`, `ord` (`multiplicativeorder`), `primitiveroot`, `discretelog` (`dlog`), `crt`, `egcd` (`gcdex`), `iroot`, `sumoftwosquares`, `bell`, `stirling1`, `stirling2`, `partitions`, `derangements` (`subfactorial`), `multinomial`, `convergents`.
-- **Lists**: `range`, `table`, `length`, `first`, `last`, `rest`, `most`, `part`, `take`, `drop`, `reverse`, `sort`, `sortby`, `rotateleft`, `rotateright`, `append`, `prepend`, `join` (`concat`), `insert`, `delete`, `union`, `complement` (`setminus`), `unique` (`deleteduplicates`), `contains` (`memberq`), `count`, `position`, `total`, `accumulate` (`cumsum`), `differences`, `ratios`, `tally`, `zip`, `permutations`, `subsets`, `tuples`, `cartesianproduct`, `partition` (`chunks`), `map`, `select` (`filter`), `reject`, `countif`, `anytrue`, `alltrue`, `findfirst`, `fold` (`reduce`), `foldlist`, `nestlist`, `nest`, `fixedpoint`, `apply`, `array`.
+- **Number theory**: `isprime` (`is_prime`, `primeq`), `iscomposite` (`compositeq`), `isprimepower` (`primepowerq`), `isperfect` (`perfectnumberq`), `iscoprime` (`coprime`, `coprimeq`), `primes`, `primefactors`, `ifactors` (`factorinteger`), `primorial`, `carmichael` (`carmichaellambda`), `liouville` (`liouvillelambda`), `mangoldt` (`mangoldtlambda`), `legendre` (`legendresymbol`), `farey` (`fareysequence`), `squaresr`, `partitionsq`, `eulerian`, `superfactorial`, `hyperfactorial`, `pell`, `egyptian`, `primitiveroots` (`primitiverootlist`), `sqrtmodall` (`sqrtmods`), `pochhammer` (`rising`, `risingfactorial`), `fallingfactorial` (`falling`, `factorialpower`), `nextprime`, `prevprime`, `prime` (`nthprime`), `primepi`, `divisors`, `totient` (`eulerphi`), `sigma` (`divisorsigma`), `mobius` (`moebius`), `fibonacci` (`fib`), `lucas`, `bernoulli`, `eulernumber` (`euler`), `catalannumber`, `powmod` (`powermod`), `modinv`, `jacobi` (`jacobisymbol`), `isqrt`, `cfrac`, `base`, `frombase`, `base_conv` (`baseconv`, `convbase`, `base_convert`, `baseconvert`, `convert_base`), `tobase` (`inbase`, `baseform`), `tofraction` (`basefraction`), `digits` (`realdigits`, `digitlist`), `period` (`periodlength`, `repetend`), `digitcounts` (`digitcount`), `digitsum`, `issquare`, `issquarefree`, `perfectpower`, `primenu`, `primeomega`, `radical`, `kronecker`, `sqrtmod`, `ord` (`multiplicativeorder`), `primitiveroot`, `discretelog` (`dlog`), `crt`, `egcd` (`gcdex`), `iroot`, `sumoftwosquares`, `bell`, `stirling1`, `stirling2`, `partitions`, `derangements` (`subfactorial`), `multinomial`, `convergents`.
+- **Lists**: `range`, `table`, `length`, `first`, `last`, `rest`, `most`, `part`, `take`, `drop`, `reverse`, `sort`, `sortby`, `rotateleft`, `rotateright`, `append`, `prepend`, `join` (`concat`), `insert`, `delete`, `union`, `complement` (`setminus`, `setdiff`), `unique` (`deleteduplicates`), `contains` (`memberq`), `count`, `position`, `total`, `accumulate` (`cumsum`), `differences`, `ratios`, `tally`, `zip`, `permutations`, `subsets`, `tuples`, `cartesianproduct`, `partition` (`chunks`), `map` (`arrayfun`, `cellfun`), `select` (`filter`), `reject`, `countif`, `anytrue`, `alltrue`, `findfirst`, `fold` (`reduce`), `foldlist`, `nestlist`, `nest`, `fixedpoint`, `apply`, `array`.
 - **Programs and logic**: `if`, `piecewise`, `while`, `do`, `for`, `block`, `and`, `or`, `not`, `xor`, `implies`, `islist` (`listq`), `isnumber` (`numberq`), `isinteger` (`integerq`), `isrational`, `iseven` (`evenq`), `isodd` (`oddq`), `isreal`, `ispositive`, `isnegative`, `isnonnegative`.
-- **Statistics**: `median`, `mode` (`commonest`), `variance`, `stddev` (`standarddeviation`), `pvariance`, `pstddev`, `covariance`, `correlation`, `quantile` (`inversecdf`), `quartiles`, `iqr` (`interquartilerange`), `moment`, `centralmoment`, `skewness`, `kurtosis`, `geometricmean`, `harmonicmean`, `rms` (`rootmeansquare`), `meandeviation`.
+- **Statistics**: `median`, `mode` (`commonest`), `variance` (`var`), `stddev` (`standarddeviation`, `std`), `pvariance`, `pstddev`, `covariance`, `correlation` (`corr`), `quantile` (`inversecdf`, `icdf`), `quartiles`, `iqr` (`interquartilerange`), `moment`, `centralmoment`, `skewness`, `kurtosis`, `geometricmean` (`geomean`), `harmonicmean` (`harmmean`), `rms` (`rootmeansquare`), `meandeviation`.
 - **Probability**: `pdf` (`pmf`, `probabilitydensity`), `cdf`, `mgf` (`momentgeneratingfunction`), `expectation` (`expectedvalue`), `probability`, `normaldist` (`normaldistribution`), `uniformdist` (`uniformdistribution`), `exponentialdist` (`exponentialdistribution`), `gammadist` (`gammadistribution`), `chisquaredist` (`chisquaredistribution`), `studenttdist` (`studenttdistribution`), `betadist` (`betadistribution`), `cauchydist` (`cauchydistribution`), `lognormaldist` (`lognormaldistribution`), `weibulldist` (`weibulldistribution`), `laplacedist` (`laplacedistribution`), `rayleighdist` (`rayleighdistribution`), `logisticdist` (`logisticdistribution`), `paretodist` (`paretodistribution`), `fdist` (`fratiodistribution`), `binomialdist` (`binomialdistribution`), `poissondist` (`poissondistribution`), `geometricdist` (`geometricdistribution`), `bernoullidist` (`bernoullidistribution`), `discreteuniformdist` (`discreteuniformdistribution`), `negativebinomialdist` (`negativebinomialdistribution`), `hypergeometricdist` (`hypergeometricdistribution`).
 - **Numeric solutions lattices fits and equations in whole numbers**: `ndsolve`, `latticereduce` (`lll`), `findrelation` (`findintegerrelation`, `pslq`), `minpoly` (`minimalpolynomial`), `interpolate` (`interpolatingpolynomial`), `fit`, `leastsquares`, `criticalpoints` (`stationarypoints`), `modsolve` (`solvemod`), `diophantine`.
-- **Transforms residues and approximants**: `laplace` (`laplacetransform`), `invlaplace` (`inverselaplace`, `ilaplace`, `inverselaplacetransform`), `fourier` (`fouriertransform`), `invfourier` (`inversefourier`, `ifourier`, `inversefouriertransform`), `fourierseries`, `ztransform`, `invztransform` (`inverseztransform`, `iztransform`), `residue`, `pade` (`padeapproximant`), `seriescoeff` (`seriescoefficient`).
-- **Graphs**: `vertexlist` (`vertices`), `edgelist`, `vertexcount`, `edgecount`, `adjacencymatrix`, `weightmatrix` (`weightedadjacencymatrix`), `incidencematrix`, `laplacianmatrix` (`kirchhoffmatrix`), `adjacencygraph`, `degrees` (`degreesequence`, `vertexdegrees`), `indegrees`, `outdegrees`, `vertexdegree`, `neighbors` (`neighbours`, `adjacentvertices`), `components` (`connectedcomponents`), `strongcomponents` (`stronglyconnectedcomponents`), `isconnected` (`connectedq`), `shortestpath` (`findshortestpath`), `graphdistance`, `distancematrix` (`graphdistancematrix`), `eccentricity` (`vertexeccentricity`), `diameter` (`graphdiameter`), `graphradius`, `graphcenter` (`graphcentre`), `girth`, `spanningtree` (`minimumspanningtree`, `mst`), `spanningtreecount` (`treecount`), `isbipartite` (`bipartiteq`), `bipartition`, `istree` (`treeq`), `isacyclic` (`acyclicq`), `findcycle`, `topologicalsort` (`toposort`), `chromaticpolynomial`, `chromaticnumber`, `graphcoloring` (`vertexcoloring`), `iseulerian` (`eulerianq`), `eulerianpath` (`euleriancycle`, `eulertour`), `ishamiltonian` (`hamiltonianq`), `hamiltoniancycle` (`findhamiltoniancycle`), `hamiltonianpath`, `maxflow` (`maximumflow`), `maxmatching` (`maximummatching`), `maxclique` (`findclique`), `cliquenumber`, `maxindependentset` (`independentset`), `independencenumber`, `vertexcover` (`minvertexcover`), `complementgraph` (`graphcomplement`), `linegraph`, `subgraph` (`inducedsubgraph`), `isisomorphic` (`isomorphicq`, `graphisomorphic`), `pagerank`, `completegraph`, `cyclegraph`, `pathgraph`, `stargraph`, `wheelgraph`, `gridgraph`, `hypercubegraph`, `petersengraph`, `completebipartite` (`completebipartitegraph`).
-- **Plots**: `plot`, `parametricplot`, `polarplot`, `listplot` (`pointplot`, `scatterplot`), `histogram` (`hist`), `implicitplot` (`contourplot`).
+- **Transforms residues and approximants**: `laplace` (`laplacetransform`), `invlaplace` (`inverselaplace`, `ilaplace`, `inverselaplacetransform`), `fourier` (`fouriertransform`), `invfourier` (`inversefourier`, `ifourier`, `inversefouriertransform`), `fourierseries`, `ztransform` (`ztrans`), `invztransform` (`inverseztransform`, `iztransform`, `iztrans`), `residue`, `pade` (`padeapproximant`), `seriescoeff` (`seriescoefficient`).
+- **Graphs**: `vertexlist` (`vertices`), `edgelist`, `vertexcount` (`numnodes`), `edgecount` (`numedges`), `adjacencymatrix` (`adjacency`), `weightmatrix` (`weightedadjacencymatrix`), `incidencematrix` (`incidence`), `laplacianmatrix` (`kirchhoffmatrix`), `adjacencygraph`, `degrees` (`degreesequence`, `vertexdegrees`), `indegrees` (`indegree`), `outdegrees` (`outdegree`), `vertexdegree`, `neighbors` (`neighbours`, `adjacentvertices`), `components` (`connectedcomponents`, `conncomp`), `strongcomponents` (`stronglyconnectedcomponents`), `isconnected` (`connectedq`), `shortestpath` (`findshortestpath`), `graphdistance`, `distancematrix` (`graphdistancematrix`, `distances`), `eccentricity` (`vertexeccentricity`), `diameter` (`graphdiameter`), `graphradius`, `graphcenter` (`graphcentre`), `girth`, `spanningtree` (`minimumspanningtree`, `mst`, `minspantree`), `spanningtreecount` (`treecount`), `isbipartite` (`bipartiteq`), `bipartition`, `istree` (`treeq`), `isacyclic` (`acyclicq`), `findcycle`, `topologicalsort` (`toposort`), `chromaticpolynomial`, `chromaticnumber`, `graphcoloring` (`vertexcoloring`), `iseulerian` (`eulerianq`), `eulerianpath` (`euleriancycle`, `eulertour`), `ishamiltonian` (`hamiltonianq`), `hamiltoniancycle` (`findhamiltoniancycle`), `hamiltonianpath`, `maxflow` (`maximumflow`), `maxmatching` (`maximummatching`), `maxclique` (`findclique`), `cliquenumber`, `maxindependentset` (`independentset`), `independencenumber`, `vertexcover` (`minvertexcover`), `complementgraph` (`graphcomplement`), `linegraph`, `subgraph` (`inducedsubgraph`), `isisomorphic` (`isomorphicq`, `graphisomorphic`), `pagerank`, `completegraph`, `cyclegraph`, `pathgraph`, `stargraph`, `wheelgraph`, `gridgraph`, `hypercubegraph`, `petersengraph`, `completebipartite` (`completebipartitegraph`).
+- **Plots**: `plot` (`fplot`, `ezplot`), `parametricplot`, `polarplot`, `listplot` (`pointplot`, `scatterplot`), `histogram` (`hist`), `implicitplot` (`contourplot`, `fimplicit`).
+- **Pictures**: `walk` (`digitwalk`, `numberwalk`), `walk3d` (`digitwalk3d`, `numberwalk3d`), `primewalk` (`primes_walk`, `prime_walk`, `primeswalk`), `primewalk3d` (`primes_walk3d`, `prime_walk3d`, `primeswalk3d`, `primes3d_xyz`, `primes3d`), `primemodwalk` (`primes_modwalk`, `prime_modwalk`, `primesmodwalk`, `primeresiduewalk`), `primemodwalk3d` (`primes_modwalk3d`, `prime_modwalk3d`, `primesmodwalk3d`, `primeresiduewalk3d`), `ulamspiral` (`ulam`, `primespiral`), `sacksspiral` (`sacks`), `complexplot` (`domainplot`, `domaincoloring`), `densityplot` (`heatmap`, `contourf`), `plot3d` (`surfaceplot`, `fsurf`, `fmesh`, `ezsurf`), `parametricplot3d` (`spacecurve`, `fplot3`), `graphplot` (`drawgraph`), `matrixplot` (`arrayplot`, `imagesc`, `imshow`, `pcolor`), `save_png` (`savepng`), `save_jxl` (`savejxl`), `save` (`saveimage`, `export`).
 - **Units**: `convert` (`unitconvert`), `siunits` (`tosi`, `baseunits`), `dimension` (`unitdimension`), `quantity`.
-- **Session**: `assume`, `forget`.
+- **Session**: `assume` (`assumealso`), `forget`.
+- **Operators by their names**: `times`, `rdivide`, `ldivide`, `power`, `plus`, `minus`, `uminus`, `uplus`, `mtimes`, `mpower`, `mldivide`, `mrdivide`, `colon`.
+- **Arrays**: `linspace`, `logspace`, `meshgrid`, `ndgrid`, `repmat`, `repelem`, `horzcat`, `vertcat`, `cat`, `blkdiag`, `flip`, `fliplr`, `flipud`, `rot90`, `circshift`, `tril`, `triu`, `sortrows`, `issorted`, `setxor`, `ismember`, `isequal`, `numel`, `size`, `ndims`, `isempty`, `isrow`, `iscolumn`, `isvector`, `isscalar`, `ismatrix`, `isdiag`, `istril`, `istriu`, `bandwidth`, `isbanded`, `issymmetric`, `ishermitian`, `nnz`, `nonzeros`, `find`, `any`, `all`, `ind2sub`, `sub2ind`, `magic`, `invhilb`, `pascal`, `rosser`, `wilkinson`, `toeplitz`, `hankel`, `compan`, `hadamard`, `vander`, `ctranspose`, `nchoosek`, `perms`.
+- **Sums and statistics of data**: `cumprod`, `cummax`, `cummin`, `bounds`, `peak2peak`, `maxk`, `mink`, `movmean`, `movsum`, `movmedian`, `movmax`, `movmin`, `movstd`, `movvar`, `movprod`, `movmad`, `trapz`, `cumtrapz`, `prctile` (`percentile`), `zscore`, `rescale` (`mat2gray`), `trimmean`, `mad`, `cov`, `corrcoef`, `histcounts`, `detrend`, `unwrap`, `accumarray`, `tabulate`, `tiedrank`.
+- **Matrices taken apart**: `cond`, `rcond`, `vecnorm`, `orth`, `colspace`, `lu`, `chol`, `jordan`, `jordandecomposition`, `diagonalize`, `smithform`, `smithdecomposition`, `hermiteform`, `hermitedecomposition`, `schur`, `schurdecomposition`, `hess`, `hessenbergdecomposition`, `singularvaluedecomposition`, `sylvester`, `subspace`, `planerot`.
+- **Polynomials as lists of coefficients, the highest first**: `poly`, `polyval`, `polyvalm`, `polyfit`, `polyder`, `polyint`, `conv`, `deconv`, `poly2sym`, `sym2poly`, `coeffs`, `horner`, `numden`, `quorem`, `interp1`, `spline`, `pchip`, `makima`, `interp2`, `gbasis` (`groebnerbasis`).
+- **Signals**: `fft`, `ifft`, `fft2` (`fftn`), `ifft2` (`ifftn`), `fftshift`, `ifftshift`, `dct`, `idct`, `lfilter`, `conv2` (`convn`), `xcorr`, `upsample`, `downsample`.
+- **Functions of numbers by the names of MATLAB**: `expm1`, `log1p`, `nthroot`, `realsqrt`, `reallog`, `realpow`, `nextpow2`, `pow2`, `idivide`, `sind`, `cosd`, `tand`, `cotd`, `secd`, `cscd`, `asind`, `acosd`, `atand`, `acotd`, `asecd`, `acscd`, `atan2d`, `sinpi`, `cospi`, `deg2rad`, `rad2deg`, `cart2pol`, `pol2cart`, `cart2sph`, `sph2cart`, `rat`, `bitand`, `bitor`, `bitxor`, `bitshift`, `bitcmp`, `bitget`, `bitset`, `erfcx`, `dawson`, `betaln`, `ssinint`, `airy`, `besselh`, `whittakerm`, `whittakerw`, `wrightomega`, `rectangularpulse`, `triangularpulse`, `jacobicd`, `jacobisd`, `jacobind`, `jacobidc`, `jacobinc`, `jacobisc`, `jacobins`, `jacobids`, `jacobics`, `jacobiam`, `jacobizeta`, `ellipticck`, `ellipticce`, `ellipticcpi`, `ellipke`, `ellipj`, `gammaincinv`, `betaincinv`.
+- **Texts**: `num2str`, `int2str`, `mat2str`, `tostring` (`string`), `dec2bin`, `dec2hex`, `dec2base`, `bin2dec`, `hex2dec`, `base2dec`, `char`, `double`, `strcat`, `strlength` (`strlen`), `upper` (`toupper`), `lower` (`tolower`), `strtrim` (`strip`), `strrep`, `strfind`, `strsplit` (`split`), `strjoin`, `strcmp`, `strcmpi`, `strncmp`, `strncmpi`, `startswith`, `endswith`, `blanks`, `isletter`, `isspace`, `ischar` (`isstring`), `isnumeric`, `islogical`, `logical`, `sprintf`, `rats`.
+- **The distribution functions of MATLAB**: `normpdf`, `normcdf`, `norminv`, `normrnd`, `normstat`, `unifpdf`, `unifcdf`, `unifinv`, `unifrnd`, `unifstat`, `exppdf`, `expcdf`, `expinv`, `exprnd`, `expstat`, `gampdf`, `gamcdf`, `gaminv`, `gamrnd`, `gamstat`, `betapdf`, `betacdf`, `betainv`, `betarnd`, `betastat`, `chi2pdf`, `chi2cdf`, `chi2inv`, `chi2rnd`, `chi2stat`, `tpdf`, `tcdf`, `tinv`, `trnd`, `tstat`, `fpdf`, `fcdf`, `frnd`, `fstat`, `lognpdf`, `logncdf`, `logninv`, `lognrnd`, `lognstat`, `wblpdf`, `wblcdf`, `wblinv`, `wblrnd`, `wblstat`, `raylpdf`, `raylcdf`, `raylinv`, `raylrnd`, `raylstat`, `binopdf`, `binocdf`, `binoinv`, `binornd`, `binostat`, `poisspdf`, `poisscdf`, `poissinv`, `poissrnd`, `poissstat`, `geopdf`, `geocdf`, `geoinv`, `geornd`, `geostat`, `nbinpdf`, `nbincdf`, `nbininv`, `nbinrnd`, `nbinstat`, `hygepdf`, `hygecdf`, `hygeinv`, `hygernd`, `hygestat`, `unidpdf`, `unidcdf`, `unidinv`, `unidrnd`, `unidstat`.
+- **Random numbers**: `rng`, `rand` (`randomreal`), `randn`, `randi` (`randominteger`), `randperm`, `randsample`, `shuffle`, `random`.
+- **Optimisation with exact numbers**: `linprog`, `intlinprog`, `lsqnonneg`.
+- **Zeros, minima, integrals and differential equations of functions**: `fzero`, `fminbnd`, `fminsearch` (`fminunc`), `lsqcurvefit`, `quad` (`quadgk`, `quadl`, `quadv`), `integral2` (`quad2d`, `dblquad`), `integral3` (`triplequad`), `ode45` (`ode23`, `ode113`, `ode78`, `ode89`, `ode15s`, `ode23s`, `ode23t`, `ode23tb`), `fsolve`, `feval`, `bsxfun`, `funm`, `lsqminnorm`, `str2num` (`str2sym`), `str2double`, `finverse`, `compose`, `symvar`, `has`, `children`, `lhs`, `rhs`, `isalways`, `combine`, `rewrite`, `potential`, `vectorpotential`, `equationstomatrix`, `eliminate`, `isolate`, `assumptions`, `ttest`, `ttest2`, `ztest`, `vartest`, `vartest2`, `splitapply`, `assert`, `error`.
+- **Data with gaps and outliers, groups**: `isoutlier`, `rmoutliers`, `ismissing`, `rmmissing`, `fillmissing`, `discretize`, `findgroups`, `ecdf`, `cplxpair`, `regress`.
+- **More on graphs**: `bfsearch`, `dfsearch`, `successors`, `predecessors`, `nearest`, `allpaths`, `hascycles`, `isdag`, `transclosure`, `transreduction`, `biconncomp`, `cutvertices` (`articulationvertices`), `bridges`, `centrality`, `addedge`, `rmedge`, `addnode`, `rmnode`, `findedge`, `flipedge`.
+- **Geometry of points**: `polyarea`, `inpolygon`, `convhull`, `convexhull`, `delaunay`, `voronoi`, `rectint`, `dsearchn`, `rotx`, `roty`, `rotz`.
+- **Kinds of whole numbers, values of the largest size, the session**: `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `eigs`, `svds`, `disp`, `fprintf`, `readmatrix` (`csvread`, `dlmread`), `writematrix` (`csvwrite`, `dlmwrite`), `tic`, `toc`, `who`, `clear`.
+- **Charts of data (they take what is chosen for a picture, and save_png / save_jxl save them)**: `lineplot` (`dataplot`, `comet`), `scatter`, `bar`, `barh`, `stairs`, `stem`, `errorbar`, `pie` (`pie3`), `loglog`, `semilogx`, `semilogy`, `contour` (`fcontour`), `quiver`, `plot3` (`comet3`), `scatter3`, `surf` (`mesh`), `spy`, `boxplot`, `imread`, `imwrite`.
+- **More of MATLAB: arrays of more sizes, matrices by the places of their entries, data with gaps**: `condest`, `normest`, `filter2`, `newline`, `meanabs`, `nansum`, `nanmean`, `nanmax`, `nanmin`, `nanstd`, `nanvar`, `nanmedian`, `single`, `cast`, `class`, `isa`, `sparse`, `full`, `issparse`, `nzmax`, `spones`, `speye`, `spdiags`, `squeeze`, `permute`, `ipermute`, `num2cell`, `cell2mat`, `signim`, `padecoef`, `crosstab`, `pdist`, `squareform`, `normfit`, `expfit`, `partialcorr`, `del2`, `interpft`, `datasample`, `quadprog`, `lsqlin`, `lsqnonlin`, `mellin`, `anova1`, `polyeig`, `pca`, `mkpp`, `unmkpp`, `ppval`, `polynomialreduce`, `griddata`, `tsearchn`, `erase`, `extractbefore`, `extractafter`, `extractbetween`, `insertafter`, `insertbefore`, `pad`, `isstrprop`.
+- **More charts, and pictures as matrices**: `stem3`, `quiver3`, `contour3`, `waterfall`, `compass`, `feather`, `polarscatter`, `rgb2gray`, `im2double`, `im2uint8`, `im2uint16`, `imcomplement`, `imcrop`, `imresize`, `imrotate`, `imfilter`, `imhist`, `imbinarize`, `htrans`, `ihtrans`.
+- **The calendar**: `datenum` (`datetime`), `datevec`, `datestr`, `weekday`, `eomday`, `calendar`, `addtodate`, `etime`, `juliandate`, `mjuliandate` (`modifiedjuliandate`), `posixtime`, `dayofyear`, `isweekend`, `leapyear` (`isleapyear`, `is_leap_year`), `yeardays`, `now`, `clock`, `date` (`today`), `cputime`.
+- **Patterns of texts**: `regexp`, `regexpi`, `regexprep`, `regexptranslate`, `strjust`, `validatestring`.
+- **Tests of ranks and counts, groups of points**: `ranksum`, `signrank`, `signtest`, `kruskalwallis`, `friedman`, `vartestn` (`bartlett`), `fishertest`, `chi2gof`, `kstest`, `kstest2`, `jbtest`, `anova2`, `mahal`, `mvnpdf`, `mvnrnd`, `ksdensity`, `jackknife`, `bootstrp`, `grpstats`, `linkage`, `cluster`, `kmeans`, `fitlm`.
+- **Records and tables**: `struct`, `isstruct`, `fieldnames`, `numfields`, `getfield`, `setfield`, `rmfield`, `isfield`, `orderfields`, `struct2cell`, `cell2struct`, `structfun`, `dictionary`, `keys`, `values`, `entries`, `numentries`, `iskey`, `lookup`, `remove`, `iscell`, `iscellstr`, `cell`.
+- **More special functions**: `meijerg`, `lerchphi` (`lerch`).
+- **Expressions in an unknown function and its derivatives**: `functionalderivative` (`eulerlagrange`), `odetovectorfield`.
+- **The least value under conditions**: `fmincon`.
+- **Matrices with names, a surface, colours, counts of pairs**: `gallery`, `peaks`, `colormap`, `histcounts2`, `pcg` (`gmres`, `bicg`, `bicgstab`, `cgs`, `minres`, `qmr`, `symmlq`, `tfqmr`), `lsqr`.
 
 Constants:
 
@@ -1444,6 +2170,11 @@ Constants:
 | `niven` |  | Niven's constant |
 | `mertens` |  | Meissel-Mertens constant |
 | `twinprime` |  | twin prime constant |
+| `flintmax` |  | 2^53: up to it every whole number is a double of MATLAB |
+| `realmax` |  | the largest double of MATLAB |
+| `realmin` |  | the least normal positive double of MATLAB |
+| `intmax` |  | the largest 32-bit whole number |
+| `intmin` |  | the least 32-bit whole number |
 
 `gamma` and `γ` without brackets are Euler's constant, `gamma(x)` and `Γ(x)` are the function.
 The constants with a closed form are replaced by it (`phi` is `1/2 + sqrt(5)/2`); the others
@@ -1470,8 +2201,17 @@ run the program on fixed inputs: `tests/cli.rs` (with a stand-in `tet`, and with
 when it is installed), `tests/iterates.rs` (fractional and complex iterates: closed forms,
 values checked with other software, the law `f[s](f[t](x)) = f[s + t](x)`), `tests/round3.rs`
 (lists, statistics, distributions, transforms, special functions and more), `tests/round4.rs`
-(equations in one unknown and with quaternion unknowns, units, graphs, plots) and
-`tests/help.rs` (every example of `--help` runs, and every function and constant has one).
+(equations in one unknown and with quaternion unknowns, units, graphs, plots),
+`tests/round5.rs` (numbers in a base, walks, pictures of characters, saved pictures: PNG
+files byte for byte, JPEG XL files decoded and compared with them), `tests/help.rs` (every
+example of `--help` runs, and every function and constant has one) and `tests/coverage.rs`
+with the tables of `tests/coverage/`: more than 37000 inputs with their answers, among them
+every name of every function, too few and too many arguments, numbers against exact
+arithmetic, functions against values of 25 digits from mpmath, identities of matrices, lists
+and polynomials, derivatives of integrals, texts, programs, refusals, and what MATLAB has
+area by area. A test fails when a function has no row.
+What MATLAB has was compared with GNU Octave (758 cases), SciPy and NumPy (450 checks) and
+mpmath while it was written; the scripts are not part of the repository.
 `make lint` checks the formatting and runs clippy with warnings as errors.
 
 Licensed under the GNU Affero General Public License, version 3 only (AGPL-3.0-only); see

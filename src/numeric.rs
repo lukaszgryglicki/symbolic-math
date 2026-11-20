@@ -318,8 +318,44 @@ fn eval_node(e: &Expr, cx: &mut Ctx) -> Result<Complex, NumErr> {
                 ))),
             }
         }
+        Expr::Fn(name, args)
+            if &**name == "meijerg"
+                && args.len() == 5
+                && args[..4].iter().all(|l| l.as_list().is_some()) =>
+        {
+            let mut lists = Vec::new();
+            for list in &args[..4] {
+                let mut values = Vec::new();
+                for x in list.as_list().unwrap_or_default() {
+                    values.push(unsigned_zero(eval(x, cx)?));
+                }
+                lists.push(values);
+            }
+            let z = unsigned_zero(eval(&args[4], cx)?);
+            let all_real = lists.iter().flatten().all(|x| x.imag().is_zero())
+                && z.imag().is_zero()
+                && *z.real() > 0u32;
+            match crate::hyper::meijer_g(&lists[0], &lists[1], &lists[2], &lists[3], &z, p) {
+                // (real parameters at a positive place give a real value unless the place is
+                // beyond the unit circle of a function with a cut there)
+                Some(Some(v))
+                    if all_real
+                        && v.imag().get_exp().is_none_or(|e| {
+                            i64::from(e) < crate::special::expo(&v) - i64::from(p) + 16
+                        }) =>
+                {
+                    finite(Complex::with_val(p, (v.real(), 0)), &|| e.to_string())
+                }
+                Some(Some(v)) => finite(v, &|| e.to_string()),
+                Some(None) => Err(NumErr::Undefined(e.to_string())),
+                None => Err(NumErr::Unsupported(format!(
+                    "{e}: the series of Meijer's G function do not converge here"
+                ))),
+            }
+        }
         // a product that is kept as it is written, and a sum in the order of its terms
         Expr::Fn(name, args) if &**name == "hold" && args.len() == 1 => eval(&args[0], cx),
+        Expr::Fn(name, args) if &**name == "based" && args.len() == 2 => eval(&args[0], cx),
         Expr::Fn(name, args) if &**name == "ordered" => {
             let mut sum = Complex::new(p);
             for t in args.iter() {

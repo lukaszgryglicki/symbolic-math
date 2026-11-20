@@ -16,10 +16,20 @@ name = "symbolic-math"
 path = "src/main.rs"
 
 [dependencies]
+font8x8 = "0.3"
+jxl-sys = "0.1.12"
+libc = "0.2"
+png = "0.18"
 rug = "1"
+
+[dev-dependencies]
+jxl-oxide = "0.12.6"
 
 [profile.dev]
 opt-level = 1
+
+[profile.dev.package.jxl-oxide]
+opt-level = 2
 
 [profile.release]
 lto = "thin"

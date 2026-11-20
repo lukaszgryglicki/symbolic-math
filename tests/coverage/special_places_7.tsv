@@ -1,0 +1,700 @@
+-e	multinomial(-inf)	multinomial(-inf)
+-e	multinomial(undefined)	undefined
+-e	multinomial(10^20)	multinomial(100000000000000000000)
+-e	multinomial(10^(-20))	multinomial(1/100000000000000000000)
+-e	multinomial(x)	multinomial(x)
+-e	multinomial([])	[]
+-e	multinomial([1, 2])	[1, 1]
+-e	multinomial("text")	multinomial("text")
+-e	multinomial(true)	multinomial(true)
+-e	multinomial(-7/3)	multinomial(-7/3)
+-e	multinomial(0.5)	multinomial(0.5)
+-e	convergents(0)	[0]
+-e	convergents(1)	[1]
+-e	convergents(-1)	[-1]
+-e	convergents(1/2)	[0, 1/2]
+-e	convergents(2)	[2]
+-e	convergents(i)	error: cfrac needs a real number, got i
+-e	convergents(inf)	error: cfrac needs a real number, got inf
+-e	convergents(-inf)	error: cfrac needs a real number, got -inf
+-e	convergents(undefined)	error: cfrac needs a real number, got undefined
+-e	convergents(10^20)	[100000000000000000000]
+-e	convergents(10^(-20))	[0, 1/100000000000000000000]
+-e	convergents(x)	error: cfrac needs a real number, got x
+-e	convergents([])	error: cfrac needs a real number, got []
+-e	convergents([1, 2])	error: cfrac needs a real number, got [1, 2]
+-e	convergents("text")	error: cfrac needs a real number, got "text"
+-e	convergents(true)	error: cfrac needs a real number, got true
+-e	convergents(-7/3)	[-3, -2, -7/3]
+-e	convergents(0.5)	[0, 1/2]
+-e	range(0)	[]
+-e	range(1)	[1]
+-e	range(-1)	[]
+-e	range(1/2)	[]
+-e	range(2)	[1, 2]
+-e	range(i)	error: the ends and the step of a range must be real numbers
+-e	range(inf)	error: the ends and the step of a range must be real numbers
+-e	range(-inf)	error: the ends and the step of a range must be real numbers
+-e	range(undefined)	error: the ends and the step of a range must be real numbers
+-e	range(10^20)	error: a range of more than 1000000 entries
+-e	range(10^(-20))	[]
+-e	range(x)	error: the ends and the step of a range must be real numbers
+-e	range([])	error: the ends and the step of a range must be real numbers
+-e	range([1, 2])	error: the ends and the step of a range must be real numbers
+-e	range("text")	error: the ends and the step of a range must be real numbers
+-e	range(true)	error: the ends and the step of a range must be real numbers
+-e	range(-7/3)	[]
+-e	range(0.5)	[]
+-e	length(0)	error: length needs a list, 0 is none
+-e	length(1)	error: length needs a list, 1 is none
+-e	length(-1)	error: length needs a list, -1 is none
+-e	length(1/2)	error: length needs a list, 1/2 is none
+-e	length(2)	error: length needs a list, 2 is none
+-e	length(i)	error: length needs a list, i is none
+-e	length(inf)	error: length needs a list, inf is none
+-e	length(-inf)	error: length needs a list, -inf is none
+-e	length(undefined)	error: length needs a list, undefined is none
+-e	length(10^20)	error: length needs a list, 100000000000000000000 is none
+-e	length(10^(-20))	error: length needs a list, 1/100000000000000000000 is none
+-e	length(x)	error: length needs a list, x is none
+-e	length([])	0
+-e	length([1, 2])	2
+-e	length("text")	4
+-e	length(true)	error: length needs a list, true is none
+-e	length(-7/3)	error: length needs a list, -7/3 is none
+-e	length(0.5)	error: length needs a list, 1/2 is none
+-e	first(0)	error: 0 is not a list: it has no parts
+-e	first(1)	error: 1 is not a list: it has no parts
+-e	first(-1)	error: -1 is not a list: it has no parts
+-e	first(1/2)	error: 1/2 is not a list: it has no parts
+-e	first(2)	error: 2 is not a list: it has no parts
+-e	first(i)	error: i is not a list: it has no parts
+-e	first(inf)	error: inf is not a list: it has no parts
+-e	first(-inf)	error: -inf is not a list: it has no parts
+-e	first(undefined)	error: undefined is not a list: it has no parts
+-e	first(10^20)	error: 100000000000000000000 is not a list: it has no parts
+-e	first(10^(-20))	error: 1/100000000000000000000 is not a list: it has no parts
+-e	first(x)	error: x is not a list: it has no parts
+-e	first([])	error: there is no position 1 in a list of 0 entries
+-e	first([1, 2])	1
+-e	first("text")	error: "text" is not a list: it has no parts
+-e	first(true)	error: true is not a list: it has no parts
+-e	first(-7/3)	error: -7/3 is not a list: it has no parts
+-e	first(0.5)	error: 1/2 is not a list: it has no parts
+-e	last(0)	error: 0 is not a list: it has no parts
+-e	last(1)	error: 1 is not a list: it has no parts
+-e	last(-1)	error: -1 is not a list: it has no parts
+-e	last(1/2)	error: 1/2 is not a list: it has no parts
+-e	last(2)	error: 2 is not a list: it has no parts
+-e	last(i)	error: i is not a list: it has no parts
+-e	last(inf)	error: inf is not a list: it has no parts
+-e	last(-inf)	error: -inf is not a list: it has no parts
+-e	last(undefined)	error: undefined is not a list: it has no parts
+-e	last(10^20)	error: 100000000000000000000 is not a list: it has no parts
+-e	last(10^(-20))	error: 1/100000000000000000000 is not a list: it has no parts
+-e	last(x)	error: x is not a list: it has no parts
+-e	last([])	error: there is no position -1 in a list of 0 entries
+-e	last([1, 2])	2
+-e	last("text")	error: "text" is not a list: it has no parts
+-e	last(true)	error: true is not a list: it has no parts
+-e	last(-7/3)	error: -7/3 is not a list: it has no parts
+-e	last(0.5)	error: 1/2 is not a list: it has no parts
+-e	rest(0)	error: rest needs a list, 0 is none
+-e	rest(1)	error: rest needs a list, 1 is none
+-e	rest(-1)	error: rest needs a list, -1 is none
+-e	rest(1/2)	error: rest needs a list, 1/2 is none
+-e	rest(2)	error: rest needs a list, 2 is none
+-e	rest(i)	error: rest needs a list, i is none
+-e	rest(inf)	error: rest needs a list, inf is none
+-e	rest(-inf)	error: rest needs a list, -inf is none
+-e	rest(undefined)	error: rest needs a list, undefined is none
+-e	rest(10^20)	error: rest needs a list, 100000000000000000000 is none
+-e	rest(10^(-20))	error: rest needs a list, 1/100000000000000000000 is none
+-e	rest(x)	error: rest needs a list, x is none
+-e	rest([])	error: rest: the list is empty
+-e	rest([1, 2])	[2]
+-e	rest("text")	error: rest needs a list, "text" is none
+-e	rest(true)	error: rest needs a list, true is none
+-e	rest(-7/3)	error: rest needs a list, -7/3 is none
+-e	rest(0.5)	error: rest needs a list, 1/2 is none
+-e	most(0)	error: most needs a list, 0 is none
+-e	most(1)	error: most needs a list, 1 is none
+-e	most(-1)	error: most needs a list, -1 is none
+-e	most(1/2)	error: most needs a list, 1/2 is none
+-e	most(2)	error: most needs a list, 2 is none
+-e	most(i)	error: most needs a list, i is none
+-e	most(inf)	error: most needs a list, inf is none
+-e	most(-inf)	error: most needs a list, -inf is none
+-e	most(undefined)	error: most needs a list, undefined is none
+-e	most(10^20)	error: most needs a list, 100000000000000000000 is none
+-e	most(10^(-20))	error: most needs a list, 1/100000000000000000000 is none
+-e	most(x)	error: most needs a list, x is none
+-e	most([])	error: most: the list is empty
+-e	most([1, 2])	[1]
+-e	most("text")	error: most needs a list, "text" is none
+-e	most(true)	error: most needs a list, true is none
+-e	most(-7/3)	error: most needs a list, -7/3 is none
+-e	most(0.5)	error: most needs a list, 1/2 is none
+-e	reverse(0)	error: reverse needs a list, 0 is none
+-e	reverse(1)	error: reverse needs a list, 1 is none
+-e	reverse(-1)	error: reverse needs a list, -1 is none
+-e	reverse(1/2)	error: reverse needs a list, 1/2 is none
+-e	reverse(2)	error: reverse needs a list, 2 is none
+-e	reverse(i)	error: reverse needs a list, i is none
+-e	reverse(inf)	error: reverse needs a list, inf is none
+-e	reverse(-inf)	error: reverse needs a list, -inf is none
+-e	reverse(undefined)	error: reverse needs a list, undefined is none
+-e	reverse(10^20)	error: reverse needs a list, 100000000000000000000 is none
+-e	reverse(10^(-20))	error: reverse needs a list, 1/100000000000000000000 is none
+-e	reverse(x)	error: reverse needs a list, x is none
+-e	reverse([])	[]
+-e	reverse([1, 2])	[2, 1]
+-e	reverse("text")	"txet"
+-e	reverse(true)	error: reverse needs a list, true is none
+-e	reverse(-7/3)	error: reverse needs a list, -7/3 is none
+-e	reverse(0.5)	error: reverse needs a list, 1/2 is none
+-e	sort(0)	error: sort needs a list, 0 is none
+-e	sort(1)	error: sort needs a list, 1 is none
+-e	sort(-1)	error: sort needs a list, -1 is none
+-e	sort(1/2)	error: sort needs a list, 1/2 is none
+-e	sort(2)	error: sort needs a list, 2 is none
+-e	sort(i)	error: sort needs a list, i is none
+-e	sort(inf)	error: sort needs a list, inf is none
+-e	sort(-inf)	error: sort needs a list, -inf is none
+-e	sort(undefined)	error: sort needs a list, undefined is none
+-e	sort(10^20)	error: sort needs a list, 100000000000000000000 is none
+-e	sort(10^(-20))	error: sort needs a list, 1/100000000000000000000 is none
+-e	sort(x)	error: sort needs a list, x is none
+-e	sort([])	[]
+-e	sort([1, 2])	[1, 2]
+-e	sort("text")	error: sort needs a list, "text" is none
+-e	sort(true)	error: sort needs a list, true is none
+-e	sort(-7/3)	error: sort needs a list, -7/3 is none
+-e	sort(0.5)	error: sort needs a list, 1/2 is none
+-e	rotateleft(0)	error: rotateleft needs a list, 0 is none
+-e	rotateleft(1)	error: rotateleft needs a list, 1 is none
+-e	rotateleft(-1)	error: rotateleft needs a list, -1 is none
+-e	rotateleft(1/2)	error: rotateleft needs a list, 1/2 is none
+-e	rotateleft(2)	error: rotateleft needs a list, 2 is none
+-e	rotateleft(i)	error: rotateleft needs a list, i is none
+-e	rotateleft(inf)	error: rotateleft needs a list, inf is none
+-e	rotateleft(-inf)	error: rotateleft needs a list, -inf is none
+-e	rotateleft(undefined)	error: rotateleft needs a list, undefined is none
+-e	rotateleft(10^20)	error: rotateleft needs a list, 100000000000000000000 is none
+-e	rotateleft(10^(-20))	error: rotateleft needs a list, 1/100000000000000000000 is none
+-e	rotateleft(x)	error: rotateleft needs a list, x is none
+-e	rotateleft([])	[]
+-e	rotateleft([1, 2])	[2, 1]
+-e	rotateleft("text")	error: rotateleft needs a list, "text" is none
+-e	rotateleft(true)	error: rotateleft needs a list, true is none
+-e	rotateleft(-7/3)	error: rotateleft needs a list, -7/3 is none
+-e	rotateleft(0.5)	error: rotateleft needs a list, 1/2 is none
+-e	rotateright(0)	error: rotateright needs a list, 0 is none
+-e	rotateright(1)	error: rotateright needs a list, 1 is none
+-e	rotateright(-1)	error: rotateright needs a list, -1 is none
+-e	rotateright(1/2)	error: rotateright needs a list, 1/2 is none
+-e	rotateright(2)	error: rotateright needs a list, 2 is none
+-e	rotateright(i)	error: rotateright needs a list, i is none
+-e	rotateright(inf)	error: rotateright needs a list, inf is none
+-e	rotateright(-inf)	error: rotateright needs a list, -inf is none
+-e	rotateright(undefined)	error: rotateright needs a list, undefined is none
+-e	rotateright(10^20)	error: rotateright needs a list, 100000000000000000000 is none
+-e	rotateright(10^(-20))	error: rotateright needs a list, 1/100000000000000000000 is none
+-e	rotateright(x)	error: rotateright needs a list, x is none
+-e	rotateright([])	[]
+-e	rotateright([1, 2])	[2, 1]
+-e	rotateright("text")	error: rotateright needs a list, "text" is none
+-e	rotateright(true)	error: rotateright needs a list, true is none
+-e	rotateright(-7/3)	error: rotateright needs a list, -7/3 is none
+-e	rotateright(0.5)	error: rotateright needs a list, 1/2 is none
+-e	join(0)	error: join needs a list, 0 is none
+-e	join(1)	error: join needs a list, 1 is none
+-e	join(-1)	error: join needs a list, -1 is none
+-e	join(1/2)	error: join needs a list, 1/2 is none
+-e	join(2)	error: join needs a list, 2 is none
+-e	join(i)	error: join needs a list, i is none
+-e	join(inf)	error: join needs a list, inf is none
+-e	join(-inf)	error: join needs a list, -inf is none
+-e	join(undefined)	error: join needs a list, undefined is none
+-e	join(10^20)	error: join needs a list, 100000000000000000000 is none
+-e	join(10^(-20))	error: join needs a list, 1/100000000000000000000 is none
+-e	join(x)	error: join needs a list, x is none
+-e	join([])	[]
+-e	join([1, 2])	[1, 2]
+-e	join("text")	"text"
+-e	join(true)	error: join needs a list, true is none
+-e	join(-7/3)	error: join needs a list, -7/3 is none
+-e	join(0.5)	error: join needs a list, 1/2 is none
+-e	union(0)	error: union needs a list, 0 is none
+-e	union(1)	error: union needs a list, 1 is none
+-e	union(-1)	error: union needs a list, -1 is none
+-e	union(1/2)	error: union needs a list, 1/2 is none
+-e	union(2)	error: union needs a list, 2 is none
+-e	union(i)	error: union needs a list, i is none
+-e	union(inf)	error: union needs a list, inf is none
+-e	union(-inf)	error: union needs a list, -inf is none
+-e	union(undefined)	error: union needs a list, undefined is none
+-e	union(10^20)	error: union needs a list, 100000000000000000000 is none
+-e	union(10^(-20))	error: union needs a list, 1/100000000000000000000 is none
+-e	union(x)	error: union needs a list, x is none
+-e	union([])	[]
+-e	union([1, 2])	[1, 2]
+-e	union("text")	error: union needs a list, "text" is none
+-e	union(true)	error: union needs a list, true is none
+-e	union(-7/3)	error: union needs a list, -7/3 is none
+-e	union(0.5)	error: union needs a list, 1/2 is none
+-e	unique(0)	error: unique needs a list, 0 is none
+-e	unique(1)	error: unique needs a list, 1 is none
+-e	unique(-1)	error: unique needs a list, -1 is none
+-e	unique(1/2)	error: unique needs a list, 1/2 is none
+-e	unique(2)	error: unique needs a list, 2 is none
+-e	unique(i)	error: unique needs a list, i is none
+-e	unique(inf)	error: unique needs a list, inf is none
+-e	unique(-inf)	error: unique needs a list, -inf is none
+-e	unique(undefined)	error: unique needs a list, undefined is none
+-e	unique(10^20)	error: unique needs a list, 100000000000000000000 is none
+-e	unique(10^(-20))	error: unique needs a list, 1/100000000000000000000 is none
+-e	unique(x)	error: unique needs a list, x is none
+-e	unique([])	[]
+-e	unique([1, 2])	[1, 2]
+-e	unique("text")	error: unique needs a list, "text" is none
+-e	unique(true)	error: unique needs a list, true is none
+-e	unique(-7/3)	error: unique needs a list, -7/3 is none
+-e	unique(0.5)	error: unique needs a list, 1/2 is none
+-e	total(0)	error: total needs a list, 0 is none
+-e	total(1)	error: total needs a list, 1 is none
+-e	total(-1)	error: total needs a list, -1 is none
+-e	total(1/2)	error: total needs a list, 1/2 is none
+-e	total(2)	error: total needs a list, 2 is none
+-e	total(i)	error: total needs a list, i is none
+-e	total(inf)	error: total needs a list, inf is none
+-e	total(-inf)	error: total needs a list, -inf is none
+-e	total(undefined)	error: total needs a list, undefined is none
+-e	total(10^20)	error: total needs a list, 100000000000000000000 is none
+-e	total(10^(-20))	error: total needs a list, 1/100000000000000000000 is none
+-e	total(x)	error: total needs a list, x is none
+-e	total([])	0
+-e	total([1, 2])	3
+-e	total("text")	error: total needs a list, "text" is none
+-e	total(true)	error: total needs a list, true is none
+-e	total(-7/3)	error: total needs a list, -7/3 is none
+-e	total(0.5)	error: total needs a list, 1/2 is none
+-e	accumulate(0)	error: accumulate needs a list, 0 is none
+-e	accumulate(1)	error: accumulate needs a list, 1 is none
+-e	accumulate(-1)	error: accumulate needs a list, -1 is none
+-e	accumulate(1/2)	error: accumulate needs a list, 1/2 is none
+-e	accumulate(2)	error: accumulate needs a list, 2 is none
+-e	accumulate(i)	error: accumulate needs a list, i is none
+-e	accumulate(inf)	error: accumulate needs a list, inf is none
+-e	accumulate(-inf)	error: accumulate needs a list, -inf is none
+-e	accumulate(undefined)	error: accumulate needs a list, undefined is none
+-e	accumulate(10^20)	error: accumulate needs a list, 100000000000000000000 is none
+-e	accumulate(10^(-20))	error: accumulate needs a list, 1/100000000000000000000 is none
+-e	accumulate(x)	error: accumulate needs a list, x is none
+-e	accumulate([])	[]
+-e	accumulate([1, 2])	[1, 3]
+-e	accumulate("text")	error: accumulate needs a list, "text" is none
+-e	accumulate(true)	error: accumulate needs a list, true is none
+-e	accumulate(-7/3)	error: accumulate needs a list, -7/3 is none
+-e	accumulate(0.5)	error: accumulate needs a list, 1/2 is none
+-e	differences(0)	error: differences needs a list, 0 is none
+-e	differences(1)	error: differences needs a list, 1 is none
+-e	differences(-1)	error: differences needs a list, -1 is none
+-e	differences(1/2)	error: differences needs a list, 1/2 is none
+-e	differences(2)	error: differences needs a list, 2 is none
+-e	differences(i)	error: differences needs a list, i is none
+-e	differences(inf)	error: differences needs a list, inf is none
+-e	differences(-inf)	error: differences needs a list, -inf is none
+-e	differences(undefined)	error: differences needs a list, undefined is none
+-e	differences(10^20)	error: differences needs a list, 100000000000000000000 is none
+-e	differences(10^(-20))	error: differences needs a list, 1/100000000000000000000 is none
+-e	differences(x)	error: differences needs a list, x is none
+-e	differences([])	[]
+-e	differences([1, 2])	[1]
+-e	differences("text")	error: differences needs a list, "text" is none
+-e	differences(true)	error: differences needs a list, true is none
+-e	differences(-7/3)	error: differences needs a list, -7/3 is none
+-e	differences(0.5)	error: differences needs a list, 1/2 is none
+-e	ratios(0)	error: ratios needs a list, 0 is none
+-e	ratios(1)	error: ratios needs a list, 1 is none
+-e	ratios(-1)	error: ratios needs a list, -1 is none
+-e	ratios(1/2)	error: ratios needs a list, 1/2 is none
+-e	ratios(2)	error: ratios needs a list, 2 is none
+-e	ratios(i)	error: ratios needs a list, i is none
+-e	ratios(inf)	error: ratios needs a list, inf is none
+-e	ratios(-inf)	error: ratios needs a list, -inf is none
+-e	ratios(undefined)	error: ratios needs a list, undefined is none
+-e	ratios(10^20)	error: ratios needs a list, 100000000000000000000 is none
+-e	ratios(10^(-20))	error: ratios needs a list, 1/100000000000000000000 is none
+-e	ratios(x)	error: ratios needs a list, x is none
+-e	ratios([])	[]
+-e	ratios([1, 2])	[2]
+-e	ratios("text")	error: ratios needs a list, "text" is none
+-e	ratios(true)	error: ratios needs a list, true is none
+-e	ratios(-7/3)	error: ratios needs a list, -7/3 is none
+-e	ratios(0.5)	error: ratios needs a list, 1/2 is none
+-e	tally(0)	error: tally needs a list, 0 is none
+-e	tally(1)	error: tally needs a list, 1 is none
+-e	tally(-1)	error: tally needs a list, -1 is none
+-e	tally(1/2)	error: tally needs a list, 1/2 is none
+-e	tally(2)	error: tally needs a list, 2 is none
+-e	tally(i)	error: tally needs a list, i is none
+-e	tally(inf)	error: tally needs a list, inf is none
+-e	tally(-inf)	error: tally needs a list, -inf is none
+-e	tally(undefined)	error: tally needs a list, undefined is none
+-e	tally(10^20)	error: tally needs a list, 100000000000000000000 is none
+-e	tally(10^(-20))	error: tally needs a list, 1/100000000000000000000 is none
+-e	tally(x)	error: tally needs a list, x is none
+-e	tally([])	[]
+-e	tally([1, 2])	[[1, 1], [2, 1]]
+-e	tally("text")	error: tally needs a list, "text" is none
+-e	tally(true)	error: tally needs a list, true is none
+-e	tally(-7/3)	error: tally needs a list, -7/3 is none
+-e	tally(0.5)	error: tally needs a list, 1/2 is none
+-e	zip(0)	error: zip needs a list, 0 is none
+-e	zip(1)	error: zip needs a list, 1 is none
+-e	zip(-1)	error: zip needs a list, -1 is none
+-e	zip(1/2)	error: zip needs a list, 1/2 is none
+-e	zip(2)	error: zip needs a list, 2 is none
+-e	zip(i)	error: zip needs a list, i is none
+-e	zip(inf)	error: zip needs a list, inf is none
+-e	zip(-inf)	error: zip needs a list, -inf is none
+-e	zip(undefined)	error: zip needs a list, undefined is none
+-e	zip(10^20)	error: zip needs a list, 100000000000000000000 is none
+-e	zip(10^(-20))	error: zip needs a list, 1/100000000000000000000 is none
+-e	zip(x)	error: zip needs a list, x is none
+-e	zip([])	[]
+-e	zip([1, 2])	[[1], [2]]
+-e	zip("text")	error: zip needs a list, "text" is none
+-e	zip(true)	error: zip needs a list, true is none
+-e	zip(-7/3)	error: zip needs a list, -7/3 is none
+-e	zip(0.5)	error: zip needs a list, 1/2 is none
+-e	permutations(0)	error: permutations needs a list, 0 is none
+-e	permutations(1)	error: permutations needs a list, 1 is none
+-e	permutations(-1)	error: permutations needs a list, -1 is none
+-e	permutations(1/2)	error: permutations needs a list, 1/2 is none
+-e	permutations(2)	error: permutations needs a list, 2 is none
+-e	permutations(i)	error: permutations needs a list, i is none
+-e	permutations(inf)	error: permutations needs a list, inf is none
+-e	permutations(-inf)	error: permutations needs a list, -inf is none
+-e	permutations(undefined)	error: permutations needs a list, undefined is none
+-e	permutations(10^20)	error: permutations needs a list, 100000000000000000000 is none
+-e	permutations(10^(-20))	error: permutations needs a list, 1/100000000000000000000 is none
+-e	permutations(x)	error: permutations needs a list, x is none
+-e	permutations([])	[[]]
+-e	permutations([1, 2])	[[1, 2], [2, 1]]
+-e	permutations("text")	error: permutations needs a list, "text" is none
+-e	permutations(true)	error: permutations needs a list, true is none
+-e	permutations(-7/3)	error: permutations needs a list, -7/3 is none
+-e	permutations(0.5)	error: permutations needs a list, 1/2 is none
+-e	subsets(0)	error: subsets needs a list, 0 is none
+-e	subsets(1)	error: subsets needs a list, 1 is none
+-e	subsets(-1)	error: subsets needs a list, -1 is none
+-e	subsets(1/2)	error: subsets needs a list, 1/2 is none
+-e	subsets(2)	error: subsets needs a list, 2 is none
+-e	subsets(i)	error: subsets needs a list, i is none
+-e	subsets(inf)	error: subsets needs a list, inf is none
+-e	subsets(-inf)	error: subsets needs a list, -inf is none
+-e	subsets(undefined)	error: subsets needs a list, undefined is none
+-e	subsets(10^20)	error: subsets needs a list, 100000000000000000000 is none
+-e	subsets(10^(-20))	error: subsets needs a list, 1/100000000000000000000 is none
+-e	subsets(x)	error: subsets needs a list, x is none
+-e	subsets([])	[[]]
+-e	subsets([1, 2])	[[], [1], [2], [1, 2]]
+-e	subsets("text")	error: subsets needs a list, "text" is none
+-e	subsets(true)	error: subsets needs a list, true is none
+-e	subsets(-7/3)	error: subsets needs a list, -7/3 is none
+-e	subsets(0.5)	error: subsets needs a list, 1/2 is none
+-e	cartesianproduct(0)	error: cartesianproduct needs a list, 0 is none
+-e	cartesianproduct(1)	error: cartesianproduct needs a list, 1 is none
+-e	cartesianproduct(-1)	error: cartesianproduct needs a list, -1 is none
+-e	cartesianproduct(1/2)	error: cartesianproduct needs a list, 1/2 is none
+-e	cartesianproduct(2)	error: cartesianproduct needs a list, 2 is none
+-e	cartesianproduct(i)	error: cartesianproduct needs a list, i is none
+-e	cartesianproduct(inf)	error: cartesianproduct needs a list, inf is none
+-e	cartesianproduct(-inf)	error: cartesianproduct needs a list, -inf is none
+-e	cartesianproduct(undefined)	error: cartesianproduct needs a list, undefined is none
+-e	cartesianproduct(10^20)	error: cartesianproduct needs a list, 100000000000000000000 is none
+-e	cartesianproduct(10^(-20))	error: cartesianproduct needs a list, 1/100000000000000000000 is none
+-e	cartesianproduct(x)	error: cartesianproduct needs a list, x is none
+-e	cartesianproduct([])	[]
+-e	cartesianproduct([1, 2])	[[1], [2]]
+-e	cartesianproduct("text")	error: cartesianproduct needs a list, "text" is none
+-e	cartesianproduct(true)	error: cartesianproduct needs a list, true is none
+-e	cartesianproduct(-7/3)	error: cartesianproduct needs a list, -7/3 is none
+-e	cartesianproduct(0.5)	error: cartesianproduct needs a list, 1/2 is none
+-e	piecewise(0)	0
+-e	piecewise(1)	1
+-e	piecewise(-1)	-1
+-e	piecewise(1/2)	1/2
+-e	piecewise(2)	2
+-e	piecewise(i)	i
+-e	piecewise(inf)	inf
+-e	piecewise(-inf)	-inf
+-e	piecewise(undefined)	undefined
+-e	piecewise(10^20)	100000000000000000000
+-e	piecewise(10^(-20))	1/100000000000000000000
+-e	piecewise(x)	x
+-e	piecewise([])	[]
+-e	piecewise([1, 2])	[1, 2]
+-e	piecewise("text")	"text"
+-e	piecewise(true)	true
+-e	piecewise(-7/3)	-7/3
+-e	piecewise(0.5)	0.5
+-e	block(0)	0
+-e	block(1)	1
+-e	block(-1)	-1
+-e	block(1/2)	1/2
+-e	block(2)	2
+-e	block(i)	i
+-e	block(inf)	inf
+-e	block(-inf)	-inf
+-e	block(undefined)	undefined
+-e	block(10^20)	100000000000000000000
+-e	block(10^(-20))	1/100000000000000000000
+-e	block(x)	x
+-e	block([])	[]
+-e	block([1, 2])	[1, 2]
+-e	block("text")	"text"
+-e	block(true)	true
+-e	block(-7/3)	-7/3
+-e	block(0.5)	0.5
+-e	and(0)	and(0)
+-e	and(1)	and(1)
+-e	and(-1)	and(-1)
+-e	and(1/2)	and(1/2)
+-e	and(2)	and(2)
+-e	and(i)	and(i)
+-e	and(inf)	and(inf)
+-e	and(-inf)	and(-inf)
+-e	and(undefined)	and(undefined)
+-e	and(10^20)	and(100000000000000000000)
+-e	and(10^(-20))	and(1/100000000000000000000)
+-e	and(x)	and(x)
+-e	and([])	and([])
+-e	and([1, 2])	and([1, 2])
+-e	and("text")	and("text")
+-e	and(true)	true
+-e	and(-7/3)	and(-7/3)
+-e	and(0.5)	and(0.5)
+-e	or(0)	or(0)
+-e	or(1)	or(1)
+-e	or(-1)	or(-1)
+-e	or(1/2)	or(1/2)
+-e	or(2)	or(2)
+-e	or(i)	or(i)
+-e	or(inf)	or(inf)
+-e	or(-inf)	or(-inf)
+-e	or(undefined)	or(undefined)
+-e	or(10^20)	or(100000000000000000000)
+-e	or(10^(-20))	or(1/100000000000000000000)
+-e	or(x)	or(x)
+-e	or([])	or([])
+-e	or([1, 2])	or([1, 2])
+-e	or("text")	or("text")
+-e	or(true)	true
+-e	or(-7/3)	or(-7/3)
+-e	or(0.5)	or(0.5)
+-e	not(0)	not (0)
+-e	not(1)	not (1)
+-e	not(-1)	not (-1)
+-e	not(1/2)	not (1/2)
+-e	not(2)	not (2)
+-e	not(i)	not (i)
+-e	not(inf)	not inf
+-e	not(-inf)	not (-inf)
+-e	not(undefined)	not undefined
+-e	not(10^20)	not (100000000000000000000)
+-e	not(10^(-20))	not (1/100000000000000000000)
+-e	not(x)	not x
+-e	not([])	not ([])
+-e	not([1, 2])	not ([1, 2])
+-e	not("text")	not ("text")
+-e	not(true)	false
+-e	not(-7/3)	not (-7/3)
+-e	not(0.5)	not (0.5)
+-e	islist(0)	false
+-e	islist(1)	false
+-e	islist(-1)	false
+-e	islist(1/2)	false
+-e	islist(2)	false
+-e	islist(i)	false
+-e	islist(inf)	false
+-e	islist(-inf)	false
+-e	islist(undefined)	false
+-e	islist(10^20)	false
+-e	islist(10^(-20))	false
+-e	islist(x)	false
+-e	islist([])	true
+-e	islist([1, 2])	true
+-e	islist("text")	false
+-e	islist(true)	false
+-e	islist(-7/3)	false
+-e	islist(0.5)	false
+-e	isnumber(0)	true
+-e	isnumber(1)	true
+-e	isnumber(-1)	true
+-e	isnumber(1/2)	true
+-e	isnumber(2)	true
+-e	isnumber(i)	true
+-e	isnumber(inf)	false
+-e	isnumber(-inf)	false
+-e	isnumber(undefined)	false
+-e	isnumber(10^20)	true
+-e	isnumber(10^(-20))	true
+-e	isnumber(x)	false
+-e	isnumber([])	false
+-e	isnumber([1, 2])	false
+-e	isnumber("text")	false
+-e	isnumber(true)	false
+-e	isnumber(-7/3)	true
+-e	isnumber(0.5)	true
+-e	isinteger(0)	true
+-e	isinteger(1)	true
+-e	isinteger(-1)	true
+-e	isinteger(1/2)	false
+-e	isinteger(2)	true
+-e	isinteger(i)	false
+-e	isinteger(inf)	isinteger(inf)
+-e	isinteger(-inf)	isinteger(-inf)
+-e	isinteger(undefined)	undefined
+-e	isinteger(10^20)	true
+-e	isinteger(10^(-20))	false
+-e	isinteger(x)	isinteger(x)
+-e	isinteger([])	false
+-e	isinteger([1, 2])	false
+-e	isinteger("text")	isinteger("text")
+-e	isinteger(true)	isinteger(true)
+-e	isinteger(-7/3)	false
+-e	isinteger(0.5)	false
+-e	isrational(0)	true
+-e	isrational(1)	true
+-e	isrational(-1)	true
+-e	isrational(1/2)	true
+-e	isrational(2)	true
+-e	isrational(i)	false
+-e	isrational(inf)	isrational(inf)
+-e	isrational(-inf)	isrational(-inf)
+-e	isrational(undefined)	undefined
+-e	isrational(10^20)	true
+-e	isrational(10^(-20))	true
+-e	isrational(x)	isrational(x)
+-e	isrational([])	false
+-e	isrational([1, 2])	false
+-e	isrational("text")	isrational("text")
+-e	isrational(true)	isrational(true)
+-e	isrational(-7/3)	true
+-e	isrational(0.5)	true
+-e	iseven(0)	true
+-e	iseven(1)	false
+-e	iseven(-1)	false
+-e	iseven(1/2)	false
+-e	iseven(2)	true
+-e	iseven(i)	false
+-e	iseven(inf)	false
+-e	iseven(-inf)	false
+-e	iseven(undefined)	false
+-e	iseven(10^20)	true
+-e	iseven(10^(-20))	false
+-e	iseven(x)	iseven(x)
+-e	iseven([])	false
+-e	iseven([1, 2])	false
+-e	iseven("text")	iseven("text")
+-e	iseven(true)	false
+-e	iseven(-7/3)	false
+-e	iseven(0.5)	false
+-e	isodd(0)	false
+-e	isodd(1)	true
+-e	isodd(-1)	true
+-e	isodd(1/2)	false
+-e	isodd(2)	false
+-e	isodd(i)	false
+-e	isodd(inf)	false
+-e	isodd(-inf)	false
+-e	isodd(undefined)	false
+-e	isodd(10^20)	false
+-e	isodd(10^(-20))	false
+-e	isodd(x)	isodd(x)
+-e	isodd([])	false
+-e	isodd([1, 2])	false
+-e	isodd("text")	isodd("text")
+-e	isodd(true)	false
+-e	isodd(-7/3)	false
+-e	isodd(0.5)	false
+-e	isreal(0)	true
+-e	isreal(1)	true
+-e	isreal(-1)	true
+-e	isreal(1/2)	true
+-e	isreal(2)	true
+-e	isreal(i)	false
+-e	isreal(inf)	true
+-e	isreal(-inf)	true
+-e	isreal(undefined)	false
+-e	isreal(10^20)	true
+-e	isreal(10^(-20))	true
+-e	isreal(x)	isreal(x)
+-e	isreal([])	false
+-e	isreal([1, 2])	false
+-e	isreal("text")	isreal("text")
+-e	isreal(true)	false
+-e	isreal(-7/3)	true
+-e	isreal(0.5)	true
+-e	ispositive(0)	false
+-e	ispositive(1)	true
+-e	ispositive(-1)	false
+-e	ispositive(1/2)	true
+-e	ispositive(2)	true
+-e	ispositive(i)	false
+-e	ispositive(inf)	false
+-e	ispositive(-inf)	false
+-e	ispositive(undefined)	false
+-e	ispositive(10^20)	true
+-e	ispositive(10^(-20))	true
+-e	ispositive(x)	ispositive(x)
+-e	ispositive([])	false
+-e	ispositive([1, 2])	false
+-e	ispositive("text")	ispositive("text")
+-e	ispositive(true)	false
+-e	ispositive(-7/3)	false
+-e	ispositive(0.5)	true
+-e	isnegative(0)	false
+-e	isnegative(1)	false
+-e	isnegative(-1)	true
+-e	isnegative(1/2)	false
+-e	isnegative(2)	false
+-e	isnegative(i)	false
+-e	isnegative(inf)	false
+-e	isnegative(-inf)	false
+-e	isnegative(undefined)	false
+-e	isnegative(10^20)	false
+-e	isnegative(10^(-20))	false
+-e	isnegative(x)	isnegative(x)
+-e	isnegative([])	false
+-e	isnegative([1, 2])	false
+-e	isnegative("text")	isnegative("text")
+-e	isnegative(true)	false
+-e	isnegative(-7/3)	true
+-e	isnegative(0.5)	false
+-e	isnonnegative(0)	true
+-e	isnonnegative(1)	true
+-e	isnonnegative(-1)	false
+-e	isnonnegative(1/2)	true
+-e	isnonnegative(2)	true
+-e	isnonnegative(i)	false
+-e	isnonnegative(inf)	false
+-e	isnonnegative(-inf)	false
+-e	isnonnegative(undefined)	false
+-e	isnonnegative(10^20)	true
+-e	isnonnegative(10^(-20))	true
+-e	isnonnegative(x)	isnonnegative(x)
+-e	isnonnegative([])	false
+-e	isnonnegative([1, 2])	false
+-e	isnonnegative("text")	isnonnegative("text")
+-e	isnonnegative(true)	false
+-e	isnonnegative(-7/3)	false
+-e	isnonnegative(0.5)	true
+-e	median(0)	error: median needs a list of values that is not empty
+-e	median(1)	error: median needs a list of values that is not empty
+-e	median(-1)	error: median needs a list of values that is not empty
+-e	median(1/2)	error: median needs a list of values that is not empty
+-e	median(2)	error: median needs a list of values that is not empty

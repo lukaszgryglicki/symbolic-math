@@ -1,0 +1,15 @@
+-q	i*j == k	true
+-q	j*k == i	true
+-q	k*i == j	true
+-q	j*i == -k	true
+-q	i*j*k == -1	true
+-q	i^2 == -1	true
+-q	j^2 == -1	true
+-q	k^2 == -1	true
+-q	(1 + 2i + 3j + 4k)*(1 - 2i - 3j - 4k) == 30	true
+-q	abs(1 + 2i + 3j + 4k)^2 == 30	true
+-q	(2 + i - j + 3k)*inv(2 + i - j + 3k) == 1	true
+-q	conj((1 + i)*(2 + j)) == conj(2 + j)*conj(1 + i)	true
+-q	abs((1 + i + j)*(2 - k))^2 == abs(1 + i + j)^2*abs(2 - k)^2	true
+-q	((1 + i)*(1 + j))*(1 + k) == (1 + i)*((1 + j)*(1 + k))	true
+-q	(1 + i + j + k)^4 == -8 - 8i - 8j - 8k	true

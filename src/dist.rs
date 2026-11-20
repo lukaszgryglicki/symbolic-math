@@ -554,11 +554,15 @@ impl Bound<'_> {
         if self.dist.discrete {
             let from = lo.as_i64().ok_or_else(|| self.missing("quantile"))?;
             let mut total = Float::with_val(bits, 0);
+            // (a probability that the sum reaches exactly is reached: the sum of rounded
+            // numbers may end a hair below it)
+            let reached = Float::with_val(bits, &target)
+                * (1u32 - Float::with_val(bits, Float::i_pow_u(10, digits)).recip());
             for k in from..from + 10_000_000 {
                 let p = self.pdf(&Expr::int(k))?;
                 total +=
                     numeric::real_value(&p, digits + 5).ok_or_else(|| self.missing("quantile"))?;
-                if total >= target {
+                if total >= reached {
                     return Ok(Expr::int(k));
                 }
                 if hi.as_i64() == Some(k) {

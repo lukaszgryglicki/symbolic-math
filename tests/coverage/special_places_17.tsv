@@ -1,0 +1,700 @@
+-e	boxplot(i)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(inf)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(-inf)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(undefined)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(10^20)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(10^(-20))	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(x)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot([])	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot([1, 2])	2.04 │                ⡤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⢤|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|     │                ⡇                              ⢸|0.96 │                ⠓⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠚|     └────────────────────────────────────────────────────────────────|      0.4                                                          1.6|quartiles 1, 1.5, 2
+-e	boxplot("text")	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(true)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(-7/3)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	boxplot(0.5)	error: boxplot([values]) or boxplot([[values], [values], ...])
+-e	condest(0)	error: cond needs a matrix
+-e	condest(1)	error: cond needs a matrix
+-e	condest(-1)	error: cond needs a matrix
+-e	condest(1/2)	error: cond needs a matrix
+-e	condest(2)	error: cond needs a matrix
+-e	condest(i)	error: cond needs a matrix
+-e	condest(inf)	error: cond needs a matrix
+-e	condest(-inf)	error: cond needs a matrix
+-e	condest(undefined)	error: cond needs a matrix
+-e	condest(10^20)	error: cond needs a matrix
+-e	condest(10^(-20))	error: cond needs a matrix
+-e	condest(x)	error: cond needs a matrix
+-e	condest([])	error: cond needs a matrix
+-e	condest([1, 2])	error: cond needs a matrix
+-e	condest("text")	error: cond needs a matrix
+-e	condest(true)	error: cond needs a matrix
+-e	condest(-7/3)	error: cond needs a matrix
+-e	condest(0.5)	error: cond needs a matrix
+-e	normest(0)	error: normest: norm is not known
+-e	normest(1)	error: normest: norm is not known
+-e	normest(-1)	error: normest: norm is not known
+-e	normest(1/2)	error: normest: norm is not known
+-e	normest(2)	error: normest: norm is not known
+-e	normest(i)	error: normest: norm is not known
+-e	normest(inf)	error: normest: norm is not known
+-e	normest(-inf)	error: normest: norm is not known
+-e	normest(undefined)	error: normest: norm is not known
+-e	normest(10^20)	error: normest: norm is not known
+-e	normest(10^(-20))	error: normest: norm is not known
+-e	normest(x)	error: normest: norm is not known
+-e	normest([])	error: normest: norm is not known
+-e	normest([1, 2])	error: normest: norm is not known
+-e	normest("text")	error: normest: norm is not known
+-e	normest(true)	error: normest: norm is not known
+-e	normest(-7/3)	error: normest: norm is not known
+-e	normest(0.5)	error: normest: norm is not known
+-e	meanabs(0)	0
+-e	meanabs(1)	1
+-e	meanabs(-1)	1
+-e	meanabs(1/2)	1/2
+-e	meanabs(2)	2
+-e	meanabs(i)	1
+-e	meanabs(inf)	inf
+-e	meanabs(-inf)	inf
+-e	meanabs(undefined)	undefined
+-e	meanabs(10^20)	100000000000000000000
+-e	meanabs(10^(-20))	1/100000000000000000000
+-e	meanabs(x)	abs(x)
+-e	meanabs([])	undefined
+-e	meanabs([1, 2])	3/2
+-e	meanabs("text")	abs("text")
+-e	meanabs(true)	abs(true)
+-e	meanabs(-7/3)	7/3
+-e	meanabs(0.5)	0.5
+-e	nansum(0)	0
+-e	nansum(1)	1
+-e	nansum(-1)	-1
+-e	nansum(1/2)	1/2
+-e	nansum(2)	2
+-e	nansum(i)	i
+-e	nansum(inf)	inf
+-e	nansum(-inf)	-inf
+-e	nansum(undefined)	0
+-e	nansum(10^20)	100000000000000000000
+-e	nansum(10^(-20))	1/100000000000000000000
+-e	nansum(x)	x
+-e	nansum([])	0
+-e	nansum([1, 2])	3
+-e	nansum("text")	"text"
+-e	nansum(true)	true
+-e	nansum(-7/3)	-7/3
+-e	nansum(0.5)	0.5
+-e	nanmean(0)	0
+-e	nanmean(1)	1
+-e	nanmean(-1)	-1
+-e	nanmean(1/2)	1/2
+-e	nanmean(2)	2
+-e	nanmean(i)	i
+-e	nanmean(inf)	inf
+-e	nanmean(-inf)	-inf
+-e	nanmean(undefined)	undefined
+-e	nanmean(10^20)	100000000000000000000
+-e	nanmean(10^(-20))	1/100000000000000000000
+-e	nanmean(x)	x
+-e	nanmean([])	undefined
+-e	nanmean([1, 2])	3/2
+-e	nanmean("text")	"text"
+-e	nanmean(true)	true
+-e	nanmean(-7/3)	-7/3
+-e	nanmean(0.5)	0.5
+-e	nanmax(0)	0
+-e	nanmax(1)	1
+-e	nanmax(-1)	-1
+-e	nanmax(1/2)	1/2
+-e	nanmax(2)	2
+-e	nanmax(i)	i
+-e	nanmax(inf)	inf
+-e	nanmax(-inf)	-inf
+-e	nanmax(undefined)	undefined
+-e	nanmax(10^20)	100000000000000000000
+-e	nanmax(10^(-20))	1/100000000000000000000
+-e	nanmax(x)	x
+-e	nanmax([])	undefined
+-e	nanmax([1, 2])	2
+-e	nanmax("text")	"text"
+-e	nanmax(true)	true
+-e	nanmax(-7/3)	-7/3
+-e	nanmax(0.5)	0.5
+-e	nanmin(0)	0
+-e	nanmin(1)	1
+-e	nanmin(-1)	-1
+-e	nanmin(1/2)	1/2
+-e	nanmin(2)	2
+-e	nanmin(i)	i
+-e	nanmin(inf)	inf
+-e	nanmin(-inf)	-inf
+-e	nanmin(undefined)	undefined
+-e	nanmin(10^20)	100000000000000000000
+-e	nanmin(10^(-20))	1/100000000000000000000
+-e	nanmin(x)	x
+-e	nanmin([])	undefined
+-e	nanmin([1, 2])	1
+-e	nanmin("text")	"text"
+-e	nanmin(true)	true
+-e	nanmin(-7/3)	-7/3
+-e	nanmin(0.5)	0.5
+-e	nanstd(0)	0
+-e	nanstd(1)	0
+-e	nanstd(-1)	0
+-e	nanstd(1/2)	0
+-e	nanstd(2)	0
+-e	nanstd(i)	0
+-e	nanstd(inf)	0
+-e	nanstd(-inf)	0
+-e	nanstd(undefined)	undefined
+-e	nanstd(10^20)	0
+-e	nanstd(10^(-20))	0
+-e	nanstd(x)	0
+-e	nanstd([])	undefined
+-e	nanstd([1, 2])	sqrt(2)/2
+-e	nanstd("text")	0
+-e	nanstd(true)	0
+-e	nanstd(-7/3)	0
+-e	nanstd(0.5)	0
+-e	nanvar(0)	0
+-e	nanvar(1)	0
+-e	nanvar(-1)	0
+-e	nanvar(1/2)	0
+-e	nanvar(2)	0
+-e	nanvar(i)	0
+-e	nanvar(inf)	0
+-e	nanvar(-inf)	0
+-e	nanvar(undefined)	undefined
+-e	nanvar(10^20)	0
+-e	nanvar(10^(-20))	0
+-e	nanvar(x)	0
+-e	nanvar([])	undefined
+-e	nanvar([1, 2])	1/2
+-e	nanvar("text")	0
+-e	nanvar(true)	0
+-e	nanvar(-7/3)	0
+-e	nanvar(0.5)	0
+-e	nanmedian(0)	0
+-e	nanmedian(1)	1
+-e	nanmedian(-1)	-1
+-e	nanmedian(1/2)	1/2
+-e	nanmedian(2)	2
+-e	nanmedian(i)	error: median needs real numbers
+-e	nanmedian(inf)	error: median needs real numbers
+-e	nanmedian(-inf)	error: median needs real numbers
+-e	nanmedian(undefined)	undefined
+-e	nanmedian(10^20)	100000000000000000000
+-e	nanmedian(10^(-20))	1/100000000000000000000
+-e	nanmedian(x)	error: median needs real numbers
+-e	nanmedian([])	undefined
+-e	nanmedian([1, 2])	3/2
+-e	nanmedian("text")	error: median needs real numbers
+-e	nanmedian(true)	error: median needs real numbers
+-e	nanmedian(-7/3)	-7/3
+-e	nanmedian(0.5)	0.5
+-e	single(0)	0
+-e	single(1)	1
+-e	single(-1)	-1
+-e	single(1/2)	1/2
+-e	single(2)	2
+-e	single(i)	i
+-e	single(inf)	error: undefined value: inf
+-e	single(-inf)	error: undefined value: inf
+-e	single(undefined)	error: undefined value: undefined
+-e	single(10^20)	100000002004087734272
+-e	single(10^(-20))	1547425/154742504910672534362390528
+-e	single(x)	error: no numeric value: x is a free variable
+-e	single([])	[]
+-e	single([1, 2])	[1, 2]
+-e	single("text")	error: no numeric value: text is a free variable
+-e	single(true)	error: no numeric evaluation for true
+-e	single(-7/3)	-9786709/4194304
+-e	single(0.5)	0.5
+-e	class(0)	"double"
+-e	class(1)	"double"
+-e	class(-1)	"double"
+-e	class(1/2)	"double"
+-e	class(2)	"double"
+-e	class(i)	"double"
+-e	class(inf)	"double"
+-e	class(-inf)	"double"
+-e	class(undefined)	"double"
+-e	class(10^20)	"double"
+-e	class(10^(-20))	"double"
+-e	class(x)	"sym"
+-e	class([])	"double"
+-e	class([1, 2])	"double"
+-e	class("text")	"char"
+-e	class(true)	"logical"
+-e	class(-7/3)	"double"
+-e	class(0.5)	"double"
+-e	sparse(0)	0
+-e	sparse(1)	1
+-e	sparse(-1)	-1
+-e	sparse(1/2)	1/2
+-e	sparse(2)	2
+-e	sparse(i)	i
+-e	sparse(inf)	inf
+-e	sparse(-inf)	-inf
+-e	sparse(undefined)	undefined
+-e	sparse(10^20)	100000000000000000000
+-e	sparse(10^(-20))	1/100000000000000000000
+-e	sparse(x)	x
+-e	sparse([])	[]
+-e	sparse([1, 2])	[1, 2]
+-e	sparse("text")	"text"
+-e	sparse(true)	true
+-e	sparse(-7/3)	-7/3
+-e	sparse(0.5)	0.5
+-e	full(0)	0
+-e	full(1)	1
+-e	full(-1)	-1
+-e	full(1/2)	1/2
+-e	full(2)	2
+-e	full(i)	i
+-e	full(inf)	inf
+-e	full(-inf)	-inf
+-e	full(undefined)	undefined
+-e	full(10^20)	100000000000000000000
+-e	full(10^(-20))	1/100000000000000000000
+-e	full(x)	x
+-e	full([])	[]
+-e	full([1, 2])	[1, 2]
+-e	full("text")	"text"
+-e	full(true)	true
+-e	full(-7/3)	-7/3
+-e	full(0.5)	0.5
+-e	issparse(0)	false
+-e	issparse(1)	false
+-e	issparse(-1)	false
+-e	issparse(1/2)	false
+-e	issparse(2)	false
+-e	issparse(i)	false
+-e	issparse(inf)	false
+-e	issparse(-inf)	false
+-e	issparse(undefined)	false
+-e	issparse(10^20)	false
+-e	issparse(10^(-20))	false
+-e	issparse(x)	false
+-e	issparse([])	false
+-e	issparse([1, 2])	false
+-e	issparse("text")	false
+-e	issparse(true)	false
+-e	issparse(-7/3)	false
+-e	issparse(0.5)	false
+-e	nzmax(0)	0
+-e	nzmax(1)	1
+-e	nzmax(-1)	1
+-e	nzmax(1/2)	1
+-e	nzmax(2)	1
+-e	nzmax(i)	1
+-e	nzmax(inf)	error: whether inf is zero cannot be told
+-e	nzmax(-inf)	error: whether -inf is zero cannot be told
+-e	nzmax(undefined)	error: whether undefined is zero cannot be told
+-e	nzmax(10^20)	1
+-e	nzmax(10^(-20))	1
+-e	nzmax(x)	error: x is neither true nor false
+-e	nzmax([])	0
+-e	nzmax([1, 2])	2
+-e	nzmax("text")	error: "text" is neither true nor false
+-e	nzmax(true)	1
+-e	nzmax(-7/3)	1
+-e	nzmax(0.5)	1
+-e	spones(0)	0
+-e	spones(1)	1
+-e	spones(-1)	1
+-e	spones(1/2)	1
+-e	spones(2)	1
+-e	spones(i)	1
+-e	spones(inf)	1
+-e	spones(-inf)	1
+-e	spones(undefined)	1
+-e	spones(10^20)	1
+-e	spones(10^(-20))	1
+-e	spones(x)	1
+-e	spones([])	[]
+-e	spones([1, 2])	[1, 1]
+-e	spones("text")	1
+-e	spones(true)	1
+-e	spones(-7/3)	1
+-e	spones(0.5)	1
+-e	speye(0)	error: the size must be a whole number from 1 to 4096, not 0
+-e	speye(1)	[[1]]
+-e	speye(-1)	error: the size must be a whole number from 1 to 4096, not -1
+-e	speye(1/2)	error: the size must be a whole number from 1 to 4096, not 1/2
+-e	speye(2)	[[1, 0], [0, 1]]
+-e	speye(i)	error: the size must be a whole number from 1 to 4096, not i
+-e	speye(inf)	error: the size must be a whole number from 1 to 4096, not inf
+-e	speye(-inf)	error: the size must be a whole number from 1 to 4096, not -inf
+-e	speye(undefined)	error: the size must be a whole number from 1 to 4096, not undefined
+-e	speye(10^20)	error: the size must be a whole number from 1 to 4096, not 100000000000000000000
+-e	speye(10^(-20))	error: the size must be a whole number from 1 to 4096, not 1/100000000000000000000
+-e	speye(x)	error: the size must be a whole number from 1 to 4096, not x
+-e	speye([])	error: the size must be a whole number from 1 to 4096, not []
+-e	speye([1, 2])	error: the size must be a whole number from 1 to 4096, not [1, 2]
+-e	speye("text")	error: the size must be a whole number from 1 to 4096, not "text"
+-e	speye(true)	error: the size must be a whole number from 1 to 4096, not true
+-e	speye(-7/3)	error: the size must be a whole number from 1 to 4096, not -7/3
+-e	speye(0.5)	error: the size must be a whole number from 1 to 4096, not 1/2
+-e	squeeze(0)	0
+-e	squeeze(1)	1
+-e	squeeze(-1)	-1
+-e	squeeze(1/2)	1/2
+-e	squeeze(2)	2
+-e	squeeze(i)	i
+-e	squeeze(inf)	inf
+-e	squeeze(-inf)	-inf
+-e	squeeze(undefined)	undefined
+-e	squeeze(10^20)	100000000000000000000
+-e	squeeze(10^(-20))	1/100000000000000000000
+-e	squeeze(x)	x
+-e	squeeze([])	[]
+-e	squeeze([1, 2])	[1, 2]
+-e	squeeze("text")	"text"
+-e	squeeze(true)	true
+-e	squeeze(-7/3)	-7/3
+-e	squeeze(0.5)	0.5
+-e	num2cell(0)	0
+-e	num2cell(1)	1
+-e	num2cell(-1)	-1
+-e	num2cell(1/2)	1/2
+-e	num2cell(2)	2
+-e	num2cell(i)	i
+-e	num2cell(inf)	inf
+-e	num2cell(-inf)	-inf
+-e	num2cell(undefined)	undefined
+-e	num2cell(10^20)	100000000000000000000
+-e	num2cell(10^(-20))	1/100000000000000000000
+-e	num2cell(x)	x
+-e	num2cell([])	[]
+-e	num2cell([1, 2])	[1, 2]
+-e	num2cell("text")	"text"
+-e	num2cell(true)	true
+-e	num2cell(-7/3)	-7/3
+-e	num2cell(0.5)	0.5
+-e	cell2mat(0)	error: cell2mat needs a list of matrices
+-e	cell2mat(1)	error: cell2mat needs a list of matrices
+-e	cell2mat(-1)	error: cell2mat needs a list of matrices
+-e	cell2mat(1/2)	error: cell2mat needs a list of matrices
+-e	cell2mat(2)	error: cell2mat needs a list of matrices
+-e	cell2mat(i)	error: cell2mat needs a list of matrices
+-e	cell2mat(inf)	error: cell2mat needs a list of matrices
+-e	cell2mat(-inf)	error: cell2mat needs a list of matrices
+-e	cell2mat(undefined)	error: cell2mat needs a list of matrices
+-e	cell2mat(10^20)	error: cell2mat needs a list of matrices
+-e	cell2mat(10^(-20))	error: cell2mat needs a list of matrices
+-e	cell2mat(x)	error: cell2mat needs a list of matrices
+-e	cell2mat([])	error: cell2mat: vertcat is not known
+-e	cell2mat([1, 2])	[1, 2]
+-e	cell2mat("text")	error: cell2mat needs a list of matrices
+-e	cell2mat(true)	error: cell2mat needs a list of matrices
+-e	cell2mat(-7/3)	error: cell2mat needs a list of matrices
+-e	cell2mat(0.5)	error: cell2mat needs a list of matrices
+-e	signim(0)	0
+-e	signim(1)	-1
+-e	signim(-1)	1
+-e	signim(1/2)	-1
+-e	signim(2)	-1
+-e	signim(i)	1
+-e	signim(inf)	error: undefined value: inf
+-e	signim(-inf)	error: undefined value: inf
+-e	signim(undefined)	error: undefined value: undefined
+-e	signim(10^20)	-1
+-e	signim(10^(-20))	-1
+-e	signim(x)	error: no numeric value: x is a free variable
+-e	signim([])	[]
+-e	signim([1, 2])	[-1, -1]
+-e	signim("text")	error: no numeric value: text is a free variable
+-e	signim(true)	error: no numeric evaluation for true
+-e	signim(-7/3)	1
+-e	signim(0.5)	-1
+-e	padecoef(0)	[[undefined, ComplexInfinity], [undefined, ComplexInfinity]]
+-e	padecoef(1)	[[-1, 2], [1, 2]]
+-e	padecoef(-1)	[[-1, -2], [1, -2]]
+-e	padecoef(1/2)	[[-1, 4], [1, 4]]
+-e	padecoef(2)	[[-1, 1], [1, 1]]
+-e	padecoef(i)	[[-1, -2i], [1, -2i]]
+-e	padecoef(inf)	[[undefined, 0], [undefined, 0]]
+-e	padecoef(-inf)	[[undefined, 0], [undefined, 0]]
+-e	padecoef(undefined)	[[undefined, undefined], [undefined, undefined]]
+-e	padecoef(10^20)	[[-1, 1/50000000000000000000], [1, 1/50000000000000000000]]
+-e	padecoef(10^(-20))	[[-1, 200000000000000000000], [1, 200000000000000000000]]
+-e	padecoef(x)	[[-1, 2/x], [1, 2/x]]
+-e	padecoef([])	[[-1, 2/[]], [1, 2/[]]]
+-e	padecoef([1, 2])	[[-1, 2/[1, 2]], [1, 2/[1, 2]]]
+-e	padecoef("text")	[[-1, 2/"text"], [1, 2/"text"]]
+-e	padecoef(true)	[[-1, 2/true], [1, 2/true]]
+-e	padecoef(-7/3)	[[-1, -6/7], [1, -6/7]]
+-e	padecoef(0.5)	[[-1, 4], [1, 4]]
+-e	pdist(0)	error: pdist needs a matrix with a point in every row
+-e	pdist(1)	error: pdist needs a matrix with a point in every row
+-e	pdist(-1)	error: pdist needs a matrix with a point in every row
+-e	pdist(1/2)	error: pdist needs a matrix with a point in every row
+-e	pdist(2)	error: pdist needs a matrix with a point in every row
+-e	pdist(i)	error: pdist needs a matrix with a point in every row
+-e	pdist(inf)	error: pdist needs a matrix with a point in every row
+-e	pdist(-inf)	error: pdist needs a matrix with a point in every row
+-e	pdist(undefined)	error: pdist needs a matrix with a point in every row
+-e	pdist(10^20)	error: pdist needs a matrix with a point in every row
+-e	pdist(10^(-20))	error: pdist needs a matrix with a point in every row
+-e	pdist(x)	error: pdist needs a matrix with a point in every row
+-e	pdist([])	error: pdist needs a matrix with a point in every row
+-e	pdist([1, 2])	error: pdist needs a matrix with a point in every row
+-e	pdist("text")	error: pdist needs a matrix with a point in every row
+-e	pdist(true)	error: pdist needs a matrix with a point in every row
+-e	pdist(-7/3)	error: pdist needs a matrix with a point in every row
+-e	pdist(0.5)	error: pdist needs a matrix with a point in every row
+-e	squareform(0)	error: squareform needs a list of distances or a square matrix
+-e	squareform(1)	error: squareform needs a list of distances or a square matrix
+-e	squareform(-1)	error: squareform needs a list of distances or a square matrix
+-e	squareform(1/2)	error: squareform needs a list of distances or a square matrix
+-e	squareform(2)	error: squareform needs a list of distances or a square matrix
+-e	squareform(i)	error: squareform needs a list of distances or a square matrix
+-e	squareform(inf)	error: squareform needs a list of distances or a square matrix
+-e	squareform(-inf)	error: squareform needs a list of distances or a square matrix
+-e	squareform(undefined)	error: squareform needs a list of distances or a square matrix
+-e	squareform(10^20)	error: squareform needs a list of distances or a square matrix
+-e	squareform(10^(-20))	error: squareform needs a list of distances or a square matrix
+-e	squareform(x)	error: squareform needs a list of distances or a square matrix
+-e	squareform([])	[[0]]
+-e	squareform([1, 2])	error: squareform: a list of n*(n - 1)/2 distances
+-e	squareform("text")	error: squareform needs a list of distances or a square matrix
+-e	squareform(true)	error: squareform needs a list of distances or a square matrix
+-e	squareform(-7/3)	error: squareform needs a list of distances or a square matrix
+-e	squareform(0.5)	error: squareform needs a list of distances or a square matrix
+-e	normfit(0)	error: normfit needs a list of numbers
+-e	normfit(1)	error: normfit needs a list of numbers
+-e	normfit(-1)	error: normfit needs a list of numbers
+-e	normfit(1/2)	error: normfit needs a list of numbers
+-e	normfit(2)	error: normfit needs a list of numbers
+-e	normfit(i)	error: normfit needs a list of numbers
+-e	normfit(inf)	error: normfit needs a list of numbers
+-e	normfit(-inf)	error: normfit needs a list of numbers
+-e	normfit(undefined)	error: normfit needs a list of numbers
+-e	normfit(10^20)	error: normfit needs a list of numbers
+-e	normfit(10^(-20))	error: normfit needs a list of numbers
+-e	normfit(x)	error: normfit needs a list of numbers
+-e	normfit([])	error: normfit needs a list of numbers
+-e	normfit([1, 2])	[3/2, sqrt(2)/2]
+-e	normfit("text")	error: normfit needs a list of numbers
+-e	normfit(true)	error: normfit needs a list of numbers
+-e	normfit(-7/3)	error: normfit needs a list of numbers
+-e	normfit(0.5)	error: normfit needs a list of numbers
+-e	expfit(0)	error: expfit needs a list of numbers
+-e	expfit(1)	error: expfit needs a list of numbers
+-e	expfit(-1)	error: expfit needs a list of numbers
+-e	expfit(1/2)	error: expfit needs a list of numbers
+-e	expfit(2)	error: expfit needs a list of numbers
+-e	expfit(i)	error: expfit needs a list of numbers
+-e	expfit(inf)	error: expfit needs a list of numbers
+-e	expfit(-inf)	error: expfit needs a list of numbers
+-e	expfit(undefined)	error: expfit needs a list of numbers
+-e	expfit(10^20)	error: expfit needs a list of numbers
+-e	expfit(10^(-20))	error: expfit needs a list of numbers
+-e	expfit(x)	error: expfit needs a list of numbers
+-e	expfit([])	error: expfit needs a list of numbers
+-e	expfit([1, 2])	3/2
+-e	expfit("text")	error: expfit needs a list of numbers
+-e	expfit(true)	error: expfit needs a list of numbers
+-e	expfit(-7/3)	error: expfit needs a list of numbers
+-e	expfit(0.5)	error: expfit needs a list of numbers
+-e	partialcorr(0)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(1)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(-1)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(1/2)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(2)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(i)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(inf)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(-inf)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(undefined)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(10^20)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(10^(-20))	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(x)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr([])	error: cov needs columns of one length that are not empty
+-e	partialcorr([1, 2])	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr("text")	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(true)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(-7/3)	error: partialcorr needs a matrix with a variable in every column
+-e	partialcorr(0.5)	error: partialcorr needs a matrix with a variable in every column
+-e	del2(0)	0
+-e	del2(1)	0
+-e	del2(-1)	0
+-e	del2(1/2)	0
+-e	del2(2)	0
+-e	del2(i)	0
+-e	del2(inf)	0
+-e	del2(-inf)	0
+-e	del2(undefined)	0
+-e	del2(10^20)	0
+-e	del2(10^(-20))	0
+-e	del2(x)	0
+-e	del2([])	[]
+-e	del2([1, 2])	[0, 0]
+-e	del2("text")	0
+-e	del2(true)	0
+-e	del2(-7/3)	0
+-e	del2(0.5)	0
+-e	anova1(0)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(1)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(-1)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(1/2)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(2)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(i)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(inf)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(-inf)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(undefined)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(10^20)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(10^(-20))	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(x)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1([])	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1([1, 2])	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1("text")	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(true)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(-7/3)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	anova1(0.5)	error: anova1([[values of a group], [values of another], ...]): the probability that groups with one mean differ as much
+-e	pca(0)	error: pca needs a matrix
+-e	pca(1)	error: pca needs a matrix
+-e	pca(-1)	error: pca needs a matrix
+-e	pca(1/2)	error: pca needs a matrix
+-e	pca(2)	error: pca needs a matrix
+-e	pca(i)	error: pca needs a matrix
+-e	pca(inf)	error: pca needs a matrix
+-e	pca(-inf)	error: pca needs a matrix
+-e	pca(undefined)	error: pca needs a matrix
+-e	pca(10^20)	error: pca needs a matrix
+-e	pca(10^(-20))	error: pca needs a matrix
+-e	pca(x)	error: pca needs a matrix
+-e	pca([])	error: pca needs a matrix
+-e	pca([1, 2])	error: pca needs a matrix
+-e	pca("text")	error: pca needs a matrix
+-e	pca(true)	error: pca needs a matrix
+-e	pca(-7/3)	error: pca needs a matrix
+-e	pca(0.5)	error: pca needs a matrix
+-e	unmkpp(0)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(1)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(-1)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(1/2)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(2)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(i)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(inf)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(-inf)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(undefined)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(10^20)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(10^(-20))	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(x)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp([])	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp([1, 2])	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp("text")	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(true)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(-7/3)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	unmkpp(0.5)	error: the pieces of polynomials are [breaks, coefficients]: mkpp([0, 1, 2], [[1, 0], [2, 1]]), with a row of coefficients for every piece
+-e	stem3(0)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(1)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(-1)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(1/2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(i)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(-inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(undefined)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(10^20)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(10^(-20))	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(x)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3([])	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3([1, 2])	error: stem3 needs lists of numbers, 1 is none
+-e	stem3("text")	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(true)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(-7/3)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(0.5)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	contour3(0)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(1/2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(i)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-inf)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(undefined)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(10^20)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(10^(-20))	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(x)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3([])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3([1, 2])	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3("text")	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(true)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-7/3)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(0.5)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	waterfall(0)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-1)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(1/2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(2)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(i)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-inf)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(undefined)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(10^20)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(10^(-20))	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(x)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall([])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall([1, 2])	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall("text")	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(true)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(-7/3)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	waterfall(0.5)	error: waterfall(matrix of heights) or waterfall([x values], [y values], matrix): a line for every row
+-e	compass(0)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(1)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-1)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(1/2)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(2)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(i)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(inf)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-inf)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(undefined)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(10^20)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(10^(-20))	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(x)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass([])	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass([1, 2])	 2.31 │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │        ⢀|      │                                │   ⠐⠤⡀   ⠙⠢⢄⡀|    0 │────────────────────────────────⠉⠉⠉⠉⠩⠛⠉⠉⠉⠉⣩⠝⠋⠉──────────────────|      │                                │        ⠈|      │                                │|      │                                │|      │                                │|      │                                │|      │                                │|-2.31 │                                │|      └────────────────────────────────────────────────────────────────|       -4.62                                                       4.62|2 arrows from the origin
+-e	compass("text")	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(true)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(-7/3)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	compass(0.5)	error: compass([u values], [v values]) or compass([complex numbers])
+-e	feather(0)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(1)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-1)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(1/2)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(2)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(i)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(inf)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-inf)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(undefined)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(10^20)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(10^(-20))	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(x)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather([])	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather([1, 2])	 1 │  │|   │  │|   │  │|   │  │|   │  │|   │  │                                                 ⠠⣀|   │  │                        ⢀⡀                         ⠉⠒⢄⡀|   │  │                         ⠈⠑⠢⢄                         ⠈⠑⠢⢄| 0 │──┼──────────────⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⡩⠝⠋⠁──|   │  │                        ⠈⠁                         ⣀⠤⠊⠁|   │  │                                                 ⠐⠉|   │  │|   │  │|   │  │|   │  │|-1 │  │|   └────────────────────────────────────────────────────────────────|    -0.16                                                       4.16|2 arrows from the places 1, 2, 3 ... on the x axis
+-e	feather("text")	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(true)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(-7/3)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	feather(0.5)	error: feather([u values], [v values]) or feather([complex numbers])
+-e	rgb2gray(0)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-1)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(1/2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(2)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(i)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-inf)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(undefined)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(10^20)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(10^(-20))	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(x)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray([])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray([1, 2])	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray("text")	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(true)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(-7/3)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2gray(0.5)	error: rgb2gray needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	im2double(0)	0
+-e	im2double(1)	1/255
+-e	im2double(-1)	-1/255

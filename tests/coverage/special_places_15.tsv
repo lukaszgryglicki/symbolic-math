@@ -1,0 +1,700 @@
+-e	expcdf(10^20)	1 - 1/e^100000000000000000000
+-e	expcdf(10^(-20))	1 - 1/e^(1/100000000000000000000)
+-e	expcdf(x)	piecewise(x >= 0, 1 - e^(-x), 0)
+-e	expcdf([])	[]
+-e	expcdf([1, 2])	[1 - 1/e, 1 - 1/e^2]
+-e	expcdf("text")	piecewise("text" >= 0, 1 - e^(-"text"), 0)
+-e	expcdf(true)	piecewise(true >= 0, 1 - e^(-true), 0)
+-e	expcdf(-7/3)	0
+-e	expcdf(0.5)	0.39346934028736657639620046500882
+-e	expinv(0)	0
+-e	expinv(1)	inf
+-e	expinv(-1)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(1/2)	ln(2)
+-e	expinv(2)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(i)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(-inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(undefined)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(10^20)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(10^(-20))	-ln(101) - ln(11) + 20ln(2) - ln(271) - ln(27961) - 2ln(3) - ln(3541) - ln(41) + 20ln(5) - ln(9091)
+-e	expinv(x)	-ln(1 - x)
+-e	expinv([])	[]
+-e	expinv([1, 2])	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv("text")	-ln(1 - "text")
+-e	expinv(true)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	expinv(0.5)	0.69314718055994530941723212145818
+-e	expstat(0)	[0, 0]
+-e	expstat(1)	[1, 1]
+-e	expstat(-1)	error: exponentialdist(r) needs r > 0
+-e	expstat(1/2)	[1/2, 1/4]
+-e	expstat(2)	[2, 4]
+-e	expstat(i)	[i, -1]
+-e	expstat(inf)	error: exponentialdist(r) needs r > 0
+-e	expstat(-inf)	error: exponentialdist(r) needs r > 0
+-e	expstat(undefined)	[undefined, undefined]
+-e	expstat(10^20)	[100000000000000000000, 10000000000000000000000000000000000000000]
+-e	expstat(10^(-20))	[1/100000000000000000000, 1/10000000000000000000000000000000000000000]
+-e	expstat(x)	[x, x^2]
+-e	expstat([])	[[], []]
+-e	expstat([1, 2])	[[1, 2], [1, 4]]
+-e	expstat("text")	["text", "text"^2]
+-e	expstat(true)	[true, (true)^2]
+-e	expstat(-7/3)	error: exponentialdist(r) needs r > 0
+-e	expstat(0.5)	[0.5, 0.25]
+-e	gamstat(0)	error: gammadist(k, h) needs k > 0 and h > 0
+-e	gamstat(1)	[1, 1]
+-e	gamstat(-1)	error: gammadist(k, h) needs k > 0 and h > 0
+-e	gamstat(1/2)	[1/2, 1/2]
+-e	gamstat(2)	[2, 2]
+-e	gamstat(i)	[i, i]
+-e	gamstat(inf)	[inf, inf]
+-e	gamstat(-inf)	error: gammadist(k, h) needs k > 0 and h > 0
+-e	gamstat(undefined)	[undefined, undefined]
+-e	gamstat(10^20)	[100000000000000000000, 100000000000000000000]
+-e	gamstat(10^(-20))	[1/100000000000000000000, 1/100000000000000000000]
+-e	gamstat(x)	[x, x]
+-e	gamstat([])	[[], []]
+-e	gamstat([1, 2])	[[1, 2], [1, 2]]
+-e	gamstat("text")	["text", "text"]
+-e	gamstat(true)	[true, true]
+-e	gamstat(-7/3)	error: gammadist(k, h) needs k > 0 and h > 0
+-e	gamstat(0.5)	[0.5, 0.5]
+-e	chi2stat(0)	error: chisquaredist(k) needs k > 0
+-e	chi2stat(1)	[1, 2]
+-e	chi2stat(-1)	error: chisquaredist(k) needs k > 0
+-e	chi2stat(1/2)	[1/2, 1]
+-e	chi2stat(2)	[2, 4]
+-e	chi2stat(i)	[i, 2i]
+-e	chi2stat(inf)	[inf, inf]
+-e	chi2stat(-inf)	error: chisquaredist(k) needs k > 0
+-e	chi2stat(undefined)	[undefined, undefined]
+-e	chi2stat(10^20)	[100000000000000000000, 200000000000000000000]
+-e	chi2stat(10^(-20))	[1/100000000000000000000, 1/50000000000000000000]
+-e	chi2stat(x)	[x, 2x]
+-e	chi2stat([])	[[], []]
+-e	chi2stat([1, 2])	[[1, 2], [2, 4]]
+-e	chi2stat("text")	["text", 2*"text"]
+-e	chi2stat(true)	[true, 2true]
+-e	chi2stat(-7/3)	error: chisquaredist(k) needs k > 0
+-e	chi2stat(0.5)	[0.5, 1]
+-e	tstat(0)	error: studenttdist(v) needs v > 0
+-e	tstat(1)	[undefined, undefined]
+-e	tstat(-1)	error: studenttdist(v) needs v > 0
+-e	tstat(1/2)	[undefined, undefined]
+-e	tstat(2)	[0, inf]
+-e	tstat(i)	[piecewise(i > 1, 0, undefined), piecewise(i > 2, 1/5 - 2i/5, i > 1, inf, undefined)]
+-e	tstat(inf)	[0, undefined]
+-e	tstat(-inf)	error: studenttdist(v) needs v > 0
+-e	tstat(undefined)	[piecewise(undefined > 1, 0, undefined), piecewise(undefined > 2, undefined, undefined > 1, inf, undefined)]
+-e	tstat(10^20)	[0, 50000000000000000000/49999999999999999999]
+-e	tstat(10^(-20))	[undefined, undefined]
+-e	tstat(x)	[piecewise(x > 1, 0, undefined), piecewise(x > 2, x/(x - 2), x > 1, inf, undefined)]
+-e	tstat([])	[piecewise([] > 1, 0, undefined), piecewise([] > 2, 0, [] > 1, inf, undefined)]
+-e	tstat([1, 2])	[piecewise([1, 2] > 1, 0, undefined), piecewise([1, 2] > 2, ComplexInfinity, [1, 2] > 1, inf, undefined)]
+-e	tstat("text")	[piecewise("text" > 1, 0, undefined), piecewise("text" > 2, "text"/("text" - 2), "text" > 1, inf, undefined)]
+-e	tstat(true)	[piecewise(true > 1, 0, undefined), piecewise(true > 2, true/(true - 2), true > 1, inf, undefined)]
+-e	tstat(-7/3)	error: studenttdist(v) needs v > 0
+-e	tstat(0.5)	[undefined, undefined]
+-e	lognpdf(0)	0
+-e	lognpdf(1)	sqrt(2)/(2sqrt(pi))
+-e	lognpdf(-1)	0
+-e	lognpdf(1/2)	sqrt(2)*e^(-ln(2)^2/2)/sqrt(pi)
+-e	lognpdf(2)	sqrt(2)*e^(-ln(2)^2/2)/(4sqrt(pi))
+-e	lognpdf(i)	piecewise(i > 0, -i*sqrt(2)*e^(pi^2/8)/(2sqrt(pi)), 0)
+-e	lognpdf(inf)	0
+-e	lognpdf(-inf)	0
+-e	lognpdf(undefined)	piecewise(undefined > 0, undefined, 0)
+-e	lognpdf(10^20)	sqrt(2)*e^(-200(ln(2) + ln(5))^2)/(200000000000000000000sqrt(pi))
+-e	lognpdf(10^(-20))	50000000000000000000sqrt(2)*e^(-200(ln(2) + ln(5))^2)/sqrt(pi)
+-e	lognpdf(x)	piecewise(x > 0, sqrt(2)*e^(-ln(x)^2/2)/(2sqrt(pi)*x), 0)
+-e	lognpdf([])	[]
+-e	lognpdf([1, 2])	[sqrt(2)/(2sqrt(pi)), sqrt(2)*e^(-ln(2)^2/2)/(4sqrt(pi))]
+-e	lognpdf("text")	piecewise("text" > 0, sqrt(2)*e^(-ln("text")^2/2)/(2sqrt(pi)*"text"), 0)
+-e	lognpdf(true)	piecewise(true > 0, sqrt(2)*e^(-ln(true)^2/2)/(2sqrt(pi)*true), 0)
+-e	lognpdf(-7/3)	0
+-e	lognpdf(0.5)	0.62749607711592436537670162680861
+-e	logncdf(0)	0
+-e	logncdf(1)	1/2
+-e	logncdf(-1)	0
+-e	logncdf(1/2)	1/2 - erf(sqrt(2)*ln(2)/2)/2
+-e	logncdf(2)	1/2 + erf(sqrt(2)*ln(2)/2)/2
+-e	logncdf(i)	piecewise(i > 0, 1/2 + erf(i*sqrt(2)*pi/4)/2, 0)
+-e	logncdf(inf)	1
+-e	logncdf(-inf)	0
+-e	logncdf(undefined)	piecewise(undefined > 0, undefined, 0)
+-e	logncdf(10^20)	1/2 + erf(10sqrt(2)*(ln(2) + ln(5)))/2
+-e	logncdf(10^(-20))	0
+-e	logncdf(x)	piecewise(x > 0, erf(sqrt(2)*ln(x)/2)/2 + 1/2, 0)
+-e	logncdf([])	[]
+-e	logncdf([1, 2])	[1/2, 1/2 + erf(sqrt(2)*ln(2)/2)/2]
+-e	logncdf("text")	piecewise("text" > 0, erf(sqrt(2)*ln("text")/2)/2 + 1/2, 0)
+-e	logncdf(true)	piecewise(true > 0, 1/2 + erf(sqrt(2)*ln(true)/2)/2, 0)
+-e	logncdf(-7/3)	0
+-e	logncdf(0.5)	0.24410859578558273400503930647894
+-e	logninv(0)	0
+-e	logninv(1)	inf
+-e	logninv(-1)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(1/2)	1
+-e	logninv(2)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(i)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(-inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(undefined)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(10^20)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(10^(-20))	e^(sqrt(2)*erfinv(-49999999999999999999/50000000000000000000))
+-e	logninv(x)	e^(sqrt(2)*erfinv(2x - 1))
+-e	logninv([])	[]
+-e	logninv([1, 2])	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv("text")	e^(sqrt(2)*erfinv(2*"text" - 1))
+-e	logninv(true)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	logninv(0.5)	1
+-e	lognstat(0)	[sqrt(e), e^2 - e]
+-e	lognstat(1)	[e^(3/2), e^4 - e^3]
+-e	lognstat(-1)	[1/sqrt(e), 1 - 1/e]
+-e	lognstat(1/2)	[e, e^3 - e^2]
+-e	lognstat(2)	[e^(5/2), e^6 - e^5]
+-e	lognstat(i)	[e^(1/2 + i), e^(1 + 2i)*(e - 1)]
+-e	lognstat(inf)	[inf, inf]
+-e	lognstat(-inf)	[0, 0]
+-e	lognstat(undefined)	[undefined, undefined]
+-e	lognstat(10^20)	[e^(200000000000000000001/2), e^200000000000000000001*(e - 1)]
+-e	lognstat(10^(-20))	[e^(50000000000000000001/100000000000000000000), e^(50000000000000000001/50000000000000000000)*(e - 1)]
+-e	lognstat(x)	[e^(x + 1/2), e^(2x + 1)*(e - 1)]
+-e	lognstat([])	[[], []]
+-e	lognstat([1, 2])	[[e^(3/2), e^(5/2)], [e^4 - e^3, e^6 - e^5]]
+-e	lognstat("text")	[e^("text" + 1/2), e^(2*"text" + 1)*(e - 1)]
+-e	lognstat(true)	[e^(1/2 + true), e^(1 + 2true)*(e - 1)]
+-e	lognstat(-7/3)	[1/e^(11/6), (e - 1)/e^(11/3)]
+-e	lognstat(0.5)	[2.7182818284590452353602874713527, 12.696480824257017513698102194007]
+-e	wblpdf(0)	undefined
+-e	wblpdf(1)	1/e
+-e	wblpdf(-1)	0
+-e	wblpdf(1/2)	1/sqrt(e)
+-e	wblpdf(2)	1/e^2
+-e	wblpdf(i)	piecewise(i >= 0, e^(-i), 0)
+-e	wblpdf(inf)	undefined
+-e	wblpdf(-inf)	0
+-e	wblpdf(undefined)	piecewise(undefined >= 0, undefined, 0)
+-e	wblpdf(10^20)	1/e^100000000000000000000
+-e	wblpdf(10^(-20))	1/e^(1/100000000000000000000)
+-e	wblpdf(x)	piecewise(x >= 0, e^(-x), 0)
+-e	wblpdf([])	[]
+-e	wblpdf([1, 2])	[1/e, 1/e^2]
+-e	wblpdf("text")	piecewise("text" >= 0, e^(-"text"), 0)
+-e	wblpdf(true)	piecewise(true >= 0, e^(-true), 0)
+-e	wblpdf(-7/3)	0
+-e	wblpdf(0.5)	0.60653065971263342360379953499118
+-e	wblcdf(0)	0
+-e	wblcdf(1)	1 - 1/e
+-e	wblcdf(-1)	0
+-e	wblcdf(1/2)	1 - 1/sqrt(e)
+-e	wblcdf(2)	1 - 1/e^2
+-e	wblcdf(i)	piecewise(i >= 0, 1 - e^(-i), 0)
+-e	wblcdf(inf)	1
+-e	wblcdf(-inf)	0
+-e	wblcdf(undefined)	piecewise(undefined >= 0, undefined, 0)
+-e	wblcdf(10^20)	1 - 1/e^100000000000000000000
+-e	wblcdf(10^(-20))	1 - 1/e^(1/100000000000000000000)
+-e	wblcdf(x)	piecewise(x >= 0, 1 - e^(-x), 0)
+-e	wblcdf([])	[]
+-e	wblcdf([1, 2])	[1 - 1/e, 1 - 1/e^2]
+-e	wblcdf("text")	piecewise("text" >= 0, 1 - e^(-"text"), 0)
+-e	wblcdf(true)	piecewise(true >= 0, 1 - e^(-true), 0)
+-e	wblcdf(-7/3)	0
+-e	wblcdf(0.5)	0.39346934028736657639620046500882
+-e	wblinv(0)	0
+-e	wblinv(1)	inf
+-e	wblinv(-1)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(1/2)	ln(2)
+-e	wblinv(2)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(i)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(-inf)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(undefined)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(10^20)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(10^(-20))	-ln(101) - ln(11) + 20ln(2) - ln(271) - ln(27961) - 2ln(3) - ln(3541) - ln(41) + 20ln(5) - ln(9091)
+-e	wblinv(x)	-ln(1 - x)
+-e	wblinv([])	[]
+-e	wblinv([1, 2])	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv("text")	-ln(1 - "text")
+-e	wblinv(true)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
+-e	wblinv(0.5)	0.69314718055994530941723212145818
+-e	wblstat(0)	error: weibulldist(k, l) needs k > 0 and l > 0
+-e	wblstat(1)	[1, 1]
+-e	wblstat(-1)	error: weibulldist(k, l) needs k > 0 and l > 0
+-e	wblstat(1/2)	[1/2, 1/4]
+-e	wblstat(2)	[2, 4]
+-e	wblstat(i)	[i, -1]
+-e	wblstat(inf)	[inf, inf]
+-e	wblstat(-inf)	error: weibulldist(k, l) needs k > 0 and l > 0
+-e	wblstat(undefined)	[undefined, undefined]
+-e	wblstat(10^20)	[100000000000000000000, 10000000000000000000000000000000000000000]
+-e	wblstat(10^(-20))	[1/100000000000000000000, 1/10000000000000000000000000000000000000000]
+-e	wblstat(x)	[x, x^2]
+-e	wblstat([])	[[], []]
+-e	wblstat([1, 2])	[[1, 2], [1, 4]]
+-e	wblstat("text")	["text", "text"^2]
+-e	wblstat(true)	[true, (true)^2]
+-e	wblstat(-7/3)	error: weibulldist(k, l) needs k > 0 and l > 0
+-e	wblstat(0.5)	[0.5, 0.25]
+-e	raylstat(0)	error: rayleighdist(s) needs s > 0
+-e	raylstat(1)	[sqrt(2)*sqrt(pi)/2, 2 - pi/2]
+-e	raylstat(-1)	error: rayleighdist(s) needs s > 0
+-e	raylstat(1/2)	[sqrt(2)*sqrt(pi)/4, 1/2 - pi/8]
+-e	raylstat(2)	[sqrt(2)*sqrt(pi), 8 - 2pi]
+-e	raylstat(i)	[i*sqrt(2)*sqrt(pi)/2, pi/2 - 2]
+-e	raylstat(inf)	[inf, inf]
+-e	raylstat(-inf)	error: rayleighdist(s) needs s > 0
+-e	raylstat(undefined)	[undefined, undefined]
+-e	raylstat(10^20)	[50000000000000000000sqrt(2)*sqrt(pi), (-5000000000000000000000000000000000000000)(pi - 4)]
+-e	raylstat(10^(-20))	[sqrt(2)*sqrt(pi)/200000000000000000000, (-1/20000000000000000000000000000000000000000)(pi - 4)]
+-e	raylstat(x)	[sqrt(2)*sqrt(pi)*x/2, x^2*(4 - pi)/2]
+-e	raylstat([])	[[], []]
+-e	raylstat([1, 2])	[[sqrt(2)*sqrt(pi)/2, sqrt(2)*sqrt(pi)], [2 - pi/2, 8 - 2pi]]
+-e	raylstat("text")	[sqrt(2)*sqrt(pi)*"text"/2, "text"^2*(4 - pi)/2]
+-e	raylstat(true)	[sqrt(2)*sqrt(pi)*true/2, (true)^2*(4 - pi)/2]
+-e	raylstat(-7/3)	error: rayleighdist(s) needs s > 0
+-e	raylstat(0.5)	[0.62665706865775012560394132120276, 0.10730091830127584519216957709006]
+-e	poissstat(0)	error: poissondist(l) needs l > 0
+-e	poissstat(1)	[1, 1]
+-e	poissstat(-1)	error: poissondist(l) needs l > 0
+-e	poissstat(1/2)	[1/2, 1/2]
+-e	poissstat(2)	[2, 2]
+-e	poissstat(i)	[i, i]
+-e	poissstat(inf)	[inf, inf]
+-e	poissstat(-inf)	error: poissondist(l) needs l > 0
+-e	poissstat(undefined)	[undefined, undefined]
+-e	poissstat(10^20)	[100000000000000000000, 100000000000000000000]
+-e	poissstat(10^(-20))	[1/100000000000000000000, 1/100000000000000000000]
+-e	poissstat(x)	[x, x]
+-e	poissstat([])	[[], []]
+-e	poissstat([1, 2])	[[1, 2], [1, 2]]
+-e	poissstat("text")	["text", "text"]
+-e	poissstat(true)	[true, true]
+-e	poissstat(-7/3)	error: poissondist(l) needs l > 0
+-e	poissstat(0.5)	[0.5, 0.5]
+-e	geostat(0)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(1)	[0, 0]
+-e	geostat(-1)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(1/2)	[1, 2]
+-e	geostat(2)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(i)	[-1 - i, -1 + i]
+-e	geostat(inf)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(-inf)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(undefined)	[undefined, undefined]
+-e	geostat(10^20)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(10^(-20))	[99999999999999999999, 9999999999999999999900000000000000000000]
+-e	geostat(x)	[1/x - 1, (1 - x)/x^2]
+-e	geostat([])	[0, 0]
+-e	geostat([1, 2])	[-1/2, -1/4]
+-e	geostat("text")	[1/"text" - 1, (1 - "text")/"text"^2]
+-e	geostat(true)	[1/true - 1, (1 - true)/(true)^2]
+-e	geostat(-7/3)	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat(0.5)	[1, 2]
+-e	unidstat(0)	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(1)	[1, 0]
+-e	unidstat(-1)	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(1/2)	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(2)	[3/2, 1/4]
+-e	unidstat(i)	[1/2 + i/2, -1/6]
+-e	unidstat(inf)	[inf, inf]
+-e	unidstat(-inf)	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(undefined)	[undefined, undefined]
+-e	unidstat(10^20)	[100000000000000000001/2, 3333333333333333333333333333333333333333/4]
+-e	unidstat(10^(-20))	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(x)	[x/2 + 1/2, x^2/12 - 1/12]
+-e	unidstat([])	[[], []]
+-e	unidstat([1, 2])	[[1, 3/2], [0, 1/4]]
+-e	unidstat("text")	["text"/2 + 1/2, "text"^2/12 - 1/12]
+-e	unidstat(true)	[1/2 + true/2, (true)^2/12 - 1/12]
+-e	unidstat(-7/3)	error: discreteuniformdist(a, b) needs a <= b
+-e	unidstat(0.5)	error: discreteuniformdist(a, b) needs a <= b
+-e	feval(0)	error: 0 is not a function: write x -> expr or the name of a function
+-e	feval(1)	error: 1 is not a function: write x -> expr or the name of a function
+-e	feval(-1)	error: -1 is not a function: write x -> expr or the name of a function
+-e	feval(1/2)	error: 1/2 is not a function: write x -> expr or the name of a function
+-e	feval(2)	error: 2 is not a function: write x -> expr or the name of a function
+-e	feval(i)	error: i is not a function: write x -> expr or the name of a function
+-e	feval(inf)	error: `inf` is not a function
+-e	feval(-inf)	error: -inf is not a function: write x -> expr or the name of a function
+-e	feval(undefined)	error: `undefined` is not a function
+-e	feval(10^20)	error: 100000000000000000000 is not a function: write x -> expr or the name of a function
+-e	feval(10^(-20))	error: 1/100000000000000000000 is not a function: write x -> expr or the name of a function
+-e	feval(x)	error: `x` is not a function
+-e	feval([])	error: [] is not a function: write x -> expr or the name of a function
+-e	feval([1, 2])	error: [1, 2] is not a function: write x -> expr or the name of a function
+-e	feval("text")	error: "text" is not a function: write x -> expr or the name of a function
+-e	feval(true)	error: true is not a function: write x -> expr or the name of a function
+-e	feval(-7/3)	error: -7/3 is not a function: write x -> expr or the name of a function
+-e	feval(0.5)	error: 1/2 is not a function: write x -> expr or the name of a function
+-e	str2num(0)	error: str2num needs a text in quotes
+-e	str2num(1)	error: str2num needs a text in quotes
+-e	str2num(-1)	error: str2num needs a text in quotes
+-e	str2num(1/2)	error: str2num needs a text in quotes
+-e	str2num(2)	error: str2num needs a text in quotes
+-e	str2num(i)	error: str2num needs a text in quotes
+-e	str2num(inf)	error: str2num needs a text in quotes
+-e	str2num(-inf)	error: str2num needs a text in quotes
+-e	str2num(undefined)	error: str2num needs a text in quotes
+-e	str2num(10^20)	error: str2num needs a text in quotes
+-e	str2num(10^(-20))	error: str2num needs a text in quotes
+-e	str2num(x)	error: str2num needs a text in quotes
+-e	str2num([])	error: str2num needs a text in quotes
+-e	str2num([1, 2])	error: str2num needs a text in quotes
+-e	str2num("text")	text
+-e	str2num(true)	error: str2num needs a text in quotes
+-e	str2num(-7/3)	error: str2num needs a text in quotes
+-e	str2num(0.5)	error: str2num needs a text in quotes
+-e	str2double(0)	undefined
+-e	str2double(1)	undefined
+-e	str2double(-1)	undefined
+-e	str2double(1/2)	undefined
+-e	str2double(2)	undefined
+-e	str2double(i)	undefined
+-e	str2double(inf)	undefined
+-e	str2double(-inf)	undefined
+-e	str2double(undefined)	undefined
+-e	str2double(10^20)	undefined
+-e	str2double(10^(-20))	undefined
+-e	str2double(x)	undefined
+-e	str2double([])	[]
+-e	str2double([1, 2])	[undefined, undefined]
+-e	str2double("text")	undefined
+-e	str2double(true)	undefined
+-e	str2double(-7/3)	undefined
+-e	str2double(0.5)	undefined
+-e	finverse(0)	error: finverse: 0 has no inverse that was found
+-e	finverse(1)	error: finverse: 1 has no inverse that was found
+-e	finverse(-1)	error: finverse: -1 has no inverse that was found
+-e	finverse(1/2)	error: finverse: 1/2 has no inverse that was found
+-e	finverse(2)	error: finverse: 2 has no inverse that was found
+-e	finverse(i)	error: finverse: i has no inverse that was found
+-e	finverse(inf)	error: finverse: inf has no inverse that was found
+-e	finverse(-inf)	error: finverse: -inf has no inverse that was found
+-e	finverse(undefined)	error: finverse: undefined has no inverse that was found
+-e	finverse(10^20)	error: finverse: 100000000000000000000 has no inverse that was found
+-e	finverse(10^(-20))	error: finverse: 1/100000000000000000000 has no inverse that was found
+-e	finverse(x)	x
+-e	finverse([])	error: finverse: [] has no inverse that was found
+-e	finverse([1, 2])	error: finverse: [1, 2] has no inverse that was found
+-e	finverse("text")	error: no method for this equation
+-e	finverse(true)	error: finverse: true has no inverse that was found
+-e	finverse(-7/3)	error: finverse: -7/3 has no inverse that was found
+-e	finverse(0.5)	error: finverse: 1/2 has no inverse that was found
+-e	symvar(0)	[]
+-e	symvar(1)	[]
+-e	symvar(-1)	[]
+-e	symvar(1/2)	[]
+-e	symvar(2)	[]
+-e	symvar(i)	[]
+-e	symvar(inf)	[]
+-e	symvar(-inf)	[]
+-e	symvar(undefined)	[]
+-e	symvar(10^20)	[]
+-e	symvar(10^(-20))	[]
+-e	symvar(x)	[x]
+-e	symvar([])	[]
+-e	symvar([1, 2])	[]
+-e	symvar("text")	[text]
+-e	symvar(true)	[]
+-e	symvar(-7/3)	[]
+-e	symvar(0.5)	[]
+-e	children(0)	[0]
+-e	children(1)	[1]
+-e	children(-1)	[-1]
+-e	children(1/2)	[1/2]
+-e	children(2)	[2]
+-e	children(i)	[i]
+-e	children(inf)	[inf]
+-e	children(-inf)	[-1, inf]
+-e	children(undefined)	[undefined]
+-e	children(10^20)	[100000000000000000000]
+-e	children(10^(-20))	[1/100000000000000000000]
+-e	children(x)	[x]
+-e	children([])	[[]]
+-e	children([1, 2])	[1, 2]
+-e	children("text")	[text]
+-e	children(true)	[true]
+-e	children(-7/3)	[-7/3]
+-e	children(0.5)	[0.5]
+-e	lhs(0)	error: lhs needs an equation or an inequality, 0 is none
+-e	lhs(1)	error: lhs needs an equation or an inequality, 1 is none
+-e	lhs(-1)	error: lhs needs an equation or an inequality, -1 is none
+-e	lhs(1/2)	error: lhs needs an equation or an inequality, 1/2 is none
+-e	lhs(2)	error: lhs needs an equation or an inequality, 2 is none
+-e	lhs(i)	error: lhs needs an equation or an inequality, i is none
+-e	lhs(inf)	error: lhs needs an equation or an inequality, inf is none
+-e	lhs(-inf)	error: lhs needs an equation or an inequality, -inf is none
+-e	lhs(undefined)	error: lhs needs an equation or an inequality, undefined is none
+-e	lhs(10^20)	error: lhs needs an equation or an inequality, 100000000000000000000 is none
+-e	lhs(10^(-20))	error: lhs needs an equation or an inequality, 1/100000000000000000000 is none
+-e	lhs(x)	error: lhs needs an equation or an inequality, x is none
+-e	lhs([])	error: lhs needs an equation or an inequality, [] is none
+-e	lhs([1, 2])	error: lhs needs an equation or an inequality, [1, 2] is none
+-e	lhs("text")	error: lhs needs an equation or an inequality, "text" is none
+-e	lhs(true)	error: lhs needs an equation or an inequality, true is none
+-e	lhs(-7/3)	error: lhs needs an equation or an inequality, -7/3 is none
+-e	lhs(0.5)	error: lhs needs an equation or an inequality, 1/2 is none
+-e	rhs(0)	error: rhs needs an equation or an inequality, 0 is none
+-e	rhs(1)	error: rhs needs an equation or an inequality, 1 is none
+-e	rhs(-1)	error: rhs needs an equation or an inequality, -1 is none
+-e	rhs(1/2)	error: rhs needs an equation or an inequality, 1/2 is none
+-e	rhs(2)	error: rhs needs an equation or an inequality, 2 is none
+-e	rhs(i)	error: rhs needs an equation or an inequality, i is none
+-e	rhs(inf)	error: rhs needs an equation or an inequality, inf is none
+-e	rhs(-inf)	error: rhs needs an equation or an inequality, -inf is none
+-e	rhs(undefined)	error: rhs needs an equation or an inequality, undefined is none
+-e	rhs(10^20)	error: rhs needs an equation or an inequality, 100000000000000000000 is none
+-e	rhs(10^(-20))	error: rhs needs an equation or an inequality, 1/100000000000000000000 is none
+-e	rhs(x)	error: rhs needs an equation or an inequality, x is none
+-e	rhs([])	error: rhs needs an equation or an inequality, [] is none
+-e	rhs([1, 2])	error: rhs needs an equation or an inequality, [1, 2] is none
+-e	rhs("text")	error: rhs needs an equation or an inequality, "text" is none
+-e	rhs(true)	error: rhs needs an equation or an inequality, true is none
+-e	rhs(-7/3)	error: rhs needs an equation or an inequality, -7/3 is none
+-e	rhs(0.5)	error: rhs needs an equation or an inequality, 1/2 is none
+-e	isalways(0)	error: isalways needs a condition, 0 is none
+-e	isalways(1)	error: isalways needs a condition, 1 is none
+-e	isalways(-1)	error: isalways needs a condition, -1 is none
+-e	isalways(1/2)	error: isalways needs a condition, 1/2 is none
+-e	isalways(2)	error: isalways needs a condition, 2 is none
+-e	isalways(i)	error: isalways needs a condition, i is none
+-e	isalways(inf)	error: isalways needs a condition, inf is none
+-e	isalways(-inf)	error: isalways needs a condition, -inf is none
+-e	isalways(undefined)	error: isalways needs a condition, undefined is none
+-e	isalways(10^20)	error: isalways needs a condition, 100000000000000000000 is none
+-e	isalways(10^(-20))	error: isalways needs a condition, 1/100000000000000000000 is none
+-e	isalways(x)	error: isalways needs a condition, x is none
+-e	isalways([])	true
+-e	isalways([1, 2])	error: isalways needs a condition, 1 is none
+-e	isalways("text")	error: isalways needs a condition, "text" is none
+-e	isalways(true)	true
+-e	isalways(-7/3)	error: isalways needs a condition, -7/3 is none
+-e	isalways(0.5)	error: isalways needs a condition, 1/2 is none
+-e	combine(0)	0
+-e	combine(1)	1
+-e	combine(-1)	-1
+-e	combine(1/2)	1/2
+-e	combine(2)	2
+-e	combine(i)	i
+-e	combine(inf)	inf
+-e	combine(-inf)	-inf
+-e	combine(undefined)	undefined
+-e	combine(10^20)	100000000000000000000
+-e	combine(10^(-20))	1/100000000000000000000
+-e	combine(x)	x
+-e	combine([])	[]
+-e	combine([1, 2])	[1, 2]
+-e	combine("text")	"text"
+-e	combine(true)	true
+-e	combine(-7/3)	-7/3
+-e	combine(0.5)	0.5
+-e	equationstomatrix(0)	[[[]], [0]]
+-e	equationstomatrix(1)	[[[]], [-1]]
+-e	equationstomatrix(-1)	[[[]], [1]]
+-e	equationstomatrix(1/2)	[[[]], [-1/2]]
+-e	equationstomatrix(2)	[[[]], [-2]]
+-e	equationstomatrix(i)	[[[]], [-i]]
+-e	equationstomatrix(inf)	[[[]], [-inf]]
+-e	equationstomatrix(-inf)	[[[]], [inf]]
+-e	equationstomatrix(undefined)	[[[]], [undefined]]
+-e	equationstomatrix(10^20)	[[[]], [-100000000000000000000]]
+-e	equationstomatrix(10^(-20))	[[[]], [-1/100000000000000000000]]
+-e	equationstomatrix(x)	[[[1]], [0]]
+-e	equationstomatrix([])	[[], []]
+-e	equationstomatrix([1, 2])	[[[], []], [-1, -2]]
+-e	equationstomatrix("text")	error: equationstomatrix: "text" = 0 is not linear in the variables
+-e	equationstomatrix(true)	[[[]], [-true]]
+-e	equationstomatrix(-7/3)	[[[]], [7/3]]
+-e	equationstomatrix(0.5)	[[[]], [-0.5]]
+-e	ttest(0)	error: ttest needs a list of two or more numbers
+-e	ttest(1)	error: ttest needs a list of two or more numbers
+-e	ttest(-1)	error: ttest needs a list of two or more numbers
+-e	ttest(1/2)	error: ttest needs a list of two or more numbers
+-e	ttest(2)	error: ttest needs a list of two or more numbers
+-e	ttest(i)	error: ttest needs a list of two or more numbers
+-e	ttest(inf)	error: ttest needs a list of two or more numbers
+-e	ttest(-inf)	error: ttest needs a list of two or more numbers
+-e	ttest(undefined)	error: ttest needs a list of two or more numbers
+-e	ttest(10^20)	error: ttest needs a list of two or more numbers
+-e	ttest(10^(-20))	error: ttest needs a list of two or more numbers
+-e	ttest(x)	error: ttest needs a list of two or more numbers
+-e	ttest([])	error: ttest needs a list of two or more numbers
+-e	ttest([1, 2])	[0, 0.20483276469913345164919784755052]
+-e	ttest("text")	error: ttest needs a list of two or more numbers
+-e	ttest(true)	error: ttest needs a list of two or more numbers
+-e	ttest(-7/3)	error: ttest needs a list of two or more numbers
+-e	ttest(0.5)	error: ttest needs a list of two or more numbers
+-e	isoutlier(0)	error: isoutlier needs a list
+-e	isoutlier(1)	error: isoutlier needs a list
+-e	isoutlier(-1)	error: isoutlier needs a list
+-e	isoutlier(1/2)	error: isoutlier needs a list
+-e	isoutlier(2)	error: isoutlier needs a list
+-e	isoutlier(i)	error: isoutlier needs a list
+-e	isoutlier(inf)	error: isoutlier needs a list
+-e	isoutlier(-inf)	error: isoutlier needs a list
+-e	isoutlier(undefined)	error: isoutlier needs a list
+-e	isoutlier(10^20)	error: isoutlier needs a list
+-e	isoutlier(10^(-20))	error: isoutlier needs a list
+-e	isoutlier(x)	error: isoutlier needs a list
+-e	isoutlier([])	[]
+-e	isoutlier([1, 2])	[false, false]
+-e	isoutlier("text")	error: isoutlier needs a list
+-e	isoutlier(true)	error: isoutlier needs a list
+-e	isoutlier(-7/3)	error: isoutlier needs a list
+-e	isoutlier(0.5)	error: isoutlier needs a list
+-e	rmoutliers(0)	error: rmoutliers needs a list
+-e	rmoutliers(1)	error: rmoutliers needs a list
+-e	rmoutliers(-1)	error: rmoutliers needs a list
+-e	rmoutliers(1/2)	error: rmoutliers needs a list
+-e	rmoutliers(2)	error: rmoutliers needs a list
+-e	rmoutliers(i)	error: rmoutliers needs a list
+-e	rmoutliers(inf)	error: rmoutliers needs a list
+-e	rmoutliers(-inf)	error: rmoutliers needs a list
+-e	rmoutliers(undefined)	error: rmoutliers needs a list
+-e	rmoutliers(10^20)	error: rmoutliers needs a list
+-e	rmoutliers(10^(-20))	error: rmoutliers needs a list
+-e	rmoutliers(x)	error: rmoutliers needs a list
+-e	rmoutliers([])	[]
+-e	rmoutliers([1, 2])	[1, 2]
+-e	rmoutliers("text")	error: rmoutliers needs a list
+-e	rmoutliers(true)	error: rmoutliers needs a list
+-e	rmoutliers(-7/3)	error: rmoutliers needs a list
+-e	rmoutliers(0.5)	error: rmoutliers needs a list
+-e	ismissing(0)	false
+-e	ismissing(1)	false
+-e	ismissing(-1)	false
+-e	ismissing(1/2)	false
+-e	ismissing(2)	false
+-e	ismissing(i)	false
+-e	ismissing(inf)	false
+-e	ismissing(-inf)	false
+-e	ismissing(undefined)	true
+-e	ismissing(10^20)	false
+-e	ismissing(10^(-20))	false
+-e	ismissing(x)	false
+-e	ismissing([])	[]
+-e	ismissing([1, 2])	[false, false]
+-e	ismissing("text")	false
+-e	ismissing(true)	false
+-e	ismissing(-7/3)	false
+-e	ismissing(0.5)	false
+-e	rmmissing(0)	0
+-e	rmmissing(1)	1
+-e	rmmissing(-1)	-1
+-e	rmmissing(1/2)	1/2
+-e	rmmissing(2)	2
+-e	rmmissing(i)	i
+-e	rmmissing(inf)	inf
+-e	rmmissing(-inf)	-inf
+-e	rmmissing(undefined)	undefined
+-e	rmmissing(10^20)	100000000000000000000
+-e	rmmissing(10^(-20))	1/100000000000000000000
+-e	rmmissing(x)	x
+-e	rmmissing([])	[]
+-e	rmmissing([1, 2])	[1, 2]
+-e	rmmissing("text")	"text"
+-e	rmmissing(true)	true
+-e	rmmissing(-7/3)	-7/3
+-e	rmmissing(0.5)	0.5
+-e	findgroups(0)	error: findgroups needs a list
+-e	findgroups(1)	error: findgroups needs a list
+-e	findgroups(-1)	error: findgroups needs a list
+-e	findgroups(1/2)	error: findgroups needs a list
+-e	findgroups(2)	error: findgroups needs a list
+-e	findgroups(i)	error: findgroups needs a list
+-e	findgroups(inf)	error: findgroups needs a list
+-e	findgroups(-inf)	error: findgroups needs a list
+-e	findgroups(undefined)	error: findgroups needs a list
+-e	findgroups(10^20)	error: findgroups needs a list
+-e	findgroups(10^(-20))	error: findgroups needs a list
+-e	findgroups(x)	error: findgroups needs a list
+-e	findgroups([])	[]
+-e	findgroups([1, 2])	[1, 2]
+-e	findgroups("text")	error: findgroups needs a list
+-e	findgroups(true)	error: findgroups needs a list
+-e	findgroups(-7/3)	error: findgroups needs a list
+-e	findgroups(0.5)	error: findgroups needs a list
+-e	ecdf(0)	error: ecdf needs a list
+-e	ecdf(1)	error: ecdf needs a list
+-e	ecdf(-1)	error: ecdf needs a list
+-e	ecdf(1/2)	error: ecdf needs a list
+-e	ecdf(2)	error: ecdf needs a list
+-e	ecdf(i)	error: ecdf needs a list
+-e	ecdf(inf)	error: ecdf needs a list
+-e	ecdf(-inf)	error: ecdf needs a list
+-e	ecdf(undefined)	error: ecdf needs a list
+-e	ecdf(10^20)	error: ecdf needs a list
+-e	ecdf(10^(-20))	error: ecdf needs a list
+-e	ecdf(x)	error: ecdf needs a list
+-e	ecdf([])	[[], []]
+-e	ecdf([1, 2])	[[1, 2], [1/2, 1]]
+-e	ecdf("text")	error: ecdf needs a list
+-e	ecdf(true)	error: ecdf needs a list
+-e	ecdf(-7/3)	error: ecdf needs a list
+-e	ecdf(0.5)	error: ecdf needs a list
+-e	cplxpair(0)	error: cplxpair needs a list
+-e	cplxpair(1)	error: cplxpair needs a list
+-e	cplxpair(-1)	error: cplxpair needs a list
+-e	cplxpair(1/2)	error: cplxpair needs a list
+-e	cplxpair(2)	error: cplxpair needs a list
+-e	cplxpair(i)	error: cplxpair needs a list
+-e	cplxpair(inf)	error: cplxpair needs a list
+-e	cplxpair(-inf)	error: cplxpair needs a list
+-e	cplxpair(undefined)	error: cplxpair needs a list
+-e	cplxpair(10^20)	error: cplxpair needs a list
+-e	cplxpair(10^(-20))	error: cplxpair needs a list
+-e	cplxpair(x)	error: cplxpair needs a list
+-e	cplxpair([])	[]
+-e	cplxpair([1, 2])	[1, 2]
+-e	cplxpair("text")	error: cplxpair needs a list
+-e	cplxpair(true)	error: cplxpair needs a list
+-e	cplxpair(-7/3)	error: cplxpair needs a list
+-e	cplxpair(0.5)	error: cplxpair needs a list
+-e	hascycles(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles([])	false
+-e	hascycles([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	hascycles(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(undefined)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(10^20)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(10^(-20))	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(x)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag([])	false
+-e	isdag([1, 2])	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag("text")	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(true)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(-7/3)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	isdag(0.5)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(i)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
+-e	transclosure(inf)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]

@@ -1,0 +1,700 @@
+-e	sortrows(0.5)	error: sortrows needs a matrix
+-e	issorted(0)	true
+-e	issorted(1)	true
+-e	issorted(-1)	true
+-e	issorted(1/2)	true
+-e	issorted(2)	true
+-e	issorted(i)	true
+-e	issorted(inf)	true
+-e	issorted(-inf)	true
+-e	issorted(undefined)	true
+-e	issorted(10^20)	true
+-e	issorted(10^(-20))	true
+-e	issorted(x)	true
+-e	issorted([])	true
+-e	issorted([1, 2])	true
+-e	issorted("text")	true
+-e	issorted(true)	true
+-e	issorted(-7/3)	true
+-e	issorted(0.5)	true
+-e	numel(0)	1
+-e	numel(1)	1
+-e	numel(-1)	1
+-e	numel(1/2)	1
+-e	numel(2)	1
+-e	numel(i)	1
+-e	numel(inf)	1
+-e	numel(-inf)	1
+-e	numel(undefined)	1
+-e	numel(10^20)	1
+-e	numel(10^(-20))	1
+-e	numel(x)	1
+-e	numel([])	0
+-e	numel([1, 2])	2
+-e	numel("text")	1
+-e	numel(true)	1
+-e	numel(-7/3)	1
+-e	numel(0.5)	1
+-e	size(0)	[1, 1]
+-e	size(1)	[1, 1]
+-e	size(-1)	[1, 1]
+-e	size(1/2)	[1, 1]
+-e	size(2)	[1, 1]
+-e	size(i)	[1, 1]
+-e	size(inf)	[1, 1]
+-e	size(-inf)	[1, 1]
+-e	size(undefined)	[1, 1]
+-e	size(10^20)	[1, 1]
+-e	size(10^(-20))	[1, 1]
+-e	size(x)	[1, 1]
+-e	size([])	[1, 0]
+-e	size([1, 2])	[1, 2]
+-e	size("text")	[1, 1]
+-e	size(true)	[1, 1]
+-e	size(-7/3)	[1, 1]
+-e	size(0.5)	[1, 1]
+-e	ndims(0)	2
+-e	ndims(1)	2
+-e	ndims(-1)	2
+-e	ndims(1/2)	2
+-e	ndims(2)	2
+-e	ndims(i)	2
+-e	ndims(inf)	2
+-e	ndims(-inf)	2
+-e	ndims(undefined)	2
+-e	ndims(10^20)	2
+-e	ndims(10^(-20))	2
+-e	ndims(x)	2
+-e	ndims([])	2
+-e	ndims([1, 2])	2
+-e	ndims("text")	2
+-e	ndims(true)	2
+-e	ndims(-7/3)	2
+-e	ndims(0.5)	2
+-e	isempty(0)	false
+-e	isempty(1)	false
+-e	isempty(-1)	false
+-e	isempty(1/2)	false
+-e	isempty(2)	false
+-e	isempty(i)	false
+-e	isempty(inf)	false
+-e	isempty(-inf)	false
+-e	isempty(undefined)	false
+-e	isempty(10^20)	false
+-e	isempty(10^(-20))	false
+-e	isempty(x)	false
+-e	isempty([])	true
+-e	isempty([1, 2])	false
+-e	isempty("text")	false
+-e	isempty(true)	false
+-e	isempty(-7/3)	false
+-e	isempty(0.5)	false
+-e	isrow(0)	true
+-e	isrow(1)	true
+-e	isrow(-1)	true
+-e	isrow(1/2)	true
+-e	isrow(2)	true
+-e	isrow(i)	true
+-e	isrow(inf)	true
+-e	isrow(-inf)	true
+-e	isrow(undefined)	true
+-e	isrow(10^20)	true
+-e	isrow(10^(-20))	true
+-e	isrow(x)	true
+-e	isrow([])	true
+-e	isrow([1, 2])	true
+-e	isrow("text")	true
+-e	isrow(true)	true
+-e	isrow(-7/3)	true
+-e	isrow(0.5)	true
+-e	iscolumn(0)	true
+-e	iscolumn(1)	true
+-e	iscolumn(-1)	true
+-e	iscolumn(1/2)	true
+-e	iscolumn(2)	true
+-e	iscolumn(i)	true
+-e	iscolumn(inf)	true
+-e	iscolumn(-inf)	true
+-e	iscolumn(undefined)	true
+-e	iscolumn(10^20)	true
+-e	iscolumn(10^(-20))	true
+-e	iscolumn(x)	true
+-e	iscolumn([])	false
+-e	iscolumn([1, 2])	false
+-e	iscolumn("text")	true
+-e	iscolumn(true)	true
+-e	iscolumn(-7/3)	true
+-e	iscolumn(0.5)	true
+-e	isvector(0)	true
+-e	isvector(1)	true
+-e	isvector(-1)	true
+-e	isvector(1/2)	true
+-e	isvector(2)	true
+-e	isvector(i)	true
+-e	isvector(inf)	true
+-e	isvector(-inf)	true
+-e	isvector(undefined)	true
+-e	isvector(10^20)	true
+-e	isvector(10^(-20))	true
+-e	isvector(x)	true
+-e	isvector([])	true
+-e	isvector([1, 2])	true
+-e	isvector("text")	true
+-e	isvector(true)	true
+-e	isvector(-7/3)	true
+-e	isvector(0.5)	true
+-e	isscalar(0)	true
+-e	isscalar(1)	true
+-e	isscalar(-1)	true
+-e	isscalar(1/2)	true
+-e	isscalar(2)	true
+-e	isscalar(i)	true
+-e	isscalar(inf)	true
+-e	isscalar(-inf)	true
+-e	isscalar(undefined)	true
+-e	isscalar(10^20)	true
+-e	isscalar(10^(-20))	true
+-e	isscalar(x)	true
+-e	isscalar([])	false
+-e	isscalar([1, 2])	false
+-e	isscalar("text")	true
+-e	isscalar(true)	true
+-e	isscalar(-7/3)	true
+-e	isscalar(0.5)	true
+-e	ismatrix(0)	true
+-e	ismatrix(1)	true
+-e	ismatrix(-1)	true
+-e	ismatrix(1/2)	true
+-e	ismatrix(2)	true
+-e	ismatrix(i)	true
+-e	ismatrix(inf)	true
+-e	ismatrix(-inf)	true
+-e	ismatrix(undefined)	true
+-e	ismatrix(10^20)	true
+-e	ismatrix(10^(-20))	true
+-e	ismatrix(x)	true
+-e	ismatrix([])	true
+-e	ismatrix([1, 2])	true
+-e	ismatrix("text")	true
+-e	ismatrix(true)	true
+-e	ismatrix(-7/3)	true
+-e	ismatrix(0.5)	true
+-e	isdiag(0)	true
+-e	isdiag(1)	true
+-e	isdiag(-1)	true
+-e	isdiag(1/2)	true
+-e	isdiag(2)	true
+-e	isdiag(i)	true
+-e	isdiag(inf)	true
+-e	isdiag(-inf)	true
+-e	isdiag(undefined)	true
+-e	isdiag(10^20)	true
+-e	isdiag(10^(-20))	true
+-e	isdiag(x)	true
+-e	isdiag([])	true
+-e	isdiag([1, 2])	false
+-e	isdiag("text")	true
+-e	isdiag(true)	true
+-e	isdiag(-7/3)	true
+-e	isdiag(0.5)	true
+-e	istril(0)	true
+-e	istril(1)	true
+-e	istril(-1)	true
+-e	istril(1/2)	true
+-e	istril(2)	true
+-e	istril(i)	true
+-e	istril(inf)	true
+-e	istril(-inf)	true
+-e	istril(undefined)	true
+-e	istril(10^20)	true
+-e	istril(10^(-20))	true
+-e	istril(x)	true
+-e	istril([])	true
+-e	istril([1, 2])	false
+-e	istril("text")	true
+-e	istril(true)	true
+-e	istril(-7/3)	true
+-e	istril(0.5)	true
+-e	istriu(0)	true
+-e	istriu(1)	true
+-e	istriu(-1)	true
+-e	istriu(1/2)	true
+-e	istriu(2)	true
+-e	istriu(i)	true
+-e	istriu(inf)	true
+-e	istriu(-inf)	true
+-e	istriu(undefined)	true
+-e	istriu(10^20)	true
+-e	istriu(10^(-20))	true
+-e	istriu(x)	true
+-e	istriu([])	true
+-e	istriu([1, 2])	true
+-e	istriu("text")	true
+-e	istriu(true)	true
+-e	istriu(-7/3)	true
+-e	istriu(0.5)	true
+-e	bandwidth(0)	[0, 0]
+-e	bandwidth(1)	[0, 0]
+-e	bandwidth(-1)	[0, 0]
+-e	bandwidth(1/2)	[0, 0]
+-e	bandwidth(2)	[0, 0]
+-e	bandwidth(i)	[0, 0]
+-e	bandwidth(inf)	[0, 0]
+-e	bandwidth(-inf)	[0, 0]
+-e	bandwidth(undefined)	[0, 0]
+-e	bandwidth(10^20)	[0, 0]
+-e	bandwidth(10^(-20))	[0, 0]
+-e	bandwidth(x)	[0, 0]
+-e	bandwidth([])	[0, 0]
+-e	bandwidth([1, 2])	[0, 1]
+-e	bandwidth("text")	[0, 0]
+-e	bandwidth(true)	[0, 0]
+-e	bandwidth(-7/3)	[0, 0]
+-e	bandwidth(0.5)	[0, 0]
+-e	issymmetric(0)	true
+-e	issymmetric(1)	true
+-e	issymmetric(-1)	true
+-e	issymmetric(1/2)	true
+-e	issymmetric(2)	true
+-e	issymmetric(i)	true
+-e	issymmetric(inf)	false
+-e	issymmetric(-inf)	false
+-e	issymmetric(undefined)	false
+-e	issymmetric(10^20)	true
+-e	issymmetric(10^(-20))	true
+-e	issymmetric(x)	true
+-e	issymmetric([])	false
+-e	issymmetric([1, 2])	false
+-e	issymmetric("text")	true
+-e	issymmetric(true)	true
+-e	issymmetric(-7/3)	true
+-e	issymmetric(0.5)	true
+-e	ishermitian(0)	true
+-e	ishermitian(1)	true
+-e	ishermitian(-1)	true
+-e	ishermitian(1/2)	true
+-e	ishermitian(2)	true
+-e	ishermitian(i)	false
+-e	ishermitian(inf)	false
+-e	ishermitian(-inf)	false
+-e	ishermitian(undefined)	false
+-e	ishermitian(10^20)	true
+-e	ishermitian(10^(-20))	true
+-e	ishermitian(x)	false
+-e	ishermitian([])	false
+-e	ishermitian([1, 2])	false
+-e	ishermitian("text")	false
+-e	ishermitian(true)	false
+-e	ishermitian(-7/3)	true
+-e	ishermitian(0.5)	true
+-e	nnz(0)	0
+-e	nnz(1)	1
+-e	nnz(-1)	1
+-e	nnz(1/2)	1
+-e	nnz(2)	1
+-e	nnz(i)	1
+-e	nnz(inf)	error: whether inf is zero cannot be told
+-e	nnz(-inf)	error: whether -inf is zero cannot be told
+-e	nnz(undefined)	error: whether undefined is zero cannot be told
+-e	nnz(10^20)	1
+-e	nnz(10^(-20))	1
+-e	nnz(x)	error: x is neither true nor false
+-e	nnz([])	0
+-e	nnz([1, 2])	2
+-e	nnz("text")	error: "text" is neither true nor false
+-e	nnz(true)	1
+-e	nnz(-7/3)	1
+-e	nnz(0.5)	1
+-e	nonzeros(0)	[]
+-e	nonzeros(1)	[1]
+-e	nonzeros(-1)	[-1]
+-e	nonzeros(1/2)	[1/2]
+-e	nonzeros(2)	[2]
+-e	nonzeros(i)	[i]
+-e	nonzeros(inf)	error: whether inf is zero cannot be told
+-e	nonzeros(-inf)	error: whether -inf is zero cannot be told
+-e	nonzeros(undefined)	error: whether undefined is zero cannot be told
+-e	nonzeros(10^20)	[100000000000000000000]
+-e	nonzeros(10^(-20))	[1/100000000000000000000]
+-e	nonzeros(x)	error: x is neither true nor false
+-e	nonzeros([])	[]
+-e	nonzeros([1, 2])	[1, 2]
+-e	nonzeros("text")	error: "text" is neither true nor false
+-e	nonzeros(true)	[true]
+-e	nonzeros(-7/3)	[-7/3]
+-e	nonzeros(0.5)	[0.5]
+-e	find(0)	[]
+-e	find(1)	[1]
+-e	find(-1)	[1]
+-e	find(1/2)	[1]
+-e	find(2)	[1]
+-e	find(i)	[1]
+-e	find(inf)	error: whether inf is zero cannot be told
+-e	find(-inf)	error: whether -inf is zero cannot be told
+-e	find(undefined)	error: whether undefined is zero cannot be told
+-e	find(10^20)	[1]
+-e	find(10^(-20))	[1]
+-e	find(x)	error: x is neither true nor false
+-e	find([])	[]
+-e	find([1, 2])	[1, 2]
+-e	find("text")	error: "text" is neither true nor false
+-e	find(true)	[1]
+-e	find(-7/3)	[1]
+-e	find(0.5)	[1]
+-e	any(0)	false
+-e	any(1)	true
+-e	any(-1)	true
+-e	any(1/2)	true
+-e	any(2)	true
+-e	any(i)	true
+-e	any(inf)	error: whether inf is zero cannot be told
+-e	any(-inf)	error: whether -inf is zero cannot be told
+-e	any(undefined)	error: whether undefined is zero cannot be told
+-e	any(10^20)	true
+-e	any(10^(-20))	true
+-e	any(x)	error: x is neither true nor false
+-e	any([])	false
+-e	any([1, 2])	true
+-e	any("text")	error: "text" is neither true nor false
+-e	any(true)	true
+-e	any(-7/3)	true
+-e	any(0.5)	true
+-e	all(0)	false
+-e	all(1)	true
+-e	all(-1)	true
+-e	all(1/2)	true
+-e	all(2)	true
+-e	all(i)	true
+-e	all(inf)	error: whether inf is zero cannot be told
+-e	all(-inf)	error: whether -inf is zero cannot be told
+-e	all(undefined)	error: whether undefined is zero cannot be told
+-e	all(10^20)	true
+-e	all(10^(-20))	true
+-e	all(x)	error: x is neither true nor false
+-e	all([])	true
+-e	all([1, 2])	true
+-e	all("text")	error: "text" is neither true nor false
+-e	all(true)	true
+-e	all(-7/3)	true
+-e	all(0.5)	true
+-e	magic(0)	error: the size of a magic square must be a whole number from 1 to 1000, not 0
+-e	magic(1)	[[1]]
+-e	magic(-1)	error: the size of a magic square must be a whole number from 1 to 1000, not -1
+-e	magic(1/2)	error: the size of a magic square must be a whole number from 1 to 1000, not 1/2
+-e	magic(2)	[[4, 3], [1, 2]]
+-e	magic(i)	error: the size of a magic square must be a whole number from 1 to 1000, not i
+-e	magic(inf)	error: the size of a magic square must be a whole number from 1 to 1000, not inf
+-e	magic(-inf)	error: the size of a magic square must be a whole number from 1 to 1000, not -inf
+-e	magic(undefined)	error: the size of a magic square must be a whole number from 1 to 1000, not undefined
+-e	magic(10^20)	error: the size of a magic square must be a whole number from 1 to 1000, not 100000000000000000000
+-e	magic(10^(-20))	error: the size of a magic square must be a whole number from 1 to 1000, not 1/100000000000000000000
+-e	magic(x)	error: the size of a magic square must be a whole number from 1 to 1000, not x
+-e	magic([])	error: the size of a magic square must be a whole number from 1 to 1000, not []
+-e	magic([1, 2])	error: the size of a magic square must be a whole number from 1 to 1000, not [1, 2]
+-e	magic("text")	error: the size of a magic square must be a whole number from 1 to 1000, not "text"
+-e	magic(true)	error: the size of a magic square must be a whole number from 1 to 1000, not true
+-e	magic(-7/3)	error: the size of a magic square must be a whole number from 1 to 1000, not -7/3
+-e	magic(0.5)	error: the size of a magic square must be a whole number from 1 to 1000, not 1/2
+-e	invhilb(0)	error: the size must be a whole number from 1 to 500, not 0
+-e	invhilb(1)	[[1]]
+-e	invhilb(-1)	error: the size must be a whole number from 1 to 500, not -1
+-e	invhilb(1/2)	error: the size must be a whole number from 1 to 500, not 1/2
+-e	invhilb(2)	[[4, -6], [-6, 12]]
+-e	invhilb(i)	error: the size must be a whole number from 1 to 500, not i
+-e	invhilb(inf)	error: the size must be a whole number from 1 to 500, not inf
+-e	invhilb(-inf)	error: the size must be a whole number from 1 to 500, not -inf
+-e	invhilb(undefined)	error: the size must be a whole number from 1 to 500, not undefined
+-e	invhilb(10^20)	error: the size must be a whole number from 1 to 500, not 100000000000000000000
+-e	invhilb(10^(-20))	error: the size must be a whole number from 1 to 500, not 1/100000000000000000000
+-e	invhilb(x)	error: the size must be a whole number from 1 to 500, not x
+-e	invhilb([])	error: the size must be a whole number from 1 to 500, not []
+-e	invhilb([1, 2])	error: the size must be a whole number from 1 to 500, not [1, 2]
+-e	invhilb("text")	error: the size must be a whole number from 1 to 500, not "text"
+-e	invhilb(true)	error: the size must be a whole number from 1 to 500, not true
+-e	invhilb(-7/3)	error: the size must be a whole number from 1 to 500, not -7/3
+-e	invhilb(0.5)	error: the size must be a whole number from 1 to 500, not 1/2
+-e	pascal(0)	error: the size must be a whole number from 1 to 500, not 0
+-e	pascal(1)	[[1]]
+-e	pascal(-1)	error: the size must be a whole number from 1 to 500, not -1
+-e	pascal(1/2)	error: the size must be a whole number from 1 to 500, not 1/2
+-e	pascal(2)	[[1, 1], [1, 2]]
+-e	pascal(i)	error: the size must be a whole number from 1 to 500, not i
+-e	pascal(inf)	error: the size must be a whole number from 1 to 500, not inf
+-e	pascal(-inf)	error: the size must be a whole number from 1 to 500, not -inf
+-e	pascal(undefined)	error: the size must be a whole number from 1 to 500, not undefined
+-e	pascal(10^20)	error: the size must be a whole number from 1 to 500, not 100000000000000000000
+-e	pascal(10^(-20))	error: the size must be a whole number from 1 to 500, not 1/100000000000000000000
+-e	pascal(x)	error: the size must be a whole number from 1 to 500, not x
+-e	pascal([])	error: the size must be a whole number from 1 to 500, not []
+-e	pascal([1, 2])	error: the size must be a whole number from 1 to 500, not [1, 2]
+-e	pascal("text")	error: the size must be a whole number from 1 to 500, not "text"
+-e	pascal(true)	error: the size must be a whole number from 1 to 500, not true
+-e	pascal(-7/3)	error: the size must be a whole number from 1 to 500, not -7/3
+-e	pascal(0.5)	error: the size must be a whole number from 1 to 500, not 1/2
+-e	wilkinson(0)	error: the size must be a whole number from 1 to 1000, not 0
+-e	wilkinson(1)	[[0]]
+-e	wilkinson(-1)	error: the size must be a whole number from 1 to 1000, not -1
+-e	wilkinson(1/2)	error: the size must be a whole number from 1 to 1000, not 1/2
+-e	wilkinson(2)	[[1/2, 1], [1, 1/2]]
+-e	wilkinson(i)	error: the size must be a whole number from 1 to 1000, not i
+-e	wilkinson(inf)	error: the size must be a whole number from 1 to 1000, not inf
+-e	wilkinson(-inf)	error: the size must be a whole number from 1 to 1000, not -inf
+-e	wilkinson(undefined)	error: the size must be a whole number from 1 to 1000, not undefined
+-e	wilkinson(10^20)	error: the size must be a whole number from 1 to 1000, not 100000000000000000000
+-e	wilkinson(10^(-20))	error: the size must be a whole number from 1 to 1000, not 1/100000000000000000000
+-e	wilkinson(x)	error: the size must be a whole number from 1 to 1000, not x
+-e	wilkinson([])	error: the size must be a whole number from 1 to 1000, not []
+-e	wilkinson([1, 2])	error: the size must be a whole number from 1 to 1000, not [1, 2]
+-e	wilkinson("text")	error: the size must be a whole number from 1 to 1000, not "text"
+-e	wilkinson(true)	error: the size must be a whole number from 1 to 1000, not true
+-e	wilkinson(-7/3)	error: the size must be a whole number from 1 to 1000, not -7/3
+-e	wilkinson(0.5)	error: the size must be a whole number from 1 to 1000, not 1/2
+-e	toeplitz(0)	error: toeplitz needs a list
+-e	toeplitz(1)	error: toeplitz needs a list
+-e	toeplitz(-1)	error: toeplitz needs a list
+-e	toeplitz(1/2)	error: toeplitz needs a list
+-e	toeplitz(2)	error: toeplitz needs a list
+-e	toeplitz(i)	error: toeplitz needs a list
+-e	toeplitz(inf)	error: toeplitz needs a list
+-e	toeplitz(-inf)	error: toeplitz needs a list
+-e	toeplitz(undefined)	error: toeplitz needs a list
+-e	toeplitz(10^20)	error: toeplitz needs a list
+-e	toeplitz(10^(-20))	error: toeplitz needs a list
+-e	toeplitz(x)	error: toeplitz needs a list
+-e	toeplitz([])	error: toeplitz needs a list
+-e	toeplitz([1, 2])	[[1, 2], [2, 1]]
+-e	toeplitz("text")	error: toeplitz needs a list
+-e	toeplitz(true)	error: toeplitz needs a list
+-e	toeplitz(-7/3)	error: toeplitz needs a list
+-e	toeplitz(0.5)	error: toeplitz needs a list
+-e	hankel(0)	error: hankel needs a list
+-e	hankel(1)	error: hankel needs a list
+-e	hankel(-1)	error: hankel needs a list
+-e	hankel(1/2)	error: hankel needs a list
+-e	hankel(2)	error: hankel needs a list
+-e	hankel(i)	error: hankel needs a list
+-e	hankel(inf)	error: hankel needs a list
+-e	hankel(-inf)	error: hankel needs a list
+-e	hankel(undefined)	error: hankel needs a list
+-e	hankel(10^20)	error: hankel needs a list
+-e	hankel(10^(-20))	error: hankel needs a list
+-e	hankel(x)	error: hankel needs a list
+-e	hankel([])	error: hankel needs a list
+-e	hankel([1, 2])	[[1, 2], [2, 0]]
+-e	hankel("text")	error: hankel needs a list
+-e	hankel(true)	error: hankel needs a list
+-e	hankel(-7/3)	error: hankel needs a list
+-e	hankel(0.5)	error: hankel needs a list
+-e	compan(0)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(1)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(-1)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(1/2)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(2)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(i)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(inf)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(-inf)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(undefined)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(10^20)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(10^(-20))	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(x)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan([])	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan([1, 2])	[[-2]]
+-e	compan("text")	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(true)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(-7/3)	error: compan needs the coefficients of a polynomial, the highest first
+-e	compan(0.5)	error: compan needs the coefficients of a polynomial, the highest first
+-e	hadamard(0)	error: the size must be a whole number from 1 to 4096, not 0
+-e	hadamard(1)	[[1]]
+-e	hadamard(-1)	error: the size must be a whole number from 1 to 4096, not -1
+-e	hadamard(1/2)	error: the size must be a whole number from 1 to 4096, not 1/2
+-e	hadamard(2)	[[1, 1], [1, -1]]
+-e	hadamard(i)	error: the size must be a whole number from 1 to 4096, not i
+-e	hadamard(inf)	error: the size must be a whole number from 1 to 4096, not inf
+-e	hadamard(-inf)	error: the size must be a whole number from 1 to 4096, not -inf
+-e	hadamard(undefined)	error: the size must be a whole number from 1 to 4096, not undefined
+-e	hadamard(10^20)	error: the size must be a whole number from 1 to 4096, not 100000000000000000000
+-e	hadamard(10^(-20))	error: the size must be a whole number from 1 to 4096, not 1/100000000000000000000
+-e	hadamard(x)	error: the size must be a whole number from 1 to 4096, not x
+-e	hadamard([])	error: the size must be a whole number from 1 to 4096, not []
+-e	hadamard([1, 2])	error: the size must be a whole number from 1 to 4096, not [1, 2]
+-e	hadamard("text")	error: the size must be a whole number from 1 to 4096, not "text"
+-e	hadamard(true)	error: the size must be a whole number from 1 to 4096, not true
+-e	hadamard(-7/3)	error: the size must be a whole number from 1 to 4096, not -7/3
+-e	hadamard(0.5)	error: the size must be a whole number from 1 to 4096, not 1/2
+-e	vander(0)	error: vander needs a list
+-e	vander(1)	error: vander needs a list
+-e	vander(-1)	error: vander needs a list
+-e	vander(1/2)	error: vander needs a list
+-e	vander(2)	error: vander needs a list
+-e	vander(i)	error: vander needs a list
+-e	vander(inf)	error: vander needs a list
+-e	vander(-inf)	error: vander needs a list
+-e	vander(undefined)	error: vander needs a list
+-e	vander(10^20)	error: vander needs a list
+-e	vander(10^(-20))	error: vander needs a list
+-e	vander(x)	error: vander needs a list
+-e	vander([])	[]
+-e	vander([1, 2])	[[1, 1], [2, 1]]
+-e	vander("text")	error: vander needs a list
+-e	vander(true)	error: vander needs a list
+-e	vander(-7/3)	error: vander needs a list
+-e	vander(0.5)	error: vander needs a list
+-e	ctranspose(0)	0
+-e	ctranspose(1)	1
+-e	ctranspose(-1)	-1
+-e	ctranspose(1/2)	1/2
+-e	ctranspose(2)	2
+-e	ctranspose(i)	-i
+-e	ctranspose(inf)	inf
+-e	ctranspose(-inf)	-inf
+-e	ctranspose(undefined)	undefined
+-e	ctranspose(10^20)	100000000000000000000
+-e	ctranspose(10^(-20))	1/100000000000000000000
+-e	ctranspose(x)	conj(x)
+-e	ctranspose([])	[]
+-e	ctranspose([1, 2])	[[1], [2]]
+-e	ctranspose("text")	conj("text")
+-e	ctranspose(true)	conj(true)
+-e	ctranspose(-7/3)	-7/3
+-e	ctranspose(0.5)	0.5
+-e	perms(0)	error: permutations needs a list, 0 is none
+-e	perms(1)	error: permutations needs a list, 1 is none
+-e	perms(-1)	error: permutations needs a list, -1 is none
+-e	perms(1/2)	error: permutations needs a list, 1/2 is none
+-e	perms(2)	error: permutations needs a list, 2 is none
+-e	perms(i)	error: permutations needs a list, i is none
+-e	perms(inf)	error: permutations needs a list, inf is none
+-e	perms(-inf)	error: permutations needs a list, -inf is none
+-e	perms(undefined)	error: permutations needs a list, undefined is none
+-e	perms(10^20)	error: permutations needs a list, 100000000000000000000 is none
+-e	perms(10^(-20))	error: permutations needs a list, 1/100000000000000000000 is none
+-e	perms(x)	error: permutations needs a list, x is none
+-e	perms([])	[[]]
+-e	perms([1, 2])	[[2, 1], [1, 2]]
+-e	perms("text")	error: permutations needs a list, "text" is none
+-e	perms(true)	error: permutations needs a list, true is none
+-e	perms(-7/3)	error: permutations needs a list, -7/3 is none
+-e	perms(0.5)	error: permutations needs a list, 1/2 is none
+-e	cumprod(0)	0
+-e	cumprod(1)	1
+-e	cumprod(-1)	-1
+-e	cumprod(1/2)	1/2
+-e	cumprod(2)	2
+-e	cumprod(i)	i
+-e	cumprod(inf)	inf
+-e	cumprod(-inf)	-inf
+-e	cumprod(undefined)	undefined
+-e	cumprod(10^20)	100000000000000000000
+-e	cumprod(10^(-20))	1/100000000000000000000
+-e	cumprod(x)	x
+-e	cumprod([])	[]
+-e	cumprod([1, 2])	[1, 2]
+-e	cumprod("text")	"text"
+-e	cumprod(true)	true
+-e	cumprod(-7/3)	-7/3
+-e	cumprod(0.5)	0.5
+-e	cummax(0)	0
+-e	cummax(1)	1
+-e	cummax(-1)	-1
+-e	cummax(1/2)	1/2
+-e	cummax(2)	2
+-e	cummax(i)	i
+-e	cummax(inf)	inf
+-e	cummax(-inf)	-inf
+-e	cummax(undefined)	undefined
+-e	cummax(10^20)	100000000000000000000
+-e	cummax(10^(-20))	1/100000000000000000000
+-e	cummax(x)	x
+-e	cummax([])	[]
+-e	cummax([1, 2])	[1, 2]
+-e	cummax("text")	"text"
+-e	cummax(true)	true
+-e	cummax(-7/3)	-7/3
+-e	cummax(0.5)	0.5
+-e	cummin(0)	0
+-e	cummin(1)	1
+-e	cummin(-1)	-1
+-e	cummin(1/2)	1/2
+-e	cummin(2)	2
+-e	cummin(i)	i
+-e	cummin(inf)	inf
+-e	cummin(-inf)	-inf
+-e	cummin(undefined)	undefined
+-e	cummin(10^20)	100000000000000000000
+-e	cummin(10^(-20))	1/100000000000000000000
+-e	cummin(x)	x
+-e	cummin([])	[]
+-e	cummin([1, 2])	[1, 1]
+-e	cummin("text")	"text"
+-e	cummin(true)	true
+-e	cummin(-7/3)	-7/3
+-e	cummin(0.5)	0.5
+-e	bounds(0)	[0, 0]
+-e	bounds(1)	[1, 1]
+-e	bounds(-1)	[-1, -1]
+-e	bounds(1/2)	[1/2, 1/2]
+-e	bounds(2)	[2, 2]
+-e	bounds(i)	[i, i]
+-e	bounds(inf)	[inf, inf]
+-e	bounds(-inf)	[-inf, -inf]
+-e	bounds(undefined)	[undefined, undefined]
+-e	bounds(10^20)	[100000000000000000000, 100000000000000000000]
+-e	bounds(10^(-20))	[1/100000000000000000000, 1/100000000000000000000]
+-e	bounds(x)	[x, x]
+-e	bounds([])	[undefined, undefined]
+-e	bounds([1, 2])	[1, 2]
+-e	bounds("text")	["text", "text"]
+-e	bounds(true)	[true, true]
+-e	bounds(-7/3)	[-7/3, -7/3]
+-e	bounds(0.5)	[0.5, 0.5]
+-e	peak2peak(0)	0
+-e	peak2peak(1)	0
+-e	peak2peak(-1)	0
+-e	peak2peak(1/2)	0
+-e	peak2peak(2)	0
+-e	peak2peak(i)	0
+-e	peak2peak(inf)	undefined
+-e	peak2peak(-inf)	undefined
+-e	peak2peak(undefined)	undefined
+-e	peak2peak(10^20)	0
+-e	peak2peak(10^(-20))	0
+-e	peak2peak(x)	0
+-e	peak2peak([])	undefined
+-e	peak2peak([1, 2])	1
+-e	peak2peak("text")	0
+-e	peak2peak(true)	0
+-e	peak2peak(-7/3)	0
+-e	peak2peak(0.5)	0
+-e	trapz(0)	0
+-e	trapz(1)	0
+-e	trapz(-1)	0
+-e	trapz(1/2)	0
+-e	trapz(2)	0
+-e	trapz(i)	0
+-e	trapz(inf)	0
+-e	trapz(-inf)	0
+-e	trapz(undefined)	0
+-e	trapz(10^20)	0
+-e	trapz(10^(-20))	0
+-e	trapz(x)	0
+-e	trapz([])	0
+-e	trapz([1, 2])	3/2
+-e	trapz("text")	0
+-e	trapz(true)	0
+-e	trapz(-7/3)	0
+-e	trapz(0.5)	0
+-e	cumtrapz(0)	0
+-e	cumtrapz(1)	0
+-e	cumtrapz(-1)	0
+-e	cumtrapz(1/2)	0
+-e	cumtrapz(2)	0
+-e	cumtrapz(i)	0
+-e	cumtrapz(inf)	0
+-e	cumtrapz(-inf)	0
+-e	cumtrapz(undefined)	0
+-e	cumtrapz(10^20)	0
+-e	cumtrapz(10^(-20))	0
+-e	cumtrapz(x)	0
+-e	cumtrapz([])	[0]
+-e	cumtrapz([1, 2])	[0, 3/2]
+-e	cumtrapz("text")	0

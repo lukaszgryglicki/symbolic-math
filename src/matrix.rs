@@ -36,7 +36,7 @@ fn map(e: &Expr, f: &dyn Fn(&Expr) -> Expr) -> Expr {
     }
 }
 
-fn zip(a: &Expr, b: &Expr, f: &dyn Fn(&Expr, &Expr) -> Expr) -> Result<Expr, String> {
+pub(crate) fn zip(a: &Expr, b: &Expr, f: &dyn Fn(&Expr, &Expr) -> Expr) -> Result<Expr, String> {
     match (a, b) {
         (Expr::List(x), Expr::List(y)) => {
             if x.len() != y.len() {
@@ -81,6 +81,9 @@ fn dot(a: &[Expr], b: &[Expr]) -> Expr {
 }
 
 pub fn matmul(a: &Rows, b: &Rows) -> Result<Rows, String> {
+    if a.is_empty() || b.is_empty() {
+        return Err("a matrix without entries cannot be multiplied".to_string());
+    }
     if a[0].len() != b.len() {
         return Err(format!(
             "cannot multiply a {}x{} matrix by a {}x{} matrix",
@@ -192,6 +195,9 @@ pub fn eliminate_with(
     full: bool,
     zero: &dyn Fn(&Expr) -> bool,
 ) -> (Rows, usize, Expr) {
+    if m.is_empty() {
+        return (m, 0, Expr::one());
+    }
     let (nr, nc) = (m.len(), m[0].len());
     let (mut rank, mut det) = (0, Expr::one());
     for col in 0..nc {
@@ -550,4 +556,23 @@ pub fn cholesky(a: &Rows) -> Result<Rows, String> {
         }
     }
     Ok(l)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_matrix_without_entries_is_no_trap() {
+        let (reduced, rank, det) = eliminate(Vec::new(), true);
+        assert!(reduced.is_empty());
+        assert_eq!((rank, det), (0, Expr::one()));
+        assert!(matmul(&Vec::new(), &Vec::new()).is_err());
+        let one = vec![vec![Expr::int(2)]];
+        assert!(matmul(&one, &Vec::new()).is_err());
+        assert_eq!(
+            matmul(&one, &one).expect("a product"),
+            vec![vec![Expr::int(4)]]
+        );
+    }
 }

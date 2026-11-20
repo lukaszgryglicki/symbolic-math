@@ -325,16 +325,25 @@ pub fn principal_parts(r: &Expr, var: &str) -> Option<(Expr, Vec<Pole>)> {
             &x,
             &add(vec![p.clone(), Expr::sym(U)]),
         );
-        let s = series::expand(&shifted, U, root.mult as usize + 2)?.trim();
-        if s.den != 1 {
-            return None;
-        }
+        // (the series is asked for more terms until it reaches the one of 1/U)
+        let mut order = 2 * root.mult as usize + 4;
+        let s = loop {
+            let s = series::expand(&shifted, U, order)?.trim();
+            if s.den != 1 {
+                return None;
+            }
+            if usize::try_from(-1 - s.lo).is_ok_and(|k| k >= s.c.len()) && order <= 128 {
+                order *= 2;
+                continue;
+            }
+            break s;
+        };
         let mut cs = Vec::new();
         for j in 1..=i64::from(root.mult) {
-            let at = -j - s.lo;
-            cs.push(match usize::try_from(at).ok().and_then(|k| s.c.get(k)) {
-                Some(c) => simplify(c),
-                None => Expr::zero(),
+            cs.push(match usize::try_from(-j - s.lo) {
+                // (a term that is not known gives no answer rather than a wrong one)
+                Ok(k) => simplify(s.c.get(k)?),
+                Err(_) => Expr::zero(),
             });
         }
         parts.push((p.clone(), cs));
