@@ -165,7 +165,20 @@ pub(crate) fn chi_above(x: &Float, degrees: usize) -> Float {
         return fl(1);
     }
     let half = fl(degrees as u32) / 2u32;
-    let upper = half.clone().gamma_inc(&fl(x / 2u32));
+    let at = fl(x / 2u32);
+    // (far to the right MPFR's own function takes for ever: the one of this program does not)
+    if at > 1000u32 {
+        let prec = at.prec();
+        let far = crate::hyper::upper_gamma(
+            &Complex::with_val(prec, &half),
+            &Complex::with_val(prec, &at),
+            prec,
+        );
+        if let Some(Some(upper)) = far {
+            return fl(upper.real()) / half.gamma();
+        }
+    }
+    let upper = half.clone().gamma_inc(&at);
     upper / half.gamma()
 }
 
@@ -952,16 +965,28 @@ impl Session {
         let total = spread(&y);
         let free = (count - terms) as u32;
         let unit = fl(&left / free);
-        let exact_fit = unit <= fl(&total >> (bits() - 16)) || unit.is_nan();
+        // (values that do not differ at all are fitted exactly too: the size of the values is the measure then)
+        let size = y.iter().fold(fl(0), |s, v| s + square(v.clone()));
+        if total <= fl(&size >> (bits() - 16)) {
+            return Err("fitlm: the values that are to be explained do not differ (regress gives the coefficients)".into());
+        }
+        let exact_fit = unit <= fl(fl(&total + &size) >> (bits() - 16)) || unit.is_nan();
         let errors: Vec<Float> = (0..terms)
             .map(|i| fl(&unit * &inverse[i][i]).max(&fl(0)).sqrt())
             .collect();
         let law = Expr::call("studenttdist", vec![Expr::int(i64::from(free))]);
         let (mut ratios, mut chances) = (Vec::new(), Vec::new());
+        let dust = fl(fl(size.clone().sqrt()) >> (bits() / 2));
         for (b, e) in beta.iter().zip(&errors) {
             if exact_fit {
-                ratios.push(Expr::inf());
-                chances.push(Expr::zero());
+                // (a coefficient that is nothing over an error that is nothing says nothing)
+                let none = fl(b.abs_ref()) <= dust;
+                ratios.push(if none { Expr::undefined() } else { Expr::inf() });
+                chances.push(if none {
+                    Expr::undefined()
+                } else {
+                    Expr::zero()
+                });
                 continue;
             }
             let t = fl(b / e);

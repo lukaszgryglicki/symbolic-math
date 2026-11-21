@@ -150,7 +150,7 @@ subspace||2|2|the angle between the spans of the columns of two matrices
 planerot||1|1|planerot([x, y]): [G, [r, 0]] with the turn G that takes [x, y] to [r, 0]
 
 # polynomials as lists of coefficients, the highest first
-!roots|1|2|roots of a polynomial; roots([1, -3, 2]): of the one with these coefficients, the highest first
+!roots|1|2|roots of a polynomial; roots([1, -3, 2]): of the one with these coefficients, the highest first (names may stand among them: roots([1, a, b]))
 !residue|2|3|residue(f, z, a): the residue of f at z = a; residue(b, a) with lists of coefficients: [residues, poles, polynomial part] of b(s)/a(s); residue(r, p, k): back to [b, a]
 +degree|polynomialdegree
 poly||1|1|poly([roots]): the coefficients of the polynomial with these roots; poly(A): of the characteristic polynomial of a matrix
@@ -320,7 +320,7 @@ logical||1|1|true for numbers other than zero and for conditions that hold, entr
 sprintf||1|*|sprintf(format, values): a text with the values in the forms %d %i %u %f %e %g %s %c %x %o, as in C; \n is a new line
 rats||1|2|a fraction near a number, as a text
 
-# the distribution functions of MATLAB
+# the distribution functions of MATLAB (a list among the parameters stands for a distribution of every entry: poissrnd([1, 2, 3]) gives three numbers)
 !inv|1|3|reciprocal, inverse of a matrix; inv(system): the system the other way round; finv(p, v1, v2): the place where the F distribution reaches the probability p
 +quantile|icdf
 normpdf||1|3|normpdf(x, mu, sigma): density or probability at x of the normal distribution with the mean mu (0) and the deviation sigma (1)
@@ -913,7 +913,7 @@ cse||1|1|cse(expression or [expressions]): [[sigma1 = part, sigma2 = part, ...],
 pretty||1|1|pretty(expression): the expression as text in several lines, as on paper: fractions over a bar, powers raised, brackets as tall as what they hold
 # systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)
 !series|2|4|series(f, x, a, n): power series around a up to order n; series(G, H): two systems one after the other, G*H
-!pade|2|5|pade(f, x, m, n): the ratio of polynomials of degrees m and n that agrees with f at 0 as far as possible; pade(f, x, x0, m, n) at x0; pade(T, n): [numerator, denominator] for the delay e^(-T*s) as padecoef
+!pade|2|5|pade(f, x, m, n): the ratio of polynomials of degrees m and n that agrees with f at 0 as far as possible; pade(f, x, x0, m, n) at x0; pade(T, n): [numerator, denominator] for the delay e^(-T*s) as padecoef; pade(system, n): the delay of a system as such a ratio (a system without a delay stays as it is)
 tf||1|3|tf([numerator], [denominator][, Ts]): the system with that transfer function, the highest power first; Ts the time between samples of a sampled system (-1: not said); tf("s"), tf("z", Ts): the variable itself; tf(system or a ratio of polynomials in s or z): written as tf
 zpk||1|4|zpk([zeros], [poles], gain[, Ts]): the system by its zeros and poles; zpk(system): a system written that way
 ss||1|5|ss(A, B, C, D[, Ts]): the system x' = A*x + B*u, y = C*x + D*u (sampled with Ts: x at the next sample); ss(system): a system written that way (the companion form of tf2ss)
@@ -946,11 +946,11 @@ margin||1|1|margin(system): [gain margin, phase margin in degrees, frequency whe
 allmargin||1|1|allmargin(system): the record of every gain margin and phase margin with their frequencies, the delay margins, and whether the closed loop is stable
 hinfnorm|getpeakgain|1|1|hinfnorm(system): [the largest gain over all frequencies, the frequency where it is]
 h2norm||1|1|h2norm(system): the root of the energy of its impulse response; inf for a system that is not stable or not strictly proper
-step||1|2|step(system): its answer to a step of height 1 as an expression in t (for a sampled system the first samples); step(system, t or [t]): the values at those times
+step||1|2|step(system): its answer to a step of height 1 as an expression in t (for a sampled system the first samples); step(system, t or [t]): the values at those times; step(sampled system, n): the first n samples (more than 5000 of them in decimal numbers)
 impulse||1|2|impulse(system): its answer to an impulse as an expression in t (for a sampled system the first samples); impulse(system, t or [t]): the values at those times
 lsim||2|3|lsim(system, u(t)): its answer to the input u, an expression in t; lsim(system, u(t), t or [t]): the values; lsim(sampled system, [samples of the input]): the samples of the output
 stepinfo||1|1|stepinfo(system): the record of the step response: RiseTime (10% to 90%), SettlingTime (within 2%), SettlingMin, SettlingMax, Overshoot and Undershoot in percent, Peak, PeakTime
-c2d||2|3|c2d(system, Ts[, "zoh" | "tustin" | "matched" | "impulse"]): the sampled system for the time Ts between samples; "zoh" (the usual) holds the input between samples
+c2d||2|3|c2d(system, Ts[, "zoh" | "tustin" | "matched" | "impulse"]): the sampled system for the time Ts between samples; "zoh" (the usual) holds the input between samples; in closed form for small systems and with names, in decimal numbers for larger ones
 d2c||1|2|d2c(sampled system[, "zoh" | "tustin"]): the system of running time that c2d turns back into it
 pid||1|4|pid(Kp, Ki, Kd, Tf): the controller Kp + Ki/s + Kd*s/(Tf*s + 1); what is left out is 0
 rlocus||1|2|rlocus(system, k or [k]): the poles of the closed loop with the gain k, the roots of denominator + k*numerator; rlocus(system): [the poles for gains that it chooses, the gains]

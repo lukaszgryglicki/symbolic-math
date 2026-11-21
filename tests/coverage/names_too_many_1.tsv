@@ -364,7 +364,6 @@
 	sortby(1, 2, 3)	error: sortby takes 2 argument(s), 3 given
 	rotateleft(1, 2, 3)	error: rotateleft takes 1 to 2 argument(s), 3 given
 	rotateright(1, 2, 3)	error: rotateright takes 1 to 2 argument(s), 3 given
-	append(1, 2, 3)	error: append takes 2 argument(s), 3 given
 	prepend(1, 2, 3)	error: prepend takes 2 argument(s), 3 given
 	insert(1, 2, 3, 4)	error: insert takes 3 argument(s), 4 given
 	delete(1, 2, 3)	error: delete takes 2 argument(s), 3 given
@@ -698,3 +697,4 @@
 	nextpow2(1, 2)	error: nextpow2 takes 1 argument(s), 2 given
 	pow2(1, 2, 3)	error: pow2 takes 1 to 2 argument(s), 3 given
 	idivide(1, 2, 3, 4)	error: idivide takes 2 to 3 argument(s), 4 given
+	sind(1, 2)	error: sind takes 1 argument(s), 2 given

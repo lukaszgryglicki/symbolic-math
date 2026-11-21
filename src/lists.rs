@@ -1018,12 +1018,17 @@ impl Session {
         let mut named: Vec<Expr> = raw.to_vec();
         if name == "map" {
             if let [.., key, value] = named.as_slice()
-                && crate::radix::text_of(key).is_some_and(|k| k.eq_ignore_ascii_case("uniformoutput"))
+                && crate::radix::text_of(key)
+                    .is_some_and(|k| k.eq_ignore_ascii_case("uniformoutput"))
             {
                 uniform = Some(!matches!(value, Expr::Bool(false)) && !value.is_zero());
                 named.truncate(named.len() - 2);
             }
-            if let Some(known) = named.first().and_then(crate::radix::text_of).filter(|t| crate::names::function(t).is_some()) {
+            if let Some(known) = named
+                .first()
+                .and_then(crate::radix::text_of)
+                .filter(|t| crate::names::function(t).is_some())
+            {
                 named[0] = Expr::sym(known);
             }
         }
@@ -1056,7 +1061,11 @@ impl Session {
         };
         // of cells: numbers and truths give a list, other things a cell array again
         let gathered = |out: Vec<Expr>| -> Expr {
-            let plain = |x: &Expr| x.as_list().is_none() && !crate::cells::is_cell(x) && crate::radix::text_of(x).is_none();
+            let plain = |x: &Expr| {
+                x.as_list().is_none()
+                    && !crate::cells::is_cell(x)
+                    && crate::radix::text_of(x).is_none()
+            };
             match uniform.unwrap_or(!held || out.iter().all(plain)) {
                 true => Expr::list(out),
                 false => crate::cells::made(out),

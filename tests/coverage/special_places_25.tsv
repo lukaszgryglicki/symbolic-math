@@ -1,587 +1,700 @@
--e	str2angle(-inf)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(undefined)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(10^20)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(10^(-20))	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(x)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle([])	[]
--e	str2angle([1, 2])	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle("text")	error: str2angle: "text" is not an angle: degrees, minutes and seconds like 12°30'15''S, 12-30-15S, 12d30m15s, 123015S (the last four digits are minutes and seconds), or -12.5
--e	str2angle(true)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(-7/3)	error: str2angle is written str2angle("12°30'15''S")
--e	str2angle(0.5)	error: str2angle is written str2angle("12°30'15''S")
--e	timezone(0)	[0, "Z"]
--e	timezone(1)	[0, "Z"]
--e	timezone(-1)	[0, "Z"]
--e	timezone(1/2)	[0, "Z"]
--e	timezone(2)	[0, "Z"]
--e	timezone(i)	error: timezone: i is not a real number
--e	timezone(inf)	error: timezone: inf is not a real number
--e	timezone(-inf)	error: timezone: -inf is not a real number
--e	timezone(undefined)	error: timezone: undefined is not a real number
--e	timezone(10^20)	[5, "R"]
--e	timezone(10^(-20))	[0, "Z"]
--e	timezone(x)	error: timezone: x is not a real number
--e	timezone([])	[]
--e	timezone([1, 2])	[[0, "Z"], [0, "Z"]]
--e	timezone("text")	error: timezone: "text" is not a real number
--e	timezone(true)	error: timezone: true is not a real number
--e	timezone(-7/3)	[0, "Z"]
--e	timezone(0.5)	[0, "Z"]
--e	utmzone(0)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 0
--e	utmzone(1)	[[0, 8], [-180, -174]]
--e	utmzone(-1)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -1
--e	utmzone(1/2)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
--e	utmzone(2)	[[0, 8], [-174, -168]]
--e	utmzone(i)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not i
--e	utmzone(inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not inf
--e	utmzone(-inf)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -inf
--e	utmzone(undefined)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not undefined
--e	utmzone(10^20)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 100000000000000000000
--e	utmzone(10^(-20))	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/100000000000000000000
--e	utmzone(x)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not x
--e	utmzone([])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not []
--e	utmzone([1, 2])	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not [1, 2]
--e	utmzone("text")	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not "text"
--e	utmzone(true)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not true
--e	utmzone(-7/3)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not -7/3
--e	utmzone(0.5)	error: utmzone: a zone of UTM is a number from 1 to 60 and a letter from C to X without I and O, like "31U"; not 1/2
--e	relu(0)	0
--e	relu(1)	1
--e	relu(-1)	0
--e	relu(1/2)	1/2
--e	relu(2)	2
--e	relu(i)	error: relu: i is not a real number
--e	relu(inf)	error: relu: inf is not a real number
--e	relu(-inf)	error: relu: -inf is not a real number
--e	relu(undefined)	error: relu: undefined is not a real number
--e	relu(10^20)	100000000000000000000
--e	relu(10^(-20))	1/100000000000000000000
--e	relu(x)	x/2 + abs(x)/2
--e	relu([])	[]
--e	relu([1, 2])	[1, 2]
--e	relu("text")	"text"/2 + abs("text")/2
--e	relu(true)	error: relu: true is not a real number
--e	relu(-7/3)	0
--e	relu(0.5)	0.5
--e	leakyrelu(0)	0
--e	leakyrelu(1)	1
--e	leakyrelu(-1)	-1/100
--e	leakyrelu(1/2)	1/2
--e	leakyrelu(2)	2
--e	leakyrelu(i)	error: leakyrelu: i is not a real number
--e	leakyrelu(inf)	error: leakyrelu: inf is not a real number
--e	leakyrelu(-inf)	error: leakyrelu: -inf is not a real number
--e	leakyrelu(undefined)	error: leakyrelu: undefined is not a real number
--e	leakyrelu(10^20)	100000000000000000000
--e	leakyrelu(10^(-20))	1/100000000000000000000
--e	leakyrelu(x)	101x/200 + 99abs(x)/200
--e	leakyrelu([])	[]
--e	leakyrelu([1, 2])	[1, 2]
--e	leakyrelu("text")	101*"text"/200 + 99abs("text")/200
--e	leakyrelu(true)	error: leakyrelu: true is not a real number
--e	leakyrelu(-7/3)	-7/300
--e	leakyrelu(0.5)	0.5
--e	clippedrelu(0)	0
--e	clippedrelu(1)	1
--e	clippedrelu(-1)	0
--e	clippedrelu(1/2)	1/2
--e	clippedrelu(2)	2
--e	clippedrelu(i)	error: clippedrelu: i is not a real number
--e	clippedrelu(inf)	error: clippedrelu: inf is not a real number
--e	clippedrelu(-inf)	error: clippedrelu: -inf is not a real number
--e	clippedrelu(undefined)	error: clippedrelu: undefined is not a real number
--e	clippedrelu(10^20)	6
--e	clippedrelu(10^(-20))	1/100000000000000000000
--e	clippedrelu(x)	-abs(x - 6)/2 + abs(x)/2 + 3
--e	clippedrelu([])	[]
--e	clippedrelu([1, 2])	[1, 2]
--e	clippedrelu("text")	-abs("text" - 6)/2 + abs("text")/2 + 3
--e	clippedrelu(true)	error: clippedrelu: true is not a real number
--e	clippedrelu(-7/3)	0
--e	clippedrelu(0.5)	0.5
--e	elu(0)	0
--e	elu(1)	1
--e	elu(-1)	1/e - 1
--e	elu(1/2)	1/2
--e	elu(2)	2
--e	elu(i)	error: elu: i is not a real number
--e	elu(inf)	error: elu: inf is not a real number
--e	elu(-inf)	error: elu: -inf is not a real number
--e	elu(undefined)	error: elu: undefined is not a real number
--e	elu(10^20)	100000000000000000000
--e	elu(10^(-20))	1/100000000000000000000
--e	elu(x)	x/2 + abs(x)/2 + e^(x/2 - abs(x)/2) - 1
--e	elu([])	[]
--e	elu([1, 2])	[1, 2]
--e	elu("text")	"text"/2 + abs("text")/2 + e^("text"/2 - abs("text")/2) - 1
--e	elu(true)	error: elu: true is not a real number
--e	elu(-7/3)	1/e^(7/3) - 1
--e	elu(0.5)	0.5
--e	gelu(0)	0
--e	gelu(1)	1/2 + erf(sqrt(2)/2)/2
--e	gelu(-1)	erf(sqrt(2)/2)/2 - 1/2
--e	gelu(1/2)	1/4 + erf(sqrt(2)/4)/4
--e	gelu(2)	1 + erf(sqrt(2))
--e	gelu(i)	i/2 + i*erf(i*sqrt(2)/2)/2
--e	gelu(inf)	inf
--e	gelu(-inf)	undefined
--e	gelu(undefined)	undefined
--e	gelu(10^20)	50000000000000000000(1 + erf(50000000000000000000sqrt(2)))
--e	gelu(10^(-20))	(1/200000000000000000000)(1 + erf(sqrt(2)/200000000000000000000))
--e	gelu(x)	x*(erf(sqrt(2)*x/2) + 1)/2
--e	gelu([])	[]
--e	gelu([1, 2])	[1/2 + erf(sqrt(2)/2)/2, 1 + erf(sqrt(2))]
--e	gelu("text")	"text"*(erf(sqrt(2)*"text"/2) + 1)/2
--e	gelu(true)	(1 + erf(sqrt(2)*true/2))*true/2
--e	gelu(-7/3)	7erf(7sqrt(2)/6)/6 - 7/6
--e	gelu(0.5)	0.34573123063700655181885230530417
--e	swish(0)	0
--e	swish(1)	e/(1 + e)
--e	swish(-1)	-1/(1 + e)
--e	swish(1/2)	1/(2(1 + 1/sqrt(e)))
--e	swish(2)	2/(1 + 1/e^2)
--e	swish(i)	i/(1 + e^(-i))
--e	swish(inf)	inf
--e	swish(-inf)	undefined
--e	swish(undefined)	undefined
--e	swish(10^20)	100000000000000000000/(1 + 1/e^100000000000000000000)
--e	swish(10^(-20))	1/(100000000000000000000(1 + 1/e^(1/100000000000000000000)))
--e	swish(x)	x/(e^(-x) + 1)
--e	swish([])	[]
--e	swish([1, 2])	[e/(1 + e), 2/(1 + 1/e^2)]
--e	swish("text")	"text"/(e^(-"text") + 1)
--e	swish(true)	true/(1 + e^(-true))
--e	swish(-7/3)	-7/(3(1 + e^(7/3)))
--e	swish(0.5)	0.31122966560092728231945028287275
--e	mish(0)	0
--e	mish(1)	e*(2 + e)/(2 + 2e + e^2)
--e	mish(-1)	(-1 - 2e)/(1 + 2e + 2e^2)
--e	mish(1/2)	(e/2 + sqrt(e))/(2 + e + 2sqrt(e))
--e	mish(2)	(4e^2 + 2e^4)/(2 + 2e^2 + e^4)
--e	mish(i)	i*e^i*(2 + e^i)/(2 + e^(2i) + 2e^i)
--e	mish(inf)	inf
--e	mish(-inf)	undefined
--e	mish(undefined)	undefined
--e	mish(10^20)	100000000000000000000((1 + e^100000000000000000000)^2 - 1)/(1 + (1 + e^100000000000000000000)^2)
--e	mish(10^(-20))	((1 + e^(1/100000000000000000000))^2 - 1)/(100000000000000000000(1 + (1 + e^(1/100000000000000000000))^2))
--e	mish(x)	x*e^x*(e^x + 2)/(e^(2x) + 2e^x + 2)
--e	mish([])	[]
--e	mish([1, 2])	[e*(2 + e)/(2 + 2e + e^2), (4e^2 + 2e^4)/(2 + 2e^2 + e^4)]
--e	mish("text")	"text"*((e^"text" + 1)^2 - 1)/((e^"text" + 1)^2 + 1)
--e	mish(true)	((1 + e^(true))^2 - 1)*true/(1 + (1 + e^(true))^2)
--e	mish(-7/3)	-7(1 + 2e^(7/3))/(3(1 + 2e^(14/3) + 2e^(7/3)))
--e	mish(0.5)	0.37524521130489510481856241339928
--e	softplus(0)	ln(2)
--e	softplus(1)	ln(1 + e)
--e	softplus(-1)	ln(1 + 1/e)
--e	softplus(1/2)	ln(1 + sqrt(e))
--e	softplus(2)	ln(1 + e^2)
--e	softplus(i)	ln(1 + e^i)
--e	softplus(inf)	inf
--e	softplus(-inf)	0
--e	softplus(undefined)	undefined
--e	softplus(10^20)	ln(1 + e^100000000000000000000)
--e	softplus(10^(-20))	ln(1 + e^(1/100000000000000000000))
--e	softplus(x)	ln(e^x + 1)
--e	softplus([])	[]
--e	softplus([1, 2])	[ln(1 + e), ln(1 + e^2)]
--e	softplus("text")	ln(e^"text" + 1)
--e	softplus(true)	ln(1 + e^(true))
--e	softplus(-7/3)	ln(1 + 1/e^(7/3))
--e	softplus(0.5)	0.97407698418010668087299735508117
--e	softsign(0)	0
--e	softsign(1)	1/2
--e	softsign(-1)	-1/2
--e	softsign(1/2)	1/3
--e	softsign(2)	2/3
--e	softsign(i)	i/2
--e	softsign(inf)	undefined
--e	softsign(-inf)	undefined
--e	softsign(undefined)	undefined
--e	softsign(10^20)	100000000000000000000/100000000000000000001
--e	softsign(10^(-20))	1/100000000000000000001
--e	softsign(x)	x/(abs(x) + 1)
--e	softsign([])	[]
--e	softsign([1, 2])	[1/2, 2/3]
--e	softsign("text")	"text"/(abs("text") + 1)
--e	softsign(true)	true/(1 + abs(true))
--e	softsign(-7/3)	-7/10
--e	softsign(0.5)	0.33333333333333333333333333333333
--e	sigmoid(0)	1/2
--e	sigmoid(1)	e/(1 + e)
--e	sigmoid(-1)	1/(1 + e)
--e	sigmoid(1/2)	1/(1 + 1/sqrt(e))
--e	sigmoid(2)	1/(1 + 1/e^2)
--e	sigmoid(i)	e^i/(1 + e^i)
--e	sigmoid(inf)	1
--e	sigmoid(-inf)	0
--e	sigmoid(undefined)	undefined
--e	sigmoid(10^20)	1/(1 + 1/e^100000000000000000000)
--e	sigmoid(10^(-20))	1/(1 + 1/e^(1/100000000000000000000))
--e	sigmoid(x)	e^x/(e^x + 1)
--e	sigmoid([])	[]
--e	sigmoid([1, 2])	[e/(1 + e), 1/(1 + 1/e^2)]
--e	sigmoid("text")	1/(e^(-"text") + 1)
--e	sigmoid(true)	1/(1 + e^(-true))
--e	sigmoid(-7/3)	1/(1 + e^(7/3))
--e	sigmoid(0.5)	0.62245933120185456463890056574551
--e	tansig(0)	0
--e	tansig(1)	tanh(1)
--e	tansig(-1)	-tanh(1)
--e	tansig(1/2)	tanh(1/2)
--e	tansig(2)	tanh(2)
--e	tansig(i)	i*tan(1)
--e	tansig(inf)	1
--e	tansig(-inf)	-1
--e	tansig(undefined)	undefined
--e	tansig(10^20)	tanh(100000000000000000000)
--e	tansig(10^(-20))	tanh(1/100000000000000000000)
--e	tansig(x)	tanh(x)
--e	tansig([])	[]
--e	tansig([1, 2])	[tanh(1), tanh(2)]
--e	tansig("text")	tanh("text")
--e	tansig(true)	tanh(true)
--e	tansig(-7/3)	-tanh(7/3)
--e	tansig(0.5)	0.46211715726000975850231848364367
--e	purelin(0)	0
--e	purelin(1)	1
--e	purelin(-1)	-1
--e	purelin(1/2)	1/2
--e	purelin(2)	2
--e	purelin(i)	i
--e	purelin(inf)	inf
--e	purelin(-inf)	-inf
--e	purelin(undefined)	undefined
--e	purelin(10^20)	100000000000000000000
--e	purelin(10^(-20))	1/100000000000000000000
--e	purelin(x)	x
--e	purelin([])	[]
--e	purelin([1, 2])	[1, 2]
--e	purelin("text")	"text"
--e	purelin(true)	true
--e	purelin(-7/3)	-7/3
--e	purelin(0.5)	0.5
--e	satlin(0)	0
--e	satlin(1)	1
--e	satlin(-1)	0
--e	satlin(1/2)	1/2
--e	satlin(2)	1
--e	satlin(i)	error: satlin: i is not a real number
--e	satlin(inf)	error: satlin: inf is not a real number
--e	satlin(-inf)	error: satlin: -inf is not a real number
--e	satlin(undefined)	error: satlin: undefined is not a real number
--e	satlin(10^20)	1
--e	satlin(10^(-20))	1/100000000000000000000
--e	satlin(x)	-abs(x - 1)/2 + abs(x)/2 + 1/2
--e	satlin([])	[]
--e	satlin([1, 2])	[1, 1]
--e	satlin("text")	-abs("text" - 1)/2 + abs("text")/2 + 1/2
--e	satlin(true)	error: satlin: true is not a real number
--e	satlin(-7/3)	0
--e	satlin(0.5)	0.5
--e	satlins(0)	0
--e	satlins(1)	1
--e	satlins(-1)	-1
--e	satlins(1/2)	1/2
--e	satlins(2)	1
--e	satlins(i)	error: satlins: i is not a real number
--e	satlins(inf)	error: satlins: inf is not a real number
--e	satlins(-inf)	error: satlins: -inf is not a real number
--e	satlins(undefined)	error: satlins: undefined is not a real number
--e	satlins(10^20)	1
--e	satlins(10^(-20))	1/100000000000000000000
--e	satlins(x)	abs(x + 1)/2 - abs(x - 1)/2
--e	satlins([])	[]
--e	satlins([1, 2])	[1, 1]
--e	satlins("text")	abs("text" + 1)/2 - abs("text" - 1)/2
--e	satlins(true)	error: satlins: true is not a real number
--e	satlins(-7/3)	-1
--e	satlins(0.5)	0.5
--e	hardlim(0)	1
--e	hardlim(1)	1
--e	hardlim(-1)	0
--e	hardlim(1/2)	1
--e	hardlim(2)	1
--e	hardlim(i)	error: hardlim: i is not a real number
--e	hardlim(inf)	error: hardlim: inf is not a real number
--e	hardlim(-inf)	error: hardlim: -inf is not a real number
--e	hardlim(undefined)	error: hardlim: undefined is not a real number
--e	hardlim(10^20)	1
--e	hardlim(10^(-20))	1
--e	hardlim(x)	hardlim(x)
--e	hardlim([])	[]
--e	hardlim([1, 2])	[1, 1]
--e	hardlim("text")	hardlim("text")
--e	hardlim(true)	error: hardlim: true is not a real number
--e	hardlim(-7/3)	0
--e	hardlim(0.5)	1
--e	hardlims(0)	1
--e	hardlims(1)	1
--e	hardlims(-1)	-1
--e	hardlims(1/2)	1
--e	hardlims(2)	1
--e	hardlims(i)	error: hardlims: i is not a real number
--e	hardlims(inf)	error: hardlims: inf is not a real number
--e	hardlims(-inf)	error: hardlims: -inf is not a real number
--e	hardlims(undefined)	error: hardlims: undefined is not a real number
--e	hardlims(10^20)	1
--e	hardlims(10^(-20))	1
--e	hardlims(x)	hardlims(x)
--e	hardlims([])	[]
--e	hardlims([1, 2])	[1, 1]
--e	hardlims("text")	hardlims("text")
--e	hardlims(true)	error: hardlims: true is not a real number
--e	hardlims(-7/3)	-1
--e	hardlims(0.5)	1
--e	radbas(0)	1
--e	radbas(1)	1/e
--e	radbas(-1)	1/e
--e	radbas(1/2)	1/e^(1/4)
--e	radbas(2)	1/e^4
--e	radbas(i)	e
--e	radbas(inf)	0
--e	radbas(-inf)	0
--e	radbas(undefined)	undefined
--e	radbas(10^20)	1/e^10000000000000000000000000000000000000000
--e	radbas(10^(-20))	1/e^(1/10000000000000000000000000000000000000000)
--e	radbas(x)	e^(-x^2)
--e	radbas([])	[]
--e	radbas([1, 2])	[1/e, 1/e^4]
--e	radbas("text")	e^(-"text"^2)
--e	radbas(true)	e^(-(true)^2)
--e	radbas(-7/3)	1/e^(49/9)
--e	radbas(0.5)	0.77880078307140486824517026697832
--e	tribas(0)	1
--e	tribas(1)	0
--e	tribas(-1)	0
--e	tribas(1/2)	1/2
--e	tribas(2)	0
--e	tribas(i)	error: tribas: i is not a real number
--e	tribas(inf)	error: tribas: inf is not a real number
--e	tribas(-inf)	error: tribas: -inf is not a real number
--e	tribas(undefined)	error: tribas: undefined is not a real number
--e	tribas(10^20)	0
--e	tribas(10^(-20))	99999999999999999999/100000000000000000000
--e	tribas(x)	abs(1 - abs(x))/2 - abs(x)/2 + 1/2
--e	tribas([])	[]
--e	tribas([1, 2])	[0, 0]
--e	tribas("text")	-abs("text")/2 + abs(1 - abs("text"))/2 + 1/2
--e	tribas(true)	error: tribas: true is not a real number
--e	tribas(-7/3)	0
--e	tribas(0.5)	0.5
--e	netinv(0)	ComplexInfinity
--e	netinv(1)	1
--e	netinv(-1)	-1
--e	netinv(1/2)	2
--e	netinv(2)	1/2
--e	netinv(i)	-i
--e	netinv(inf)	0
--e	netinv(-inf)	0
--e	netinv(undefined)	undefined
--e	netinv(10^20)	1/100000000000000000000
--e	netinv(10^(-20))	100000000000000000000
--e	netinv(x)	1/x
--e	netinv([])	[]
--e	netinv([1, 2])	[1, 1/2]
--e	netinv("text")	1/"text"
--e	netinv(true)	1/true
--e	netinv(-7/3)	-3/7
--e	netinv(0.5)	2
--e	softmax(0)	[1]
--e	softmax(1)	[1]
--e	softmax(-1)	[1]
--e	softmax(1/2)	[1]
--e	softmax(2)	[1]
--e	softmax(i)	[1]
--e	softmax(inf)	[undefined]
--e	softmax(-inf)	[undefined]
--e	softmax(undefined)	[undefined]
--e	softmax(10^20)	[1]
--e	softmax(10^(-20))	[1]
--e	softmax(x)	[1]
--e	softmax([])	[]
--e	softmax([1, 2])	[1/(1 + e), e/(1 + e)]
--e	softmax("text")	[1]
--e	softmax(true)	[1]
--e	softmax(-7/3)	[1]
--e	softmax(0.5)	[1]
--e	compet(0)	[1]
--e	compet(1)	[1]
--e	compet(-1)	[1]
--e	compet(1/2)	[1]
--e	compet(2)	[1]
--e	compet(i)	[1]
--e	compet(inf)	[1]
--e	compet(-inf)	[1]
--e	compet(undefined)	[1]
--e	compet(10^20)	[1]
--e	compet(10^(-20))	[1]
--e	compet(x)	[1]
--e	compet([])	error: compet needs values
--e	compet([1, 2])	[0, 1]
--e	compet("text")	[1]
--e	compet(true)	[1]
--e	compet(-7/3)	[1]
--e	compet(0.5)	[1]
--e	onehotencode(0)	[1]
--e	onehotencode(1)	[1]
--e	onehotencode(-1)	[1]
--e	onehotencode(1/2)	[1]
--e	onehotencode(2)	[1]
--e	onehotencode(i)	[1]
--e	onehotencode(inf)	[1]
--e	onehotencode(-inf)	[1]
--e	onehotencode(undefined)	[1]
--e	onehotencode(10^20)	[1]
--e	onehotencode(10^(-20))	[1]
--e	onehotencode(x)	[1]
--e	onehotencode([])	[]
--e	onehotencode([1, 2])	[[1, 0], [0, 1]]
--e	onehotencode("text")	[1]
--e	onehotencode(true)	[1]
--e	onehotencode(-7/3)	[1]
--e	onehotencode(0.5)	[1]
--e	onehotdecode(0)	1
--e	onehotdecode(1)	1
--e	onehotdecode(-1)	1
--e	onehotdecode(1/2)	1
--e	onehotdecode(2)	1
--e	onehotdecode(i)	1
--e	onehotdecode(inf)	1
--e	onehotdecode(-inf)	1
--e	onehotdecode(undefined)	1
--e	onehotdecode(10^20)	1
--e	onehotdecode(10^(-20))	1
--e	onehotdecode(x)	1
--e	onehotdecode([])	error: onehotdecode needs values
--e	onehotdecode([1, 2])	2
--e	onehotdecode("text")	1
--e	onehotdecode(true)	1
--e	onehotdecode(-7/3)	1
--e	onehotdecode(0.5)	1
--e	ind2vec(0)	error: an index must be a whole number from 1 to 1000000, not 0
--e	ind2vec(1)	[[1]]
--e	ind2vec(-1)	error: an index must be a whole number from 1 to 1000000, not -1
--e	ind2vec(1/2)	error: an index must be a whole number from 1 to 1000000, not 1/2
--e	ind2vec(2)	[[0], [1]]
--e	ind2vec(i)	error: an index must be a whole number from 1 to 1000000, not i
--e	ind2vec(inf)	error: an index must be a whole number from 1 to 1000000, not inf
--e	ind2vec(-inf)	error: an index must be a whole number from 1 to 1000000, not -inf
--e	ind2vec(undefined)	error: an index must be a whole number from 1 to 1000000, not undefined
--e	ind2vec(10^20)	error: an index must be a whole number from 1 to 1000000, not 100000000000000000000
--e	ind2vec(10^(-20))	error: an index must be a whole number from 1 to 1000000, not 1/100000000000000000000
--e	ind2vec(x)	error: an index must be a whole number from 1 to 1000000, not x
--e	ind2vec([])	[]
--e	ind2vec([1, 2])	[[1, 0], [0, 1]]
--e	ind2vec("text")	error: an index must be a whole number from 1 to 1000000, not "text"
--e	ind2vec(true)	error: an index must be a whole number from 1 to 1000000, not true
--e	ind2vec(-7/3)	error: an index must be a whole number from 1 to 1000000, not -7/3
--e	ind2vec(0.5)	error: an index must be a whole number from 1 to 1000000, not 1/2
--e	vec2ind(0)	[1]
--e	vec2ind(1)	[1]
--e	vec2ind(-1)	[1]
--e	vec2ind(1/2)	[1]
--e	vec2ind(2)	[1]
--e	vec2ind(i)	[1]
--e	vec2ind(inf)	[1]
--e	vec2ind(-inf)	[1]
--e	vec2ind(undefined)	[1]
--e	vec2ind(10^20)	[1]
--e	vec2ind(10^(-20))	[1]
--e	vec2ind(x)	[1]
--e	vec2ind([])	[]
--e	vec2ind([1, 2])	[1, 1]
--e	vec2ind("text")	[1]
--e	vec2ind(true)	[1]
--e	vec2ind(-7/3)	[1]
--e	vec2ind(0.5)	[1]
--e	mapminmax(0)	[-1]
--e	mapminmax(1)	[-1]
--e	mapminmax(-1)	[-1]
--e	mapminmax(1/2)	[-1]
--e	mapminmax(2)	[-1]
--e	mapminmax(i)	[-1]
--e	mapminmax(inf)	[undefined]
--e	mapminmax(-inf)	[undefined]
--e	mapminmax(undefined)	[undefined]
--e	mapminmax(10^20)	[-1]
--e	mapminmax(10^(-20))	[-1]
--e	mapminmax(x)	[-1]
--e	mapminmax([])	[]
--e	mapminmax([1, 2])	[-1, 1]
--e	mapminmax("text")	[-1]
--e	mapminmax(true)	[-1]
--e	mapminmax(-7/3)	[-1]
--e	mapminmax(0.5)	[-1]
--e	mapstd(0)	[0]
--e	mapstd(1)	[0]
--e	mapstd(-1)	[0]
--e	mapstd(1/2)	[0]
--e	mapstd(2)	[0]
--e	mapstd(i)	[0]
--e	mapstd(inf)	[undefined]
--e	mapstd(-inf)	[undefined]
--e	mapstd(undefined)	[undefined]
--e	mapstd(10^20)	[0]
--e	mapstd(10^(-20))	[0]
--e	mapstd(x)	[0]
--e	mapstd([])	[]
--e	mapstd([1, 2])	[-sqrt(2)/2, sqrt(2)/2]
--e	mapstd("text")	[0]
--e	mapstd(true)	[0]
--e	mapstd(-7/3)	[0]
--e	mapstd(0.5)	[0]
--e	divideblock(0)	error: the number of observations must be a whole number from 1 to 100000000, not 0
--e	divideblock(1)	[[1], [], []]
--e	divideblock(-1)	error: the number of observations must be a whole number from 1 to 100000000, not -1
--e	divideblock(1/2)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
--e	divideblock(2)	[[1, 2], [], []]
--e	divideblock(i)	error: the number of observations must be a whole number from 1 to 100000000, not i
--e	divideblock(inf)	error: the number of observations must be a whole number from 1 to 100000000, not inf
--e	divideblock(-inf)	error: the number of observations must be a whole number from 1 to 100000000, not -inf
--e	divideblock(undefined)	error: the number of observations must be a whole number from 1 to 100000000, not undefined
--e	divideblock(10^20)	error: the number of observations must be a whole number from 1 to 100000000, not 100000000000000000000
--e	divideblock(10^(-20))	error: the number of observations must be a whole number from 1 to 100000000, not 1/100000000000000000000
--e	divideblock(x)	error: the number of observations must be a whole number from 1 to 100000000, not x
--e	divideblock([])	error: the number of observations must be a whole number from 1 to 100000000, not []
--e	divideblock([1, 2])	error: the number of observations must be a whole number from 1 to 100000000, not [1, 2]
--e	divideblock("text")	error: the number of observations must be a whole number from 1 to 100000000, not "text"
--e	divideblock(true)	error: the number of observations must be a whole number from 1 to 100000000, not true
--e	divideblock(-7/3)	error: the number of observations must be a whole number from 1 to 100000000, not -7/3
--e	divideblock(0.5)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
--e	feedforwardnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
--e	feedforwardnet(1)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
--e	feedforwardnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
--e	feedforwardnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
--e	feedforwardnet(2)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
--e	feedforwardnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
--e	feedforwardnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
--e	feedforwardnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
--e	feedforwardnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
--e	feedforwardnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
--e	feedforwardnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
--e	feedforwardnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
--e	feedforwardnet([])	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
--e	feedforwardnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "purelin"]]
--e	feedforwardnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
--e	feedforwardnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
--e	feedforwardnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
--e	feedforwardnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
--e	patternnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
--e	patternnet(1)	error: patternnet([values that come in, units of every layer ..., values that go out])
--e	patternnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
--e	patternnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
--e	patternnet(2)	error: patternnet([values that come in, units of every layer ..., values that go out])
--e	patternnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
--e	patternnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
--e	patternnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
--e	patternnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
--e	patternnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
--e	patternnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
--e	patternnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
--e	patternnet([])	error: patternnet([values that come in, units of every layer ..., values that go out])
--e	patternnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "softmax"]]
--e	patternnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
--e	patternnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
--e	patternnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
--e	patternnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	graythresh(-inf)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(undefined)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(10^20)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(10^(-20))	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(x)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh([])	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh([1, 2])	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh("text")	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(true)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(-7/3)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	graythresh(0.5)	error: graythresh needs a picture of one channel: a matrix of numbers
+-e	otsuthresh(0)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(1)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(-1)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(1/2)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(2)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(i)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(inf)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(-inf)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(undefined)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(10^20)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(10^(-20))	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(x)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh([])	0
+-e	otsuthresh([1, 2])	0
+-e	otsuthresh("text")	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(true)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(-7/3)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	otsuthresh(0.5)	error: otsuthresh([counts]): how many pixels have every level of gray
+-e	stretchlim(0)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(1)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(-1)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(1/2)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(2)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(i)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(inf)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(-inf)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(undefined)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(10^20)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(10^(-20))	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(x)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim([])	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim([1, 2])	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim("text")	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(true)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(-7/3)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	stretchlim(0.5)	error: stretchlim needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(0)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(1)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(-1)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(1/2)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(2)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(i)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(inf)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(-inf)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(undefined)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(10^20)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(10^(-20))	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(x)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust([])	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust([1, 2])	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust("text")	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(true)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(-7/3)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	imadjust(0.5)	error: imadjust needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(0)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(1)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(-1)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(1/2)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(2)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(i)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(inf)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(-inf)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(undefined)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(10^20)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(10^(-20))	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(x)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq([])	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq([1, 2])	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq("text")	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(true)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(-7/3)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	histeq(0.5)	error: histeq needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(0)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(1)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(-1)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(1/2)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(2)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(i)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(inf)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(-inf)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(undefined)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(10^20)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(10^(-20))	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(x)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2([])	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2([1, 2])	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2("text")	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(true)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(-7/3)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	mean2(0.5)	error: mean2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(0)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(1)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(-1)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(1/2)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(2)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(i)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(inf)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(-inf)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(undefined)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(10^20)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(10^(-20))	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(x)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2([])	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2([1, 2])	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2("text")	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(true)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(-7/3)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	std2(0.5)	error: std2 needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(0)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(1)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(-1)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(1/2)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(2)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(i)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(inf)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(-inf)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(undefined)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(10^20)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(10^(-20))	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(x)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy([])	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy([1, 2])	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy("text")	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(true)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(-7/3)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	entropy(0.5)	error: entropy needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(0)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(1)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(-1)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(1/2)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(2)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(i)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(inf)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(-inf)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(undefined)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(10^20)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(10^(-20))	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(x)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv([])	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv([1, 2])	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv("text")	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(true)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(-7/3)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2hsv(0.5)	error: rgb2hsv needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(0)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(1)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(-1)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(1/2)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(2)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(i)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(inf)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(-inf)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(undefined)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(10^20)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(10^(-20))	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(x)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb([])	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb([1, 2])	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb("text")	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(true)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(-7/3)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	hsv2rgb(0.5)	error: hsv2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(0)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(1)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(-1)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(1/2)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(2)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(i)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(inf)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(-inf)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(undefined)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(10^20)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(10^(-20))	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(x)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab([])	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab([1, 2])	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab("text")	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(true)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(-7/3)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2lab(0.5)	error: rgb2lab needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(0)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(1)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(-1)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(1/2)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(2)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(i)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(inf)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(-inf)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(undefined)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(10^20)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(10^(-20))	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(x)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb([])	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb([1, 2])	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb("text")	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(true)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(-7/3)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	lab2rgb(0.5)	error: lab2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(0)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(1)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(-1)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(1/2)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(2)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(i)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(inf)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(-inf)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(undefined)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(10^20)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(10^(-20))	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(x)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr([])	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr([1, 2])	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr("text")	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(true)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(-7/3)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	rgb2ycbcr(0.5)	error: rgb2ycbcr needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(0)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(1)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(-1)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(1/2)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(2)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(i)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(inf)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(-inf)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(undefined)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(10^20)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(10^(-20))	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(x)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb([])	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb([1, 2])	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb("text")	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(true)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(-7/3)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	ycbcr2rgb(0.5)	error: ycbcr2rgb needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(0)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(1)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(-1)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(1/2)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(2)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(i)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(inf)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(-inf)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(undefined)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(10^20)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(10^(-20))	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(x)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid([])	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid([1, 2])	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid("text")	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(true)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(-7/3)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	impyramid(0.5)	error: impyramid needs a picture: a matrix of numbers, or a list of the matrices of its channels
+-e	integralimage(0)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(1)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(-1)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(1/2)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(2)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(i)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(inf)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(-inf)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(undefined)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(10^20)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(10^(-20))	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(x)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage([])	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage([1, 2])	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage("text")	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(true)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(-7/3)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	integralimage(0.5)	error: integralimage needs a picture of one channel: a matrix of numbers
+-e	xcorr2(0)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(1)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(-1)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(1/2)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(2)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(i)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(inf)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(-inf)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(undefined)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(10^20)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(10^(-20))	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(x)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2([])	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2([1, 2])	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2("text")	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(true)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(-7/3)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	xcorr2(0.5)	error: xcorr2 needs a picture of one channel: a matrix of numbers
+-e	dct2(0)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(1)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(-1)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(1/2)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(2)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(i)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(inf)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(-inf)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(undefined)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(10^20)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(10^(-20))	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(x)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2([])	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2([1, 2])	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2("text")	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(true)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(-7/3)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	dct2(0.5)	error: dct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(0)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(1)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(-1)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(1/2)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(2)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(i)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(inf)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(-inf)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(undefined)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(10^20)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(10^(-20))	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(x)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2([])	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2([1, 2])	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2("text")	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(true)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(-7/3)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	idct2(0.5)	error: idct2 needs a picture of one channel: a matrix of numbers
+-e	matread(0)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(1)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(-1)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(1/2)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(2)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(i)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(inf)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(-inf)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(undefined)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(10^20)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(10^(-20))	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(x)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread([])	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread([1, 2])	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread("text")	error: matread: text: No such file or directory (os error 2)
+-e	matread(true)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(-7/3)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matread(0.5)	error: matread("file.mat"[, "name"]): the variables of a MAT-file as a record, or the value of one
+-e	matinfo(0)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(1)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(-1)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(1/2)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(2)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(i)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(inf)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(-inf)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(undefined)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(10^20)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(10^(-20))	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(x)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo([])	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo([1, 2])	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo("text")	error: matinfo: text: No such file or directory (os error 2)
+-e	matinfo(true)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(-7/3)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	matinfo(0.5)	error: matinfo("file.mat"): the names, sizes and kinds of the variables of a MAT-file
+-e	removeunit(0)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(1)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(-1)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(1/2)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(2)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(i)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(inf)	error: removeunit: inf is no unit
+-e	removeunit(-inf)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(undefined)	error: removeunit: undefined is no unit
+-e	removeunit(10^20)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(10^(-20))	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(x)	error: removeunit: x is no unit
+-e	removeunit([])	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit([1, 2])	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit("text")	error: removeunit: text is no unit
+-e	removeunit(true)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(-7/3)	error: removeunit("name"): the name of a unit that newunit made
+-e	removeunit(0.5)	error: removeunit("name"): the name of a unit that newunit made
+-e	km2nm(0)	0
+-e	km2nm(1)	250/463
+-e	km2nm(-1)	-250/463
+-e	km2nm(1/2)	125/463
+-e	km2nm(2)	500/463
+-e	km2nm(i)	250i/463
+-e	km2nm(inf)	inf
+-e	km2nm(-inf)	-inf
+-e	km2nm(undefined)	undefined
+-e	km2nm(10^20)	25000000000000000000000/463
+-e	km2nm(10^(-20))	1/185200000000000000000
+-e	km2nm(x)	250x/463
+-e	km2nm([])	[]
+-e	km2nm([1, 2])	[250/463, 500/463]
+-e	km2nm("text")	250*"text"/463
+-e	km2nm(true)	250true/463
+-e	km2nm(-7/3)	-1750/1389
+-e	km2nm(0.5)	0.26997840172786177105831533477322
+-e	km2sm(0)	0
+-e	km2sm(1)	3937/6336
+-e	km2sm(-1)	-3937/6336
+-e	km2sm(1/2)	3937/12672
+-e	km2sm(2)	3937/3168
+-e	km2sm(i)	3937i/6336
+-e	km2sm(inf)	inf
+-e	km2sm(-inf)	-inf
+-e	km2sm(undefined)	undefined
+-e	km2sm(10^20)	6151562500000000000000/99
+-e	km2sm(10^(-20))	3937/633600000000000000000000
+-e	km2sm(x)	3937x/6336
+-e	km2sm([])	[]
+-e	km2sm([1, 2])	[3937/6336, 3937/3168]
+-e	km2sm("text")	3937*"text"/6336
+-e	km2sm(true)	3937true/6336
+-e	km2sm(-7/3)	-27559/19008
+-e	km2sm(0.5)	0.31068497474747474747474747474747
+-e	nm2km(0)	0
+-e	nm2km(1)	463/250
+-e	nm2km(-1)	-463/250
+-e	nm2km(1/2)	463/500
+-e	nm2km(2)	463/125
+-e	nm2km(i)	463i/250
+-e	nm2km(inf)	inf
+-e	nm2km(-inf)	-inf
+-e	nm2km(undefined)	undefined
+-e	nm2km(10^20)	185200000000000000000
+-e	nm2km(10^(-20))	463/25000000000000000000000
+-e	nm2km(x)	463x/250
+-e	nm2km([])	[]
+-e	nm2km([1, 2])	[463/250, 463/125]
+-e	nm2km("text")	463*"text"/250
+-e	nm2km(true)	463true/250
+-e	nm2km(-7/3)	-3241/750
+-e	nm2km(0.5)	0.926
+-e	nm2sm(0)	0
+-e	nm2sm(1)	1822831/1584000
+-e	nm2sm(-1)	-1822831/1584000
+-e	nm2sm(1/2)	1822831/3168000
+-e	nm2sm(2)	1822831/792000
+-e	nm2sm(i)	1822831i/1584000
+-e	nm2sm(inf)	inf
+-e	nm2sm(-inf)	-inf
+-e	nm2sm(undefined)	undefined
+-e	nm2sm(10^20)	11392693750000000000000/99
+-e	nm2sm(10^(-20))	1822831/158400000000000000000000000
+-e	nm2sm(x)	1822831x/1584000
+-e	nm2sm([])	[]
+-e	nm2sm([1, 2])	[1822831/1584000, 1822831/792000]
+-e	nm2sm("text")	1822831*"text"/1584000
+-e	nm2sm(true)	1822831true/1584000
+-e	nm2sm(-7/3)	-12759817/4752000
+-e	nm2sm(0.5)	0.57538857323232323232323232323232
+-e	sm2km(0)	0
+-e	sm2km(1)	6336/3937
+-e	sm2km(-1)	-6336/3937
+-e	sm2km(1/2)	3168/3937
+-e	sm2km(2)	12672/3937
+-e	sm2km(i)	6336i/3937
+-e	sm2km(inf)	inf
+-e	sm2km(-inf)	-inf
+-e	sm2km(undefined)	undefined
+-e	sm2km(10^20)	633600000000000000000000/3937
+-e	sm2km(10^(-20))	99/6151562500000000000000
+-e	sm2km(x)	6336x/3937
+-e	sm2km([])	[]
+-e	sm2km([1, 2])	[6336/3937, 12672/3937]
+-e	sm2km("text")	6336*"text"/3937
+-e	sm2km(true)	6336true/3937
+-e	sm2km(-7/3)	-14784/3937
+-e	sm2km(0.5)	0.80467360934721869443738887477775
+-e	sm2nm(0)	0
+-e	sm2nm(1)	1584000/1822831
+-e	sm2nm(-1)	-1584000/1822831
+-e	sm2nm(1/2)	792000/1822831
+-e	sm2nm(2)	3168000/1822831
+-e	sm2nm(i)	1584000i/1822831
+-e	sm2nm(inf)	inf
+-e	sm2nm(-inf)	-inf
+-e	sm2nm(undefined)	undefined
+-e	sm2nm(10^20)	158400000000000000000000000/1822831
+-e	sm2nm(10^(-20))	99/11392693750000000000000
+-e	sm2nm(x)	1584000x/1822831
+-e	sm2nm([])	[]
+-e	sm2nm([1, 2])	[1584000/1822831, 3168000/1822831]
+-e	sm2nm("text")	1584000*"text"/1822831
+-e	sm2nm(true)	1584000true/1822831
+-e	sm2nm(-7/3)	-3696000/1822831
+-e	sm2nm(0.5)	0.4344889899283038306897348135949
+-e	deg2km(0)	0
+-e	deg2km(1)	6371pi/180
+-e	deg2km(-1)	-6371pi/180
+-e	deg2km(1/2)	6371pi/360
+-e	deg2km(2)	6371pi/90
+-e	deg2km(i)	6371i*pi/180
+-e	deg2km(inf)	inf
+-e	deg2km(-inf)	-inf
+-e	deg2km(undefined)	undefined
+-e	deg2km(10^20)	31855000000000000000000pi/9
+-e	deg2km(10^(-20))	6371pi/18000000000000000000000
+-e	deg2km(x)	6371pi*x/180
+-e	deg2km([])	[]
+-e	deg2km([1, 2])	[6371pi/180, 6371pi/90]
+-e	deg2km("text")	6371pi*"text"/180
+-e	deg2km(true)	6371pi*true/180
+-e	deg2km(-7/3)	-44597pi/540
+-e	deg2km(0.5)	55.597463322279368672904169430205
+-e	km2deg(0)	0
+-e	km2deg(1)	180/(6371pi)
+-e	km2deg(-1)	-180/(6371pi)
+-e	km2deg(1/2)	90/(6371pi)
+-e	km2deg(2)	360/(6371pi)
+-e	km2deg(i)	180i/(6371pi)
+-e	km2deg(inf)	inf
+-e	km2deg(-inf)	-inf
+-e	km2deg(undefined)	undefined
+-e	km2deg(10^20)	18000000000000000000000/(6371pi)
+-e	km2deg(10^(-20))	9/(31855000000000000000000pi)
+-e	km2deg(x)	180x/(6371pi)
+-e	km2deg([])	[]
+-e	km2deg([1, 2])	[180/(6371pi), 360/(6371pi)]
+-e	km2deg("text")	180*"text"/(6371pi)
+-e	km2deg(true)	180true/(6371pi)
+-e	km2deg(-7/3)	-420/(6371pi)
+-e	km2deg(0.5)	0.0044966080295936525566471633035713
+-e	deg2nm(0)	0
+-e	deg2nm(1)	159275pi/8334
+-e	deg2nm(-1)	-159275pi/8334
+-e	deg2nm(1/2)	159275pi/16668
+-e	deg2nm(2)	159275pi/4167
+-e	deg2nm(i)	159275i*pi/8334
+-e	deg2nm(inf)	inf
+-e	deg2nm(-inf)	-inf
+-e	deg2nm(undefined)	undefined
+-e	deg2nm(10^20)	7963750000000000000000000pi/4167
+-e	deg2nm(10^(-20))	6371pi/33336000000000000000000
+-e	deg2nm(x)	159275pi*x/8334
+-e	deg2nm([])	[]
+-e	deg2nm([1, 2])	[159275pi/8334, 159275pi/4167]
+-e	deg2nm("text")	159275pi*"text"/8334
+-e	deg2nm(true)	159275pi*true/8334
+-e	deg2nm(-7/3)	-1114925pi/25002
+-e	deg2nm(0.5)	30.020228575744799499408298828404
+-e	nm2deg(0)	0
+-e	nm2deg(1)	8334/(159275pi)
+-e	nm2deg(-1)	-8334/(159275pi)
+-e	nm2deg(1/2)	4167/(159275pi)
+-e	nm2deg(2)	16668/(159275pi)
+-e	nm2deg(i)	8334i/(159275pi)
+-e	nm2deg(inf)	inf
+-e	nm2deg(-inf)	-inf
+-e	nm2deg(undefined)	undefined
+-e	nm2deg(10^20)	33336000000000000000000/(6371pi)
+-e	nm2deg(10^(-20))	4167/(7963750000000000000000000pi)
+-e	nm2deg(x)	8334x/(159275pi)
+-e	nm2deg([])	[]
+-e	nm2deg([1, 2])	[8334/(159275pi), 16668/(159275pi)]
+-e	nm2deg("text")	8334*"text"/(159275pi)
+-e	nm2deg(true)	8334true/(159275pi)
+-e	nm2deg(-7/3)	-19446/(159275pi)
+-e	nm2deg(0.5)	0.008327718070807444534910546438214
+-e	deg2sm(0)	0
+-e	deg2sm(1)	25082627pi/1140480
+-e	deg2sm(-1)	-25082627pi/1140480
+-e	deg2sm(1/2)	25082627pi/2280960
+-e	deg2sm(2)	25082627pi/570240
+-e	deg2sm(i)	25082627i*pi/1140480
+-e	deg2sm(inf)	inf
+-e	deg2sm(-inf)	-inf
+-e	deg2sm(undefined)	undefined
+-e	deg2sm(10^20)	1959580234375000000000000pi/891
+-e	deg2sm(10^(-20))	25082627pi/114048000000000000000000000
+-e	deg2sm(x)	25082627pi*x/1140480
+-e	deg2sm([])	[]
+-e	deg2sm([1, 2])	[25082627pi/1140480, 25082627pi/570240]
+-e	deg2sm("text")	25082627pi*"text"/1140480
+-e	deg2sm(true)	25082627pi*true/1140480
+-e	deg2sm(-7/3)	-175578389pi/3421440
+-e	deg2sm(0.5)	34.546592976612038267869904521262
+-e	sm2deg(0)	0
+-e	sm2deg(1)	1140480/(25082627pi)
+-e	sm2deg(-1)	-1140480/(25082627pi)
+-e	sm2deg(1/2)	570240/(25082627pi)
+-e	sm2deg(2)	2280960/(25082627pi)
+-e	sm2deg(i)	1140480i/(25082627pi)
+-e	sm2deg(inf)	inf
+-e	sm2deg(-inf)	-inf
+-e	sm2deg(undefined)	undefined
+-e	sm2deg(10^20)	114048000000000000000000000/(25082627pi)
+-e	sm2deg(10^(-20))	891/(1959580234375000000000000pi)
+-e	sm2deg(x)	1140480x/(25082627pi)
+-e	sm2deg([])	[]
+-e	sm2deg([1, 2])	[1140480/(25082627pi), 2280960/(25082627pi)]
+-e	sm2deg("text")	1140480*"text"/(25082627pi)
+-e	sm2deg(true)	1140480true/(25082627pi)
+-e	sm2deg(-7/3)	-2661120/(25082627pi)
+-e	sm2deg(0.5)	0.0072366036259856191513630751057728
+-e	rad2km(0)	0
+-e	rad2km(1)	6371
+-e	rad2km(-1)	-6371
+-e	rad2km(1/2)	6371/2
+-e	rad2km(2)	12742
+-e	rad2km(i)	6371i
+-e	rad2km(inf)	inf
+-e	rad2km(-inf)	-inf
+-e	rad2km(undefined)	undefined
+-e	rad2km(10^20)	637100000000000000000000
+-e	rad2km(10^(-20))	6371/100000000000000000000
+-e	rad2km(x)	6371x
+-e	rad2km([])	[]
+-e	rad2km([1, 2])	[6371, 12742]
+-e	rad2km("text")	6371*"text"
+-e	rad2km(true)	6371true
+-e	rad2km(-7/3)	-44597/3
+-e	rad2km(0.5)	3185.5
+-e	km2rad(0)	0
+-e	km2rad(1)	1/6371
+-e	km2rad(-1)	-1/6371
+-e	km2rad(1/2)	1/12742
+-e	km2rad(2)	2/6371
+-e	km2rad(i)	i/6371
+-e	km2rad(inf)	inf
+-e	km2rad(-inf)	-inf
+-e	km2rad(undefined)	undefined
+-e	km2rad(10^20)	100000000000000000000/6371
+-e	km2rad(10^(-20))	1/637100000000000000000000
+-e	km2rad(x)	x/6371
+-e	km2rad([])	[]
+-e	km2rad([1, 2])	[1/6371, 2/6371]
+-e	km2rad("text")	"text"/6371
+-e	km2rad(true)	true/6371
+-e	km2rad(-7/3)	-7/19113
+-e	km2rad(0.5)	0.000078480615288023858107047559252865
+-e	rad2nm(0)	0
+-e	rad2nm(1)	1592750/463
+-e	rad2nm(-1)	-1592750/463
+-e	rad2nm(1/2)	796375/463
+-e	rad2nm(2)	3185500/463
+-e	rad2nm(i)	1592750i/463
+-e	rad2nm(inf)	inf
+-e	rad2nm(-inf)	-inf
+-e	rad2nm(undefined)	undefined
+-e	rad2nm(10^20)	159275000000000000000000000/463
+-e	rad2nm(10^(-20))	6371/185200000000000000000
+-e	rad2nm(x)	1592750x/463
+-e	rad2nm([])	[]
+-e	rad2nm([1, 2])	[1592750/463, 3185500/463]
+-e	rad2nm("text")	1592750*"text"/463
+-e	rad2nm(true)	1592750true/463
+-e	rad2nm(-7/3)	-11149250/1389
+-e	rad2nm(0.5)	1720.0323974082073434125269978402
+-e	nm2rad(0)	0
+-e	nm2rad(1)	463/1592750
+-e	nm2rad(-1)	-463/1592750
+-e	nm2rad(1/2)	463/3185500
+-e	nm2rad(2)	463/796375
+-e	nm2rad(i)	463i/1592750
+-e	nm2rad(inf)	inf
+-e	nm2rad(-inf)	-inf
+-e	nm2rad(undefined)	undefined
+-e	nm2rad(10^20)	185200000000000000000/6371
+-e	nm2rad(10^(-20))	463/159275000000000000000000000
+-e	nm2rad(x)	463x/1592750
+-e	nm2rad([])	[]
+-e	nm2rad([1, 2])	[463/1592750, 463/796375]
+-e	nm2rad("text")	463*"text"/1592750
+-e	nm2rad(true)	463true/1592750
+-e	nm2rad(-7/3)	-3241/4778250
+-e	nm2rad(0.5)	0.00014534609951342018521425207973631
+-e	rad2sm(0)	0
+-e	rad2sm(1)	25082627/6336
+-e	rad2sm(-1)	-25082627/6336
+-e	rad2sm(1/2)	25082627/12672
+-e	rad2sm(2)	25082627/3168
+-e	rad2sm(i)	25082627i/6336
+-e	rad2sm(inf)	inf
+-e	rad2sm(-inf)	-inf
+-e	rad2sm(undefined)	undefined
+-e	rad2sm(10^20)	39191604687500000000000000/99
+-e	rad2sm(10^(-20))	25082627/633600000000000000000000
+-e	rad2sm(x)	25082627x/6336
+-e	rad2sm([])	[]
+-e	rad2sm([1, 2])	[25082627/6336, 25082627/3168]
+-e	rad2sm("text")	25082627*"text"/6336
+-e	rad2sm(true)	25082627true/6336
+-e	rad2sm(-7/3)	-175578389/19008
+-e	rad2sm(0.5)	1979.3739741161616161616161616162
+-e	sm2rad(0)	0
+-e	sm2rad(1)	6336/25082627
+-e	sm2rad(-1)	-6336/25082627
+-e	sm2rad(1/2)	3168/25082627
+-e	sm2rad(2)	12672/25082627

@@ -880,9 +880,7 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             let (q, r) = divide(list(0)?, list(1)?)?;
             Expr::list(vec![Expr::list(q), Expr::list(r)])
         }
-        ("roots", 1) if a[0].as_list().is_some() && a[0].free_syms().is_empty() => {
-            Expr::list(roots_of(list(0)?)?)
-        }
+        ("roots", 1) if a[0].as_list().is_some() => Expr::list(roots_of(list(0)?)?),
         ("residue", 2) if a[0].as_list().is_some() && a[1].as_list().is_some() => {
             residues(list(0)?, list(1)?)?
         }

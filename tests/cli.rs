@@ -2652,3 +2652,269 @@ mod tetration {
         );
     }
 }
+
+/// What a pass of odd inputs found in round 7: these crashed, hung or took all the memory.
+#[test]
+fn odd_inputs_that_once_broke_the_program() {
+    check(&[
+        // a power of a thousand million of one exponential in the simplifier
+        ("e^(-t) + e^(-t/1000000000)", "e^(-t) + e^(-t/1000000000)"),
+        (
+            "step(1/((s + 1)*(s + 1/1000000000)))",
+            "1000000000e^(-t)/999999999 - 1000000000000000000e^(-t/1000000000)/999999999 + 1000000000",
+        ),
+        ("(e^(2t) - 1)/(e^t - 1)", "e^t + 1"),
+        // a decimal exponent of a thousand beside a small one: the exact way took for ever
+        (
+            "softmax([-7, 1000.5])",
+            "[2.8074335297474330303768726824136e-438, 1]",
+        ),
+        ("e^1000.5/(e^(-7) + e^1000.5)", "1"),
+        // the quantile of whole numbers whose upper end is none
+        ("quantile(discreteuniformdist(1, 5/2), 9/10)", "2"),
+        ("quantile(discreteuniformdist(1, 6), 1/2)", "3"),
+        // an observation that is no even list
+        (
+            "trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [1, []]], [[0], [1]], \"solver\", \"sgdm\", \"epochs\", 2)",
+            "error: trainnet: an observation is a list of 2 values; several of them are the rows of a matrix",
+        ),
+        // a number of a part far beyond the pixels of the picture
+        (
+            "regionprops([[1, 1, 0], [0, 0, 0], [0, 1, 1000000000]])",
+            "error: regionprops: the numbers of the parts are whole numbers, no more than the picture has pixels",
+        ),
+        // a weight between states and inputs of the wrong size
+        (
+            "lqr([[0, 1], [0, 0]], [[0], [1]], [[1, 0], [0, 1]], [[1]], [[1]])",
+            "error: lqr(A, B, Q, R, N): the weight N between states and inputs has a row for every state and a column for every input",
+        ),
+        // rows of conditions without their right sides; a lower bound above its upper one
+        (
+            "fmincon(@(x, y) x^2 + y^2, [1, 1], [1, 2])",
+            "error: fmincon(f, start, A, b, Aeq, beq, lower, upper, conditions): the least f(x) with A*x <= b, Aeq*x = beq, lower <= x <= upper and conditions(x) = [[values that are <= 0], [values that are 0]]; [] leaves a part out",
+        ),
+        (
+            "ga(@(x, y) x^2 + y^2, 2, [5, 5], [-5, -5])",
+            "error: ga: a lower bound lies above its upper bound",
+        ),
+        // e is a number in a formula of blocks, also when a signal has that name
+        (
+            "sim([[\"e\", \"constant\", 1], [\"y\", \"fcn\", 2*e]], 1)",
+            "error: sim: the block y: e in its formula is a number, and a signal of this diagram has that name too: give the signal another name",
+        ),
+        (
+            "getfield(sim([[\"u\", \"constant\", 1], [\"y\", \"fcn\", 2*e^u]], 1, \"points\", 2), \"y\")",
+            "[5.43656365691809, 5.43656365691809]",
+        ),
+    ]);
+}
+
+/// What a scan of larger systems found in round 7: sampling that hung or gave wrong systems.
+#[test]
+fn systems_that_once_hung_or_went_wrong() {
+    check(&[
+        // sampling: closed forms only where they are short, decimals otherwise (these hung)
+        (
+            "order(c2d(ss([[0, 1, 0], [0, 0, 1], [-1, -2, -3]], [[0, 0], [0, 1], [1, 0]], [[1, 0, 0], [0, 1, 0]], [[0, 0], [0, 0]]), 1/10))",
+            "3",
+        ),
+        (
+            "c2d(ss([[-1, 0], [0, -2]], [[1, 0], [0, 1]], [[1, 0], [0, 1]], [[0, 0], [0, 0]]), 1/10)",
+            "ss([[1/e^(1/10), 0], [0, 1/e^(1/5)]], [[1 - 1/e^(1/10), 0], [0, 1/2 - 1/(2e^(1/5))]], [[1, 0], [0, 1]], [[0, 0], [0, 0]], 1/10)",
+        ),
+        (
+            "c2d(1/((s^2 + 2s + 5)*(s^2 + 10s + 74)*(s + 3)), 1/10, \"impulse\")",
+            "tf([3.0433480639301867484348889692682e-7, 0.0000024210380307937531529956573504475, 0.0000017884296150445891575936457104819, 1.2352083503291179624799442035126e-7, 0], [1, -3.4422205171355621847233674182834, 4.8334068474491114086688299185168, -3.5102052740679598547598516392927, 1.3472965299099051973974126626299, -0.22313016014842982893328047076401], 1/10)",
+        ),
+        (
+            "c2d(tf([1], [1, 6, 11, 6]), 1/10, \"impulse\")",
+            "tf([(e^(1/10) - 1)^2/(20e^(3/10)), (e^(1/10) - 1)^2/(20sqrt(e)), 0], [1, (-1 - e^(1/10) - e^(1/5))/e^(3/10), (1 + e^(1/10) + e^(1/5))/sqrt(e), -1/e^(3/5)], 1/10)",
+        ),
+        (
+            "c2d(tf([1, 2], [1, 1]), 1/10, \"impulse\")",
+            "error: c2d(system, Ts, \"impulse\"): the answer to a blow is sampled, so the system has more poles than zeros",
+        ),
+        // a matrix of systems in decimal numbers: every entry with the states of its own
+        (
+            "d2c(c2d([[1/(s + 1), 2/(s + 2)], [0, s/(s^2 + 2s + 5)]], 1/10))",
+            "[[tf([1], [1, 1]), tf([2], [1, 2])], [tf([0], [1]), tf([1, 0], [1, 2, 5])]]",
+        ),
+        (
+            "part(c2d([[1/(s + 1), 2/(s + 2)], [0, s/(s^2 + 2s + 5)]], 1/10), 1, 1)",
+            "tf([0.095162581964040426835750940553563], [1, -0.90483741803595957316424905944644], 1/10)",
+        ),
+        // coefficients with names
+        ("roots([1, a])", "[-a]"),
+        (
+            "roots([1, a, b])",
+            "[-a/2 - sqrt(a^2 - 4b)/2, sqrt(a^2 - 4b)/2 - a/2]",
+        ),
+        (
+            "roots([1, 0, -a], x)",
+            "error: roots([coefficients]) or roots(expression, variable)",
+        ),
+        ("zpk(tf([1, b], [1, a]))", "zpk([-b], [-a], 1)"),
+        ("pole(tf([1], [1, a]))", "[-a]"),
+        // a system without a delay is no delay T
+        ("pade(tf([1], [1, 2]), 1)", "tf([1], [1, 2])"),
+        ("pade(1/(s + 2), 2)", "tf([1], [1, 2])"),
+        ("pade(a, 1)", "[[-1, 2/a], [1, 2/a]]"),
+        // objects of systems that are none: these overflowed the stack
+        (
+            "zpk([-1], [-2, -3], 4) + zpk([], [-1])",
+            "error: zpk([zeros], [poles], gain[, Ts]) or zpk(system)",
+        ),
+        (
+            "tf([1], [1, -1/2], 1/10) + tf([1], [1, -1/3], [1, -1/3], 1/10)",
+            "error: tf([numerator], [denominator][, Ts]), tf(\"s\"), tf(system); with a delay: tf([numerator], [denominator], \"InputDelay\", T)",
+        ),
+        (
+            "ss([[-1]], [[1]], [[0]])*ss([[-2]], [[1]], [[1]], [[0]])",
+            "error: ss(A, B, C, D[, Ts]) or ss(system)",
+        ),
+        (
+            "tf([[1, 2], [3]], [1, 2])",
+            "error: tf: tf([numerator], [denominator][, Ts]): the coefficients of both, the highest power first",
+        ),
+        // a gain alone: a system without states
+        ("ss(tf([2], [1]))", "ss([[]], [], [[]], [[2]])"),
+        ("dcgain(ss([[]], [], [[]], [[2]]))", "2"),
+        ("ss([], [], [], 2)", "ss([[]], [], [[]], [[2]])"),
+        (
+            "ss(tf([1], [1, 1]))*ss(tf([2], [1])) + ss(tf([2], [1]))",
+            "tf([2, 4], [1, 1])",
+        ),
+        ("c2d(tf([2], [1]), 1/10)", "tf([2], [1], 1/10)"),
+        ("d2c(tf([2], [1], 1/10))", "tf([2], [1])"),
+        ("d2d(tf([2], [1], 1/10), 1/5)", "tf([2], [1], 1/5)"),
+        ("h2norm(tf([1], [0, -1/2], 1))", "2"),
+        (
+            "gram(tf([2], [1]), \"c\")",
+            "error: gram: a system with states, or gram(A, B[, \"o\"]) with a square matrix A",
+        ),
+        (
+            "gram([[0], [1]], [[0, 1], [-2, -3]])",
+            "error: gram: a system with states, or gram(A, B[, \"o\"]) with a square matrix A",
+        ),
+        (
+            "stepinfo(tf([2], [1]))",
+            "struct(\"RiseTime\", 0, \"SettlingTime\", 0, \"SettlingMin\", 2, \"SettlingMax\", 2, \"Overshoot\", 0, \"Undershoot\", 0, \"Peak\", 2, \"PeakTime\", 0)",
+        ),
+        // the matched way: names, zeros at 0, pairs of roots
+        (
+            "c2d(tf([1], [1, a]), 1/10, \"matched\")",
+            "tf([(1 - e^(-a/10))/a], [1, -e^(-a/10)], 1/10)",
+        ),
+        (
+            "c2d(tf([1, 0], [1, 1]), 1/10, \"matched\")",
+            "tf([1/2 + 1/(2e^(1/10)), -1/2 - 1/(2e^(1/10))], [1, -1/e^(1/10)], 1/10)",
+        ),
+        (
+            "c2d(tf([1], [1, 2, 5]), 1/10, \"matched\")",
+            "tf([1/10 + 1/(10e^(1/5)) - cos(1/5)/(5e^(1/10)), 1/10 + 1/(10e^(1/5)) - cos(1/5)/(5e^(1/10))], [1, -2cos(1/5)/e^(1/10), 1/e^(1/5)], 1/10)",
+        ),
+        (
+            "c2d(tf([1, -1], [1, 3, 2, 0]), 1/10, \"matched\")",
+            "tf([(1 + e^(1/10))^2*(e^(1/10) - 1)^2*(1 + e^(1/10) + e^(1/5))/(24e^(2/5)), -(1 + e^(1/10))^2*(e^(1/10) - 1)^3*(1 + e^(1/10) + e^(1/5))/(24e^(2/5)), -(1 + e^(1/10))^2*(e^(1/10) - 1)^2*(1 + e^(1/10) + e^(1/5))/(24e^(3/10))], [1, -1 - 1/e^(1/10) - 1/e^(1/5), (1 + e^(1/10) + e^(1/5))/e^(3/10), -1/e^(3/10)], 1/10)",
+        ),
+        (
+            "c2d(tf([1], [1, 3, 2, 1]), 1/10, \"matched\")",
+            "tf([0.00021562552986360568098776298883099, 0.00043125105972721136197552597766198, 0.00021562552986360568098776298883099], [1, -2.72311537903558240815012283657, 2.4647961018367546969409476678431, -0.74081822068171786606687377931782], 1/10)",
+        ),
+        (
+            "c2d(tf([1, 1], [1, 3, 2]), 1/5, \"matched\")",
+            "tf([1/2 - 1/(2e^(2/5))], [1, -1/e^(2/5)], 1/5)",
+        ),
+    ]);
+}
+
+/// What the pass over every older example with one value changed found in round 7.
+#[test]
+fn odd_values_in_older_examples() {
+    check(&[
+        // odd parameters of distributions: these hung or gave numbers that are none
+        (
+            "rng(7); binornd(i, 1/2)",
+            "error: binomialdist: the parameter n is a real number or a name, not i",
+        ),
+        ("rng(7); geornd([])", "7|[]"),
+        (
+            "unidinv(1/2, true)",
+            "error: discreteuniformdist: the parameter b is a real number or a name, not true",
+        ),
+        (
+            "rng(1); exprnd(-1)",
+            "error: exponentialdist(r) needs r > 0",
+        ),
+        ("rng(1); normrnd(3, 0)", "1|3"),
+        // lists among the parameters: a distribution of every entry
+        ("rng(7); poissrnd([1, 2, 3])", "7|[0, 3, 3]"),
+        ("poisspdf(2, [1, 2])", "[1/(2e), 2/e^2]"),
+        (
+            "rng(7); binornd([5, 6, 7], [1/2, 1/3])",
+            "error: binomialdist: the lists among the parameters are of one length",
+        ),
+        // large laws of whole numbers: quick, and the same draws as the slow way gave
+        ("rng(7); poissrnd(10000)", "7|9857"),
+        ("rng(7); poissrnd(1000000)", "7|998570"),
+        ("rng(7); binornd(10000, 1/2)", "7|4928"),
+        ("quantile(geometricdist(1/1000000), 1/2)", "693146"),
+        ("quantile(negativebinomialdist(20000, 1/2), 1/2)", "19999"),
+        // the incomplete beta and gamma functions far out: the series cancelled itself to garbage or never ended
+        (
+            "N(betaregularized(1/2, 50000, 50001))",
+            "0.50126156310709836994276897365706",
+        ),
+        (
+            "N(binocdf(50000, 100000, 1/2))",
+            "0.50126156310709836994276897365706",
+        ),
+        ("N(gammap(5/2, 500000000))", "1"),
+        (
+            "chi2gof([16, 18, 16, 14, 12, 12], [1000000000, 16, 16, 16, 16, 8])",
+            "[1, 3.0278415258651586812365834368744e-186302445, 857954522.13636384581818181818182]",
+        ),
+        // values that do not differ; a list as an entry of a matrix; an order of a thousand million
+        (
+            "fitlm([1, 2, 3, 4], [1, 1, 1, 1])",
+            "error: fitlm: the values that are to be explained do not differ (regress gives the coefficients)",
+        ),
+        (
+            "getfield(fitlm([1, 2, 3, 4], [1, 2, 3, 4]), \"tstat\")",
+            "[undefined, inf]",
+        ),
+        (
+            "lyap([[-2, 1], [[], -1]], [[1, 0], [0, 1]])",
+            "error: lyap(A, Q), lyap(A, B, C) or dlyap(A, Q): square matrices",
+        ),
+        (
+            "odetovectorfield(diff(y, x, 1000000000) = -y, y, x)",
+            "error: odetovectorfield: a derivative of the order 1000 at most",
+        ),
+        // Student's law far out: the series in 1/z
+        ("N(tcdf(100, 3))", "0.99999889773903840754444131816197"),
+        ("N(tcdf(10^20, 4))", "1"),
+        (
+            "N(hyp2f1(1/2, 2, 3/2, -10^40))",
+            "7.8539816339744830961566084581988e-21",
+        ),
+        // systems where numbers belong; huge delays, poles and counts
+        (
+            "initial(ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0], [0, 1]], [[0], [0]]), ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0], [0, 1]], [[0], [0]]), [1, 0])",
+            "error: initial: only the first argument is a system",
+        ),
+        (
+            "impulse(e^(-s)/(s + 1000000000))",
+            "e^((-1000000000)(t - 1))*heaviside(t - 1)",
+        ),
+        (
+            "tf([1], [1, -1/2], 1, \"InputDelay\", 1000000000)",
+            "error: tf: the delay of a sampled system is a whole number of samples (100000 at most)",
+        ),
+        ("part(step(tf([1], [1, -1/2], 1), 100000), 100000)", "2"),
+        (
+            "pdepe(0, @(x, t, u, ux) [1, ux, 0], @(x) sin(pi*x), @(xl, ul, xr, ur, t) [ul, 0, ur, 0], linspace(0, 1, 100000), [0, 1/10])",
+            "error: pdepe: 2000 points of the mesh at most",
+        ),
+    ]);
+}

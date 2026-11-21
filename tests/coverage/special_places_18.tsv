@@ -1,3 +1,21 @@
+-e	stem3(1/2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(i)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(-inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(undefined)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(10^20)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(10^(-20))	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(x)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3([])	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3([1, 2])	error: stem3 needs lists of numbers, 1 is none
+-e	stem3("text")	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(true)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(-7/3)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	stem3(0.5)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
+-e	contour3(0)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
+-e	contour3(-1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(1/2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(2)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
 -e	contour3(i)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
@@ -680,21 +698,3 @@
 -e	isstruct(-7/3)	false
 -e	isstruct(0.5)	false
 -e	fieldnames(0)	error: fieldnames needs a record made by struct(name, value, ...), 0 is none
--e	fieldnames(1)	error: fieldnames needs a record made by struct(name, value, ...), 1 is none
--e	fieldnames(-1)	error: fieldnames needs a record made by struct(name, value, ...), -1 is none
--e	fieldnames(1/2)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
--e	fieldnames(2)	error: fieldnames needs a record made by struct(name, value, ...), 2 is none
--e	fieldnames(i)	error: fieldnames needs a record made by struct(name, value, ...), i is none
--e	fieldnames(inf)	error: fieldnames needs a record made by struct(name, value, ...), inf is none
--e	fieldnames(-inf)	error: fieldnames needs a record made by struct(name, value, ...), -inf is none
--e	fieldnames(undefined)	error: fieldnames needs a record made by struct(name, value, ...), undefined is none
--e	fieldnames(10^20)	error: fieldnames needs a record made by struct(name, value, ...), 100000000000000000000 is none
--e	fieldnames(10^(-20))	error: fieldnames needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
--e	fieldnames(x)	error: fieldnames needs a record made by struct(name, value, ...), x is none
--e	fieldnames([])	error: fieldnames needs a record made by struct(name, value, ...), [] is none
--e	fieldnames([1, 2])	error: fieldnames needs a record made by struct(name, value, ...), [1, 2] is none
--e	fieldnames("text")	error: fieldnames needs a record made by struct(name, value, ...), "text" is none
--e	fieldnames(true)	error: fieldnames needs a record made by struct(name, value, ...), true is none
--e	fieldnames(-7/3)	error: fieldnames needs a record made by struct(name, value, ...), -7/3 is none
--e	fieldnames(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
--e	numfields(0)	0

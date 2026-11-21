@@ -158,6 +158,9 @@ impl Session {
         if most == 0 {
             return Err(format!("{usage}: the equation holds no derivative of {y}"));
         }
+        if most > 1000 {
+            return Err("odetovectorfield: a derivative of the order 1000 at most".into());
+        }
         let top = marker(most);
         let slope = simplify(&diff(&f, &top));
         if slope.is_zero() || slope.has(&Expr::sym(&top)) {

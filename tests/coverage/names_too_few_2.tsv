@@ -492,6 +492,8 @@
 	iscell()	error: iscell takes 1 argument(s), 0 given
 	iscellstr()	error: iscellstr takes 1 argument(s), 0 given
 	cell()	error: cell takes 1 to 2 argument(s), 0 given
+	celldisp()	error: celldisp takes 1 to 2 argument(s), 0 given
+	mat2cell()	error: mat2cell takes 2 to 3 argument(s), 0 given
 	meijerg()	error: meijerg takes 5 argument(s), 0 given
 	lerchphi()	error: lerchphi takes 3 argument(s), 0 given
 	functionalderivative()	error: functionalderivative takes 1 to 3 argument(s), 0 given
@@ -628,9 +630,9 @@
 	subexpr()	error: subexpr takes 1 to 2 argument(s), 0 given
 	cse()	error: cse takes 1 argument(s), 0 given
 	pretty()	error: pretty takes 1 argument(s), 0 given
-	tf()	error: tf takes 1 to 3 argument(s), 0 given
-	zpk()	error: zpk takes 1 to 4 argument(s), 0 given
-	ss()	error: ss takes 1 to 5 argument(s), 0 given
+	tf()	error: tf takes 1 to 5 argument(s), 0 given
+	zpk()	error: zpk takes 1 to 6 argument(s), 0 given
+	ss()	error: ss takes 1 to 7 argument(s), 0 given
 	tfdata()	error: tfdata takes 1 argument(s), 0 given
 	zpkdata()	error: zpkdata takes 1 argument(s), 0 given
 	ssdata()	error: ssdata takes 1 argument(s), 0 given
@@ -670,8 +672,8 @@
 	rlocus()	error: rlocus takes 1 to 2 argument(s), 0 given
 	esort()	error: esort takes 1 argument(s), 0 given
 	dsort()	error: dsort takes 1 argument(s), 0 given
-	ctrb()	error: ctrb takes 2 argument(s), 0 given
-	obsv()	error: obsv takes 2 argument(s), 0 given
+	ctrb()	error: ctrb takes 1 to 2 argument(s), 0 given
+	obsv()	error: obsv takes 1 to 2 argument(s), 0 given
 	lyap()	error: lyap takes 2 to 3 argument(s), 0 given
 	dlyap()	error: dlyap takes 2 argument(s), 0 given
 	gram()	error: gram takes 2 to 3 argument(s), 0 given
@@ -696,5 +698,3 @@
 	ord2()	error: ord2 takes 2 argument(s), 0 given
 	d2d()	error: d2d takes 2 argument(s), 0 given
 	reg()	error: reg takes 3 argument(s), 0 given
-	filt()	error: filt takes 1 to 3 argument(s), 0 given
-	bodeplot()	error: bodeplot takes at least 1 argument(s), 0 given

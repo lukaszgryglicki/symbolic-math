@@ -1,3 +1,21 @@
+-e	fieldnames(1)	error: fieldnames needs a record made by struct(name, value, ...), 1 is none
+-e	fieldnames(-1)	error: fieldnames needs a record made by struct(name, value, ...), -1 is none
+-e	fieldnames(1/2)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	fieldnames(2)	error: fieldnames needs a record made by struct(name, value, ...), 2 is none
+-e	fieldnames(i)	error: fieldnames needs a record made by struct(name, value, ...), i is none
+-e	fieldnames(inf)	error: fieldnames needs a record made by struct(name, value, ...), inf is none
+-e	fieldnames(-inf)	error: fieldnames needs a record made by struct(name, value, ...), -inf is none
+-e	fieldnames(undefined)	error: fieldnames needs a record made by struct(name, value, ...), undefined is none
+-e	fieldnames(10^20)	error: fieldnames needs a record made by struct(name, value, ...), 100000000000000000000 is none
+-e	fieldnames(10^(-20))	error: fieldnames needs a record made by struct(name, value, ...), 1/100000000000000000000 is none
+-e	fieldnames(x)	error: fieldnames needs a record made by struct(name, value, ...), x is none
+-e	fieldnames([])	error: fieldnames needs a record made by struct(name, value, ...), [] is none
+-e	fieldnames([1, 2])	error: fieldnames needs a record made by struct(name, value, ...), [1, 2] is none
+-e	fieldnames("text")	error: fieldnames needs a record made by struct(name, value, ...), "text" is none
+-e	fieldnames(true)	error: fieldnames needs a record made by struct(name, value, ...), true is none
+-e	fieldnames(-7/3)	error: fieldnames needs a record made by struct(name, value, ...), -7/3 is none
+-e	fieldnames(0.5)	error: fieldnames needs a record made by struct(name, value, ...), 1/2 is none
+-e	numfields(0)	0
 -e	numfields(1)	0
 -e	numfields(-1)	0
 -e	numfields(1/2)	0
@@ -177,11 +195,11 @@
 -e	iscellstr(true)	false
 -e	iscellstr(-7/3)	false
 -e	iscellstr(0.5)	false
--e	cell(0)	[]
--e	cell(1)	[[]]
+-e	cell(0)	{}
+-e	cell(1)	{[]}
 -e	cell(-1)	error: the size must be a whole number from 0 to 100000, not -1
 -e	cell(1/2)	error: the size must be a whole number from 0 to 100000, not 1/2
--e	cell(2)	[[], []]
+-e	cell(2)	{[], []}
 -e	cell(i)	error: the size must be a whole number from 0 to 100000, not i
 -e	cell(inf)	error: the size must be a whole number from 0 to 100000, not inf
 -e	cell(-inf)	error: the size must be a whole number from 0 to 100000, not -inf
@@ -195,6 +213,42 @@
 -e	cell(true)	error: the size must be a whole number from 0 to 100000, not true
 -e	cell(-7/3)	error: the size must be a whole number from 0 to 100000, not -7/3
 -e	cell(0.5)	error: the size must be a whole number from 0 to 100000, not 1/2
+-e	cellarray(0)	{0}
+-e	cellarray(1)	{1}
+-e	cellarray(-1)	{-1}
+-e	cellarray(1/2)	{1/2}
+-e	cellarray(2)	{2}
+-e	cellarray(i)	{i}
+-e	cellarray(inf)	{inf}
+-e	cellarray(-inf)	{-inf}
+-e	cellarray(undefined)	undefined
+-e	cellarray(10^20)	{100000000000000000000}
+-e	cellarray(10^(-20))	{1/100000000000000000000}
+-e	cellarray(x)	{x}
+-e	cellarray([])	{[]}
+-e	cellarray([1, 2])	{[1, 2]}
+-e	cellarray("text")	{"text"}
+-e	cellarray(true)	{true}
+-e	cellarray(-7/3)	{-7/3}
+-e	cellarray(0.5)	{0.5}
+-e	celldisp(0)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(1)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(-1)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(1/2)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(2)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(i)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(inf)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(-inf)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(undefined)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(10^20)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(10^(-20))	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(x)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp([])	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp([1, 2])	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp("text")	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(true)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(-7/3)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	celldisp(0.5)	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
 -e	functionalderivative(0)	0
 -e	functionalderivative(1)	0
 -e	functionalderivative(-1)	0
@@ -644,57 +698,3 @@
 -e	head("text")	error: head(list or table[, how many])
 -e	head(true)	error: head(list or table[, how many])
 -e	head(-7/3)	error: head(list or table[, how many])
--e	head(0.5)	error: head(list or table[, how many])
--e	tail(0)	error: tail(list or table[, how many])
--e	tail(1)	error: tail(list or table[, how many])
--e	tail(-1)	error: tail(list or table[, how many])
--e	tail(1/2)	error: tail(list or table[, how many])
--e	tail(2)	error: tail(list or table[, how many])
--e	tail(i)	error: tail(list or table[, how many])
--e	tail(inf)	error: tail(list or table[, how many])
--e	tail(-inf)	error: tail(list or table[, how many])
--e	tail(undefined)	error: tail(list or table[, how many])
--e	tail(10^20)	error: tail(list or table[, how many])
--e	tail(10^(-20))	error: tail(list or table[, how many])
--e	tail(x)	error: tail(list or table[, how many])
--e	tail([])	[]
--e	tail([1, 2])	[1, 2]
--e	tail("text")	error: tail(list or table[, how many])
--e	tail(true)	error: tail(list or table[, how many])
--e	tail(-7/3)	error: tail(list or table[, how many])
--e	tail(0.5)	error: tail(list or table[, how many])
--e	varnames(0)	varnames(0)
--e	varnames(1)	varnames(1)
--e	varnames(-1)	varnames(-1)
--e	varnames(1/2)	varnames(1/2)
--e	varnames(2)	varnames(2)
--e	varnames(i)	varnames(i)
--e	varnames(inf)	varnames(inf)
--e	varnames(-inf)	varnames(-inf)
--e	varnames(undefined)	undefined
--e	varnames(10^20)	varnames(100000000000000000000)
--e	varnames(10^(-20))	varnames(1/100000000000000000000)
--e	varnames(x)	varnames(x)
--e	varnames([])	[]
--e	varnames([1, 2])	[varnames(1), varnames(2)]
--e	varnames("text")	varnames("text")
--e	varnames(true)	varnames(true)
--e	varnames(-7/3)	varnames(-7/3)
--e	varnames(0.5)	varnames(0.5)
--e	table2array(0)	table2array(0)
--e	table2array(1)	table2array(1)
--e	table2array(-1)	table2array(-1)
--e	table2array(1/2)	table2array(1/2)
--e	table2array(2)	table2array(2)
--e	table2array(i)	table2array(i)
--e	table2array(inf)	table2array(inf)
--e	table2array(-inf)	table2array(-inf)
--e	table2array(undefined)	undefined
--e	table2array(10^20)	table2array(100000000000000000000)
--e	table2array(10^(-20))	table2array(1/100000000000000000000)
--e	table2array(x)	table2array(x)
--e	table2array([])	[]
--e	table2array([1, 2])	[table2array(1), table2array(2)]
--e	table2array("text")	table2array("text")
--e	table2array(true)	table2array(true)
--e	table2array(-7/3)	table2array(-7/3)

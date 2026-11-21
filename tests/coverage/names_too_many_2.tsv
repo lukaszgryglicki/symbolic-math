@@ -1,4 +1,3 @@
-	sind(1, 2)	error: sind takes 1 argument(s), 2 given
 	cosd(1, 2)	error: cosd takes 1 argument(s), 2 given
 	tand(1, 2)	error: tand takes 1 argument(s), 2 given
 	cotd(1, 2)	error: cotd takes 1 argument(s), 2 given
@@ -413,6 +412,8 @@
 	iscell(1, 2)	error: iscell takes 1 argument(s), 2 given
 	iscellstr(1, 2)	error: iscellstr takes 1 argument(s), 2 given
 	cell(1, 2, 3)	error: cell takes 1 to 2 argument(s), 3 given
+	celldisp(1, 2, 3)	error: celldisp takes 1 to 2 argument(s), 3 given
+	mat2cell(1, 2, 3, 4)	error: mat2cell takes 2 to 3 argument(s), 4 given
 	meijerg(1, 2, 3, 4, 5, 6)	error: meijerg takes 5 argument(s), 6 given
 	lerchphi(1, 2, 3, 4)	error: lerchphi takes 3 argument(s), 4 given
 	functionalderivative(1, 2, 3, 4)	error: functionalderivative takes 1 to 3 argument(s), 4 given
@@ -520,9 +521,9 @@
 	subexpr(1, 2, 3)	error: subexpr takes 1 to 2 argument(s), 3 given
 	cse(1, 2)	error: cse takes 1 argument(s), 2 given
 	pretty(1, 2)	error: pretty takes 1 argument(s), 2 given
-	tf(1, 2, 3, 4)	error: tf takes 1 to 3 argument(s), 4 given
-	zpk(1, 2, 3, 4, 5)	error: zpk takes 1 to 4 argument(s), 5 given
-	ss(1, 2, 3, 4, 5, 6)	error: ss takes 1 to 5 argument(s), 6 given
+	tf(1, 2, 3, 4, 5, 6)	error: tf takes 1 to 5 argument(s), 6 given
+	zpk(1, 2, 3, 4, 5, 6, 7)	error: zpk takes 1 to 6 argument(s), 7 given
+	ss(1, 2, 3, 4, 5, 6, 7, 8)	error: ss takes 1 to 7 argument(s), 8 given
 	tfdata(1, 2)	error: tfdata takes 1 argument(s), 2 given
 	zpkdata(1, 2)	error: zpkdata takes 1 argument(s), 2 given
 	ssdata(1, 2)	error: ssdata takes 1 argument(s), 2 given
@@ -562,8 +563,8 @@
 	rlocus(1, 2, 3)	error: rlocus takes 1 to 2 argument(s), 3 given
 	esort(1, 2)	error: esort takes 1 argument(s), 2 given
 	dsort(1, 2)	error: dsort takes 1 argument(s), 2 given
-	ctrb(1, 2, 3)	error: ctrb takes 2 argument(s), 3 given
-	obsv(1, 2, 3)	error: obsv takes 2 argument(s), 3 given
+	ctrb(1, 2, 3)	error: ctrb takes 1 to 2 argument(s), 3 given
+	obsv(1, 2, 3)	error: obsv takes 1 to 2 argument(s), 3 given
 	lyap(1, 2, 3, 4)	error: lyap takes 2 to 3 argument(s), 4 given
 	dlyap(1, 2, 3)	error: dlyap takes 2 argument(s), 3 given
 	gram(1, 2, 3, 4)	error: gram takes 2 to 3 argument(s), 4 given
@@ -589,6 +590,21 @@
 	d2d(1, 2, 3)	error: d2d takes 2 argument(s), 3 given
 	reg(1, 2, 3, 4)	error: reg takes 3 argument(s), 4 given
 	filt(1, 2, 3, 4)	error: filt takes 1 to 3 argument(s), 4 given
+	connect(1, 2, 3, 4, 5)	error: connect takes 4 argument(s), 5 given
+	lft(1, 2, 3, 4, 5)	error: lft takes 2 to 4 argument(s), 5 given
+	subsystem(1, 2, 3, 4)	error: subsystem takes 3 argument(s), 4 given
+	iosize(1, 2)	error: iosize takes 1 argument(s), 2 given
+	order(1, 2)	error: order takes 1 argument(s), 2 given
+	augstate(1, 2)	error: augstate takes 1 argument(s), 2 given
+	kalman(1, 2, 3, 4, 5)	error: kalman takes 3 to 4 argument(s), 5 given
+	lqg(1, 2, 3, 4)	error: lqg takes 3 argument(s), 4 given
+	lqgreg(1, 2, 3)	error: lqgreg takes 2 argument(s), 3 given
+	estim(1, 2, 3, 4, 5)	error: estim takes 2 to 4 argument(s), 5 given
+	lqry(1, 2, 3, 4, 5)	error: lqry takes 3 to 4 argument(s), 5 given
+	hasdelay(1, 2)	error: hasdelay takes 1 argument(s), 2 given
+	totaldelay(1, 2)	error: totaldelay takes 1 argument(s), 2 given
+	absorbdelay(1, 2)	error: absorbdelay takes 1 argument(s), 2 given
+	thiran(1, 2, 3)	error: thiran takes 2 argument(s), 3 given
 	rectwin(1, 2, 3)	error: rectwin takes 1 to 2 argument(s), 3 given
 	hann(1, 2, 3)	error: hann takes 1 to 2 argument(s), 3 given
 	hanning(1, 2, 3)	error: hanning takes 1 to 2 argument(s), 3 given
@@ -682,19 +698,3 @@
 	gauspuls(1, 2, 3, 4)	error: gauspuls takes 3 argument(s), 4 given
 	chirp(1, 2, 3, 4, 5, 6)	error: chirp takes 4 to 5 argument(s), 6 given
 	diric(1, 2, 3)	error: diric takes 2 argument(s), 3 given
-	firls(1, 2, 3, 4, 5)	error: firls takes 3 to 4 argument(s), 5 given
-	firpm(1, 2, 3, 4, 5)	error: firpm takes 3 to 4 argument(s), 5 given
-	fir2(1, 2, 3, 4, 5, 6, 7)	error: fir2 takes 3 to 6 argument(s), 7 given
-	resample(1, 2, 3, 4)	error: resample takes 3 argument(s), 4 given
-	phasez(1, 2, 3, 4)	error: phasez takes 1 to 3 argument(s), 4 given
-	phasedelay(1, 2, 3, 4)	error: phasedelay takes 1 to 3 argument(s), 4 given
-	zerophase(1, 2, 3, 4)	error: zerophase takes 1 to 3 argument(s), 4 given
-	finddelay(1, 2, 3)	error: finddelay takes 2 argument(s), 3 given
-	dtw(1, 2, 3, 4)	error: dtw takes 2 to 3 argument(s), 4 given
-	residuez(1, 2, 3)	error: residuez takes 2 argument(s), 3 given
-	tf2latc(1, 2, 3)	error: tf2latc takes 1 to 2 argument(s), 3 given
-	latc2tf(1, 2, 3)	error: latc2tf takes 1 to 2 argument(s), 3 given
-	latcfilt(1, 2, 3, 4)	error: latcfilt takes 2 to 3 argument(s), 4 given
-	fftfilt(1, 2, 3)	error: fftfilt takes 2 argument(s), 3 given
-	filtic(1, 2, 3, 4, 5)	error: filtic takes 3 to 4 argument(s), 5 given
-	azimuth(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: azimuth takes 4 to 8 argument(s), 9 given

@@ -38,7 +38,10 @@ fn draws(seed: Option<&Expr>) -> Result<(crate::random::Draws, String), String> 
         None => Ok((crate::random::Draws::new(), String::new())),
         Some(e) => {
             let seed = whole(Some(e), 0, (0, u64::from(u32::MAX)), "the seed")? as u32;
-            Ok((crate::random::Draws::seeded(seed), format!(" (seed {seed})")))
+            Ok((
+                crate::random::Draws::seeded(seed),
+                format!(" (seed {seed})"),
+            ))
         }
     }
 }
@@ -161,7 +164,9 @@ fn walk(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
     let count = whole(a.get(2), 1000, (1, MOST as u64), "the number of digits")? as usize;
     if of_chance(x) {
         let (mut chance, seeded) = draws(a.get(3))?;
-        let digits: Vec<u32> = (0..count).map(|_| chance.below(base as usize) as u32).collect();
+        let digits: Vec<u32> = (0..count)
+            .map(|_| chance.below(base as usize) as u32)
+            .collect();
         let (dirs, steps) = directions(&digits, |d| {
             let (sin, cos) = turn((u64::from(d), u64::from(base)));
             [cos, sin, 0.0]
@@ -212,7 +217,12 @@ fn walk3d(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
     if of_chance(z) {
         let (mut chance, seeded) = draws(a.get(3))?;
         let pairs: Vec<(u32, u32)> = (0..count)
-            .map(|_| (chance.below(base as usize) as u32, chance.below(base as usize) as u32))
+            .map(|_| {
+                (
+                    chance.below(base as usize) as u32,
+                    chance.below(base as usize) as u32,
+                )
+            })
             .collect();
         let parts = u64::from(base);
         let (dirs, steps) = directions(&pairs, |(a, c)| {
@@ -258,37 +268,62 @@ fn walk3d(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
 fn randomwalk(a: &[Expr], solid: bool) -> Result<Drawing, String> {
     let name = if solid { "randomwalk3d" } else { "randomwalk" };
     let usage = match solid {
-        true => "randomwalk3d(n[, \"lattice\" | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in space",
-        false => "randomwalk(n[, directions | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in the plane, in one of 4 directions unless said",
+        true => {
+            "randomwalk3d(n[, \"lattice\" | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in space"
+        }
+        false => {
+            "randomwalk(n[, directions | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in the plane, in one of 4 directions unless said"
+        }
     };
     let count = whole(a.first(), 1000, (1, MOST as u64), "the number of steps")? as usize;
     let kind = match a.get(1) {
         None => None,
         Some(e) => match crate::arrays::word(e) {
             Some(w) => Some(Err(w)),
-            None => Some(Ok(whole(Some(e), 4, (2, 3600), "the number of directions")?)),
+            None => Some(Ok(whole(
+                Some(e),
+                4,
+                (2, 3600),
+                "the number of directions",
+            )?)),
         },
     };
     let (mut chance, seeded) = draws(a.get(2))?;
     let tau = std::f64::consts::TAU;
     let mut unit = |chance: &mut crate::random::Draws| chance.unit().to_f64();
-    let any = |chance: &mut crate::random::Draws, unit: &mut dyn FnMut(&mut crate::random::Draws) -> f64| -> Point {
+    let any = |chance: &mut crate::random::Draws,
+               unit: &mut dyn FnMut(&mut crate::random::Draws) -> f64|
+     -> Point {
         match solid {
             true => {
                 let (z, turn) = (2.0 * unit(chance) - 1.0, tau * unit(chance));
                 let wide = (1.0 - z * z).max(0.0).sqrt();
-                [wide * turn.cos(), wide * turn.sin(), z]
+                [
+                    wide * crate::detmath::cos(turn),
+                    wide * crate::detmath::sin(turn),
+                    z,
+                ]
             }
             false => {
                 let turn = tau * unit(chance);
-                [turn.cos(), turn.sin(), 0.0]
+                [crate::detmath::cos(turn), crate::detmath::sin(turn), 0.0]
             }
         }
     };
     let (dirs, steps, how): (Vec<Point>, Vec<u32>, String) = match kind {
-        None | Some(Ok(_)) | Some(Err(_)) if matches!(&kind, None | Some(Ok(_))) || matches!(&kind, Some(Err(w)) if w == "lattice") => {
+        None | Some(Ok(_)) | Some(Err(_))
+            if matches!(&kind, None | Some(Ok(_)))
+                || matches!(&kind, Some(Err(w)) if w == "lattice") =>
+        {
             let directions: Vec<Point> = match (solid, &kind) {
-                (true, None) | (true, Some(Err(_))) => vec![[1.0, 0.0, 0.0], [-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0]],
+                (true, None) | (true, Some(Err(_))) => vec![
+                    [1.0, 0.0, 0.0],
+                    [-1.0, 0.0, 0.0],
+                    [0.0, 1.0, 0.0],
+                    [0.0, -1.0, 0.0],
+                    [0.0, 0.0, 1.0],
+                    [0.0, 0.0, -1.0],
+                ],
                 (true, Some(Ok(_))) => return Err(usage.into()),
                 (false, Some(Err(_))) => return Err(usage.into()),
                 (false, k) => {
@@ -304,8 +339,13 @@ fn randomwalk(a: &[Expr], solid: bool) -> Result<Drawing, String> {
                         .collect()
                 }
             };
-            let steps: Vec<u32> = (0..count).map(|_| chance.below(directions.len()) as u32).collect();
-            let how = format!("each of the {} directions as likely as another", directions.len());
+            let steps: Vec<u32> = (0..count)
+                .map(|_| chance.below(directions.len()) as u32)
+                .collect();
+            let how = format!(
+                "each of the {} directions as likely as another",
+                directions.len()
+            );
             (directions, steps, how)
         }
         Some(Err(w)) => {
@@ -322,12 +362,14 @@ fn randomwalk(a: &[Expr], solid: bool) -> Result<Drawing, String> {
                         let mut bell = || chance.normal().to_f64();
                         dirs.push([bell(), bell(), if solid { bell() } else { 0.0 }]);
                     }
-                    "whose parts along the axes follow the normal law (the motion of Brown)".to_string()
+                    "whose parts along the axes follow the normal law (the motion of Brown)"
+                        .to_string()
                 }
                 "levy" => {
                     for _ in 0..count {
                         // lengths above 1 whose chance falls as their power -3/2
-                        let far = (1.0 - unit(&mut chance)).max(1e-300).powf(-2.0 / 3.0);
+                        let far =
+                            crate::detmath::pow((1.0 - unit(&mut chance)).max(1e-300), -2.0 / 3.0);
                         let d = any(&mut chance, &mut unit);
                         dirs.push([d[0] * far, d[1] * far, d[2] * far]);
                     }
@@ -643,7 +685,10 @@ mod tests {
             let (dx, dy) = ((w[1][0] - w[0][0]).abs(), (w[1][1] - w[0][1]).abs());
             (dx - 1.0).abs() < 1e-12 && dy < 1e-12 || dx < 1e-12 && (dy - 1.0).abs() < 1e-12
         }));
-        assert_eq!(d.facts[0], "200 steps of chance in the plane (seed 3): each of the 4 directions as likely as another");
+        assert_eq!(
+            d.facts[0],
+            "200 steps of chance in the plane (seed 3): each of the 4 directions as likely as another"
+        );
         // in space: steps of the length 1 in any direction
         let d = drawn("randomwalk3d", &["100", "\"any\"", "2"]);
         let p = path(&d);

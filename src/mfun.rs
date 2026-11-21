@@ -1689,6 +1689,21 @@ impl Session {
                 }
             })(),
             ("random", 1 | 2) if crate::dist::is_distribution(&a[0]) => (|| {
+                // (lists among the parameters: a draw of every one)
+                if let Some(parts) = crate::dist::spread(&a[0]) {
+                    let mut out = Vec::new();
+                    for part in parts? {
+                        let mut own = a.to_vec();
+                        own[0] = part;
+                        out.push(self.call("random", &own)?);
+                    }
+                    return Ok(Expr::list(out));
+                }
+                // (a spread of 0 leaves the middle itself)
+                let still = matches!(&a[0], Expr::Fn(name, parts) if matches!(&**name, "normaldist" | "lognormaldist") && parts.get(1).is_some_and(Expr::is_zero));
+                if !still {
+                    self.valid_distribution(&a[0])?;
+                }
                 // (where MATLAB's own recipe is short, the numbers are those of its stream)
                 let draw = |s: &mut Session| {
                     let (bell, unit) = (crate::random::normal_value, crate::random::uniform);

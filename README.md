@@ -1545,6 +1545,59 @@ $ symbolic-math 'ulamspiral(2000, width = 50, height = 16)'
 the first 2000 primes up to 17389 on the square spiral of the whole numbers: 1 in the middle, 2 to its right, then around against the clock
 ```
 
+### Walks of chance
+
+`randomwalk(n)` takes n steps of chance in the plane: along the four directions, along any
+number of directions, in any direction (`"any"`), with normal steps (`"normal"`, the motion of
+Brown) or with flights of a heavy tail (`"levy"`); `randomwalk3d` does the same in space. A
+walk along digits can take digits of chance: `walk(random, 10, 1000)`, `walk3d(random, 12,
+10000)`. A seed as the last argument repeats a walk; without one the numbers come from the
+stream that `rng` begins. They are drawings as the other walks are: `save_png` and `save_jxl`
+save them, with `frames` they grow or turn.
+
+```
+$ symbolic-math 'randomwalk(2000, "any", 7, width = 60, height = 16)'
+ 37.18 │                         │    ⡀⣀⣤⡤
+       │                         │ ⣀⣄⣠⢙⡿⠂   ⢀⣀
+       │                         │ ⢵⠈⠛⠋    ⢠⣾⡏⠁
+       │                         │⢐⣾⣤⣤ ⢤⣤⠤⠶⠚⢻⣇
+       │                         │⠹⣟⣿⣿⣾⣮⢽⡄⢐⣯⣏
+       │                         │ ⠾⣿⣿⣿⣿⡻⠁⠾⣿⣻⣤⢄⣠⣤⠤
+       │                         │⢶⡿⠛⣟⣾⣿⠇ ⢐⣿⣿⣿⣿⣿⣿⡷⠔⣄
+       │                      ⡺⢿⣷⣷⣶⣤⢴⡿⢚⣟ ⠠⣻⣿⣿⣿⣿⣿⣿⣶⣾⡿⠗⠃
+       │                        ⠁⠈⠹⠿⡏⣀⣿⣿⣧⣾⣿⣻⣿⣿⣿⣻⢯⣽⡉⠛⠗
+       │                         │  ⠚⢷⣿⡟⡿⣯⣁⡟⢻⠿⠛⠛⠉⠈⠁
+       │                         │   ⡨⣿⣿⢿⣿⣻⣷⡞⠁
+       │               ⢰⢦     ⣠⡀ │  ⢴⣷⣺⡿⠉⠋⠙⠉⠁
+       │              ⢘⡍⢻⣶⣲⠖⠔⢾⣧⣭⣇⣀⡠⠤⢿⣿⣷⣻⣿
+     0 │───────────────⢳⣿⠟⠟─⢀⢼⣿⣿⣿⠿⠇⠙⢿⠿⣿⣿⣿⡄──────────────────────────
+       │              ⢠⢵⣧⢴⣴⡄⢽⣿⣿⣻⠺⡦      ⠛⣷⠃
+-8.038 │               ⠉⠈⠉⠜⠋⠉⠋⠉⠚ │       ⠉
+       └────────────────────────────────────────────────────────────
+        -35.74                                                 49.05
+2000 steps of chance in the plane (seed 7): of the length 1 in any direction
+from the origin to (11.11, 35.17), 36.88 away; x from -15.24 to 28.54, y from -6.962 to 36.11
+$ symbolic-math 'walk(random, 10, 1500, 3, width = 60, height = 14)'
+ 18.81 │                      ⢀⣤⠦                       │
+       │                    ⠤⡶⠁⢀⣷⣆             ⠠⣴⠄      │
+       │                    ⠸⣮⣶⠄⠈⠈          ⣀⣤⡶⢏⣻ ⣄     │
+       │                    ⢿⠿⣿⣧⣄            ⢈⣳⡾⣅⠜⢉⠇ ⢴⣾⣋⠗⠄
+       │                   ⢤⣄⡼  ⠉     ⣀⣀⣤⣶⣶⣆⣰⠉⣟⣿⠟⣷⣿⣵⡐⣿⣏⣼⣶⠄
+       │              ⠰⢷⢺⡶⢶⢼ ⡌      ⢀⣤⣿⣿⣿⡿⢛⠓⢣ ⢽⢺⣾⡾⢿⣿⣿⣿⣟⡟⠉
+       │               ⢣⠤⣫⣝⠄⠛⠉    ⢀⣴⠇⠈⢹⣿⣿⣷⣿⣿⣊⢦⡚⢿⣿⣗⣊⣨⢽⣿⣯⡥⢤⡀
+       │               ⢀⣤⡇  ⣠⣧⣄⠄ ⡀⢀⣾⠧⡤⣜⣻⠟⣿⣿⣿⣿⣿⡶⢿⠛⠛⠃ ⠈⠉⢻⠿⣒⠉
+     0 │──────────⣰⣼⣿⣴⣶⣼⣏⡈⣅⣮⠃⠛⠋⠣⢤⢯⣫⡾⣿⡮⠁⠈──⠈⠉⣩⣿⡩⠂──────⠘⡿⡟⠋──────────
+       │           ⢬⣛⣻⠷⣗⣤⡾⡟⢉   ⢰⣷⣮⣻⡻⣽⢩⣶⠲⡀  ⠐⠿          ⠉│
+       │           ⢰⣿⣿⢏⠉⣩⢿⠛⠛   ⡰⢋⣿⣿⢟⣿⡛⣁⣀⠇               │
+       │           ⠐⠿⣿⣿⣬⡇     ⢼⢿⣽⣿⣾⣯⣟⢣⢘⠖                │
+       │             ⠛⢳⠛⠂     ⠈⠻⢿⠟⢟⣷⣷⠘⠃                 │
+-12.79 │                          ⠈⠟⠚                   │
+       └────────────────────────────────────────────────────────────
+        -55.14                                                 12.56
+1500 steps along digits of chance in base 10 (seed 3): the digit d is a step at 36*d degrees
+from the origin to (-25.9, 14.39), 29.63 away; x from -43.62 to 1.045, y from -12.03 to 18.06
+```
+
 ### Pictures of functions, graphs and matrices
 
 Besides the plots above there are `complexplot(f, z, a, b)` (the values of a complex function
@@ -1862,6 +1915,84 @@ the eye stands at azimuth = 30, elevation = 25 (found: the lowest of three heigh
 saved rings.png: PNG, 256 x 256 pixels, 8 bits, RGB, level 1, 29509 bytes
 ```
 
+### Solids of four dimensions
+
+`solid4d("name", numbers...)` is a solid of four dimensions around the origin: the ball and the
+ellipsoid; the six regular polychora; the uniform polychora by name (`"truncated 120-cell"`) or
+by Coxeter diagram (`"x5o3o3x"`), their duals, the snub 24-cell and the grand antiprism; the ten
+regular star polychora (`"small stellated 120-cell"`, `"{5/2,5,3}"`); prisms, pyramids and
+bipyramids over uniform polyhedra; duoprisms and duopyramids; spherinder, cubinder, duocylinder;
+cones and capsules; the tori of 4D (spheritorus, torisphere, tiger, ditorus, torinder); walls
+around the Klein bottle, the projective plane and the Möbius band; paraboloid, hyperboloid,
+segments, lenses, bodies of one width, balls with spikes, superquadrics and the bodies of the
+bracket notation: the solids of the renderer [photons4d](https://github.com/lukaszgryglicki/photons4d).
+`rotate4d` turns a solid in one of the six planes of 4D, `scale4d` and `move4d` change its size
+and place, `section4d` cuts it by `w = c`. `inside4d` says whether points are in it, `volume4d`
+and `surface4d` measure it (exact where a formula gives it; a polytope from its sides),
+`vertices4d` and `edges4d` list the corners and edges of a polytope, `density4d` says how often a
+star polychoron winds around a point.
+
+```
+'[volume4d(solid4d("ball")), surface4d(solid4d("ball"))]'
+                                              [pi^2/2, 2pi^2]
+'volume4d(solid4d("tiger", 2, 3, 1/2))'       6pi^3
+                                                ~ 186.03766008179892105285789040261
+'[length(vertices4d(solid4d("120-cell"))), length(edges4d(solid4d("120-cell")))]'
+                                              [600, 1200]
+'length(vertices4d(solid4d("omnitruncated 120-cell")))'
+                                              14400
+'volume4d(solid4d("600-cell"))'               386271242969/100000000000
+                                                ~ 3.86271242969
+'density4d(solid4d("grand 600-cell"), [0.001, 0.002, -0.001, 0.0005])'
+                                              191
+'inside4d(rotate4d(solid4d("tesseract"), "xw", 45), [[0.7, 0, 0, 0], [0.72, 0, 0, 0]])'
+                                              [true, false]
+```
+
+`plot4d(solid)` and `view4d(solid)` show a solid as they show a function: three of its axes
+across, upwards and along the frames, and the fourth in the colours (the highest `w` of the
+solid over a place; `fill = below`: the lowest; `fill = between`: how far it reaches; of a cut
+solid how deep a place lies in it). `wire4d(solid)` draws its lines as an eye outside of the
+fourth dimension sees them: the edges of a polytope, the borders of cuts of other solids; saved
+with `frames = n` the solid turns in a plane of 4D (`"xw"` unless named).
+
+```
+$ symbolic-math 'plot4d(rotate4d(solid4d("tesseract"), "xw", 30), width = 60, height = 16)'
+
+
+
+
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+          =+++++****#####%%%%%@@@@@@@%%#**+==-::..
+
+
+
+
+plot4d of solid4d("tesseract", ["rotate", "xw", 30]): frame 9 of 16, where z is from 0 to 0.1313; the characters .:-=+*#%@ are the colours, the least value first
+the width: x from -1.05 to 1.05; the height: y from -1.05 to 1.05, upwards; the frames: z from -1.05 to 1.05; the colours: the highest w of the solid from -0.1821 to 0.6683
+2560 voxels of the box of 60 x 16 x 16 belong to the solid (16.67 %)
+save_jxl("plot4d.jxl", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is
+$ symbolic-math 'save_png("cell600.png", wire4d(solid4d("600-cell")), width = 400)'
+wire4d of solid4d("600-cell"): 720 lines (the edges), seen from the place 3 along w: what lies farther along w is smaller, the colours go along w
+saved cell600.png: PNG, 400 x 400 pixels, 8 bits, RGB, level 9, 214899 bytes
+$ symbolic-math 'save_jxl("turning.jxl", wire4d(solid4d("tesseract"), "xw", "yz"), frames = 24, width = 200)'
+wire4d of solid4d("tesseract"): 32 lines (the edges), seen from the place 3 along w: what lies farther along w is smaller, the colours go along w; in 24 frames it turns once in the planes xw and yz
+saved turning.jxl: JPEG XL, 200 x 200 pixels, 8 bits, RGB, 24 frames, 12 a second, lossless, effort 7, 208109 bytes
+$ symbolic-math 'save_png("star.png", view4d(solid4d("great grand stellated 120-cell")), width = 160)'
+view4d of solid4d("great grand stellated 120-cell"): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is x from -1.05 to 1.05; y is y from -1.05 to 1.05; z, upright, is z from -1.05 to 1.05; the colours are the highest w of the solid from 5.682e-6 to 0.8844 (512 colours of the palette rainbow, the least value first)
+83976 voxels of the box of 80 x 80 x 80 belong to the solid (16.4 %)
+the body has 83976 cubes, of which 44704 sides lie open
+the eye stands at azimuth = 30, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+saved star.png: PNG, 160 x 160 pixels, 8 bits, RGB, level 9, 6632 bytes
+```
+
 ### Pictures made with it
 
 The directory [jxls](jxls) holds pictures that the program made, all without loss and packed
@@ -1870,6 +2001,40 @@ there is left as it is). They are JPEG XL files: a viewer that knows the format 
 the moving ones with their frames.
 
 <!-- pictures -->
+**Solids of four dimensions (`solid4d`): cut into frames as `plot4d` does, seen from outside, and as wires that turn in 4D**
+
+| File | Made with `symbolic-math '...'` |
+| --- | --- |
+| [plot4d_solid_tesseract_turned.jxl](jxls/plot4d_solid_tesseract_turned.jxl) | `save_jxl("plot4d_solid_tesseract_turned.jxl", plot4d(rotate4d(rotate4d(solid4d("tesseract"), "xw", 30), "yz", 20)))` |
+| [plot4d_solid_120cell.jxl](jxls/plot4d_solid_120cell.jxl) | `save_jxl("plot4d_solid_120cell.jxl", plot4d(solid4d("120-cell")))` |
+| [plot4d_solid_tiger_between.jxl](jxls/plot4d_solid_tiger_between.jxl) | `save_jxl("plot4d_solid_tiger_between.jxl", plot4d(solid4d("tiger", 1, 1, 3/10)), fill = between, palette = turbo)` |
+| [plot4d_solid_star.jxl](jxls/plot4d_solid_star.jxl) | `save_jxl("plot4d_solid_star.jxl", plot4d(solid4d("great grand stellated 120-cell")), palette = plasma)` |
+| [plot4d_solid_klein.jxl](jxls/plot4d_solid_klein.jxl) | `save_jxl("plot4d_solid_klein.jxl", plot4d(solid4d("Klein bottle", 1, 2/5, 4/25)), palette = twilight)` |
+| [plot4d_solid_cut_120cell.jxl](jxls/plot4d_solid_cut_120cell.jxl) | `save_jxl("plot4d_solid_cut_120cell.jxl", plot4d(section4d(solid4d("120-cell"), 3/10)), palette = viridis)` |
+| [view4d_solid_duocylinder.jxl](jxls/view4d_solid_duocylinder.jxl) | `save_jxl("view4d_solid_duocylinder.jxl", view4d(rotate4d(solid4d("duocylinder"), "xw", 40)), width = 1920, height = 1080, effort = 10)` |
+| [view4d_solid_star.jxl](jxls/view4d_solid_star.jxl) | `save_jxl("view4d_solid_star.jxl", view4d(solid4d("small stellated 120-cell")), palette = turbo, width = 1920, height = 1080, effort = 10)` |
+| [wire4d_600cell.jxl](jxls/wire4d_600cell.jxl) | `save_jxl("wire4d_600cell.jxl", wire4d(solid4d("600-cell")), width = 1920, height = 1080, effort = 10)` |
+| [wire4d_great_stellated.jxl](jxls/wire4d_great_stellated.jxl) | `save_jxl("wire4d_great_stellated.jxl", wire4d(solid4d("great stellated 120-cell")), width = 1920, height = 1080, effort = 10)` |
+| [wire4d_tesseract_turning.jxl](jxls/wire4d_tesseract_turning.jxl) | `save_jxl("wire4d_tesseract_turning.jxl", wire4d(solid4d("tesseract"), "xw", "yz"), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [wire4d_24cell_turning.jxl](jxls/wire4d_24cell_turning.jxl) | `save_jxl("wire4d_24cell_turning.jxl", wire4d(solid4d("24-cell"), "xw", "yz"), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+
+**Walks of chance, and walks along digits of chance**
+
+| File | Made with `symbolic-math '...'` |
+| --- | --- |
+| [randomwalk_any.jxl](jxls/randomwalk_any.jxl) | `save_jxl("randomwalk_any.jxl", randomwalk(200000, "any", 7), width = 1920, height = 1080, effort = 10)` |
+| [randomwalk_levy.jxl](jxls/randomwalk_levy.jxl) | `save_jxl("randomwalk_levy.jxl", randomwalk(100000, "levy", 3), width = 1920, height = 1080, effort = 10)` |
+| [randomwalk3d_normal_around.jxl](jxls/randomwalk3d_normal_around.jxl) | `save_jxl("randomwalk3d_normal_around.jxl", randomwalk3d(60000, "normal", 5), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [walk_random_digits.jxl](jxls/walk_random_digits.jxl) | `save_jxl("walk_random_digits.jxl", walk(random, 10, 500000, 11), width = 1920, height = 1080, effort = 10)` |
+| [walk3d_random_around.jxl](jxls/walk3d_random_around.jxl) | `save_jxl("walk3d_random_around.jxl", walk3d(random, 12, 100000, 3), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+
+**The geoid of the earth, and a diagram of blocks over time**
+
+| File | Made with `symbolic-math '...'` |
+| --- | --- |
+| [geoid_egm96.jxl](jxls/geoid_egm96.jxl) | `save_jxl("geoid_egm96.jxl", geoshow(egm96geoid(georefpostings([-90, 90], [-180, 180], [181, 361])), georefpostings([-90, 90], [-180, 180], [181, 361])), width = 1920, height = 1080, effort = 10)` |
+| [sim_lorenz.jxl](jxls/sim_lorenz.jxl) | `save_jxl("sim_lorenz.jxl", lineplot(getfield(sim([["x", "integrator", "dx", 1], ["y", "integrator", "dy", 1], ["z", "integrator", "dz", 1], ["dx", "fcn", 10*(y - x)], ["dy", "fcn", x*(28 - z) - y], ["dz", "fcn", x*y - 8/3*z]], 40, "points", 8001, "step", 1/500), "x"), getfield(sim([["x", "integrator", "dx", 1], ["y", "integrator", "dy", 1], ["z", "integrator", "dz", 1], ["dx", "fcn", 10*(y - x)], ["dy", "fcn", x*(28 - z) - y], ["dz", "fcn", x*y - 8/3*z]], 40, "points", 8001, "step", 1/500), "z")), width = 1920, height = 1080, effort = 10)` |
+
 **Shapes of four dimensions (`plot4d`: 512 x 512 pixels, 512 frames, 512 colours; alpha says where the shape is)**
 
 | File | Made with `symbolic-math '...'` |
@@ -2405,8 +2570,11 @@ waveforms. A filter is its pair `[b, a]`, which every command takes as one value
 
 Filters of linear phase are also made with the least square error (`firls`), with ripples of
 one size (`firpm` or `remez`: the exchange of Remez, with the greatest errors sought on the
-whole bands, not on a grid) and through given gains (`fir2`). `resample` changes the rate by
-a ratio, `phasez`, `phasedelay` and `zerophase` are the phase without jumps, its delay and the
+whole bands, not on a grid) and through given gains (`fir2`); `firls` and `firpm` take
+`"hilbert"` or `"differentiator"` as the last word: taps of opposite signs from the two ends,
+for the transformer of Hilbert and for the slope of a signal. `resample` changes the rate by
+a ratio (with the lowpass that MATLAB designs for it, or a reach, a shape or taps of your own),
+`phasez`, `phasedelay` and `zerophase` are the phase without jumps, its delay and the
 real response, `finddelay` and `dtw` lay two signals along each other, `residuez` takes a
 ratio in `1/z` apart, `tf2latc`, `latc2tf` and `latcfilt` are the lattices, `fftfilt` and
 `filtic` filter by transforms and from a state.
@@ -2487,6 +2655,167 @@ exactly.
                                               [[[[2, 1]], [-3], "hardlim"]]
 ```
 
+### Several inputs and outputs, and delays
+
+A system with several inputs and outputs is `ss(A, B, C, D)` of any sizes, or a matrix whose
+entries are systems (ratios in `s` are): the functions of systems take both, and `+ - * / ^`
+join them. There are `append`, `connect`, `lft`, `subsystem`, `augstate`, `tzero`, `sigma`,
+`hinfnorm`, `norm`, `covar`, `gram`, `balreal`, `minreal` (exact), `c2d`, `d2c`, and the
+controllers and watchers `kalman`, `lqg`, `lqgreg`, `lqry`, `estim`, `reg`.
+
+```
+'H := [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]; [pole(H), tzero(H), dcgain(H)]'
+                                              [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]
+                                              [[-3, -2, -1], [-2], [[1, 1], [0, 1/3]]]
+'H := [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]; step(H)'
+                                              [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]
+                                              [[1 - e^(-t), 1 - e^(-2t)], [0, 1/3 - e^(-3t)/3]]
+'H := [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]; feedback(H, [[1, 0], [0, 1]])'
+                                              [[1/(s + 1), 2/(s + 2)], [0, 1/(s + 3)]]
+                                              [[tf([1], [1, 2]), tf([2, 8, 6], [1, 8, 20, 16])], [tf([0], [1]), tf([1], [1, 4])]]
+'G := ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0], [0, 1]], [[0], [0]]); tf(G)'
+                                              ss([[0, 1], [-2, -3]], [[0], [1]], [[1, 0], [0, 1]], [[0], [0]])
+                                              [[tf([1], [1, 3, 2])], [tf([1, 0], [1, 3, 2])]]
+```
+
+A system with dead time is an expression in `s` with `e^(-T*s)` in it: `tf(..., "InputDelay",
+T)` gives one, or it is written out. `step`, `impulse` and `lsim` stay exact (inside a loop at
+given times, trip by trip of the delay); `evalfr`, `bode`, `nyquist`, `margin` and `allmargin`
+take it; `pade` gives a ratio of polynomials that stands for it, `c2d` samples it exactly (also
+for a part of a sample), `thiran` is the sampled filter that delays by a part of a sample.
+
+```
+'step(tf([1], [1, 1], "InputDelay", 2))'      heaviside(t - 2)*(1 - e^(2 - t))
+'G := e^(-s)/(s + 1); step(feedback(G, 1), [0, 1, 2, 3])'
+                                              e^(-s)/(s + 1)
+                                              [0, 0, 0.63212055882855767840447622983854, 0.60042359910627195129704804535044]
+'margin(4*e^(-s/4)/(s + 1))'                  [1.7336276390671879088344916547312, 49.001112220394941377923816308214, 6.8620286107683018928617323220355, 3.8729833462074168851792653997824]
+'c2d(tf([10], [1, 3, 10], "IODelay", 1/4), 1/10)'
+                                              tf([0.011873235806753380872023200200738, 0.064083550227662953993481358956289, 0.0097206590635277442437651212127366], [1, -1.6551407755837737869576040989481, 0.74081822068171786606687377931782, 0, 0, 0], 1/10)
+```
+
+### Grids of the earth and the geoid
+
+A grid of values has a reference that says where its samples lie: `georefcells`,
+`georefpostings` (and `maprefcells`, `maprefpostings` for a plane) make one, a record with the
+names of MATLAB. Places become cells and back (`geographictodiscrete`, `intrinsictogeographic`,
+...); `geointerp` and `ltln2val` read a grid between its samples; `geocrop`, `georesize`,
+`gradientm` (course of the way down, slope), `areamat`, `los2` and `viewshed` (what is seen over
+the ground) work on it; `arcgridread` and `arcgridwrite` read and write grids of ESRI in text,
+`worldfileread` and `worldfilewrite` world files; `geoshow`, `contourm` and `surfm` draw one.
+`egm96geoid` is the height of the geoid above the ellipsoid, from the Earth Gravitational
+Model 1996 to degree 360 (its coefficients are built in), with the digits of the session.
+
+```
+'R := georefpostings([0, 2], [10, 13], [3, 4]); geointerp([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], R, 1/2, 21/2)'
+                                              struct("LatitudeLimits", [0, 2], "LongitudeLimits", [10, 13], "RasterSize", [3, 4], "RasterInterpretation", "postings", "ColumnsStartFrom", "south", "RowsStartFrom", "west", "SampleSpacingInLatitude", 1, "SampleSpacingInLongitude", 1, "CoordinateSystemType", "geographic")
+                                              7/2
+                                                ~ 3.5
+'R := georefcells([0, 2], [10, 13], [2, 3]); geographictodiscrete(R, [1/2, 3/2], [10.2, 12.9])'
+                                              struct("LatitudeLimits", [0, 2], "LongitudeLimits", [10, 13], "RasterSize", [2, 3], "RasterInterpretation", "cells", "ColumnsStartFrom", "south", "RowsStartFrom", "west", "CellExtentInLatitude", 1, "CellExtentInLongitude", 1, "CoordinateSystemType", "geographic")
+                                              [[1, 2], [1, 3]]
+-d 8 'egm96geoid(52, 21)' 'geoidheight(27.988, 86.925)'
+                                              32.027854
+                                              -28.742168
+```
+
+### Networks that slide windows over pictures
+
+`dlnetwork` makes a network of the layers `imageinputlayer`, `convolution2dlayer`,
+`maxpooling2dlayer`, `averagepooling2dlayer`, `flattenlayer`, `fullyconnectedlayer` and the
+layers of units (`relulayer`, `softmaxlayer`, ...): the sizes are worked out and the first
+weights are the same on every machine. `predict`, `classify` and `perform` take it, and
+`trainnet` trains it by steps on batches: `"sgdm"`, `"adam"` or `"rmsprop"`, with the slopes of
+every layer worked out with the digits of the session.
+
+```
+'net := dlnetwork([imageinputlayer([4, 4]), convolution2dlayer(2, 2), relulayer(), maxpooling2dlayer(2), flattenlayer(), fullyconnectedlayer(2), softmaxlayer()]); length(net)'
+                                              [["input", [4, 4, 1]], ["conv", [[[[0.67505173740213993929932041827707, 0.018805863878010690555894106442964], [-0.22354773863400879818494633927737, -0.57566216403776926802376351257938]]], [[[-0.65688463667218118306936618674313, 0.41369378569740376842163910912991], [0.34701793101723598207268837832087, 0.55072057380734376800926890385417]]]], [0, 0], [1, 1], [0, 0]], ["relu"], ["maxpool", [2, 2], [1, 1]], ["flatten"], ["dense", [[0.57221311079425569076674952826801, 0.66076547575070745791937828629234, 0.56211416823227244889486917215042, -0.43825620674311142891448288307402, -0.17557018072758300833876910058199, -0.2925796347408038205177370373689, 0.12895062403219152324639411110329, -0.17985374699260746431145176611425], [-0.13769715271335248650292688521995, 0.2926451204894962966106062731296, -0.33973859616885964667118747589795, -0.025883615855571876140778290946235, -0.48122406149846531367393633664434, -0.13657849963973489379774456074774, -0.30464907966633578063752782664467, 0.29975154843735114696656935225277]], [0, 0]], ["softmax"]]
+                                              7
+'net := dlnetwork([imageinputlayer([3, 3]), convolution2dlayer(2, 1), relulayer(), flattenlayer(), fullyconnectedlayer(2), softmaxlayer()]); x := [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[0, 0, 1], [0, 1, 0], [1, 0, 0]]]; t := [[1, 0], [0, 1]]; perform(trainnet(net, x, t, "solver", "adam", "epochs", 20, "rate", 1/20), x, t) < perform(net, x, t)'
+                                              [["input", [3, 3, 1]], ["conv", [[[[0.82676615330725262302278420416154, 0.023032385336681933294968152738874], [-0.27378894640318966814573040716356, -0.70503928305944156071114522458308]]]], [0], [1, 1], [0, 0]], ["relu"], ["flatten"], ["dense", [[-0.928975162096321582794189453125, 0.585051362402737140655517578125, 0.490757464431226253509521484375, 0.778836504556238651275634765625], [0.738723949529230594635009765625, 0.853044561110436916351318359375, 0.7256862707436084747314453125, -0.56578633002936840057373046875]], [0, 0]], ["softmax"]]
+                                              [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[0, 0, 1], [0, 1, 0], [1, 0, 0]]]
+                                              [[1, 0], [0, 1]]
+                                              true
+```
+
+### Diagrams of blocks
+
+What Simulink does with drawn diagrams, `sim` does with written ones: a diagram is a list of
+blocks, a block the name of the signal that it makes, its kind, its numbers and the names of
+the signals that it takes. There are sources (`constant`, `step`, `ramp`, `sine`, `pulse`,
+`clock`, `signal`), sums, gains, products and formulas of signals (`fcn`), `saturation`,
+`deadzone`, `quantizer`, `switch`, `lookup`, `relay`, `ratelimiter`, blocks with states
+(`integrator`, `tf`, `ss`, `pid`, `delay`, `derivative`) and sampled ones (`unitdelay`, `zoh`,
+`dtf`); `simblocks()` lists them. The answer is a record of the times and of every signal. As in
+Simulink the numbers are doubles; the states go by steps of Runge and Kutta, sampled blocks at
+their own times, and a loop without a state is solved at every step.
+
+```
+'r := sim([["u", "step", 0], ["e", "sum", "u", "-y"], ["v", "gain", 2, "e"], ["y", "tf", [1], [1, 1], "v"]], 2, "points", 5); getfield(r, "y")'
+                                              struct("t", [0, 0.5, 1, 1.5, 2], "u", [1, 1, 1, 1, 1], "e", [1, 0.48208677343243733, 0.3665247122453097, 0.3407393310255177, 0.33498583478445076], "v", [2, 0.9641735468648747, 0.7330494244906194, 0.6814786620510354, 0.6699716695689015], "y", [0, 0.5179132265675627, 0.6334752877546903, 0.6592606689744823, 0.6650141652155492])
+                                              [0, 0.5179132265675627, 0.6334752877546903, 0.6592606689744823, 0.6650141652155492]
+'r := sim([["x", "integrator", "v", 2], ["v", "integrator", "a"], ["a", "fcn", (1 - x^2)*v - x]], 10, "points", 6); getfield(r, "x")'
+                                              struct("t", [0, 2, 4, 6, 8, 10], "x", [2, 0.3233166671392892, -1.7417683245456699, 1.2790420281921422, 1.2132324432261572, -2.0083407826497575], "v", [0, -1.8329745678614033, 0.6246661634922148, 2.4378144509232857, -0.9878139207067338, 0.03290706439833287], "a", [-2, -1.9646836814460498, 0.4713492066015012, -2.8293664956252917, -0.7470504944171117, 1.9085194174673894])
+                                              [2, 0.3233166671392892, -1.7417683245456699, 1.2790420281921422, 1.2132324432261572, -2.0083407826497575]
+'r := sim([["u", "constant", 1], ["s", "sum", "u", "d"], ["d", "unitdelay", 1, "s"]], 5, "points", 6); getfield(r, "d")'
+                                              struct("t", [0, 1, 2, 3, 4, 5], "u", [1, 1, 1, 1, 1, 1], "s", [1, 2, 3, 4, 5, 6], "d", [0, 1, 2, 3, 4, 5])
+                                              [0, 1, 2, 3, 4, 5]
+```
+
+### More of pictures as matrices
+
+Filters (`fspecial`, `imgaussfilt`, `imboxfilt`, `medfilt2`, `ordfilt2`, `stdfilt`, `imsharpen`,
+`padarray`), shapes and what they do to pictures (`strel`, `imdilate`, `imerode`, `imopen`,
+`imclose`, `imtophat`, `imbothat`), the parts that hang together (`bwlabel`, `bwconncomp`,
+`regionprops`, `bwareaopen`, `imclearborder`, `imfill`, `bwperim`, `bweuler`, `bwdist`), edges
+and slopes (`edge`, `imgradient`), levels of gray (`graythresh`, `imadjust`, `stretchlim`,
+`histeq`), noise from the stream of `rng` (`imnoise`), measures (`psnr`, `immse`, `corr2`,
+`entropy`), colours (`rgb2hsv`, `rgb2lab`, `rgb2ycbcr` and back), `imtranslate`, `impyramid`,
+`normxcorr2`, `dct2`. The numbers are doubles here.
+
+```
+'bwlabel([[1, 0, 1], [1, 0, 0], [0, 0, 1]])'
+                                              [[1, 0, 2], [1, 0, 0], [0, 0, 3]]
+'imdilate([[0, 0, 0], [0, 1, 0], [0, 0, 0]], strel("disk", 1))'
+                                              [[0, 1, 0], [1, 1, 1], [0, 1, 0]]
+'graythresh([[0, 0, 255, 255], [0, 10, 250, 255]])'
+                                              0.5078431372549019
+'medfilt2([[1, 2, 3], [4, 100, 6], [7, 8, 9]])'
+                                              [[0, 2, 0], [2, 6, 3], [0, 6, 0]]
+'rgb2lab([[[1]], [[0]], [[0]]])'              [[[53.240794141307205]], [[80.09245959641115]], [[67.20319651585298]]]
+```
+
+### Cell arrays, files of MATLAB, units of your own, MATLAB's random numbers
+
+A cell array `{1, "two", [3, 4]}` holds anything in every cell and stays what it is: the
+functions of lists take it as the list of what it holds, and those that order or choose give a
+cell array again; `cellfun`, `cell2mat`, `num2cell`, `mat2cell`, `celldisp`, `iscell` are there.
+`matwrite` and `matread` write and read MAT-files (level 5, also packed) with numbers, texts,
+truths, matrices, cell arrays and records, as MATLAB, Octave and SciPy do. `newunit` makes a
+unit of your own. After `rng(seed)` the numbers of `rand`, `randi`, `randn` and `randperm` are
+those of MATLAB.
+
+```
+'c := {3, "two", [1, 4]}; [class(c), length(c), part(c, 2)]'
+                                              {3, "two", [1, 4]}
+                                              ["cell", 3, "two"]
+'cellfun(length, {[1, 2], [3], []})' 'sort({3, 1, 2})'
+                                              [2, 1, 0]
+                                              {1, 2, 3}
+'matwrite("v.mat", "x", [[1, 2], [3, 4]], "name", "text"); matread("v.mat")'
+                                              saved v.mat: a MAT-file of level 5 with 2 variable(s), 296 bytes
+                                              struct("x", [[1, 2], [3, 4]], "name", "text")
+'newunit("smoot", 1.7018 m); convert(364.4 smoot, m)'
+                                              smoot
+                                              620.13592 m
+-d 5 'rng(0); randn(1, 5)' 'rng(0); randperm(6)'
+                                              0
+                                              [0.53767, 1.8339, -2.2588, 0.86217, 0.31877]
+                                              0
+                                              [6, 3, 5, 1, 2, 4]
+```
+
 ### For users of MATLAB
 
 What is the same thing under another form, and what differs on purpose:
@@ -2529,19 +2858,48 @@ What is the same thing under another form, and what differs on purpose:
   the survey mile of 6336000/3937 m. `areaint` is the exact area of the polygon of geodesics.
 - A network is a list of layers, rows of data are observations, and `feedforwardnet` takes
   the numbers of inputs and outputs too: `feedforwardnet([2, 3, 1])`. `trainnet` goes down to a
-  least value with every digit of the session (BFGS); it does not stop early.
+  least value with every digit of the session (BFGS) and does not stop early; with a choice of
+  steps (`"solver"`, `"epochs"`, `"batch"`, ...) it trains by steps on batches.
+- A cell array is `{...}`; what its k-th cell holds is `part(c, k)` (MATLAB: `c{k}`), since a
+  bracket after a name of one letter multiplies. A row of cells is a list in it.
+- `firls` and `firpm` with `"hilbert"` have the response `-j` on the band, as MATLAB (SciPy's
+  `remez` has the other sign). `strel("disk", r)` is the true disk of all pixels within `r`
+  (MATLAB approximates it by lines unless asked not to); `edge` finds edges by the rule that
+  `--functions` tells, which is the documented one of MATLAB for Sobel, Prewitt and Roberts.
+- The random numbers of `rand`, `randi`, `randn`, `randperm` after `rng(seed)`, and of
+  `normrnd`, `lognrnd`, `exprnd`, `unifrnd`, `unidrnd` and `mvnrnd` that are made of them, are
+  MATLAB's. Those of the other laws are drawn through the inverse of the law.
+- `sim` works in doubles as Simulink does; the transport delay draws straight lines between the
+  values that it kept, and the derivative is the slope over the last step.
+- A list among the parameters of a distribution stands for a distribution of every entry, as
+  in MATLAB: `poissrnd([1, 2, 3])` gives three numbers and `normcdf(1, 0, [1, 2])` two. The
+  draws of the laws of whole numbers are quick for large means too (`poissrnd(1000000)`).
+- `c2d` gives closed forms for small systems and for systems with names, and decimal numbers
+  for larger ones (MATLAB: always decimals); `step` and `impulse` of a sampled system give
+  exact fractions up to 5000 samples and decimals beyond. `roots` takes names among the
+  coefficients (`roots([1, a, b])`), so `pole` and `zpk` do too. A gain alone is a system
+  without states: `ss(tf([2], [1]))` is `ss([[]], [], [[]], [[2]])`.
+- `fitlm` of values that do not differ is an error (MATLAB: a table of NaN); in an exact fit a
+  coefficient that is nothing has `undefined` as its `tstat`.
 
 ### What is not there
 
-Of the toolboxes for control, signal design, maps and deep learning their cores are here, not
-all of them: systems with several inputs and outputs (and what is made of them: `kalman`,
-`lqg`, `append`, `connect`), delays inside systems, the filters of `firls` and `firpm` with
-taps of the other sign from the end (Hilbert transformers, differentiators), MATLAB's own
-lowpass in `resample` (the one of SciPy's `resample_poly` is used), raster maps and geoids,
-convolutional networks that are trained and stochastic training are missing. There is
-no Simulink, no image processing beyond the functions above, no cell array as a type of its own
-(a list holds unlike things), no `latex`, no `newUnit`, no MATLAB streams of `randn` and
-`randperm`, and no graphical user interface, object or file of MATLAB's own formats.
+What a command line cannot be: the graphical user interfaces and apps of MATLAB (the web page
+of this program is its window), the `classdef` objects of its language, and its documents
+(`.fig`, `.mlx`, `.slx`: a drawn diagram is written as text for `sim`). `latex` is left out on
+purpose. Of data: the geoid is EGM96 (the coefficients of EGM2008 take 75 MB); MAT-files of the
+version 7.3 (HDF5) and the objects of MATLAB inside a MAT-file (string arrays, tables,
+datetimes) are not read; of grids the text files of ESRI and world files are read, GeoTIFF is
+not. The tail of `randn` beyond 3.65 (one draw in 3900) follows the published method of the
+ziggurat; everything else of its stream was compared with numbers that MATLAB's documentation
+prints.
+
+What is slow: `firpm` of orders above 100 (the exchange runs with all digits: an order of 150
+takes a quarter of a minute, 300 minutes); `plot4d` and `view4d` of functions that rise steeply
+(`z^9 + z` takes a quarter of a minute); systems of an order of hundreds; more than 5000
+samples of a sampled system with a name among its coefficients; `pdepe` takes 2000 points of a
+mesh at most. A probability in the far tail of Student's law that is below the digits of the
+session shows as 0 or 1.
 
 ## Tetration
 
@@ -2698,7 +3056,7 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **Signals**: `fft`, `ifft`, `fft2` (`fftn`), `ifft2` (`ifftn`), `fftshift`, `ifftshift`, `dct`, `idct`, `lfilter`, `conv2` (`convn`), `xcorr`, `upsample`, `downsample`.
 - **Functions of numbers by the names of MATLAB**: `expm1`, `log1p`, `nthroot`, `realsqrt`, `reallog`, `realpow`, `nextpow2`, `pow2`, `idivide`, `sind`, `cosd`, `tand`, `cotd`, `secd`, `cscd`, `asind`, `acosd`, `atand`, `acotd`, `asecd`, `acscd`, `atan2d`, `sinpi`, `cospi`, `deg2rad`, `rad2deg`, `cart2pol`, `pol2cart`, `cart2sph`, `sph2cart`, `rat`, `bitand`, `bitor`, `bitxor`, `bitshift`, `bitcmp`, `bitget`, `bitset`, `erfcx`, `dawson`, `betaln`, `ssinint`, `airy`, `besselh`, `whittakerm`, `whittakerw`, `wrightomega`, `rectangularpulse`, `triangularpulse`, `jacobicd`, `jacobisd`, `jacobind`, `jacobidc`, `jacobinc`, `jacobisc`, `jacobins`, `jacobids`, `jacobics`, `jacobiam`, `jacobizeta`, `ellipticck`, `ellipticce`, `ellipticcpi`, `ellipke`, `ellipj`, `gammaincinv`, `betaincinv`.
 - **Texts**: `num2str`, `int2str`, `mat2str`, `tostring` (`string`), `dec2bin`, `dec2hex`, `dec2base`, `bin2dec`, `hex2dec`, `base2dec`, `char`, `double`, `strcat`, `strlength` (`strlen`), `upper` (`toupper`), `lower` (`tolower`), `strtrim` (`strip`), `strrep`, `strfind`, `strsplit` (`split`), `strjoin`, `strcmp`, `strcmpi`, `strncmp`, `strncmpi`, `startswith`, `endswith`, `blanks`, `isletter`, `isspace`, `ischar` (`isstring`), `isnumeric`, `islogical`, `logical`, `sprintf`, `rats`.
-- **The distribution functions of MATLAB**: `normpdf`, `normcdf`, `norminv`, `normrnd`, `normstat`, `unifpdf`, `unifcdf`, `unifinv`, `unifrnd`, `unifstat`, `exppdf`, `expcdf`, `expinv`, `exprnd`, `expstat`, `gampdf`, `gamcdf`, `gaminv`, `gamrnd`, `gamstat`, `betapdf`, `betacdf`, `betainv`, `betarnd`, `betastat`, `chi2pdf`, `chi2cdf`, `chi2inv`, `chi2rnd`, `chi2stat`, `tpdf`, `tcdf`, `tinv`, `trnd`, `tstat`, `fpdf`, `fcdf`, `frnd`, `fstat`, `lognpdf`, `logncdf`, `logninv`, `lognrnd`, `lognstat`, `wblpdf`, `wblcdf`, `wblinv`, `wblrnd`, `wblstat`, `raylpdf`, `raylcdf`, `raylinv`, `raylrnd`, `raylstat`, `binopdf`, `binocdf`, `binoinv`, `binornd`, `binostat`, `poisspdf`, `poisscdf`, `poissinv`, `poissrnd`, `poissstat`, `geopdf`, `geocdf`, `geoinv`, `geornd`, `geostat`, `nbinpdf`, `nbincdf`, `nbininv`, `nbinrnd`, `nbinstat`, `hygepdf`, `hygecdf`, `hygeinv`, `hygernd`, `hygestat`, `unidpdf`, `unidcdf`, `unidinv`, `unidrnd`, `unidstat`.
+- **The distribution functions of MATLAB (a list among the parameters stands for a distribution of every entry: poissrnd([1, 2, 3]) gives three numbers)**: `normpdf`, `normcdf`, `norminv`, `normrnd`, `normstat`, `unifpdf`, `unifcdf`, `unifinv`, `unifrnd`, `unifstat`, `exppdf`, `expcdf`, `expinv`, `exprnd`, `expstat`, `gampdf`, `gamcdf`, `gaminv`, `gamrnd`, `gamstat`, `betapdf`, `betacdf`, `betainv`, `betarnd`, `betastat`, `chi2pdf`, `chi2cdf`, `chi2inv`, `chi2rnd`, `chi2stat`, `tpdf`, `tcdf`, `tinv`, `trnd`, `tstat`, `fpdf`, `fcdf`, `frnd`, `fstat`, `lognpdf`, `logncdf`, `logninv`, `lognrnd`, `lognstat`, `wblpdf`, `wblcdf`, `wblinv`, `wblrnd`, `wblstat`, `raylpdf`, `raylcdf`, `raylinv`, `raylrnd`, `raylstat`, `binopdf`, `binocdf`, `binoinv`, `binornd`, `binostat`, `poisspdf`, `poisscdf`, `poissinv`, `poissrnd`, `poissstat`, `geopdf`, `geocdf`, `geoinv`, `geornd`, `geostat`, `nbinpdf`, `nbincdf`, `nbininv`, `nbinrnd`, `nbinstat`, `hygepdf`, `hygecdf`, `hygeinv`, `hygernd`, `hygestat`, `unidpdf`, `unidcdf`, `unidinv`, `unidrnd`, `unidstat`.
 - **Random numbers**: `rng`, `rand` (`randomreal`), `randn`, `randi` (`randominteger`), `randperm`, `randsample`, `shuffle`, `random`.
 - **Optimisation with exact numbers**: `linprog`, `intlinprog`, `lsqnonneg`.
 - **Zeros, minima, integrals and differential equations of functions**: `fzero`, `fminbnd`, `fminsearch` (`fminunc`), `lsqcurvefit`, `quad` (`quadgk`, `quadl`, `quadv`), `integral2` (`quad2d`, `dblquad`), `integral3` (`triplequad`), `ode45` (`ode23`, `ode113`, `ode78`, `ode89`, `ode15s`, `ode23s`, `ode23t`, `ode23tb`), `fsolve`, `feval`, `bsxfun`, `funm`, `lsqminnorm`, `str2num` (`str2sym`), `str2double`, `finverse`, `compose`, `symvar`, `has`, `children`, `lhs`, `rhs`, `isalways`, `combine`, `rewrite`, `potential`, `vectorpotential`, `equationstomatrix`, `eliminate`, `isolate`, `assumptions`, `ttest`, `ttest2`, `ztest`, `vartest`, `vartest2`, `splitapply`, `assert`, `error`.
@@ -2712,7 +3070,7 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **The calendar**: `datenum` (`datetime`), `datevec`, `datestr`, `weekday`, `eomday`, `calendar`, `addtodate`, `etime`, `juliandate`, `mjuliandate` (`modifiedjuliandate`), `posixtime`, `dayofyear`, `isweekend`, `leapyear` (`isleapyear`, `is_leap_year`), `yeardays`, `now`, `clock`, `date` (`today`), `cputime`.
 - **Patterns of texts**: `regexp`, `regexpi`, `regexprep`, `regexptranslate`, `strjust`, `validatestring`.
 - **Tests of ranks and counts, groups of points**: `ranksum`, `signrank`, `signtest`, `kruskalwallis`, `friedman`, `vartestn` (`bartlett`), `fishertest`, `chi2gof`, `kstest`, `kstest2`, `jbtest`, `anova2`, `mahal`, `mvnpdf`, `mvnrnd`, `ksdensity`, `jackknife`, `bootstrp`, `grpstats`, `linkage`, `cluster`, `kmeans`, `fitlm`.
-- **Records and tables**: `struct`, `isstruct`, `fieldnames`, `numfields`, `getfield`, `setfield`, `rmfield`, `isfield`, `orderfields`, `struct2cell`, `cell2struct`, `structfun`, `dictionary`, `keys`, `values`, `entries`, `numentries`, `iskey`, `lookup`, `remove`, `iscell`, `iscellstr`, `cell`.
+- **Records and tables**: `struct`, `isstruct`, `fieldnames`, `numfields`, `getfield`, `setfield`, `rmfield`, `isfield`, `orderfields`, `struct2cell`, `cell2struct`, `structfun`, `dictionary`, `keys`, `values`, `entries`, `numentries`, `iskey`, `lookup`, `remove`, `iscell`, `iscellstr`, `cell`, `cellarray`, `celldisp`, `mat2cell`.
 - **More special functions**: `meijerg`, `lerchphi` (`lerch`).
 - **Expressions in an unknown function and its derivatives**: `functionalderivative` (`eulerlagrange`), `odetovectorfield`.
 - **The least value under conditions**: `fmincon`.
@@ -2724,6 +3082,8 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **More charts of data**: `bar3`, `histogram2`, `surfc` (`meshc`), `streamline`, `polarhistogram` (`rose`), `dendrogram`, `bubblechart`, `fimplicit3`, `isosurface`, `triplot`, `trisurf` (`trimesh`), `pareto`, `fill` (`patch`), `ribbon`, `normplot` (`qqplot`, `probplot`), `parallelplot`, `swarmchart`, `violinplot`, `histfit`, `gscatter`, `andrewsplot`, `bar3h`, `cdfplot`, `plotmatrix`, `stackedplot`, `biplot`, `silhouette`.
 - **Expressions as code, their shared parts, and as a picture of text**: `ccode`, `fortran`, `matlabcode` (`octavecode`), `matlabfunction`, `subexpr`, `cse`, `pretty`.
 - **Systems of control: one input, one output, as a ratio of polynomials in s (running time) or z (sampled)**: `tf`, `zpk`, `ss`, `tfdata`, `zpkdata`, `ssdata`, `tf2sym`, `tf2ss`, `ss2tf`, `tf2zp` (`tf2zpk`), `zp2tf`, `ss2zp`, `zp2ss`, `isct`, `isdt`, `isproper`, `isstable`, `pole`, `zero` (`tzero`), `dcgain`, `damp`, `parallel`, `feedback`, `minreal`, `evalfr`, `freqresp`, `bode` (`nichols`), `nyquist`, `margin`, `allmargin`, `hinfnorm` (`getpeakgain`), `h2norm`, `step`, `impulse`, `lsim`, `stepinfo`, `c2d`, `d2c`, `pid`, `rlocus`, `esort`, `dsort`, `ctrb`, `obsv`, `lyap`, `dlyap`, `gram`, `care` (`icare`), `dare` (`idare`), `lqr`, `dlqr`, `lqe`, `acker`, `place`, `hsvd`, `balreal`, `balred`, `covar`, `dlqe`, `lyapchol`, `dlyapchol`, `initial`, `gensig`, `lqi`, `ss2ss`, `ord2`, `d2d`, `reg`, `filt`, `bodeplot`, `nyquistplot`, `pzplot` (`pzmap`), `rlocusplot`, `stepplot`, `impulseplot`, `initialplot`, `nicholsplot`.
+- **Systems of control with several inputs and outputs: ss(A, B, C, D) of any sizes, or a matrix whose entries are systems with one input and one output. The functions of systems take them: tf ss zpk minreal pole zero dcgain evalfr freqresp sigma step impulse lsim initial norm hinfnorm covar series parallel feedback inv c2d d2c reg, and + - * / ^ join them**: `connect`, `lft`, `subsystem`, `iosize`, `order`, `augstate`, `kalman`, `lqg`, `lqgreg`, `estim`, `lqry`.
+- **Delays inside systems of control: a system of running time with dead time is an expression in s with e^(-T*s) in it, as tf([1], [1, 1], "InputDelay", 2) gives it or as it is written: e^(-2s)/(s + 1). The functions of systems take it: step impulse lsim (exact, also for delays inside loops at given times), evalfr freqresp dcgain bode nyquist sigma margin allmargin, pole zero isstable (of the ratio of polynomials beside one delay), series parallel feedback, c2d (exact with the input held, also for a part of a sample), pade(system, n)**: `hasdelay`, `totaldelay`, `absorbdelay`, `thiran`.
 - **Filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction**: `rectwin` (`boxcar`), `hann`, `hanning`, `hamming`, `blackman`, `blackmanharris`, `nuttallwin`, `flattopwin`, `triang`, `bohmanwin`, `parzenwin`, `gausswin`, `tukeywin`, `kaiser`, `chebwin`, `barthannwin`, `buttap`, `cheb1ap`, `cheb2ap`, `ellipap`, `besselap`, `butter`, `cheby1`, `cheby2`, `ellip`, `besself`, `buttord`, `cheb1ord`, `cheb2ord`, `ellipord`, `lp2lp`, `lp2hp`, `lp2bp`, `lp2bs`, `bilinear`, `iirnotch`, `iirpeak`, `fir1`, `kaiserord`, `sgolay`, `sgolayfilt`, `freqz`, `freqs`, `grpdelay`, `impz`, `stepz`, `filtfilt`, `sosfilt`, `sos2tf`, `tf2sos`, `zp2sos`, `isminphase`, `ismaxphase`, `islinphase`, `firtype`, `polystab`, `periodogram`, `pwelch`, `cpsd`, `mscohere`, `tfestimate`, `spectrogram`, `bandpower`, `rssq`, `peak2rms`, `enbw`, `mag2db` (`db`), `db2mag`, `pow2db`, `db2pow`, `rceps`, `goertzel`, `czt`, `dftmtx`, `cconv`, `envelope`, `findpeaks`, `medfilt1`, `upfirdn`, `decimate`, `buffer`, `xcov`, `levinson`, `aryule`, `arburg`, `lpc`, `poly2rc`, `rc2poly`, `sawtooth`, `rectpuls`, `tripuls`, `gauspuls`, `chirp`, `diric`, `zplane`.
 - **More of the design of filters: least squares, samples of the response, equal ripples, another rate, lattices, phases, delays**: `firls`, `firpm` (`remez`), `fir2`, `resample`, `phasez`, `phasedelay`, `zerophase`, `finddelay`, `dtw`, `residuez`, `tf2latc`, `latc2tf`, `latcfilt`, `fftfilt`, `filtic`.
 - **A function of a complex number as a shape of four dimensions: frames are the third, colours the fourth**: `plot4d`, `view4d` (`plot4dview`, `look4d`, `snapshot4d`).
@@ -2731,12 +3091,20 @@ Names of constants are accepted in any letter case; a name in brackets is anothe
 - **The earth: ways on a sphere and on an ellipsoid. Angles are degrees unless "radians" is said last; an ellipsoid is [half axis, eccentricity], the radius of a sphere or a name like "wgs84" (metres); without one, lengths are arcs of the sphere in degrees**: `azimuth`, `reckon`, `haversine`, `geoddistance`, `geodreckon`, `geodarea`, `areaint`, `areaquad`, `departure`, `antipode`, `meanm`, `track2`, `track1`, `gcwaypts`, `scircle1`, `scircle2`, `legs`, `gc2sc`, `gcxgc`, `scxsc`, `gcxsc`, `rhxrh`, `interpm`.
 - **The earth: places in space. geodetic = latitude, longitude and height above the ellipsoid (WGS84 in metres unless given); ecef = x, y, z from the middle of the earth; enu = east, north, up and ned = north, east, down at a place; aer = course, elevation and distance as seen from a place**: `geodetic2ecef`, `ecef2geodetic`, `lla2ecef`, `ecef2lla`, `geodetic2enu`, `enu2geodetic`, `geodetic2ned`, `ned2geodetic`, `geodetic2aer`, `aer2geodetic`, `ecef2enu`, `enu2ecef`, `ecef2ned`, `ned2ecef`, `ecef2aer`, `aer2ecef`, `enu2aer`, `aer2enu`, `ned2aer`, `aer2ned`, `ecef2enuv`, `enu2ecefv`, `ecef2nedv`, `ned2ecefv`, `ecefoffset`, `elevation`.
 - **The earth: ellipsoids, their radii and latitudes of other kinds**: `referenceellipsoid`, `wgs84ellipsoid`, `referencesphere`, `meridianarc`, `meridianfwd`, `spheroid`, `axes2ecc`, `majaxis`, `minaxis`, `ecc2flat`, `flat2ecc`, `ecc2n`, `n2ecc`, `rcurve`, `rsphere`, `convertlat`, `geocentriclatitude`, `parametriclatitude`, `geodeticlatitudefromgeocentric`, `geodeticlatitudefromparametric`.
+- **Pictures as matrices: filters, shapes, parts that hang together, edges, levels of gray, noise, measures, colours, moves (in doubles; shares from 0 to 1 or whole samples)**: `fspecial`, `imgaussfilt`, `imboxfilt`, `medfilt2`, `ordfilt2`, `stdfilt`, `rangefilt`, `padarray`, `imsharpen`, `strel`, `imdilate`, `imerode`, `imopen`, `imclose`, `imtophat`, `imbothat`, `bwperim`, `imfill`, `bwlabel`, `bwconncomp`, `regionprops`, `bwareaopen`, `imclearborder`, `bweuler`, `bwdist`, `edge`, `imgradientxy`, `imgradient`, `graythresh`, `otsuthresh`, `stretchlim`, `imadjust`, `histeq`, `imnoise`, `mean2`, `std2`, `corr2`, `immse`, `psnr`, `entropy`, `imabsdiff`, `rgb2hsv`, `hsv2rgb`, `rgb2lab`, `lab2rgb`, `rgb2ycbcr`, `ycbcr2rgb`, `ind2rgb`, `imtranslate`, `impyramid`, `integralimage`, `normxcorr2`, `xcorr2`, `dct2`, `idct2`.
+- **Diagrams of blocks and their simulation over time (what Simulink does with drawn diagrams)**: `sim` (`simulate`), `simblocks`.
+- **Files of MATLAB's own format for values (MAT-files of level 5)**: `matread` (`loadmat`, `load`), `matinfo`, `matwrite` (`savemat`).
+- **Units of the user's own**: `newunit` (`defineunit`), `removeunit`.
 - **The earth: units of lengths and angles (exact), angles as texts, zones**: `km2nm`, `km2sm`, `nm2km`, `nm2sm`, `sm2km`, `sm2nm`, `deg2km`, `km2deg`, `deg2nm`, `nm2deg`, `deg2sm`, `sm2deg`, `rad2km`, `km2rad`, `rad2nm`, `nm2rad`, `rad2sm`, `sm2rad`, `unitsratio`, `earthradius`, `distdim`, `angledim`, `todegrees`, `toradians`, `fromdegrees`, `fromradians`, `wrapto180` (`npi2pi`), `wrapto360` (`zero22pi`), `wraptopi`, `wrapto2pi`, `roundn`, `dms2degrees`, `dm2degrees`, `degrees2dms`, `degrees2dm`, `angl2str`, `str2angle`, `timezone`, `utmzone`.
 - **The earth: maps. projfwd("map", lat, lon, choices) gives [x, y], projinv("map", x, y, choices) gives [lat, lon]**: `projfwd` (`mfwdtran`), `projinv` (`minvtran`), `deg2utm`, `utm2deg`.
 - **Networks of neurons: the functions of their units (exact; of a name a formula that has a slope), for a number or every entry of a list**: `relu` (`poslin`), `leakyrelu`, `clippedrelu`, `elu`, `gelu`, `swish` (`silu`), `mish`, `softplus`, `softsign` (`elliotsig`), `sigmoid` (`logsig`, `logistic`), `tansig`, `purelin`, `satlin`, `satlins`, `hardlim`, `hardlims`, `radbas`, `tribas`, `netinv`, `softmax`, `compet`.
 - **Networks of neurons: losses (exact; rows are observations, a flat list holds one number of every observation)**: `mse`, `sse`, `mae`, `l2loss`, `l1loss`, `huber`, `crossentropy`.
 - **Networks of neurons: the operations of layers**: `fullyconnect`, `dlconv`, `maxpool`, `avgpool`, `batchnorm`, `layernorm`, `embed`, `lstm`, `gru`, `onehotencode`, `onehotdecode`, `ind2vec`, `vec2ind`, `confusionmat`, `mapminmax`, `mapstd`, `divideblock`, `dlgradient`, `sgdmupdate`, `adamupdate`, `rmspropupdate`.
 - **Networks of neurons: a network is a list of layers [weights, biases, "function"], a row of the weights for every unit**: `feedforwardnet` (`fitnet`), `patternnet`, `predict` (`forward`), `classify`, `perform`, `trainnet` (`train`), `perceptron`, `newlind`, `newrbe`.
+- **Solids of four dimensions: solid4d("name", numbers...). They can be turned in the six planes of 4D, scaled, moved and cut; plot4d, view4d and wire4d draw them**: `solid4d`, `rotate4d`, `scale4d`, `move4d` (`translate4d`), `section4d`, `inside4d`, `volume4d` (`bulk4d`), `surface4d`, `vertices4d`, `edges4d`, `density4d`, `wire4d` (`wireframe4d`).
+- **Walks of chance. They are drawings as walk and walk3d are: save_png / save_jxl save them, with frames they grow or turn**: `randomwalk` (`randwalk`), `randomwalk3d` (`randwalk3d`).
+- **Networks of neurons: layers that slide windows over pictures, and training by steps on a few observations at a time. Such a network is a list of layers that begins with ["input", [height, width, channels]]; an observation is a matrix (a list of matrices for several channels), several observations are a list of them**: `imageinputlayer`, `featureinputlayer`, `convolution2dlayer`, `maxpooling2dlayer`, `averagepooling2dlayer`, `flattenlayer`, `fullyconnectedlayer`, `relulayer`, `tanhlayer`, `sigmoidlayer`, `softmaxlayer`, `leakyrelulayer`, `dlnetwork`, `trainingoptions`.
+- **The earth: grids of values (raster maps). A grid is a matrix with a reference that says where its samples lie: cells that fill the limits, or postings on them**: `georefcells`, `georefpostings`, `maprefcells`, `maprefpostings`, `refvectogeorasterreference`, `geographictointrinsic`, `intrinsictogeographic`, `geographictodiscrete`, `worldtointrinsic`, `intrinsictoworld`, `worldtodiscrete`, `geointerp`, `mapinterp`, `ltln2val`, `geocrop`, `mapcrop`, `georesize`, `mapresize`, `gradientm`, `areamat`, `los2`, `viewshed`, `arcgridread` (`readgeoraster`), `arcgridwrite`, `worldfileread`, `worldfilewrite`, `egm96geoid`, `geoidheight`, `geoshow`, `contourm`, `surfm` (`meshm`).
 
 Constants:
 

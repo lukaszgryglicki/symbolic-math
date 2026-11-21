@@ -82,7 +82,11 @@ pub(crate) fn heights(lats: &[Float], lons: &[Float], grid: bool, prec: u32) -> 
     let root = |above: usize, below: usize| (fl(above as f64) / fl(below as f64)).sqrt();
     let mut out = Vec::new();
     let mut before: Option<(Float, Vec<[Float; 4]>, Float)> = None;
-    let count = if grid { lats.len() } else { lats.len().min(lons.len()) };
+    let count = if grid {
+        lats.len()
+    } else {
+        lats.len().min(lons.len())
+    };
     for i in 0..count {
         let lat = &lats[i];
         // the sums over the degrees for every order: of the potential (cosines, sines) and
@@ -90,16 +94,24 @@ pub(crate) fn heights(lats: &[Float], lons: &[Float], grid: bool, prec: u32) -> 
         let fresh = before.as_ref().is_none_or(|(old, _, _)| old != lat);
         if fresh {
             let (sin, cos) = radians(lat).sin_cos(Float::new(prec));
-            let curve = Float::with_val(prec, &radius / (fl(1.0) - Float::with_val(prec, &squared * &sin) * &sin).sqrt());
+            let curve = Float::with_val(
+                prec,
+                &radius / (fl(1.0) - Float::with_val(prec, &squared * &sin) * &sin).sqrt(),
+            );
             let (x, z) = (
                 Float::with_val(prec, &curve * &cos),
                 Float::with_val(prec, &curve * (fl(1.0) - &squared)) * &sin,
             );
             let far = (Float::with_val(prec, &x * &x) + Float::with_val(prec, &z * &z)).sqrt();
             // the latitude as the middle of the earth sees it
-            let (t, u) = (Float::with_val(prec, &z / &far), Float::with_val(prec, &x / &far));
-            let normal = Float::with_val(prec, &gravity * (fl(1.0) + Float::with_val(prec, &somigliana * &sin) * &sin))
-                / (fl(1.0) - Float::with_val(prec, &squared * &sin) * &sin).sqrt();
+            let (t, u) = (
+                Float::with_val(prec, &z / &far),
+                Float::with_val(prec, &x / &far),
+            );
+            let normal = Float::with_val(
+                prec,
+                &gravity * (fl(1.0) + Float::with_val(prec, &somigliana * &sin) * &sin),
+            ) / (fl(1.0) - Float::with_val(prec, &squared * &sin) * &sin).sqrt();
             let ratio = Float::with_val(prec, &radius / &far);
             let mut sums: Vec<[Float; 4]> = Vec::with_capacity(top + 1);
             let mut diagonal = fl(1.0);
@@ -107,19 +119,31 @@ pub(crate) fn heights(lats: &[Float], lons: &[Float], grid: bool, prec: u32) -> 
                 if order == 1 {
                     diagonal = Float::with_val(prec, &u * fl(3.0).sqrt());
                 } else if order > 1 {
-                    diagonal = Float::with_val(prec, &diagonal * &u) * root(2 * order + 1, 2 * order);
+                    diagonal =
+                        Float::with_val(prec, &diagonal * &u) * root(2 * order + 1, 2 * order);
                 }
-                let mut sum = [Float::new(prec), Float::new(prec), Float::new(prec), Float::new(prec)];
+                let mut sum = [
+                    Float::new(prec),
+                    Float::new(prec),
+                    Float::new(prec),
+                    Float::new(prec),
+                ];
                 let (mut two_back, mut one_back) = (Float::new(prec), diagonal.clone());
                 let mut power = ratio.clone().pow(order as u32);
                 for n in order..=top {
                     let p = match n - order {
                         0 => diagonal.clone(),
-                        1 => Float::with_val(prec, &t * &one_back) * fl((2 * order + 3) as f64).sqrt(),
+                        1 => {
+                            Float::with_val(prec, &t * &one_back)
+                                * fl((2 * order + 3) as f64).sqrt()
+                        }
                         _ => {
                             let a = root(4 * n * n - 1, n * n - order * order);
-                            let b = root((n - 1) * (n - 1) - order * order, 4 * (n - 1) * (n - 1) - 1);
-                            (Float::with_val(prec, &t * &one_back) - Float::with_val(prec, &b * &two_back)) * a
+                            let b =
+                                root((n - 1) * (n - 1) - order * order, 4 * (n - 1) * (n - 1) - 1);
+                            (Float::with_val(prec, &t * &one_back)
+                                - Float::with_val(prec, &b * &two_back))
+                                * a
                         }
                     };
                     let at = place(n, order);
@@ -157,9 +181,12 @@ pub(crate) fn heights(lats: &[Float], lons: &[Float], grid: bool, prec: u32) -> 
             let angle = radians(lon);
             let (mut anomaly, mut correction) = (Float::new(prec), Float::new(prec));
             for (order, sum) in sums.iter().enumerate() {
-                let (sin, cos) = Float::with_val(prec, &angle * order as u64).sin_cos(Float::new(prec));
-                anomaly += Float::with_val(prec, &sum[0] * &cos) + Float::with_val(prec, &sum[1] * &sin);
-                correction += Float::with_val(prec, &sum[2] * &cos) + Float::with_val(prec, &sum[3] * &sin);
+                let (sin, cos) =
+                    Float::with_val(prec, &angle * order as u64).sin_cos(Float::new(prec));
+                anomaly +=
+                    Float::with_val(prec, &sum[0] * &cos) + Float::with_val(prec, &sum[1] * &sin);
+                correction +=
+                    Float::with_val(prec, &sum[2] * &cos) + Float::with_val(prec, &sum[3] * &sin);
             }
             out.push(Float::with_val(prec, &anomaly * scale) + correction / 100u32 - dec("0.53"));
         }
@@ -179,10 +206,20 @@ mod tests {
         // the grid of the agency at its corners: 13.606 m at the north pole, -29.534 m at the south
         // pole, 17.162 m where the equator meets the meridian of Greenwich
         let at = |lat: f64, lon: f64| -> f64 {
-            heights(&[Float::with_val(120, lat)], &[Float::with_val(120, lon)], false, 120)[0].to_f64()
+            heights(
+                &[Float::with_val(120, lat)],
+                &[Float::with_val(120, lon)],
+                false,
+                120,
+            )[0]
+            .to_f64()
         };
         assert!((at(90.0, 0.0) - 13.606).abs() < 0.002, "{}", at(90.0, 0.0));
-        assert!((at(-90.0, 0.0) + 29.534).abs() < 0.002, "{}", at(-90.0, 0.0));
+        assert!(
+            (at(-90.0, 0.0) + 29.534).abs() < 0.002,
+            "{}",
+            at(-90.0, 0.0)
+        );
         assert!((at(0.0, 0.0) - 17.162).abs() < 0.002, "{}", at(0.0, 0.0));
     }
 }

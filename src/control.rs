@@ -189,11 +189,26 @@ pub(crate) fn state_space(e: &Expr) -> Option<([Rows; 4], Option<Expr>)> {
             None => vec![vec![args[k].clone()]],
         }
     };
-    let (a, b, c, mut d) = (m(0), m(1), m(2), m(3));
+    let (mut a, mut b, mut c, mut d) = (m(0), m(1), m(2), m(3));
+    // a system without states (a gain alone, written with A = [[]] or []): A and B have no rows, C has empty ones
+    let none = |m: &Rows| m.iter().all(Vec::is_empty);
+    if none(&a) && none(&b) && none(&c) {
+        (a, b, c) = (Vec::new(), Vec::new(), vec![Vec::new(); d.len()]);
+    }
     if d.len() == 1 && d[0].len() == 1 && d[0][0].is_zero() && !b.is_empty() {
         d = vec![vec![Expr::zero(); b[0].len()]; c.len()];
     }
     Some(([a, b, c, d], args.get(4).cloned()))
+}
+
+/// The object `ss(A, B, C, D[, Ts])` as it is written; a system without states has A = [[]].
+fn written(m: [Rows; 4], ts: Option<Expr>) -> Expr {
+    let mut args: Vec<Expr> = m.into_iter().map(matrix::from_rows).collect();
+    if args[0].as_list().is_some_and(<[Expr]>::is_empty) {
+        args[0] = Expr::list(vec![Expr::list(Vec::new())]);
+    }
+    args.extend(ts);
+    Expr::call("ss", args)
 }
 
 /// det(s*I - A) and the matrices of adj(s*I - A) from the highest power of s (Faddeev and
@@ -263,11 +278,15 @@ pub(crate) fn tf_to_ss(num: &[Expr], den: &[Expr]) -> Result<[Rows; 4], String> 
     let c: Vec<Expr> = (0..n)
         .map(|k| tidy(sub(b[k + 1].clone(), mul(vec![d.clone(), a[k].clone()]))))
         .collect();
-    let mut top = vec![
-        a.iter()
-            .map(|x| tidy(neg(x.clone())))
-            .collect::<Vec<Expr>>(),
-    ];
+    // (a gain alone has no states: A has no rows)
+    let mut top = match n {
+        0 => Vec::new(),
+        _ => vec![
+            a.iter()
+                .map(|x| tidy(neg(x.clone())))
+                .collect::<Vec<Expr>>(),
+        ],
+    };
     for i in 1..n {
         top.push((0..n).map(|j| Expr::int(i64::from(j + 1 == i))).collect());
     }
@@ -321,7 +340,7 @@ fn rolled(place: &Float, ts: &Option<Float>) -> Float {
 }
 
 /// Coefficients of decimal numbers without what rounding has left where zero belongs.
-fn dusted(p: Vec<Expr>) -> Vec<Expr> {
+pub(crate) fn dusted(p: Vec<Expr>) -> Vec<Expr> {
     if !p.iter().any(Expr::has_float) {
         return p;
     }
@@ -349,7 +368,7 @@ fn dusted(p: Vec<Expr>) -> Vec<Expr> {
 }
 
 /// Whether an imaginary number stands in it.
-fn has_i(e: &Expr) -> bool {
+pub(crate) fn has_i(e: &Expr) -> bool {
     e.any(&|x| x.as_num().is_some_and(|n| !n.is_real()))
 }
 
@@ -738,7 +757,12 @@ impl Session {
     }
 
     /// A ratio of polynomials in s or z as a system.
-    pub(crate) fn sys_of_expr(&mut self, e: &Expr, ts: Option<Expr>, who: &str) -> Result<Sys, String> {
+    pub(crate) fn sys_of_expr(
+        &mut self,
+        e: &Expr,
+        ts: Option<Expr>,
+        who: &str,
+    ) -> Result<Sys, String> {
         let sampled = ts.is_some() || (e.has(&Expr::sym("z")) && !e.has(&Expr::sym("s")));
         let var = Expr::sym(if sampled { "z" } else { "s" });
         let both = self.call("numden", &[tidy(e.clone())])?;
@@ -758,6 +782,16 @@ impl Session {
     pub(crate) fn sys_of(&mut self, e: &Expr, who: &str) -> Result<Sys, String> {
         if let Some(args) = e.fn_args("tf").filter(|a| a.len() == 2 || a.len() == 3) {
             let (num, den) = (trimmed(list_of(&args[0])), trimmed(list_of(&args[1])));
+            if num
+                .iter()
+                .chain(&den)
+                .any(|c| c.as_list().is_some() || text_of(c).is_some())
+                || args.get(2).is_some_and(|ts| ts.as_list().is_some())
+            {
+                return Err(format!(
+                    "{who}: tf([numerator], [denominator][, Ts]): the coefficients of both, the highest power first"
+                ));
+            }
             if den.len() == 1 && den[0].is_zero() {
                 return Err(format!(
                     "{who}: the denominator of a transfer function is not zero"
@@ -792,7 +826,7 @@ impl Session {
                 ts,
             });
         }
-        if e.as_list().is_some() || text_of(e).is_some() {
+        if e.as_list().is_some() || text_of(e).is_some() || is_system(e) {
             return Err(format!(
                 "{who} needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)"
             ));
@@ -980,7 +1014,13 @@ impl Session {
 
     /// The answer in time to an input with the transform `drive`: an expression of t for
     /// running time; for a sampled system the first samples.
-    pub(crate) fn response(&mut self, sys: &Sys, drive: Expr, times: Option<&Expr>, who: &str) -> Res {
+    pub(crate) fn response(
+        &mut self,
+        sys: &Sys,
+        drive: Expr,
+        times: Option<&Expr>,
+        who: &str,
+    ) -> Res {
         match &sys.ts {
             None => {
                 let (s, t) = (Expr::sym("s"), Expr::sym("t"));
@@ -998,7 +1038,17 @@ impl Session {
                     None => 20,
                 };
                 // the input as a ratio of polynomials in z, then long division
-                let all = self.sys_of_expr(&mul(vec![sys.expr(), drive]), sys.ts.clone(), who)?;
+                let mut all =
+                    self.sys_of_expr(&mul(vec![sys.expr(), drive]), sys.ts.clone(), who)?;
+                if count > 5000 {
+                    // (so many samples as exact fractions would fill the memory: decimal numbers)
+                    let digits = numeric::digits();
+                    for c in all.num.iter_mut().chain(all.den.iter_mut()) {
+                        if let Ok(z) = numeric::evalf_digits(c, digits + 6) {
+                            *c = numeric::to_float_expr(z, digits);
+                        }
+                    }
+                }
                 samples(&all, count)
             }
         }
@@ -1303,17 +1353,26 @@ impl Session {
                 }
                 ("ss", 1) => {
                     let (m, ts) = self.matrices(&a[0], who)?;
-                    let mut args: Vec<Expr> = m.into_iter().map(matrix::from_rows).collect();
-                    args.extend(ts);
-                    Expr::call("ss", args)
+                    written(m, ts)
                 }
                 ("ss", 4 | 5) => {
-                    let (m, _) = state_space(&Expr::call("ss", a.to_vec())).ok_or("ss(A, B, C, D[, Ts]): four matrices")?;
+                    let (m, ts) = state_space(&Expr::call("ss", a.to_vec())).ok_or("ss(A, B, C, D[, Ts]): four matrices")?;
                     let size = m[0].len();
-                    if m[0].iter().any(|r| r.len() != size) || m[1].len() != size || m[2].iter().any(|r| r.len() != size) || m[3].len() != m[2].len() || m[3][0].len() != m[1][0].len() {
+                    let wide = m[3].first().map_or(0, Vec::len);
+                    if m[0].iter().any(|r| r.len() != size)
+                        || m[1].len() != size
+                        || m[1].iter().any(|r| r.len() != wide)
+                        || m[2].iter().any(|r| r.len() != size)
+                        || m[3].len() != m[2].len()
+                        || wide == 0
+                        || m[3].iter().any(|r| r.len() != wide)
+                    {
                         return Err("ss(A, B, C, D): A is n by n, B has n rows, C has n columns, D a row for every output and a column for every input".into());
                     }
-                    Expr::call("ss", a.to_vec())
+                    match size {
+                        0 => written(m, ts),
+                        _ => Expr::call("ss", a.to_vec()),
+                    }
                 }
                 ("tfdata", 1) => {
                     let sys = self.sys_of(&a[0], who)?;
@@ -1670,6 +1729,9 @@ impl Session {
                         ),
                         _ => return Err("gram(system, \"c\" | \"o\") or gram(A, B[, \"o\"])".into()),
                     };
+                    if m.is_empty() || m.iter().any(|row| row.len() != m.len()) {
+                        return Err("gram: a system with states, or gram(A, B[, \"o\"]) with a square matrix A".into());
+                    }
                     // (the integral is there only when every eigenvalue lies left of the axis)
                     let numbers = decomp::to_complex(&m).map_err(|_| "gram: a matrix of numbers".to_string())?;
                     let (_, triangle) = decomp::schur(&numbers)?;
@@ -1967,6 +2029,9 @@ impl Session {
                     args.extend(ts);
                     Expr::call("ss", args)
                 }
+                ("tf", _) => return Err("tf([numerator], [denominator][, Ts]), tf(\"s\"), tf(system); with a delay: tf([numerator], [denominator], \"InputDelay\", T)".into()),
+                ("zpk", _) => return Err("zpk([zeros], [poles], gain[, Ts]) or zpk(system)".into()),
+                ("ss", _) => return Err("ss(A, B, C, D[, Ts]) or ss(system)".into()),
                 _ => return Err(String::new()),
             })
         })())
@@ -2006,6 +2071,9 @@ impl Session {
             || right.iter().any(|r| r.len() != columns)
             || q.len() != rows
             || q.iter().any(|r| r.len() != columns)
+            || [&m, &right, &q]
+                .iter()
+                .any(|x| x.iter().flatten().any(|e| e.as_list().is_some()))
         {
             return Err(usage.into());
         }
@@ -2063,10 +2131,22 @@ impl Session {
             let rows = matrix::rows(&a[k]).unwrap_or_else(|| vec![vec![a[k].clone()]]);
             to_cmat(&rows, prec).map_err(|_| usage.clone())
         };
+        let even = |x: &CMat, rows: usize, columns: usize| {
+            x.len() == rows && x.iter().all(|row| row.len() == columns)
+        };
         let (m, input, q, r) = match name {
             // lqe(A, G, C, Q, R): the gain of the watcher is that of the turned system
             "lqe" => {
                 let (m, g, c, q, r) = (get(0)?, get(1)?, get(2)?, get(3)?, get(4)?);
+                let (size, noise) = (m.len(), g.first().map_or(0, Vec::len));
+                if !even(&m, size, size)
+                    || !even(&g, size, noise)
+                    || !even(&q, noise, noise)
+                    || c.is_empty()
+                    || !even(&c, c.len(), size)
+                {
+                    return Err("lqe(A, G, C, Q, R): matrices that fit; Q and R symmetric, R positive definite".into());
+                }
                 (
                     c_turned(&m),
                     c_turned(&c),
@@ -2077,12 +2157,13 @@ impl Session {
             _ => (get(0)?, get(1)?, get(2)?, get(3)?),
         };
         let size = m.len();
-        if m.iter().any(|x| x.len() != size)
-            || input.len() != size
-            || q.len() != size
-            || q.iter().any(|x| x.len() != size)
-            || r.len() != input[0].len()
-            || r.iter().any(|x| x.len() != r.len())
+        let wide = input.first().map_or(0, Vec::len);
+        if size == 0
+            || wide == 0
+            || !even(&m, size, size)
+            || !even(&input, size, wide)
+            || !even(&q, size, size)
+            || !even(&r, wide, wide)
         {
             return Err(usage);
         }
@@ -2090,6 +2171,11 @@ impl Session {
             ("lqr" | "dlqr", Some(_)) => Some(get(4)?),
             _ => None,
         };
+        if cross.as_ref().is_some_and(|nn| !even(nn, size, wide)) {
+            return Err(format!(
+                "{name}(A, B, Q, R, N): the weight N between states and inputs has a row for every state and a column for every input"
+            ));
+        }
         let unit = c_unit(r.len(), prec);
         let r_inverse = solved(&r, &unit).ok_or_else(|| usage.clone())?;
         let bt = c_turned(&input);
@@ -2495,7 +2581,7 @@ impl Session {
             return Ok(Expr::inf());
         }
         let m = tf_to_ss(&sys.num, &sys.den)?;
-        if m[0].is_empty() {
+        if m[1].is_empty() {
             return self.call("abs", &[m[3][0][0].clone()]);
         }
         let q = matrix::matmul(&m[1], &matrix::transpose(&m[1]))?;
@@ -2524,6 +2610,25 @@ impl Session {
             return Err(
                 "stepinfo: the system is not stable, its answer to a step settles nowhere".into(),
             );
+        }
+        let level = tidy(div(sys.num[0].clone(), sys.den[0].clone()));
+        if sys.den.len() == 1
+            && sys.num.len() == 1
+            && numeric::real_value(&level, 30).is_some_and(|v| v.is_finite())
+        {
+            // a gain alone is there at once
+            let gain = level;
+            let size = self.call("abs", std::slice::from_ref(&gain))?;
+            return Ok(crate::records::record(vec![
+                ("RiseTime", Expr::zero()),
+                ("SettlingTime", Expr::zero()),
+                ("SettlingMin", gain.clone()),
+                ("SettlingMax", gain),
+                ("Overshoot", Expr::zero()),
+                ("Undershoot", Expr::zero()),
+                ("Peak", size),
+                ("PeakTime", Expr::zero()),
+            ]));
         }
         let prec = crate::mfun::bits();
         let t = Expr::sym("t");
@@ -2713,6 +2818,76 @@ impl Session {
         ]))
     }
 
+    /// The factors in z of the "matched" way: a root p gives z - e^(p*Ts), a pair a +- b*i gives
+    /// z^2 - 2e^(a*Ts)*cos(b*Ts)*z + e^(2a*Ts), so a system of real numbers stays one.
+    fn matched_factors(&mut self, roots: &[Expr], ts: &Expr) -> Result<Vec<Vec<Expr>>, String> {
+        let prec = crate::mfun::bits();
+        let places: Vec<Option<Complex>> = roots.iter().map(|r| complex_of(r, prec).ok()).collect();
+        let near = |gap: Float, z: &Complex| -> bool {
+            let size = Float::with_val(prec, z.abs_ref()) + 1u32;
+            gap <= size * Float::with_val(prec, Float::i_pow_u(2, prec / 2)).recip()
+        };
+        let mut used = vec![false; roots.len()];
+        let mut out = Vec::new();
+        for i in 0..roots.len() {
+            if used[i] {
+                continue;
+            }
+            used[i] = true;
+            let partner = places[i]
+                .as_ref()
+                .filter(|z| !near(Float::with_val(prec, z.imag().abs_ref()), z))
+                .and_then(|z| {
+                    let other = Complex::with_val(prec, z.conj_ref());
+                    (i + 1..roots.len()).find(|&j| {
+                        !used[j]
+                            && places[j].as_ref().is_some_and(|w| {
+                                near(
+                                    Float::with_val(
+                                        prec,
+                                        Complex::with_val(prec, w - &other).abs_ref(),
+                                    ),
+                                    z,
+                                )
+                            })
+                    })
+                });
+            let parts = match partner {
+                Some(_) => {
+                    let (a, b) = (
+                        self.call("re", &[roots[i].clone()])?,
+                        self.call("im", &[roots[i].clone()])?,
+                    );
+                    let plain = |e: &Expr| {
+                        !e.any(&|x| matches!(x, Expr::Fn(name, _) if &**name == "re" || &**name == "im"))
+                    };
+                    (plain(&a) && plain(&b) && !has_i(&a) && !has_i(&b)).then_some((a, b))
+                }
+                None => None,
+            };
+            match (partner, parts) {
+                (Some(j), Some((a, b))) => {
+                    used[j] = true;
+                    let grown = tidy(pow(Expr::e(), mul(vec![a.clone(), ts.clone()])));
+                    let turn = Expr::call("cos", vec![tidy(mul(vec![b, ts.clone()]))]);
+                    out.push(vec![
+                        Expr::one(),
+                        tidy(mul(vec![Expr::int(-2), grown, turn])),
+                        tidy(pow(Expr::e(), mul(vec![Expr::int(2), a, ts.clone()]))),
+                    ]);
+                }
+                _ => out.push(vec![
+                    Expr::one(),
+                    neg(tidy(pow(
+                        Expr::e(),
+                        mul(vec![roots[i].clone(), ts.clone()]),
+                    ))),
+                ]),
+            }
+        }
+        Ok(out)
+    }
+
     /// `c2d(system, Ts[, method])`: a system of running time as a sampled one.
     fn sampled(&mut self, e: &Expr, ts: &Expr, method: Option<&Expr>) -> Res {
         let who = "c2d";
@@ -2729,6 +2904,17 @@ impl Session {
                 .ok_or("c2d: the method is \"zoh\", \"tustin\", \"matched\" or \"impulse\"")?,
             None => "zoh".to_string(),
         };
+        if sys.den.len() == 1
+            && sys.num.len() == 1
+            && matches!(method.as_str(), "zoh" | "tustin" | "bilinear" | "matched")
+        {
+            // a gain alone stays what it is
+            return Ok(Sys {
+                ts: Some(ts.clone()),
+                ..sys
+            }
+            .object());
+        }
         match method.as_str() {
             "tustin" | "bilinear" => {
                 // s = (2/Ts)*(z - 1)/(z + 1)
@@ -2743,35 +2929,118 @@ impl Session {
             "matched" => {
                 // every zero and pole p goes to e^(p*Ts); zeros at infinity go to -1; the
                 // gains at rest agree
-                let moved = |r: &Expr| tidy(pow(Expr::e(), mul(vec![r.clone(), ts.clone()])));
-                let (zeros, poles) = (self.roots_of(&sys.num)?, self.roots_of(&sys.den)?);
-                let mut new_zeros: Vec<Expr> = zeros.iter().map(moved).collect();
-                let new_poles: Vec<Expr> = poles.iter().map(moved).collect();
-                while new_zeros.len() + 1 < new_poles.len() {
-                    new_zeros.push(Expr::int(-1));
+                let (mut zeros, mut poles) = (self.roots_of(&sys.num)?, self.roots_of(&sys.den)?);
+                // in closed form with names, for at most two zeros and poles and for roots that are fractions; else by decimal numbers
+                let closed = sys.num.iter().chain(&sys.den).any(|x| !x.is_const())
+                    || (sys.num.len() <= 3 && sys.den.len() <= 3)
+                    || zeros.iter().chain(&poles).all(|x| x.as_rat().is_some());
+                let digits = numeric::digits();
+                if !closed {
+                    for r in zeros.iter_mut().chain(poles.iter_mut()) {
+                        *r = numeric::n(r, digits + 10);
+                    }
                 }
-                let shape = |roots: &[Expr], at: &Expr| {
-                    mul(roots.iter().map(|r| sub(at.clone(), r.clone())).collect())
+                // a zero on a pole leaves with it
+                let mut k = 0;
+                while closed && k < zeros.len() {
+                    let on = |p: &Expr| crate::simplify::is_zero(&sub(zeros[k].clone(), p.clone()));
+                    match poles.iter().position(on) {
+                        Some(j) => {
+                            zeros.remove(k);
+                            poles.remove(j);
+                        }
+                        None => k += 1,
+                    }
+                }
+                let mut new_zeros = self.matched_factors(&zeros, ts)?;
+                let new_poles = self.matched_factors(&poles, ts)?;
+                let degree = |f: &[Vec<Expr>]| f.iter().map(|p| p.len() - 1).sum::<usize>();
+                while degree(&new_zeros) + 1 < degree(&new_poles) {
+                    new_zeros.push(vec![Expr::one(), Expr::one()]);
+                }
+                let whole = |factors: &[Vec<Expr>]| {
+                    factors
+                        .iter()
+                        .fold(vec![Expr::one()], |p, f| poly_mul(&p, f))
                 };
-                let ratio = div(shape(&new_zeros, &z), shape(&new_poles, &z));
-                // match the gain at s = 0 and z = 1 (at a point beside them when a pole lies there)
-                let (at_s, at_z) = match poly_at(&sys.den, &Expr::zero()).is_zero() {
-                    false => (Expr::zero(), Expr::one()),
-                    true => (Expr::one(), tidy(pow(Expr::e(), ts.clone()))),
+                let (top, den) = (whole(&new_zeros), whole(&new_poles));
+                // the gains agree at s = 0 and z = 1, or at the first whole s that is no zero and no pole
+                let free = |p: &[Expr], x: &Expr| !crate::simplify::is_zero(&poly_at(p, x));
+                let at_s = (0..)
+                    .map(Expr::int)
+                    .find(|x| free(&sys.num, x) && free(&sys.den, x))
+                    .unwrap_or_else(Expr::zero);
+                let at_z = tidy(pow(Expr::e(), mul(vec![at_s.clone(), ts.clone()])));
+                let gain = div(
+                    sys.at(&at_s),
+                    div(poly_at(&top, &at_z), poly_at(&den, &at_z)),
+                );
+                let mut clean = |p: Vec<Expr>| -> Result<Vec<Expr>, String> {
+                    p.into_iter()
+                        .map(|x| {
+                            let x = self.call("simplify", &[x])?;
+                            Ok(if closed { x } else { numeric::n(&x, digits) })
+                        })
+                        .collect()
                 };
-                let gain = div(sys.at(&at_s), crate::canon::subst(&ratio, &z, &at_z));
-                let top = self.call("expand", &[mul(vec![gain, shape(&new_zeros, &z)])])?;
-                let den = self.call("expand", &[shape(&new_poles, &z)])?;
-                self.combined(div(top, den), Some(ts.clone()), who)
+                let (num, den) = (clean(poly_scaled(&top, &gain))?, clean(den)?);
+                Ok(Sys {
+                    num: trimmed(dusted(num)),
+                    den: dusted(den),
+                    ts: Some(ts.clone()),
+                }
+                .object())
             }
             "impulse" => {
                 // Ts times the transform of the samples of the answer to a blow
-                let (t, k) = (Expr::sym("t"), Expr::sym("_k"));
-                let blow = self.call("invlaplace", &[sys.expr(), s, t.clone()])?;
-                let at = crate::canon::subst(&blow, &t, &mul(vec![k.clone(), ts.clone()]));
-                let e = self.call("ztransform", &[at, k, z])?;
-                let simpler = self.call("simplify", &[mul(vec![ts.clone(), e])])?;
-                self.combined(simpler, Some(ts.clone()), who)
+                if trimmed(sys.num.clone()).len() >= sys.den.len() {
+                    return Err("c2d(system, Ts, \"impulse\"): the answer to a blow is sampled, so the system has more poles than zeros".into());
+                }
+                // in closed form with names, for one or two poles and for poles that are fractions; else by decimal numbers
+                let closed = sys.num.iter().chain(&sys.den).any(|x| !x.is_const())
+                    || sys.den.len() <= 3
+                    || self
+                        .roots_of(&sys.den)
+                        .is_ok_and(|poles| poles.iter().all(|x| x.as_rat().is_some()));
+                if closed {
+                    let (t, k) = (Expr::sym("t"), Expr::sym("_k"));
+                    let blow = self.call("invlaplace", &[sys.expr(), s, t.clone()])?;
+                    let at = crate::canon::subst(&blow, &t, &mul(vec![k.clone(), ts.clone()]));
+                    let e = self.call("ztransform", &[at, k, z])?;
+                    let simpler = self.call("simplify", &[mul(vec![ts.clone(), e])])?;
+                    return self.combined(simpler, Some(ts.clone()), who);
+                }
+                // the samples are C*Ad^k*B with Ad = e^(A*Ts): their transform is z*C*(z*I - Ad)^(-1)*B
+                let m = tf_to_ss(&sys.num, &sys.den)?;
+                let scaled: Rows = m[0]
+                    .iter()
+                    .map(|row| {
+                        row.iter()
+                            .map(|x| tidy(mul(vec![x.clone(), ts.clone()])))
+                            .collect()
+                    })
+                    .collect();
+                let grown =
+                    decomp::from_complex(&crate::matfun::exp(&decomp::to_complex(&scaled)?));
+                let grown = matrix::rows(&grown)
+                    .ok_or("c2d: the exponential of the matrix has no value")?;
+                let (num, den) =
+                    ss_to_tf(&[grown, m[1].clone(), m[2].clone(), vec![vec![Expr::zero()]]])?;
+                let mut num: Vec<Expr> = num
+                    .iter()
+                    .map(|x| mul(vec![ts.clone(), x.clone()]))
+                    .collect();
+                num.push(Expr::zero());
+                let mut clean = |p: Vec<Expr>| -> Result<Vec<Expr>, String> {
+                    p.into_iter().map(|x| self.call("simplify", &[x])).collect()
+                };
+                let (num, den) = (clean(num)?, clean(den)?);
+                Ok(Sys {
+                    num: trimmed(dusted(num)),
+                    den: dusted(den),
+                    ts: Some(ts.clone()),
+                }
+                .object())
             }
             "zoh" => {
                 // [[Ad, Bd], [0, I]] = exp([[A, B], [0, 0]] * Ts)
@@ -2856,6 +3125,13 @@ impl Session {
             Some(m) => word(m).ok_or("d2c: the method is \"zoh\" or \"tustin\"")?,
             None => "zoh".to_string(),
         };
+        if sys.den.len() == 1
+            && sys.num.len() == 1
+            && matches!(method.as_str(), "zoh" | "tustin" | "bilinear")
+        {
+            // a gain alone stays what it is
+            return Ok(Sys { ts: None, ..sys }.object());
+        }
         match method.as_str() {
             "tustin" | "bilinear" => {
                 // z = (1 + s*Ts/2)/(1 - s*Ts/2)

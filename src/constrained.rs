@@ -222,7 +222,9 @@ impl Session {
             if empty(m) && empty(b) {
                 return Ok(Vec::new());
             }
-            let (m, b) = (&a[m], &a[b]);
+            let (Some(m), Some(b)) = (a.get(m), a.get(b)) else {
+                return Err(USAGE.into());
+            };
             let rows = match m.as_list() {
                 Some(flat) if flat.iter().all(|x| x.as_list().is_none()) => vec![flat.to_vec()],
                 _ => matrix::rows(m).ok_or(USAGE)?,

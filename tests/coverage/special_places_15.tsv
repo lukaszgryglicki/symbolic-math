@@ -1,3 +1,21 @@
+-e	unifpdf(10^20)	0
+-e	unifpdf(10^(-20))	1
+-e	unifpdf(x)	piecewise(0 <= x and x <= 1, 1, 0)
+-e	unifpdf([])	[]
+-e	unifpdf([1, 2])	[1, 0]
+-e	unifpdf("text")	piecewise(0 <= "text" and "text" <= 1, 1, 0)
+-e	unifpdf(true)	piecewise(0 <= true and true <= 1, 1, 0)
+-e	unifpdf(-7/3)	0
+-e	unifpdf(0.5)	1
+-e	unifcdf(0)	0
+-e	unifcdf(1)	1
+-e	unifcdf(-1)	0
+-e	unifcdf(1/2)	1/2
+-e	unifcdf(2)	1
+-e	unifcdf(i)	piecewise(i < 0, 0, i <= 1, i, 1)
+-e	unifcdf(inf)	1
+-e	unifcdf(-inf)	0
+-e	unifcdf(undefined)	piecewise(undefined < 0, 0, undefined <= 1, undefined, 1)
 -e	unifcdf(10^20)	1
 -e	unifcdf(10^(-20))	1/100000000000000000000
 -e	unifcdf(x)	piecewise(x < 0, 0, x <= 1, x, 1)
@@ -30,17 +48,17 @@
 -e	unifstat(-1)	[0, 1/3]
 -e	unifstat(1/2)	[3/4, 1/48]
 -e	unifstat(2)	error: uniformdist(a, b) needs a < b
--e	unifstat(i)	[1/2 + i/2, -i/6]
+-e	unifstat(i)	error: uniformdist: the parameter a is a real number or a name, not i
 -e	unifstat(inf)	error: uniformdist(a, b) needs a < b
 -e	unifstat(-inf)	[-inf, inf]
--e	unifstat(undefined)	[undefined, undefined]
+-e	unifstat(undefined)	error: uniformdist: the parameter a is a real number or a name, not undefined
 -e	unifstat(10^20)	error: uniformdist(a, b) needs a < b
 -e	unifstat(10^(-20))	[100000000000000000001/200000000000000000000, 3333333333333333333266666666666666666667/40000000000000000000000000000000000000000]
 -e	unifstat(x)	[x/2 + 1/2, (1 - x)^2/12]
 -e	unifstat([])	[[], []]
--e	unifstat([1, 2])	[[1, 3/2], [0, 1/12]]
--e	unifstat("text")	["text"/2 + 1/2, (1 - "text")^2/12]
--e	unifstat(true)	[1/2 + true/2, (1 - true)^2/12]
+-e	unifstat([1, 2])	error: uniformdist(a, b) needs a < b
+-e	unifstat("text")	error: uniformdist: the parameter a is a real number or a name, not "text"
+-e	unifstat(true)	error: uniformdist: the parameter a is a real number or a name, not true
 -e	unifstat(-7/3)	[-2/3, 25/27]
 -e	unifstat(0.5)	[0.75, 0.020833333333333333333333333333333]
 -e	exppdf(0)	1
@@ -97,22 +115,22 @@
 -e	expinv(true)	error: quantile(dist, q): q must be a number from 0 to 1
 -e	expinv(-7/3)	error: quantile(dist, q): q must be a number from 0 to 1
 -e	expinv(0.5)	0.69314718055994530941723212145818
--e	expstat(0)	[0, 0]
+-e	expstat(0)	error: exponentialdist: the parameter r is a real number or a name, not ComplexInfinity
 -e	expstat(1)	[1, 1]
 -e	expstat(-1)	error: exponentialdist(r) needs r > 0
 -e	expstat(1/2)	[1/2, 1/4]
 -e	expstat(2)	[2, 4]
--e	expstat(i)	[i, -1]
+-e	expstat(i)	error: exponentialdist: the parameter r is a real number or a name, not -i
 -e	expstat(inf)	error: exponentialdist(r) needs r > 0
 -e	expstat(-inf)	error: exponentialdist(r) needs r > 0
--e	expstat(undefined)	[undefined, undefined]
+-e	expstat(undefined)	error: exponentialdist: the parameter r is a real number or a name, not undefined
 -e	expstat(10^20)	[100000000000000000000, 10000000000000000000000000000000000000000]
 -e	expstat(10^(-20))	[1/100000000000000000000, 1/10000000000000000000000000000000000000000]
 -e	expstat(x)	[x, x^2]
 -e	expstat([])	[[], []]
 -e	expstat([1, 2])	[[1, 2], [1, 4]]
 -e	expstat("text")	["text", "text"^2]
--e	expstat(true)	[true, (true)^2]
+-e	expstat(true)	error: exponentialdist: the parameter r is a real number or a name, not 1/true
 -e	expstat(-7/3)	error: exponentialdist(r) needs r > 0
 -e	expstat(0.5)	[0.5, 0.25]
 -e	gamstat(0)	error: gammadist(k, h) needs k > 0 and h > 0
@@ -120,17 +138,17 @@
 -e	gamstat(-1)	error: gammadist(k, h) needs k > 0 and h > 0
 -e	gamstat(1/2)	[1/2, 1/2]
 -e	gamstat(2)	[2, 2]
--e	gamstat(i)	[i, i]
+-e	gamstat(i)	error: gammadist: the parameter k is a real number or a name, not i
 -e	gamstat(inf)	[inf, inf]
 -e	gamstat(-inf)	error: gammadist(k, h) needs k > 0 and h > 0
--e	gamstat(undefined)	[undefined, undefined]
+-e	gamstat(undefined)	error: gammadist: the parameter k is a real number or a name, not undefined
 -e	gamstat(10^20)	[100000000000000000000, 100000000000000000000]
 -e	gamstat(10^(-20))	[1/100000000000000000000, 1/100000000000000000000]
 -e	gamstat(x)	[x, x]
 -e	gamstat([])	[[], []]
 -e	gamstat([1, 2])	[[1, 2], [1, 2]]
--e	gamstat("text")	["text", "text"]
--e	gamstat(true)	[true, true]
+-e	gamstat("text")	error: gammadist: the parameter k is a real number or a name, not "text"
+-e	gamstat(true)	error: gammadist: the parameter k is a real number or a name, not true
 -e	gamstat(-7/3)	error: gammadist(k, h) needs k > 0 and h > 0
 -e	gamstat(0.5)	[0.5, 0.5]
 -e	chi2stat(0)	error: chisquaredist(k) needs k > 0
@@ -138,17 +156,17 @@
 -e	chi2stat(-1)	error: chisquaredist(k) needs k > 0
 -e	chi2stat(1/2)	[1/2, 1]
 -e	chi2stat(2)	[2, 4]
--e	chi2stat(i)	[i, 2i]
+-e	chi2stat(i)	error: chisquaredist: the parameter k is a real number or a name, not i
 -e	chi2stat(inf)	[inf, inf]
 -e	chi2stat(-inf)	error: chisquaredist(k) needs k > 0
--e	chi2stat(undefined)	[undefined, undefined]
+-e	chi2stat(undefined)	error: chisquaredist: the parameter k is a real number or a name, not undefined
 -e	chi2stat(10^20)	[100000000000000000000, 200000000000000000000]
 -e	chi2stat(10^(-20))	[1/100000000000000000000, 1/50000000000000000000]
 -e	chi2stat(x)	[x, 2x]
 -e	chi2stat([])	[[], []]
 -e	chi2stat([1, 2])	[[1, 2], [2, 4]]
--e	chi2stat("text")	["text", 2*"text"]
--e	chi2stat(true)	[true, 2true]
+-e	chi2stat("text")	error: chisquaredist: the parameter k is a real number or a name, not "text"
+-e	chi2stat(true)	error: chisquaredist: the parameter k is a real number or a name, not true
 -e	chi2stat(-7/3)	error: chisquaredist(k) needs k > 0
 -e	chi2stat(0.5)	[0.5, 1]
 -e	tstat(0)	error: studenttdist(v) needs v > 0
@@ -156,17 +174,17 @@
 -e	tstat(-1)	error: studenttdist(v) needs v > 0
 -e	tstat(1/2)	[undefined, undefined]
 -e	tstat(2)	[0, inf]
--e	tstat(i)	[piecewise(i > 1, 0, undefined), piecewise(i > 2, 1/5 - 2i/5, i > 1, inf, undefined)]
+-e	tstat(i)	error: studenttdist: the parameter v is a real number or a name, not i
 -e	tstat(inf)	[0, undefined]
 -e	tstat(-inf)	error: studenttdist(v) needs v > 0
--e	tstat(undefined)	[piecewise(undefined > 1, 0, undefined), piecewise(undefined > 2, undefined, undefined > 1, inf, undefined)]
+-e	tstat(undefined)	error: studenttdist: the parameter v is a real number or a name, not undefined
 -e	tstat(10^20)	[0, 50000000000000000000/49999999999999999999]
 -e	tstat(10^(-20))	[undefined, undefined]
 -e	tstat(x)	[piecewise(x > 1, 0, undefined), piecewise(x > 2, x/(x - 2), x > 1, inf, undefined)]
--e	tstat([])	[piecewise([] > 1, 0, undefined), piecewise([] > 2, 0, [] > 1, inf, undefined)]
--e	tstat([1, 2])	[piecewise([1, 2] > 1, 0, undefined), piecewise([1, 2] > 2, ComplexInfinity, [1, 2] > 1, inf, undefined)]
--e	tstat("text")	[piecewise("text" > 1, 0, undefined), piecewise("text" > 2, "text"/("text" - 2), "text" > 1, inf, undefined)]
--e	tstat(true)	[piecewise(true > 1, 0, undefined), piecewise(true > 2, true/(true - 2), true > 1, inf, undefined)]
+-e	tstat([])	[[], []]
+-e	tstat([1, 2])	[[undefined, 0], [undefined, inf]]
+-e	tstat("text")	error: studenttdist: the parameter v is a real number or a name, not "text"
+-e	tstat(true)	error: studenttdist: the parameter v is a real number or a name, not true
 -e	tstat(-7/3)	error: studenttdist(v) needs v > 0
 -e	tstat(0.5)	[undefined, undefined]
 -e	lognpdf(0)	0
@@ -228,17 +246,17 @@
 -e	lognstat(-1)	[1/sqrt(e), 1 - 1/e]
 -e	lognstat(1/2)	[e, e^3 - e^2]
 -e	lognstat(2)	[e^(5/2), e^6 - e^5]
--e	lognstat(i)	[e^(1/2 + i), e^(1 + 2i)*(e - 1)]
+-e	lognstat(i)	error: lognormaldist: the parameter m is a real number or a name, not i
 -e	lognstat(inf)	[inf, inf]
 -e	lognstat(-inf)	[0, 0]
--e	lognstat(undefined)	[undefined, undefined]
+-e	lognstat(undefined)	error: lognormaldist: the parameter m is a real number or a name, not undefined
 -e	lognstat(10^20)	[e^(200000000000000000001/2), e^200000000000000000001*(e - 1)]
 -e	lognstat(10^(-20))	[e^(50000000000000000001/100000000000000000000), e^(50000000000000000001/50000000000000000000)*(e - 1)]
 -e	lognstat(x)	[e^(x + 1/2), e^(2x + 1)*(e - 1)]
 -e	lognstat([])	[[], []]
 -e	lognstat([1, 2])	[[e^(3/2), e^(5/2)], [e^4 - e^3, e^6 - e^5]]
--e	lognstat("text")	[e^("text" + 1/2), e^(2*"text" + 1)*(e - 1)]
--e	lognstat(true)	[e^(1/2 + true), e^(1 + 2true)*(e - 1)]
+-e	lognstat("text")	error: lognormaldist: the parameter m is a real number or a name, not "text"
+-e	lognstat(true)	error: lognormaldist: the parameter m is a real number or a name, not true
 -e	lognstat(-7/3)	[1/e^(11/6), (e - 1)/e^(11/3)]
 -e	lognstat(0.5)	[2.7182818284590452353602874713527, 12.696480824257017513698102194007]
 -e	wblpdf(0)	undefined
@@ -300,17 +318,17 @@
 -e	wblstat(-1)	error: weibulldist(k, l) needs k > 0 and l > 0
 -e	wblstat(1/2)	[1/2, 1/4]
 -e	wblstat(2)	[2, 4]
--e	wblstat(i)	[i, -1]
+-e	wblstat(i)	error: weibulldist: the parameter l is a real number or a name, not i
 -e	wblstat(inf)	[inf, inf]
 -e	wblstat(-inf)	error: weibulldist(k, l) needs k > 0 and l > 0
--e	wblstat(undefined)	[undefined, undefined]
+-e	wblstat(undefined)	error: weibulldist: the parameter l is a real number or a name, not undefined
 -e	wblstat(10^20)	[100000000000000000000, 10000000000000000000000000000000000000000]
 -e	wblstat(10^(-20))	[1/100000000000000000000, 1/10000000000000000000000000000000000000000]
 -e	wblstat(x)	[x, x^2]
 -e	wblstat([])	[[], []]
 -e	wblstat([1, 2])	[[1, 2], [1, 4]]
--e	wblstat("text")	["text", "text"^2]
--e	wblstat(true)	[true, (true)^2]
+-e	wblstat("text")	error: weibulldist: the parameter l is a real number or a name, not "text"
+-e	wblstat(true)	error: weibulldist: the parameter l is a real number or a name, not true
 -e	wblstat(-7/3)	error: weibulldist(k, l) needs k > 0 and l > 0
 -e	wblstat(0.5)	[0.5, 0.25]
 -e	raylstat(0)	error: rayleighdist(s) needs s > 0
@@ -318,17 +336,17 @@
 -e	raylstat(-1)	error: rayleighdist(s) needs s > 0
 -e	raylstat(1/2)	[sqrt(2)*sqrt(pi)/4, 1/2 - pi/8]
 -e	raylstat(2)	[sqrt(2)*sqrt(pi), 8 - 2pi]
--e	raylstat(i)	[i*sqrt(2)*sqrt(pi)/2, pi/2 - 2]
+-e	raylstat(i)	error: rayleighdist: the parameter s is a real number or a name, not i
 -e	raylstat(inf)	[inf, inf]
 -e	raylstat(-inf)	error: rayleighdist(s) needs s > 0
--e	raylstat(undefined)	[undefined, undefined]
+-e	raylstat(undefined)	error: rayleighdist: the parameter s is a real number or a name, not undefined
 -e	raylstat(10^20)	[50000000000000000000sqrt(2)*sqrt(pi), (-5000000000000000000000000000000000000000)(pi - 4)]
 -e	raylstat(10^(-20))	[sqrt(2)*sqrt(pi)/200000000000000000000, (-1/20000000000000000000000000000000000000000)(pi - 4)]
 -e	raylstat(x)	[sqrt(2)*sqrt(pi)*x/2, x^2*(4 - pi)/2]
 -e	raylstat([])	[[], []]
 -e	raylstat([1, 2])	[[sqrt(2)*sqrt(pi)/2, sqrt(2)*sqrt(pi)], [2 - pi/2, 8 - 2pi]]
--e	raylstat("text")	[sqrt(2)*sqrt(pi)*"text"/2, "text"^2*(4 - pi)/2]
--e	raylstat(true)	[sqrt(2)*sqrt(pi)*true/2, (true)^2*(4 - pi)/2]
+-e	raylstat("text")	error: rayleighdist: the parameter s is a real number or a name, not "text"
+-e	raylstat(true)	error: rayleighdist: the parameter s is a real number or a name, not true
 -e	raylstat(-7/3)	error: rayleighdist(s) needs s > 0
 -e	raylstat(0.5)	[0.62665706865775012560394132120276, 0.10730091830127584519216957709006]
 -e	poissstat(0)	error: poissondist(l) needs l > 0
@@ -336,17 +354,17 @@
 -e	poissstat(-1)	error: poissondist(l) needs l > 0
 -e	poissstat(1/2)	[1/2, 1/2]
 -e	poissstat(2)	[2, 2]
--e	poissstat(i)	[i, i]
+-e	poissstat(i)	error: poissondist: the parameter l is a real number or a name, not i
 -e	poissstat(inf)	[inf, inf]
 -e	poissstat(-inf)	error: poissondist(l) needs l > 0
--e	poissstat(undefined)	[undefined, undefined]
+-e	poissstat(undefined)	error: poissondist: the parameter l is a real number or a name, not undefined
 -e	poissstat(10^20)	[100000000000000000000, 100000000000000000000]
 -e	poissstat(10^(-20))	[1/100000000000000000000, 1/100000000000000000000]
 -e	poissstat(x)	[x, x]
 -e	poissstat([])	[[], []]
 -e	poissstat([1, 2])	[[1, 2], [1, 2]]
--e	poissstat("text")	["text", "text"]
--e	poissstat(true)	[true, true]
+-e	poissstat("text")	error: poissondist: the parameter l is a real number or a name, not "text"
+-e	poissstat(true)	error: poissondist: the parameter l is a real number or a name, not true
 -e	poissstat(-7/3)	error: poissondist(l) needs l > 0
 -e	poissstat(0.5)	[0.5, 0.5]
 -e	geostat(0)	error: geometricdist(p) needs 0 < p and p <= 1
@@ -354,17 +372,17 @@
 -e	geostat(-1)	error: geometricdist(p) needs 0 < p and p <= 1
 -e	geostat(1/2)	[1, 2]
 -e	geostat(2)	error: geometricdist(p) needs 0 < p and p <= 1
--e	geostat(i)	[-1 - i, -1 + i]
+-e	geostat(i)	error: geometricdist: the parameter p is a real number or a name, not i
 -e	geostat(inf)	error: geometricdist(p) needs 0 < p and p <= 1
 -e	geostat(-inf)	error: geometricdist(p) needs 0 < p and p <= 1
--e	geostat(undefined)	[undefined, undefined]
+-e	geostat(undefined)	error: geometricdist: the parameter p is a real number or a name, not undefined
 -e	geostat(10^20)	error: geometricdist(p) needs 0 < p and p <= 1
 -e	geostat(10^(-20))	[99999999999999999999, 9999999999999999999900000000000000000000]
 -e	geostat(x)	[1/x - 1, (1 - x)/x^2]
--e	geostat([])	[0, 0]
--e	geostat([1, 2])	[-1/2, -1/4]
--e	geostat("text")	[1/"text" - 1, (1 - "text")/"text"^2]
--e	geostat(true)	[1/true - 1, (1 - true)/(true)^2]
+-e	geostat([])	[[], []]
+-e	geostat([1, 2])	error: geometricdist(p) needs 0 < p and p <= 1
+-e	geostat("text")	error: geometricdist: the parameter p is a real number or a name, not "text"
+-e	geostat(true)	error: geometricdist: the parameter p is a real number or a name, not true
 -e	geostat(-7/3)	error: geometricdist(p) needs 0 < p and p <= 1
 -e	geostat(0.5)	[1, 2]
 -e	unidstat(0)	error: discreteuniformdist(a, b) needs a <= b
@@ -372,17 +390,17 @@
 -e	unidstat(-1)	error: discreteuniformdist(a, b) needs a <= b
 -e	unidstat(1/2)	error: discreteuniformdist(a, b) needs a <= b
 -e	unidstat(2)	[3/2, 1/4]
--e	unidstat(i)	[1/2 + i/2, -1/6]
+-e	unidstat(i)	error: discreteuniformdist: the parameter b is a real number or a name, not i
 -e	unidstat(inf)	[inf, inf]
 -e	unidstat(-inf)	error: discreteuniformdist(a, b) needs a <= b
--e	unidstat(undefined)	[undefined, undefined]
+-e	unidstat(undefined)	error: discreteuniformdist: the parameter b is a real number or a name, not undefined
 -e	unidstat(10^20)	[100000000000000000001/2, 3333333333333333333333333333333333333333/4]
 -e	unidstat(10^(-20))	error: discreteuniformdist(a, b) needs a <= b
 -e	unidstat(x)	[x/2 + 1/2, x^2/12 - 1/12]
 -e	unidstat([])	[[], []]
 -e	unidstat([1, 2])	[[1, 3/2], [0, 1/4]]
--e	unidstat("text")	["text"/2 + 1/2, "text"^2/12 - 1/12]
--e	unidstat(true)	[1/2 + true/2, (true)^2/12 - 1/12]
+-e	unidstat("text")	error: discreteuniformdist: the parameter b is a real number or a name, not "text"
+-e	unidstat(true)	error: discreteuniformdist: the parameter b is a real number or a name, not true
 -e	unidstat(-7/3)	error: discreteuniformdist(a, b) needs a <= b
 -e	unidstat(0.5)	error: discreteuniformdist(a, b) needs a <= b
 -e	feval(0)	error: 0 is not a function: write x -> expr or the name of a function
@@ -680,21 +698,3 @@
 -e	findgroups(2)	error: findgroups needs a list
 -e	findgroups(i)	error: findgroups needs a list
 -e	findgroups(inf)	error: findgroups needs a list
--e	findgroups(-inf)	error: findgroups needs a list
--e	findgroups(undefined)	error: findgroups needs a list
--e	findgroups(10^20)	error: findgroups needs a list
--e	findgroups(10^(-20))	error: findgroups needs a list
--e	findgroups(x)	error: findgroups needs a list
--e	findgroups([])	[]
--e	findgroups([1, 2])	[1, 2]
--e	findgroups("text")	error: findgroups needs a list
--e	findgroups(true)	error: findgroups needs a list
--e	findgroups(-7/3)	error: findgroups needs a list
--e	findgroups(0.5)	error: findgroups needs a list
--e	ecdf(0)	error: ecdf needs a list
--e	ecdf(1)	error: ecdf needs a list
--e	ecdf(-1)	error: ecdf needs a list
--e	ecdf(1/2)	error: ecdf needs a list
--e	ecdf(2)	error: ecdf needs a list
--e	ecdf(i)	error: ecdf needs a list
--e	ecdf(inf)	error: ecdf needs a list

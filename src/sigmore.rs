@@ -1367,8 +1367,12 @@ mod tests {
             said("h := firpm(10, [0, 0.8], [0, 0.8*pi], \"d\"); [part(h, 6), sign(part(h, 5)), part(h, 5) + part(h, 7)]")
                 .ends_with("|[0, 1, 0]")
         );
-        assert!(said("firpm(10, [0.1, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0"));
-        assert!(said("firpm(11, [0, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0"));
+        assert!(
+            said("firpm(10, [0.1, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0")
+        );
+        assert!(
+            said("firpm(11, [0, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0")
+        );
         assert!(said("firls(9, [0, 1], [1, 1], \"differentiator\")").contains("must be 0"));
         assert!(said("firls(9, [0, 1], [1, 1], \"other\")").contains("not \"other\""));
         // the exchange keeps its points where a steep error hides a turn beside an edge

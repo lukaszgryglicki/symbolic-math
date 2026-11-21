@@ -1,3 +1,21 @@
+-e	findgroups(-inf)	error: findgroups needs a list
+-e	findgroups(undefined)	error: findgroups needs a list
+-e	findgroups(10^20)	error: findgroups needs a list
+-e	findgroups(10^(-20))	error: findgroups needs a list
+-e	findgroups(x)	error: findgroups needs a list
+-e	findgroups([])	[]
+-e	findgroups([1, 2])	[1, 2]
+-e	findgroups("text")	error: findgroups needs a list
+-e	findgroups(true)	error: findgroups needs a list
+-e	findgroups(-7/3)	error: findgroups needs a list
+-e	findgroups(0.5)	error: findgroups needs a list
+-e	ecdf(0)	error: ecdf needs a list
+-e	ecdf(1)	error: ecdf needs a list
+-e	ecdf(-1)	error: ecdf needs a list
+-e	ecdf(1/2)	error: ecdf needs a list
+-e	ecdf(2)	error: ecdf needs a list
+-e	ecdf(i)	error: ecdf needs a list
+-e	ecdf(inf)	error: ecdf needs a list
 -e	ecdf(-inf)	error: ecdf needs a list
 -e	ecdf(undefined)	error: ecdf needs a list
 -e	ecdf(10^20)	error: ecdf needs a list
@@ -680,21 +698,3 @@
 -e	contour(-1)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
 -e	contour(1/2)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
 -e	contour(2)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(i)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(-inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(undefined)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(10^20)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(10^(-20))	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(x)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour([])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour([1, 2])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour("text")	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(true)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(-7/3)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	contour(0.5)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
--e	plot3(0)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(-1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(1/2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
--e	plot3(2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])

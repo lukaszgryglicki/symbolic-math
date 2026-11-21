@@ -142,7 +142,7 @@ fn as_value(x: Float) -> Expr {
 }
 
 /// Where the last layer of the ziggurat ends, and the area of every layer.
-const ZIGGURAT_END: f64 = 3.654_152_885_361_008_8;
+const ZIGGURAT_END: f64 = 3.654_152_885_361_009;
 const ZIGGURAT_AREA: f64 = 4.928_673_233_99e-3;
 
 /// The right ends of the 256 layers of the ziggurat of Marsaglia and Tsang, from the
@@ -150,12 +150,15 @@ const ZIGGURAT_AREA: f64 = 4.928_673_233_99e-3;
 fn layers() -> &'static [f64; 257] {
     static LAYERS: std::sync::OnceLock<[f64; 257]> = std::sync::OnceLock::new();
     LAYERS.get_or_init(|| {
-        let density = |x: f64| (-0.5 * x * x).exp();
+        // (the true values rounded, not those of the system: the same numbers on every system)
+        let density = |x: f64| crate::detmath::exp(-0.5 * x * x);
         let mut ends = [0.0; 257];
         ends[0] = ZIGGURAT_AREA / density(ZIGGURAT_END);
         ends[1] = ZIGGURAT_END;
         for k in 2..256 {
-            ends[k] = (-2.0 * (ZIGGURAT_AREA / ends[k - 1] + density(ends[k - 1])).ln()).sqrt();
+            ends[k] = (-2.0
+                * crate::detmath::ln(ZIGGURAT_AREA / ends[k - 1] + density(ends[k - 1])))
+            .sqrt();
         }
         ends
     })
@@ -168,7 +171,7 @@ fn layers() -> &'static [f64; 257] {
 fn ziggurat(next: &mut dyn FnMut() -> u64) -> f64 {
     const SCALE: f64 = 9_007_199_254_740_992.0;
     let ends = layers();
-    let density = |x: f64| (-0.5 * x * x).exp();
+    let density = |x: f64| crate::detmath::exp(-0.5 * x * x);
     loop {
         let bits = next();
         let layer = 255 - ((bits >> 18) & 0xff) as usize;
@@ -179,15 +182,21 @@ fn ziggurat(next: &mut dyn FnMut() -> u64) -> f64 {
         }
         if layer == 0 {
             loop {
-                let a = -((next().max(1)) as f64 / SCALE).ln() / ZIGGURAT_END;
-                let b = -((next().max(1)) as f64 / SCALE).ln();
+                let a = -crate::detmath::ln((next().max(1)) as f64 / SCALE) / ZIGGURAT_END;
+                let b = -crate::detmath::ln((next().max(1)) as f64 / SCALE);
                 if b + b > a * a {
-                    return if side < 0.0 { -(ZIGGURAT_END + a) } else { ZIGGURAT_END + a };
+                    return if side < 0.0 {
+                        -(ZIGGURAT_END + a)
+                    } else {
+                        ZIGGURAT_END + a
+                    };
                 }
             }
         }
         let height = next() as f64 / SCALE;
-        if density(ends[layer + 1]) + height * (density(ends[layer]) - density(ends[layer + 1])) < density(x) {
+        if density(ends[layer + 1]) + height * (density(ends[layer]) - density(ends[layer + 1]))
+            < density(x)
+        {
             return x;
         }
     }
@@ -390,8 +399,15 @@ mod tests {
             1.4193 0.2916 0.1978 1.5877 -0.8045 0.6966 0.8351 -0.2437 0.2157 -1.1658 -1.1480 0.1049 0.7223 2.5855 -0.6669 0.1873 -0.0825 -1.9330 -0.4390 -1.7947";
         let mut t = Twister::new(5489);
         for (k, text) in known.split_whitespace().enumerate() {
-            let (drawn, wanted) = (ziggurat(&mut || t.bits53()), text.parse::<f64>().expect("a number"));
-            assert!((drawn - wanted).abs() < 5.1e-5, "the {}th: {drawn} against {wanted}", k + 1);
+            let (drawn, wanted) = (
+                ziggurat(&mut || t.bits53()),
+                text.parse::<f64>().expect("a number"),
+            );
+            assert!(
+                (drawn - wanted).abs() < 5.1e-5,
+                "the {}th: {drawn} against {wanted}",
+                k + 1
+            );
         }
         // after rng(22)
         let mut t = Twister::new(22);
@@ -403,15 +419,32 @@ mod tests {
         let mut t = Twister::new(7);
         let all: Vec<f64> = (0..400_000).map(|_| ziggurat(&mut || t.bits53())).collect();
         let mean = all.iter().sum::<f64>() / all.len() as f64;
-        let spread = (all.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / all.len() as f64).sqrt();
+        let spread =
+            (all.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / all.len() as f64).sqrt();
         let beyond = all.iter().filter(|x| x.abs() > ZIGGURAT_END).count();
-        assert!(mean.abs() < 0.006 && (spread - 1.0).abs() < 0.005, "{mean} {spread}");
+        assert!(
+            mean.abs() < 0.006 && (spread - 1.0).abs() < 0.005,
+            "{mean} {spread}"
+        );
         // (2 (1 - Phi(3.654)) = 2.58e-4 of them: about 103)
-        assert!((60..150).contains(&beyond), "{beyond} beyond the last layer");
+        assert!(
+            (60..150).contains(&beyond),
+            "{beyond} beyond the last layer"
+        );
         // randperm(6) and randperm(8, 4) of MATLAB's documentation
         seed(0);
-        assert_eq!(permutation(6).iter().map(|k| k + 1).collect::<Vec<_>>(), [6, 3, 5, 1, 2, 4]);
+        assert_eq!(
+            permutation(6).iter().map(|k| k + 1).collect::<Vec<_>>(),
+            [6, 3, 5, 1, 2, 4]
+        );
         seed(0);
-        assert_eq!(permutation(8).iter().take(4).map(|k| k + 1).collect::<Vec<_>>(), [6, 3, 7, 8]);
+        assert_eq!(
+            permutation(8)
+                .iter()
+                .take(4)
+                .map(|k| k + 1)
+                .collect::<Vec<_>>(),
+            [6, 3, 7, 8]
+        );
     }
 }

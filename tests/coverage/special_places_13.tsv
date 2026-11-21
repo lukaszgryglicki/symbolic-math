@@ -1,3 +1,21 @@
+-e	sym2poly([1, 2])	[[1, 2]]
+-e	sym2poly("text")	error: sym2poly: "text" is no polynomial in text
+-e	sym2poly(true)	[true]
+-e	sym2poly(-7/3)	[-7/3]
+-e	sym2poly(0.5)	[0.5]
+-e	coeffs(0)	[]
+-e	coeffs(1)	[1]
+-e	coeffs(-1)	[-1]
+-e	coeffs(1/2)	[1/2]
+-e	coeffs(2)	[2]
+-e	coeffs(i)	[i]
+-e	coeffs(inf)	[inf]
+-e	coeffs(-inf)	[-inf]
+-e	coeffs(undefined)	[undefined]
+-e	coeffs(10^20)	[100000000000000000000]
+-e	coeffs(10^(-20))	[1/100000000000000000000]
+-e	coeffs(x)	[1]
+-e	coeffs([])	[[]]
 -e	coeffs([1, 2])	[[1, 2]]
 -e	coeffs("text")	error: coeffs: "text" is no polynomial in text
 -e	coeffs(true)	[true]
@@ -680,21 +698,3 @@
 -e	dawson(undefined)	undefined
 -e	dawson(10^20)	-i*sqrt(pi)*erf(100000000000000000000i)/(2e^10000000000000000000000000000000000000000)
 -e	dawson(10^(-20))	-i*sqrt(pi)*erf(i/100000000000000000000)/(2e^(1/10000000000000000000000000000000000000000))
--e	dawson(x)	-i*sqrt(pi)*e^(-x^2)*erf(i*x)/2
--e	dawson([])	0
--e	dawson([1, 2])	-i*sqrt(pi)*erf(2i)/(2e^4) - i*sqrt(pi)*erf(i)/(2e)
--e	dawson("text")	-i*sqrt(pi)*e^(-"text"^2)*erf(i*"text")/2
--e	dawson(true)	-i*sqrt(pi)*e^(-(true)^2)*erf(i*true)/2
--e	dawson(-7/3)	i*sqrt(pi)*erf(7i/3)/(2e^(49/9))
--e	dawson(0.5)	0.42443638350202229593404235248967
--e	ssinint(0)	-pi/2
--e	ssinint(1)	si(1) - pi/2
--e	ssinint(-1)	-pi/2 - si(1)
--e	ssinint(1/2)	si(1/2) - pi/2
--e	ssinint(2)	si(2) - pi/2
--e	ssinint(i)	si(i) - pi/2
--e	ssinint(inf)	0
--e	ssinint(-inf)	-pi
--e	ssinint(undefined)	undefined
--e	ssinint(10^20)	si(100000000000000000000) - pi/2
--e	ssinint(10^(-20))	si(1/100000000000000000000) - pi/2

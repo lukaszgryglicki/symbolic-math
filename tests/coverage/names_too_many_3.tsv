@@ -1,3 +1,19 @@
+	firls(1, 2, 3, 4, 5, 6)	error: firls takes 3 to 5 argument(s), 6 given
+	firpm(1, 2, 3, 4, 5, 6)	error: firpm takes 3 to 5 argument(s), 6 given
+	fir2(1, 2, 3, 4, 5, 6, 7)	error: fir2 takes 3 to 6 argument(s), 7 given
+	resample(1, 2, 3, 4, 5, 6)	error: resample takes 3 to 5 argument(s), 6 given
+	phasez(1, 2, 3, 4)	error: phasez takes 1 to 3 argument(s), 4 given
+	phasedelay(1, 2, 3, 4)	error: phasedelay takes 1 to 3 argument(s), 4 given
+	zerophase(1, 2, 3, 4)	error: zerophase takes 1 to 3 argument(s), 4 given
+	finddelay(1, 2, 3)	error: finddelay takes 2 argument(s), 3 given
+	dtw(1, 2, 3, 4)	error: dtw takes 2 to 3 argument(s), 4 given
+	residuez(1, 2, 3)	error: residuez takes 2 argument(s), 3 given
+	tf2latc(1, 2, 3)	error: tf2latc takes 1 to 2 argument(s), 3 given
+	latc2tf(1, 2, 3)	error: latc2tf takes 1 to 2 argument(s), 3 given
+	latcfilt(1, 2, 3, 4)	error: latcfilt takes 2 to 3 argument(s), 4 given
+	fftfilt(1, 2, 3)	error: fftfilt takes 2 argument(s), 3 given
+	filtic(1, 2, 3, 4, 5)	error: filtic takes 3 to 4 argument(s), 5 given
+	azimuth(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: azimuth takes 4 to 8 argument(s), 9 given
 	reckon(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: reckon takes 4 to 8 argument(s), 9 given
 	haversine(1, 2, 3, 4, 5, 6, 7)	error: haversine takes 4 to 6 argument(s), 7 given
 	geoddistance(1, 2, 3, 4, 5, 6, 7)	error: geoddistance takes 4 to 6 argument(s), 7 given
@@ -66,6 +82,66 @@
 	parametriclatitude(1, 2, 3, 4)	error: parametriclatitude takes 2 to 3 argument(s), 4 given
 	geodeticlatitudefromgeocentric(1, 2, 3, 4)	error: geodeticlatitudefromgeocentric takes 2 to 3 argument(s), 4 given
 	geodeticlatitudefromparametric(1, 2, 3, 4)	error: geodeticlatitudefromparametric takes 2 to 3 argument(s), 4 given
+	fspecial(1, 2, 3, 4)	error: fspecial takes 1 to 3 argument(s), 4 given
+	imgaussfilt(1, 2, 3)	error: imgaussfilt takes 1 to 2 argument(s), 3 given
+	imboxfilt(1, 2, 3)	error: imboxfilt takes 1 to 2 argument(s), 3 given
+	medfilt2(1, 2, 3, 4)	error: medfilt2 takes 1 to 3 argument(s), 4 given
+	ordfilt2(1, 2, 3, 4)	error: ordfilt2 takes 3 argument(s), 4 given
+	stdfilt(1, 2, 3)	error: stdfilt takes 1 to 2 argument(s), 3 given
+	rangefilt(1, 2, 3)	error: rangefilt takes 1 to 2 argument(s), 3 given
+	padarray(1, 2, 3, 4, 5)	error: padarray takes 2 to 4 argument(s), 5 given
+	imsharpen(1, 2, 3, 4, 5, 6)	error: imsharpen takes 1 to 5 argument(s), 6 given
+	strel(1, 2, 3, 4)	error: strel takes 2 to 3 argument(s), 4 given
+	imdilate(1, 2, 3)	error: imdilate takes 2 argument(s), 3 given
+	imerode(1, 2, 3)	error: imerode takes 2 argument(s), 3 given
+	imopen(1, 2, 3)	error: imopen takes 2 argument(s), 3 given
+	imclose(1, 2, 3)	error: imclose takes 2 argument(s), 3 given
+	imtophat(1, 2, 3)	error: imtophat takes 2 argument(s), 3 given
+	imbothat(1, 2, 3)	error: imbothat takes 2 argument(s), 3 given
+	bwperim(1, 2, 3)	error: bwperim takes 1 to 2 argument(s), 3 given
+	imfill(1, 2, 3)	error: imfill takes 1 to 2 argument(s), 3 given
+	bwlabel(1, 2, 3)	error: bwlabel takes 1 to 2 argument(s), 3 given
+	bwconncomp(1, 2, 3)	error: bwconncomp takes 1 to 2 argument(s), 3 given
+	regionprops(1, 2, 3)	error: regionprops takes 1 to 2 argument(s), 3 given
+	bwareaopen(1, 2, 3, 4)	error: bwareaopen takes 2 to 3 argument(s), 4 given
+	imclearborder(1, 2, 3)	error: imclearborder takes 1 to 2 argument(s), 3 given
+	bweuler(1, 2, 3)	error: bweuler takes 1 to 2 argument(s), 3 given
+	bwdist(1, 2)	error: bwdist takes 1 argument(s), 2 given
+	edge(1, 2, 3, 4)	error: edge takes 1 to 3 argument(s), 4 given
+	imgradientxy(1, 2, 3)	error: imgradientxy takes 1 to 2 argument(s), 3 given
+	imgradient(1, 2, 3)	error: imgradient takes 1 to 2 argument(s), 3 given
+	graythresh(1, 2)	error: graythresh takes 1 argument(s), 2 given
+	otsuthresh(1, 2)	error: otsuthresh takes 1 argument(s), 2 given
+	stretchlim(1, 2, 3)	error: stretchlim takes 1 to 2 argument(s), 3 given
+	imadjust(1, 2, 3, 4, 5)	error: imadjust takes 1 to 4 argument(s), 5 given
+	histeq(1, 2, 3)	error: histeq takes 1 to 2 argument(s), 3 given
+	imnoise(1, 2, 3, 4, 5)	error: imnoise takes 2 to 4 argument(s), 5 given
+	mean2(1, 2)	error: mean2 takes 1 argument(s), 2 given
+	std2(1, 2)	error: std2 takes 1 argument(s), 2 given
+	corr2(1, 2, 3)	error: corr2 takes 2 argument(s), 3 given
+	immse(1, 2, 3)	error: immse takes 2 argument(s), 3 given
+	psnr(1, 2, 3, 4)	error: psnr takes 2 to 3 argument(s), 4 given
+	entropy(1, 2)	error: entropy takes 1 argument(s), 2 given
+	imabsdiff(1, 2, 3)	error: imabsdiff takes 2 argument(s), 3 given
+	rgb2hsv(1, 2)	error: rgb2hsv takes 1 argument(s), 2 given
+	hsv2rgb(1, 2)	error: hsv2rgb takes 1 argument(s), 2 given
+	rgb2lab(1, 2)	error: rgb2lab takes 1 argument(s), 2 given
+	lab2rgb(1, 2)	error: lab2rgb takes 1 argument(s), 2 given
+	rgb2ycbcr(1, 2)	error: rgb2ycbcr takes 1 argument(s), 2 given
+	ycbcr2rgb(1, 2)	error: ycbcr2rgb takes 1 argument(s), 2 given
+	ind2rgb(1, 2, 3)	error: ind2rgb takes 2 argument(s), 3 given
+	imtranslate(1, 2, 3)	error: imtranslate takes 2 argument(s), 3 given
+	impyramid(1, 2, 3)	error: impyramid takes 1 to 2 argument(s), 3 given
+	integralimage(1, 2)	error: integralimage takes 1 argument(s), 2 given
+	normxcorr2(1, 2, 3)	error: normxcorr2 takes 2 argument(s), 3 given
+	xcorr2(1, 2, 3)	error: xcorr2 takes 1 to 2 argument(s), 3 given
+	dct2(1, 2)	error: dct2 takes 1 argument(s), 2 given
+	idct2(1, 2)	error: idct2 takes 1 argument(s), 2 given
+	simblocks(1)	error: simblocks takes 0 argument(s), 1 given
+	matread(1, 2, 3)	error: matread takes 1 to 2 argument(s), 3 given
+	matinfo(1, 2)	error: matinfo takes 1 argument(s), 2 given
+	newunit(1, 2, 3)	error: newunit takes 2 argument(s), 3 given
+	removeunit(1, 2)	error: removeunit takes 1 argument(s), 2 given
 	km2nm(1, 2)	error: km2nm takes 1 argument(s), 2 given
 	km2sm(1, 2)	error: km2sm takes 1 argument(s), 2 given
 	nm2km(1, 2)	error: nm2km takes 1 argument(s), 2 given
@@ -164,3 +240,54 @@
 	perceptron(1, 2, 3, 4)	error: perceptron takes 2 to 3 argument(s), 4 given
 	newlind(1, 2, 3)	error: newlind takes 2 argument(s), 3 given
 	newrbe(1, 2, 3, 4)	error: newrbe takes 2 to 3 argument(s), 4 given
+	rotate4d(1, 2, 3, 4)	error: rotate4d takes 3 argument(s), 4 given
+	scale4d(1, 2, 3)	error: scale4d takes 2 argument(s), 3 given
+	move4d(1, 2, 3)	error: move4d takes 2 argument(s), 3 given
+	section4d(1, 2, 3)	error: section4d takes 2 argument(s), 3 given
+	inside4d(1, 2, 3)	error: inside4d takes 2 argument(s), 3 given
+	volume4d(1, 2)	error: volume4d takes 1 argument(s), 2 given
+	surface4d(1, 2)	error: surface4d takes 1 argument(s), 2 given
+	vertices4d(1, 2)	error: vertices4d takes 1 argument(s), 2 given
+	edges4d(1, 2)	error: edges4d takes 1 argument(s), 2 given
+	density4d(1, 2, 3)	error: density4d takes 2 argument(s), 3 given
+	imageinputlayer(1, 2, 3, 4)	error: imageinputlayer takes 1 to 3 argument(s), 4 given
+	featureinputlayer(1, 2)	error: featureinputlayer takes 1 argument(s), 2 given
+	convolution2dlayer(1, 2, 3, 4, 5, 6, 7)	error: convolution2dlayer takes 2 to 6 argument(s), 7 given
+	maxpooling2dlayer(1, 2, 3, 4)	error: maxpooling2dlayer takes 1 to 3 argument(s), 4 given
+	averagepooling2dlayer(1, 2, 3, 4)	error: averagepooling2dlayer takes 1 to 3 argument(s), 4 given
+	flattenlayer(1)	error: flattenlayer takes 0 argument(s), 1 given
+	fullyconnectedlayer(1, 2)	error: fullyconnectedlayer takes 1 argument(s), 2 given
+	relulayer(1)	error: relulayer takes 0 argument(s), 1 given
+	tanhlayer(1)	error: tanhlayer takes 0 argument(s), 1 given
+	sigmoidlayer(1)	error: sigmoidlayer takes 0 argument(s), 1 given
+	softmaxlayer(1)	error: softmaxlayer takes 0 argument(s), 1 given
+	leakyrelulayer(1, 2)	error: leakyrelulayer takes 0 to 1 argument(s), 2 given
+	dlnetwork(1, 2, 3)	error: dlnetwork takes 1 to 2 argument(s), 3 given
+	georefcells(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: georefcells takes 3 to 8 argument(s), 9 given
+	georefpostings(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: georefpostings takes 3 to 8 argument(s), 9 given
+	maprefcells(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: maprefcells takes 3 to 8 argument(s), 9 given
+	maprefpostings(1, 2, 3, 4, 5, 6, 7, 8, 9)	error: maprefpostings takes 3 to 8 argument(s), 9 given
+	refvectogeorasterreference(1, 2, 3)	error: refvectogeorasterreference takes 2 argument(s), 3 given
+	geographictointrinsic(1, 2, 3, 4)	error: geographictointrinsic takes 3 argument(s), 4 given
+	intrinsictogeographic(1, 2, 3, 4)	error: intrinsictogeographic takes 3 argument(s), 4 given
+	geographictodiscrete(1, 2, 3, 4)	error: geographictodiscrete takes 3 argument(s), 4 given
+	worldtointrinsic(1, 2, 3, 4)	error: worldtointrinsic takes 3 argument(s), 4 given
+	intrinsictoworld(1, 2, 3, 4)	error: intrinsictoworld takes 3 argument(s), 4 given
+	worldtodiscrete(1, 2, 3, 4)	error: worldtodiscrete takes 3 argument(s), 4 given
+	geointerp(1, 2, 3, 4, 5, 6)	error: geointerp takes 4 to 5 argument(s), 6 given
+	mapinterp(1, 2, 3, 4, 5, 6)	error: mapinterp takes 4 to 5 argument(s), 6 given
+	ltln2val(1, 2, 3, 4, 5, 6)	error: ltln2val takes 4 to 5 argument(s), 6 given
+	geocrop(1, 2, 3, 4, 5)	error: geocrop takes 4 argument(s), 5 given
+	mapcrop(1, 2, 3, 4, 5)	error: mapcrop takes 4 argument(s), 5 given
+	georesize(1, 2, 3, 4, 5)	error: georesize takes 3 to 4 argument(s), 5 given
+	mapresize(1, 2, 3, 4, 5)	error: mapresize takes 3 to 4 argument(s), 5 given
+	gradientm(1, 2, 3, 4)	error: gradientm takes 2 to 3 argument(s), 4 given
+	areamat(1, 2, 3, 4)	error: areamat takes 2 to 3 argument(s), 4 given
+	los2(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)	error: los2 takes 6 to 9 argument(s), 10 given
+	viewshed(1, 2, 3, 4, 5, 6, 7, 8)	error: viewshed takes 4 to 7 argument(s), 8 given
+	arcgridread(1, 2)	error: arcgridread takes 1 argument(s), 2 given
+	arcgridwrite(1, 2, 3, 4)	error: arcgridwrite takes 3 argument(s), 4 given
+	worldfileread(1, 2, 3, 4)	error: worldfileread takes 3 argument(s), 4 given
+	worldfilewrite(1, 2, 3)	error: worldfilewrite takes 2 argument(s), 3 given
+	egm96geoid(1, 2, 3)	error: egm96geoid takes 1 to 2 argument(s), 3 given
+	geoidheight(1, 2, 3, 4)	error: geoidheight takes 2 to 3 argument(s), 4 given

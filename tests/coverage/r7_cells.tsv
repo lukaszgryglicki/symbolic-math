@@ -1,0 +1,42 @@
+-e	c := {1, "two", [3, 4], {5, x^2}}	{1, "two", [3, 4], {5, x^2}}
+-e	[class({1, 2}), iscell({1, 2}), iscell([1, 2]), iscellstr({"a", "b"})]	["cell", true, false, true]
+-e	cellarray(1, "a")	{1, "a"}
+-e	part({1, "two", [3, 4]}, 3)	[3, 4]
+-e	[length({1, "a", [1, 2]}), numel({}), isempty({})]	[3, 0, true]
+-e	cell(3)	{[], [], []}
+-e	cell(2, 2)	{[[], []], [[], []]}
+-e	num2cell([1, 2, 3])	{1, 2, 3}
+-e	cell2mat({[1, 2], [3]})	[1, 2, 3]
+-e	cell2mat({[[1, 2], [3, 4]], [[5], [6]]})	[[1, 2, 5], [3, 4, 6]]
+-e	mat2cell([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 2], [2, 1])	{[[[1, 2]], [[3]]], [[[4, 5], [7, 8]], [[6], [9]]]}
+-e	celldisp({1, {"a", [2, 3]}}, "c")	["c{1} = 1", "c{2}{1} = "a"", "c{2}{2} = [2, 3]"]
+-e	sort({3, 1, 2})	{1, 2, 3}
+-e	horzcat({1, 2}, {"a"})	{1, 2, "a"}
+-e	upper({"ab", "c"})	{"AB", "C"}
+-e	strjoin({"a", "b"}, "-")	"a-b"
+-e	sum({1, 2, 3})	6
+-e	cellfun(length, {[1, 2], [3], []})	[2, 1, 0]
+-e	cellfun(x -> 2*x, {1, 2}, "UniformOutput", false)	{2, 4}
+-e	cellfun("isempty", {[], 1, ""})	[true, false, true]
+-e	struct2cell(struct("a", 1, "b", "x"))	{1, "x"}
+-e	cell2struct({1, "x"}, ["a", "b"])	struct("a", 1, "b", "x")
+-e	isequal({1, [2, 3]}, {1, [2, 3]})	true
+-e	[class({1, 2}), iscell({1, 2}), iscell([1, 2]), iscellstr({"a", "b"}), iscellstr({"a", 1})]	["cell", true, false, true, false]
+-e	reverse({1, "a"})	{"a", 1}
+-e	cellfun(reverse, {[1, 2], [3, 4]})	{[2, 1], [4, 3]}
+-e	{}	{}
+-e	{1, 2; 3, 4}	{[1, 2], [3, 4]}
+-e	class({})	"cell"
+-e	iscell("a")	false
+-e	part({1, 2}, 3)	error: there is no position 3 in a list of 2 entries
+-e	cell(-1)	error: the size must be a whole number from 0 to 100000, not -1
+-e	cell2mat({1, "a"})	[1, "a"]
+-e	mat2cell([[1, 2], [3, 4]], [1, 2], [2])	error: mat2cell: the sizes of the blocks add up to 3, the matrix has 2
+-e	celldisp([1, 2])	error: celldisp({a, b, ...}[, "name"]): what every cell of a cell array holds
+-e	cellfun(x -> x^2, {1, 2, 3})	[1, 4, 9]
+-e	cellfun(x -> x^2, {1, 2, 3}, "UniformOutput", true)	[1, 4, 9]
+-e	unique({"b", "a", "b"})	{"b", "a"}
+-e	reverse({1, "a", [2]})	{[2], "a", 1}
+-e	{1, 2} == {1, 2}	true
+-e	num2cell(5)	{5}
+-e	num2cell({1})	{1}

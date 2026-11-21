@@ -1,3 +1,21 @@
+-e	dawson(x)	-i*sqrt(pi)*e^(-x^2)*erf(i*x)/2
+-e	dawson([])	0
+-e	dawson([1, 2])	-i*sqrt(pi)*erf(2i)/(2e^4) - i*sqrt(pi)*erf(i)/(2e)
+-e	dawson("text")	-i*sqrt(pi)*e^(-"text"^2)*erf(i*"text")/2
+-e	dawson(true)	-i*sqrt(pi)*e^(-(true)^2)*erf(i*true)/2
+-e	dawson(-7/3)	i*sqrt(pi)*erf(7i/3)/(2e^(49/9))
+-e	dawson(0.5)	0.42443638350202229593404235248967
+-e	ssinint(0)	-pi/2
+-e	ssinint(1)	si(1) - pi/2
+-e	ssinint(-1)	-pi/2 - si(1)
+-e	ssinint(1/2)	si(1/2) - pi/2
+-e	ssinint(2)	si(2) - pi/2
+-e	ssinint(i)	si(i) - pi/2
+-e	ssinint(inf)	0
+-e	ssinint(-inf)	-pi
+-e	ssinint(undefined)	undefined
+-e	ssinint(10^20)	si(100000000000000000000) - pi/2
+-e	ssinint(10^(-20))	si(1/100000000000000000000) - pi/2
 -e	ssinint(x)	si(x) - pi/2
 -e	ssinint([])	[]
 -e	ssinint([1, 2])	[si(1) - pi/2, si(2) - pi/2]
@@ -658,17 +676,17 @@
 -e	normstat(-1)	[-1, 1]
 -e	normstat(1/2)	[1/2, 1]
 -e	normstat(2)	[2, 1]
--e	normstat(i)	[i, 1]
+-e	normstat(i)	error: normaldist: the parameter m is a real number or a name, not i
 -e	normstat(inf)	[inf, 1]
 -e	normstat(-inf)	[-inf, 1]
--e	normstat(undefined)	[undefined, 1]
+-e	normstat(undefined)	error: normaldist: the parameter m is a real number or a name, not undefined
 -e	normstat(10^20)	[100000000000000000000, 1]
 -e	normstat(10^(-20))	[1/100000000000000000000, 1]
 -e	normstat(x)	[x, 1]
--e	normstat([])	[[], 1]
--e	normstat([1, 2])	[[1, 2], 1]
--e	normstat("text")	["text", 1]
--e	normstat(true)	[true, 1]
+-e	normstat([])	[[], []]
+-e	normstat([1, 2])	[[1, 2], [1, 1]]
+-e	normstat("text")	error: normaldist: the parameter m is a real number or a name, not "text"
+-e	normstat(true)	error: normaldist: the parameter m is a real number or a name, not true
 -e	normstat(-7/3)	[-7/3, 1]
 -e	normstat(0.5)	[0.5, 1]
 -e	unifpdf(0)	1
@@ -680,21 +698,3 @@
 -e	unifpdf(inf)	0
 -e	unifpdf(-inf)	0
 -e	unifpdf(undefined)	piecewise(0 <= undefined and undefined <= 1, 1, 0)
--e	unifpdf(10^20)	0
--e	unifpdf(10^(-20))	1
--e	unifpdf(x)	piecewise(0 <= x and x <= 1, 1, 0)
--e	unifpdf([])	[]
--e	unifpdf([1, 2])	[1, 0]
--e	unifpdf("text")	piecewise(0 <= "text" and "text" <= 1, 1, 0)
--e	unifpdf(true)	piecewise(0 <= true and true <= 1, 1, 0)
--e	unifpdf(-7/3)	0
--e	unifpdf(0.5)	1
--e	unifcdf(0)	0
--e	unifcdf(1)	1
--e	unifcdf(-1)	0
--e	unifcdf(1/2)	1/2
--e	unifcdf(2)	1
--e	unifcdf(i)	piecewise(i < 0, 0, i <= 1, i, 1)
--e	unifcdf(inf)	1
--e	unifcdf(-inf)	0
--e	unifcdf(undefined)	piecewise(undefined < 0, 0, undefined <= 1, undefined, 1)

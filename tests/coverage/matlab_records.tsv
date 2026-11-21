@@ -17,7 +17,7 @@
 -e	numfields(struct("a", 1, "b", 2))	2
 -e	numfields(7)	0
 -e	orderfields(struct("b", 1, "c", 2, "a", 3))	struct("a", 3, "b", 1, "c", 2)
--e	struct2cell(struct("a", 1, "b", "two"))	[1, "two"]
+-e	struct2cell(struct("a", 1, "b", "two"))	{1, "two"}
 -e	cell2struct([1, "two"], ["a", "b"])	struct("a", 1, "b", "two")
 -e	structfun(@(v) v^2, struct("a", 2, "b", 3))	[4, 9]
 -e	structfun(@numel, struct("a", [1, 2, 3], "b", [4]))	[3, 1]
@@ -52,14 +52,14 @@
 -e	iscell(["a", "b"])	true
 -e	iscellstr(["a", "b"])	true
 -e	iscellstr(["a", 1])	false
--e	cell(3)	[[], [], []]
--e	cell(2, 2)	[[[], []], [[], []]]
+-e	cell(3)	{[], [], []}
+-e	cell(2, 2)	{[[], []], [[], []]}
 -e	fitlm([1, 2, 3, 4, 5], [2.1, 3.9, 6.2, 7.8, 10.1])	struct("coefficients", [0.05, 1.99], "se", [0.19807406022327439868572865176, 0.059721576223896390615487717002174], "tstat", [0.25243083290986541888580541855565, 33.321290659501070277987072009624], "pvalue", [0.8170151781751251391948618293904, 0.000059415391117553522637846053666058], "rsquared", 0.99730532890097713307142137604513, "adjusted", 0.99640710520130284409522850139351, "rmse", 0.18885620632287059330849113489892, "dfe", 3, "fstat", 1110.3084112149532710280373831776, "p", 0.000059415391117553522637846053666058)
 -e	getfield(fitlm([1, 2, 3, 4, 5], [2.1, 3.9, 6.2, 7.8, 10.1]), "coefficients")	[0.05, 1.99]
 -e	getfield(fitlm([1, 2, 3, 4, 5], [2.1, 3.9, 6.2, 7.8, 10.1]), "rsquared")	0.99730532890097713307142137604513
 -e	fieldnames(fitlm([1, 2, 3, 4], [1, 3, 2, 5]))	["coefficients", "se", "tstat", "pvalue", "rsquared", "adjusted", "rmse", "dfe", "fstat", "p"]
 -e	getfield(fitlm([[1, 2], [2, 1], [3, 5], [4, 3], [5, 6], [6, 4]], [3.1, 2.9, 8.2, 7.1, 10.8, 10.1]), "pvalue")	[0.74300560853635989264995571768905, 0.00051401480410094666876976108646034, 0.00048903769023882022962325454013941]
--e	getfield(fitlm([1, 2, 3], [2, 4, 6]), "tstat")	[inf, inf]
+-e	getfield(fitlm([1, 2, 3], [2, 4, 6]), "tstat")	[undefined, inf]
 -e	struct("a")	error: struct(name, value, ...) needs a value for every name
 -e	struct("1a", 1)	error: struct: "1a" is no name of a field (letters, digits and _ after a letter)
 -e	struct("a", 1, "a", 2)	error: struct: the field "a" is there twice

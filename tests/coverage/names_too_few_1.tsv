@@ -390,7 +390,7 @@
 	sortby()	error: sortby takes 2 argument(s), 0 given
 	rotateleft()	error: rotateleft takes 1 to 2 argument(s), 0 given
 	rotateright()	error: rotateright takes 1 to 2 argument(s), 0 given
-	append()	error: append takes 2 argument(s), 0 given
+	append()	error: append takes at least 1 argument(s), 0 given
 	prepend()	error: prepend takes 2 argument(s), 0 given
 	join()	error: join takes at least 1 argument(s), 0 given
 	insert()	error: insert takes 3 argument(s), 0 given

@@ -13,6 +13,9 @@ use crate::texts::text;
 use rug::Float;
 
 type Res = Result<Expr, String>;
+/// Whether a place is seen, whether every place on the way is, and the ways, heights, latitudes
+/// and longitudes along the way.
+type Sight = (bool, Vec<bool>, Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>);
 
 /// Where the samples of a grid lie: cells that fill the limits, or postings on them.
 #[derive(Clone)]
@@ -61,11 +64,17 @@ impl Ref {
 
     /// The size of a cell, or the way between two postings.
     fn dy(&self) -> Expr {
-        tidy(div(sub(self.ylim[1].clone(), self.ylim[0].clone()), int(self.steps(true))))
+        tidy(div(
+            sub(self.ylim[1].clone(), self.ylim[0].clone()),
+            int(self.steps(true)),
+        ))
     }
 
     fn dx(&self) -> Expr {
-        tidy(div(sub(self.xlim[1].clone(), self.xlim[0].clone()), int(self.steps(false))))
+        tidy(div(
+            sub(self.xlim[1].clone(), self.xlim[0].clone()),
+            int(self.steps(false)),
+        ))
     }
 
     fn first(&self) -> Expr {
@@ -106,7 +115,14 @@ impl Ref {
             ("RowsStartFrom", from_x),
             (step_y, self.dy()),
             (step_x, self.dx()),
-            ("CoordinateSystemType", text(if self.geographic { "geographic" } else { "planar" })),
+            (
+                "CoordinateSystemType",
+                text(if self.geographic {
+                    "geographic"
+                } else {
+                    "planar"
+                }),
+            ),
         ]);
         crate::records::record(fields)
     }
@@ -121,7 +137,10 @@ impl Ref {
             };
             tidy(add(vec![self.first(), div(way, step)]))
         };
-        (along(x, &self.xlim, self.dx(), self.east), along(y, &self.ylim, self.dy(), self.north))
+        (
+            along(x, &self.xlim, self.dx(), self.east),
+            along(y, &self.ylim, self.dy(), self.north),
+        )
     }
 
     /// The place of the world [y, x] of a place of the grid.
@@ -133,7 +152,10 @@ impl Ref {
                 false => add(vec![limits[0].clone(), way]),
             })
         };
-        (along(row, &self.ylim, self.dy(), self.north), along(column, &self.xlim, self.dx(), self.east))
+        (
+            along(row, &self.ylim, self.dy(), self.north),
+            along(column, &self.xlim, self.dx(), self.east),
+        )
     }
 
     /// A longitude a whole number of turns away that lies within the limits, if one does.
@@ -141,18 +163,35 @@ impl Ref {
         if !self.geographic {
             return Ok(x.clone());
         }
-        let (value, low, high) = (num(x, who)?, num(&self.xlim[0], who)?, num(&self.xlim[1], who)?);
+        let (value, low, high) = (
+            num(x, who)?,
+            num(&self.xlim[0], who)?,
+            num(&self.xlim[1], who)?,
+        );
         let turns = (Float::with_val(value.prec(), &value - &low) / 360u32).floor();
-        if turns.is_zero() || Float::with_val(value.prec(), &value - Float::with_val(value.prec(), &turns * 360u32)) > high {
+        if turns.is_zero()
+            || Float::with_val(
+                value.prec(),
+                &value - Float::with_val(value.prec(), &turns * 360u32),
+            ) > high
+        {
             return Ok(x.clone());
         }
-        let whole = turns.to_integer().ok_or_else(|| format!("{who}: {x} is no longitude"))?;
-        Ok(tidy(sub(x.clone(), mul(vec![Expr::integer(whole), Expr::int(360)]))))
+        let whole = turns
+            .to_integer()
+            .ok_or_else(|| format!("{who}: {x} is no longitude"))?;
+        Ok(tidy(sub(
+            x.clone(),
+            mul(vec![Expr::integer(whole), Expr::int(360)]),
+        )))
     }
 
     fn holds(&self, y: &Expr, x: &Expr, who: &str) -> Result<bool, String> {
         let (y, x) = (num(y, who)?, num(x, who)?);
-        Ok(y >= num(&self.ylim[0], who)? && y <= num(&self.ylim[1], who)? && x >= num(&self.xlim[0], who)? && x <= num(&self.xlim[1], who)?)
+        Ok(y >= num(&self.ylim[0], who)?
+            && y <= num(&self.ylim[1], who)?
+            && x >= num(&self.xlim[0], who)?
+            && x <= num(&self.xlim[1], who)?)
     }
 }
 
@@ -167,7 +206,10 @@ fn options(a: &[Expr]) -> (Vec<Expr>, Vec<(String, Expr)>) {
             }
             e if crate::radix::text_of(e).is_some()
                 && k + 1 < a.len()
-                && matches!(word(e).as_deref(), Some("columnsstartfrom" | "rowsstartfrom")) =>
+                && matches!(
+                    word(e).as_deref(),
+                    Some("columnsstartfrom" | "rowsstartfrom")
+                ) =>
             {
                 pairs.push((word(e).unwrap_or_default(), a[k + 1].clone()));
                 k += 1;
@@ -197,7 +239,9 @@ fn shaped(e: &Expr) -> (Vec<Expr>, Option<(usize, usize)>, bool) {
 
 fn reshaped(values: Vec<Expr>, shape: Option<(usize, usize)>, list: bool) -> Expr {
     match (shape, list) {
-        (Some((_, cols)), _) => matrix::from_rows(values.chunks(cols).map(<[Expr]>::to_vec).collect()),
+        (Some((_, cols)), _) => {
+            matrix::from_rows(values.chunks(cols).map(<[Expr]>::to_vec).collect())
+        }
         (None, true) => Expr::list(values),
         (None, false) => values.into_iter().next().unwrap_or_else(nothing),
     }
@@ -210,15 +254,33 @@ impl Session {
 
     /// The reference of a grid: a record that georefcells and its kin make, or the three
     /// numbers [cells a degree, northern latitude, western longitude] of older grids.
-    fn grid_ref(&mut self, e: &Expr, size: Option<(usize, usize)>, who: &str) -> Result<Ref, String> {
-        let usage = || format!("{who}: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])");
-        if let Some([density, north, west]) = e.as_list().filter(|l| l.iter().all(|x| x.as_list().is_none())) {
+    fn grid_ref(
+        &mut self,
+        e: &Expr,
+        size: Option<(usize, usize)>,
+        who: &str,
+    ) -> Result<Ref, String> {
+        let usage = || {
+            format!(
+                "{who}: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])"
+            )
+        };
+        if let Some([density, north, west]) = e
+            .as_list()
+            .filter(|l| l.iter().all(|x| x.as_list().is_none()))
+        {
             let (rows, cols) = size.ok_or_else(usage)?;
             return Ok(Ref {
                 geographic: true,
                 postings: false,
-                ylim: [tidy(sub(north.clone(), div(int(rows), density.clone()))), north.clone()],
-                xlim: [west.clone(), tidy(add(vec![west.clone(), div(int(cols), density.clone())]))],
+                ylim: [
+                    tidy(sub(north.clone(), div(int(rows), density.clone()))),
+                    north.clone(),
+                ],
+                xlim: [
+                    west.clone(),
+                    tidy(add(vec![west.clone(), div(int(cols), density.clone())])),
+                ],
                 rows,
                 cols,
                 north: false,
@@ -230,15 +292,22 @@ impl Session {
         }
         let geographic = self.field(e, "LatitudeLimits").is_some();
         let (ylim, xlim) = match geographic {
-            true => (self.field(e, "LatitudeLimits"), self.field(e, "LongitudeLimits")),
+            true => (
+                self.field(e, "LatitudeLimits"),
+                self.field(e, "LongitudeLimits"),
+            ),
             false => (self.field(e, "YWorldLimits"), self.field(e, "XWorldLimits")),
         };
-        let (Some(ylim), Some(xlim), Some(size_given)) = (ylim, xlim, self.field(e, "RasterSize")) else {
+        let (Some(ylim), Some(xlim), Some(size_given)) = (ylim, xlim, self.field(e, "RasterSize"))
+        else {
             return Err(usage());
         };
         let said = |s: &mut Session, name: &str| s.field(e, name).and_then(|v| word(&v));
         let sizes = items(&size_given);
-        let (Some(rows), Some(cols)) = (sizes.first().and_then(Expr::as_i64), sizes.get(1).and_then(Expr::as_i64)) else {
+        let (Some(rows), Some(cols)) = (
+            sizes.first().and_then(Expr::as_i64),
+            sizes.get(1).and_then(Expr::as_i64),
+        ) else {
             return Err(usage());
         };
         let found = Ref {
@@ -264,7 +333,8 @@ impl Session {
 
     /// The matrix of a grid and its reference.
     fn raster_of(&mut self, z: &Expr, r: &Expr, who: &str) -> Result<(Rows, Ref), String> {
-        let rows = matrix::rows(z).ok_or_else(|| format!("{who}: the grid is a matrix of values"))?;
+        let rows =
+            matrix::rows(z).ok_or_else(|| format!("{who}: the grid is a matrix of values"))?;
         let reference = self.grid_ref(r, Some((rows.len(), rows[0].len())), who)?;
         Ok((rows, reference))
     }
@@ -274,44 +344,76 @@ impl Session {
         let geographic = name.starts_with("geo");
         let postings = name.ends_with("postings");
         let usage = || match geographic {
-            true => format!("{name}([south, north], [west, east], [rows, columns]) or {name}([south, north], [west, east], degrees of latitude, degrees of longitude)[, ColumnsStartFrom = \"north\"][, RowsStartFrom = \"east\"]"),
-            false => format!("{name}([x from, to], [y from, to], [rows, columns]) or {name}([x from, to], [y from, to], size in x, size in y)[, ColumnsStartFrom = \"north\"][, RowsStartFrom = \"east\"]"),
+            true => format!(
+                "{name}([south, north], [west, east], [rows, columns]) or {name}([south, north], [west, east], degrees of latitude, degrees of longitude)[, ColumnsStartFrom = \"north\"][, RowsStartFrom = \"east\"]"
+            ),
+            false => format!(
+                "{name}([x from, to], [y from, to], [rows, columns]) or {name}([x from, to], [y from, to], size in x, size in y)[, ColumnsStartFrom = \"north\"][, RowsStartFrom = \"east\"]"
+            ),
         };
         if !(3..=4).contains(&plain.len()) {
             return Err(usage());
         }
         let (first, second) = (pair_of(&plain[0], name)?, pair_of(&plain[1], name)?);
-        let (ylim, xlim) = if geographic { (first, second) } else { (second, first) };
-        let rising = |p: &[Expr; 2]| -> Result<bool, String> { Ok(num(&p[0], name)? < num(&p[1], name)?) };
+        let (ylim, xlim) = if geographic {
+            (first, second)
+        } else {
+            (second, first)
+        };
+        let rising =
+            |p: &[Expr; 2]| -> Result<bool, String> { Ok(num(&p[0], name)? < num(&p[1], name)?) };
         if !rising(&ylim)? || !rising(&xlim)? {
             return Err(usage());
         }
-        if geographic && (num(&ylim[0], name)? < -90 || num(&ylim[1], name)? > 90 || Float::with_val(64, num(&xlim[1], name)? - num(&xlim[0], name)?) > 360) {
-            return Err(format!("{name}: latitudes from -90 to 90, longitudes over 360 degrees at most"));
+        if geographic
+            && (num(&ylim[0], name)? < -90
+                || num(&ylim[1], name)? > 90
+                || Float::with_val(64, num(&xlim[1], name)? - num(&xlim[0], name)?) > 360)
+        {
+            return Err(format!(
+                "{name}: latitudes from -90 to 90, longitudes over 360 degrees at most"
+            ));
         }
         let (mut ylim, mut xlim) = (ylim, xlim);
         let (rows, cols) = match plain.len() {
             3 => {
                 let sizes = items(&plain[2]);
-                match (sizes.first().and_then(Expr::as_i64), sizes.get(1).and_then(Expr::as_i64)) {
-                    (Some(r), Some(c)) if sizes.len() == 2 && r >= 1 && c >= 1 && r <= 100_000 && c <= 100_000 => (r as usize, c as usize),
+                match (
+                    sizes.first().and_then(Expr::as_i64),
+                    sizes.get(1).and_then(Expr::as_i64),
+                ) {
+                    (Some(r), Some(c))
+                        if sizes.len() == 2 && r >= 1 && c >= 1 && r <= 100_000 && c <= 100_000 =>
+                    {
+                        (r as usize, c as usize)
+                    }
                     _ => return Err(usage()),
                 }
             }
             _ => {
                 // the sizes of the cells: whole numbers of them, the far limits moved to fit
-                let (step_y, step_x) = if geographic { (&plain[2], &plain[3]) } else { (&plain[3], &plain[2]) };
+                let (step_y, step_x) = if geographic {
+                    (&plain[2], &plain[3])
+                } else {
+                    (&plain[3], &plain[2])
+                };
                 let count = |limits: &mut [Expr; 2], step: &Expr| -> Result<usize, String> {
                     let wide = num(&limits[1], name)? - num(&limits[0], name)?;
                     let size = num(step, name)?;
                     if size <= 0 {
                         return Err(usage());
                     }
-                    let cells = (wide / &size + Float::with_val(64, 1e-9)).floor().max(&Float::with_val(64, 1)).to_f64() as usize;
+                    let cells = (wide / &size + Float::with_val(64, 1e-9))
+                        .floor()
+                        .max(&Float::with_val(64, 1))
+                        .to_f64() as usize;
                     if cells > 100_000 {
                         return Err(format!("{name}: 100000 rows or columns at most"));
                     }
-                    limits[1] = tidy(add(vec![limits[0].clone(), mul(vec![int(cells), step.clone()])]));
+                    limits[1] = tidy(add(vec![
+                        limits[0].clone(),
+                        mul(vec![int(cells), step.clone()]),
+                    ]));
                     Ok(match postings {
                         true => cells + 1,
                         false => cells,
@@ -321,7 +423,9 @@ impl Session {
             }
         };
         if postings && (rows < 2 || cols < 2) {
-            return Err(format!("{name}: postings need two rows and two columns at least"));
+            return Err(format!(
+                "{name}: postings need two rows and two columns at least"
+            ));
         }
         let mut made = Ref {
             geographic,
@@ -347,7 +451,14 @@ impl Session {
 
     /// The value of a grid at a place of the grid: the nearest sample, between four of them
     /// along straight lines, or between sixteen along curves (cubic convolution).
-    fn between(grid: &Rows, reference: &Ref, column: &Expr, row: &Expr, method: &str, who: &str) -> Res {
+    fn between(
+        grid: &Rows,
+        reference: &Ref,
+        column: &Expr,
+        row: &Expr,
+        method: &str,
+        who: &str,
+    ) -> Res {
         let (rows, cols) = (reference.rows, reference.cols);
         // (in the half cells at the border the outermost samples stand)
         let clamp = |place: &Expr, most: usize| -> Result<Expr, String> {
@@ -363,7 +474,9 @@ impl Session {
         let (x, y) = (clamp(column, cols)?, clamp(row, rows)?);
         let whole = |place: &Expr, most: usize| -> Result<(usize, Expr), String> {
             let value = num(place, who)?;
-            let below = (value.floor().to_f64() as usize).clamp(1, most.max(2) - 1).min(most);
+            let below = (value.floor().to_f64() as usize)
+                .clamp(1, most.max(2) - 1)
+                .min(most);
             Ok((below, tidy(sub(place.clone(), int(below)))))
         };
         let at = |r: usize, c: usize| grid[r.clamp(1, rows) - 1][c.clamp(1, cols) - 1].clone();
@@ -377,7 +490,12 @@ impl Session {
             }
             "linear" | "bilinear" => {
                 let ((c, fx), (r, fy)) = (whole(&x, cols)?, whole(&y, rows)?);
-                let blend = |a: Expr, b: Expr, f: &Expr| add(vec![mul(vec![sub(Expr::one(), f.clone()), a]), mul(vec![f.clone(), b])]);
+                let blend = |a: Expr, b: Expr, f: &Expr| {
+                    add(vec![
+                        mul(vec![sub(Expr::one(), f.clone()), a]),
+                        mul(vec![f.clone(), b]),
+                    ])
+                };
                 Ok(tidy(blend(
                     blend(at(r, c), at(r, c + 1), &fx),
                     blend(at(r + 1, c), at(r + 1, c + 1), &fx),
@@ -389,11 +507,35 @@ impl Session {
                 // the weights of the four samples around a place (Keys, a = -1/2)
                 let weights = |f: &Expr| -> Vec<Expr> {
                     let p = |k: i64| Expr::int(k);
-                    let (f2, f3) = (mul(vec![f.clone(), f.clone()]), mul(vec![f.clone(), f.clone(), f.clone()]));
+                    let (f2, f3) = (
+                        mul(vec![f.clone(), f.clone()]),
+                        mul(vec![f.clone(), f.clone(), f.clone()]),
+                    );
                     vec![
-                        tidy(div(add(vec![mul(vec![p(-1), f3.clone()]), mul(vec![p(2), f2.clone()]), mul(vec![p(-1), f.clone()])]), p(2))),
-                        tidy(div(add(vec![mul(vec![p(3), f3.clone()]), mul(vec![p(-5), f2.clone()]), p(2)]), p(2))),
-                        tidy(div(add(vec![mul(vec![p(-3), f3.clone()]), mul(vec![p(4), f2.clone()]), f.clone()]), p(2))),
+                        tidy(div(
+                            add(vec![
+                                mul(vec![p(-1), f3.clone()]),
+                                mul(vec![p(2), f2.clone()]),
+                                mul(vec![p(-1), f.clone()]),
+                            ]),
+                            p(2),
+                        )),
+                        tidy(div(
+                            add(vec![
+                                mul(vec![p(3), f3.clone()]),
+                                mul(vec![p(-5), f2.clone()]),
+                                p(2),
+                            ]),
+                            p(2),
+                        )),
+                        tidy(div(
+                            add(vec![
+                                mul(vec![p(-3), f3.clone()]),
+                                mul(vec![p(4), f2.clone()]),
+                                f.clone(),
+                            ]),
+                            p(2),
+                        )),
                         tidy(div(add(vec![f3, mul(vec![p(-1), f2])]), p(2))),
                     ]
                 };
@@ -402,13 +544,18 @@ impl Session {
                 for (i, weight_y) in wy.iter().enumerate() {
                     for (j, weight_x) in wx.iter().enumerate() {
                         // (beyond the border the outermost samples go on)
-                        let value = at((r + i).saturating_sub(1).max(1), (c + j).saturating_sub(1).max(1));
+                        let value = at(
+                            (r + i).saturating_sub(1).max(1),
+                            (c + j).saturating_sub(1).max(1),
+                        );
                         terms.push(mul(vec![weight_y.clone(), weight_x.clone(), value]));
                     }
                 }
                 Ok(tidy(add(terms)))
             }
-            other => Err(format!("{who}: the values between the samples are \"nearest\", \"linear\" or \"cubic\", not \"{other}\"")),
+            other => Err(format!(
+                "{who}: the values between the samples are \"nearest\", \"linear\" or \"cubic\", not \"{other}\""
+            )),
         }
     }
 
@@ -430,11 +577,25 @@ impl Session {
     /// [seen, seen along the way, the ways from the watcher, the heights of the ground,
     /// the latitudes, the longitudes].
     #[allow(clippy::too_many_arguments)]
-    fn sight(heights: &[Vec<f64>], reference: &Ref, limits: [f64; 4], from: (f64, f64), to: (f64, f64), above: (f64, f64), radius: f64) -> (bool, Vec<bool>, Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
+    fn sight(
+        heights: &[Vec<f64>],
+        reference: &Ref,
+        limits: [f64; 4],
+        from: (f64, f64),
+        to: (f64, f64),
+        above: (f64, f64),
+        radius: f64,
+    ) -> Sight {
         let [south, north, west, east] = limits;
         let (rows, cols) = (reference.rows, reference.cols);
         let first = if reference.postings { 1.0 } else { 0.5 };
-        let steps = |count: usize| if reference.postings { (count - 1).max(1) as f64 } else { count as f64 };
+        let steps = |count: usize| {
+            if reference.postings {
+                (count - 1).max(1) as f64
+            } else {
+                count as f64
+            }
+        };
         let (dy, dx) = ((north - south) / steps(rows), (east - west) / steps(cols));
         let ground = |lat: f64, lon: f64| -> f64 {
             let mut lon = lon;
@@ -444,23 +605,39 @@ impl Session {
             while lon > east && lon - 360.0 >= west {
                 lon -= 360.0;
             }
-            let y = first + if reference.north { (north - lat) / dy } else { (lat - south) / dy };
-            let x = first + if reference.east { (east - lon) / dx } else { (lon - west) / dx };
+            let y = first
+                + if reference.north {
+                    (north - lat) / dy
+                } else {
+                    (lat - south) / dy
+                };
+            let x = first
+                + if reference.east {
+                    (east - lon) / dx
+                } else {
+                    (lon - west) / dx
+                };
             let (y, x) = (y.clamp(1.0, rows as f64), x.clamp(1.0, cols as f64));
-            let (r, c) = ((y.floor() as usize).clamp(1, rows.max(2) - 1).min(rows), (x.floor() as usize).clamp(1, cols.max(2) - 1).min(cols));
+            let (r, c) = (
+                (y.floor() as usize).clamp(1, rows.max(2) - 1).min(rows),
+                (x.floor() as usize).clamp(1, cols.max(2) - 1).min(cols),
+            );
             let (fy, fx) = (y - r as f64, x - c as f64);
             let at = |r: usize, c: usize| heights[r.clamp(1, rows) - 1][c.clamp(1, cols) - 1];
-            (1.0 - fy) * ((1.0 - fx) * at(r, c) + fx * at(r, c + 1)) + fy * ((1.0 - fx) * at(r + 1, c) + fx * at(r + 1, c + 1))
+            (1.0 - fy) * ((1.0 - fx) * at(r, c) + fx * at(r, c + 1))
+                + fy * ((1.0 - fx) * at(r + 1, c) + fx * at(r + 1, c + 1))
         };
         let unit = |lat: f64, lon: f64| -> [f64; 3] {
             let (la, lo) = (lat.to_radians(), lon.to_radians());
-            [la.cos() * lo.cos(), la.cos() * lo.sin(), la.sin()]
+            let ((sa, ca), (so, co)) = (crate::detmath::sin_cos(la), crate::detmath::sin_cos(lo));
+            [ca * co, ca * so, sa]
         };
         let (a, b) = (unit(from.0, from.1), unit(to.0, to.1));
         let dot = (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]).clamp(-1.0, 1.0);
-        let whole = dot.acos();
+        let whole = crate::detmath::acos(dot);
         let count = ((whole.to_degrees() / (dy.min(dx) / 2.0)).ceil() as usize).clamp(1, 200_000);
-        let (mut lats, mut lons, mut ways, mut grounds, mut seen) = (Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
+        let (mut lats, mut lons, mut ways, mut grounds, mut seen) =
+            (Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
         let eye = radius + ground(from.0, from.1) + above.0;
         let mut steepest = f64::NEG_INFINITY;
         let mut last = true;
@@ -471,9 +648,19 @@ impl Session {
             let (lat, lon) = match whole < 1e-15 {
                 true => from,
                 false => {
-                    let (wa, wb) = (((1.0 - share) * whole).sin() / whole.sin(), (share * whole).sin() / whole.sin());
-                    let p = [wa * a[0] + wb * b[0], wa * a[1] + wb * b[1], wa * a[2] + wb * b[2]];
-                    (p[2].clamp(-1.0, 1.0).asin().to_degrees(), p[1].atan2(p[0]).to_degrees())
+                    let (wa, wb) = (
+                        crate::detmath::sin((1.0 - share) * whole) / crate::detmath::sin(whole),
+                        crate::detmath::sin(share * whole) / crate::detmath::sin(whole),
+                    );
+                    let p = [
+                        wa * a[0] + wb * b[0],
+                        wa * a[1] + wb * b[1],
+                        wa * a[2] + wb * b[2],
+                    ];
+                    (
+                        crate::detmath::asin(p[2].clamp(-1.0, 1.0)).to_degrees(),
+                        crate::detmath::atan2(p[1], p[0]).to_degrees(),
+                    )
                 }
             };
             let height = ground(lat, lon);
@@ -488,7 +675,10 @@ impl Session {
             // how steeply the watcher looks up to a point above this place
             let rise = |h: f64| {
                 let far = radius + h;
-                (far * angle.cos() - eye).atan2(far * angle.sin())
+                crate::detmath::atan2(
+                    far * crate::detmath::cos(angle) - eye,
+                    far * crate::detmath::sin(angle),
+                )
             };
             let target = if k == count { height + above.1 } else { height };
             let visible = rise(target) >= steepest - 1e-13;
@@ -1008,11 +1198,16 @@ impl Session {
     }
 
     /// The lines of the commands that write a grid to a file.
-    pub(crate) fn georaster_written(&mut self, name: &str, a: &[Expr]) -> Result<Vec<String>, String> {
+    pub(crate) fn georaster_written(
+        &mut self,
+        name: &str,
+        a: &[Expr],
+    ) -> Result<Vec<String>, String> {
         let cell = |x: &Expr| format!("{x}");
         match (name, a) {
             ("arcgridwrite", [file, z, r]) => {
-                let path = crate::radix::text_of(file).ok_or("arcgridwrite(\"file.asc\", grid, reference)")?;
+                let path = crate::radix::text_of(file)
+                    .ok_or("arcgridwrite(\"file.asc\", grid, reference)")?;
                 let (grid, reference) = self.raster_of(z, r, name)?;
                 if reference.postings {
                     return Err("arcgridwrite takes a grid of cells".into());
@@ -1052,10 +1247,16 @@ impl Session {
                     .and_then(|()| crate::sandbox::spend(out.len()))
                     .map_err(|e| format!("arcgridwrite: {e}"))?;
                 std::fs::write(path, &out).map_err(|e| format!("arcgridwrite: {path}: {e}"))?;
-                Ok(vec![format!("saved {path}: {} row(s) of {} value(s), {} bytes", reference.rows, reference.cols, out.len())])
+                Ok(vec![format!(
+                    "saved {path}: {} row(s) of {} value(s), {} bytes",
+                    reference.rows,
+                    reference.cols,
+                    out.len()
+                )])
             }
             ("worldfilewrite", [r, file]) => {
-                let path = crate::radix::text_of(file).ok_or("worldfilewrite(reference, \"file.tfw\")")?;
+                let path =
+                    crate::radix::text_of(file).ok_or("worldfilewrite(reference, \"file.tfw\")")?;
                 let reference = self.grid_ref(r, None, name)?;
                 if reference.postings {
                     return Err("worldfilewrite takes a reference of cells".into());
@@ -1066,13 +1267,26 @@ impl Session {
                     true => tidy(mul(vec![Expr::int(-1), step.clone()])),
                     false => step.clone(),
                 };
-                let lines = [signed(&dx, reference.east), Expr::zero(), Expr::zero(), signed(&dy, reference.north), first_x, first_y];
-                let out: String = lines.iter().map(|x| format!("{}\n", numeric::n(x, numeric::digits()))).collect();
+                let lines = [
+                    signed(&dx, reference.east),
+                    Expr::zero(),
+                    Expr::zero(),
+                    signed(&dy, reference.north),
+                    first_x,
+                    first_y,
+                ];
+                let out: String = lines
+                    .iter()
+                    .map(|x| format!("{}\n", numeric::n(x, numeric::digits())))
+                    .collect();
                 crate::sandbox::allowed(path)
                     .and_then(|()| crate::sandbox::spend(out.len()))
                     .map_err(|e| format!("worldfilewrite: {e}"))?;
                 std::fs::write(path, &out).map_err(|e| format!("worldfilewrite: {path}: {e}"))?;
-                Ok(vec![format!("saved {path}: 6 numbers, {} bytes", out.len())])
+                Ok(vec![format!(
+                    "saved {path}: 6 numbers, {} bytes",
+                    out.len()
+                )])
             }
             ("arcgridwrite", _) => Err("arcgridwrite(\"file.asc\", grid, reference)".into()),
             _ => Err("worldfilewrite(reference, \"file.tfw\")".into()),
@@ -1081,7 +1295,11 @@ impl Session {
 
     /// A chart of a grid of the earth as the chart of a matrix that draws it: north at
     /// the top, west at the left.
-    pub(crate) fn map_chart(&mut self, name: &str, args: &[Expr]) -> Result<Option<(&'static str, Vec<Expr>)>, String> {
+    pub(crate) fn map_chart(
+        &mut self,
+        name: &str,
+        args: &[Expr],
+    ) -> Result<Option<(&'static str, Vec<Expr>)>, String> {
         let target = match name {
             "geoshow" => "matrixplot",
             "contourm" => "contour",
@@ -1104,9 +1322,17 @@ impl Session {
                 if reference.north {
                     rows.reverse();
                 }
-                let upright = Ref { north: false, east: false, ..reference.clone() };
-                let lons: Vec<Expr> = (1..=reference.cols).map(|c| upright.to_world(&int(c), &Expr::one()).1).collect();
-                let lats: Vec<Expr> = (1..=reference.rows).map(|r| upright.to_world(&Expr::one(), &int(r)).0).collect();
+                let upright = Ref {
+                    north: false,
+                    east: false,
+                    ..reference.clone()
+                };
+                let lons: Vec<Expr> = (1..=reference.cols)
+                    .map(|c| upright.to_world(&int(c), &Expr::one()).1)
+                    .collect();
+                let lats: Vec<Expr> = (1..=reference.rows)
+                    .map(|r| upright.to_world(&Expr::one(), &int(r)).0)
+                    .collect();
                 vec![Expr::list(lons), Expr::list(lats), matrix::from_rows(rows)]
             }
             _ => {
@@ -1136,16 +1362,35 @@ mod tests {
     fn places_and_cells() {
         // two rows of three cells of 10 degrees: the first row is the southern one
         let r = "georefcells([0, 20], [0, 30], [2, 3])";
-        assert_eq!(said(&format!("geographictointrinsic({r}, 5, 15)")), "[2, 1]");
-        assert_eq!(said(&format!("intrinsictogeographic({r}, 2, 1)")), "[5, 15]");
-        assert_eq!(said(&format!("geographictodiscrete({r}, [5, 19, 50], [15, 29, 0])")), "[[1, 2, undefined], [2, 3, undefined]]");
         assert_eq!(
-            said(&format!("geographictointrinsic(georefcells([0, 20], [0, 30], [2, 3], ColumnsStartFrom = \"north\"), 5, 15)")),
+            said(&format!("geographictointrinsic({r}, 5, 15)")),
+            "[2, 1]"
+        );
+        assert_eq!(
+            said(&format!("intrinsictogeographic({r}, 2, 1)")),
+            "[5, 15]"
+        );
+        assert_eq!(
+            said(&format!(
+                "geographictodiscrete({r}, [5, 19, 50], [15, 29, 0])"
+            )),
+            "[[1, 2, undefined], [2, 3, undefined]]"
+        );
+        assert_eq!(
+            said(
+                "geographictointrinsic(georefcells([0, 20], [0, 30], [2, 3], ColumnsStartFrom = \"north\"), 5, 15)"
+            ),
             "[2, 2]"
         );
         // postings lie on the limits
-        assert_eq!(said("geographictointrinsic(georefpostings([0, 20], [0, 30], [3, 4]), 10, 30)"), "[4, 2]");
-        assert_eq!(said("getfield(georefcells([0, 20], [0, 30], 10, 5), \"RasterSize\")"), "[2, 6]");
+        assert_eq!(
+            said("geographictointrinsic(georefpostings([0, 20], [0, 30], [3, 4]), 10, 30)"),
+            "[4, 2]"
+        );
+        assert_eq!(
+            said("getfield(georefcells([0, 20], [0, 30], 10, 5), \"RasterSize\")"),
+            "[2, 6]"
+        );
     }
 
     #[test]
@@ -1153,14 +1398,27 @@ mod tests {
         let z = "[[1, 2, 3], [4, 5, 6]]";
         let r = "georefcells([0, 20], [0, 30], [2, 3])";
         assert_eq!(said(&format!("geointerp({z}, {r}, 10, 15)")), "7/2|  ~ 3.5");
-        assert_eq!(said(&format!("geointerp({z}, {r}, [5, 15], [5, 25], \"nearest\")")), "[1, 6]");
-        assert_eq!(said(&format!("geointerp({z}, {r}, 30, 15)")), "undefined");
-        assert_eq!(said(&format!("part(geocrop({z}, {r}, [0, 10], [10, 30]), 1)")), "[[2, 3]]");
         assert_eq!(
-            said(&format!("getfield(part(geocrop({z}, {r}, [0, 10], [10, 30]), 2), \"LongitudeLimits\")")),
+            said(&format!(
+                "geointerp({z}, {r}, [5, 15], [5, 25], \"nearest\")"
+            )),
+            "[1, 6]"
+        );
+        assert_eq!(said(&format!("geointerp({z}, {r}, 30, 15)")), "undefined");
+        assert_eq!(
+            said(&format!("part(geocrop({z}, {r}, [0, 10], [10, 30]), 1)")),
+            "[[2, 3]]"
+        );
+        assert_eq!(
+            said(&format!(
+                "getfield(part(geocrop({z}, {r}, [0, 10], [10, 30]), 2), \"LongitudeLimits\")"
+            )),
             "[10, 30]"
         );
-        assert_eq!(said(&format!("part(georesize({z}, {r}, 2, \"nearest\"), 1)")), "[[1, 1, 2, 2, 3, 3], [1, 1, 2, 2, 3, 3], [4, 4, 5, 5, 6, 6], [4, 4, 5, 5, 6, 6]]");
+        assert_eq!(
+            said(&format!("part(georesize({z}, {r}, 2, \"nearest\"), 1)")),
+            "[[1, 1, 2, 2, 3, 3], [1, 1, 2, 2, 3, 3], [4, 4, 5, 5, 6, 6], [4, 4, 5, 5, 6, 6]]"
+        );
     }
 
     #[test]
@@ -1168,8 +1426,21 @@ mod tests {
         // flat ground with a wall in the middle column
         let z = "[[0, 0, 500, 0, 0], [0, 0, 500, 0, 0], [0, 0, 500, 0, 0]]";
         let r = "georefcells([0, 0.03], [0, 0.05], [3, 5])";
-        assert_eq!(said(&format!("part(los2({z}, {r}, 0.015, 0.005, 0.015, 0.045, 10, 10), 1)")), "false");
-        assert_eq!(said(&format!("part(los2({z}, {r}, 0.015, 0.005, 0.015, 0.015, 10, 10), 1)")), "true");
-        assert_eq!(said(&format!("part(viewshed({z}, {r}, 0.015, 0.005, 10), 2)")), "[1, 1, 1, 0, 0]");
+        assert_eq!(
+            said(&format!(
+                "part(los2({z}, {r}, 0.015, 0.005, 0.015, 0.045, 10, 10), 1)"
+            )),
+            "false"
+        );
+        assert_eq!(
+            said(&format!(
+                "part(los2({z}, {r}, 0.015, 0.005, 0.015, 0.015, 10, 10), 1)"
+            )),
+            "true"
+        );
+        assert_eq!(
+            said(&format!("part(viewshed({z}, {r}, 0.015, 0.005, 10), 2)")),
+            "[1, 1, 1, 0, 0]"
+        );
     }
 }

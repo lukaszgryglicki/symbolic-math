@@ -31,7 +31,12 @@ pub(crate) fn is_delayed(e: &Expr) -> bool {
 /// `"InputDelay", T` among the arguments, or `InputDelay = T`: the place and the delay.
 fn delay_option(a: &[Expr]) -> Option<(usize, usize, Expr)> {
     let named = |e: &Expr| {
-        word(e).is_some_and(|w| matches!(w.as_str(), "inputdelay" | "outputdelay" | "iodelay" | "delay"))
+        word(e).is_some_and(|w| {
+            matches!(
+                w.as_str(),
+                "inputdelay" | "outputdelay" | "iodelay" | "delay"
+            )
+        })
     };
     for (k, e) in a.iter().enumerate() {
         if let Expr::Rel(Rel::Eq, left, right) = e
@@ -107,7 +112,10 @@ impl Session {
     /// The rate c and the rest k of an exponent c*s + k.
     fn rate_of(&mut self, exponent: &Expr, who: &str) -> Result<(Expr, Expr), String> {
         let rate = self.call("simplify", &[crate::diff::diff(exponent, "s")])?;
-        let rest = self.call("simplify", &[sub(exponent.clone(), mul(vec![rate.clone(), s()]))])?;
+        let rest = self.call(
+            "simplify",
+            &[sub(exponent.clone(), mul(vec![rate.clone(), s()]))],
+        )?;
         if rate.has_sym("s") || rest.has_sym("s") {
             return Err(format!(
                 "{who}: e^({exponent}) is no delay (a delay is e^(-T*s) with a number T)"
@@ -149,7 +157,9 @@ impl Session {
                 }
             }
         }
-        let bottom = ratios.iter().fold(rug::Integer::from(1), |m, r| m.lcm(r.denom()));
+        let bottom = ratios
+            .iter()
+            .fold(rug::Integer::from(1), |m, r| m.lcm(r.denom()));
         let top = ratios.iter().fold(rug::Integer::new(), |g, r| {
             g.gcd(&rug::Integer::from(r.numer() * &bottom).div_exact(r.denom()))
         });
@@ -169,7 +179,10 @@ impl Session {
                 false => Expr::integer(power.numer().clone()),
             };
             let lift = pow(Expr::e(), rest.clone());
-            swap.push((pow(Expr::e(), exponent.clone()), mul(vec![lift, pow(unit.clone(), whole)])));
+            swap.push((
+                pow(Expr::e(), exponent.clone()),
+                mul(vec![lift, pow(unit.clone(), whole)]),
+            ));
         }
         let mut replaced = e.clone();
         for (from, to) in &swap {
@@ -180,7 +193,9 @@ impl Session {
         }
         let both = self.call("numden", &[tidy(replaced)])?;
         let [num, den] = &list_of(&both)[..] else {
-            return Err(format!("{who}: {e} is no ratio of polynomials in s and its delays"));
+            return Err(format!(
+                "{who}: {e} is no ratio of polynomials in s and its delays"
+            ));
         };
         let mut powers = |p: &Expr| -> Result<Vec<Expr>, String> {
             let mut c = self.poly_of(p, &unit, who)?;
@@ -204,7 +219,9 @@ impl Session {
     /// R(s) and T when the system is R(s)*e^(-T*s) with a ratio of polynomials R.
     fn dead_time(&mut self, e: &Expr, who: &str) -> Result<Option<(Sys, Expr)>, String> {
         let shape = self.shape(e, who)?;
-        let filled: Vec<usize> = (0..shape.num.len()).filter(|k| !shape.num[*k].is_zero()).collect();
+        let filled: Vec<usize> = (0..shape.num.len())
+            .filter(|k| !shape.num[*k].is_zero())
+            .collect();
         if shape.den.len() != 1 || filled.len() != 1 {
             return Ok(None);
         }
@@ -227,7 +244,9 @@ impl Session {
         let shape = self.shape(e, who)?;
         let lead = shape.den[0].clone();
         if lead.is_zero() {
-            return Err(format!("{who}: this system would answer before it is asked"));
+            return Err(format!(
+                "{who}: this system would answer before it is asked"
+            ));
         }
         let t = Expr::sym("t");
         let prec = crate::mfun::bits();
@@ -339,7 +358,8 @@ impl Session {
         let closed = poly_add(&sys.num, &sys.den);
         let mut count = 0i64;
         for root in self.roots_of(&trimmed(closed))? {
-            let z = numeric::evalf(&root, prec).map_err(|_| format!("{who}: {root} is no number"))?;
+            let z =
+                numeric::evalf(&root, prec).map_err(|_| format!("{who}: {root} is no number"))?;
             if !z.real().is_sign_negative() && !z.real().is_zero() {
                 count += 1;
             }
@@ -370,7 +390,8 @@ impl Session {
                     .map_err(|_| format!("{who}: no gain at the frequency {x}"))?;
                 Ok(Float::with_val(prec, z.abs_ref()))
             };
-            let falls = gain(&Float::with_val(prec, &w + &near))? < gain(&Float::with_val(prec, &w - &near))?;
+            let falls = gain(&Float::with_val(prec, &w + &near))?
+                < gain(&Float::with_val(prec, &w - &near))?;
             count += if falls { 2 * passes } else { -2 * passes };
         }
         Ok(count)
@@ -381,13 +402,19 @@ impl Session {
         let prec = crate::mfun::bits();
         let record = self.call("allmargin", &[sys.object()])?;
         let mut field = |name: &str| -> Result<Vec<Expr>, String> {
-            Ok(list_of(&self.call("getfield", &[record.clone(), crate::texts::text(name)])?))
+            Ok(list_of(&self.call(
+                "getfield",
+                &[record.clone(), crate::texts::text(name)],
+            )?))
         };
         let (margins, places) = (field("PhaseMargin")?, field("PMFrequency")?);
         let pi = Float::with_val(prec, rug::float::Constant::Pi);
         let mut out = Vec::new();
         for (margin, w) in margins.iter().zip(places) {
-            let (margin, w) = (crate::mfun::real(margin, prec, who)?, crate::mfun::real(&w, prec, who)?);
+            let (margin, w) = (
+                crate::mfun::real(margin, prec, who)?,
+                crate::mfun::real(&w, prec, who)?,
+            );
             out.push((w, (margin - 180u32) * &pi / 180u32));
         }
         Ok(out)
@@ -403,7 +430,9 @@ impl Session {
         // the phase margins: at the frequencies where the gain of R is 1
         let mut phase_margins: Vec<(Float, Float)> = Vec::new();
         for (w, phase) in self.unit_crossings(&sys, who)? {
-            let mut margin = (Float::with_val(prec, &phase - Float::with_val(prec, &w * &dead)) + &pi) * 180u32 / &pi;
+            let mut margin =
+                (Float::with_val(prec, &phase - Float::with_val(prec, &w * &dead)) + &pi) * 180u32
+                    / &pi;
             while margin > 180 {
                 margin -= 360u32;
             }
@@ -415,14 +444,19 @@ impl Session {
         // the gain margins: where the response is real and negative, up to ten turns of
         // the delay beyond the corners of R
         let mut corner = Float::with_val(prec, 1);
-        for root in self.roots_of(&sys.num)?.into_iter().chain(self.roots_of(&sys.den)?) {
+        for root in self
+            .roots_of(&sys.num)?
+            .into_iter()
+            .chain(self.roots_of(&sys.den)?)
+        {
             if let Ok(z) = numeric::evalf(&root, prec) {
                 corner = corner.max(&Float::with_val(prec, z.abs_ref()));
             }
         }
         let top = match dead.is_zero() {
             true => Float::with_val(prec, &corner * 100u32),
-            false => Float::with_val(prec, &corner * 10u32).max(&(Float::with_val(prec, &pi * 20u32) / &dead)),
+            false => Float::with_val(prec, &corner * 10u32)
+                .max(&(Float::with_val(prec, &pi * 20u32) / &dead)),
         };
         let response = |w: &Float| -> Result<Complex, String> {
             let x = Complex::with_val(prec, (0, w));
@@ -433,7 +467,10 @@ impl Session {
         let ratio = Float::with_val(prec, &top / &low);
         let place = |k: u32| -> Float {
             use rug::ops::Pow;
-            Float::with_val(prec, &low * ratio.clone().pow(Float::with_val(prec, k) / cells))
+            Float::with_val(
+                prec,
+                &low * ratio.clone().pow(Float::with_val(prec, k) / cells),
+            )
         };
         let mut gain_margins: Vec<(Float, Float)> = Vec::new();
         let mut before = (place(0), response(&place(0))?);
@@ -460,7 +497,9 @@ impl Session {
                 let value = response(&from)?;
                 // (a jump of the phase over a pole on the axis is no crossing)
                 let small = Float::with_val(prec, value.abs_ref()) >> 20;
-                if value.real().is_sign_negative() && Float::with_val(prec, value.imag().abs_ref()) <= small {
+                if value.real().is_sign_negative()
+                    && Float::with_val(prec, value.imag().abs_ref()) <= small
+                {
                     gain_margins.push((Float::with_val(prec, value.abs_ref()).recip(), from));
                 }
             }
@@ -479,18 +518,35 @@ impl Session {
                 })
                 .collect();
             return Ok(crate::records::record(vec![
-                ("GainMargin", Expr::list(gain_margins.iter().map(|m| shown(&m.0)).collect())),
-                ("GMFrequency", Expr::list(gain_margins.iter().map(|m| shown(&m.1)).collect())),
-                ("PhaseMargin", Expr::list(phase_margins.iter().map(|m| shown(&m.0)).collect())),
-                ("PMFrequency", Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect())),
+                (
+                    "GainMargin",
+                    Expr::list(gain_margins.iter().map(|m| shown(&m.0)).collect()),
+                ),
+                (
+                    "GMFrequency",
+                    Expr::list(gain_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
+                (
+                    "PhaseMargin",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.0)).collect()),
+                ),
+                (
+                    "PMFrequency",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
                 ("DelayMargin", Expr::list(delays)),
-                ("DMFrequency", Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect())),
+                (
+                    "DMFrequency",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
                 ("Stable", Expr::Bool(stable)),
             ]));
         }
         let nearest_gain = gain_margins.iter().min_by(|x, y| {
             let far = |m: &Float| Float::with_val(prec, m.ln_ref()).abs();
-            far(&x.0).partial_cmp(&far(&y.0)).unwrap_or(std::cmp::Ordering::Equal)
+            far(&x.0)
+                .partial_cmp(&far(&y.0))
+                .unwrap_or(std::cmp::Ordering::Equal)
         });
         let nearest_phase = phase_margins.iter().min_by(|x, y| {
             Float::with_val(prec, x.0.abs_ref())
@@ -510,7 +566,14 @@ impl Session {
 
     /// The sampled form of R(s)*e^(-T*s) with the input held between the samples, exact
     /// also for a delay that is no whole number of samples.
-    fn delay_sampled(&mut self, sys: &Sys, delay: &Expr, step: &Expr, method: Option<&Expr>, who: &str) -> Res {
+    fn delay_sampled(
+        &mut self,
+        sys: &Sys,
+        delay: &Expr,
+        step: &Expr,
+        method: Option<&Expr>,
+        who: &str,
+    ) -> Res {
         let samples = self.call("simplify", &[div(delay.clone(), step.clone())])?;
         let padded = |sys: Sys, zeros: usize| -> Expr {
             let mut den = sys.den.clone();
@@ -530,9 +593,14 @@ impl Session {
             ));
         }
         let prec = crate::mfun::bits();
-        let (h, dead) = (crate::mfun::real(step, prec, who)?, crate::mfun::real(delay, prec, who)?);
+        let (h, dead) = (
+            crate::mfun::real(step, prec, who)?,
+            crate::mfun::real(delay, prec, who)?,
+        );
         if h <= 0 || dead < 0 {
-            return Err(format!("{who}: the time between samples is above zero and the delay is not negative"));
+            return Err(format!(
+                "{who}: the time between samples is above zero and the delay is not negative"
+            ));
         }
         let whole = Float::with_val(prec, &dead / &h).ceil();
         let count = whole.to_f64() as usize;
@@ -541,13 +609,22 @@ impl Session {
         let m = tf_to_ss(&sys.num, &sys.den).map_err(|e| format!("{who}: {e}"))?;
         let size = m[0].first().map_or(0, Vec::len);
         if size == 0 {
-            return Ok(padded(Sys { ts: Some(step.clone()), ..sys.clone() }, count));
+            return Ok(padded(
+                Sys {
+                    ts: Some(step.clone()),
+                    ..sys.clone()
+                },
+                count,
+            ));
         }
         // exp([[A, B], [0, 0]]*t) = [[e^(A t), the integral of e^(A x) B over 0..t], [0, 1]]
         let grown = |t: &Float| -> Result<(Rows, Rows), String> {
             let mut joined: Rows = Vec::new();
             for (state, input) in m[0].iter().zip(&m[1]) {
-                let mut row: Vec<Expr> = state.iter().map(|x| mul(vec![x.clone(), crate::mfun::value(t)])).collect();
+                let mut row: Vec<Expr> = state
+                    .iter()
+                    .map(|x| mul(vec![x.clone(), crate::mfun::value(t)]))
+                    .collect();
                 row.push(mul(vec![input[0].clone(), crate::mfun::value(t)]));
                 joined.push(row);
             }
@@ -573,7 +650,9 @@ impl Session {
         lifted.push(Expr::zero());
         let top = poly_add(&poly_add(&lifted, &num1), &poly_scaled(&den, &m[3][0][0]));
         let clean = |p: Vec<Expr>| -> Vec<Expr> {
-            p.into_iter().map(|x| numeric::n(&tidy(x), numeric::digits())).collect()
+            p.into_iter()
+                .map(|x| numeric::n(&tidy(x), numeric::digits()))
+                .collect()
         };
         let mut bottom = clean(den);
         bottom.extend(vec![Expr::zero(); count]);
@@ -592,13 +671,19 @@ impl Session {
     fn delays_of(&mut self, name: &str, a: &[Expr]) -> Option<Res> {
         let n = a.len();
         let first = a.first().is_some_and(is_delayed);
-        let pair = matches!(name, "series" | "parallel" | "feedback") && n >= 2 && a[..2].iter().any(is_delayed);
+        let pair = matches!(name, "series" | "parallel" | "feedback")
+            && n >= 2
+            && a[..2].iter().any(is_delayed);
         let option = matches!(name, "tf" | "zpk" | "ss") && delay_option(a).is_some();
         let own = match name {
             "hasdelay" | "totaldelay" | "absorbdelay" => n == 1,
             "thiran" => n == 2,
             "exp" => n == 1 && is_system(&a[0]),
-            "pade" => n == 2 && first,
+            // (a system without a delay stays as it is; a number or a name alone is the delay T itself)
+            "pade" => {
+                n == 2
+                    && (first || is_system(&a[0]) || a[0].free_syms().iter().any(|v| &**v == "s"))
+            }
             _ => false,
         };
         if !(first || pair || option || own) {
@@ -624,8 +709,8 @@ impl Session {
                     }
                     match &sys.ts {
                         Some(_) => {
-                            let whole = delay.as_i64().ok_or_else(|| {
-                                format!("{name}: the delay of a sampled system is a whole number of samples")
+                            let whole = delay.as_i64().filter(|k| *k <= 100_000).ok_or_else(|| {
+                                format!("{name}: the delay of a sampled system is a whole number of samples (100000 at most)")
                             })?;
                             let mut den = sys.den.clone();
                             den.extend(vec![Expr::zero(); whole as usize]);
@@ -699,6 +784,9 @@ impl Session {
                 }
                 ("pade", 2) => {
                     let order = crate::arrays::whole(&a[1], "the order", 0, 60)?;
+                    if is_system(&a[0]) {
+                        return Ok(a[0].clone());
+                    }
                     let mut exponents: Vec<Expr> = Vec::new();
                     a[0].walk(&mut |x| {
                         if is_exp_of_s(x)
@@ -899,10 +987,7 @@ mod tests {
         assert_eq!(said("pole(e^(-2s)/(s + 1))"), "[-1]");
         assert_eq!(said("dcgain(3*e^(-2s)/(s + 1))"), "3");
         // two ways with different delays, added
-        assert_eq!(
-            said("step(e^(-s)/s + e^(-3s)/s, [0, 2, 4])"),
-            "[0, 1, 4]"
-        );
+        assert_eq!(said("step(e^(-s)/s + e^(-3s)/s, [0, 2, 4])"), "[0, 1, 4]");
     }
 
     #[test]
@@ -925,10 +1010,7 @@ mod tests {
     fn a_delay_in_frequency_and_sampled() {
         assert_eq!(said("pade(e^(-2s), 1)"), "tf([-1, 1], [1, 1])");
         // a whole number of samples: poles at 0
-        assert_eq!(
-            said("c2d(e^(-2s)/s, 1)"),
-            "tf([1], [1, -1, 0, 0], 1)"
-        );
+        assert_eq!(said("c2d(e^(-2s)/s, 1)"), "tf([1], [1, -1, 0, 0], 1)");
         assert_eq!(said("thiran(2, 1)"), "tf([1], [1, 0, 0], 1)");
         assert_eq!(said("thiran(1/2, 1)"), "tf([1/3, 1], [1, 1/3], 1)");
         assert_eq!(

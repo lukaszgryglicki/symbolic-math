@@ -1,0 +1,18 @@
+-e	matwrite("v.mat", "x", [[1, 2], [3, 4]], "name", "text", "z", 1 + 2*i); matread("v.mat")	saved v.mat: a MAT-file of level 5 with 3 variable(s), 384 bytes|struct("x", [[1, 2], [3, 4]], "name", "text", "z", 1 + 2i)
+-e	matwrite("v.mat", "x", [1, 2, 3]); matread("v.mat", "x")	saved v.mat: a MAT-file of level 5 with 1 variable(s), 216 bytes|[1, 2, 3]
+-e	matwrite("w.mat", struct("a", 1, "b", {1, "two", [3, 4]})); matinfo("w.mat")	saved w.mat: a MAT-file of level 5 with 2 variable(s), 456 bytes|[["a", [1, 1], "double"], ["b", [1, 3], "cell"]]
+-e	savemat("p.mat", "m", [[1, 2], [3, 4]], "flags", [true, false], "compress"); loadmat("p.mat")	saved p.mat: a MAT-file of level 5 with 2 variable(s), packed, 252 bytes|struct("m", [[1, 2], [3, 4]], "flags", [true, false])
+-e	matwrite("s.mat", "s", struct("k", [1, 2], "t", "x")); getfield(load("s.mat"), "s")	saved s.mat: a MAT-file of level 5 with 1 variable(s), 344 bytes|struct("k", [1, 2], "t", "x")
+-e	matwrite("a.mat", "n", 5, "row", [1, 2.5, -3], "m", [[1, 2], [3, 4]], "z", 1 + 2*i, "t", "text", "b", [true, false], "c", {1, "two", [3, 4]}, "s", struct("a", 1, "b", "x")); matread("a.mat")	saved a.mat: a MAT-file of level 5 with 8 variable(s), 1080 bytes|struct("n", 5, "row", [1, 2.5, -3], "m", [[1, 2], [3, 4]], "z", 1 + 2i, "t", "text", "b", [true, false], "c", {1, "two", [3, 4]}, "s", struct("a", 1, "b", "x"))
+-e	matwrite("a.mat", "n", 5, "row", [1, 2.5, -3], "c", {1, "two"}); matinfo("a.mat")	saved a.mat: a MAT-file of level 5 with 3 variable(s), 472 bytes|[["n", [1, 1], "double"], ["row", [1, 3], "double"], ["c", [1, 2], "cell"]]
+-e	matwrite("b.mat", "x", 1/3, "compress"); matread("b.mat", "x")	saved b.mat: a MAT-file of level 5 with 1 variable(s), packed, 185 bytes|0.3333333333333333
+-e	matwrite("c.mat", "f", x^2 + 1); matread("c.mat", "f")	saved c.mat: a MAT-file of level 5 with 1 variable(s), 208 bytes|"x^2 + 1"
+-e	matwrite("d.mat", "e", [], "u", "zażółć π", "col", [[1], [2], [3]]); matread("d.mat")	saved d.mat: a MAT-file of level 5 with 3 variable(s), 360 bytes|struct("e", [], "u", "zażółć π", "col", [[1], [2], [3]])
+-e	matwrite("e.mat", "list", [struct("a", 1), struct("a", 2)]); matread("e.mat", "list")	saved e.mat: a MAT-file of level 5 with 1 variable(s), 336 bytes|[struct("a", 1), struct("a", 2)]
+-e	matwrite("f.mat", "x", inf, "y", [1 + i, 2]); matread("f.mat")	saved f.mat: a MAT-file of level 5 with 2 variable(s), 304 bytes|struct("x", inf, "y", [1 + i, 2])
+-e	matwrite("g.mat", "x", 1); matread("g.mat", "y")	error: matread: g.mat has no variable y; it has x
+-e	matwrite("bad.mat", "1x", 2)	error: matwrite: the name of a variable of MATLAB begins with a letter and holds letters, digits and _ (63 at most), 1x does not
+-e	matwrite("bad.mat")	error: matwrite takes at least 2 argument(s), 1 given
+-e	matwrite("bad.mat", 1, 2)	error: matwrite("file.mat", record) or matwrite("file.mat", "name", value, ...): the values as the variables of a MAT-file; "compress" as the last word packs them
+-e	matread("nothing.mat")	error: matread: nothing.mat: No such file or directory (os error 2)
+-e	matinfo("nothing.mat")	error: matinfo: nothing.mat: No such file or directory (os error 2)

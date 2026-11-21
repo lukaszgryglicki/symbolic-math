@@ -1249,6 +1249,13 @@ impl Session {
         };
         let lower = bound(bounds_at)?;
         let upper = bound(bounds_at.map(|k| k + 1))?;
+        if lower
+            .iter()
+            .zip(&upper)
+            .any(|(lo, hi)| matches!((lo, hi), (Some(lo), Some(hi)) if lo > hi))
+        {
+            return Err(format!("{name}: a lower bound lies above its upper bound"));
+        }
         let (params, body) = self.function_of(&a[0], n, name)?;
         Ok((
             Target {
@@ -1743,6 +1750,9 @@ impl Session {
             return Err(format!(
                 "{usage}; the mesh has three points or more, the times two or more, both rising"
             ));
+        }
+        if mesh.len() > 2000 {
+            return Err("pdepe: 2000 points of the mesh at most".into());
         }
         if shape > 0 && mesh[0].is_sign_negative() {
             return Err("pdepe: with m = 1 or 2 the mesh begins at 0 or above".into());

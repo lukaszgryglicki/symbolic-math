@@ -1,0 +1,37 @@
+-e	rng(0); randn(1, 5)	0|[0.5376671295494892532929043227341, 1.8338850278757192757694838292082, -2.2588468289089180807138745876728, 0.86217332152738990203033608850092, 0.31876522793409056699687198488391]
+-e	rng("default"); randn(2, 2)	0|[[0.5376671295494892532929043227341, -2.2588468289089180807138745876728], [1.8338850278757192757694838292082, 0.86217332152738990203033608850092]]
+-e	rng(0); randperm(6)	0|[6, 3, 5, 1, 2, 4]
+-e	rng(0); randperm(8, 4)	0|[6, 3, 7, 8]
+-e	rng(0); randi(10, 1, 5)	0|[9, 10, 2, 10, 7]
+-e	rng(0); normrnd(10, 2)	0|11.075334259098978506585808645468
+-e	rng(0); exprnd(2)	0|0.4098125166541226944933533238392
+-e	rng(0); mvnrnd([1, 2], [[2, 1], [1, 3]], 3)	0|[[1.7603761466510995961184090380498, 3.7434037902551669646822893339719], [3.5935050782548036742699997865786, 3.8007646186946298514224792821971], [-2.1944918207664501803598846948591, -1.6648826332154606942542564868581]]
+-e	newunit("smoot", 1.7018 m); convert(364.4 smoot, m)	smoot|620.13592 m
+-e	newunit("warp", 3 c); convert(1 warp, km/s)	warp|899377.374 km/s
+-e	defineunit("pace", 30 in); newunit("stadion", 240 pace); convert(1 mile, stadion)	pace|stadion|8.8 stadion
+-e	newunit("smoot", 1.7018 m); removeunit("smoot")	smoot|true
+-e	newunit("earsmoot", smoot/67); convert(134 earsmoot, m)	error: newunit: smoot is no unit; a new unit is made of units that are there
+-e	newunit("smoot", 2 m)	smoot
+-e	newunit("warp", 3 c); dimension(2 warp)	warp|length/time
+-e	removeunit("smoot"); convert(1 smoot, m)	error: removeunit: smoot is no unit
+-e	removeunit("warp")	error: removeunit: warp is no unit
+-e	newunit("km", 2 m)	error: newunit: km is a unit already
+-e	newunit("cos", 2 m)	error: newunit: cos is the name of a function or of a constant
+-e	newunit("zz", 2 qq)	error: newunit: qq is no unit; a new unit is made of units that are there
+-e	removeunit("km")	error: removeunit: km is a unit of the program itself; only the units that newunit made go away
+-e	rng(22); randn(1, 5)	22|[-1.119253428837396313610952347517, -0.072876620199255004450833439477719, -0.28473462560511142438457454773015, 1.5110600303376904296470684130327, -1.5111595525657928185125911113573]
+-e	rng(1); randn()	1|-0.64901371115167993952610459018615
+-e	rng(0); randn(3)	0|[[0.5376671295494892532929043227341, 0.86217332152738990203033608850092, -0.43359202037911670490899496144266], [1.8338850278757192757694838292082, 0.31876522793409056699687198488391, 0.34262447734599854598513957171235], [-2.2588468289089180807138745876728, -1.3076882835912275737655363627709, 3.5783969964346096226393001416]]
+-e	rng(0); randperm(1)	0|[1]
+-e	rng(0); randperm(0)	0|[]
+-e	rng(7); randperm(10)	7|[8, 1, 9, 3, 10, 7, 6, 4, 2, 5]
+-e	rng(0); lognrnd(0, 1)	0|1.7120083063530058769715180886218
+-e	rng(0); unidrnd(10)	0|9
+-e	rng(0); unifrnd(2, 4)	0|3.6294473727863578726982041189331
+-e	rng(0); shuffle([1, 2, 3, 4, 5])	0|[3, 5, 1, 2, 4]
+-e	rng(0); randsample(10, 3)	0|[6, 3, 7]
+-e	newunit("1x", 2 m)	error: newunit: the name of a unit begins with a letter and holds letters, digits and _, 1x does not
+-e	newunit("flat", 0 m)	error: newunit: a unit of the size zero measures nothing
+-e	removeunit("nothing")	error: removeunit: nothing is no unit
+-e	newunit("smoot", 1.7018 m); siunits(2 smoot^2)	smoot|5.79224648 m^2
+-e	newunit("smoot", 1.7018 m); dimension(smoot/s)	smoot|length/time

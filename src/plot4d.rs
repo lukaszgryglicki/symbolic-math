@@ -856,7 +856,12 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
 /// point there (its lowest with fill = below, how far it reaches with fill = between), or
 /// for a solid that is cut how deep the place lies in it.
 fn solid_shape(plan: &Plan, solid: &crate::solids4d::Solid) -> Result<Shape, String> {
-    if plan.rotate.is_some() || plan.normalize || plan.thickness > 1 || plan.range_real.is_some() || plan.range_imag.is_some() {
+    if plan.rotate.is_some()
+        || plan.normalize
+        || plan.thickness > 1
+        || plan.range_real.is_some()
+        || plan.range_imag.is_some()
+    {
         return Err("rotate, normalize, thickness, range_real and range_imag belong to the shape of a function: a solid is turned by rotate4d(solid, \"xw\", degrees), made larger by scale4d and cut by section4d".to_string());
     }
     let sizes = plan.sizes;
@@ -868,13 +873,15 @@ fn solid_shape(plan: &Plan, solid: &crate::solids4d::Solid) -> Result<Shape, Str
     if (width * height).saturating_mul(frames) > 1 << 28 {
         return Err("the body of a solid has 268 million voxels at most: take a smaller width, height or frames".to_string());
     }
-    let place = |k: usize, count: usize| ends.0 + (ends.1 - ends.0) * (k as f64 + 0.5) / count as f64;
+    let place =
+        |k: usize, count: usize| ends.0 + (ends.1 - ends.0) * (k as f64 + 0.5) / count as f64;
     let reach = solid.reach();
     let form = &solid.form;
     let (cut, fill) = (solid.cut, plan.fill);
     // what the colour of a voxel shows, as a number
     let shown = move |p: &mut [f64; 4]| -> Option<f64> {
-        let rest = reach * reach - (p[across] * p[across] + p[upwards] * p[upwards] + p[along] * p[along]);
+        let rest =
+            reach * reach - (p[across] * p[across] + p[upwards] * p[upwards] + p[along] * p[along]);
         if rest < 0.0 {
             return None;
         }
@@ -899,7 +906,9 @@ fn solid_shape(plan: &Plan, solid: &crate::solids4d::Solid) -> Result<Shape, Str
             }
         }
     };
-    let threads = std::thread::available_parallelism().map_or(4, |n| n.get()).min(frames.max(1));
+    let threads = std::thread::available_parallelism()
+        .map_or(4, |n| n.get())
+        .min(frames.max(1));
     let found: Vec<Vec<(u32, f32)>> = std::thread::scope(|scope| {
         let shown = &shown;
         let handles: Vec<_> = (0..threads)
@@ -1348,9 +1357,17 @@ impl Session {
                 [] => solid.reach() * 1.05,
                 [r] => match crate::plot::number(r) {
                     Some(r) if r > 0.0 => r,
-                    _ => return Err(format!("{name}(solid4d(\"name\", ...)[, half the size of the box])")),
+                    _ => {
+                        return Err(format!(
+                            "{name}(solid4d(\"name\", ...)[, half the size of the box])"
+                        ));
+                    }
                 },
-                _ => return Err(format!("{name}(solid4d(\"name\", ...)[, half the size of the box])")),
+                _ => {
+                    return Err(format!(
+                        "{name}(solid4d(\"name\", ...)[, half the size of the box])"
+                    ));
+                }
             };
             return Ok((f, Rc::from("_"), (-half, half), (-half, half)));
         }

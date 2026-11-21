@@ -4,7 +4,9 @@
 
 use crate::arrays::{tidy, word};
 use crate::canon::{add, div, mul};
-use crate::control::{Sys, is_system, list_of, poly_add, poly_scaled, resolvent, state_space, tf_to_ss, trimmed};
+use crate::control::{
+    Sys, is_system, list_of, poly_add, poly_scaled, resolvent, state_space, tf_to_ss, trimmed,
+};
 use crate::decomp::{self, CMat};
 use crate::eval::Session;
 use crate::expr::Expr;
@@ -207,7 +209,9 @@ impl Mat {
             .iter()
             .map(|r| {
                 r.iter()
-                    .map(|x| numeric::evalf(x, prec).map_err(|_| format!("{who}: {x} is no number")))
+                    .map(|x| {
+                        numeric::evalf(x, prec).map_err(|_| format!("{who}: {x} is no number"))
+                    })
                     .collect()
             })
             .collect()
@@ -343,7 +347,12 @@ impl Ss {
             .iter()
             .filter_map(size)
             .fold(Float::with_val(prec, 0), |m, x| m.max(&x));
-        let least = top * Float::with_val(prec, Float::i_pow_u(10, numeric::digits().saturating_sub(6))).recip();
+        let least = top
+            * Float::with_val(
+                prec,
+                Float::i_pow_u(10, numeric::digits().saturating_sub(6)),
+            )
+            .recip();
         let zero = move |e: &Expr| -> bool {
             match loose {
                 true => size(e).is_none_or(|s| s <= least),
@@ -364,7 +373,11 @@ impl Ss {
         }
         let t = Mat::of(&basis, n).t();
         let back = t.inv("the change of the states")?;
-        let (keep, all_in, all_out) = (span(0, rank), span(0, self.inputs()), span(0, self.outputs()));
+        let (keep, all_in, all_out) = (
+            span(0, rank),
+            span(0, self.inputs()),
+            span(0, self.outputs()),
+        );
         Ok(Ss {
             a: back.mul(&self.a).mul(&t).pick(&keep, &keep),
             b: back.mul(&self.b).pick(&keep, &all_in),
@@ -411,8 +424,18 @@ impl Ss {
         let (n1, n2) = (self.n(), o.n());
         Ss {
             a: Mat::blocks(&self.a, &Mat::zeros(n1, n2), &Mat::zeros(n2, n1), &o.a),
-            b: Mat::blocks(&self.b, &Mat::zeros(n1, o.inputs()), &Mat::zeros(n2, self.inputs()), &o.b),
-            c: Mat::blocks(&self.c, &Mat::zeros(self.outputs(), n2), &Mat::zeros(o.outputs(), n1), &o.c),
+            b: Mat::blocks(
+                &self.b,
+                &Mat::zeros(n1, o.inputs()),
+                &Mat::zeros(n2, self.inputs()),
+                &o.b,
+            ),
+            c: Mat::blocks(
+                &self.c,
+                &Mat::zeros(self.outputs(), n2),
+                &Mat::zeros(o.outputs(), n1),
+                &o.c,
+            ),
             d: Mat::blocks(
                 &self.d,
                 &Mat::zeros(self.outputs(), o.inputs()),
@@ -425,7 +448,12 @@ impl Ss {
 
     fn sum(&self, o: &Ss) -> Ss {
         Ss {
-            a: Mat::blocks(&self.a, &Mat::zeros(self.n(), o.n()), &Mat::zeros(o.n(), self.n()), &o.a),
+            a: Mat::blocks(
+                &self.a,
+                &Mat::zeros(self.n(), o.n()),
+                &Mat::zeros(o.n(), self.n()),
+                &o.a,
+            ),
             b: self.b.above(&o.b),
             c: self.c.beside(&o.c),
             d: self.d.plus(&o.d),
@@ -436,7 +464,12 @@ impl Ss {
     /// `self` after `o`: y = self(o(u)).
     fn after(&self, o: &Ss) -> Ss {
         Ss {
-            a: Mat::blocks(&self.a, &self.b.mul(&o.c), &Mat::zeros(o.n(), self.n()), &o.a),
+            a: Mat::blocks(
+                &self.a,
+                &self.b.mul(&o.c),
+                &Mat::zeros(o.n(), self.n()),
+                &o.a,
+            ),
             b: self.b.mul(&o.d).above(&o.b),
             c: self.c.beside(&self.d.mul(&o.c)),
             d: self.d.mul(&o.d),
@@ -528,6 +561,7 @@ impl Session {
     }
 
     /// The states of a matrix of systems: those of every entry, side by side.
+    #[allow(clippy::needless_range_loop)]
     fn of_grid(&mut self, rows: &Rows, who: &str) -> Result<Ss, String> {
         let (p, m) = (rows.len(), rows[0].len());
         let mut parts = Vec::new();
@@ -553,7 +587,12 @@ impl Session {
                 parts.push((i, j, own, size));
             }
         }
-        let (mut a, mut b, mut c, mut d) = (Mat::zeros(total, total), Mat::zeros(total, m), Mat::zeros(p, total), Mat::zeros(p, m));
+        let (mut a, mut b, mut c, mut d) = (
+            Mat::zeros(total, total),
+            Mat::zeros(total, m),
+            Mat::zeros(p, total),
+            Mat::zeros(p, m),
+        );
         let mut at = 0;
         for (i, j, own, size) in parts {
             d.v[i * m + j] = own[3][0][0].clone();
@@ -584,10 +623,34 @@ impl Session {
             0 => (vec![Expr::one()], Vec::new()),
             _ => resolvent(&s.a.rows())?,
         };
+        // with decimal numbers nothing cancels in a ratio: every entry from the states of its own
+        let loose = n > 0 && [&s.a, &s.b, &s.c, &s.d].iter().any(|x| x.has_float());
         for i in 0..p {
             let mut row = Vec::with_capacity(m);
             let ci: Rows = vec![(0..n).map(|k| s.c.at(i, k).clone()).collect()];
             for j in 0..m {
+                if loose {
+                    let own = s.picked(&[i], &[j]).minimal()?;
+                    let k = own.n();
+                    let (den, parts) = match k {
+                        0 => (vec![Expr::one()], Vec::new()),
+                        _ => resolvent(&own.a.rows())?,
+                    };
+                    let mut num = vec![Expr::zero()];
+                    for part in &parts {
+                        let through =
+                            matrix::matmul(&matrix::matmul(&own.c.rows(), part)?, &own.b.rows())?;
+                        num.push(tidy(through[0][0].clone()));
+                    }
+                    let num = poly_add(&num, &poly_scaled(&den, own.d.at(0, 0)));
+                    let whole = Sys {
+                        num: trimmed(crate::control::dusted(num)),
+                        den: crate::control::dusted(den),
+                        ts: s.ts.clone(),
+                    };
+                    row.push(self.sys_of_expr(&whole.expr(), s.ts.clone(), who)?);
+                    continue;
+                }
                 let bj: Rows = (0..n).map(|k| vec![s.b.at(k, j).clone()]).collect();
                 let mut num = vec![Expr::zero()];
                 for part in &parts {
@@ -635,7 +698,8 @@ impl Session {
     fn wide_stable(&mut self, s: &Ss, who: &str) -> Result<bool, String> {
         let prec = crate::mfun::bits();
         for p in self.wide_poles(s)? {
-            let z = numeric::evalf(&p, prec).map_err(|_| format!("{who}: the pole {p} is no number"))?;
+            let z = numeric::evalf(&p, prec)
+                .map_err(|_| format!("{who}: the pole {p} is no number"))?;
             let inside = match &s.ts {
                 None => z.real().is_sign_negative() && !z.real().is_zero(),
                 Some(_) => Float::with_val(prec, z.abs_ref()) < 1,
@@ -783,7 +847,8 @@ impl Session {
         let prec = crate::mfun::bits();
         let mut sizes: Vec<Float> = Vec::new();
         for p in self.wide_poles(s)? {
-            let z = numeric::evalf(&p, prec).map_err(|_| format!("{who}: the pole {p} is no number"))?;
+            let z = numeric::evalf(&p, prec)
+                .map_err(|_| format!("{who}: the pole {p} is no number"))?;
             let size = Float::with_val(prec, z.abs_ref());
             if !size.is_zero() {
                 sizes.push(size);
@@ -831,7 +896,10 @@ impl Session {
         for pair in grid.windows(2) {
             for k in 1..10u32 {
                 let ratio = Float::with_val(prec, &pair[1] / &pair[0]);
-                fine.push(Float::with_val(prec, &pair[0] * ratio.pow(Float::with_val(prec, k) / 10u32)));
+                fine.push(Float::with_val(
+                    prec,
+                    &pair[0] * ratio.pow(Float::with_val(prec, k) / 10u32),
+                ));
             }
         }
         grid.extend(fine);
@@ -865,7 +933,10 @@ impl Session {
             let (_, mut direct, _) = decomp::svd(&numbers[3])?;
             direct.sort_by(|x, y| y.partial_cmp(x).unwrap_or(std::cmp::Ordering::Equal));
             if direct[0] > best.0 {
-                best = (direct.swap_remove(0), Float::with_val(prec, rug::float::Special::Infinity));
+                best = (
+                    direct.swap_remove(0),
+                    Float::with_val(prec, rug::float::Special::Infinity),
+                );
             }
         }
         let ratio = (Float::with_val(prec, 5).sqrt() - 1u32) / 2u32;
@@ -1019,7 +1090,9 @@ impl Session {
     pub(crate) fn wide_power(&mut self, base: &Expr, exponent: &Expr) -> Res {
         let who = "a power of a system";
         let Some(k) = exponent.as_i64().filter(|k| k.abs() <= 64) else {
-            return Err(format!("{who} is a whole one, as G^2 or G^-1: not {exponent}"));
+            return Err(format!(
+                "{who} is a whole one, as G^2 or G^-1: not {exponent}"
+            ));
         };
         self.without_names(|session| {
             let s = session.wide_of(base, who)?;
@@ -1049,16 +1122,21 @@ impl Session {
         let pair = matches!(name, "feedback" | "series" | "parallel" | "lft")
             && n >= 2
             && (a[..2].iter().any(holds_systems)
-                || (a[..2].iter().any(is_system) && a[..2].iter().any(|e| matrix::rows(e).is_some())));
+                || (a[..2].iter().any(is_system)
+                    && a[..2].iter().any(|e| matrix::rows(e).is_some())));
         let grid = a.first().is_some_and(holds_systems) || pair;
         let system = |e: &Expr| is_system(e) || holds_systems(e);
         let own = match name {
             // (a list with something at its end is not meant)
-            "append" => a.iter().any(system) && a.iter().all(|e| system(e) || e.as_list().is_none()),
-            "connect" | "kalman" | "lqg" | "lqgreg" | "estim" | "lqry" | "augstate" | "lft" | "subsystem" | "iosize" => true,
+            "append" => {
+                a.iter().any(system) && a.iter().all(|e| system(e) || e.as_list().is_none())
+            }
+            "connect" | "kalman" | "lqg" | "lqgreg" | "estim" | "lqry" | "augstate" | "lft"
+            | "subsystem" | "iosize" => true,
             _ => false,
         };
-        let sized = matches!(name, "size" | "order" | "ctrb" | "obsv") && n == 1 && is_system(&a[0]);
+        let sized =
+            matches!(name, "size" | "order" | "ctrb" | "obsv") && n == 1 && is_system(&a[0]);
         if !(wide || grid || own || sized) {
             return None;
         }
@@ -1087,6 +1165,12 @@ impl Session {
             if joined.is_some() {
                 return joined;
             }
+        }
+        // (the functions that go on entry by entry would call themselves for ever)
+        if !matches!(name, "feedback" | "series" | "parallel" | "lft" | "append")
+            && a.iter().skip(1).any(|e| is_system(e) || holds_systems(e))
+        {
+            return Some(Err(format!("{name}: only the first argument is a system")));
         }
         let who = name;
         let form = match a.first() {
@@ -1502,7 +1586,25 @@ impl Session {
                     let sampled = match method.as_str() {
                         "zoh" => {
                             let whole = Mat::blocks(&s.a, &s.b, &Mat::zeros(m, n), &Mat::zeros(m, m)).scaled(&step);
-                            let grown = Mat::read(&self.call("matrixexp", &[whole.expr()])?, false);
+                            // in closed form for one or two states of fractions (and for names); else by decimal numbers
+                            let joined = whole.expr();
+                            let entries = matrix::rows(&joined).unwrap_or_default();
+                            let closed = entries.iter().flatten().any(|x| !x.is_const())
+                                || (n <= 2 && entries.iter().flatten().all(|x| x.as_rat().is_some()));
+                            let exact = match closed {
+                                true => self
+                                    .call("matrixexp", std::slice::from_ref(&joined))
+                                    .ok()
+                                    .filter(|g| matrix::rows(g).is_some() && !crate::control::has_i(g)),
+                                false => None,
+                            };
+                            let grown = Mat::read(
+                                &match exact {
+                                    Some(g) => g,
+                                    None => crate::decomp::from_complex(&crate::matfun::exp(&crate::decomp::to_complex(&entries)?)),
+                                },
+                                false,
+                            );
                             Ss {
                                 a: grown.pick(&span(0, n), &span(0, n)),
                                 b: grown.pick(&span(0, n), &span(n, n + m)),
@@ -1757,10 +1859,16 @@ mod tests {
             said("tf(ss([[-1, 0], [0, -2]], [[1, 0], [0, 1]], [[1, 2]], [[0, 0]]))"),
             "[[tf([1], [1, 1]), tf([2], [1, 2])]]"
         );
-        assert_eq!(said("size(ss([[-1, 0], [0, -2]], [[1, 0], [0, 1]], [[1, 2]], [[0, 0]]))"), "[1, 2]");
+        assert_eq!(
+            said("size(ss([[-1, 0], [0, -2]], [[1, 0], [0, 1]], [[1, 2]], [[0, 0]]))"),
+            "[1, 2]"
+        );
         // a pole that two entries share is one state when one input feeds both
         assert_eq!(said("order([[1/(s + 1)], [3/(s + 1)]])"), "1");
-        assert_eq!(said("pole([[1/(s + 1), 1/(s + 2)], [0, 1/(s + 1)]])"), "[-2, -1, -1]");
+        assert_eq!(
+            said("pole([[1/(s + 1), 1/(s + 2)], [0, 1/(s + 1)]])"),
+            "[-2, -1, -1]"
+        );
     }
 
     #[test]

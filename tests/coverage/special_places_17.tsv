@@ -1,3 +1,21 @@
+-e	contour(i)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(-inf)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(undefined)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(10^20)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(10^(-20))	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(x)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour([])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour([1, 2])	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour("text")	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(true)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(-7/3)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	contour(0.5)	error: contour(f(x, y), x, a, b, y, c, d), contour(f, x, a, b, y, c, d, heights) or contour(matrix)
+-e	plot3(0)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(-1)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(1/2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
+-e	plot3(2)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(i)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
 -e	plot3(-inf)	error: plot3([x values], [y values], [z values]) or plot3([[x, y, z], ...])
@@ -443,24 +461,24 @@
 -e	squeeze(true)	true
 -e	squeeze(-7/3)	-7/3
 -e	squeeze(0.5)	0.5
--e	num2cell(0)	0
--e	num2cell(1)	1
--e	num2cell(-1)	-1
--e	num2cell(1/2)	1/2
--e	num2cell(2)	2
--e	num2cell(i)	i
--e	num2cell(inf)	inf
--e	num2cell(-inf)	-inf
+-e	num2cell(0)	{0}
+-e	num2cell(1)	{1}
+-e	num2cell(-1)	{-1}
+-e	num2cell(1/2)	{1/2}
+-e	num2cell(2)	{2}
+-e	num2cell(i)	{i}
+-e	num2cell(inf)	{inf}
+-e	num2cell(-inf)	{-inf}
 -e	num2cell(undefined)	undefined
--e	num2cell(10^20)	100000000000000000000
--e	num2cell(10^(-20))	1/100000000000000000000
--e	num2cell(x)	x
--e	num2cell([])	[]
--e	num2cell([1, 2])	[1, 2]
--e	num2cell("text")	"text"
--e	num2cell(true)	true
--e	num2cell(-7/3)	-7/3
--e	num2cell(0.5)	0.5
+-e	num2cell(10^20)	{100000000000000000000}
+-e	num2cell(10^(-20))	{1/100000000000000000000}
+-e	num2cell(x)	{x}
+-e	num2cell([])	{}
+-e	num2cell([1, 2])	{1, 2}
+-e	num2cell("text")	{"text"}
+-e	num2cell(true)	{true}
+-e	num2cell(-7/3)	{-7/3}
+-e	num2cell(0.5)	{0.5}
 -e	cell2mat(0)	error: cell2mat needs a list of matrices
 -e	cell2mat(1)	error: cell2mat needs a list of matrices
 -e	cell2mat(-1)	error: cell2mat needs a list of matrices
@@ -680,21 +698,3 @@
 -e	stem3(0)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
 -e	stem3(1)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
 -e	stem3(-1)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(1/2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(2)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(i)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(-inf)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(undefined)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(10^20)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(10^(-20))	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(x)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3([])	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3([1, 2])	error: stem3 needs lists of numbers, 1 is none
--e	stem3("text")	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(true)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(-7/3)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	stem3(0.5)	error: stem3([x values], [y values], [z values]) or stem3([[x, y, z], ...])
--e	contour3(0)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)
--e	contour3(-1)	error: contour3(f(x, y), x, a, b, y, c, d), contour3(f, x, a, b, y, c, d, heights) or contour3(matrix)

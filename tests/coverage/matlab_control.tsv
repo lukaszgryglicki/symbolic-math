@@ -46,7 +46,7 @@
 -e	margin(tf([1], [1, 3, 3, 1]))	[8, inf, 1.7320508075688772935274463415059, undefined]
 -e	margin(tf([4], [1, 3, 3, 1]))	[2, 27.141630595376226979139373587665, 1.7320508075688772935274463415059, 1.2328187619393802564187234770704]
 -e	margin(tf([1], [1, 1]))	[inf, inf, undefined, undefined]
--e	allmargin(tf([4], [1, 3, 3, 1]))	struct("GainMargin", [2], "GMFrequency", [1.7320508075688772935274463415059], "PhaseMargin", [27.141630595376226979139373587665], "PMFrequency", [1.2328187619393802564187234770704], "Stable", true)
+-e	allmargin(tf([4], [1, 3, 3, 1]))	struct("GainMargin", [2], "GMFrequency", [1.7320508075688772935274463415059], "PhaseMargin", [27.141630595376226979139373587665], "PMFrequency", [1.2328187619393802564187234770704], "DelayMargin", [0.38425016950921221491191021304782], "DMFrequency", [1.2328187619393802564187234770704], "Stable", true)
 -e	bandwidth(tf([1], [1, 1]))	0.99762834511098350274928187753979
 -e	bandwidth(tf([1], [1, 2, 1]))	0.64229085671738649011762086157347
 -e	bandwidth(tf([1], [1, 0.4, 1]))	1.5089992033539208787422160474058
@@ -114,7 +114,7 @@
 -e	tf((s + 1)/(s^2 + a s + b))	tf([1, 1], [1, a, b])
 -e	tf(1/(z - 1/2))	tf([2], [2, -1], -1)
 -e	tf(sin(s))	error: tf: sin(s) is no polynomial in s
--e	tf([1, 2], [1, 2, 3], 0.1, 4)	error: tf takes 1 to 3 argument(s), 4 given
+-e	tf([1, 2], [1, 2, 3], 0.1, 4)	error: tf([numerator], [denominator][, Ts]), tf("s"), tf(system); with a delay: tf([numerator], [denominator], "InputDelay", T)
 -e	zpk([], [-1, -2], 3)	zpk([], [-1, -2], 3)
 -e	zpk([-1], [-2, -3], 4, 0.1)	zpk([-1], [-2, -3], 4, 0.1)
 -e	tf(zpk([1/2], [1/3, 1/4], 2, 1))	tf([2, -1], [1, -7/12, 1/12], 1)
@@ -161,8 +161,8 @@
 -e	margin(tf([1], [1, 2, 3, 7]))	[inf, -86.430585385100338722436044779816, undefined, 1.8791298183332823762557711360922]
 -e	margin(tf([20, 20], [1, 7, 10, 0, 0]))	[1.05, 0.57093528543730350241555012553527, 1.7320508075688772935274463415059, 1.6852618283636656027677089787791]
 -e	margin(tf([1], [1, -0.5], 1))	[1.5, 75.522487814070076121228965200873, 3.1415926535897932384626433832795, 1.318116071652817965745664254646]
--e	allmargin(tf([20, 20], [1, 7, 10, 0, 0]))	struct("GainMargin", [1.05], "GMFrequency", [1.7320508075688772935274463415059], "PhaseMargin", [0.57093528543730350241555012553527], "PMFrequency", [1.6852618283636656027677089787791], "Stable", true)
--e	allmargin(tf([1], [1, 1]))	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(tf([20, 20], [1, 7, 10, 0, 0]))	struct("GainMargin", [1.05], "GMFrequency", [1.7320508075688772935274463415059], "PhaseMargin", [0.57093528543730350241555012553527], "PMFrequency", [1.6852618283636656027677089787791], "DelayMargin", [0.0059128500859536940220302931579588], "DMFrequency", [1.6852618283636656027677089787791], "Stable", true)
+-e	allmargin(tf([1], [1, 1]))	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
 -e	bandwidth(tf([1], [1, 1]), -6)	1.7265780334334653256053069633764
 -e	bandwidth(tf([1], [1, 1]), 3)	error: bandwidth(system, drop): the drop in dB is below zero, as -3
 -e	bandwidth(tf([1], [1, 0]))	undefined

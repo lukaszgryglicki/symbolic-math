@@ -18,12 +18,32 @@ type Res = Result<Expr, String>;
 #[derive(Clone, Debug)]
 enum Kind {
     Constant(f64),
-    Step { time: f64, before: f64, after: f64 },
-    Ramp { slope: f64, start: f64 },
-    Sine { height: f64, rate: f64, phase: f64, bias: f64 },
-    Pulse { height: f64, period: f64, width: f64, delay: f64 },
+    Step {
+        time: f64,
+        before: f64,
+        after: f64,
+    },
+    Ramp {
+        slope: f64,
+        start: f64,
+    },
+    Sine {
+        height: f64,
+        rate: f64,
+        phase: f64,
+        bias: f64,
+    },
+    Pulse {
+        height: f64,
+        period: f64,
+        width: f64,
+        delay: f64,
+    },
     Clock,
-    Signal { times: Vec<f64>, values: Vec<f64> },
+    Signal {
+        times: Vec<f64>,
+        values: Vec<f64>,
+    },
     Sum(Vec<(f64, usize)>),
     Gain(f64, usize),
     Product(Vec<(bool, usize)>),
@@ -32,53 +52,164 @@ enum Kind {
     Saturation(f64, f64, usize),
     DeadZone(f64, f64, usize),
     Quantizer(f64, usize),
-    Switch { first: usize, control: usize, second: usize, threshold: f64 },
+    Switch {
+        first: usize,
+        control: usize,
+        second: usize,
+        threshold: f64,
+    },
     Least(Vec<usize>),
     Most(Vec<usize>),
-    Lookup { places: Vec<f64>, values: Vec<f64>, input: usize },
-    Relay { on: f64, off: f64, high: f64, low: f64, input: usize },
-    RateLimiter { up: f64, down: f64, input: usize },
+    Lookup {
+        places: Vec<f64>,
+        values: Vec<f64>,
+        input: usize,
+    },
+    Relay {
+        on: f64,
+        off: f64,
+        high: f64,
+        low: f64,
+        input: usize,
+    },
+    RateLimiter {
+        up: f64,
+        down: f64,
+        input: usize,
+    },
     Derivative(usize),
-    Integrator { input: usize, start: f64 },
+    Integrator {
+        input: usize,
+        start: f64,
+    },
     /// Running states: dx = A x + B u, y = C x + D u.
-    Linear { a: Vec<Vec<f64>>, b: Vec<f64>, c: Vec<f64>, d: f64, input: usize, start: Vec<f64> },
-    Delay { time: f64, input: usize, before: f64 },
-    UnitDelay { every: f64, input: usize, start: f64 },
-    Hold { every: f64, input: usize },
+    Linear {
+        a: Vec<Vec<f64>>,
+        b: Vec<f64>,
+        c: Vec<f64>,
+        d: f64,
+        input: usize,
+        start: Vec<f64>,
+    },
+    Delay {
+        time: f64,
+        input: usize,
+        before: f64,
+    },
+    UnitDelay {
+        every: f64,
+        input: usize,
+        start: f64,
+    },
+    Hold {
+        every: f64,
+        input: usize,
+    },
     /// A sampled transfer function: the taps above and below (the first below is 1).
-    Sampled { above: Vec<f64>, below: Vec<f64>, every: f64, input: usize },
+    Sampled {
+        above: Vec<f64>,
+        below: Vec<f64>,
+        every: f64,
+        input: usize,
+    },
 }
 
 const FORMS: &[(&str, &str)] = &[
     ("constant", "[\"y\", \"constant\", value]"),
-    ("step", "[\"y\", \"step\", time, value after (1), value before (0)]"),
+    (
+        "step",
+        "[\"y\", \"step\", time, value after (1), value before (0)]",
+    ),
     ("ramp", "[\"y\", \"ramp\", slope, start (0)]"),
-    ("sine", "[\"y\", \"sine\", height, radians a second, phase (0), bias (0)]"),
-    ("pulse", "[\"y\", \"pulse\", height, period, width in percent, delay (0)]"),
+    (
+        "sine",
+        "[\"y\", \"sine\", height, radians a second, phase (0), bias (0)]",
+    ),
+    (
+        "pulse",
+        "[\"y\", \"pulse\", height, period, width in percent, delay (0)]",
+    ),
     ("clock", "[\"y\", \"clock\"]: the time"),
-    ("signal", "[\"y\", \"signal\", [times], [values]]: straight lines between given values"),
-    ("sum", "[\"y\", \"sum\", \"a\", \"-b\", ...]: signals added, with - taken away"),
+    (
+        "signal",
+        "[\"y\", \"signal\", [times], [values]]: straight lines between given values",
+    ),
+    (
+        "sum",
+        "[\"y\", \"sum\", \"a\", \"-b\", ...]: signals added, with - taken away",
+    ),
     ("gain", "[\"y\", \"gain\", k, \"u\"]"),
-    ("product", "[\"y\", \"product\", \"a\", \"/b\", ...]: signals multiplied, with / divided by"),
-    ("fcn", "[\"y\", \"fcn\", expression of the names of signals and t] or [\"y\", \"fcn\", expression of u, \"signal\"]"),
-    ("abs", "[\"y\", \"abs\", \"u\"]; likewise sign, sqrt, exp, log, sin, cos, tan, tanh"),
-    ("saturation", "[\"y\", \"saturation\", lowest, highest, \"u\"]"),
-    ("deadzone", "[\"y\", \"deadzone\", start, end, \"u\"]: zero between them, the distance beyond"),
+    (
+        "product",
+        "[\"y\", \"product\", \"a\", \"/b\", ...]: signals multiplied, with / divided by",
+    ),
+    (
+        "fcn",
+        "[\"y\", \"fcn\", expression of the names of signals and t] or [\"y\", \"fcn\", expression of u, \"signal\"]",
+    ),
+    (
+        "abs",
+        "[\"y\", \"abs\", \"u\"]; likewise sign, sqrt, exp, log, sin, cos, tan, tanh",
+    ),
+    (
+        "saturation",
+        "[\"y\", \"saturation\", lowest, highest, \"u\"]",
+    ),
+    (
+        "deadzone",
+        "[\"y\", \"deadzone\", start, end, \"u\"]: zero between them, the distance beyond",
+    ),
     ("quantizer", "[\"y\", \"quantizer\", step, \"u\"]"),
-    ("switch", "[\"y\", \"switch\", \"first\", \"control\", \"second\", threshold (0)]: the first while the control is at the threshold or above"),
+    (
+        "switch",
+        "[\"y\", \"switch\", \"first\", \"control\", \"second\", threshold (0)]: the first while the control is at the threshold or above",
+    ),
     ("min", "[\"y\", \"min\", \"a\", \"b\", ...]; likewise max"),
-    ("lookup", "[\"y\", \"lookup\", [places], [values], \"u\"]: a table with straight lines between its entries"),
-    ("relay", "[\"y\", \"relay\", on at, off at, value on, value off, \"u\"]"),
-    ("ratelimiter", "[\"y\", \"ratelimiter\", rising slope, falling slope, \"u\"]"),
-    ("derivative", "[\"y\", \"derivative\", \"u\"]: the slope over the last step"),
+    (
+        "lookup",
+        "[\"y\", \"lookup\", [places], [values], \"u\"]: a table with straight lines between its entries",
+    ),
+    (
+        "relay",
+        "[\"y\", \"relay\", on at, off at, value on, value off, \"u\"]",
+    ),
+    (
+        "ratelimiter",
+        "[\"y\", \"ratelimiter\", rising slope, falling slope, \"u\"]",
+    ),
+    (
+        "derivative",
+        "[\"y\", \"derivative\", \"u\"]: the slope over the last step",
+    ),
     ("integrator", "[\"y\", \"integrator\", \"u\", start (0)]"),
-    ("tf", "[\"y\", \"tf\", [numerator], [denominator], \"u\"]: a transfer function in s"),
-    ("ss", "[\"y\", \"ss\", A, B, C, D, \"u\", [start]]: states with one input and one output"),
-    ("pid", "[\"y\", \"pid\", Kp, Ki, Kd, N (100), \"u\"]: Kp + Ki/s + Kd N/(1 + N/s)"),
-    ("delay", "[\"y\", \"delay\", time, \"u\", value before (0)]: the signal that much later"),
-    ("unitdelay", "[\"y\", \"unitdelay\", sample time, \"u\", start (0)]: the sample before"),
-    ("zoh", "[\"y\", \"zoh\", sample time, \"u\"]: the signal held between samples"),
-    ("dtf", "[\"y\", \"dtf\", [numerator], [denominator], sample time, \"u\"]: a sampled transfer function in z"),
+    (
+        "tf",
+        "[\"y\", \"tf\", [numerator], [denominator], \"u\"]: a transfer function in s",
+    ),
+    (
+        "ss",
+        "[\"y\", \"ss\", A, B, C, D, \"u\", [start]]: states with one input and one output",
+    ),
+    (
+        "pid",
+        "[\"y\", \"pid\", Kp, Ki, Kd, N (100), \"u\"]: Kp + Ki/s + Kd N/(1 + N/s)",
+    ),
+    (
+        "delay",
+        "[\"y\", \"delay\", time, \"u\", value before (0)]: the signal that much later",
+    ),
+    (
+        "unitdelay",
+        "[\"y\", \"unitdelay\", sample time, \"u\", start (0)]: the sample before",
+    ),
+    (
+        "zoh",
+        "[\"y\", \"zoh\", sample time, \"u\"]: the signal held between samples",
+    ),
+    (
+        "dtf",
+        "[\"y\", \"dtf\", [numerator], [denominator], sample time, \"u\"]: a sampled transfer function in z",
+    ),
 ];
 
 struct Diagram {
@@ -101,7 +232,9 @@ struct Memory {
 }
 
 fn number(e: &Expr, what: &str) -> Result<f64, String> {
-    crate::plot::number(e).filter(|v| v.is_finite()).ok_or_else(|| format!("sim: {what} is a number, {e} is none"))
+    crate::plot::number(e)
+        .filter(|v| v.is_finite())
+        .ok_or_else(|| format!("sim: {what} is a number, {e} is none"))
 }
 
 fn numbers(e: &Expr, what: &str) -> Result<Vec<f64>, String> {
@@ -117,40 +250,68 @@ impl Diagram {
         let blocks = model.as_list().filter(|b| !b.is_empty()).ok_or(usage)?;
         let mut names = Vec::new();
         for block in blocks {
-            let name = block.as_list().and_then(|b| b.first()).and_then(text_of).ok_or(usage)?;
+            let name = block
+                .as_list()
+                .and_then(|b| b.first())
+                .and_then(text_of)
+                .ok_or(usage)?;
             if names.iter().any(|n| n == name) {
                 return Err(format!("sim: two blocks make the signal {name}"));
             }
             names.push(name.to_string());
         }
         let find = |e: &Expr, block: &str| -> Result<usize, String> {
-            let name = text_of(e).ok_or_else(|| format!("sim: the block {block} takes a signal by its name in quotes, {e} is none"))?;
-            names.iter().position(|n| n == name).ok_or_else(|| format!("sim: the block {block} takes the signal {name}, which no block makes"))
+            let name = text_of(e).ok_or_else(|| {
+                format!("sim: the block {block} takes a signal by its name in quotes, {e} is none")
+            })?;
+            names.iter().position(|n| n == name).ok_or_else(|| {
+                format!("sim: the block {block} takes the signal {name}, which no block makes")
+            })
         };
         let mut kinds = Vec::new();
         for block in blocks {
             let parts = block.as_list().unwrap_or_default();
             let (name, rest) = (&names[kinds.len()], &parts[1..]);
-            let kind = rest.first().and_then(text_of).ok_or_else(|| format!("sim: the block {name} has no kind; simblocks() lists them"))?.to_lowercase();
+            let kind = rest
+                .first()
+                .and_then(text_of)
+                .ok_or_else(|| {
+                    format!("sim: the block {name} has no kind; simblocks() lists them")
+                })?
+                .to_lowercase();
             let a = &rest[1..];
             let form = || {
-                let known = FORMS.iter().find(|(k, _)| *k == kind || (matches!(kind.as_str(), "sign" | "sqrt" | "exp" | "log" | "sin" | "cos" | "tan" | "tanh") && *k == "abs") || (kind == "max" && *k == "min"));
+                let known = FORMS.iter().find(|(k, _)| {
+                    *k == kind
+                        || (matches!(
+                            kind.as_str(),
+                            "sign" | "sqrt" | "exp" | "log" | "sin" | "cos" | "tan" | "tanh"
+                        ) && *k == "abs")
+                        || (kind == "max" && *k == "min")
+                });
                 match known {
                     Some((_, form)) => format!("sim: the block {name}: {form}"),
-                    None => format!("sim: the block {name} is of the kind {kind}, which is not known; simblocks() lists the kinds"),
+                    None => format!(
+                        "sim: the block {name} is of the kind {kind}, which is not known; simblocks() lists the kinds"
+                    ),
                 }
             };
-            let at = |k: usize, what: &str| -> Result<f64, String> { number(a.get(k).ok_or_else(&form)?, what) };
+            let at = |k: usize, what: &str| -> Result<f64, String> {
+                number(a.get(k).ok_or_else(&form)?, what)
+            };
             let or = |k: usize, usual: f64, what: &str| -> Result<f64, String> {
                 match a.get(k) {
                     Some(e) => number(e, what),
                     None => Ok(usual),
                 }
             };
-            let input = |k: usize| -> Result<usize, String> { find(a.get(k).ok_or_else(&form)?, name) };
+            let input =
+                |k: usize| -> Result<usize, String> { find(a.get(k).ok_or_else(&form)?, name) };
             let sample = |v: f64| match v > 0.0 {
                 true => Ok(v),
-                false => Err(format!("sim: the sample time of the block {name} is above zero")),
+                false => Err(format!(
+                    "sim: the sample time of the block {name} is above zero"
+                )),
             };
             let most = |n: usize| match a.len() <= n {
                 true => Ok(()),
@@ -160,7 +321,9 @@ impl Diagram {
                 let below: Vec<f64> = below.iter().copied().skip_while(|c| *c == 0.0).collect();
                 let above: Vec<f64> = above.iter().copied().skip_while(|c| *c == 0.0).collect();
                 if below.is_empty() || above.len() > below.len() {
-                    return Err(format!("sim: the block {name}: the numerator of a transfer function is of no higher degree than its denominator (the block derivative gives a slope)"));
+                    return Err(format!(
+                        "sim: the block {name}: the numerator of a transfer function is of no higher degree than its denominator (the block derivative gives a slope)"
+                    ));
                 }
                 let n = below.len() - 1;
                 let lead = below[0];
@@ -174,13 +337,22 @@ impl Diagram {
                     rows.push((0..n).map(|j| f64::from(u8::from(j + 1 == i))).collect());
                 }
                 rows.truncate(n);
-                Ok(Kind::Linear { a: rows, b: (0..n).map(|i| f64::from(u8::from(i == 0))).collect(), c, d, input, start: vec![0.0; n] })
+                Ok(Kind::Linear {
+                    a: rows,
+                    b: (0..n).map(|i| f64::from(u8::from(i == 0))).collect(),
+                    c,
+                    d,
+                    input,
+                    start: vec![0.0; n],
+                })
             };
             let signed = |e: &Expr, marks: &[char]| -> Result<(Option<char>, usize), String> {
                 let written = text_of(e).ok_or_else(&form)?;
                 let mark = written.chars().next().filter(|c| marks.contains(c));
                 let plain = written.trim_start_matches(marks);
-                let k = names.iter().position(|n| n == plain).ok_or_else(|| format!("sim: the block {name} takes the signal {plain}, which no block makes"))?;
+                let k = names.iter().position(|n| n == plain).ok_or_else(|| {
+                    format!("sim: the block {name} takes the signal {plain}, which no block makes")
+                })?;
                 Ok((mark, k))
             };
             kinds.push(match kind.as_str() {
@@ -229,7 +401,15 @@ impl Diagram {
                         None => None,
                     };
                     let mut strangers = Vec::new();
+                    let mut both = Vec::new();
                     formula.walk(&mut |e| {
+                        // (e and pi are numbers in a formula: a signal of such a name is told apart)
+                        if let Expr::Sym(s) = e
+                            && crate::expr::is_const_name(s)
+                            && names.iter().any(|n| n.as_str() == &**s)
+                        {
+                            both.push(s.to_string());
+                        }
                         if let Expr::Sym(s) = e
                             && !crate::expr::is_const_name(s)
                             && &**s != "t"
@@ -242,6 +422,9 @@ impl Diagram {
                             }
                         }
                     });
+                    if let Some(name_of_both) = both.first() {
+                        return Err(format!("sim: the block {name}: {name_of_both} in its formula is a number, and a signal of this diagram has that name too: give the signal another name"));
+                    }
                     if let Some(stranger) = strangers.first() {
                         return Err(format!("sim: the block {name}: {stranger} in its formula is no signal (nor t, nor u of the one signal named after the formula)"));
                     }
@@ -253,12 +436,13 @@ impl Diagram {
                         "abs" => f64::abs,
                         "sign" => |x| if x > 0.0 { 1.0 } else if x < 0.0 { -1.0 } else { 0.0 },
                         "sqrt" => f64::sqrt,
-                        "exp" => f64::exp,
-                        "log" => f64::ln,
-                        "sin" => f64::sin,
-                        "cos" => f64::cos,
-                        "tan" => f64::tan,
-                        _ => f64::tanh,
+                        // (the true values rounded, not those of the system: the same on every system)
+                        "exp" => crate::detmath::exp,
+                        "log" => crate::detmath::ln,
+                        "sin" => crate::detmath::sin,
+                        "cos" => crate::detmath::cos,
+                        "tan" => crate::detmath::tan,
+                        _ => crate::detmath::tanh,
                     };
                     Kind::Plain(f, input(0)?)
                 }
@@ -372,8 +556,19 @@ impl Diagram {
                 Kind::Sum(terms) => terms.iter().map(|(_, k)| *k).collect(),
                 Kind::Product(factors) => factors.iter().map(|(_, k)| *k).collect(),
                 Kind::Fcn(_, taken) => taken.iter().map(|(_, k)| *k).collect(),
-                Kind::Gain(_, k) | Kind::Plain(_, k) | Kind::Saturation(_, _, k) | Kind::DeadZone(_, _, k) | Kind::Quantizer(_, k) | Kind::RateLimiter { input: k, .. } | Kind::Hold { input: k, .. } => vec![*k],
-                Kind::Switch { first, control, second, .. } => vec![*first, *control, *second],
+                Kind::Gain(_, k)
+                | Kind::Plain(_, k)
+                | Kind::Saturation(_, _, k)
+                | Kind::DeadZone(_, _, k)
+                | Kind::Quantizer(_, k)
+                | Kind::RateLimiter { input: k, .. }
+                | Kind::Hold { input: k, .. } => vec![*k],
+                Kind::Switch {
+                    first,
+                    control,
+                    second,
+                    ..
+                } => vec![*first, *control, *second],
                 Kind::Least(all) | Kind::Most(all) => all.clone(),
                 Kind::Lookup { input, .. } => vec![*input],
                 Kind::Linear { d, input, .. } if *d != 0.0 => vec![*input],
@@ -384,7 +579,9 @@ impl Diagram {
         let mut order = Vec::new();
         let mut done = vec![false; kinds.len()];
         loop {
-            let ready: Vec<usize> = (0..kinds.len()).filter(|k| !done[*k] && needs[*k].iter().all(|n| done[*n])).collect();
+            let ready: Vec<usize> = (0..kinds.len())
+                .filter(|k| !done[*k] && needs[*k].iter().all(|n| done[*n]))
+                .collect();
             if ready.is_empty() {
                 break;
             }
@@ -404,26 +601,72 @@ impl Diagram {
                 _ => 0,
             };
         }
-        Ok(Diagram { names, kinds, order, looped, places, states })
+        Ok(Diagram {
+            names,
+            kinds,
+            order,
+            looped,
+            places,
+            states,
+        })
     }
 
     /// The value of one block from the values of the others.
-    fn one(&self, k: usize, t: f64, at: f64, x: &[f64], memory: &Memory, hits: &[bool], out: &[f64]) -> f64 {
+    #[allow(clippy::too_many_arguments)]
+    fn one(
+        &self,
+        k: usize,
+        t: f64,
+        at: f64,
+        x: &[f64],
+        memory: &Memory,
+        hits: &[bool],
+        out: &[f64],
+    ) -> f64 {
         let place = self.places[k];
         match &self.kinds[k] {
             Kind::Constant(c) => *c,
-            Kind::Step { time, before, after } => if at >= *time { *after } else { *before },
+            Kind::Step {
+                time,
+                before,
+                after,
+            } => {
+                if at >= *time {
+                    *after
+                } else {
+                    *before
+                }
+            }
             Kind::Ramp { slope, start } => slope * (t - start).max(0.0),
-            Kind::Sine { height, rate, phase, bias } => height * (rate * t + phase).sin() + bias,
-            Kind::Pulse { height, period, width, delay } => {
+            Kind::Sine {
+                height,
+                rate,
+                phase,
+                bias,
+            } => height * crate::detmath::sin(rate * t + phase) + bias,
+            Kind::Pulse {
+                height,
+                period,
+                width,
+                delay,
+            } => {
                 let into = (at - delay).rem_euclid(*period);
-                if at >= *delay && into < width * period { *height } else { 0.0 }
+                if at >= *delay && into < width * period {
+                    *height
+                } else {
+                    0.0
+                }
             }
             Kind::Clock => t,
             Kind::Signal { times, values } => between(times, values, t),
             Kind::Sum(terms) => terms.iter().map(|(sign, k)| sign * out[*k]).sum(),
             Kind::Gain(gain, k) => gain * out[*k],
-            Kind::Product(factors) => factors.iter().fold(1.0, |all, (under, k)| if *under { all / out[*k] } else { all * out[*k] }),
+            Kind::Product(factors) => {
+                factors.iter().fold(
+                    1.0,
+                    |all, (under, k)| if *under { all / out[*k] } else { all * out[*k] },
+                )
+            }
             Kind::Fcn(formula, taken) => {
                 let mut env = Env::new();
                 env.insert(Rc::from("t"), Complex::with_val(64, (t, 0.0)));
@@ -436,14 +679,44 @@ impl Diagram {
             Kind::Saturation(low, high, k) => out[*k].clamp(*low, *high),
             Kind::DeadZone(low, high, k) => {
                 let u = out[*k];
-                if u > *high { u - high } else if u < *low { u - low } else { 0.0 }
+                if u > *high {
+                    u - high
+                } else if u < *low {
+                    u - low
+                } else {
+                    0.0
+                }
             }
             Kind::Quantizer(step, k) => step * (out[*k] / step).round(),
-            Kind::Switch { first, control, second, threshold } => if out[*control] >= *threshold { out[*first] } else { out[*second] },
+            Kind::Switch {
+                first,
+                control,
+                second,
+                threshold,
+            } => {
+                if out[*control] >= *threshold {
+                    out[*first]
+                } else {
+                    out[*second]
+                }
+            }
             Kind::Least(all) => all.iter().map(|k| out[*k]).fold(f64::INFINITY, f64::min),
-            Kind::Most(all) => all.iter().map(|k| out[*k]).fold(f64::NEG_INFINITY, f64::max),
-            Kind::Lookup { places, values, input } => between(places, values, out[*input]),
-            Kind::Relay { high, low, .. } => if memory.values[k][0] > 0.5 { *high } else { *low },
+            Kind::Most(all) => all
+                .iter()
+                .map(|k| out[*k])
+                .fold(f64::NEG_INFINITY, f64::max),
+            Kind::Lookup {
+                places,
+                values,
+                input,
+            } => between(places, values, out[*input]),
+            Kind::Relay { high, low, .. } => {
+                if memory.values[k][0] > 0.5 {
+                    *high
+                } else {
+                    *low
+                }
+            }
             Kind::RateLimiter { up, down, input } => {
                 let (last, when) = (memory.values[k][0], memory.values[k][1]);
                 match last.is_nan() {
@@ -453,7 +726,13 @@ impl Diagram {
             }
             Kind::Derivative(_) => memory.values[k][2],
             Kind::Integrator { .. } => x[place],
-            Kind::Linear { c, d, input, .. } => c.iter().enumerate().map(|(i, c)| c * x[place + i]).sum::<f64>() + if *d != 0.0 { d * out[*input] } else { 0.0 },
+            Kind::Linear { c, d, input, .. } => {
+                c.iter()
+                    .enumerate()
+                    .map(|(i, c)| c * x[place + i])
+                    .sum::<f64>()
+                    + if *d != 0.0 { d * out[*input] } else { 0.0 }
+            }
             Kind::Delay { time, before, .. } => {
                 let past = &memory.past[k];
                 let wanted = t - time;
@@ -461,7 +740,9 @@ impl Diagram {
                     Some((first, _)) if wanted >= *first => {
                         let next = past.partition_point(|(when, _)| *when <= wanted);
                         match (past.get(next.wrapping_sub(1)), past.get(next)) {
-                            (Some((ta, ua)), Some((tb, ub))) if tb > ta => ua + (ub - ua) * (wanted - ta) / (tb - ta),
+                            (Some((ta, ua)), Some((tb, ub))) if tb > ta => {
+                                ua + (ub - ua) * (wanted - ta) / (tb - ta)
+                            }
                             (Some((_, ua)), None) => *ua,
                             _ => *before,
                         }
@@ -470,14 +751,33 @@ impl Diagram {
                 }
             }
             Kind::UnitDelay { .. } => memory.values[k][0],
-            Kind::Hold { input, .. } => if hits[k] { out[*input] } else { memory.values[k][0] },
-            Kind::Sampled { above, input, .. } => if hits[k] { above[0] * out[*input] + memory.values[k].get(1).copied().unwrap_or(0.0) } else { memory.values[k][0] },
+            Kind::Hold { input, .. } => {
+                if hits[k] {
+                    out[*input]
+                } else {
+                    memory.values[k][0]
+                }
+            }
+            Kind::Sampled { above, input, .. } => {
+                if hits[k] {
+                    above[0] * out[*input] + memory.values[k].get(1).copied().unwrap_or(0.0)
+                } else {
+                    memory.values[k][0]
+                }
+            }
         }
     }
 
     /// Every signal at a time. `at` is the time that the jumps of the sources go by: just
     /// inside the step that is being made.
-    fn signals(&self, t: f64, at: f64, x: &[f64], memory: &Memory, hits: &[bool]) -> Result<Vec<f64>, String> {
+    fn signals(
+        &self,
+        t: f64,
+        at: f64,
+        x: &[f64],
+        memory: &Memory,
+        hits: &[bool],
+    ) -> Result<Vec<f64>, String> {
         let mut out = vec![0.0; self.kinds.len()];
         for k in &self.order {
             out[*k] = self.one(*k, t, at, x, memory, hits, &out);
@@ -491,7 +791,11 @@ impl Diagram {
             for (i, k) in self.looped.iter().enumerate() {
                 out[*k] = z[i];
             }
-            self.looped.iter().enumerate().map(|(i, k)| self.one(*k, t, at, x, memory, hits, out) - z[i]).collect()
+            self.looped
+                .iter()
+                .enumerate()
+                .map(|(i, k)| self.one(*k, t, at, x, memory, hits, out) - z[i])
+                .collect()
         };
         let mut z = vec![0.0; n];
         for round in 0..60 {
@@ -516,18 +820,31 @@ impl Diagram {
                     slopes[i][j] = (other[i] - g[i]) / step;
                 }
             }
-            let Some(change) = solved(slopes, g.iter().map(|v| -v).collect()) else { break };
+            let Some(change) = solved(slopes, g.iter().map(|v| -v).collect()) else {
+                break;
+            };
             for (v, c) in z.iter_mut().zip(change) {
                 *v += c;
             }
         }
         Err(format!(
             "sim: the blocks {} form a loop without a state in it whose values do not settle: put an integrator, a transfer function or a delay into the loop",
-            self.looped.iter().map(|k| self.names[*k].as_str()).collect::<Vec<_>>().join(", ")
+            self.looped
+                .iter()
+                .map(|k| self.names[*k].as_str())
+                .collect::<Vec<_>>()
+                .join(", ")
         ))
     }
 
-    fn rates(&self, t: f64, at: f64, x: &[f64], memory: &Memory, hits: &[bool]) -> Result<Vec<f64>, String> {
+    fn rates(
+        &self,
+        t: f64,
+        at: f64,
+        x: &[f64],
+        memory: &Memory,
+        hits: &[bool],
+    ) -> Result<Vec<f64>, String> {
         let out = self.signals(t, at, x, memory, hits)?;
         let mut rates = vec![0.0; self.states];
         for (k, kind) in self.kinds.iter().enumerate() {
@@ -536,7 +853,12 @@ impl Diagram {
                 Kind::Integrator { input, .. } => rates[place] = out[*input],
                 Kind::Linear { a, b, input, .. } => {
                     for (i, row) in a.iter().enumerate() {
-                        rates[place + i] = row.iter().enumerate().map(|(j, c)| c * x[place + j]).sum::<f64>() + b[i] * out[*input];
+                        rates[place + i] = row
+                            .iter()
+                            .enumerate()
+                            .map(|(j, c)| c * x[place + j])
+                            .sum::<f64>()
+                            + b[i] * out[*input];
                     }
                 }
                 _ => {}
@@ -552,16 +874,24 @@ fn between(places: &[f64], values: &[f64], at: f64) -> f64 {
     if places.len() == 1 {
         return values[0];
     }
-    let next = places.partition_point(|p| *p <= at).clamp(1, places.len() - 1);
+    let next = places
+        .partition_point(|p| *p <= at)
+        .clamp(1, places.len() - 1);
     let (a, b) = (next - 1, next);
     values[a] + (values[b] - values[a]) * (at - places[a]) / (places[b] - places[a])
 }
 
 /// The answer of a small system of lines, by Gauss with the largest entry first.
+#[allow(clippy::needless_range_loop)]
 fn solved(mut m: Vec<Vec<f64>>, mut right: Vec<f64>) -> Option<Vec<f64>> {
     let n = right.len();
     for c in 0..n {
-        let best = (c..n).max_by(|a, b| m[*a][c].abs().partial_cmp(&m[*b][c].abs()).unwrap_or(std::cmp::Ordering::Equal))?;
+        let best = (c..n).max_by(|a, b| {
+            m[*a][c]
+                .abs()
+                .partial_cmp(&m[*b][c].abs())
+                .unwrap_or(std::cmp::Ordering::Equal)
+        })?;
         if m[best][c].abs() < 1e-14 {
             return None;
         }
@@ -586,7 +916,10 @@ fn sim(a: &[Expr]) -> Res {
     let usage = "sim([blocks], t or [t0, t1][, \"step\", h][, \"points\", n]): the signals of a diagram of blocks over time, a record of the times t and of every signal; simblocks() lists the kinds of blocks";
     let diagram = Diagram::read(a.first().ok_or(usage)?)?;
     let (start, end) = match a.get(1).ok_or(usage)?.as_list() {
-        Some([from, to]) => (number(from, "the first time")?, number(to, "the last time")?),
+        Some([from, to]) => (
+            number(from, "the first time")?,
+            number(to, "the last time")?,
+        ),
         Some(_) => return Err(usage.into()),
         None => (0.0, number(&a[1], "the time")?),
     };
@@ -595,40 +928,59 @@ fn sim(a: &[Expr]) -> Res {
     }
     let (mut step, mut points) = ((end - start) / 2000.0, 101usize);
     let choices = &a[2..];
-    if choices.len() % 2 != 0 {
+    if !choices.len().is_multiple_of(2) {
         return Err(usage.into());
     }
     for pair in choices.chunks(2) {
-        match text_of(&pair[0]).unwrap_or_default().to_lowercase().as_str() {
+        match text_of(&pair[0])
+            .unwrap_or_default()
+            .to_lowercase()
+            .as_str()
+        {
             "step" | "maxstep" | "fixedstep" => {
                 step = number(&pair[1], "the step")?;
                 if step <= 0.0 || (end - start) / step > 2e7 {
                     return Err("sim: a step above zero, and 20 million steps at most".into());
                 }
             }
-            "points" => points = crate::arrays::whole(&pair[1], "the number of points", 2, 1_000_000)? as usize,
+            "points" => {
+                points =
+                    crate::arrays::whole(&pair[1], "the number of points", 2, 1_000_000)? as usize
+            }
             _ => return Err(usage.into()),
         }
     }
     // the times of every sampled block, where sources jump, and where the answer is wanted
-    let mut times: Vec<f64> = (0..points).map(|k| start + (end - start) * k as f64 / (points - 1) as f64).collect();
+    let mut times: Vec<f64> = (0..points)
+        .map(|k| start + (end - start) * k as f64 / (points - 1) as f64)
+        .collect();
     let mut every: Vec<f64> = Vec::new();
     for kind in &diagram.kinds {
         match kind {
             Kind::Step { time, .. } => times.push(*time),
             Kind::Ramp { start, .. } => times.push(*start),
-            Kind::Pulse { period, width, delay, .. } => {
+            Kind::Pulse {
+                period,
+                width,
+                delay,
+                ..
+            } => {
                 let count = ((end - delay) / period).ceil().max(0.0);
                 if count > 1e6 {
                     return Err("sim: a pulse with more than a million periods".into());
                 }
                 for k in 0..count as usize {
-                    times.extend([delay + k as f64 * period, delay + (k as f64 + width) * period]);
+                    times.extend([
+                        delay + k as f64 * period,
+                        delay + (k as f64 + width) * period,
+                    ]);
                 }
             }
             Kind::Signal { times: knots, .. } => times.extend(knots),
             Kind::Delay { time, .. } => step = step.min(*time),
-            Kind::UnitDelay { every: ts, .. } | Kind::Hold { every: ts, .. } | Kind::Sampled { every: ts, .. } => every.push(*ts),
+            Kind::UnitDelay { every: ts, .. }
+            | Kind::Hold { every: ts, .. }
+            | Kind::Sampled { every: ts, .. } => every.push(*ts),
             _ => {}
         }
     }
@@ -647,10 +999,15 @@ fn sim(a: &[Expr]) -> Res {
     times.retain(|t| *t >= start - near && *t <= end + near);
     times.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     times.dedup_by(|b, a| (*b - *a).abs() <= near);
-    let wanted: Vec<f64> = (0..points).map(|k| start + (end - start) * k as f64 / (points - 1) as f64).collect();
+    let wanted: Vec<f64> = (0..points)
+        .map(|k| start + (end - start) * k as f64 / (points - 1) as f64)
+        .collect();
     // the states and what the blocks remember at the start
     let mut x = vec![0.0; diagram.states];
-    let mut memory = Memory { values: vec![Vec::new(); diagram.kinds.len()], past: vec![Vec::new(); diagram.kinds.len()] };
+    let mut memory = Memory {
+        values: vec![Vec::new(); diagram.kinds.len()],
+        past: vec![Vec::new(); diagram.kinds.len()],
+    };
     for (k, kind) in diagram.kinds.iter().enumerate() {
         let place = diagram.places[k];
         match kind {
@@ -681,13 +1038,15 @@ fn sim(a: &[Expr]) -> Res {
                 Kind::RateLimiter { .. } => memory.values[k] = vec![out[k], t],
                 Kind::Derivative(input) => {
                     let (last, when) = (memory.values[k][0], memory.values[k][1]);
-                    let slope = if last.is_nan() || t <= when { memory.values[k][2] } else { (out[*input] - last) / (t - when) };
+                    let slope = if last.is_nan() || t <= when {
+                        memory.values[k][2]
+                    } else {
+                        (out[*input] - last) / (t - when)
+                    };
                     memory.values[k] = vec![out[*input], t, slope];
                 }
-                Kind::Delay { input, .. } => {
-                    if memory.past[k].last() != Some(&(t, out[*input])) {
-                        memory.past[k].push((t, out[*input]));
-                    }
+                Kind::Delay { input, .. } if memory.past[k].last() != Some(&(t, out[*input])) => {
+                    memory.past[k].push((t, out[*input]));
                 }
                 _ => {}
             }
@@ -696,7 +1055,11 @@ fn sim(a: &[Expr]) -> Res {
     // what happens at a time of the list: the memories take what the signals were just
     // before it, the sampled blocks take their samples, and the signals are those just
     // after it (a source that jumps there has jumped)
-    let arrive = |t: f64, x: &[f64], memory: &mut Memory, first: bool| -> Result<Vec<f64>, String> {
+    let arrive = |t: f64,
+                  x: &[f64],
+                  memory: &mut Memory,
+                  first: bool|
+     -> Result<Vec<f64>, String> {
         if !first {
             let before = diagram.signals(t, t - near, x, memory, &none)?;
             follow(t, &before, memory);
@@ -705,7 +1068,9 @@ fn sim(a: &[Expr]) -> Res {
             .kinds
             .iter()
             .map(|kind| match kind {
-                Kind::UnitDelay { every, .. } | Kind::Hold { every, .. } | Kind::Sampled { every, .. } => on_grid(t, *every),
+                Kind::UnitDelay { every, .. }
+                | Kind::Hold { every, .. }
+                | Kind::Sampled { every, .. } => on_grid(t, *every),
                 _ => false,
             })
             .collect();
@@ -719,12 +1084,18 @@ fn sim(a: &[Expr]) -> Res {
             match kind {
                 Kind::UnitDelay { input, .. } if hits[k] => memory.values[k][1] = out[*input],
                 Kind::Hold { .. } if hits[k] => memory.values[k][0] = out[k],
-                Kind::Sampled { above, below, input, .. } if hits[k] => {
+                Kind::Sampled {
+                    above,
+                    below,
+                    input,
+                    ..
+                } if hits[k] => {
                     let (u, y) = (out[*input], out[k]);
                     let order = below.len() - 1;
                     let old = memory.values[k].clone();
                     for i in 1..=order {
-                        memory.values[k][i] = above[i] * u - below[i] * y + old.get(i + 1).copied().unwrap_or(0.0);
+                        memory.values[k][i] =
+                            above[i] * u - below[i] * y + old.get(i + 1).copied().unwrap_or(0.0);
                     }
                     memory.values[k][0] = y;
                 }
@@ -737,10 +1108,8 @@ fn sim(a: &[Expr]) -> Res {
                         memory.values[k][0] = 0.0;
                     }
                 }
-                Kind::Delay { input, .. } => {
-                    if memory.past[k].last() != Some(&(t, out[*input])) {
-                        memory.past[k].push((t, out[*input]));
-                    }
+                Kind::Delay { input, .. } if memory.past[k].last() != Some(&(t, out[*input])) => {
+                    memory.past[k].push((t, out[*input]));
                 }
                 Kind::RateLimiter { .. } if first => memory.values[k] = vec![out[k], t],
                 Kind::Derivative(input) if first => memory.values[k] = vec![out[*input], t, 0.0],
@@ -766,16 +1135,33 @@ fn sim(a: &[Expr]) -> Res {
             let t = from + h * part as f64;
             if diagram.states > 0 {
                 let k1 = diagram.rates(t, inside(t), &x, &memory, &none)?;
-                let moved = |k: &[f64], by: f64| -> Vec<f64> { x.iter().zip(k).map(|(x, k)| x + by * k).collect() };
-                let k2 = diagram.rates(t + h / 2.0, inside(t + h / 2.0), &moved(&k1, h / 2.0), &memory, &none)?;
-                let k3 = diagram.rates(t + h / 2.0, inside(t + h / 2.0), &moved(&k2, h / 2.0), &memory, &none)?;
+                let moved = |k: &[f64], by: f64| -> Vec<f64> {
+                    x.iter().zip(k).map(|(x, k)| x + by * k).collect()
+                };
+                let k2 = diagram.rates(
+                    t + h / 2.0,
+                    inside(t + h / 2.0),
+                    &moved(&k1, h / 2.0),
+                    &memory,
+                    &none,
+                )?;
+                let k3 = diagram.rates(
+                    t + h / 2.0,
+                    inside(t + h / 2.0),
+                    &moved(&k2, h / 2.0),
+                    &memory,
+                    &none,
+                )?;
                 let k4 = diagram.rates(t + h, inside(t + h), &moved(&k3, h), &memory, &none)?;
                 for i in 0..x.len() {
                     x[i] += h / 6.0 * (k1[i] + 2.0 * k2[i] + 2.0 * k3[i] + k4[i]);
                 }
             }
             if x.iter().any(|v| !v.is_finite()) {
-                return Err(format!("sim: the states grow beyond every number near t = {}", crate::plot::label(t + h)));
+                return Err(format!(
+                    "sim: the states grow beyond every number near t = {}",
+                    crate::plot::label(t + h)
+                ));
             }
             if part + 1 < parts {
                 // (inside a step: the memories go on, the samples wait)
@@ -790,10 +1176,21 @@ fn sim(a: &[Expr]) -> Res {
         }
     }
     let number_of = crate::matfile::double;
-    let mut fields = vec![text("t"), Expr::list(wanted.iter().take(rows.len()).map(|t| number_of(*t)).collect())];
+    let mut fields = vec![
+        text("t"),
+        Expr::list(
+            wanted
+                .iter()
+                .take(rows.len())
+                .map(|t| number_of(*t))
+                .collect(),
+        ),
+    ];
     for (k, name) in diagram.names.iter().enumerate() {
         fields.push(text(name));
-        fields.push(Expr::list(rows.iter().map(|row| number_of(row[k])).collect()));
+        fields.push(Expr::list(
+            rows.iter().map(|row| number_of(row[k])).collect(),
+        ));
     }
     Ok(Expr::call("struct", fields))
 }
@@ -801,7 +1198,9 @@ fn sim(a: &[Expr]) -> Res {
 pub(crate) fn call(name: &str, a: &[Expr]) -> Option<Res> {
     Some(match (name, a.len()) {
         ("sim", 2..) => sim(a),
-        ("simblocks", 0) => Ok(Expr::list(FORMS.iter().map(|(_, form)| text(form)).collect())),
+        ("simblocks", 0) => Ok(Expr::list(
+            FORMS.iter().map(|(_, form)| text(form)).collect(),
+        )),
         _ => return None,
     })
 }
@@ -813,29 +1212,62 @@ mod tests {
     }
 
     fn last(input: &str) -> f64 {
-        said(input).rsplit('|').next().and_then(|v| v.parse().ok()).unwrap_or(f64::NAN)
+        said(input)
+            .rsplit('|')
+            .next()
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(f64::NAN)
     }
 
     #[test]
     fn loops_of_blocks_follow_their_formulas() {
         // 1/(s + 1) in a loop with the gain 2: y = 2/3 (1 - e^(-3 t))
-        let y = last("r := sim([[\"u\", \"step\", 0], [\"e\", \"sum\", \"u\", \"-y\"], [\"v\", \"gain\", 2, \"e\"], [\"y\", \"tf\", [1], [1, 1], \"v\"]], 2); part(getfield(r, \"y\"), 101)");
-        assert!((y - 2.0 / 3.0 * (1.0 - (-6.0f64).exp())).abs() < 1e-11, "{y}");
+        let y = last(
+            "r := sim([[\"u\", \"step\", 0], [\"e\", \"sum\", \"u\", \"-y\"], [\"v\", \"gain\", 2, \"e\"], [\"y\", \"tf\", [1], [1, 1], \"v\"]], 2); part(getfield(r, \"y\"), 101)",
+        );
+        assert!(
+            (y - 2.0 / 3.0 * (1.0 - (-6.0f64).exp())).abs() < 1e-11,
+            "{y}"
+        );
         // an oscillator of two integrators: cos(t)
-        let y = last("r := sim([[\"x\", \"integrator\", \"v\", 1], [\"v\", \"integrator\", \"a\"], [\"a\", \"gain\", -1, \"x\"]], 3); part(getfield(r, \"x\"), 101)");
+        let y = last(
+            "r := sim([[\"x\", \"integrator\", \"v\", 1], [\"v\", \"integrator\", \"a\"], [\"a\", \"gain\", -1, \"x\"]], 3); part(getfield(r, \"x\"), 101)",
+        );
         assert!((y - 3f64.cos()).abs() < 1e-11, "{y}");
         // a formula: Van der Pol's equation keeps its size
-        let y = last("r := sim([[\"x\", \"integrator\", \"v\", 2], [\"v\", \"integrator\", \"a\"], [\"a\", \"fcn\", (1 - x^2)*v - x]], 20, \"points\", 401); max(getfield(r, \"x\"))");
+        let y = last(
+            "r := sim([[\"x\", \"integrator\", \"v\", 2], [\"v\", \"integrator\", \"a\"], [\"a\", \"fcn\", (1 - x^2)*v - x]], 20, \"points\", 401); max(getfield(r, \"x\"))",
+        );
         assert!((y - 2.0086).abs() < 2e-3, "{y}");
         // sampled: the sum of the samples of a step, one sample late
-        assert_eq!(said("getfield(sim([[\"u\", \"constant\", 1], [\"s\", \"sum\", \"u\", \"d\"], [\"d\", \"unitdelay\", 1, \"s\"]], 5, \"points\", 6), \"d\")"), "[0, 1, 2, 3, 4, 5]");
-        assert_eq!(said("getfield(sim([[\"u\", \"clock\"], [\"y\", \"dtf\", [1, 0], [1, -0.5], 1, \"u\"]], 4, \"points\", 5), \"y\")"), "[0, 1, 2.5, 4.25, 6.125]");
+        assert_eq!(
+            said(
+                "getfield(sim([[\"u\", \"constant\", 1], [\"s\", \"sum\", \"u\", \"d\"], [\"d\", \"unitdelay\", 1, \"s\"]], 5, \"points\", 6), \"d\")"
+            ),
+            "[0, 1, 2, 3, 4, 5]"
+        );
+        assert_eq!(
+            said(
+                "getfield(sim([[\"u\", \"clock\"], [\"y\", \"dtf\", [1, 0], [1, -0.5], 1, \"u\"]], 4, \"points\", 5), \"y\")"
+            ),
+            "[0, 1, 2.5, 4.25, 6.125]"
+        );
         // a delay shifts, a loop without a state settles
-        let y = last("r := sim([[\"u\", \"sine\", 1, 2], [\"y\", \"delay\", 0.5, \"u\"]], 3); part(getfield(r, \"y\"), 101)");
+        let y = last(
+            "r := sim([[\"u\", \"sine\", 1, 2], [\"y\", \"delay\", 0.5, \"u\"]], 3); part(getfield(r, \"y\"), 101)",
+        );
         assert!((y - 5f64.sin()).abs() < 1e-6, "{y}");
-        assert_eq!(said("getfield(sim([[\"u\", \"constant\", 6], [\"y\", \"sum\", \"u\", \"-h\"], [\"h\", \"gain\", 2, \"y\"]], 1, \"points\", 2), \"y\")"), "[2, 2]");
+        assert_eq!(
+            said(
+                "getfield(sim([[\"u\", \"constant\", 6], [\"y\", \"sum\", \"u\", \"-h\"], [\"h\", \"gain\", 2, \"y\"]], 1, \"points\", 2), \"y\")"
+            ),
+            "[2, 2]"
+        );
         assert!(said("sim([[\"y\", \"gain\", 2, \"z\"]], 1)").contains("which no block makes"));
         assert!(said("sim([[\"y\", \"wobble\", 2]], 1)").contains("simblocks()"));
-        assert!(said("sim([[\"c\", \"constant\", 1], [\"y\", \"sum\", \"y\", \"c\"]], 1)").contains("loop without a state"));
+        assert!(
+            said("sim([[\"c\", \"constant\", 1], [\"y\", \"sum\", \"y\", \"c\"]], 1)")
+                .contains("loop without a state")
+        );
     }
 }

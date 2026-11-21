@@ -1,3 +1,57 @@
+-e	head(0.5)	error: head(list or table[, how many])
+-e	tail(0)	error: tail(list or table[, how many])
+-e	tail(1)	error: tail(list or table[, how many])
+-e	tail(-1)	error: tail(list or table[, how many])
+-e	tail(1/2)	error: tail(list or table[, how many])
+-e	tail(2)	error: tail(list or table[, how many])
+-e	tail(i)	error: tail(list or table[, how many])
+-e	tail(inf)	error: tail(list or table[, how many])
+-e	tail(-inf)	error: tail(list or table[, how many])
+-e	tail(undefined)	error: tail(list or table[, how many])
+-e	tail(10^20)	error: tail(list or table[, how many])
+-e	tail(10^(-20))	error: tail(list or table[, how many])
+-e	tail(x)	error: tail(list or table[, how many])
+-e	tail([])	[]
+-e	tail([1, 2])	[1, 2]
+-e	tail("text")	error: tail(list or table[, how many])
+-e	tail(true)	error: tail(list or table[, how many])
+-e	tail(-7/3)	error: tail(list or table[, how many])
+-e	tail(0.5)	error: tail(list or table[, how many])
+-e	varnames(0)	varnames(0)
+-e	varnames(1)	varnames(1)
+-e	varnames(-1)	varnames(-1)
+-e	varnames(1/2)	varnames(1/2)
+-e	varnames(2)	varnames(2)
+-e	varnames(i)	varnames(i)
+-e	varnames(inf)	varnames(inf)
+-e	varnames(-inf)	varnames(-inf)
+-e	varnames(undefined)	undefined
+-e	varnames(10^20)	varnames(100000000000000000000)
+-e	varnames(10^(-20))	varnames(1/100000000000000000000)
+-e	varnames(x)	varnames(x)
+-e	varnames([])	[]
+-e	varnames([1, 2])	[varnames(1), varnames(2)]
+-e	varnames("text")	varnames("text")
+-e	varnames(true)	varnames(true)
+-e	varnames(-7/3)	varnames(-7/3)
+-e	varnames(0.5)	varnames(0.5)
+-e	table2array(0)	table2array(0)
+-e	table2array(1)	table2array(1)
+-e	table2array(-1)	table2array(-1)
+-e	table2array(1/2)	table2array(1/2)
+-e	table2array(2)	table2array(2)
+-e	table2array(i)	table2array(i)
+-e	table2array(inf)	table2array(inf)
+-e	table2array(-inf)	table2array(-inf)
+-e	table2array(undefined)	undefined
+-e	table2array(10^20)	table2array(100000000000000000000)
+-e	table2array(10^(-20))	table2array(1/100000000000000000000)
+-e	table2array(x)	table2array(x)
+-e	table2array([])	[]
+-e	table2array([1, 2])	[table2array(1), table2array(2)]
+-e	table2array("text")	table2array("text")
+-e	table2array(true)	table2array(true)
+-e	table2array(-7/3)	table2array(-7/3)
 -e	table2array(0.5)	table2array(0.5)
 -e	array2table(0)	error: array2table needs a matrix: a list of rows of one length
 -e	array2table(1)	error: array2table needs a matrix: a list of rows of one length
@@ -644,57 +698,3 @@
 -e	stackedplot([])	error: stackedplot needs a matrix of numbers
 -e	stackedplot([1, 2])	error: stackedplot needs a matrix of numbers
 -e	stackedplot("text")	error: stackedplot needs a matrix of numbers
--e	stackedplot(true)	error: stackedplot needs a matrix of numbers
--e	stackedplot(-7/3)	error: stackedplot needs a matrix of numbers
--e	stackedplot(0.5)	error: stackedplot needs a matrix of numbers
--e	biplot(0)	error: biplot needs a matrix of numbers
--e	biplot(1)	error: biplot needs a matrix of numbers
--e	biplot(-1)	error: biplot needs a matrix of numbers
--e	biplot(1/2)	error: biplot needs a matrix of numbers
--e	biplot(2)	error: biplot needs a matrix of numbers
--e	biplot(i)	error: biplot needs a matrix of numbers
--e	biplot(inf)	error: biplot needs a matrix of numbers
--e	biplot(-inf)	error: biplot needs a matrix of numbers
--e	biplot(undefined)	error: biplot needs a matrix of numbers
--e	biplot(10^20)	error: biplot needs a matrix of numbers
--e	biplot(10^(-20))	error: biplot needs a matrix of numbers
--e	biplot(x)	error: biplot needs a matrix of numbers
--e	biplot([])	error: biplot needs a matrix of numbers
--e	biplot([1, 2])	error: biplot needs a matrix of numbers
--e	biplot("text")	error: biplot needs a matrix of numbers
--e	biplot(true)	error: biplot needs a matrix of numbers
--e	biplot(-7/3)	error: biplot needs a matrix of numbers
--e	biplot(0.5)	error: biplot needs a matrix of numbers
--e	ccode(0)	"t0 = 0.0;"
--e	ccode(1)	"t0 = 1.0;"
--e	ccode(-1)	"t0 = -1.0;"
--e	ccode(1/2)	"t0 = 1.0/2.0;"
--e	ccode(2)	"t0 = 2.0;"
--e	ccode(i)	"t0 = I;"
--e	ccode(inf)	"t0 = INFINITY;"
--e	ccode(-inf)	"t0 = -INFINITY;"
--e	ccode(undefined)	"t0 = NAN;"
--e	ccode(10^20)	"t0 = 100000000000000000000.0;"
--e	ccode(10^(-20))	"t0 = 1.0/100000000000000000000.0;"
--e	ccode(x)	"t0 = x;"
--e	ccode([])	""
--e	ccode([1, 2])	"t0[0] = 1.0;|t0[1] = 2.0;"
--e	ccode("text")	error: ccode: C has no function for string
--e	ccode(true)	"t0 = 1;"
--e	ccode(-7/3)	"t0 = -7.0/3.0;"
--e	ccode(0.5)	"t0 = 1.0/2.0;"
--e	fortran(0)	"      t0 = 0.0D0"
--e	fortran(1)	"      t0 = 1.0D0"
--e	fortran(-1)	"      t0 = -1.0D0"
--e	fortran(1/2)	"      t0 = 1.0D0/2.0D0"
--e	fortran(2)	"      t0 = 2.0D0"
--e	fortran(i)	"      t0 = (0.0D0,1.0D0)"
--e	fortran(inf)	"      t0 = huge(1.0D0)"
--e	fortran(-inf)	"      t0 = -huge(1.0D0)"
--e	fortran(undefined)	"      t0 = undDfinDd"
--e	fortran(10^20)	"      t0 = 100000000000000000000.0D0"
--e	fortran(10^(-20))	"      t0 = 1.0D0/100000000000000000000.0D0"
--e	fortran(x)	"      t0 = x"
--e	fortran([])	""
--e	fortran([1, 2])	"      t0(1) = 1.0D0|      t0(2) = 2.0D0"
--e	fortran("text")	error: fortran: Fortran has no function for string

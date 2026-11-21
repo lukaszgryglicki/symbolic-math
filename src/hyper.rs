@@ -388,6 +388,47 @@ fn hyp2f1_far(a: &Complex, b: &Complex, c: &Complex, z: &Complex, wp: u32) -> Ou
     None
 }
 
+/// Gauss's function far left on the real axis, by its two series in 1/z:
+/// gamma(c) gamma(b - a)/(gamma(b) gamma(c - a)) (-z)^(-a) 2F1(a, a - c + 1; a - b + 1; 1/z) and
+/// the same with a and b the other way round. `None`: not this way.
+fn hyp2f1_inverse(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) -> Option<Complex> {
+    // (a - b a whole number: both parts have poles that cancel each other; b moved a hair
+    // stands for the limit, with twice the bits)
+    let whole = is_int(&Complex::with_val(p + 32, a - b)).is_some();
+    let wp = if whole { 2 * p + 96 } else { p + 64 };
+    let (a, c) = (Complex::with_val(wp, a), Complex::with_val(wp, c));
+    let b = match whole {
+        true => Complex::with_val(wp, b) + (Float::with_val(wp, 1) >> (p + 24)),
+        false => Complex::with_val(wp, b),
+    };
+    let inv = Complex::with_val(wp, z.recip_ref());
+    let log = Complex::with_val(wp, Float::with_val(wp, -z.real())).ln();
+    let gc = gamma_any(&c, wp)??;
+    let part = |a: &Complex, b: &Complex| -> Option<Complex> {
+        let low = rgamma(b, wp)? * rgamma(&Complex::with_val(wp, &c - a), wp)?;
+        if low.is_zero() {
+            return Some(Complex::new(wp));
+        }
+        let top = gamma_any(&Complex::with_val(wp, b - a), wp)??;
+        let series = pfq(
+            &[a.clone(), Complex::with_val(wp, a - &c) + 1u32],
+            &[Complex::with_val(wp, a - b) + 1u32],
+            &inv,
+            wp,
+        )??;
+        let power = (Complex::with_val(wp, -a) * &log).exp();
+        Some(Complex::with_val(wp, &gc * top) * low * power * series)
+    };
+    let (first, second) = (part(&a, &b)?, part(&b, &a)?);
+    let sum = Complex::with_val(wp, &first + &second);
+    // (parts that cancel each other further than the spare bits reach: not this way)
+    let lost = expo(&first).max(expo(&second)) - expo(&sum);
+    if sum.is_zero() || lost + 24 > i64::from(wp - p) {
+        return None;
+    }
+    Some(Complex::with_val(p, sum))
+}
+
 /// Gauss's hypergeometric function, on its principal branch (cut from 1 to infinity).
 pub(crate) fn hyp2f1(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) -> Out {
     if z.is_zero() {
@@ -434,6 +475,12 @@ pub(crate) fn hyp2f1(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32)
         };
         let factor = (Complex::with_val(wp, -a) * crate::numeric::unsigned_zero(one_z).ln()).exp();
         return Some(Some(Complex::with_val(p, f * factor)));
+    }
+    if z.imag().is_zero()
+        && *z.real() < -1.35
+        && let Some(v) = hyp2f1_inverse(a, b, c, z, p)
+    {
+        return Some(Some(v));
     }
     let far = size(z).max(2.0).log2().min(1e6) as u32;
     let near = (-size(&one_z).min(1.0).log2()).clamp(0.0, 1e6) as u32;
@@ -604,6 +651,88 @@ pub(crate) fn beta_inc(z: &Complex, a: &Complex, b: &Complex, p: u32) -> Out {
     Some(Some(Complex::with_val(p, f * power / a)))
 }
 
+/// The share of the whole beta function that the integral up to `x` has, for 0 < x < 1 and
+/// large positive `a`, `b`: by the continued fraction, which loses nothing where the series
+/// cancels itself away. `None` when it does not settle.
+fn beta_share(x: &Float, a: &Float, b: &Float, p: u32) -> Option<Float> {
+    let size = Float::with_val(64, a + b).to_f64().max(4.0).log2().ceil() as u32;
+    let wp = p + 64 + 2 * size;
+    let (x, a, b) = (
+        Float::with_val(wp, x),
+        Float::with_val(wp, a),
+        Float::with_val(wp, b),
+    );
+    // (the fraction settles fast below the middle (a + 1)/(a + b + 2); above it the mirrored one does)
+    let whole = Float::with_val(wp, &a + &b);
+    let mirrored = Float::with_val(wp, &x * Float::with_val(wp, &whole + 2u32))
+        > Float::with_val(wp, &a + 1u32);
+    let (x, a, b) = match mirrored {
+        true => (Float::with_val(wp, 1u32 - &x), b, a),
+        false => (x, a, b),
+    };
+    let log_front = Float::with_val(wp, &a * Float::with_val(wp, x.ln_ref()))
+        + Float::with_val(wp, &b * Float::with_val(wp, (-x.clone()).ln_1p()))
+        + Float::with_val(wp, whole.ln_gamma_ref())
+        - Float::with_val(wp, a.ln_gamma_ref())
+        - Float::with_val(wp, b.ln_gamma_ref());
+    let front = log_front.exp() / &a;
+    // the method of Lentz
+    let tiny = Float::with_val(wp, 1) >> (4 * wp);
+    let kept = |v: Float| {
+        if Float::with_val(wp, v.abs_ref()) < tiny {
+            tiny.clone()
+        } else {
+            v
+        }
+    };
+    let done = Float::with_val(wp, 1) >> (wp - 8);
+    let mut c = Float::with_val(wp, 1);
+    let mut d =
+        kept(1u32 - Float::with_val(wp, &whole * &x) / Float::with_val(wp, &a + 1u32)).recip();
+    let mut h = d.clone();
+    for m in 1..=20_000_000u32 {
+        let twice = Float::with_val(wp, &a + 2 * m);
+        let even =
+            Float::with_val(wp, &b - m) * m * &x / (Float::with_val(wp, &twice - 1u32) * &twice);
+        d = kept(1u32 + Float::with_val(wp, &even * &d)).recip();
+        c = kept(1u32 + Float::with_val(wp, &even / &c));
+        h *= Float::with_val(wp, &d * &c);
+        let odd = -(Float::with_val(wp, &a + m) * Float::with_val(wp, &whole + m) * &x)
+            / (Float::with_val(wp, &twice + 1u32) * &twice);
+        d = kept(1u32 + Float::with_val(wp, &odd * &d)).recip();
+        c = kept(1u32 + Float::with_val(wp, &odd / &c));
+        let step = Float::with_val(wp, &d * &c);
+        h *= &step;
+        if Float::with_val(wp, &step - 1u32).abs() < done {
+            let value = Float::with_val(wp, &front * &h);
+            return Some(match mirrored {
+                true => Float::with_val(p, 1u32 - value),
+                false => Float::with_val(p, value),
+            });
+        }
+    }
+    None
+}
+
+/// The real arguments where `beta_share` is the way: 0 < x < 1 and positive a, b, one of them large.
+fn beta_large(z: &Complex, a: &Complex, b: &Complex) -> bool {
+    [z, a, b].iter().all(|v| v.imag().is_zero())
+        && *z.real() > 0u32
+        && *z.real() < 1u32
+        && *a.real() > 0u32
+        && *b.real() > 0u32
+        && (*a.real() > 200u32 || *b.real() > 200u32)
+}
+
+/// Real a > 0 and z beyond 1000 and a + 1.
+fn far_right(a: &Complex, z: &Complex) -> bool {
+    a.imag().is_zero()
+        && z.imag().is_zero()
+        && *a.real() > 0u32
+        && *z.real() > 1000u32
+        && *z.real() > Float::with_val(64, a.real() + 1u32)
+}
+
 fn beta_full(a: &Complex, b: &Complex, wp: u32) -> Out {
     let (Some(ga), Some(gb)) = (gamma_any(a, wp)?, gamma_any(b, wp)?) else {
         return Some(None);
@@ -685,6 +814,19 @@ fn dispatch(name: &str, a: &[Complex], p: u32) -> Out {
             };
             Some(cut(Some(x - y)))
         }
+        // (far right of a the series of the lower function cancels itself: the upper one is the way)
+        ("lowergamma" | "gammap", 2) if far_right(&a[0], &a[1]) => {
+            let Some(upper) = upper_gamma(&a[0], &a[1], wp)? else {
+                return Some(None);
+            };
+            if name == "gammap" {
+                return Some(cut(Some(1u32 - upper * rgamma(&a[0], wp)?)));
+            }
+            let Some(whole) = gamma_any(&a[0], wp)? else {
+                return Some(None);
+            };
+            Some(cut(Some(whole - upper)))
+        }
         ("lowergamma", 2) => lower_gamma(&a[0], &a[1], p),
         ("gammaq", 2) => {
             let Some(g) = upper_gamma(&a[0], &a[1], wp)? else {
@@ -722,6 +864,16 @@ fn dispatch(name: &str, a: &[Complex], p: u32) -> Out {
                 * crate::numeric::unsigned_zero(Complex::with_val(wp, z)).ln())
             .exp();
             Some(cut(Some(g * power)))
+        }
+        ("betainc" | "betaregularized", 3) if beta_large(&a[0], &a[1], &a[2]) => {
+            let share = beta_share(a[0].real(), a[1].real(), a[2].real(), wp)?;
+            if name == "betaregularized" {
+                return Some(cut(Some(Complex::with_val(wp, share))));
+            }
+            let Some(full) = beta_full(&a[1], &a[2], wp)? else {
+                return Some(None);
+            };
+            Some(cut(Some(full * share)))
         }
         ("betainc", 3) => beta_inc(&a[0], &a[1], &a[2], p),
         ("betaregularized", 3) => {

@@ -328,7 +328,12 @@ impl Session {
                     label(low),
                     label(high)
                 ),
-                _ => format!("{} from {} to {}", shape.long(parts[k]), label(low), label(high)),
+                _ => format!(
+                    "{} from {} to {}",
+                    shape.long(parts[k]),
+                    label(low),
+                    label(high)
+                ),
             }
         };
         let (low, high) = shape.ranges[coloured];

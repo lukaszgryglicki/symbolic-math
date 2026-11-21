@@ -1,3 +1,57 @@
+-e	stackedplot(true)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(-7/3)	error: stackedplot needs a matrix of numbers
+-e	stackedplot(0.5)	error: stackedplot needs a matrix of numbers
+-e	biplot(0)	error: biplot needs a matrix of numbers
+-e	biplot(1)	error: biplot needs a matrix of numbers
+-e	biplot(-1)	error: biplot needs a matrix of numbers
+-e	biplot(1/2)	error: biplot needs a matrix of numbers
+-e	biplot(2)	error: biplot needs a matrix of numbers
+-e	biplot(i)	error: biplot needs a matrix of numbers
+-e	biplot(inf)	error: biplot needs a matrix of numbers
+-e	biplot(-inf)	error: biplot needs a matrix of numbers
+-e	biplot(undefined)	error: biplot needs a matrix of numbers
+-e	biplot(10^20)	error: biplot needs a matrix of numbers
+-e	biplot(10^(-20))	error: biplot needs a matrix of numbers
+-e	biplot(x)	error: biplot needs a matrix of numbers
+-e	biplot([])	error: biplot needs a matrix of numbers
+-e	biplot([1, 2])	error: biplot needs a matrix of numbers
+-e	biplot("text")	error: biplot needs a matrix of numbers
+-e	biplot(true)	error: biplot needs a matrix of numbers
+-e	biplot(-7/3)	error: biplot needs a matrix of numbers
+-e	biplot(0.5)	error: biplot needs a matrix of numbers
+-e	ccode(0)	"t0 = 0.0;"
+-e	ccode(1)	"t0 = 1.0;"
+-e	ccode(-1)	"t0 = -1.0;"
+-e	ccode(1/2)	"t0 = 1.0/2.0;"
+-e	ccode(2)	"t0 = 2.0;"
+-e	ccode(i)	"t0 = I;"
+-e	ccode(inf)	"t0 = INFINITY;"
+-e	ccode(-inf)	"t0 = -INFINITY;"
+-e	ccode(undefined)	"t0 = NAN;"
+-e	ccode(10^20)	"t0 = 100000000000000000000.0;"
+-e	ccode(10^(-20))	"t0 = 1.0/100000000000000000000.0;"
+-e	ccode(x)	"t0 = x;"
+-e	ccode([])	""
+-e	ccode([1, 2])	"t0[0] = 1.0;|t0[1] = 2.0;"
+-e	ccode("text")	error: ccode: C has no function for string
+-e	ccode(true)	"t0 = 1;"
+-e	ccode(-7/3)	"t0 = -7.0/3.0;"
+-e	ccode(0.5)	"t0 = 1.0/2.0;"
+-e	fortran(0)	"      t0 = 0.0D0"
+-e	fortran(1)	"      t0 = 1.0D0"
+-e	fortran(-1)	"      t0 = -1.0D0"
+-e	fortran(1/2)	"      t0 = 1.0D0/2.0D0"
+-e	fortran(2)	"      t0 = 2.0D0"
+-e	fortran(i)	"      t0 = (0.0D0,1.0D0)"
+-e	fortran(inf)	"      t0 = huge(1.0D0)"
+-e	fortran(-inf)	"      t0 = -huge(1.0D0)"
+-e	fortran(undefined)	"      t0 = undDfinDd"
+-e	fortran(10^20)	"      t0 = 100000000000000000000.0D0"
+-e	fortran(10^(-20))	"      t0 = 1.0D0/100000000000000000000.0D0"
+-e	fortran(x)	"      t0 = x"
+-e	fortran([])	""
+-e	fortran([1, 2])	"      t0(1) = 1.0D0|      t0(2) = 2.0D0"
+-e	fortran("text")	error: fortran: Fortran has no function for string
 -e	fortran(true)	"      t0 = .true."
 -e	fortran(-7/3)	"      t0 = -7.0D0/3.0D0"
 -e	fortran(0.5)	"      t0 = 1.0D0/2.0D0"
@@ -181,24 +235,24 @@
 -e	zpkdata(true)	[[], [], true]
 -e	zpkdata(-7/3)	[[], [], -7/3]
 -e	zpkdata(0.5)	[[], [], 0.5]
--e	ssdata(0)	[[[]], [], [[]], [[0]]]
--e	ssdata(1)	[[[]], [], [[]], [[1]]]
--e	ssdata(-1)	[[[]], [], [[]], [[-1]]]
--e	ssdata(1/2)	[[[]], [], [[]], [[1/2]]]
--e	ssdata(2)	[[[]], [], [[]], [[2]]]
--e	ssdata(i)	[[[]], [], [[]], [[i]]]
--e	ssdata(inf)	[[[]], [], [[]], [[inf]]]
--e	ssdata(-inf)	[[[]], [], [[]], [[-inf]]]
--e	ssdata(undefined)	[[[]], [], [[]], [[undefined]]]
--e	ssdata(10^20)	[[[]], [], [[]], [[100000000000000000000]]]
--e	ssdata(10^(-20))	[[[]], [], [[]], [[1/100000000000000000000]]]
--e	ssdata(x)	[[[]], [], [[]], [[x]]]
+-e	ssdata(0)	[[], [], [[]], [[0]]]
+-e	ssdata(1)	[[], [], [[]], [[1]]]
+-e	ssdata(-1)	[[], [], [[]], [[-1]]]
+-e	ssdata(1/2)	[[], [], [[]], [[1/2]]]
+-e	ssdata(2)	[[], [], [[]], [[2]]]
+-e	ssdata(i)	[[], [], [[]], [[i]]]
+-e	ssdata(inf)	[[], [], [[]], [[inf]]]
+-e	ssdata(-inf)	[[], [], [[]], [[-inf]]]
+-e	ssdata(undefined)	[[], [], [[]], [[undefined]]]
+-e	ssdata(10^20)	[[], [], [[]], [[100000000000000000000]]]
+-e	ssdata(10^(-20))	[[], [], [[]], [[1/100000000000000000000]]]
+-e	ssdata(x)	[[], [], [[]], [[x]]]
 -e	ssdata([])	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	ssdata([1, 2])	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	ssdata("text")	error: ssdata needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
--e	ssdata(true)	[[[]], [], [[]], [[true]]]
--e	ssdata(-7/3)	[[[]], [], [[]], [[-7/3]]]
--e	ssdata(0.5)	[[[]], [], [[]], [[0.5]]]
+-e	ssdata(true)	[[], [], [[]], [[true]]]
+-e	ssdata(-7/3)	[[], [], [[]], [[-7/3]]]
+-e	ssdata(0.5)	[[], [], [[]], [[0.5]]]
 -e	tf2sym(0)	0
 -e	tf2sym(1)	1
 -e	tf2sym(-1)	-1
@@ -505,24 +559,24 @@
 -e	margin(true)	[inf, inf, undefined, undefined]
 -e	margin(-7/3)	[inf, inf, undefined, undefined]
 -e	margin(0.5)	[inf, inf, undefined, undefined]
--e	allmargin(0)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(-1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(1/2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(i)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(-inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(undefined)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(10^20)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(10^(-20))	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(x)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(0)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(-1)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(1/2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(2)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(i)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(-inf)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(undefined)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(10^20)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(10^(-20))	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(x)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
 -e	allmargin([])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	allmargin([1, 2])	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	allmargin("text")	error: margin needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
--e	allmargin(true)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(-7/3)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
--e	allmargin(0.5)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "Stable", true)
+-e	allmargin(true)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(-7/3)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
+-e	allmargin(0.5)	struct("GainMargin", [], "GMFrequency", [], "PhaseMargin", [], "PMFrequency", [], "DelayMargin", [], "DMFrequency", [], "Stable", true)
 -e	hinfnorm(0)	[0, 0]
 -e	hinfnorm(1)	[1, 0]
 -e	hinfnorm(-1)	[1, 0]
@@ -595,24 +649,24 @@
 -e	impulse(true)	diracdelta(t)*true
 -e	impulse(-7/3)	-7diracdelta(t)/3
 -e	impulse(0.5)	0.5diracdelta(t)
--e	stepinfo(0)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0, "SettlingMax", 0, "Overshoot", 0, "Undershoot", 0, "Peak", 0, "PeakTime", inf)
--e	stepinfo(1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.9, "SettlingMax", 1, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", inf)
--e	stepinfo(-1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -1, "SettlingMax", -0.9, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", inf)
--e	stepinfo(1/2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.45, "SettlingMax", 0.5, "Overshoot", 0, "Undershoot", 0, "Peak", 0.5, "PeakTime", inf)
--e	stepinfo(2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 1.8, "SettlingMax", 2, "Overshoot", 0, "Undershoot", 0, "Peak", 2, "PeakTime", inf)
+-e	stepinfo(0)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0, "SettlingMax", 0, "Overshoot", 0, "Undershoot", 0, "Peak", 0, "PeakTime", 0)
+-e	stepinfo(1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 1, "SettlingMax", 1, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", 0)
+-e	stepinfo(-1)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -1, "SettlingMax", -1, "Overshoot", 0, "Undershoot", 0, "Peak", 1, "PeakTime", 0)
+-e	stepinfo(1/2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 1/2, "SettlingMax", 1/2, "Overshoot", 0, "Undershoot", 0, "Peak", 1/2, "PeakTime", 0)
+-e	stepinfo(2)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 2, "SettlingMax", 2, "Overshoot", 0, "Undershoot", 0, "Peak", 2, "PeakTime", 0)
 -e	stepinfo(i)	error: stepinfo: the function has a value that is not real there
 -e	stepinfo(inf)	error: inf is no number
 -e	stepinfo(-inf)	error: -inf is no number
 -e	stepinfo(undefined)	error: undefined is no number
--e	stepinfo(10^20)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 90000000000000000000, "SettlingMax", 100000000000000000000, "Overshoot", 0, "Undershoot", 0, "Peak", 100000000000000000000, "PeakTime", inf)
--e	stepinfo(10^(-20))	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 9e-21, "SettlingMax", 1e-20, "Overshoot", 0, "Undershoot", 0, "Peak", 1e-20, "PeakTime", inf)
+-e	stepinfo(10^20)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 100000000000000000000, "SettlingMax", 100000000000000000000, "Overshoot", 0, "Undershoot", 0, "Peak", 100000000000000000000, "PeakTime", 0)
+-e	stepinfo(10^(-20))	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 1/100000000000000000000, "SettlingMax", 1/100000000000000000000, "Overshoot", 0, "Undershoot", 0, "Peak", 1/100000000000000000000, "PeakTime", 0)
 -e	stepinfo(x)	error: x is no number
 -e	stepinfo([])	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	stepinfo([1, 2])	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	stepinfo("text")	error: stepinfo needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
 -e	stepinfo(true)	error: true is no number
--e	stepinfo(-7/3)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -2.3333333333333333333333333333333, "SettlingMax", -2.1, "Overshoot", 0, "Undershoot", 0, "Peak", 2.3333333333333333333333333333333, "PeakTime", inf)
--e	stepinfo(0.5)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.45, "SettlingMax", 0.5, "Overshoot", 0, "Undershoot", 0, "Peak", 0.5, "PeakTime", inf)
+-e	stepinfo(-7/3)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", -7/3, "SettlingMax", -7/3, "Overshoot", 0, "Undershoot", 0, "Peak", 7/3, "PeakTime", 0)
+-e	stepinfo(0.5)	struct("RiseTime", 0, "SettlingTime", 0, "SettlingMin", 0.5, "SettlingMax", 0.5, "Overshoot", 0, "Undershoot", 0, "Peak", 0.5, "PeakTime", 0)
 -e	d2c(0)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
 -e	d2c(1)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
 -e	d2c(-1)	error: d2c takes a sampled system with its time of a sample: tf(num, den, Ts)
@@ -644,57 +698,3 @@
 -e	pid(10^(-20))	tf([1], [100000000000000000000])
 -e	pid(x)	tf([x], [1])
 -e	pid([])	tf([[]], [1])
--e	pid([1, 2])	tf([[1, 2]], [1])
--e	pid("text")	tf(["text"], [1])
--e	pid(true)	tf([true], [1])
--e	pid(-7/3)	tf([-7], [3])
--e	pid(0.5)	tf([1], [2])
--e	rlocus(0)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(1)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(-1)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(1/2)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(2)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(i)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(inf)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(-inf)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(undefined)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(10^20)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(10^(-20))	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(x)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus([])	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
--e	rlocus([1, 2])	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
--e	rlocus("text")	error: rlocus needs a system: tf(num, den), zpk(zeros, poles, gain), ss(A, B, C, D) or a ratio of polynomials in s (in z for a sampled system)
--e	rlocus(true)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(-7/3)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 1/10, 1/5, 1/2, 1, 2, 5, 10, 20, 50, 100]]
--e	rlocus(0.5)	[[[], [], [], [], [], [], [], [], [], [], []], [0, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100]]
--e	esort(0)	[0]
--e	esort(1)	[1]
--e	esort(-1)	[-1]
--e	esort(1/2)	[1/2]
--e	esort(2)	[2]
--e	esort(i)	[i]
--e	esort(inf)	error: inf is no number
--e	esort(-inf)	error: -inf is no number
--e	esort(undefined)	error: undefined is no number
--e	esort(10^20)	[100000000000000000000]
--e	esort(10^(-20))	[1/100000000000000000000]
--e	esort(x)	error: x is no number
--e	esort([])	[]
--e	esort([1, 2])	[2, 1]
--e	esort("text")	error: "text" is no number
--e	esort(true)	error: true is no number
--e	esort(-7/3)	[-7/3]
--e	esort(0.5)	[0.5]
--e	dsort(0)	[0]
--e	dsort(1)	[1]
--e	dsort(-1)	[-1]
--e	dsort(1/2)	[1/2]
--e	dsort(2)	[2]
--e	dsort(i)	[i]
--e	dsort(inf)	error: inf is no number
--e	dsort(-inf)	error: -inf is no number
--e	dsort(undefined)	error: undefined is no number
--e	dsort(10^20)	[100000000000000000000]
--e	dsort(10^(-20))	[1/100000000000000000000]
--e	dsort(x)	error: x is no number
--e	dsort([])	[]

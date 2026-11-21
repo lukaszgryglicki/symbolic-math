@@ -1,0 +1,429 @@
+-e	vec2ind(1/2)	[1]
+-e	vec2ind(2)	[1]
+-e	vec2ind(i)	[1]
+-e	vec2ind(inf)	[1]
+-e	vec2ind(-inf)	[1]
+-e	vec2ind(undefined)	[1]
+-e	vec2ind(10^20)	[1]
+-e	vec2ind(10^(-20))	[1]
+-e	vec2ind(x)	[1]
+-e	vec2ind([])	[]
+-e	vec2ind([1, 2])	[1, 1]
+-e	vec2ind("text")	[1]
+-e	vec2ind(true)	[1]
+-e	vec2ind(-7/3)	[1]
+-e	vec2ind(0.5)	[1]
+-e	mapminmax(0)	[-1]
+-e	mapminmax(1)	[-1]
+-e	mapminmax(-1)	[-1]
+-e	mapminmax(1/2)	[-1]
+-e	mapminmax(2)	[-1]
+-e	mapminmax(i)	[-1]
+-e	mapminmax(inf)	[undefined]
+-e	mapminmax(-inf)	[undefined]
+-e	mapminmax(undefined)	[undefined]
+-e	mapminmax(10^20)	[-1]
+-e	mapminmax(10^(-20))	[-1]
+-e	mapminmax(x)	[-1]
+-e	mapminmax([])	[]
+-e	mapminmax([1, 2])	[-1, 1]
+-e	mapminmax("text")	[-1]
+-e	mapminmax(true)	[-1]
+-e	mapminmax(-7/3)	[-1]
+-e	mapminmax(0.5)	[-1]
+-e	mapstd(0)	[0]
+-e	mapstd(1)	[0]
+-e	mapstd(-1)	[0]
+-e	mapstd(1/2)	[0]
+-e	mapstd(2)	[0]
+-e	mapstd(i)	[0]
+-e	mapstd(inf)	[undefined]
+-e	mapstd(-inf)	[undefined]
+-e	mapstd(undefined)	[undefined]
+-e	mapstd(10^20)	[0]
+-e	mapstd(10^(-20))	[0]
+-e	mapstd(x)	[0]
+-e	mapstd([])	[]
+-e	mapstd([1, 2])	[-sqrt(2)/2, sqrt(2)/2]
+-e	mapstd("text")	[0]
+-e	mapstd(true)	[0]
+-e	mapstd(-7/3)	[0]
+-e	mapstd(0.5)	[0]
+-e	divideblock(0)	error: the number of observations must be a whole number from 1 to 100000000, not 0
+-e	divideblock(1)	[[1], [], []]
+-e	divideblock(-1)	error: the number of observations must be a whole number from 1 to 100000000, not -1
+-e	divideblock(1/2)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
+-e	divideblock(2)	[[1, 2], [], []]
+-e	divideblock(i)	error: the number of observations must be a whole number from 1 to 100000000, not i
+-e	divideblock(inf)	error: the number of observations must be a whole number from 1 to 100000000, not inf
+-e	divideblock(-inf)	error: the number of observations must be a whole number from 1 to 100000000, not -inf
+-e	divideblock(undefined)	error: the number of observations must be a whole number from 1 to 100000000, not undefined
+-e	divideblock(10^20)	error: the number of observations must be a whole number from 1 to 100000000, not 100000000000000000000
+-e	divideblock(10^(-20))	error: the number of observations must be a whole number from 1 to 100000000, not 1/100000000000000000000
+-e	divideblock(x)	error: the number of observations must be a whole number from 1 to 100000000, not x
+-e	divideblock([])	error: the number of observations must be a whole number from 1 to 100000000, not []
+-e	divideblock([1, 2])	error: the number of observations must be a whole number from 1 to 100000000, not [1, 2]
+-e	divideblock("text")	error: the number of observations must be a whole number from 1 to 100000000, not "text"
+-e	divideblock(true)	error: the number of observations must be a whole number from 1 to 100000000, not true
+-e	divideblock(-7/3)	error: the number of observations must be a whole number from 1 to 100000000, not -7/3
+-e	divideblock(0.5)	error: the number of observations must be a whole number from 1 to 100000000, not 1/2
+-e	feedforwardnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
+-e	feedforwardnet(1)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
+-e	feedforwardnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	feedforwardnet(2)	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
+-e	feedforwardnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
+-e	feedforwardnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
+-e	feedforwardnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
+-e	feedforwardnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
+-e	feedforwardnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
+-e	feedforwardnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
+-e	feedforwardnet([])	error: feedforwardnet([values that come in, units of every layer ..., values that go out])
+-e	feedforwardnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "purelin"]]
+-e	feedforwardnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
+-e	feedforwardnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
+-e	feedforwardnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
+-e	feedforwardnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	patternnet(0)	error: the number of units of a layer must be a whole number from 1 to 10000, not 0
+-e	patternnet(1)	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet(-1)	error: the number of units of a layer must be a whole number from 1 to 10000, not -1
+-e	patternnet(1/2)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	patternnet(2)	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet(i)	error: the number of units of a layer must be a whole number from 1 to 10000, not i
+-e	patternnet(inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not inf
+-e	patternnet(-inf)	error: the number of units of a layer must be a whole number from 1 to 10000, not -inf
+-e	patternnet(undefined)	error: the number of units of a layer must be a whole number from 1 to 10000, not undefined
+-e	patternnet(10^20)	error: the number of units of a layer must be a whole number from 1 to 10000, not 100000000000000000000
+-e	patternnet(10^(-20))	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/100000000000000000000
+-e	patternnet(x)	error: the number of units of a layer must be a whole number from 1 to 10000, not x
+-e	patternnet([])	error: patternnet([values that come in, units of every layer ..., values that go out])
+-e	patternnet([1, 2])	[[[[-0.802156], [1.077597]], [0, 0], "softmax"]]
+-e	patternnet("text")	error: the number of units of a layer must be a whole number from 1 to 10000, not "text"
+-e	patternnet(true)	error: the number of units of a layer must be a whole number from 1 to 10000, not true
+-e	patternnet(-7/3)	error: the number of units of a layer must be a whole number from 1 to 10000, not -7/3
+-e	patternnet(0.5)	error: the number of units of a layer must be a whole number from 1 to 10000, not 1/2
+-e	solid4d(0)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(1)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(-1)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(1/2)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(2)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(i)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(inf)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(-inf)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(undefined)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(10^20)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(10^(-20))	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(x)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d([])	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d([1, 2])	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d("text")	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(true)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(-7/3)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	solid4d(0.5)	error: solid4d("name", numbers...): the solids are ball (hypersphere, glome), 5-cell, tesseract (8-cell), 16-cell, 24-cell, 120-cell, 600-cell, the uniform polychora (rectified, truncated, bitruncated, cantellated, runcinated, cantitruncated, runcitruncated or omnitruncated before one of them, or a diagram as x5o3o3x; dual before it for the dual), snub 24-cell, grand antiprism, the ten regular star polychora (small stellated 120-cell ..., or a symbol as {5/2,5,3}), ellipsoid a b c d, prism, pyramid and bipyramid over a polyhedron, duoprism p q, duopyramid p q, spherinder, cubinder, duocylinder, prismic cylinder sides, hypercone, hyperfrustum lower upper, coninder, cylindrone, dicone, hypercapsule half-length, spheritorus R r, torisphere R r, tiger (duotorus) R1 R2 r, ditorus R a r, torinder R r, paraboloid, hyperboloid waist, spherical segment lower upper, lens thickness, superquadric power, bracketope "shape", star cell cells core spike sharpness, Klein bottle R r thickness half-turns, projective plane radius thickness, Moebius band R half-width thickness half-turns, reuleaux "rotor" | "simplex"
+-e	volume4d(0)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(-1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(1/2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(i)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(-inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(undefined)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(10^20)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(10^(-20))	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(x)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d([])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d([1, 2])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d("text")	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(true)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(-7/3)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	volume4d(0.5)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(0)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(-1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(1/2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(i)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(-inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(undefined)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(10^20)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(10^(-20))	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(x)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d([])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d([1, 2])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d("text")	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(true)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(-7/3)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	surface4d(0.5)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(0)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(-1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(1/2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(i)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(-inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(undefined)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(10^20)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(10^(-20))	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(x)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d([])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d([1, 2])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d("text")	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(true)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(-7/3)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	vertices4d(0.5)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(0)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(-1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(1/2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(i)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(-inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(undefined)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(10^20)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(10^(-20))	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(x)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d([])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d([1, 2])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d("text")	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(true)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(-7/3)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	edges4d(0.5)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(0)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(-1)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(1/2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(2)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(i)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(-inf)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(undefined)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(10^20)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(10^(-20))	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(x)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d([])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d([1, 2])	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d("text")	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(true)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(-7/3)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	wire4d(0.5)	error: a solid of four dimensions: solid4d("name", numbers...)
+-e	randomwalk(0)	error: the number of steps is a whole number from 1 to 10000000, not 0
+-e	randomwalk(1)	0.1562 │                                │|       │                                │|     0 │────────────────────────────────⡆───────────────────────────────|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⡇|       │                                ⠇|       │                                │|-1.156 │                                │|       └────────────────────────────────────────────────────────────────|        -1.05                                                       1.05|1 step of chance in the plane: each of the 4 directions as likely as another|from the origin to (0, -1), 1 away; x from 0 to 0, y from -1 to 0
+-e	randomwalk(-1)	error: the number of steps is a whole number from 1 to 10000000, not -1
+-e	randomwalk(1/2)	error: the number of steps is a whole number from 1 to 10000000, not 1/2
+-e	randomwalk(2)	 0.05 │────────────────────────────────⡄───────────────────────────────|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|      │                                ⡇|-2.05 │                                ⠃|      └────────────────────────────────────────────────────────────────|       -1.68                                                       1.68|2 steps of chance in the plane: each of the 4 directions as likely as another|from the origin to (0, -2), 2 away; x from 0 to 0, y from -2 to 0
+-e	randomwalk(i)	error: the number of steps is a whole number from 1 to 10000000, not i
+-e	randomwalk(inf)	error: the number of steps is a whole number from 1 to 10000000, not inf
+-e	randomwalk(-inf)	error: the number of steps is a whole number from 1 to 10000000, not -inf
+-e	randomwalk(undefined)	error: the number of steps is a whole number from 1 to 10000000, not undefined
+-e	randomwalk(10^20)	error: the number of steps is a whole number from 1 to 10000000, not 100000000000000000000
+-e	randomwalk(10^(-20))	error: the number of steps is a whole number from 1 to 10000000, not 1/100000000000000000000
+-e	randomwalk(x)	error: the number of steps is a whole number from 1 to 10000000, not x
+-e	randomwalk([])	error: the number of steps is a whole number from 1 to 10000000, not []
+-e	randomwalk([1, 2])	error: the number of steps is a whole number from 1 to 10000000, not [1, 2]
+-e	randomwalk("text")	error: the number of steps is a whole number from 1 to 10000000, not "text"
+-e	randomwalk(true)	error: the number of steps is a whole number from 1 to 10000000, not true
+-e	randomwalk(-7/3)	error: the number of steps is a whole number from 1 to 10000000, not -7/3
+-e	randomwalk(0.5)	error: the number of steps is a whole number from 1 to 10000000, not 1/2
+-e	randomwalk3d(0)	error: the number of steps is a whole number from 1 to 10000000, not 0
+-e	randomwalk3d(1)	||||||||||                                ⠁||||||||||1 step of chance in space: each of the 6 directions as likely as another|from the origin to (0, 0, 1), 1 away; x from 0 to 0, y from 0 to 0, z from 0 to 1
+-e	randomwalk3d(-1)	error: the number of steps is a whole number from 1 to 10000000, not -1
+-e	randomwalk3d(1/2)	error: the number of steps is a whole number from 1 to 10000000, not 1/2
+-e	randomwalk3d(2)	||||||||||                                ⠁||||||||||2 steps of chance in space: each of the 6 directions as likely as another|from the origin to (0, 0, 0), 0 away; x from 0 to 0, y from 0 to 0, z from 0 to 1
+-e	randomwalk3d(i)	error: the number of steps is a whole number from 1 to 10000000, not i
+-e	randomwalk3d(inf)	error: the number of steps is a whole number from 1 to 10000000, not inf
+-e	randomwalk3d(-inf)	error: the number of steps is a whole number from 1 to 10000000, not -inf
+-e	randomwalk3d(undefined)	error: the number of steps is a whole number from 1 to 10000000, not undefined
+-e	randomwalk3d(10^20)	error: the number of steps is a whole number from 1 to 10000000, not 100000000000000000000
+-e	randomwalk3d(10^(-20))	error: the number of steps is a whole number from 1 to 10000000, not 1/100000000000000000000
+-e	randomwalk3d(x)	error: the number of steps is a whole number from 1 to 10000000, not x
+-e	randomwalk3d([])	error: the number of steps is a whole number from 1 to 10000000, not []
+-e	randomwalk3d([1, 2])	error: the number of steps is a whole number from 1 to 10000000, not [1, 2]
+-e	randomwalk3d("text")	error: the number of steps is a whole number from 1 to 10000000, not "text"
+-e	randomwalk3d(true)	error: the number of steps is a whole number from 1 to 10000000, not true
+-e	randomwalk3d(-7/3)	error: the number of steps is a whole number from 1 to 10000000, not -7/3
+-e	randomwalk3d(0.5)	error: the number of steps is a whole number from 1 to 10000000, not 1/2
+-e	imageinputlayer(0)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(1)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(-1)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(1/2)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(2)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(i)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(inf)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(-inf)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(undefined)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(10^20)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(10^(-20))	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(x)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer([])	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer([1, 2])	["input", [1, 2, 1]]
+-e	imageinputlayer("text")	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(true)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(-7/3)	error: imageinputlayer([height, width, channels])
+-e	imageinputlayer(0.5)	error: imageinputlayer([height, width, channels])
+-e	featureinputlayer(0)	error: the number of values must be a whole number from 1 to 1048576, not 0
+-e	featureinputlayer(1)	["input", 1]
+-e	featureinputlayer(-1)	error: the number of values must be a whole number from 1 to 1048576, not -1
+-e	featureinputlayer(1/2)	error: the number of values must be a whole number from 1 to 1048576, not 1/2
+-e	featureinputlayer(2)	["input", 2]
+-e	featureinputlayer(i)	error: the number of values must be a whole number from 1 to 1048576, not i
+-e	featureinputlayer(inf)	error: the number of values must be a whole number from 1 to 1048576, not inf
+-e	featureinputlayer(-inf)	error: the number of values must be a whole number from 1 to 1048576, not -inf
+-e	featureinputlayer(undefined)	error: the number of values must be a whole number from 1 to 1048576, not undefined
+-e	featureinputlayer(10^20)	error: the number of values must be a whole number from 1 to 1048576, not 100000000000000000000
+-e	featureinputlayer(10^(-20))	error: the number of values must be a whole number from 1 to 1048576, not 1/100000000000000000000
+-e	featureinputlayer(x)	error: the number of values must be a whole number from 1 to 1048576, not x
+-e	featureinputlayer([])	error: the number of values must be a whole number from 1 to 1048576, not []
+-e	featureinputlayer([1, 2])	error: the number of values must be a whole number from 1 to 1048576, not [1, 2]
+-e	featureinputlayer("text")	error: the number of values must be a whole number from 1 to 1048576, not "text"
+-e	featureinputlayer(true)	error: the number of values must be a whole number from 1 to 1048576, not true
+-e	featureinputlayer(-7/3)	error: the number of values must be a whole number from 1 to 1048576, not -7/3
+-e	featureinputlayer(0.5)	error: the number of values must be a whole number from 1 to 1048576, not 1/2
+-e	maxpooling2dlayer(0)	error: the size of the window must be a whole number from 1 to 4096, not 0
+-e	maxpooling2dlayer(1)	["maxpool", [1, 1], [1, 1]]
+-e	maxpooling2dlayer(-1)	error: the size of the window must be a whole number from 1 to 4096, not -1
+-e	maxpooling2dlayer(1/2)	error: the size of the window must be a whole number from 1 to 4096, not 1/2
+-e	maxpooling2dlayer(2)	["maxpool", [2, 2], [1, 1]]
+-e	maxpooling2dlayer(i)	error: the size of the window must be a whole number from 1 to 4096, not i
+-e	maxpooling2dlayer(inf)	error: the size of the window must be a whole number from 1 to 4096, not inf
+-e	maxpooling2dlayer(-inf)	error: the size of the window must be a whole number from 1 to 4096, not -inf
+-e	maxpooling2dlayer(undefined)	error: the size of the window must be a whole number from 1 to 4096, not undefined
+-e	maxpooling2dlayer(10^20)	error: the size of the window must be a whole number from 1 to 4096, not 100000000000000000000
+-e	maxpooling2dlayer(10^(-20))	error: the size of the window must be a whole number from 1 to 4096, not 1/100000000000000000000
+-e	maxpooling2dlayer(x)	error: the size of the window must be a whole number from 1 to 4096, not x
+-e	maxpooling2dlayer([])	error: the size of the window: one number or [down, across], not []
+-e	maxpooling2dlayer([1, 2])	["maxpool", [1, 2], [1, 1]]
+-e	maxpooling2dlayer("text")	error: the size of the window must be a whole number from 1 to 4096, not "text"
+-e	maxpooling2dlayer(true)	error: the size of the window must be a whole number from 1 to 4096, not true
+-e	maxpooling2dlayer(-7/3)	error: the size of the window must be a whole number from 1 to 4096, not -7/3
+-e	maxpooling2dlayer(0.5)	error: the size of the window must be a whole number from 1 to 4096, not 1/2
+-e	averagepooling2dlayer(0)	error: the size of the window must be a whole number from 1 to 4096, not 0
+-e	averagepooling2dlayer(1)	["avgpool", [1, 1], [1, 1]]
+-e	averagepooling2dlayer(-1)	error: the size of the window must be a whole number from 1 to 4096, not -1
+-e	averagepooling2dlayer(1/2)	error: the size of the window must be a whole number from 1 to 4096, not 1/2
+-e	averagepooling2dlayer(2)	["avgpool", [2, 2], [1, 1]]
+-e	averagepooling2dlayer(i)	error: the size of the window must be a whole number from 1 to 4096, not i
+-e	averagepooling2dlayer(inf)	error: the size of the window must be a whole number from 1 to 4096, not inf
+-e	averagepooling2dlayer(-inf)	error: the size of the window must be a whole number from 1 to 4096, not -inf
+-e	averagepooling2dlayer(undefined)	error: the size of the window must be a whole number from 1 to 4096, not undefined
+-e	averagepooling2dlayer(10^20)	error: the size of the window must be a whole number from 1 to 4096, not 100000000000000000000
+-e	averagepooling2dlayer(10^(-20))	error: the size of the window must be a whole number from 1 to 4096, not 1/100000000000000000000
+-e	averagepooling2dlayer(x)	error: the size of the window must be a whole number from 1 to 4096, not x
+-e	averagepooling2dlayer([])	error: the size of the window: one number or [down, across], not []
+-e	averagepooling2dlayer([1, 2])	["avgpool", [1, 2], [1, 1]]
+-e	averagepooling2dlayer("text")	error: the size of the window must be a whole number from 1 to 4096, not "text"
+-e	averagepooling2dlayer(true)	error: the size of the window must be a whole number from 1 to 4096, not true
+-e	averagepooling2dlayer(-7/3)	error: the size of the window must be a whole number from 1 to 4096, not -7/3
+-e	averagepooling2dlayer(0.5)	error: the size of the window must be a whole number from 1 to 4096, not 1/2
+-e	fullyconnectedlayer(0)	error: the number of units must be a whole number from 1 to 1048576, not 0
+-e	fullyconnectedlayer(1)	["dense", 1]
+-e	fullyconnectedlayer(-1)	error: the number of units must be a whole number from 1 to 1048576, not -1
+-e	fullyconnectedlayer(1/2)	error: the number of units must be a whole number from 1 to 1048576, not 1/2
+-e	fullyconnectedlayer(2)	["dense", 2]
+-e	fullyconnectedlayer(i)	error: the number of units must be a whole number from 1 to 1048576, not i
+-e	fullyconnectedlayer(inf)	error: the number of units must be a whole number from 1 to 1048576, not inf
+-e	fullyconnectedlayer(-inf)	error: the number of units must be a whole number from 1 to 1048576, not -inf
+-e	fullyconnectedlayer(undefined)	error: the number of units must be a whole number from 1 to 1048576, not undefined
+-e	fullyconnectedlayer(10^20)	error: the number of units must be a whole number from 1 to 1048576, not 100000000000000000000
+-e	fullyconnectedlayer(10^(-20))	error: the number of units must be a whole number from 1 to 1048576, not 1/100000000000000000000
+-e	fullyconnectedlayer(x)	error: the number of units must be a whole number from 1 to 1048576, not x
+-e	fullyconnectedlayer([])	error: the number of units must be a whole number from 1 to 1048576, not []
+-e	fullyconnectedlayer([1, 2])	error: the number of units must be a whole number from 1 to 1048576, not [1, 2]
+-e	fullyconnectedlayer("text")	error: the number of units must be a whole number from 1 to 1048576, not "text"
+-e	fullyconnectedlayer(true)	error: the number of units must be a whole number from 1 to 1048576, not true
+-e	fullyconnectedlayer(-7/3)	error: the number of units must be a whole number from 1 to 1048576, not -7/3
+-e	fullyconnectedlayer(0.5)	error: the number of units must be a whole number from 1 to 1048576, not 1/2
+-e	leakyrelulayer(0)	["leakyrelu", 0]
+-e	leakyrelulayer(1)	["leakyrelu", 1]
+-e	leakyrelulayer(-1)	["leakyrelu", -1]
+-e	leakyrelulayer(1/2)	["leakyrelu", 1/2]
+-e	leakyrelulayer(2)	["leakyrelu", 2]
+-e	leakyrelulayer(i)	["leakyrelu", i]
+-e	leakyrelulayer(inf)	["leakyrelu", inf]
+-e	leakyrelulayer(-inf)	["leakyrelu", -inf]
+-e	leakyrelulayer(undefined)	["leakyrelu", undefined]
+-e	leakyrelulayer(10^20)	["leakyrelu", 100000000000000000000]
+-e	leakyrelulayer(10^(-20))	["leakyrelu", 1/100000000000000000000]
+-e	leakyrelulayer(x)	["leakyrelu", x]
+-e	leakyrelulayer([])	["leakyrelu", []]
+-e	leakyrelulayer([1, 2])	["leakyrelu", [1, 2]]
+-e	leakyrelulayer("text")	["leakyrelu", "text"]
+-e	leakyrelulayer(true)	["leakyrelu", true]
+-e	leakyrelulayer(-7/3)	["leakyrelu", -7/3]
+-e	leakyrelulayer(0.5)	["leakyrelu", 0.5]
+-e	dlnetwork(0)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(1)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(-1)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(1/2)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(2)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(i)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(inf)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(-inf)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(undefined)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(10^20)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(10^(-20))	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(x)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork([])	error: dlnetwork: a network of layers begins with ["input", [height, width, channels]] (or ["input", n] for n values); then ["conv", weights, biases, stride, padding], ["maxpool", size, stride], ["avgpool", size, stride], ["flatten"], ["dense", weights, biases] and the functions of units as ["relu"], ["tanh"], ["softmax"]; dlnetwork([imageinputlayer(...), convolution2dlayer(...), ...]) makes one
+-e	dlnetwork([1, 2])	error: dlnetwork: 1 is no layer
+-e	dlnetwork("text")	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(true)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(-7/3)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	dlnetwork(0.5)	error: dlnetwork([imageinputlayer([height, width, channels]), layers ...][, seed])
+-e	trainingoptions(0)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(1)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(-1)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(1/2)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(2)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(i)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(inf)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(-inf)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(undefined)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(10^20)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(10^(-20))	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(x)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions([])	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions([1, 2])	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions("text")	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(true)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(-7/3)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	trainingoptions(0.5)	error: trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n])
+-e	arcgridread(0)	error: arcgridread("file.asc")
+-e	arcgridread(1)	error: arcgridread("file.asc")
+-e	arcgridread(-1)	error: arcgridread("file.asc")
+-e	arcgridread(1/2)	error: arcgridread("file.asc")
+-e	arcgridread(2)	error: arcgridread("file.asc")
+-e	arcgridread(i)	error: arcgridread("file.asc")
+-e	arcgridread(inf)	error: arcgridread("file.asc")
+-e	arcgridread(-inf)	error: arcgridread("file.asc")
+-e	arcgridread(undefined)	error: arcgridread("file.asc")
+-e	arcgridread(10^20)	error: arcgridread("file.asc")
+-e	arcgridread(10^(-20))	error: arcgridread("file.asc")
+-e	arcgridread(x)	error: arcgridread("file.asc")
+-e	arcgridread([])	error: arcgridread("file.asc")
+-e	arcgridread([1, 2])	error: arcgridread("file.asc")
+-e	arcgridread("text")	error: arcgridread: text: No such file or directory (os error 2)
+-e	arcgridread(true)	error: arcgridread("file.asc")
+-e	arcgridread(-7/3)	error: arcgridread("file.asc")
+-e	arcgridread(0.5)	error: arcgridread("file.asc")
+-e	egm96geoid(0)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(1)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(-1)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(1/2)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(2)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(i)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(inf)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(-inf)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(undefined)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(10^20)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(10^(-20))	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(x)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid([])	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid([1, 2])	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid("text")	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(true)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(-7/3)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])
+-e	egm96geoid(0.5)	error: egm96geoid: the reference of the grid is what georefcells, georefpostings, maprefcells or maprefpostings give (or [cells a degree, northern latitude, western longitude])

@@ -176,6 +176,11 @@ impl Gens {
         let idx = self.keys.iter().position(|k| *k == key)?;
         let k = (c / &self.steps[&key]).complete();
         let e = k.numer().to_i64().filter(|_| k.is_integer())?;
+        // (e^t beside e^(t/1000000000) would be a power of a thousand million, and e^1000.5
+        // beside e^(-7) one of thousands of a root: left as they are)
+        if e.unsigned_abs() > 128 {
+            return None;
+        }
         let p = Poly::var(n, idx).pow(u32::try_from(e.unsigned_abs()).ok()?);
         Some(if e >= 0 {
             (p, Poly::one(n))
@@ -225,7 +230,10 @@ impl Gens {
                     let part = if rest.is_one() && c.is_integer() {
                         let (bn, bd) = self.frac(b)?;
                         let k = c.numer().to_i64()?;
-                        let m = u32::try_from(k.unsigned_abs()).ok()?;
+                        // (a whole part of a sum in the exponent that is too large to multiply out: left as it is)
+                        let m = u32::try_from(k.unsigned_abs())
+                            .ok()
+                            .filter(|m| *m <= 4096)?;
                         if k >= 0 {
                             (bn.pow(m), bd.pow(m))
                         } else {

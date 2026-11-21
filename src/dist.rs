@@ -420,6 +420,33 @@ fn find(e: &Expr) -> Option<(&'static Dist, &[Expr])> {
 }
 
 /// Whether the value is a distribution: `normaldist(0, 1)` and its kin.
+/// A distribution with lists among its parameters stands for one of every entry: these,
+/// when the lists are of one length.
+pub(crate) fn spread(e: &Expr) -> Option<Result<Vec<Expr>, String>> {
+    let (dist, given) = find(e)?;
+    let size = given
+        .iter()
+        .filter_map(|v| v.as_list().map(<[Expr]>::len))
+        .max()?;
+    if given
+        .iter()
+        .any(|v| v.as_list().is_some_and(|l| l.len() != size))
+    {
+        return Some(Err(format!(
+            "{}: the lists among the parameters are of one length",
+            dist.name
+        )));
+    }
+    let one = |k: usize| {
+        let own = given.iter().map(|v| match v.as_list() {
+            Some(l) => l[k].clone(),
+            None => v.clone(),
+        });
+        Expr::call(dist.name, own.collect())
+    };
+    Some(Ok((0..size).map(one).collect()))
+}
+
 pub fn is_distribution(e: &Expr) -> bool {
     find(e).is_some()
 }
@@ -496,7 +523,12 @@ impl Bound<'_> {
             .floor()
             .to_integer()
             .and_then(|v| v.to_i64())?;
-        if !self.values.iter().all(|v| v.as_rat().is_some()) || to - from > 100_000 {
+        let most = if self.dist.cdf.is_empty() {
+            100_000
+        } else {
+            1000
+        };
+        if !self.values.iter().all(|v| v.as_rat().is_some()) || to - from > most {
             return None;
         }
         let mut total = Vec::new();
@@ -558,10 +590,58 @@ impl Bound<'_> {
             // numbers may end a hair below it)
             let reached = Float::with_val(bits, &target)
                 * (1u32 - Float::with_val(bits, Float::i_pow_u(10, digits)).recip());
-            for k in from..from + 10_000_000 {
-                let p = self.pdf(&Expr::int(k))?;
-                total +=
-                    numeric::real_value(&p, digits + 5).ok_or_else(|| self.missing("quantile"))?;
+            let top = numeric::real_value(&hi, 30).map(|v| v.to_f64());
+            // the probability of a whole number, ready to be worked out many times
+            let place = Expr::sym("#k");
+            let quick = self
+                .value(self.dist.pdf, &[("x", &place)])
+                .ok()
+                .map(|body| crate::mfun::Numeric::new(&["#k".to_string()], &body, bits));
+            let mass = |b: &mut Self, k: i64| -> Result<Float, String> {
+                let fast = quick
+                    .as_ref()
+                    .and_then(|f| f.at(&[Float::with_val(bits, k)]).ok());
+                if let Some(v) = fast {
+                    return Ok(v);
+                }
+                let p = b.pdf(&Expr::int(k))?;
+                numeric::real_value(&p, digits + 5).ok_or_else(|| b.missing("quantile"))
+            };
+            // the distribution function at a whole number, where it has a formula
+            let known = !self.dist.cdf.is_empty();
+            let below = |b: &mut Self, k: i64| -> Result<Float, String> {
+                let v = b.value(b.dist.cdf, &[("x", &Expr::int(k))])?;
+                numeric::real_value(&v, digits + 5).ok_or_else(|| b.missing("quantile"))
+            };
+            let number = |b: &mut Self, text: &'static str| -> Option<f64> {
+                let v = b.value(text, &[]).ok()?;
+                numeric::real_value(&v, 30)
+                    .map(|v| v.to_f64())
+                    .filter(|v| v.is_finite())
+            };
+            let middle = match self.dist.mean.is_empty() || self.dist.variance.is_empty() {
+                true => None,
+                false => number(self, self.dist.mean)
+                    .zip(number(self, self.dist.variance))
+                    .filter(|(_, v)| *v >= 0.0)
+                    .map(|(m, v)| (m, v.sqrt())),
+            };
+            // the sum from the start of the support, unless the mass lies far above it
+            let scan = 100_000i64;
+            let far = known
+                && middle
+                    .is_some_and(|(m, s)| m - 14.0 * s > from as f64 + scan as f64 && m < 4e18);
+            let end = match (far, known) {
+                (true, _) => from,
+                (false, true) => from + scan,
+                (false, false) => from + 10_000_000,
+            };
+            for k in from..end {
+                // (the last whole number of the support, also when its end is none)
+                if top.is_some_and(|t| (k + 1) as f64 > t) {
+                    return Ok(Expr::int(k));
+                }
+                total += mass(self, k)?;
                 if total >= reached {
                     return Ok(Expr::int(k));
                 }
@@ -569,7 +649,43 @@ impl Bound<'_> {
                     return Ok(Expr::int(k));
                 }
             }
-            return Err(self.missing("quantile"));
+            if !known {
+                return Err(self.missing("quantile"));
+            }
+            // beyond that: between two whole numbers, by the distribution function
+            let mut low = end - 1;
+            let mut step = middle.map_or(1, |(_, s)| (s.ceil() as i64).max(1));
+            if far && let Some((m, s)) = middle {
+                let begin = (m - 14.0 * s).floor() as i64;
+                if begin > low && below(self, begin)? < reached {
+                    low = begin;
+                }
+            }
+            let last = top.filter(|t| *t < 4e18).map(|t| t.floor() as i64);
+            let mut high;
+            loop {
+                high = low
+                    .checked_add(step)
+                    .filter(|h| *h < 4_000_000_000_000_000_000)
+                    .ok_or_else(|| self.missing("quantile"))?;
+                if last.is_some_and(|t| high >= t) {
+                    high = last.unwrap_or(high);
+                    break;
+                }
+                if below(self, high)? >= reached {
+                    break;
+                }
+                low = high;
+                step = step.saturating_mul(2);
+            }
+            while high - low > 1 {
+                let mid = low + (high - low) / 2;
+                match below(self, mid)? >= reached {
+                    true => high = mid,
+                    false => low = mid,
+                }
+            }
+            return Ok(Expr::int(high));
         }
         let mut at = |x: &Float| -> Result<Float, String> {
             let point = numeric::to_float_expr(rug::Complex::with_val(bits, x), digits + 8);
@@ -744,6 +860,22 @@ impl Session {
                 },
             }
         }
+        for (value, (name, _)) in values.iter().zip(dist.params) {
+            let odd = value.as_list().is_some()
+                || crate::radix::text_of(value).is_some()
+                || matches!(value, Expr::Bool(_) | Expr::Rel(..))
+                || value.has_sym(crate::expr::UNDEF)
+                || (value.is_const()
+                    && !value.is_inf()
+                    && !value.is_neg_inf()
+                    && numeric::real_value(value, 30).is_none());
+            if odd {
+                return Some(Err(format!(
+                    "{}: the parameter {name} is a real number or a name, not {value}",
+                    dist.name
+                )));
+            }
+        }
         let mut bound = Bound {
             dist,
             names: dist.params.iter().map(|(n, _)| (*n).to_string()).collect(),
@@ -766,6 +898,14 @@ impl Session {
         Some(Ok(bound))
     }
 
+    /// An error when the parameters of a distribution are none that it has.
+    pub(crate) fn valid_distribution(&mut self, e: &Expr) -> Result<(), String> {
+        match self.bound(e) {
+            Some(Err(e)) => Err(e),
+            _ => Ok(()),
+        }
+    }
+
     /// The commands whose first argument, or last for `expectation` and `probability`, is a
     /// distribution.
     pub(crate) fn distribution(&mut self, name: &str, a: &[Expr]) -> Option<Res> {
@@ -774,6 +914,17 @@ impl Session {
             (_, 1 | 2) => 0,
             _ => return None,
         };
+        if let Some(parts) = spread(&a[which]) {
+            return Some(parts.and_then(|parts| {
+                let mut out = Vec::with_capacity(parts.len());
+                for part in parts {
+                    let mut own = a.to_vec();
+                    own[which] = part;
+                    out.push(self.call(name, &own)?);
+                }
+                Ok(Expr::list(out))
+            }));
+        }
         let mut b = match self.bound(&a[which])? {
             Ok(b) => b,
             Err(e) => return Some(Err(e)),

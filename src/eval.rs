@@ -1598,8 +1598,12 @@ impl Session {
             ("quantity", [value, unit]) => units::make(value, unit),
             ("newunit", [name, q]) => units::define(name, q),
             ("removeunit", [name]) => units::forget(name),
-            ("newunit", _) => Err("newunit(\"name\", quantity), for example newunit(\"fortnight\", 14 day)".into()),
-            ("removeunit", _) => Err("removeunit(\"name\"): the name of a unit that newunit made".into()),
+            ("newunit", _) => Err(
+                "newunit(\"name\", quantity), for example newunit(\"fortnight\", 14 day)".into(),
+            ),
+            ("removeunit", _) => {
+                Err("removeunit(\"name\"): the name of a unit that newunit made".into())
+            }
             ("convert", _) => {
                 Err("convert(quantity, unit), for example convert(100 km/h, m/s)".into())
             }
@@ -3364,6 +3368,9 @@ impl Session {
                 })
             }),
             ("roots", 1 | 2) => (|| {
+                if a[0].as_list().is_some() {
+                    return Err("roots([coefficients]) or roots(expression, variable)".to_string());
+                }
                 let f = zero_form(&a[0]);
                 let v = Self::var_of(a.get(1), &f)?;
                 let solved = crate::solve::solve(&f, &v)?;

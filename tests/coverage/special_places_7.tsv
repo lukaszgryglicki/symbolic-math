@@ -225,6 +225,24 @@
 -e	rotateright(true)	error: rotateright needs a list, true is none
 -e	rotateright(-7/3)	error: rotateright needs a list, -7/3 is none
 -e	rotateright(0.5)	error: rotateright needs a list, 1/2 is none
+-e	append(0)	append(0)
+-e	append(1)	append(1)
+-e	append(-1)	append(-1)
+-e	append(1/2)	append(1/2)
+-e	append(2)	append(2)
+-e	append(i)	append(i)
+-e	append(inf)	append(inf)
+-e	append(-inf)	append(-inf)
+-e	append(undefined)	undefined
+-e	append(10^20)	append(100000000000000000000)
+-e	append(10^(-20))	append(1/100000000000000000000)
+-e	append(x)	append(x)
+-e	append([])	[]
+-e	append([1, 2])	[append(1), append(2)]
+-e	append("text")	append("text")
+-e	append(true)	append(true)
+-e	append(-7/3)	append(-7/3)
+-e	append(0.5)	append(0.5)
 -e	join(0)	error: join needs a list, 0 is none
 -e	join(1)	error: join needs a list, 1 is none
 -e	join(-1)	error: join needs a list, -1 is none
@@ -680,21 +698,3 @@
 -e	isnegative(-1)	true
 -e	isnegative(1/2)	false
 -e	isnegative(2)	false
--e	isnegative(i)	false
--e	isnegative(inf)	false
--e	isnegative(-inf)	false
--e	isnegative(undefined)	false
--e	isnegative(10^20)	false
--e	isnegative(10^(-20))	false
--e	isnegative(x)	isnegative(x)
--e	isnegative([])	false
--e	isnegative([1, 2])	false
--e	isnegative("text")	isnegative("text")
--e	isnegative(true)	false
--e	isnegative(-7/3)	true
--e	isnegative(0.5)	false
--e	isnonnegative(0)	true
--e	isnonnegative(1)	true
--e	isnonnegative(-1)	false
--e	isnonnegative(1/2)	true
--e	isnonnegative(2)	true
