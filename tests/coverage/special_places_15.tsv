@@ -1,3 +1,6 @@
+-e	unifcdf(10^20)	1
+-e	unifcdf(10^(-20))	1/100000000000000000000
+-e	unifcdf(x)	piecewise(x < 0, 0, x <= 1, x, 1)
 -e	unifcdf([])	[]
 -e	unifcdf([1, 2])	[1, 1]
 -e	unifcdf("text")	piecewise("text" < 0, 0, "text" <= 1, "text", 1)
@@ -695,6 +698,3 @@
 -e	ecdf(2)	error: ecdf needs a list
 -e	ecdf(i)	error: ecdf needs a list
 -e	ecdf(inf)	error: ecdf needs a list
--e	ecdf(-inf)	error: ecdf needs a list
--e	ecdf(undefined)	error: ecdf needs a list
--e	ecdf(10^20)	error: ecdf needs a list

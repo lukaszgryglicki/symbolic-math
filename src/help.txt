@@ -1372,6 +1372,53 @@ More shapes as JPEG XL files, each as it is and with every frame stretched (norm
   'save_jxl_fast("f1.jxl", plot4d(e^(i*z), z, pi), frames = 16, width = 64, height = 64)'
   'save_jxl_fast("f2.jxl", plot4d(e^(i*z), z, pi), normalize, frames = 16, width = 64, height = 64)'
 
+The body between the two parts of the value: fill = between, in the colours from Re f(z) to Im f(z):
+  'plot4d(z, fill = between, width = 33, height = 17, frames = 9)'
+      # over x + i*y the voxels from x to y: a frame is an area
+  'plot4d(sin(z), z, pi, fill = between, width = 48, height = 16, frames = 8)'
+  'plot4d(1/z, fill = between, width = 30, height = 10, frames = 4)'  # around a pole it is left out
+  'save_jxl("m1.jxl", plot4d(sin(z), z, pi), fill = between, width = 32, height = 32, frames = 8)'
+  'save_jxl("m2.jxl", plot4d(sin(z), z, pi), fill = span, width = 32, height = 32, frames = 8)'
+      # span = between
+  'save_jxl("m3.jxl", plot4d(z^2, z, 2), fill = between, palette = turbo, width = 32,'\
+'      height = 32, frames = 8)'
+      # the first colour at Re f(z), the last at Im f(z)
+  'save_jxl("m4.jxl", plot4d(z^2, z, 2), fill = between,'\
+'      palette = {(0,0,0),(1,0,0),(1,1,0),(1,1,1)}, reverse, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("m5.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i), fill = between, bits = 3,'\
+'      palette = cube, colors = 64, width = 32, height = 32, frames = 8)'
+      # few bits
+  'save_jxl("m6.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i), fill = between, gray, bits = 9,'\
+'      width = 32, height = 32, frames = 8)'
+      # levels of gray
+  'save_jxl("m7.jxl", plot4d(sin(z), z, pi), fill = between, normalize, width = 32, height = 32,'\
+'      frames = 8)'
+  'save_jxl("m8.jxl", plot4d(sin(z), z, pi), fill = between, rotate(30, 20, 10), width = 32,'\
+'      height = 32, frames = 8)'
+      # stretched; turned
+  'save_jxl("m9.jxl", plot4d(sin(z), z, pi), fill = between, arg_imag = frame, width = 32,'\
+'      height = 32, frames = 8)'
+      # both parts of f(z) on the side that z leaves: here the height
+  'save_jxl("m10.jxl", plot4d(sin(z), z, pi), fill = between, arg_real = frame, arg_imag = width,'\
+'      width = 32, height = 32, frames = 8)'
+  'save_jxl("m11.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = between, range_real = [-3, 3],'\
+'      range_imag = [-3, 3], palette = magma, width = 96, height = 96, frames = 48)'
+      # three zeros, three poles
+  'save_jxl_fast("m12.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = between, palette = heat,'\
+'      frames = 48, width = 96, height = 96)'
+      # a quick look
+  'save_png_fast("m13.png", plot4d(sin(z)*cos(z), z, pi), fill = between, palette = twilight,'\
+'      range_real = [-2, 2], range_imag = [-2, 2], frames = 48, width = 96, height = 96)'
+  'view4d(z^2, fill = between, width = 40, height = 12)'
+  'save_png("m14.png", view4d(sin(z), z, pi), fill = between, width = 200)'
+      # the same body seen from outside
+  'save_png("m15.png", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = between, range_real = [-3, 3],'\
+'      range_imag = [-3, 3], palette = turbo, width = 200)'
+  'save_jxl("m16.jxl", view4d(e^z, z, -2 - pi*i, 2 + pi*i), fill = between, palette = plasma,'\
+'      frames = 8, width = 96)'
+      # and once around it
+
 The shape of plot4d seen from outside: view4d draws its body as an eye in space sees it:
   'view4d(sin(z))' 'view4d(z^2, z, 1, width = 40, height = 12)'
   'view4d(1/z, z, -1 - i, 1 + i, ascii)'
@@ -2213,6 +2260,17 @@ Pictures: the files of the directory jxls/ of the repository, each with the inpu
           range_imag = [-4, 4])
     plot4d_cube3.jxl
         save_jxl("plot4d_cube3.jxl", plot4d(exp(z), z, 3), palette = cube, bits = 3, fill = below)
+    plot4d_between_sin.jxl
+        save_jxl("plot4d_between_sin.jxl", plot4d(sin(z), z, pi), fill = between)
+    plot4d_between_three_poles.jxl
+        save_jxl("plot4d_between_three_poles.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2),
+          fill = between, range_real = [-3, 3], range_imag = [-3, 3], palette = turbo)
+    plot4d_between_gamma.jxl
+        save_jxl("plot4d_between_gamma.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = between,
+          palette = heat)
+    plot4d_between_exp_stretched.jxl
+        save_jxl("plot4d_between_exp_stretched.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i),
+          fill = between, palette = spectrum, normalize)
     view4d_sin.jxl
         save_jxl("view4d_sin.jxl", view4d(sin(z)), width = 1920, height = 1080, effort = 10)
     view4d_gamma.jxl
@@ -2259,6 +2317,13 @@ Pictures: the files of the directory jxls/ of the repository, each with the inpu
     view4d_exp.jxl
         save_jxl("view4d_exp.jxl", view4d(e^z, z, -2 - pi*i, 2 + pi*i),
           title = "the exponential function", width = 1920, height = 1080, effort = 10)
+    view4d_between_sin.jxl
+        save_jxl("view4d_between_sin.jxl", view4d(sin(z), z, pi), fill = between, width = 1920,
+          height = 1080, effort = 10)
+    view4d_between_three_poles.jxl
+        save_jxl("view4d_between_three_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2),
+          fill = between, range_real = [-3, 3], range_imag = [-3, 3], palette = turbo,
+          width = 1920, height = 1080, effort = 10)
     view4d_around_sin.jxl
         save_jxl("view4d_around_sin.jxl", view4d(sin(z)), width = 512, height = 512, frames = 512,
           fps = 24, effort = 10)
@@ -2269,6 +2334,9 @@ Pictures: the files of the directory jxls/ of the repository, each with the inpu
         save_jxl("view4d_around_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below,
           palette = magma, range_real = [-3, 3], width = 512, height = 512, frames = 512, fps = 24,
           effort = 10)
+    view4d_around_between.jxl
+        save_jxl("view4d_around_between.jxl", view4d(z^2, z, 2), fill = between, width = 512,
+          height = 512, frames = 512, fps = 24, effort = 10)
     walk_pi.jxl
         save_jxl("walk_pi.jxl", walk(pi, 10, 200000), width = 1920, height = 1080, effort = 10)
     walk_e_base4.jxl
@@ -2448,6 +2516,9 @@ Pictures: the files of the directory jxls/ of the repository, each with the inpu
         save_jxl("view4d_around_tetration.jxl", view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i),
           range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma, width = 512,
           height = 512, frames = 512, fps = 24, effort = 10)
+    plot4d_between_tetration.jxl
+        save_jxl("plot4d_between_tetration.jxl", plot4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i),
+          fill = between, range_real = [-3, 5], range_imag = [-4, 4])
     complexplot_tetration.jxl
         save_jxl("complexplot_tetration.jxl", complexplot(sqrt(2)^^z, z, -4.8 - 2.7i, 4.8 + 2.7i),
           width = 1920, height = 1080, effort = 10)

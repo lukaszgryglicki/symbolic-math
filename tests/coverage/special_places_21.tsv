@@ -1,3 +1,7 @@
+-e	fortran(true)	"      t0 = .true."
+-e	fortran(-7/3)	"      t0 = -7.0D0/3.0D0"
+-e	fortran(0.5)	"      t0 = 1.0D0/2.0D0"
+-e	matlabcode(0)	"0"
 -e	matlabcode(1)	"1"
 -e	matlabcode(-1)	"-1"
 -e	matlabcode(1/2)	"1/2"
@@ -694,7 +698,3 @@
 -e	dsort(10^(-20))	[1/100000000000000000000]
 -e	dsort(x)	error: x is no number
 -e	dsort([])	[]
--e	dsort([1, 2])	[2, 1]
--e	dsort("text")	error: "text" is no number
--e	dsort(true)	error: true is no number
--e	dsort(-7/3)	[-7/3]

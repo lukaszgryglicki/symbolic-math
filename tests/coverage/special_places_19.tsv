@@ -1,3 +1,7 @@
+-e	numfields(1)	0
+-e	numfields(-1)	0
+-e	numfields(1/2)	0
+-e	numfields(2)	0
 -e	numfields(i)	0
 -e	numfields(inf)	0
 -e	numfields(-inf)	0
@@ -694,7 +698,3 @@
 -e	table2array("text")	table2array("text")
 -e	table2array(true)	table2array(true)
 -e	table2array(-7/3)	table2array(-7/3)
--e	table2array(0.5)	table2array(0.5)
--e	array2table(0)	error: array2table needs a matrix: a list of rows of one length
--e	array2table(1)	error: array2table needs a matrix: a list of rows of one length
--e	array2table(-1)	error: array2table needs a matrix: a list of rows of one length

@@ -100,7 +100,7 @@
 -e	save_jxl("f.jxl", plot4d(z), frames = 20000)	error: frames is a whole number from 1 to 10000, not 20000
 -e	save_jxl("f.jxl", plot4d(z), bits = 17)	error: bits is a whole number from 1 to 16, not 17
 -e	save_jxl("f.jxl", plot4d(z), thickness = 0.5)	error: the thickness of plot4d is a whole number of frames, 1 or more
--e	save_jxl("f.jxl", plot4d(z), fill = inside)	error: fill is one of surface, below, above: the surface alone, or the body from it down to the first frame or up to the last one; not inside
+-e	save_jxl("f.jxl", plot4d(z), fill = inside)	error: fill is one of surface, below, above, between: the surface alone, the body from it down to the first frame or up to the last one, or the body between the real and the imaginary part of f(z) in the colours from the one to the other; not inside
 -e	save_jxl("f.jxl", plot4d(z), arg_real = width, val_real = width)	error: arg_real and val_real both lie on the width: each of width, height, frame and color takes one of arg_real, arg_imag, val_real, val_imag
 -e	save_jxl("f.jxl", plot4d(z), rotate(1, 2, 3, 4))	error: rotate(yaw, pitch, roll) takes one to three numbers: the degrees that the body of plot4d is turned about its upright axis, about its width and about its frames; not rotate(1, 2, 3, 4)
 -e	save_jxl("f.jxl", plot4d(z), range_real = [3, 4])	error: plot4d: nothing of the function lies in the box of the picture

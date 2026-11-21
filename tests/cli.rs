@@ -2337,6 +2337,68 @@ fn reads_lines_from_standard_input() {
     assert_eq!(String::from_utf8_lossy(&out.stdout), "3\n10\n");
 }
 
+/// `plot4d(.., fill = between)` in the files that are saved: over the place x + i*y of the
+/// identity the voxels from the level of x to that of y, in the colours from the one to the
+/// other, and nothing else.
+#[test]
+fn the_body_between_the_parts_of_a_value_is_in_the_files() {
+    let dir =
+        std::env::temp_dir().join(format!("symbolic-math-test-{}-between", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let ask = |input: &str| -> String {
+        let out = program()
+            .arg(input)
+            .current_dir(&dir)
+            .stdin(Stdio::null())
+            .output()
+            .expect("symbolic-math runs");
+        assert!(out.status.success(), "{input}");
+        String::from_utf8_lossy(&out.stdout).into_owned()
+    };
+    // the nine grays of the palette, the first at the real part, the last at the imaginary part
+    const GRAYS: [u32; 9] = [64, 88, 112, 136, 159, 183, 207, 231, 255];
+    for file in ["body.png", "body.jxl"] {
+        let saved = ask(&format!(
+            "save(\"{file}\", plot4d(z, fill = between, width = 8, height = 8, frames = 8, colors = 9, palette = gray))"
+        ));
+        assert!(
+            saved.contains("232 voxels of the box of 8 x 8 x 8"),
+            "{saved}"
+        );
+        assert_eq!(ask(&format!("imframes(\"{file}\")")).trim(), "8");
+        for k in 0..8usize {
+            // red, green, blue and alpha, each row by row from the top
+            let samples: Vec<u32> = ask(&format!("imread(\"{file}\", {})", k + 1))
+                .split(|c: char| !c.is_ascii_digit())
+                .filter(|part| !part.is_empty())
+                .map(|part| part.parse().unwrap())
+                .collect();
+            assert_eq!(samples.len(), 4 * 64, "{file}, frame {k}");
+            for row in 0..8usize {
+                for across in 0..8usize {
+                    let (i, j) = (across, 7 - row);
+                    let inside = (i.min(j)..=i.max(j)).contains(&k);
+                    let share = match i == j {
+                        true => 0.5,
+                        false => (k as f64 - i as f64) / (j as f64 - i as f64),
+                    };
+                    let gray = match inside {
+                        true => GRAYS[(share * 8.0).round() as usize],
+                        false => 0,
+                    };
+                    let at = row * 8 + across;
+                    assert_eq!(
+                        [0, 64, 128, 192].map(|channel| samples[channel + at]),
+                        [gray, gray, gray, if inside { 255 } else { 0 }],
+                        "{file}, frame {k}, row {row}, place {across}"
+                    );
+                }
+            }
+        }
+    }
+    std::fs::remove_dir_all(&dir).ok();
+}
+
 #[cfg(unix)]
 mod tetration {
     use super::*;

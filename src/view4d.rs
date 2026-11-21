@@ -288,39 +288,68 @@ impl Session {
         drawing.axes = true;
         drawing.smooth = true;
         drawing.fog = 0.25;
+        // (of the body between the two parts of the value one side holds both, and the
+        // colours go from the one to the other)
+        let between = shape.fill == Fill::Between;
         drawing.axis_names = Some(match moved {
             true => ["width", "height", "frames"].map(String::from),
-            false => parts.map(|p| SHORT[p].to_string()),
+            false => parts.map(|p| match (between, p) {
+                (true, 2) => "re, im f(z)".to_string(),
+                _ => SHORT[p].to_string(),
+            }),
         });
-        if !shape.normalize {
+        if between {
+            drawing.legend = Some(Legend {
+                name: "from re f(z) to im f(z)".to_string(),
+                ends: None,
+                colors: tints,
+            });
+        } else if !shape.normalize {
             drawing.legend = Some(Legend {
                 name: SHORT[coloured].to_string(),
-                ends: shape.ranges[coloured],
+                ends: Some(shape.ranges[coloured]),
                 colors: tints,
             });
         }
         let scale = format!(
-            "{colours} colours of the palette {}{}, the least value first",
+            "{colours} colours of the palette {}{}{}",
             name.unwrap_or("that is given"),
-            if choices.reverse { " reversed" } else { "" }
+            if choices.reverse { " reversed" } else { "" },
+            match shape.fill {
+                Fill::Between => "",
+                _ => ", the least value first",
+            }
         );
         let side = |k: usize| {
             let (low, high) = shape.ranges[parts[k]];
-            format!("{} from {} to {}", PARTS[parts[k]], label(low), label(high))
+            match (between, parts[k]) {
+                (true, 2) => format!(
+                    "the real and the imaginary part of f(z) from {} to {}, the body between them",
+                    label(low),
+                    label(high)
+                ),
+                _ => format!("{} from {} to {}", PARTS[parts[k]], label(low), label(high)),
+            }
         };
         let (low, high) = shape.ranges[coloured];
+        let coloured_by = match between {
+            true => "the colours go from the real part of f(z), the first colour, to the imaginary part, the last".to_string(),
+            false => format!(
+                "the colours are {} from {} to {}",
+                PARTS[coloured],
+                label(low),
+                label(high)
+            ),
+        };
         let mut facts = vec![
             format!(
                 "view4d of {function}: the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright"
             ),
             format!(
-                "the box: x is {}; y is {}; z, upright, is {}; the colours are {} from {} to {}{}",
+                "the box: x is {}; y is {}; z, upright, is {}; {coloured_by}{}",
                 side(0),
                 side(1),
                 side(2),
-                PARTS[coloured],
-                label(low),
-                label(high),
                 if pixels {
                     format!(" ({scale})")
                 } else {
@@ -564,6 +593,38 @@ mod tests {
     }
 
     #[test]
+    fn the_body_between_the_two_parts_of_the_value() {
+        let (drawing, _) = drawn("view4d(z, voxels = 8, colors = 9, fill = between)");
+        let body = body(&drawing);
+        assert_eq!(body.size, [8, 8, 8]);
+        // 232 cubes; every one of them shows a side (the body is nowhere thicker than its
+        // columns are wide)
+        assert!(
+            drawing
+                .facts
+                .iter()
+                .any(|f| f.contains("the body has 232 cubes"))
+        );
+        assert!(drawing.facts.iter().any(|f| f.contains(
+            "z, upright, is the real and the imaginary part of f(z) from -2 to 2, the body between them; the colours go from the real part of f(z), the first colour, to the imaginary part, the last"
+        )));
+        // all the colours from the first to the last are seen, and its sides are flat
+        let levels: std::collections::BTreeSet<u16> = body.faces.iter().map(|f| f.level).collect();
+        assert_eq!(levels.iter().next(), Some(&0));
+        assert_eq!(levels.iter().next_back(), Some(&8));
+        assert!(body.faces.iter().all(|f| f.facing == [0; 3]));
+        let legend = drawing.legend.as_ref().expect("a legend");
+        assert_eq!(
+            (legend.name.as_str(), legend.ends),
+            ("from re f(z) to im f(z)", None)
+        );
+        assert_eq!(
+            drawing.axis_names,
+            Some(["re z", "im z", "re, im f(z)"].map(String::from))
+        );
+    }
+
+    #[test]
     fn the_eye_that_is_found() {
         // a wedge that is high where the real part of z is large is seen from its low side
         let (drawing, choices) = drawn("view4d(z, voxels = 24, fill = below)");
@@ -618,7 +679,7 @@ mod tests {
         let legend = drawing.legend.as_ref().expect("the colours");
         assert_eq!(
             (legend.name.as_str(), legend.ends),
-            ("im f(z)", (-8.0, 8.0))
+            ("im f(z)", Some((-8.0, 8.0)))
         );
         // what belongs to the body is taken; the rest is left to the picture
         assert_eq!(choices.given, ["width", "palette"]);

@@ -349,7 +349,7 @@ impl Choices {
             "fill" => {
                 self.fill = Some(crate::plot4d::Fill::named(value).ok_or_else(|| {
                     format!(
-                        "fill is one of surface, below, above: the surface alone, or the body from it down to the first frame or up to the last one; not {value}"
+                        "fill is one of surface, below, above, between: the surface alone, the body from it down to the first frame or up to the last one, or the body between the real and the imaginary part of f(z) in the colours from the one to the other; not {value}"
                     )
                 })?);
             }

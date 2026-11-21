@@ -75,6 +75,9 @@ pub enum Fill {
     Below,
     /// The body from the surface up to the last frame.
     Above,
+    /// The body between the two parts of the value, which both lie on the side of space
+    /// that the parts of z leave: the colours go from the real part to the imaginary part.
+    Between,
 }
 
 impl Fill {
@@ -83,6 +86,7 @@ impl Fill {
             "surface" | "none" => Fill::Surface,
             "below" | "under" => Fill::Below,
             "above" | "over" => Fill::Above,
+            "between" | "span" => Fill::Between,
             _ => return None,
         })
     }
@@ -234,6 +238,119 @@ impl Columns {
     }
 }
 
+/// The body between the two parts of the value: over every place of the plane of z the
+/// voxels of its column from the level of the real part to that of the imaginary part.
+struct Between {
+    /// Which of the width, the height (upwards) and the frames hold the real part of z, its
+    /// imaginary part, and both parts of the value.
+    sides: [usize; 3],
+    /// Of every column the first and the last voxel (none where the first lies beyond the
+    /// last), and the levels of the real and of the imaginary part in its middle.
+    spans: Vec<(u16, u16, f32, f32)>,
+}
+
+impl Between {
+    /// The columns of the body, and the number of its voxels.
+    fn new(
+        plan: &Plan,
+        values: &[[f64; 2]],
+        ends: Ends,
+        env: &mut Env,
+    ) -> Result<(Between, usize), String> {
+        let (a, b) = (plan.axes[0].index(), plan.axes[1].index());
+        if a > 2 || b > 2 {
+            return Err(
+                "fill = between: the two parts of z lie on two of the width, the height and the frames; the third holds both parts of f(z), and the colours go from the real part to the imaginary part"
+                    .to_string(),
+            );
+        }
+        let v = 3 - a - b;
+        let (na, nb, levels) = (plan.sizes[a], plan.sizes[b], plan.sizes[v]);
+        let level = |x: f64| (x - ends.0) / (ends.1 - ends.0) * levels as f64;
+        let none = (1, 0, 0.0, 0.0);
+        let mut spans = Vec::with_capacity(na * nb);
+        let mut voxels = 0;
+        for j in 0..nb {
+            for i in 0..na {
+                let corners = [(i, j), (i + 1, j), (i, j + 1), (i + 1, j + 1)]
+                    .map(|(i, j)| values[j * (na + 1) + i]);
+                if corners.iter().any(|c| c[0].is_nan()) {
+                    spans.push(none);
+                    continue;
+                }
+                let at = corners.map(|c| [level(c[0]), level(c[1])]);
+                let mean = [0, 1].map(|part| at.iter().map(|c| c[part]).sum::<f64>() / 4.0);
+                let extent = |part: usize| {
+                    at.iter().map(|c| c[part]).fold(f64::MIN, f64::max)
+                        - at.iter().map(|c| c[part]).fold(f64::MAX, f64::min)
+                };
+                // a jump of the values inside (a pole, a cut of a branch) is no body: where
+                // the corners lie far apart the middle tells
+                let mut middle = mean;
+                if extent(0) > 8.0 || extent(1) > 8.0 {
+                    let x = plan.re.0 + (plan.re.1 - plan.re.0) * (i as f64 + 0.5) / na as f64;
+                    let y = plan.im.0 + (plan.im.1 - plan.im.0) * (j as f64 + 0.5) / nb as f64;
+                    let found = value(&plan.f, &plan.var, env, x, y);
+                    middle = [level(found[0]), level(found[1])];
+                    let jump = (0..2).any(|part| {
+                        extent(part) > 8.0
+                            && (middle[part] - mean[part]).abs() > 0.25 * extent(part)
+                    });
+                    if found[0].is_nan() || jump {
+                        spans.push(none);
+                        continue;
+                    }
+                }
+                // the column holds what the body has anywhere over the place
+                let all = || at.iter().chain(std::iter::once(&middle));
+                let low = all().map(|c| c[0].min(c[1])).fold(f64::MAX, f64::min);
+                let high = all().map(|c| c[0].max(c[1])).fold(f64::MIN, f64::max);
+                if high < 0.0 || low >= levels as f64 {
+                    spans.push(none);
+                    continue;
+                }
+                // (a voxel belongs to it when the body reaches into it, not when it only
+                // touches it from below)
+                let first = low.max(0.0) as usize;
+                let last = ((high.ceil() as usize).max(first + 1) - 1).min(levels - 1);
+                voxels += last - first + 1;
+                spans.push((
+                    first as u16,
+                    last as u16,
+                    middle[0] as f32,
+                    middle[1] as f32,
+                ));
+            }
+        }
+        Ok((
+            Between {
+                sides: [a, b, v],
+                spans,
+            },
+            voxels,
+        ))
+    }
+
+    /// The colour of the body at a place of the box (across, upwards, along the frames):
+    /// the share of the way from the real part to the imaginary part.
+    fn at(&self, place: [f64; 3], sizes: &[usize; 4]) -> u16 {
+        if (0..3).any(|side| place[side] < 0.0 || place[side] >= sizes[side] as f64) {
+            return EMPTY;
+        }
+        let [a, b, v] = self.sides;
+        let (first, last, re, im) = self.spans[place[b] as usize * sizes[a] + place[a] as usize];
+        if !(first as usize..=last as usize).contains(&(place[v] as usize)) {
+            return EMPTY;
+        }
+        let (re, im) = (f64::from(re), f64::from(im));
+        let share = match im == re {
+            true => 0.5,
+            false => ((place[v] - re) / (im - re)).clamp(0.0, 1.0),
+        };
+        (share * (sizes[3] - 1) as f64).round() as u16
+    }
+}
+
 pub(crate) const EMPTY: u16 = u16::MAX;
 /// A voxel of a frame: its pixel (rows from the top), how far from its middle the surface
 /// was met there, its colour, and the direction that the surface faces there.
@@ -267,6 +384,8 @@ pub struct Shape {
     slices: Vec<Vec<Voxel>>,
     /// For a body: the voxels of its surface by columns.
     columns: Option<Columns>,
+    /// For the body between the two parts of the value: its columns.
+    between: Option<Between>,
     pub turn: Option<Turn>,
     pub normalize: bool,
     /// Of a surface whose frames are stretched: the frames that became larger, and the
@@ -486,11 +605,41 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
         span(values.iter().map(|v| v[0]), plan.range_real).ok_or_else(none)?;
     let (imag, narrow_imag) =
         span(values.iter().map(|v| v[1]), plan.range_imag).ok_or_else(none)?;
-    let ranges = [plan.re, plan.im, real, imag];
     let turn = plan
         .rotate
         .filter(|angles| *angles != [0.0; 3])
         .map(Turn::new);
+    if plan.fill == Fill::Between {
+        // both parts of the value lie on one side: its ends hold them both
+        let both = (real.0.min(imag.0), real.1.max(imag.1));
+        let (between, voxels) = Between::new(plan, &values, both, &mut env)?;
+        if voxels == 0 {
+            return Err(
+                "plot4d: nothing of the function lies in the box of the picture".to_string(),
+            );
+        }
+        return Ok(Shape {
+            sizes,
+            axes: [
+                plan.axes[0],
+                plan.axes[1],
+                AXES[between.sides[2]],
+                Axis::Color,
+            ],
+            ranges: [plan.re, plan.im, both, both],
+            narrowed: [false, false, narrow_real, narrow_imag],
+            slices: vec![Vec::new(); sizes[2]],
+            columns: None,
+            between: Some(between),
+            turn,
+            normalize: plan.normalize,
+            stretched: None,
+            fill: plan.fill,
+            thickness: 1,
+            voxels,
+        });
+    }
+    let ranges = [plan.re, plan.im, real, imag];
     // where the four numbers of a place lie: across, down (from below), in the frames, in the colours
     let place = |q: [f64; 4]| -> [f64; 4] {
         let mut at = [0.0; 4];
@@ -670,6 +819,7 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
         narrowed: [false, false, narrow_real, narrow_imag],
         slices,
         columns,
+        between: None,
         turn,
         normalize: plan.normalize,
         stretched,
@@ -788,6 +938,29 @@ impl<'a> Frames<'a> {
     pub fn take(&mut self, k: usize) {
         let shape = self.shape;
         let [width, height, frames, _] = shape.sizes;
+        if let Some(between) = &shape.between {
+            // every place of the picture shows what the body has where the place comes from
+            for (pixel, level) in self.levels.iter_mut().enumerate() {
+                let here = [
+                    (pixel % width) as f64 + 0.5,
+                    (height - 1 - pixel / width) as f64 + 0.5,
+                    k as f64 + 0.5,
+                ];
+                let from = match &shape.turn {
+                    Some(turn) => Turn::apply(&turn.back, here, &shape.sizes),
+                    None => here,
+                };
+                *level = between.at(from, &shape.sizes);
+            }
+            // (its cubes face as their sides do)
+            if let Some(facings) = &mut self.facings {
+                facings.fill([0; 3]);
+            }
+            if shape.normalize {
+                self.stretch();
+            }
+            return;
+        }
         match (&shape.columns, &shape.turn) {
             (None, _) => {
                 self.levels.fill(EMPTY);
@@ -1155,22 +1328,36 @@ impl Session {
                 line.trim_end().to_string()
             })
             .collect();
-        let part = plan
+        let part = shape
             .axes
             .iter()
             .position(|a| *a == Axis::Frame)
             .unwrap_or(0);
         let (low, high) = shape.ranges[part];
         let cut = |k: usize| low + (high - low) * k as f64 / plan.sizes[2] as f64;
-        lines.push(format!(
-            "plot4d of {function}: frame {} of {}, where {} is from {} to {}; the characters {} are the colours, the least value first",
-            middle + 1,
-            plan.sizes[2],
-            PARTS[part],
-            label(cut(middle)),
-            label(cut(middle + 1)),
-            String::from_utf8_lossy(MARKS)
-        ));
+        lines.push(match (shape.fill, part) {
+            (Fill::Between, 2) => format!(
+                "plot4d of {function}: frame {} of {}, where a value from {} to {} lies between the real and the imaginary part of f(z); the characters {} are the colours, from the real part to the imaginary part",
+                middle + 1,
+                plan.sizes[2],
+                label(cut(middle)),
+                label(cut(middle + 1)),
+                String::from_utf8_lossy(MARKS)
+            ),
+            _ => format!(
+                "plot4d of {function}: frame {} of {}, where {} is from {} to {}; the characters {} are the colours, {}",
+                middle + 1,
+                plan.sizes[2],
+                PARTS[part],
+                label(cut(middle)),
+                label(cut(middle + 1)),
+                String::from_utf8_lossy(MARKS),
+                match shape.fill {
+                    Fill::Between => "from the real part of f(z) to the imaginary part",
+                    _ => "the least value first",
+                }
+            ),
+        });
         lines.extend(facts(&shape, None));
         lines.push(
             "save_jxl(\"plot4d.jxl\", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is".to_string(),
@@ -1218,23 +1405,33 @@ fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
     for axis in AXES {
         let part = shape.axes.iter().position(|a| *a == axis).unwrap_or(0);
         let (low, high) = shape.ranges[part];
-        told.push(format!(
-            "the {}: {} from {} to {}{}",
-            match axis {
-                Axis::Width => "width",
-                Axis::Height => "height",
-                Axis::Frame => "frames",
-                Axis::Color => "colours",
-            },
-            PARTS[part],
-            label(low),
-            label(high),
-            if axis == Axis::Height {
-                ", upwards"
-            } else {
-                ""
+        let side = match axis {
+            Axis::Width => "width",
+            Axis::Height => "height",
+            Axis::Frame => "frames",
+            Axis::Color => "colours",
+        };
+        let upwards = if axis == Axis::Height {
+            ", upwards"
+        } else {
+            ""
+        };
+        told.push(match (shape.fill, part) {
+            (Fill::Between, 2) => format!(
+                "the {side}: the real and the imaginary part of f(z) from {} to {}{upwards}, the body between them",
+                label(low),
+                label(high)
+            ),
+            (Fill::Between, 3) => {
+                "the colours: from the real part of f(z), the first colour, to the imaginary part, the last".to_string()
             }
-        ));
+            _ => format!(
+                "the {side}: {} from {} to {}{upwards}",
+                PARTS[part],
+                label(low),
+                label(high)
+            ),
+        });
     }
     let mut lines = vec![format!(
         "{}{}",
@@ -1289,13 +1486,17 @@ pub(crate) fn notes(shape: &Shape) -> Vec<String> {
     }
     let [width, height, frames, _] = shape.sizes;
     let filled = match shape.fill {
-        Fill::Surface => "",
+        Fill::Surface | Fill::Between => "",
         Fill::Below => "; the body below it is filled",
         Fill::Above => "; the body above it is filled",
     };
     lines.push(format!(
-        "{} voxels of the box of {width} x {height} x {frames} belong to the surface ({} %){filled}",
+        "{} voxels of the box of {width} x {height} x {frames} belong to the {} ({} %){filled}",
         shape.voxels,
+        match shape.fill {
+            Fill::Between => "body between the real and the imaginary part of f(z)",
+            _ => "surface",
+        },
         label(100.0 * shape.voxels as f64 / (width * height * frames) as f64)
     ));
     lines
@@ -1404,7 +1605,10 @@ fn plot4d_file(
     let mut lines = vec![format!("plot4d of {function}")];
     lines.extend(facts(
         &shape,
-        Some(&format!("{scale}, the least value first")),
+        Some(&match shape.fill {
+            Fill::Between => scale,
+            _ => format!("{scale}, the least value first"),
+        }),
     ));
     let (n, d) = encoding.rate;
     let rate = if d == 1 {
@@ -1723,6 +1927,132 @@ mod tests {
         even.normalize = true;
         let even = shape(&even).expect("a shape");
         assert!(frame(&even, 3).iter().all(|l| *l == 4));
+    }
+
+    #[test]
+    fn the_body_between_the_two_parts_of_the_value() {
+        // f(z) = z: over the place x + i*y the column goes from the level of x to that of y
+        let mut flat = plan("z", [8, 8, 8, 9]);
+        flat.fill = Fill::Between;
+        assert_eq!(Fill::named(&Expr::sym("between")), Some(Fill::Between));
+        let body = shape(&flat).expect("a shape");
+        assert_eq!(body.axes, AXES);
+        assert_eq!((body.ranges[2], body.ranges[3]), ((-2.0, 2.0), (-2.0, 2.0)));
+        // a column with |i - j| + 1 voxels over the place (i, j)
+        assert_eq!(body.voxels, 232);
+        let frames: Vec<Vec<u16>> = (0..8).map(|k| frame(&body, k)).collect();
+        let column = |across: usize, row: usize| -> Vec<u16> {
+            frames.iter().map(|f| f[row * 8 + across]).collect()
+        };
+        // x least, y greatest: the whole column, the first colour at the real part below,
+        // the last one at the imaginary part above
+        let up = column(0, 0);
+        assert_eq!(up, [0, 1, 2, 3, 5, 6, 7, 8]);
+        // x greatest, y least: the same colours the other way round
+        let down = column(7, 7);
+        assert_eq!(down, [8, 7, 6, 5, 3, 2, 1, 0]);
+        // where both parts are equal the body is one voxel thick, in the middle colour
+        for k in 0..8 {
+            let diagonal = column(k, 7 - k);
+            let held: Vec<usize> = (0..8).filter(|f| diagonal[*f] != EMPTY).collect();
+            assert_eq!(held, [k], "the place {k}");
+            assert_eq!(diagonal[k], 4);
+        }
+        // a frame is an area, not a line: where its level lies between x and y
+        let cut = &frames[2];
+        for row in 0..8 {
+            for across in 0..8 {
+                let (i, j) = (across, 7 - row);
+                let inside = (i.min(j)..=i.max(j)).contains(&2);
+                assert_eq!(cut[row * 8 + across] != EMPTY, inside, "{across} {row}");
+            }
+        }
+        // the two parts on the height, with the imaginary part of z on the frames
+        let mut other = plan("z", [8, 8, 8, 9]);
+        other.fill = Fill::Between;
+        other.axes = [Axis::Width, Axis::Frame, Axis::Height, Axis::Color];
+        let body = shape(&other).expect("a shape");
+        assert_eq!(
+            body.axes,
+            [Axis::Width, Axis::Frame, Axis::Height, Axis::Color]
+        );
+        let first = frame(&body, 0);
+        assert_eq!(first.iter().filter(|l| **l != EMPTY).count(), 36);
+        assert!((0..8).all(|across| first[7 * 8 + across] != EMPTY));
+        assert_eq!(first[0], EMPTY);
+        // the colours are no side of z here
+        let mut wrong = plan("z", [8, 8, 8, 9]);
+        wrong.fill = Fill::Between;
+        wrong.axes = [Axis::Color, Axis::Height, Axis::Frame, Axis::Width];
+        assert!(shape(&wrong).is_err_and(|why| why.starts_with("fill = between")));
+        // val_real = color, val_imag = frame is the same body
+        let mut swapped = plan("z", [8, 8, 8, 9]);
+        swapped.fill = Fill::Between;
+        swapped.axes = [Axis::Width, Axis::Height, Axis::Color, Axis::Frame];
+        let again = shape(&swapped).expect("a shape");
+        assert_eq!(again.axes, AXES);
+        assert_eq!(frame(&again, 2), frames[2]);
+    }
+
+    #[test]
+    fn the_body_between_is_cut_turned_and_stretched() {
+        // a pole: the places around it are left out, in every frame
+        let mut pole = plan("1/z", [8, 8, 8, 4]);
+        pole.fill = Fill::Between;
+        pole.range_real = Some((-2.0, 2.0));
+        pole.range_imag = Some((-2.0, 2.0));
+        let body = shape(&pole).expect("a shape");
+        for k in 0..8 {
+            let cut = frame(&body, k);
+            for (across, row) in [(3, 3), (4, 3), (3, 4), (4, 4)] {
+                assert_eq!(cut[row * 8 + across], EMPTY, "frame {k}");
+            }
+        }
+        // what lies beyond the ends of the values is cut off, the rest is there
+        let mut high = plan("z", [8, 8, 8, 4]);
+        high.fill = Fill::Between;
+        high.range_real = Some((0.0, 1.0));
+        high.range_imag = Some((0.0, 1.0));
+        let body = shape(&high).expect("a shape");
+        assert_eq!(body.ranges[2], (0.0, 1.0));
+        assert!(frame(&body, 0).iter().any(|l| *l != EMPTY));
+        assert!(frame(&body, 7).iter().any(|l| *l != EMPTY));
+        let mut far = plan("z + 10", [8, 8, 8, 4]);
+        far.fill = Fill::Between;
+        far.range_real = Some((0.0, 1.0));
+        far.range_imag = Some((0.0, 1.0));
+        assert!(shape(&far).is_ok(), "the imaginary part lies in the ends");
+        far.range_imag = Some((20.0, 21.0));
+        far.range_real = Some((20.0, 21.0));
+        assert!(shape(&far).is_err());
+        // turned by a quarter about the frames: the picture of every frame turns
+        let mut plain = plan("z", [8, 8, 8, 9]);
+        plain.fill = Fill::Between;
+        let straight = shape(&plain).expect("a shape");
+        plain.rotate = Some([0.0, 0.0, 90.0]);
+        let turned = shape(&plain).expect("a shape");
+        for k in 0..8 {
+            let (a, b) = (frame(&straight, k), frame(&turned, k));
+            assert_eq!(
+                a.iter().filter(|l| **l != EMPTY).count(),
+                b.iter().filter(|l| **l != EMPTY).count(),
+                "frame {k}"
+            );
+        }
+        assert_ne!(frame(&straight, 1), frame(&turned, 1));
+        // every frame stretched on its own: it reaches from edge to edge, in all the colours
+        plain.rotate = None;
+        plain.normalize = true;
+        let stretched = shape(&plain).expect("a shape");
+        for k in 0..8 {
+            let cut = frame(&stretched, k);
+            let held: Vec<usize> = (0..64).filter(|p| cut[*p] != EMPTY).collect();
+            assert!(held.iter().any(|p| p % 8 == 0) && held.iter().any(|p| p % 8 == 7));
+            assert!(held.iter().any(|p| p / 8 == 0) && held.iter().any(|p| p / 8 == 7));
+            let tones: Vec<u16> = held.iter().map(|p| cut[*p]).collect();
+            assert_eq!(tones.iter().min(), Some(&0), "frame {k}");
+            assert_eq!(tones.iter().max(), Some(&8), "frame {k}");
+        }
     }
 
     #[test]

@@ -1,3 +1,4 @@
+-e	bounds(true)	[true, true]
 -e	bounds(-7/3)	[-7/3, -7/3]
 -e	bounds(0.5)	[0.5, 0.5]
 -e	peak2peak(0)	0
@@ -697,4 +698,3 @@
 -e	coeffs(10^(-20))	[1/100000000000000000000]
 -e	coeffs(x)	[1]
 -e	coeffs([])	[[]]
--e	coeffs([1, 2])	[[1, 2]]

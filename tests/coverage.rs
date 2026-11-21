@@ -226,6 +226,7 @@ tables!(
     view4d,
     matlab_signal_more,
     matlab_control_more,
+    plot4d_between,
     matlab_charts,
     checked_by_octave_1,
     checked_by_octave_2,

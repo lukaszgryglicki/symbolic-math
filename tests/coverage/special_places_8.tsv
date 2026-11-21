@@ -540,6 +540,7 @@
 -e	latticereduce(2)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
 -e	latticereduce(i)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
 -e	latticereduce(inf)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
+-e	latticereduce(-inf)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
 -e	latticereduce(undefined)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
 -e	latticereduce(10^20)	error: latticereduce needs a matrix of whole or rational numbers with independent rows
 -e	latticereduce(10^(-20))	error: latticereduce needs a matrix of whole or rational numbers with independent rows
@@ -697,4 +698,3 @@
 -e	vertexcount(0)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcount(1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
 -e	vertexcount(-1)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]
--e	vertexcount(1/2)	error: a graph is a list of edges: [[1, 2], [2, 3]], [1 -> 2, 2 -> 3], with weights [[1, 2, 5], [2 -> 3, 4]], a vertex alone as [4]

@@ -25,7 +25,7 @@
 -e	plot4d([z, z^2])	error: plot4d(f, z, a, b): the function f of the complex number z in the box with the corners a and b, as plot4d(sin(z), z, -2 - 2i, 2 + 2i); plot4d(f, z, r) is from -r - r*i to r + r*i, plot4d(f, z) from -2 - 2i to 2 + 2i; the name z may be left out when f has one name
 -e	plot4d(z, arg_real = frame, arg_imag = frame)	error: arg_real and arg_imag both lie on the frame: each of width, height, frame and color takes one of arg_real, arg_imag, val_real, val_imag
 -e	plot4d(z, arg_real = depth)	error: arg_real is one of width, height, frame, color: what this part of the argument z or of the value f(z) lies on; not depth
--e	plot4d(z, fill = inside)	error: fill is one of surface, below, above: the surface alone, or the body from it down to the first frame or up to the last one; not inside
+-e	plot4d(z, fill = inside)	error: fill is one of surface, below, above, between: the surface alone, the body from it down to the first frame or up to the last one, or the body between the real and the imaginary part of f(z) in the colours from the one to the other; not inside
 -e	plot4d(z, range_real = [1, 0])	error: range_real is [least, greatest]: the real parts of the values that are drawn; not [1, 0]
 -e	plot4d(z, range_imag = 3)	error: range_imag is [least, greatest]: the imaginary parts of the values that are drawn; not 3
 -e	plot4d(z, colors = 1)	error: colors is a whole number from 2 to 65535, not 1

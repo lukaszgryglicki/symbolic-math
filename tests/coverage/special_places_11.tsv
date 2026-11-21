@@ -1,3 +1,4 @@
+-e	rot90(0.5)	[0.5]
 -e	tril(0)	[0]
 -e	tril(1)	[1]
 -e	tril(-1)	[-1]
@@ -697,4 +698,3 @@
 -e	bounds([])	[undefined, undefined]
 -e	bounds([1, 2])	[1, 2]
 -e	bounds("text")	["text", "text"]
--e	bounds(true)	[true, true]

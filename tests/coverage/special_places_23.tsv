@@ -1,3 +1,7 @@
+-e	firtype(x)	error: firtype: x is not a real number
+-e	firtype([])	2
+-e	firtype([1, 2])	error: firtype: the filter has no linear phase (its coefficients are no mirror of themselves)
+-e	firtype("text")	error: firtype: "text" is not a real number
 -e	firtype(true)	error: firtype: true is not a real number
 -e	firtype(-7/3)	1
 -e	firtype(0.5)	1
@@ -337,6 +341,7 @@
 -e	xcov(10^20)	[0]
 -e	xcov(10^(-20))	[0]
 -e	xcov(x)	error: xcov: x is not a real number
+-e	xcov([])	[]
 -e	xcov([1, 2])	[-0.25, 0.5, -0.25]
 -e	xcov("text")	error: xcov: "text" is not a real number
 -e	xcov(true)	error: xcov: true is not a real number
@@ -693,8 +698,3 @@
 -e	wgs84ellipsoid(inf)	error: wgs84ellipsoid: inf is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
 -e	wgs84ellipsoid(-inf)	error: wgs84ellipsoid: -inf is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
 -e	wgs84ellipsoid(undefined)	error: wgs84ellipsoid: undefined is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
--e	wgs84ellipsoid(10^20)	error: wgs84ellipsoid: 100000000000000000000 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
--e	wgs84ellipsoid(10^(-20))	error: wgs84ellipsoid: 1/100000000000000000000 is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
--e	wgs84ellipsoid(x)	error: wgs84ellipsoid: x is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
--e	wgs84ellipsoid([])	error: wgs84ellipsoid: [] is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)
--e	wgs84ellipsoid([1, 2])	error: wgs84ellipsoid: [1, 2] is not a unit of length: m, km, cm, mm, micron, nm (nautical miles), ft, in, yd, mi (miles of 1609.344 m), sm (statute miles of 6336000/3937 m), sf (survey feet)

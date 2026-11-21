@@ -114,12 +114,12 @@ pub struct Body {
     pub tints: Vec<Rgb>,
 }
 
-/// The colours of a fourth number: its name, its least and its greatest value, and the
-/// colours from the least value on.
+/// The colours of a fourth number: its name, its least and its greatest value (none where
+/// the name says what the colours run between), and the colours from the least value on.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Legend {
     pub name: String,
-    pub ends: (f64, f64),
+    pub ends: Option<(f64, f64)>,
     pub colors: Vec<Rgb>,
 }
 
@@ -1507,12 +1507,15 @@ impl<'a> Shot<'a> {
         }
         // the colours of a fourth number in a row after its ends, the least value first
         if let Some(legend) = &self.drawing.legend {
-            let text = format!(
-                "{} from {} to {}",
-                legend.name,
-                plot::label(legend.ends.0),
-                plot::label(legend.ends.1)
-            );
+            let text = match legend.ends {
+                Some((low, high)) => format!(
+                    "{} from {} to {}",
+                    legend.name,
+                    plot::label(low),
+                    plot::label(high)
+                ),
+                None => legend.name.clone(),
+            };
             let top = letter / 2.0 + line * 1.25 * letter;
             on.text([letter / 2.0, top], size, &text, self.ink);
             let left = letter / 2.0 + letter * (text.chars().count() + 1) as f64;

@@ -1741,6 +1741,25 @@ the width: the real part of z from -4 to 4; the height: the imaginary part of z 
 the imaginary part of f(z) goes far beyond these ends (near a pole): what lies outside is left out; range_imag = [least, greatest] sets other ends
 4818 voxels of the box of 64 x 64 x 32 belong to the surface (3.676 %); the body below it is filled
 saved quick.jxl: JPEG XL, 64 x 64 pixels, 32 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossy at the distance 1 (alpha stays exact), effort 3, 32971 bytes
+$ symbolic-math 'plot4d(z, fill = between, width = 33, height = 9, frames = 9)'
++++++=====---:::...
+**++++++===---::...
+*******++++==--:...
+%#######****++=-...
+@@@@@@@@@@@@@@@@+@@@@@@@@@@@@@@@@
+              ...-=++****#######%
+              ...:--==++++*******
+              ...::--====++++++**
+              ...:::---=====+++++
+plot4d of z: frame 5 of 9, where a value from -0.2222 to 0.2222 lies between the real and the imaginary part of f(z); the characters .:-=+*#%@ are the colours, from the real part to the imaginary part
+the width: the real part of z from -2 to 2; the height: the imaginary part of z from -2 to 2, upwards; the frames: the real and the imaginary part of f(z) from -2 to 2, the body between them; the colours: from the real part of f(z), the first colour, to the imaginary part, the last
+1203 voxels of the box of 33 x 9 x 9 belong to the body between the real and the imaginary part of f(z) (45.01 %)
+save_jxl("plot4d.jxl", plot4d(...)) saves the whole shape: 512 frames of 512 x 512 pixels in 512 colours, with alpha where the shape is
+$ symbolic-math 'save_jxl("between.jxl", plot4d(sin(z), z, pi), fill = between, width = 64, height = 64, frames = 32)'
+plot4d of sin(z)
+the width: the real part of z from -3.142 to 3.142; the height: the imaginary part of z from -3.142 to 3.142, upwards; the frames: the real and the imaginary part of f(z) from -11.59 to 11.59, the body between them; the colours: from the real part of f(z), the first colour, to the imaginary part, the last (512 colours of the palette rainbow)
+24540 voxels of the box of 64 x 64 x 32 belong to the body between the real and the imaginary part of f(z) (18.72 %)
+saved between.jxl: JPEG XL, 64 x 64 pixels, 32 frames, 16 a second, 8 bits, RGB + alpha of 1 bit, lossless, effort 10, 32100 bytes
 $ symbolic-math 'imframes("sin.jxl"); nnz(last(imread("sin.jxl", 32)))'
 64
 96
@@ -1753,6 +1772,7 @@ $ symbolic-math 'imframes("sin.jxl"); nnz(last(imread("sin.jxl", 32)))'
 | `palette = name` or a list of colours | the colours from the least value to the largest (`rainbow` unless said) |
 | `bits`, `gray`, `channels` | RGB with 8 bits and one bit of alpha unless said; `bits = 3` holds 512 colours, `gray, bits = 9` 512 levels in one channel |
 | `fill = surface`, `below`, `above` | the surface alone, or the body between it and the least (largest) value of the side of the frames |
+| `fill = between` | the body between the two parts of the value: the real and the imaginary part of `f(z)` both lie on the side that `z` leaves (the frames with the usual sides), over every place of `z` the voxels from the one to the other are filled, and the colours run from the real part (the first colour) to the imaginary part (the last). `f(2 + 3i) = -2 + 3i` fills the frames from -2 to 3 with the palette upwards, `3 - 2i` from 3 to -2 downwards. A frame is an area then, not a line |
 | `thickness = n` | a surface of `n` voxels |
 | `range_real = [a, b]`, `range_imag = [a, b]` | the values of `f(z)` that are drawn; without them the values near a pole are left out by themselves |
 | `rotate(yaw, pitch, roll)` | the body turned by these degrees before it is saved (made smaller so that it stays in its box) |
@@ -1824,6 +1844,13 @@ the imaginary part of f(z) goes far beyond these ends (near a pole): what lies o
 the body has 63508 cubes, of which 15566 sides lie open
 the eye stands at azimuth = 30, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
 saved around.jxl: JPEG XL, 96 x 96 pixels, 8 bits, RGB, 8 frames, 12 a second, lossless, effort 7, 5757 bytes
+$ symbolic-math 'save_png("between.png", view4d(sin(z), z, pi), fill = between, width = 160)'
+view4d of sin(z): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
+the box: x is the real part of z from -3.142 to 3.142; y is the imaginary part of z from -3.142 to 3.142; z, upright, is the real and the imaginary part of f(z) from -11.59 to 11.59, the body between them; the colours go from the real part of f(z), the first colour, to the imaginary part, the last (512 colours of the palette rainbow)
+84572 voxels of the box of 80 x 80 x 80 belong to the body between the real and the imaginary part of f(z) (16.52 %)
+the body has 84572 cubes, of which 36436 sides lie open
+the eye stands at azimuth = 240, elevation = 25 (found: the lowest of three heights that shows most of what can be seen, and around the box the place that shows most); azimuth, elevation, roll, viewpoint, perspective and zoom choose another
+saved between.png: PNG, 160 x 160 pixels, 8 bits, RGB, level 9, 8649 bytes
 $ symbolic-math 'save_png_fast("rings.png", view4d(z*sin(z), z, 6), arg_real = color, arg_imag = frame, val_real = width, val_imag = height, normalize, thickness = 2)'
 view4d of z*sin(z): the shape of plot4d as an eye outside of its box sees it; the frames of plot4d stand upright
 the box: x is the real part of f(z) from -1652 to 1331; y is the imaginary part of f(z) from -1471 to 1471; z, upright, is the imaginary part of z from -6 to 6; the colours are the real part of z from -6 to 6 (256 colours of the palette rainbow, the least value first)
@@ -1863,6 +1890,10 @@ the moving ones with their frames.
 | [plot4d_curves.jxl](jxls/plot4d_curves.jxl) | `save_jxl("plot4d_curves.jxl", plot4d(sin(z)*cos(z)), arg_imag = frame, val_real = height, normalize, thickness = 3)` |
 | [plot4d_gray9.jxl](jxls/plot4d_gray9.jxl) | `save_jxl("plot4d_gray9.jxl", plot4d(z + 1/z), gray, bits = 9, range_real = [-4, 4], range_imag = [-4, 4])` |
 | [plot4d_cube3.jxl](jxls/plot4d_cube3.jxl) | `save_jxl("plot4d_cube3.jxl", plot4d(exp(z), z, 3), palette = cube, bits = 3, fill = below)` |
+| [plot4d_between_sin.jxl](jxls/plot4d_between_sin.jxl) | `save_jxl("plot4d_between_sin.jxl", plot4d(sin(z), z, pi), fill = between)` |
+| [plot4d_between_three_poles.jxl](jxls/plot4d_between_three_poles.jxl) | `save_jxl("plot4d_between_three_poles.jxl", plot4d((z^3 - 1)/(z^3 + 1), z, 2), fill = between, range_real = [-3, 3], range_imag = [-3, 3], palette = turbo)` |
+| [plot4d_between_gamma.jxl](jxls/plot4d_between_gamma.jxl) | `save_jxl("plot4d_between_gamma.jxl", plot4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = between, palette = heat)` |
+| [plot4d_between_exp_stretched.jxl](jxls/plot4d_between_exp_stretched.jxl) | `save_jxl("plot4d_between_exp_stretched.jxl", plot4d(e^z, z, -2 - pi*i, 2 + pi*i), fill = between, palette = spectrum, normalize)` |
 
 **The shapes seen from outside (`view4d`: one picture of a body of 512 x 512 x 512 voxels)**
 
@@ -1882,6 +1913,8 @@ the moving ones with their frames.
 | [view4d_two_poles_stereo.jxl](jxls/view4d_two_poles_stereo.jxl) | `save_jxl("view4d_two_poles_stereo.jxl", view4d(1/(z^2 + 1), z, 2), range_real = [-2, 2], range_imag = [-2, 2], stereo = 5, width = 1920, height = 1080, effort = 10)` |
 | [view4d_erf_turned.jxl](jxls/view4d_erf_turned.jxl) | `save_jxl("view4d_erf_turned.jxl", view4d(erf(z), z, 2), fill = below, rotate(25, 20, 0), palette = coolwarm, range_real = [-3, 3], range_imag = [-3, 3], width = 1920, height = 1080, effort = 10)` |
 | [view4d_exp.jxl](jxls/view4d_exp.jxl) | `save_jxl("view4d_exp.jxl", view4d(e^z, z, -2 - pi*i, 2 + pi*i), title = "the exponential function", width = 1920, height = 1080, effort = 10)` |
+| [view4d_between_sin.jxl](jxls/view4d_between_sin.jxl) | `save_jxl("view4d_between_sin.jxl", view4d(sin(z), z, pi), fill = between, width = 1920, height = 1080, effort = 10)` |
+| [view4d_between_three_poles.jxl](jxls/view4d_between_three_poles.jxl) | `save_jxl("view4d_between_three_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = between, range_real = [-3, 3], range_imag = [-3, 3], palette = turbo, width = 1920, height = 1080, effort = 10)` |
 
 **Walks of digits and of primes, spirals**
 
@@ -1945,6 +1978,7 @@ the moving ones with their frames.
 | [view4d_around_sin.jxl](jxls/view4d_around_sin.jxl) | `save_jxl("view4d_around_sin.jxl", view4d(sin(z)), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
 | [view4d_around_gamma.jxl](jxls/view4d_around_gamma.jxl) | `save_jxl("view4d_around_gamma.jxl", view4d(gamma(z), z, -4 - 3i, 4 + 3i), fill = below, palette = heat, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
 | [view4d_around_poles.jxl](jxls/view4d_around_poles.jxl) | `save_jxl("view4d_around_poles.jxl", view4d((z^3 - 1)/(z^3 + 1), z, 2), fill = below, palette = magma, range_real = [-3, 3], width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [view4d_around_between.jxl](jxls/view4d_around_between.jxl) | `save_jxl("view4d_around_between.jxl", view4d(z^2, z, 2), fill = between, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
 | [walk_pi_grows.jxl](jxls/walk_pi_grows.jxl) | `save_jxl("walk_pi_grows.jxl", walk(pi, 10, 100000), grow, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
 | [walk3d_around.jxl](jxls/walk3d_around.jxl) | `save_jxl("walk3d_around.jxl", walk3d(e + pi*i, 12, 50000), width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
 | [walk3d_slices.jxl](jxls/walk3d_slices.jxl) | `save_jxl("walk3d_slices.jxl", walk3d(e + pi*i, 12, 100000), slices = 512, width = 512, height = 512, fps = 24, effort = 10)` |
@@ -1969,6 +2003,7 @@ the moving ones with their frames.
 | [view4d_slog.jxl](jxls/view4d_slog.jxl) | `save_jxl("view4d_slog.jxl", view4d(slog(sqrt(2), z), z, -2 - 2i, 1.9 + 2i), voxels = 256, range_real = [-3, 6], palette = twilight, width = 1920, height = 1080, effort = 10)` |
 | [view4d_ssrt.jxl](jxls/view4d_ssrt.jxl) | `save_jxl("view4d_ssrt.jxl", view4d(ssrt(z, 2), z, -4 - 4i, 6 + 4i), voxels = 256, palette = spectrum, width = 1920, height = 1080, effort = 10)` |
 | [view4d_around_tetration.jxl](jxls/view4d_around_tetration.jxl) | `save_jxl("view4d_around_tetration.jxl", view4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), range_real = [-3, 5], range_imag = [-4, 4], fill = below, palette = magma, width = 512, height = 512, frames = 512, fps = 24, effort = 10)` |
+| [plot4d_between_tetration.jxl](jxls/plot4d_between_tetration.jxl) | `save_jxl("plot4d_between_tetration.jxl", plot4d(sqrt(2)^^z, z, -3.5 - 4i, 4.5 + 4i), fill = between, range_real = [-3, 5], range_imag = [-4, 4])` |
 | [complexplot_tetration.jxl](jxls/complexplot_tetration.jxl) | `save_jxl("complexplot_tetration.jxl", complexplot(sqrt(2)^^z, z, -4.8 - 2.7i, 4.8 + 2.7i), width = 1920, height = 1080, effort = 10)` |
 | [complexplot_tetration_fifth.jxl](jxls/complexplot_tetration_fifth.jxl) | `save_jxl("complexplot_tetration_fifth.jxl", complexplot(0.2^^z, z, -4 - 2.25i, 4 + 2.25i), width = 1920, height = 1080, effort = 10)` |
 <!-- /pictures -->

@@ -1,3 +1,8 @@
+-e	str2angle(-inf)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(undefined)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(10^20)	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(10^(-20))	error: str2angle is written str2angle("12°30'15''S")
+-e	str2angle(x)	error: str2angle is written str2angle("12°30'15''S")
 -e	str2angle([])	[]
 -e	str2angle([1, 2])	error: str2angle is written str2angle("12°30'15''S")
 -e	str2angle("text")	error: str2angle: "text" is not an angle: degrees, minutes and seconds like 12°30'15''S, 12-30-15S, 12d30m15s, 123015S (the last four digits are minutes and seconds), or -12.5

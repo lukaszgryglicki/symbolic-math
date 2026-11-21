@@ -1,3 +1,4 @@
+-e	ssinint(x)	si(x) - pi/2
 -e	ssinint([])	[]
 -e	ssinint([1, 2])	[si(1) - pi/2, si(2) - pi/2]
 -e	ssinint("text")	si("text") - pi/2
@@ -271,6 +272,7 @@
 -e	hex2dec([])	[]
 -e	hex2dec([1, 2])	error: hex2dec needs a text in quotes, 1 is none
 -e	hex2dec("text")	error: hex2dec: "text" is no number written in base 16
+-e	hex2dec(true)	error: hex2dec needs a text in quotes, true is none
 -e	hex2dec(-7/3)	error: hex2dec needs a text in quotes, -7/3 is none
 -e	hex2dec(0.5)	error: hex2dec needs a text in quotes, 1/2 is none
 -e	char(0)	" "
@@ -497,6 +499,7 @@
 -e	ischar(i)	false
 -e	ischar(inf)	false
 -e	ischar(-inf)	false
+-e	ischar(undefined)	false
 -e	ischar(10^20)	false
 -e	ischar(10^(-20))	false
 -e	ischar(x)	false
@@ -695,6 +698,3 @@
 -e	unifcdf(inf)	1
 -e	unifcdf(-inf)	0
 -e	unifcdf(undefined)	piecewise(undefined < 0, 0, undefined <= 1, undefined, 1)
--e	unifcdf(10^20)	1
--e	unifcdf(10^(-20))	1/100000000000000000000
--e	unifcdf(x)	piecewise(x < 0, 0, x <= 1, x, 1)

@@ -1,3 +1,4 @@
+-e	coeffs([1, 2])	[[1, 2]]
 -e	coeffs("text")	error: coeffs: "text" is no polynomial in text
 -e	coeffs(true)	[true]
 -e	coeffs(-7/3)	[-7/3]
@@ -697,4 +698,3 @@
 -e	ssinint(undefined)	undefined
 -e	ssinint(10^20)	si(100000000000000000000) - pi/2
 -e	ssinint(10^(-20))	si(1/100000000000000000000) - pi/2
--e	ssinint(x)	si(x) - pi/2

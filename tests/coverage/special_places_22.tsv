@@ -1,3 +1,7 @@
+-e	dsort([1, 2])	[2, 1]
+-e	dsort("text")	error: "text" is no number
+-e	dsort(true)	error: true is no number
+-e	dsort(-7/3)	[-7/3]
 -e	dsort(0.5)	[0.5]
 -e	hsvd(0)	error: hsvd: the system has no states, it is a gain alone
 -e	hsvd(1)	error: hsvd: the system has no states, it is a gain alone
@@ -694,7 +698,3 @@
 -e	firtype(undefined)	error: firtype: undefined is not a real number
 -e	firtype(10^20)	1
 -e	firtype(10^(-20))	1
--e	firtype(x)	error: firtype: x is not a real number
--e	firtype([])	2
--e	firtype([1, 2])	error: firtype: the filter has no linear phase (its coefficients are no mirror of themselves)
--e	firtype("text")	error: firtype: "text" is not a real number
