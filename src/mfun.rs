@@ -1689,8 +1689,30 @@ impl Session {
                 }
             })(),
             ("random", 1 | 2) if crate::dist::is_distribution(&a[0]) => (|| {
+                // (where MATLAB's own recipe is short, the numbers are those of its stream)
                 let draw = |s: &mut Session| {
-                    s.call("quantile", &[a[0].clone(), crate::random::uniform()])
+                    let (bell, unit) = (crate::random::normal_value, crate::random::uniform);
+                    let minus_log = |s: &mut Session| s.call("ln", &[unit()]).map(|l| mul(vec![Expr::minus_one(), l]));
+                    let parts: (&str, &[Expr]) = match &a[0] {
+                        Expr::Fn(name, parts) => (name, parts),
+                        _ => ("", &[]),
+                    };
+                    match parts {
+                        ("normaldist", [mu, sigma]) => Ok(tidy(add(vec![mu.clone(), mul(vec![sigma.clone(), bell()])]))),
+                        ("lognormaldist", [mu, sigma]) => s.call("exp", &[tidy(add(vec![mu.clone(), mul(vec![sigma.clone(), bell()])]))]),
+                        ("exponentialdist", [rate]) => Ok(tidy(div(minus_log(s)?, rate.clone()))),
+                        ("rayleighdist", [b]) => {
+                            let drawn = minus_log(s)?;
+                            let root = s.call("sqrt", &[tidy(mul(vec![Expr::int(2), drawn]))])?;
+                            Ok(tidy(mul(vec![b.clone(), root])))
+                        }
+                        ("weibulldist", [shape, scale]) => {
+                            let drawn = minus_log(s)?;
+                            let power = s.call("power", &[drawn, div(Expr::one(), shape.clone())])?;
+                            Ok(tidy(mul(vec![scale.clone(), power])))
+                        }
+                        _ => s.call("quantile", &[a[0].clone(), unit()]),
+                    }
                 };
                 match a.get(1) {
                     None => draw(self),
@@ -2022,6 +2044,8 @@ impl Session {
             None => format!("{x}"),
         };
         match (name, a) {
+            ("arcgridwrite" | "worldfilewrite", _) => self.georaster_written(name, a),
+            ("matwrite", _) => crate::matfile::write(a),
             ("fprintf", [first, rest @ ..]) if crate::radix::text_of(first).is_some() => {
                 let format = crate::radix::text_of(first).unwrap_or_default();
                 Ok(lines(&crate::texts::sprintf(format, rest)?))

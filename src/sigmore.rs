@@ -20,6 +20,45 @@ fn fl(x: &Float) -> Float {
     Float::with_val(bits(), x)
 }
 
+/// What the taps of a filter do from the other end: the same (`Even`), or the opposite sign
+/// as a transformer of Hilbert (-j times the gains) or as a differentiator (+j times them,
+/// with weights that fall with the frequency where a gain is wanted).
+#[derive(Clone, Copy, PartialEq)]
+enum Kind {
+    Even,
+    Hilbert,
+    Differentiator,
+}
+
+/// The integrals of sin(t)/t from 0 and of cos(t)/t from infinity.
+fn trig_integral(name: &str, x: &Float) -> Float {
+    let z = Complex::with_val(bits() + 32, x);
+    match crate::special::call(name, &[z], bits() + 32) {
+        Some(Some(v)) => Float::with_val(bits(), v.real()),
+        _ => zero(),
+    }
+}
+
+/// The taps of a filter from the coefficients `s` of its sines: of `sin(m w)`, m from 1,
+/// for an odd number of taps, of `sin((k + 1/2) w)` for an even one.
+fn odd_taps(s: &[Float], taps: usize, kind: Kind) -> Vec<Float> {
+    let mut h = vec![zero(); taps];
+    let half_way = taps / 2;
+    for (k, value) in s.iter().enumerate() {
+        let mut half = Float::with_val(bits(), value / 2u32);
+        if kind == Kind::Hilbert {
+            half = -half;
+        }
+        let (before, after) = match taps % 2 == 1 {
+            true => (half_way - 1 - k, half_way + 1 + k),
+            false => (half_way - 1 - k, half_way + k),
+        };
+        h[after] = Float::with_val(bits(), -&half);
+        h[before] = half;
+    }
+    h
+}
+
 /// A design whose equations lose digits: worked again with more digits until the answer
 /// stays.
 fn steady(work: &mut dyn FnMut() -> Result<Vec<Float>, String>) -> Result<Vec<Float>, String> {
@@ -114,6 +153,18 @@ impl Bands {
         Float::with_val(bits(), &self.edges[last] - pi()).abs() < Float::with_val(bits(), 1e-30)
             && !self.gains[last].is_zero()
     }
+
+    /// A gain is wanted at the frequency 0.
+    fn open_at_the_start(&self) -> bool {
+        self.edges[0].is_zero() && !self.gains[0].is_zero()
+    }
+
+    /// A band of a differentiator in which a gain is wanted: its errors weigh more the lower
+    /// the frequency is.
+    fn falls(&self, band: usize, kind: Kind) -> bool {
+        kind == Kind::Differentiator
+            && !(self.gains[2 * band].is_zero() && self.gains[2 * band + 1].is_zero())
+    }
 }
 
 /// The taps of a filter from the coefficients of its cosines: `c[k]` of `cos(k w)` for an
@@ -140,7 +191,10 @@ fn taps_of(c: &[Float], taps: usize) -> Vec<Float> {
 }
 
 /// The filter with the least weighted square error against the gains of the bands.
-fn least_squares(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
+fn least_squares(order: usize, bands: &Bands, kind: Kind) -> Result<Vec<Float>, String> {
+    if kind != Kind::Even {
+        return least_squares_of_sines(order, bands, kind);
+    }
     let taps = order + 1;
     let odd = taps % 2 == 1;
     let unknowns = if odd { taps.div_ceil(2) } else { taps / 2 };
@@ -202,18 +256,144 @@ fn least_squares(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
     Ok(taps_of(&c, taps))
 }
 
+/// The same for taps of opposite signs from the ends: a sum of sines. The weight of a band
+/// of a differentiator in which a gain is wanted is 1/f^2, f in turns a sample.
+fn least_squares_of_sines(order: usize, bands: &Bands, kind: Kind) -> Result<Vec<Float>, String> {
+    let taps = order + 1;
+    let odd = taps % 2 == 1;
+    let unknowns = taps / 2;
+    let at = |k: usize| match odd {
+        true => int(k as i64 + 1),
+        false => int(k as i64) + dec("0.5"),
+    };
+    // the integral of cos(p w) over a band
+    let cosines = |p: &Float, low: &Float, high: &Float| -> Float {
+        match p.is_zero() {
+            true => Float::with_val(bits(), high - low),
+            false => {
+                (Float::with_val(bits(), p * high).sin() - Float::with_val(bits(), p * low).sin())
+                    / p
+            }
+        }
+    };
+    let mut q = vec![vec![zero(); unknowns]; unknowns];
+    let mut d = vec![zero(); unknowns];
+    for band in 0..bands.count() {
+        let (low, high) = (&bands.edges[2 * band], &bands.edges[2 * band + 1]);
+        let (from, to) = (&bands.gains[2 * band], &bands.gains[2 * band + 1]);
+        let slope = Float::with_val(bits(), to - from) / Float::with_val(bits(), high - low);
+        let offset = Float::with_val(bits(), from - Float::with_val(bits(), &slope * low));
+        if !bands.falls(band, kind) {
+            let weight = &bands.weights[band];
+            for i in 0..unknowns {
+                let mi = at(i);
+                // the integral of (offset + slope w) sin(mi w)
+                let end = |w: &Float| -> Float {
+                    let angle = Float::with_val(bits(), &mi * w);
+                    let line =
+                        Float::with_val(bits(), &offset + Float::with_val(bits(), &slope * w));
+                    Float::with_val(bits(), &slope * angle.clone().sin())
+                        / Float::with_val(bits(), &mi * &mi)
+                        - line * angle.cos() / &mi
+                };
+                d[i] += Float::with_val(bits(), weight * (end(high) - end(low)));
+                for (j, mj) in (i..unknowns).map(|j| (j, at(j))) {
+                    let both = cosines(&Float::with_val(bits(), &mi - &mj), low, high)
+                        - cosines(&Float::with_val(bits(), &mi + &mj), low, high);
+                    let value = Float::with_val(bits(), weight * both) / 2u32;
+                    q[i][j] += &value;
+                    if j != i {
+                        q[j][i] += &value;
+                    }
+                }
+            }
+            continue;
+        }
+        if low.is_zero() && !offset.is_zero() {
+            return Err("firls: the errors of a differentiator weigh 1/f^2, so the gain at the frequency 0 must be 0".into());
+        }
+        // w/f^2 with f = angle/(2 pi)
+        let weight = Float::with_val(bits(), &bands.weights[band] * pi().square()) * 4u32;
+        // p*Si(p*w) for every whole p that a sum or a difference of two of the sines has
+        let sines_at = |w: &Float| -> Vec<Float> {
+            (0..=2 * unknowns + 1)
+                .map(|p| {
+                    let p = int(p as i64);
+                    trig_integral("si", &Float::with_val(bits(), &p * w)) * p
+                })
+                .collect()
+        };
+        let (si_low, si_high) = (sines_at(low), sines_at(high));
+        for i in 0..unknowns {
+            let mi = at(i);
+            // the integral of (offset + slope w) sin(mi w)/w^2
+            let end = |w: &Float| -> Float {
+                let angle = Float::with_val(bits(), &mi * w);
+                let mut sum = Float::with_val(bits(), &slope * trig_integral("si", &angle));
+                if !offset.is_zero() {
+                    let part = Float::with_val(bits(), &mi * trig_integral("ci", &angle))
+                        - angle.sin() / w;
+                    sum += Float::with_val(bits(), &offset * part);
+                }
+                sum
+            };
+            d[i] += Float::with_val(bits(), &weight * (end(high) - end(low)));
+            for j in i..unknowns {
+                let mj = at(j);
+                // the integral of sin(mi w) sin(mj w)/w^2
+                let end = |w: &Float, si: &[Float]| -> Float {
+                    let half = Float::with_val(bits(), &si[i + j + 1 + usize::from(odd)])
+                        - Float::with_val(bits(), &si[j - i]);
+                    let half = half / 2u32;
+                    match w.is_zero() {
+                        true => half,
+                        false => {
+                            half - Float::with_val(bits(), &mi * w).sin()
+                                * Float::with_val(bits(), &mj * w).sin()
+                                / w
+                        }
+                    }
+                };
+                let value =
+                    Float::with_val(bits(), &weight * (end(high, &si_high) - end(low, &si_low)));
+                q[i][j] += &value;
+                if j != i {
+                    q[j][i] += &value;
+                }
+            }
+        }
+    }
+    let c = crate::mfun::linear(q, d).ok_or("firls: these bands do not say what the filter is")?;
+    Ok(odd_taps(&c, taps, kind))
+}
+
 /// The filter of a number of taps whose weighted error against the gains of the bands has
 /// the least greatest size: the exchange of Remez, with the greatest errors sought on the
 /// whole bands.
-fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
+fn equal_ripples(order: usize, bands: &Bands, kind: Kind) -> Result<Vec<Float>, String> {
     let taps = order + 1;
     let even = taps.is_multiple_of(2);
-    let r = if even { taps / 2 } else { taps.div_ceil(2) };
-    // a filter with an even number of taps is cos(w/2) times a sum of r cosines
+    let sines = kind != Kind::Even;
+    let r = match (sines, even) {
+        (false, false) => taps.div_ceil(2),
+        _ => taps / 2,
+    };
+    // a filter with an even number of taps is cos(w/2) times a sum of r cosines; one with
+    // taps of opposite signs is sin(w) or sin(w/2) times such a sum
     let lean = |w: &Float| -> Float {
-        match even {
-            true => Float::with_val(bits(), w / 2u32).cos(),
-            false => int(1),
+        match (sines, even) {
+            (false, true) => Float::with_val(bits(), w / 2u32).cos(),
+            (false, false) => int(1),
+            (true, false) => w.clone().sin(),
+            (true, true) => Float::with_val(bits(), w / 2u32).sin(),
+        }
+    };
+    // the weight of a band at an angle: 1/f, f in turns a sample, where a differentiator
+    // wants a gain
+    let weight_at = |band: usize, w: &Float| -> Float {
+        match bands.falls(band, kind) {
+            true => Float::with_val(bits(), &bands.weights[band] * pi()) * 2u32 / w,
+            false => fl(&bands.weights[band]),
         }
     };
     let total = (0..bands.count()).fold(zero(), |sum, b| {
@@ -261,10 +441,7 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
             .iter()
             .map(|(band, w)| {
                 let q = lean(w);
-                (
-                    bands.wanted(*band, w) / &q,
-                    Float::with_val(bits(), &bands.weights[*band] * &q),
-                )
+                (bands.wanted(*band, w) / &q, weight_at(*band, w) * &q)
             })
             .collect();
         for k in 0..=r {
@@ -305,12 +482,19 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
         };
         let error = |band: usize, w: &Float| -> Float {
             let missed = bands.wanted(band, w) - lean(w) * sum_at(w);
-            missed * &bands.weights[band]
+            missed * weight_at(band, w)
         };
         // the places where the error is greatest: on a grid first, then between its places
         let mut found: Vec<(usize, Float, Float)> = Vec::new();
+        let mut top = zero();
         for band in 0..bands.count() {
             let (low, high) = (&bands.edges[2 * band], &bands.edges[2 * band + 1]);
+            let wide = Float::with_val(bits(), high - low);
+            // (a sum of sines is nothing at the frequency 0: the grid begins beside it)
+            let low = &match sines && low.is_zero() {
+                true => Float::with_val(bits(), &tiny * &wide),
+                false => fl(low),
+            };
             let wide = Float::with_val(bits(), high - low);
             let share = Float::with_val(64, &wide / &total).to_f64();
             let cells = ((density * r) as f64 * share).ceil().max(4.0) as usize;
@@ -324,6 +508,7 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 .collect();
             let errors: Vec<Float> = grid.iter().map(|w| error(band, w)).collect();
             let size = |k: usize| errors[k].clone().abs();
+            top = errors.iter().fold(top, |m, e| m.max(&e.clone().abs()));
             for k in 0..=cells {
                 let here = size(k);
                 if here.is_zero() {
@@ -390,6 +575,17 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 found.push((band, best, value));
             }
         }
+        // the points of the last round stay among the places: their errors have one size and
+        // signs in turn, also where a steep error beside the edge of a band hides the turn
+        // from the grid
+        for (band, w) in &points {
+            found.push((*band, w.clone(), error(*band, w)));
+        }
+        found.sort_by(|a, b| {
+            (a.0, &a.1)
+                .partial_cmp(&(b.0, &b.1))
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
         // signs in turn: of neighbours with one sign the greater stays
         let mut turns: Vec<(usize, Float, Float)> = Vec::new();
         for item in found {
@@ -429,7 +625,9 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                 turns.drain(beside..=beside + 1);
             }
         }
-        if turns.len() < r + 1 {
+        // (what is left of a fit without error is rounding)
+        let fits = top <= Float::with_val(bits(), 1) >> (bits() - 24);
+        if turns.len() < r + 1 && !fits {
             // (a grid that is too coarse misses a turn)
             if density >= 128 {
                 return Err(
@@ -446,7 +644,7 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
         let settled = Float::with_val(bits(), &greatest - &least)
             <= Float::with_val(bits(), &greatest * &done);
         points = turns.into_iter().map(|(band, w, _)| (band, w)).collect();
-        if settled || greatest.is_zero() {
+        if settled || fits || greatest.is_zero() {
             // the coefficients of the cosines from the values of the sum at as many places
             let values: Vec<Float> = (0..r)
                 .map(|j| sum_at(&(pi() * (2 * j as u64 + 1) / (2 * r as u64))))
@@ -461,6 +659,22 @@ fn equal_ripples(order: usize, bands: &Bands) -> Result<Vec<Float>, String> {
                     sum * (if k == 0 { 1u32 } else { 2u32 }) / r as u64
                 })
                 .collect();
+            if sines {
+                // sin(w) cos(k w) = (sin((k + 1) w) - sin((k - 1) w))/2, and the same with
+                // halves for sin(w/2)
+                let mut s = vec![zero(); r];
+                s[0] += &c[0];
+                for k in 1..r {
+                    let half = Float::with_val(bits(), &c[k] / 2u32);
+                    s[k] += &half;
+                    match even {
+                        true => s[k - 1] -= &half,
+                        false if k >= 2 => s[k - 2] -= &half,
+                        false => {}
+                    }
+                }
+                return Ok(odd_taps(&s, taps, kind));
+            }
             if !even {
                 return Ok(taps_of(&c, taps));
             }
@@ -571,9 +785,19 @@ fn sampled(
         .collect())
 }
 
-/// The values at another rate: `up - 1` zeros after every value, a lowpass of sinc with
-/// Kaiser's window, every `down`-th value (as `resample_poly` of SciPy).
-fn another_rate(x: &[Float], up: usize, down: usize) -> Result<Vec<Float>, String> {
+/// The values at another rate: `up - 1` zeros after every value, a lowpass, every `down`-th
+/// value. The lowpass is the one of least squares with Kaiser's window that MATLAB's
+/// `resample` designs (the sinc of `resample_poly` of SciPy): `reach` values of the signal to
+/// each side and the shape `beta` of the window; `reach` 0 repeats the values; or the taps
+/// that are given.
+fn another_rate(
+    x: &[Float],
+    up: usize,
+    down: usize,
+    reach: usize,
+    beta: &Float,
+    own: Option<&[Float]>,
+) -> Result<Vec<Float>, String> {
     let gcd = |mut a: usize, mut b: usize| {
         while b != 0 {
             (a, b) = (b, a % b);
@@ -586,27 +810,37 @@ fn another_rate(x: &[Float], up: usize, down: usize) -> Result<Vec<Float>, Strin
         return Ok(x.to_vec());
     }
     let most = up.max(down);
-    let half = 10 * most;
-    let size = 2 * half + 1;
-    let win = window("kaiser", size, Some(&int(5)))?;
-    let edge = int(1) / most as u64;
-    let mut h: Vec<Float> = (0..size)
-        .map(|k| {
-            let m = int(k as i64 - half as i64);
-            let ideal = match m.is_zero() {
-                true => edge.clone(),
-                false => (pi() * &edge * &m).sin() / (pi() * &m),
-            };
-            ideal * &win[k]
-        })
-        .collect();
-    let sum = h.iter().fold(zero(), |s, v| s + v);
-    for v in &mut h {
-        *v = Float::with_val(bits(), &*v / &sum) * up as u64;
-    }
+    let h: Vec<Float> = match own {
+        Some(taps) => taps.to_vec(),
+        None if reach == 0 => vec![int(1); up],
+        None => {
+            let half = reach * most;
+            let size = 2 * half + 1;
+            let win = window("kaiser", size, Some(beta))?;
+            let edge = int(1) / most as u64;
+            let mut h: Vec<Float> = (0..size)
+                .map(|k| {
+                    let m = int(k as i64 - half as i64);
+                    let ideal = match m.is_zero() {
+                        true => edge.clone(),
+                        false => (pi() * &edge * &m).sin() / (pi() * &m),
+                    };
+                    ideal * &win[k]
+                })
+                .collect();
+            let sum = h.iter().fold(zero(), |s, v| s + v);
+            for v in &mut h {
+                *v = Float::with_val(bits(), &*v / &sum) * up as u64;
+            }
+            h
+        }
+    };
+    let size = h.len();
     let out = (x.len() * up).div_ceil(down);
-    let before = down - half % down;
-    let cut = (half + before) / down;
+    // (twice the half length of the filter, which is a half for an even number of taps)
+    let twice = size - 1;
+    let before = (2 * down - twice % (2 * down)) / 2;
+    let cut = (twice.div_ceil(2) + before) / down;
     let reached = |long: usize| ((x.len() - 1) * up + long - 1) / down + 1;
     let mut after = 0;
     while reached(size + before + after) < out + cut {
@@ -692,18 +926,37 @@ impl Session {
             let list = |k: usize| reals(&a[k], who);
             let pair = |b: Vec<Float>, a: Vec<Float>| Expr::list(vec![shown(&b), shown(&a)]);
             Ok(match (name, n) {
-                ("firls" | "firpm", 3 | 4) => {
+                ("firls" | "firpm", 3..=5) => {
                     let mut order = count(&a[0], "the order", 1, 300)?;
                     let least = name == "firls";
-                    if Bands::read(a, who, !least)?.open_at_the_end() && order % 2 == 1 {
+                    let (kind, a) = match a.last().and_then(word).as_deref() {
+                        Some("hilbert" | "h") => (Kind::Hilbert, &a[..n - 1]),
+                        Some("differentiator" | "d") => (Kind::Differentiator, &a[..n - 1]),
+                        Some(other) => {
+                            return Err(format!(
+                                "{name}(n, f, a[, w][, \"hilbert\" | \"differentiator\"]), not \"{other}\""
+                            ));
+                        }
+                        None => (Kind::Even, a),
+                    };
+                    if !(3..=4).contains(&a.len()) {
+                        return Err(format!("{name}(n, f, a[, w][, \"hilbert\" | \"differentiator\"])"));
+                    }
+                    let bands = Bands::read(a, who, !least)?;
+                    if kind == Kind::Even && bands.open_at_the_end() && order % 2 == 1 {
                         // (a gain at half the sampling rate: an even order)
                         order += 1;
+                    }
+                    if kind != Kind::Even && !least && (bands.open_at_the_start() || (bands.open_at_the_end() && order % 2 == 0)) {
+                        return Err(format!(
+                            "{name}: taps of opposite signs from the two ends give no gain at the frequency 0, and with an even order none at half the sampling rate: take other bands or an odd order"
+                        ));
                     }
                     let taps = steady(&mut || {
                         let bands = Bands::read(a, who, !least)?;
                         match least {
-                            true => least_squares(order, &bands),
-                            false => equal_ripples(order, &bands),
+                            true => least_squares(order, &bands, kind),
+                            false => equal_ripples(order, &bands, kind),
                         }
                     })?;
                     shown(&taps)
@@ -728,14 +981,32 @@ impl Session {
                     let win = window_of(shape, order + 1, "hamming", who)?;
                     shown(&sampled(order, &f, &m, numbers.first().copied(), numbers.get(1).copied(), &win)?)
                 }
-                ("resample", 3) => {
+                ("resample", 3..=5) => {
                     let x = list(0)?;
                     let up = count(&a[1], "the factor up", 1, 1 << 12)?;
                     let down = count(&a[2], "the factor down", 1, 1 << 12)?;
                     if x.is_empty() {
                         return Err("resample needs values".into());
                     }
-                    shown(&another_rate(&x, up, down)?)
+                    let own = match a.get(3).filter(|e| e.as_list().is_some()) {
+                        Some(e) => Some(reals(e, who)?),
+                        None => None,
+                    };
+                    if own.as_ref().is_some_and(|taps| taps.is_empty() || n > 4) {
+                        return Err("resample(x, p, q, b): the taps b of the lowpass".into());
+                    }
+                    let reach = match a.get(3) {
+                        Some(e) if own.is_none() => count(e, "the reach n of the lowpass", 0, 1 << 10)?,
+                        _ => 10,
+                    };
+                    let beta = match a.get(4) {
+                        Some(e) => crate::sigdesign::real(e, who)?,
+                        None => int(5),
+                    };
+                    if beta < 0 {
+                        return Err("resample(x, p, q, n, beta): the shape beta of Kaiser's window is not negative".into());
+                    }
+                    shown(&another_rate(&x, up, down, reach, &beta, own.as_deref())?)
                 }
                 ("phasez" | "phasedelay", 1..=3) => {
                     let b = list(0)?;
@@ -1074,6 +1345,54 @@ mod tests {
             "7"
         );
         assert!(said("firpm(4, [0, 0.5, 0.3, 1], [1, 1, 0, 0])").starts_with("error: firpm("));
+    }
+
+    #[test]
+    fn taps_of_opposite_signs_and_bands_that_leave_the_top_free() {
+        // one sine against the gain 1 on the whole band: 4/pi, the taps are halves of it
+        assert_eq!(
+            said("firls(2, [0, 1], [1, 1], \"hilbert\")"),
+            "[-0.63661977236758134307553505349006, 0, 0.63661977236758134307553505349006]"
+        );
+        // the slope of a signal: the first tap is positive, the last its opposite
+        assert!(
+            said("h := firls(9, [0, 1], [0, pi], \"differentiator\"); [sign(part(h, 1)), part(h, 1) + part(h, 10), part(h, 5) + part(h, 6)]")
+                .ends_with("|[1, 0, 0]")
+        );
+        assert!(
+            said("h := firpm(11, [0.1, 1], [1, 1], \"h\"); [part(h, 1) + part(h, 12), sign(part(h, 6))]")
+                .ends_with("|[0, -1]")
+        );
+        assert!(
+            said("h := firpm(10, [0, 0.8], [0, 0.8*pi], \"d\"); [part(h, 6), sign(part(h, 5)), part(h, 5) + part(h, 7)]")
+                .ends_with("|[0, 1, 0]")
+        );
+        assert!(said("firpm(10, [0.1, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0"));
+        assert!(said("firpm(11, [0, 1], [1, 1], \"hilbert\")").contains("no gain at the frequency 0"));
+        assert!(said("firls(9, [0, 1], [1, 1], \"differentiator\")").contains("must be 0"));
+        assert!(said("firls(9, [0, 1], [1, 1], \"other\")").contains("not \"other\""));
+        // the exchange keeps its points where a steep error hides a turn beside an edge
+        assert_eq!(
+            said("length(firpm(30, [0, 0.3, 0.5, 0.7], [1, 1, 0, 0]))"),
+            "31"
+        );
+        // a gain that fits without error
+        assert_eq!(said("firpm(4, [0.2, 0.7], [2, 2])"), "[0, 0, 2, 0, 0]");
+    }
+
+    #[test]
+    fn another_rate_with_a_reach_and_with_own_taps() {
+        assert_eq!(
+            said("resample([1, 2, 3], 2, 1, [1, 1])"),
+            "[1, 2, 2, 3, 3, 0]"
+        );
+        assert_eq!(said("resample([1, 2, 3], 2, 1, 0)"), "[1, 2, 2, 3, 3, 0]");
+        assert_eq!(said("resample([1, 2, 3, 4], 1, 2, [1])"), "[1, 3]");
+        assert_eq!(
+            said("resample([3, 1, 4, 1, 5, 9], 3, 2) == resample([3, 1, 4, 1, 5, 9], 3, 2, 10, 5)"),
+            "true"
+        );
+        assert!(said("resample([1, 2, 3], 2, 1, 3, -1)").contains("not negative"));
     }
 
     #[test]

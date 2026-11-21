@@ -116,6 +116,7 @@ pub fn is_drawing(name: &str) -> bool {
         || crate::chart::is_chart(name)
         || name == "plot4d"
         || name == "view4d"
+        || name == "wire4d"
 }
 
 /// The commands whose arguments may be choices of a picture.

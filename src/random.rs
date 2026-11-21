@@ -1,4 +1,5 @@
-//! Random numbers from the Mersenne Twister, with the stream of MATLAB's `rand` for a seed.
+//! Random numbers from the Mersenne Twister, with the streams of MATLAB's `rand`, `randi`,
+//! `randn` and `randperm` for a seed.
 
 use crate::arrays::{LIMIT, whole, word};
 use crate::expr::Expr;
@@ -95,6 +96,13 @@ impl Draws {
         }
     }
 
+    /// Numbers of a stream of their own, as `rng(seed)` begins it.
+    pub(crate) fn seeded(seed: u32) -> Draws {
+        Draws {
+            own: Some(Twister::new(if seed == 0 { 5489 } else { seed })),
+        }
+    }
+
     fn bits(&mut self) -> u64 {
         match &mut self.own {
             Some(stream) => stream.bits53(),
@@ -133,12 +141,66 @@ fn as_value(x: Float) -> Expr {
     numeric::to_float_expr(Complex::with_val(prec, x), numeric::digits())
 }
 
-/// A standard normal number (Box and Muller).
+/// Where the last layer of the ziggurat ends, and the area of every layer.
+const ZIGGURAT_END: f64 = 3.654_152_885_361_008_8;
+const ZIGGURAT_AREA: f64 = 4.928_673_233_99e-3;
+
+/// The right ends of the 256 layers of the ziggurat of Marsaglia and Tsang, from the
+/// lowest (wider than the curve: its end stands for the tail too) to the top one.
+fn layers() -> &'static [f64; 257] {
+    static LAYERS: std::sync::OnceLock<[f64; 257]> = std::sync::OnceLock::new();
+    LAYERS.get_or_init(|| {
+        let density = |x: f64| (-0.5 * x * x).exp();
+        let mut ends = [0.0; 257];
+        ends[0] = ZIGGURAT_AREA / density(ZIGGURAT_END);
+        ends[1] = ZIGGURAT_END;
+        for k in 2..256 {
+            ends[k] = (-2.0 * (ZIGGURAT_AREA / ends[k - 1] + density(ends[k - 1])).ln()).sqrt();
+        }
+        ends
+    })
+}
+
+/// A standard normal number as MATLAB's `randn` draws it from the twister: the ziggurat
+/// with 256 layers. The layer comes from the top eight bits of the second word of a
+/// number of 53 bits, the place in it from the whole number; beside the curve one more
+/// number decides, and beyond the last layer two logarithms give the tail.
+fn ziggurat(next: &mut dyn FnMut() -> u64) -> f64 {
+    const SCALE: f64 = 9_007_199_254_740_992.0;
+    let ends = layers();
+    let density = |x: f64| (-0.5 * x * x).exp();
+    loop {
+        let bits = next();
+        let layer = 255 - ((bits >> 18) & 0xff) as usize;
+        let side = 2.0 * (bits as f64 / SCALE) - 1.0;
+        let x = side * ends[layer];
+        if x.abs() < ends[layer + 1] {
+            return x;
+        }
+        if layer == 0 {
+            loop {
+                let a = -((next().max(1)) as f64 / SCALE).ln() / ZIGGURAT_END;
+                let b = -((next().max(1)) as f64 / SCALE).ln();
+                if b + b > a * a {
+                    return if side < 0.0 { -(ZIGGURAT_END + a) } else { ZIGGURAT_END + a };
+                }
+            }
+        }
+        let height = next() as f64 / SCALE;
+        if density(ends[layer + 1]) + height * (density(ends[layer]) - density(ends[layer + 1])) < density(x) {
+            return x;
+        }
+    }
+}
+
+/// A standard normal number of the stream of the session.
 fn normal() -> Float {
-    let prec = precision();
-    let first = (Float::with_val(prec, bits53()) + 1u32) >> 53u32;
-    let angle = uniform_float() * Float::with_val(prec, Constant::Pi) * 2u32;
-    (first.ln() * -2i32).sqrt() * angle.cos()
+    Float::with_val(precision(), ziggurat(&mut bits53))
+}
+
+/// A standard normal number, for other modules.
+pub fn normal_value() -> Expr {
+    as_value(normal())
 }
 
 /// A whole number from 0 to under `span`.
@@ -146,11 +208,12 @@ fn below(span: u64) -> u64 {
     ((u128::from(bits53()) * u128::from(span)) >> 53) as u64
 }
 
+/// The numbers below n in an order of chance, as MATLAB's `randperm` finds it: the order
+/// that sorts n numbers of the stream.
 fn permutation(n: usize) -> Vec<usize> {
+    let keys: Vec<u64> = (0..n).map(|_| bits53()).collect();
     let mut order: Vec<usize> = (0..n).collect();
-    for k in (1..n).rev() {
-        order.swap(k, below(k as u64 + 1) as usize);
-    }
+    order.sort_by_key(|k| keys[*k]);
     order
 }
 
@@ -314,5 +377,41 @@ mod tests {
         let mut t = Twister::new(1);
         let first = t.bits53() as f64 / 9_007_199_254_740_992.0;
         assert!((first - 0.417_022_004_702_574).abs() < 1e-15);
+    }
+
+    #[test]
+    fn randn_and_randperm_follow_the_streams_of_matlab() {
+        // the first hundred of MATLAB's randn after rng default (its documentation prints
+        // them with four decimals); the 52nd is one that the curve decided
+        let known = "0.5377 1.8339 -2.2588 0.8622 0.3188 -1.3077 -0.4336 0.3426 3.5784 2.7694 -1.3499 3.0349 0.7254 -0.0631 0.7147 -0.2050 -0.1241 1.4897 1.4090 1.4172 \
+            0.6715 -1.2075 0.7172 1.6302 0.4889 1.0347 0.7269 -0.3034 0.2939 -0.7873 0.8884 -1.1471 -1.0689 -0.8095 -2.9443 1.4384 0.3252 -0.7549 1.3703 -1.7115 \
+            -0.1022 -0.2414 0.3192 0.3129 -0.8649 -0.0301 -0.1649 0.6277 1.0933 1.1093 -0.8637 0.0774 -1.2141 -1.1135 -0.0068 1.5326 -0.7697 0.3714 -0.2256 1.1174 \
+            -1.0891 0.0326 0.5525 1.1006 1.5442 0.0859 -1.4916 -0.7423 -1.0616 2.3505 -0.6156 0.7481 -0.1924 0.8886 -0.7648 -1.4023 -1.4224 0.4882 -0.1774 -0.1961 \
+            1.4193 0.2916 0.1978 1.5877 -0.8045 0.6966 0.8351 -0.2437 0.2157 -1.1658 -1.1480 0.1049 0.7223 2.5855 -0.6669 0.1873 -0.0825 -1.9330 -0.4390 -1.7947";
+        let mut t = Twister::new(5489);
+        for (k, text) in known.split_whitespace().enumerate() {
+            let (drawn, wanted) = (ziggurat(&mut || t.bits53()), text.parse::<f64>().expect("a number"));
+            assert!((drawn - wanted).abs() < 5.1e-5, "the {}th: {drawn} against {wanted}", k + 1);
+        }
+        // after rng(22)
+        let mut t = Twister::new(22);
+        for wanted in [-1.1193, -0.0729, -0.2847, 1.5111, -1.5112] {
+            let drawn = ziggurat(&mut || t.bits53());
+            assert!((drawn - wanted).abs() < 5.1e-5, "{drawn} against {wanted}");
+        }
+        // many of them: the mean 0, the deviation 1, and the tail is there
+        let mut t = Twister::new(7);
+        let all: Vec<f64> = (0..400_000).map(|_| ziggurat(&mut || t.bits53())).collect();
+        let mean = all.iter().sum::<f64>() / all.len() as f64;
+        let spread = (all.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / all.len() as f64).sqrt();
+        let beyond = all.iter().filter(|x| x.abs() > ZIGGURAT_END).count();
+        assert!(mean.abs() < 0.006 && (spread - 1.0).abs() < 0.005, "{mean} {spread}");
+        // (2 (1 - Phi(3.654)) = 2.58e-4 of them: about 103)
+        assert!((60..150).contains(&beyond), "{beyond} beyond the last layer");
+        // randperm(6) and randperm(8, 4) of MATLAB's documentation
+        seed(0);
+        assert_eq!(permutation(6).iter().map(|k| k + 1).collect::<Vec<_>>(), [6, 3, 5, 1, 2, 4]);
+        seed(0);
+        assert_eq!(permutation(8).iter().take(4).map(|k| k + 1).collect::<Vec<_>>(), [6, 3, 7, 8]);
     }
 }

@@ -411,9 +411,9 @@ unidstat||1|1|unidstat(n): [mean, variance] of the whole numbers from 1 to n, eq
 # random numbers
 rng||0|1|rng(seed): starts the random numbers anew; rng(0) or rng("default"): the stream that MATLAB starts with; rng("shuffle") or rng(): from the clock
 rand|randomreal|0|2|a random number from 0 to under 1; rand(n): an n by n matrix; rand(m, n)
-randn||0|2|a random number of the standard normal distribution; randn(n), randn(m, n)
+randn||0|2|a random number of the standard normal distribution; randn(n), randn(m, n). After rng(seed) the numbers are those of MATLAB's randn (its ziggurat of 256 layers on the twister), as rand and randi are
 randi|randominteger|1|3|randi(n): a random whole number from 1 to n; randi([a, b]): from a to b; randi(n, m, k): an m by k matrix
-randperm||1|2|randperm(n): the numbers from 1 to n in a random order; randperm(n, k): k of them
+randperm||1|2|randperm(n): the numbers from 1 to n in a random order; randperm(n, k): k of them. After rng(seed) the order is that of MATLAB's randperm (the order that sorts n numbers of the stream)
 randsample||2|2|randsample(n, k) or randsample(list, k): k entries taken at random, none twice
 shuffle||1|1|a list in a random order
 random||1|*|random(dist): a random number of a distribution; random(dist, n): n of them; random("Normal", mu, sigma): by the name MATLAB gives it
@@ -620,8 +620,8 @@ spdiags||4|4|spdiags(B, d, rows, columns): the matrix with the columns of B alon
 squeeze||1|1|an array of three or more sizes without the sizes that are 1
 permute||2|2|permute(array, order): the sizes of an array in another order: permute(A, [2, 1]) is the transpose
 ipermute||2|2|ipermute(array, order): what permute with that order turned
-num2cell||1|1|a list itself (lists stand for the cells of MATLAB)
-cell2mat||1|1|a list of matrices as one matrix, side by side; a list of rows of matrices as blocks
+num2cell||1|1|num2cell(list): the cell array that holds every entry of a list in a cell of its own
+cell2mat||1|1|cell2mat({matrices}): the matrices that a cell array (or a list) holds as one matrix, side by side; rows of matrices as blocks
 signim||1|1|the sign of the imaginary part of a number; of a real number the opposite of its sign
 padecoef||1|2|padecoef(T, n): [numerator, denominator] of Pade's fraction of order n (1 without n) for e^(-T*s), the highest power first
 crosstab||2|2|crosstab(x, y): how often every value of x comes with every value of y
@@ -741,8 +741,8 @@ setfield||3|*|setfield(record, name, value): the record with a field set or adde
 rmfield||2|2|rmfield(record, name | [names]): the record without those fields
 isfield||2|2|isfield(record, name | [names]): whether it has the field
 orderfields||1|1|orderfields(record): the fields in the order of their names
-struct2cell||1|1|struct2cell(record): the values of its fields
-cell2struct||2|2|cell2struct([values], [names]): the record with those fields
+struct2cell||1|1|struct2cell(record): the values of its fields, a cell array
+cell2struct||2|2|cell2struct({values}, [names]): the record with those fields
 structfun||2|2|structfun(f, record): f of the value of every field
 dictionary||0|*|dictionary(keys, values), dictionary(key, value, ...): a table that finds a value by its key (a number or a text); keys, values, lookup, insert, remove, iskey work with it
 keys||1|1|keys(table): its keys, in the order they came
@@ -752,9 +752,12 @@ numentries||1|1|numentries(table): how many entries it has
 iskey||2|2|iskey(table, key | [keys]): whether the key is there
 lookup||2|3|lookup(table, key | [keys]): the value of a key; lookup(table, key, fallback): the fallback when the key is not there
 remove||2|2|remove(table, key | [keys]): the table without those keys
-iscell||1|1|iscell(x): whether x is a list of unlike things or of texts
-iscellstr||1|1|iscellstr(x): whether x is a list of texts
-cell||1|2|cell(n): a list of n empty lists; cell(rows, columns)
+iscell||1|1|iscell(x): whether x is a cell array {a, b, ...} (or a list of unlike things or of texts, which stands for one)
+iscellstr||1|1|iscellstr(x): whether x is a cell array (or a list) of texts
+cell||1|2|cell(n): a cell array of n empty cells; cell(rows, columns): rows of empty cells
+cellarray||0|*|cellarray(a, b, ...) or {a, b, ...}: a cell array, a container that holds anything in every cell (numbers, texts, lists, matrices, records, other cell arrays); {a, b; c, d} holds rows of cells. part(c, k) is what the k-th cell holds; the functions of lists take a cell array as the list of what it holds, and those that order or choose (sort, unique, reverse, horzcat, take, upper ...) give a cell array again
+celldisp||1|2|celldisp({a, b, ...}[, "name"]): what every cell holds, one text for a cell, the cells of cells too
+mat2cell||2|3|mat2cell(matrix, [rows of every block], [columns of every block]): the blocks of a matrix as a cell array (rows of blocks when the columns are cut too)
 !insert|3|3|insert(list, x, i): the list with x as entry i; insert(table, key, value): the table with a key set
 # more special functions
 meijerg||5|5|meijerg([a1, ..., an], [more a], [b1, ..., bm], [more b], z): Meijer's G function, the integral of a quotient of gamma functions that holds most special functions; a number where its series converge
@@ -989,6 +992,31 @@ stepplot||1|*|stepplot(system[, the last time]): the answer to a step along the 
 impulseplot||1|*|impulseplot(system[, the last time]): the answer to an impulse along the time (for a sampled system: the number of samples)
 initialplot||2|*|initialplot(system, x0[, the last time]): the output of the system left alone from the state x0 along the time (for a sampled system: the number of samples)
 nicholsplot||1|*|nicholsplot(system[, [frequencies]]): the gain in decibels against the phase in degrees as the frequency grows, with a cross at -180 degrees and 0 dB
+# systems of control with several inputs and outputs: ss(A, B, C, D) of any sizes, or a matrix whose entries are systems with one input and one output. The functions of systems take them: tf ss zpk minreal pole zero dcgain evalfr freqresp sigma step impulse lsim initial norm hinfnorm covar series parallel feedback inv c2d d2c reg, and + - * / ^ join them
+!append|1|*|append(list, x): the list with x at its end; append(G, H, ...): systems side by side, the inputs and the outputs of all of them and nothing between them
+connect||4|4|connect(system, Q, [inputs], [outputs]): the system with loops closed: a row [input, outputs that go into it (with a minus sign: taken off)] of Q for every input that is fed; what stays are the inputs and outputs that are named, by their numbers
+lft||2|4|lft(P, K): the loop of K around the last outputs and inputs of P (as many as K takes and gives); lft(P, K, nu, ny): around the last nu inputs and ny outputs
+subsystem||3|3|subsystem(system, [outputs], [inputs]): the part of a system from those inputs to those outputs, by their numbers
+iosize||1|1|iosize(system): [outputs, inputs]; size(system) gives the same
+order||1|1|order(system): the number of states of a system (of the fewest that a matrix of systems needs)
+augstate||1|1|augstate(system): the system with its states as more outputs, ss(A, B, [C; I], [D; 0])
+kalman||3|4|kalman(system, Qn, Rn[, Nn]): [the filter of Kalman as a system with the inputs [u; y] and the outputs [estimate of y; estimate of x], its gain L, the covariance P of the error]; the last inputs of the system are the noise w of the covariance Qn (as many as Qn has rows), Rn is the covariance of the noise of the outputs, Nn the one between both; a sampled system gives [filter, L, P, M, Z] with the gain M of the newest measurement and the covariance Z after it
+lqg||3|3|lqg(system, QXU, QWV): the controller of least cost for noisy states and outputs, as a system from y to u (fed back with the sign +1): QXU weighs states and inputs together, QWV is the covariance of the noise of the states and of the outputs together
+lqgreg||2|2|lqgreg(kest, K): the controller made of the filter that kalman gives and of the gain K of the states, from y to u (fed back with the sign +1)
+estim||2|4|estim(system, L): the watcher with the gain L, from the outputs y to [estimate of y; estimate of x]; estim(system, L, [sensors], [known]): with the outputs that are measured and the inputs that are known, by their numbers: inputs [u; y]
+lqry||3|4|lqry(system, Q, R[, N]): [K, X, poles] as lqr, with the weight Q on the outputs instead of the states
+!ctrb|1|2|ctrb(A, B): the matrix [B, A*B, A^2*B, ...]; of full rank when the input reaches every state; ctrb(system)
+!obsv|1|2|obsv(A, C): the matrix [C; C*A; C*A^2; ...]; of full rank when the output shows every state; obsv(system)
+
+# delays inside systems of control: a system of running time with dead time is an expression in s with e^(-T*s) in it, as tf([1], [1, 1], "InputDelay", 2) gives it or as it is written: e^(-2s)/(s + 1). The functions of systems take it: step impulse lsim (exact, also for delays inside loops at given times), evalfr freqresp dcgain bode nyquist sigma margin allmargin, pole zero isstable (of the ratio of polynomials beside one delay), series parallel feedback, c2d (exact with the input held, also for a part of a sample), pade(system, n)
+hasdelay||1|1|hasdelay(system): whether it has a delay e^(-T*s) in it
+totaldelay||1|1|totaldelay(system): the delay T of a system that is a ratio of polynomials times e^(-T*s); 0 without a delay
+absorbdelay||1|1|absorbdelay(sampled system): the system itself, its delays are poles at 0 already; a delay of running time is no ratio of polynomials (pade gives one that stands for it)
+thiran||2|2|thiran(T, Ts): the sampled filter that passes every frequency with the gain 1 and delays by T, which need not be a whole number of samples (Thiran): its order is T/Ts rounded up
+!tf|1|5|tf([numerator], [denominator][, Ts]): the system with that transfer function, the highest power first; Ts the time between samples of a sampled system (-1: not said); tf("s"), tf("z", Ts): the variable as a system, for s := tf("s"); tf(system); tf(expression in s or z[, Ts]); tf(..., "InputDelay", T) (also "OutputDelay", "IODelay", or delay = T): with the dead time T, e^(-T*s) times the system (for a sampled system T samples: poles at 0)
+!zpk|1|6|
+!ss|1|7|
+
 # filters and spectra of signals: windows, filters of Butterworth, Chebyshev, Cauer and Bessel, filters by windows, responses, spectra, peaks, prediction
 rectwin|boxcar|1|2|rectwin(n): the window of n ones
 hann||1|2|hann(n): the window 0.5 - 0.5*cos(2*pi*k/(n - 1)), zero at both ends; hann(n, "periodic"): the first n values of the window of n + 1
@@ -1087,10 +1115,10 @@ diric||2|2|diric(x, n): Dirichlet's kernel sin(n*x/2)/(n*sin(x/2))
 !hilbert|1|1|hilbert(n): the Hilbert matrix; hilbert([x]): the analytic signal of a list, whose imaginary part is its Hilbert transform
 zplane||1|*|zplane(b, a): the zeros (circles) and the poles (crosses) of a sampled filter, with the unit circle
 # more of the design of filters: least squares, samples of the response, equal ripples, another rate, lattices, phases, delays
-firls||3|4|firls(n, f, a[, w]): the filter of the order n (n + 1 taps that read the same from both ends) with the least square error against the gains a at the edges f of the bands (pairs of frequencies from 0 to 1, 1 is half the sampling rate), a weight w for every band; an odd order with a gain at 1 takes one more
-firpm|remez|3|4|firpm(n, f, a[, w]): the filter of Parks and McClellan: the same bands as firls, the greatest weighted error as small as it can be (ripples of one size), by the exchange of Remez with the greatest errors sought on the whole bands
+firls||3|5|firls(n, f, a[, w]): the filter of the order n (n + 1 taps that read the same from both ends) with the least square error against the gains a at the edges f of the bands (pairs of frequencies from 0 to 1, 1 is half the sampling rate), a weight w for every band; an odd order with a gain at 1 takes one more; firls(n, f, a[, w], "hilbert"): taps of opposite signs from the two ends, the response -j times the gains (the transformer of Hilbert for the gain 1); firls(n, f, a[, w], "differentiator"): +j times the gains (the slope of a signal for the gains pi*f), the errors weighed by 1/f^2 where a gain is wanted
+firpm|remez|3|5|firpm(n, f, a[, w]): the filter of Parks and McClellan: the same bands as firls, the greatest weighted error as small as it can be (ripples of one size), by the exchange of Remez with the greatest errors sought on the whole bands; firpm(n, f, a[, w], "hilbert") and firpm(n, f, a[, w], "differentiator") as with firls, the errors of a differentiator weighed by 1/f
 fir2||3|6|fir2(n, f, m[, points of the grid[, points of a slope]][, window]): the filter whose response goes through the gains m at the frequencies f (from 0 to 1; two equal ones are a jump): the response on a grid, back to taps, times a window (Hamming unless given)
-resample||3|3|resample(x, p, q): the values at p/q times the rate: p - 1 zeros after every value, a lowpass of sinc with Kaiser's window, every q-th value
+resample||3|5|resample(x, p, q): the values at p/q times the rate: p - 1 zeros after every value, the lowpass that MATLAB designs for it (least squares with Kaiser's window: a sinc that reaches 10 values of the slower signal to each side, shape 5), every q-th value; resample(x, p, q, n[, beta]): another reach and shape (n = 0 repeats the values); resample(x, p, q, b): with the taps b as the lowpass
 phasez||1|3|phasez(b, a, n): [phases, w]: the phase of the response of a sampled filter at n frequencies from 0 up to pi (512 unless given), without jumps of 2 pi
 phasedelay||1|3|phasedelay(b, a, n): [delays, w]: the phase turned round, over the frequency: the delay of a wave in samples
 zerophase||1|3|zerophase(b, 1, n): [values, w]: the real response of a filter of linear phase (taps that read the same from both ends, or the same with the other sign) without the delay of half its length
@@ -1182,6 +1210,76 @@ geocentriclatitude||2|3|geocentriclatitude(latitude, flattening[, "radians"]): t
 parametriclatitude||2|3|parametriclatitude(latitude, flattening[, "radians"]): the parametric (reduced) latitude
 geodeticlatitudefromgeocentric||2|3|geodeticlatitudefromgeocentric(latitude, flattening[, "radians"]): the latitude for the angle at the middle of the earth
 geodeticlatitudefromparametric||2|3|geodeticlatitudefromparametric(latitude, flattening[, "radians"]): the latitude for a parametric one
+# pictures as matrices: filters, shapes, parts that hang together, edges, levels of gray, noise, measures, colours, moves (in doubles; shares from 0 to 1 or whole samples)
+fspecial||1|3|fspecial("average", size), fspecial("gaussian", size, sigma), fspecial("laplacian", alpha), fspecial("log", size, sigma), fspecial("prewitt"), fspecial("sobel"), fspecial("unsharp", alpha): the weights of a filter, for imfilter
+imgaussfilt||1|2|imgaussfilt(picture, sigma): a picture blurred by a bell of the width sigma (0.5 unless given), the border pixels going on beyond the border
+imboxfilt||1|2|imboxfilt(picture, size): every pixel as the mean of the box of that odd size around it (3 unless given)
+medfilt2||1|3|medfilt2(picture, [rows, columns]): every pixel as the median of the box around it (3 by 3 unless given), zeros beyond the border; "symmetric": the picture mirrored there
+ordfilt2||3|3|ordfilt2(picture, order, shape): every pixel as the order-th smallest of the pixels under the ones of a shape
+stdfilt||1|2|stdfilt(picture, shape): the deviation of the pixels under a shape (3 by 3 unless given) around every pixel
+rangefilt||1|2|rangefilt(picture, shape): the largest less the smallest of the pixels under a shape (3 by 3 unless given)
+padarray||2|4|padarray(picture, [rows, columns], value | "replicate" | "symmetric" | "circular", "both" | "pre" | "post"): a picture with a border of that many pixels: of a value (0), of its border pixels, mirrored, or going round
+imsharpen||1|5|imsharpen(picture, "Radius", r, "Amount", a): a sharper picture: what a blur of the radius r (1) takes away, a times (0.8) added again
+strel||2|3|strel("disk", r), strel("square", w), strel("rectangle", [rows, columns]), strel("diamond", r), strel("octagon", r), strel("line", length, degrees): a shape as a matrix of ones and zeros (the disk is the true one, all pixels within r)
+imdilate||2|2|imdilate(picture, shape): every pixel as the largest under the shape: light parts grow
+imerode||2|2|imerode(picture, shape): every pixel as the smallest under the shape: light parts shrink
+imopen||2|2|imopen(picture, shape): eroded, then dilated: light parts smaller than the shape go away
+imclose||2|2|imclose(picture, shape): dilated, then eroded: dark gaps smaller than the shape go away
+imtophat||2|2|imtophat(picture, shape): the picture less its opening: the small light parts
+imbothat||2|2|imbothat(picture, shape): the closing less the picture: the small dark parts
+bwperim||1|2|bwperim(picture, 4 | 8): the pixels of the parts that touch the background (by their sides unless 8)
+imfill||1|2|imfill(picture, "holes"): the background that does not reach the border filled
+bwlabel||1|2|bwlabel(picture, 4 | 8): the parts that hang together (by their 8 neighbours unless 4) numbered from 1, as they are met going down the columns
+bwconncomp||1|2|bwconncomp(picture, 4 | 8): the record of the parts: Connectivity, ImageSize, NumObjects, PixelIdxList (the numbers of the pixels of every part, counted down the columns)
+regionprops||1|2|regionprops(picture or numbered parts): for every part the record of its Area, Centroid [x, y], BoundingBox [x, y, width, height], EquivDiameter and Extent
+bwareaopen||2|3|bwareaopen(picture, pixels, 4 | 8): without the parts of fewer pixels
+imclearborder||1|2|imclearborder(picture, 4 | 8): without the parts that touch the border
+bweuler||1|2|bweuler(picture, 4 | 8): the parts less their holes
+bwdist||1|1|bwdist(picture): for every pixel the distance to the nearest pixel that is not zero
+edge||1|3|edge(picture, "sobel" | "prewitt" | "roberts" | "canny", threshold): 1 where a picture has an edge: where the slope is above the threshold (twice the root of the mean of its squares unless given) and the largest across its way; "canny": blurred, thinned, and weak edges kept where they hang on strong ones ([low, high] thresholds as shares of the largest slope)
+imgradientxy||1|2|imgradientxy(picture, "sobel" | "prewitt" | "central" | "intermediate"): [the slopes across, the slopes down]
+imgradient||1|2|imgradient(picture, method): [the sizes of the slopes, their directions in degrees against the clock from the right]
+graythresh||1|1|graythresh(picture): the level of Otsu, a share from 0 to 1: the level that parts the grays into the two most unlike sides
+otsuthresh||1|1|otsuthresh([counts]): the level of Otsu for the counts of levels of gray, a share of the way from the first to the last
+stretchlim||1|2|stretchlim(picture, share): [low, high]: the levels below which and above which a hundredth of the pixels lie (or that share)
+imadjust||1|4|imadjust(picture, [low, high] in, [low, high] out, gamma): the grays from low to high spread over the range that comes out (0 to 1), bent by gamma; without the levels: those of stretchlim
+histeq||1|2|histeq(picture, levels): the grays moved so that the levels (64 unless given) are as equally full as they can be
+imnoise||2|4|imnoise(picture, "gaussian", mean, variance), imnoise(picture, "salt & pepper", density), imnoise(picture, "speckle", variance): a picture with noise drawn from the stream of rng, down the columns
+mean2||1|1|mean2(picture): the mean of all pixels
+std2||1|1|std2(picture): the deviation of all pixels
+corr2||2|2|corr2(A, B): how alike two pictures of one size are, from -1 to 1
+immse||2|2|immse(A, B): the mean of the squares of the differences of two pictures
+psnr||2|3|psnr(picture, reference, peak): the peak signal to the noise in decibels; the peak is 1 for shares, 255 or 65535 for samples
+entropy||1|1|entropy(picture): the bits of information of a pixel, from the counts of 256 levels
+imabsdiff||2|2|imabsdiff(A, B): the sizes of the differences of two pictures
+rgb2hsv||1|1|rgb2hsv([R, G, B]): hue, saturation and value, shares from 0 to 1, of the red, green and blue of a picture
+hsv2rgb||1|1|hsv2rgb([H, S, V]): red, green and blue of hue, saturation and value
+rgb2lab||1|1|rgb2lab([R, G, B]): L*, a* and b* of the sRGB colours of a picture (white of D65)
+lab2rgb||1|1|lab2rgb([L, a, b]): the sRGB colours of L*, a* and b*
+rgb2ycbcr||1|1|rgb2ycbcr([R, G, B]): luma and the two colour differences as television counts them (shares: 16/255 is black, 235/255 white)
+ycbcr2rgb||1|1|ycbcr2rgb([Y, Cb, Cr]): red, green and blue again
+ind2rgb||2|2|ind2rgb(matrix of numbers of colours, [[r, g, b], ...]): the picture of three channels with the colours of a list
+imtranslate||2|2|imtranslate(picture, [right, down]): a picture moved by that many pixels (parts of a pixel by straight lines), zeros where nothing comes from
+impyramid||1|2|impyramid(picture, "reduce" | "expand"): half as large after a blur, or twice as large
+integralimage||1|1|integralimage(picture): the sums of all pixels above and to the left of every corner (a row and a column of zeros first)
+normxcorr2||2|2|normxcorr2(template, picture): how well a template fits at every place of a picture, from -1 to 1; the largest entry is where its last corner lies
+xcorr2||1|2|xcorr2(A, B): the sums of the products of two pictures at every shift; xcorr2(A): of A with itself
+dct2||1|1|dct2(picture): the transform of cosines of its columns and of its rows
+idct2||1|1|idct2(matrix): the picture of a transform of cosines
+
+# diagrams of blocks and their simulation over time (what Simulink does with drawn diagrams)
+sim|simulate|2|*|sim([blocks], t or [t0, t1][, "step", h][, "points", n]): the signals of a diagram of blocks over time: a record of the times t (101 unless points says more) and of the values of every signal there. A block is ["signal", "kind", ...]: the name of the signal that it makes, its kind, then its numbers and the names of the signals that it takes, as ["e", "sum", "u", "-y"] or ["y", "tf", [1], [1, 1], "e"]; simblocks() lists the kinds. Sources: constant, step, ramp, sine, pulse, clock, signal; sums, gains, products, formulas (fcn), abs sign sqrt exp log sin cos tan tanh, saturation, deadzone, quantizer, switch, min, max, lookup, relay, ratelimiter, derivative; with states: integrator, tf, ss, pid, delay; sampled: unitdelay, zoh, dtf. In doubles, as Simulink: the states go by Runge and Kutta's steps of order four (2000 over the time unless step says another), sampled blocks at their own times, the jumps of sources are steps of their own; a loop without a state in it is solved at every step
+simblocks||0|0|simblocks(): the kinds of blocks of sim, each with its form
+
+# files of MATLAB's own format for values (MAT-files of level 5)
+matread|loadmat load|1|2|matread("file.mat"): the variables of a MAT-file as a record (getfield(record, "name") is one of them); matread("file.mat", "name"): the value of one. Whole numbers come exact, other doubles by their shortest decimal form; a row is a list, a column rows of one entry, a matrix rows; logical values are truths, char arrays texts, cell arrays cell arrays, structs records, sparse matrices matrices; packed files (version 7) are unpacked. Files of the version 7.3 (HDF5) and objects of MATLAB in a file (string arrays, tables, datetimes) are not read
+matinfo||1|1|matinfo("file.mat"): [name, [rows, columns], kind] of every variable of a MAT-file
+matwrite|savemat|2|*|matwrite("file.mat", record) or matwrite("file.mat", "name", value, ...): writes the values as the variables of a MAT-file that MATLAB, Octave and SciPy read: numbers as doubles (complex ones too), truths as logical values, texts as char arrays, lists of numbers as rows, matrices as matrices, cell arrays and lists of unlike things as cell arrays, records as structs, lists of records with the same fields as struct arrays, formulas as their texts; "compress" as the last word packs the values
+
+# units of the user's own
+newunit|defineunit|2|2|newunit("name", quantity): a new unit for this session, made of units that are there, as newunit("fortnight", 14 day) or newunit("warp", 3 c): the unit commands then read the name as a unit
+removeunit||1|1|removeunit("name"): a unit that newunit made is a plain name again
+
 # the earth: units of lengths and angles (exact), angles as texts, zones
 km2nm||1|1|km2nm(x): kilometres as nautical miles of 1852 m
 km2sm||1|1|km2sm(x): kilometres as statute miles (survey miles of 6336000/3937 m)
@@ -1285,7 +1383,76 @@ patternnet||1|3|patternnet([inputs, units, ..., classes], "function", seed): the
 predict|forward|2|2|predict(net, x): what a network gives for an observation x or for the rows of observations; exact with names and fractions where its functions keep them
 classify||2|3|classify(net, x, classes): the class with the largest value that goes out, for every observation (the numbers 1, 2, ... unless classes are given)
 perform||3|4|perform(net, x, t, "mse" | "sse" | "mae" | "crossentropy"): the loss of a network on observations with their targets (the entropy for a last layer of "softmax", else the mean of the squares)
-trainnet|train|3|*|trainnet(net, x, t): the network with the weights and biases that make its loss on the observations x with the targets t least (the mean of the squares, or with a last layer of "softmax" the entropy, where t may hold the numbers of the classes); choices: "epochs", n (1000 steps at most), "l2", x (a part x/2 times the sum of the squares of the weights; 1/10000 with the entropy), "tolerance", x, "report" (then [net, loss, steps, largest slope left])
+trainnet|train|3|*|trainnet(net, x, t): the network with the weights and biases that make its loss on the observations x with the targets t least (the mean of the squares, or with a last layer of "softmax" the entropy, where t may hold the numbers of the classes); choices: "epochs", n (1000 steps at most), "l2", x (a part x/2 times the sum of the squares of the weights), "tolerance", x, "mse" | "crossentropy", "report" (gives [network, loss, steps, largest slope]); trainnet(net, x, t, "solver", "sgdm" | "adam" | "rmsprop", ...) or with what trainingoptions gives: training by steps down the slope of the loss on batches of observations ("epochs", n: 30; "batch", n: 128; "rate", x; "momentum", x; "l2", x: 1/10000; "shuffle", "once" | "never" | "every-epoch"; "seed", n; "report" gives [network, the loss after every epoch]); a network of layers of windows is always trained by steps (Adam unless said)
 perceptron||2|3|perceptron(x, t, rounds): one layer of "hardlim" units taught by the rule of the perceptron: for every wrong answer the weights move by the observation (100 rounds at most); exact
 newlind||2|2|newlind(x, t): one layer of "purelin" units with the weights of least squares; exact
 newrbe||2|3|newrbe(x, t, spread): a network that goes through every target: a unit of radbas around every observation (half its height at the distance spread, 1 unless given) and a "purelin" layer
+
+# solids of four dimensions: solid4d("name", numbers...). They can be turned in the six planes of 4D, scaled, moved and cut; plot4d, view4d and wire4d draw them
+solid4d||1|*|solid4d("name", numbers...): a solid of four dimensions around the origin, of the size 1 (its radius, the radius of its balls and disks, the distance of its vertices from the middle; a height goes from -1 to 1 along w): "ball", "ellipsoid", a, b, c, d; the regular polychora "5-cell", "tesseract", "16-cell", "24-cell", "120-cell", "600-cell"; the uniform polychora: "rectified", "truncated", "bitruncated", "cantellated", "runcinated", "cantitruncated", "runcitruncated" or "omnitruncated" before one of them, as "truncated 120-cell", or a Coxeter diagram as "x5o3o3x" (x a ring, o none, 2 no branch: "x3o2x7o" is a duoprism), "dual" before it for the dual; "snub 24-cell", "grand antiprism"; the ten regular star polychora by name ("small stellated 120-cell", "great 120-cell", "grand 120-cell", "great stellated 120-cell", "grand stellated 120-cell", "great grand 120-cell", "icosahedral 120-cell", "great icosahedral 120-cell", "grand 600-cell", "great grand stellated 120-cell") or by Schlaefli symbol ("{5/2,5,3}"): all that the polychoron winds around; "prism", "pyramid" and "bipyramid" over a uniform polyhedron ("cube", "truncated icosahedron", "snub cube", "7-gonal prism", "pentagonal antiprism", a diagram "x5x3o"); "duoprism", p, q and "duopyramid", p, q of two regular polygons; "spherinder" (ball by segment), "cubinder" (disk by square), "duocylinder" (disk by disk), "prismic cylinder", sides (disk by polygon); "hypercone", "hyperfrustum", lower, upper (over a ball), "coninder" (cone by segment), "cylindrone" (a cone over a cylinder), "dicone"; "hypercapsule", half length; the tori "spheritorus", R, r (a tube around a circle), "torisphere", R, r (around a sphere), "tiger", R1, R2, r (around a flat torus), "ditorus", R, a, r (around a torus), "torinder", R, r (torus by segment); the walls around surfaces without an inside "Klein bottle", R, r, thickness, half-turns, "projective plane", radius, thickness, "Moebius band", R, half width, thickness, half-turns; "paraboloid", "hyperboloid", waist, "spherical segment", lower, upper, "lens", thickness; "reuleaux", "rotor" | "simplex" (bodies of one width); "star cell", cells, core, spike, sharpness (a ball with the spikes of a regular polychoron); "superquadric", power (the sum of the powers of the four sizes is 1 at most); "bracketope", "shape": round brackets are the root of the sum of the squares, square ones the largest, angle ones the sum, as "[(II)(II)]" for the duocylinder
+rotate4d||3|3|rotate4d(solid, "xw", degrees): the solid turned in one of the planes "xy", "xz", "xw", "yz", "yw", "zw"
+scale4d||2|2|scale4d(solid, s) or scale4d(solid, [sx, sy, sz, sw]): the solid that many times as large, or along every axis by its own factor
+move4d|translate4d|2|2|move4d(solid, [x, y, z, w]): the solid moved by that much
+section4d||2|2|section4d(solid, c): the solid cut by w = c: plot4d and view4d show the cut, a solid of three dimensions, with the colours that say how deep a place lies in the solid along w (turn the solid first to cut it another way)
+inside4d||2|2|inside4d(solid, [x, y, z, w]): whether a point is in a solid; for a list of points a list
+volume4d|bulk4d|1|1|volume4d(solid): the bulk of a solid (its content of four dimensions): exact where a formula gives it, from the sides of a polytope (twelve digits), else by counting along the lines of a grid (three digits)
+surface4d||1|1|surface4d(solid): the surface of a solid (the content of three dimensions of its border): exact where a formula gives it, from the sides of a polytope (twelve digits); a solid that was scaled along one axis more than along another has none
+vertices4d||1|1|vertices4d(solid): the vertices of a polytope (the regular, uniform and star polychora, their duals, a duoprism) as it stands, a list of points
+edges4d||1|1|edges4d(solid): the edges of a polytope as pairs of the numbers of its vertices
+density4d||2|2|density4d(solid, [x, y, z, w]): how many times a solid covers a point: 1 inside and 0 outside, and for a star polychoron how many times it winds around the point (4 near the middle of the small stellated 120-cell, 191 for the grand 600-cell); for a list of points a list
+wire4d|wireframe4d|1|*|wire4d(solid[, "xw"[, "yz"]]): the lines of a solid of four dimensions as an eye outside of the fourth dimension sees them: the edges of a polytope, of other solids the borders of their cuts by planes of two axes; what lies farther along w is smaller, the colours go along w. A drawing of space: saved with frames = n the solid turns once in the plane that is named ("xw" unless given; two planes: in both at once)
+
+# walks of chance. They are drawings as walk and walk3d are: save_png / save_jxl save them, with frames they grow or turn
+randomwalk|randwalk|0|*|randomwalk(n[, directions | "any" | "normal" | "levy"][, seed]): n steps of chance in the plane (1000 unless given): each of the 4 directions as likely as another, or of that many directions; "any": the length 1 in any direction; "normal": the parts along the axes follow the normal law (the motion of Brown); "levy": any direction, lengths with a heavy tail. Without a seed the numbers of chance are those of the session: the same every time unless rng(...) began them otherwise
+randomwalk3d|randwalk3d|0|*|randomwalk3d(n[, "lattice" | "any" | "normal" | "levy"][, seed]): n steps of chance in space: along the six directions of the axes unless said
+!walk|1|*|walk(x, base, digits): a walk along the digits of a real number: the digit d is a step of length 1 at 360*d/base degrees; walk(pi, 10, 1000); base 10 and 1000 digits when they are left out; a number whose digits end gives a walk that ends; walk(random, base, digits[, seed]): along digits of chance
+!walk3d|1|*|walk3d(z, base, digits): a walk in space along the digits of a complex number: the digits of the real part turn the step around the z-axis, the digits of the imaginary part lift it above the plane; walk3d(e + pi*i, 12, 10000); walk3d(random, base, digits[, seed]): along two rows of digits of chance
+
+# networks of neurons: layers that slide windows over pictures, and training by steps on a few observations at a time. Such a network is a list of layers that begins with ["input", [height, width, channels]]; an observation is a matrix (a list of matrices for several channels), several observations are a list of them
+imageinputlayer||1|3|imageinputlayer([height, width, channels]): the layer that says what pictures come in, ["input", [height, width, channels]] (one channel unless said)
+featureinputlayer||1|1|featureinputlayer(n): the layer that says that lists of n values come in
+convolution2dlayer||2|6|convolution2dlayer(size, filters[, "stride", s][, "padding", p | "same"]): a layer of windows of that size (a number or [down, across]): every filter gives a channel of the sums of the products of its window with what it lies on, plus a bias; dlnetwork gives it its weights
+maxpooling2dlayer||1|3|maxpooling2dlayer(size[, "stride", s]): the largest value under a window moved over every channel (stride 1 unless given)
+averagepooling2dlayer||1|3|averagepooling2dlayer(size[, "stride", s]): the mean under the window
+flattenlayer||0|0|flattenlayer(): the channels as one list of values, for the dense layers that follow
+fullyconnectedlayer||1|1|fullyconnectedlayer(units): a dense layer of that many units; dlnetwork gives it its weights
+relulayer||0|0|relulayer(): the layer ["relu"]: every value below 0 becomes 0
+tanhlayer||0|0|tanhlayer(): the layer ["tanh"]
+sigmoidlayer||0|0|sigmoidlayer(): the layer ["sigmoid"]
+softmaxlayer||0|0|softmaxlayer(): the layer ["softmax"]: the values as chances of classes
+leakyrelulayer||0|1|leakyrelulayer(scale): the layer ["leakyrelu", scale]: values below 0 times the scale (1/100 unless given)
+dlnetwork||1|2|dlnetwork([imageinputlayer(...), layers ...][, seed]): the network of those layers with the sizes worked out and first weights of Glorot's kind that are the same on every machine (another seed gives others): ["conv", weights (filters of channels of matrices), biases, stride, padding], ["dense", weights, biases], ...
+trainingoptions||1|*|trainingoptions("sgdm" | "adam" | "rmsprop"[, "MaxEpochs", n][, "MiniBatchSize", n][, "InitialLearnRate", x][, "Momentum", x][, "L2Regularization", x][, "Shuffle", "once" | "never" | "every-epoch"][, "seed", n]): the choices of a training by steps, as a list that trainnet takes
+
+# the earth: grids of values (raster maps). A grid is a matrix with a reference that says where its samples lie: cells that fill the limits, or postings on them
+georefcells||3|8|georefcells([south, north], [west, east], [rows, columns]): the reference of a grid of cells of the earth, as a record (LatitudeLimits, LongitudeLimits, RasterSize, ...); georefcells(latitudes, longitudes, degrees of latitude of a cell, degrees of longitude): by the size of a cell; the first row is the southern one and the first column the western one unless ColumnsStartFrom = "north" or RowsStartFrom = "east" is said
+georefpostings||3|8|georefpostings([south, north], [west, east], [rows, columns]): the reference of a grid of postings, whose outermost samples lie on the limits; or by the degrees between two samples
+maprefcells||3|8|maprefcells([x from, to], [y from, to], [rows, columns]): the reference of a grid of cells of a plane (a map); or by the sizes of a cell in x and y
+maprefpostings||3|8|maprefpostings([x from, to], [y from, to], [rows, columns]): the reference of a grid of postings of a plane; or by the ways between two samples
+refvectogeorasterreference||2|2|refvectogeorasterreference([cells a degree, northern latitude, western longitude], [rows, columns]): the reference of a grid of the older kind (three numbers); those three numbers are taken wherever a reference is
+geographictointrinsic||3|3|geographictointrinsic(reference, lat, lon): [columns, rows] as places of the grid, counted from 1 at the middle of the first sample
+intrinsictogeographic||3|3|intrinsictogeographic(reference, column, row): [lat, lon] of a place of the grid
+geographictodiscrete||3|3|geographictodiscrete(reference, lat, lon): [rows, columns] of the samples that hold those places; undefined outside the limits
+worldtointrinsic||3|3|worldtointrinsic(reference, x, y): [columns, rows] as places of a grid of a plane
+intrinsictoworld||3|3|intrinsictoworld(reference, column, row): [x, y] of a place of a grid of a plane
+worldtodiscrete||3|3|worldtodiscrete(reference, x, y): [rows, columns] of the samples that hold those places of a plane
+geointerp||4|5|geointerp(grid, reference, lat, lon[, "nearest" | "linear" | "cubic"]): the values of a grid at places between its samples (along straight lines unless said; cubic: the convolution of Keys over sixteen samples); undefined outside the limits
+mapinterp||4|5|mapinterp(grid, reference, x, y[, method]): the same for a grid of a plane
+ltln2val||4|5|ltln2val(grid, reference, lat, lon[, method]): as geointerp, the nearest sample unless a method is said
+geocrop||4|4|geocrop(grid, reference, [south, north], [west, east]): [the part of the grid whose cells reach into those limits (whose postings lie in them), its reference]
+mapcrop||4|4|mapcrop(grid, reference, [x from, to], [y from, to]): the same for a grid of a plane
+georesize||3|4|georesize(grid, reference, scale or [scale of the rows, of the columns][, "nearest" | "linear" | "cubic"]): [the grid with that many times the samples in the same limits, its reference]; cubic unless said
+mapresize||3|4|mapresize(grid, reference, scale[, method]): the same for a grid of a plane
+gradientm||2|3|gradientm(grid, reference[, ellipsoid]): [the course of the way down in degrees clockwise from north (undefined where the ground is level), the slope in degrees, the rise towards north and towards east for a unit of length]: differences of neighbours over the lengths between them on the ellipsoid (WGS84 in metres unless given)
+areamat||2|3|areamat(grid of true and false, reference[, ellipsoid]): [the area of the cells that are true, the area of a cell of every row]: as shares of the whole surface, with an ellipsoid in the square of its unit
+los2||6|9|los2(grid of heights, reference, lat1, lon1, lat2, lon2[, height of the eye above the ground[, of the target[, radius of the earth]]]): [whether the second place is seen from the first over the ground on a round earth, whether every place on the way is, the ways from the watcher, the heights of the ground, the latitudes, the longitudes]; metres, the radius 6371000
+viewshed||4|7|viewshed(grid of heights, reference, lat, lon[, height of the eye[, of the targets[, radius]]]): the matrix with 1 for every sample that is seen from that place and 0 for the others
+arcgridread|readgeoraster|1|1|arcgridread("file.asc"): [grid, reference] of a grid of ESRI in text (ncols, nrows, xllcorner, yllcorner, cellsize, NODATA_value, then the rows from the north); the values that say no data are undefined
+arcgridwrite||3|3|arcgridwrite("file.asc", grid, reference): writes a grid of square cells as a grid of ESRI in text
+worldfileread||3|3|worldfileread("file.tfw", "geographic" | "planar", [rows, columns]): the reference of a grid from its world file (six numbers: the sizes of a cell and the middle of the first one)
+worldfilewrite||2|2|worldfilewrite(reference, "file.tfw"): writes the world file of a reference of cells
+egm96geoid||1|2|egm96geoid(lat, lon): the height of the geoid above the ellipsoid of WGS84 in metres, from the Earth Gravitational Model 1996 to degree and order 360 with its correction, summed as the program F477 of the agency that made it; egm96geoid(reference): the matrix of the heights at the samples of a grid
+geoidheight||2|3|geoidheight(lat, lon[, "EGM96"]): the same by another name
+geoshow||2|*|geoshow(grid, reference): the grid as colours, north at the top and west at the left (as matrixplot)
+contourm||2|*|contourm(grid, reference[, heights]): its lines of equal height (as contour)
+surfm|meshm|2|*|surfm(grid, reference): the grid as a surface over the longitudes and latitudes (as surf)

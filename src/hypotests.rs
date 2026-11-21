@@ -1138,12 +1138,16 @@ impl Session {
                     let root = matrix::rows(&self.call("chol", &[a[1].clone()])?)
                         .filter(|m| m.len() == dims)
                         .ok_or("mvnrnd(mean, covariance, count): covariances for every pair of coordinates")?;
+                    // (as MATLAB draws them: a matrix of count by dims, filled down its columns)
+                    let mut drawn = vec![vec![Expr::zero(); dims]; count];
+                    for j in 0..dims {
+                        for row in drawn.iter_mut() {
+                            row[j] = crate::random::normal_value();
+                        }
+                    }
                     let mut out = Vec::new();
-                    for _ in 0..count {
-                        let draws = crate::random::call("randn", &[Expr::int(1), Expr::int(dims as i64)])
-                            .ok_or("no random numbers")??;
-                        let z = exprs(&draws, name)?;
-                        let moved = matrix::matmul(&z, &root)?;
+                    for z in drawn {
+                        let moved = matrix::matmul(&vec![z], &root)?;
                         let row: Vec<Expr> = moved[0]
                             .iter()
                             .zip(middle)

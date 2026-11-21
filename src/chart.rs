@@ -16,6 +16,7 @@ pub fn is_chart(name: &str) -> bool {
         "complexplot" | "densityplot" | "plot3d" | "parametricplot3d" | "graphplot" | "matrixplot"
     ) || crate::datachart::is_chart(name)
         || crate::morecharts::is_chart(name)
+        || crate::georaster::is_map_chart(name)
 }
 
 /// What may follow the arguments of a plot that is saved: a range for the values.

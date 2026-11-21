@@ -173,6 +173,9 @@ pub struct Drawing {
     pub smooth: bool,
     /// A field whose values take long gets the places of every row before it is asked there.
     pub ahead: Option<Ahead>,
+    /// What every frame of a moving picture holds, when the thing itself changes from
+    /// frame to frame (a solid that turns in four dimensions); else nothing.
+    pub stages: Vec<Vec<Item>>,
 }
 
 impl Drawing {
@@ -195,12 +198,13 @@ impl Drawing {
             legend: None,
             smooth: false,
             ahead: None,
+            stages: Vec::new(),
         }
     }
 
     /// Every point of the drawing.
     pub fn points(&self, see: &mut dyn FnMut(Point)) {
-        for item in &self.items {
+        for item in self.items.iter().chain(self.stages.iter().flatten()) {
             match item {
                 Item::Trail { dirs, steps, runs } => {
                     let mut at = [0.0; 3];
@@ -898,6 +902,8 @@ impl<'a> Shot<'a> {
             self.look.slices
         } else if self.look.views {
             3
+        } else if !self.drawing.stages.is_empty() {
+            self.drawing.stages.len()
         } else {
             self.look.frames.max(1)
         }
@@ -975,15 +981,19 @@ impl<'a> Shot<'a> {
             if self.look.grow {
                 part = (k + 1) as f64 / count as f64;
             }
-            let degrees = self
-                .look
-                .turn
-                .unwrap_or(if self.look.grow { 0.0 } else { 360.0 });
+            // (a thing that changes from frame to frame is looked at from one place)
+            let still = self.look.grow || !self.drawing.stages.is_empty();
+            let degrees = self.look.turn.unwrap_or(if still { 0.0 } else { 360.0 });
             if degrees != 0.0 {
                 view = view.turned(degrees * k as f64 / count as f64);
             }
         }
-        self.draw(&view, part, &mut raster);
+        match self.drawing.stages.get(k) {
+            Some(items) if !self.look.views && self.look.slices == 0 => {
+                self.draw_items(items, &view, part, &mut raster)
+            }
+            _ => self.draw(&view, part, &mut raster),
+        }
         if self.drawing.faint {
             raster.brighten();
         }
@@ -992,6 +1002,10 @@ impl<'a> Shot<'a> {
 
     /// The drawing on a surface.
     fn draw<S: Surface + Area>(&self, view: &View, part: f64, on: &mut S) {
+        self.draw_items(&self.drawing.items, view, part, on);
+    }
+
+    fn draw_items<S: Surface + Area>(&self, items: &[Item], view: &View, part: f64, on: &mut S) {
         let half = self.look.thickness / 2.0;
         let chart = self.framed;
         if chart && self.look.grid && self.axes {
@@ -1000,7 +1014,7 @@ impl<'a> Shot<'a> {
         if chart {
             on.clip(Some(self.plot));
         }
-        for item in &self.drawing.items {
+        for item in items {
             match item {
                 Item::Trail { dirs, steps, runs } => {
                     let total = steps.len();

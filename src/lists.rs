@@ -1013,6 +1013,21 @@ impl Session {
         }
         .to_string()
         };
+        // cellfun(f, {...}, "UniformOutput", false) and cellfun("isempty", {...})
+        let mut uniform = None;
+        let mut named: Vec<Expr> = raw.to_vec();
+        if name == "map" {
+            if let [.., key, value] = named.as_slice()
+                && crate::radix::text_of(key).is_some_and(|k| k.eq_ignore_ascii_case("uniformoutput"))
+            {
+                uniform = Some(!matches!(value, Expr::Bool(false)) && !value.is_zero());
+                named.truncate(named.len() - 2);
+            }
+            if let Some(known) = named.first().and_then(crate::radix::text_of).filter(|t| crate::names::function(t).is_some()) {
+                named[0] = Expr::sym(known);
+            }
+        }
+        let raw = named.as_slice();
         // the function may come first or last: map(f, list) and select(list, f) are both read
         let Some(pos) = raw.iter().position(|e| self.is_function(e)) else {
             // filter([b, a], x): a filter as the pair that the functions that make filters give
@@ -1031,10 +1046,21 @@ impl Session {
                 rest.push(self.eval(e)?);
             }
         }
+        // (a cell array is taken as the list of what it holds)
+        let held = rest.iter().any(crate::cells::is_cell);
+        let rest: Vec<Expr> = rest.iter().map(crate::cells::open).collect();
         let items = |e: &Expr| -> Result<Vec<Expr>, String> {
             e.as_list()
                 .map(<[Expr]>::to_vec)
                 .ok_or_else(|| format!("{name} needs a list, {e} is none"))
+        };
+        // of cells: numbers and truths give a list, other things a cell array again
+        let gathered = |out: Vec<Expr>| -> Expr {
+            let plain = |x: &Expr| x.as_list().is_none() && !crate::cells::is_cell(x) && crate::radix::text_of(x).is_none();
+            match uniform.unwrap_or(!held || out.iter().all(plain)) {
+                true => Expr::list(out),
+                false => crate::cells::made(out),
+            }
         };
         let one = std::slice::from_ref::<Expr>;
         match (name, rest.len()) {
@@ -1042,7 +1068,7 @@ impl Session {
                 .iter()
                 .map(|x| self.apply(&f, one(x)))
                 .collect::<Result<Vec<_>, _>>()
-                .map(Expr::list),
+                .map(gathered),
             ("map", _) if rest.len() > 1 => {
                 let lists: Vec<Vec<Expr>> = rest.iter().map(&items).collect::<Result<_, _>>()?;
                 if lists.iter().any(|l| l.len() != lists[0].len()) {
@@ -1054,7 +1080,7 @@ impl Session {
                         self.apply(&f, &args)
                     })
                     .collect::<Result<Vec<_>, _>>()
-                    .map(Expr::list)
+                    .map(gathered)
             }
             ("select" | "reject" | "countif" | "anytrue" | "alltrue" | "findfirst", 1) => {
                 let mut kept = Vec::new();

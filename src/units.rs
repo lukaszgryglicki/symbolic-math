@@ -378,8 +378,16 @@ fn exact(def: &Def, name: &str) -> bool {
     def.names.split(' ').any(|n| n == name)
 }
 
+thread_local! {
+    /// The units that `newunit` made in this session, each with its size in SI base units.
+    static OWN: RefCell<Vec<(&'static Def, Expr)>> = const { RefCell::new(Vec::new()) };
+}
+
 /// The unit of a name: a unit as it is, or a prefix before a unit that takes prefixes.
 fn find(name: &str) -> Option<(&'static Def, Option<&'static str>)> {
+    if let Some(def) = OWN.with(|own| own.borrow().iter().map(|(def, _)| *def).find(|d| exact(d, name))) {
+        return Some((def, None));
+    }
     if let Some(def) = UNITS.iter().find(|d| exact(d, name)) {
         return Some((def, None));
     }
@@ -426,7 +434,7 @@ pub fn written(e: &Expr) -> Option<Expr> {
 
 /// The commands whose arguments have units.
 pub fn takes_units(command: &str) -> bool {
-    matches!(command, "convert" | "siunits" | "dimension" | "quantity")
+    matches!(command, "convert" | "siunits" | "dimension" | "quantity" | "newunit" | "removeunit")
 }
 
 thread_local! {
@@ -448,6 +456,9 @@ fn constant(text: &'static str) -> Expr {
 }
 
 fn size_of(def: &Def) -> Expr {
+    if let Some(size) = OWN.with(|own| own.borrow().iter().find(|(d, _)| std::ptr::eq(*d, def)).map(|(_, size)| size.clone())) {
+        return size;
+    }
     if def.digits == 0 {
         return constant(def.size);
     }
@@ -718,6 +729,55 @@ pub fn dimension(q: &Expr) -> Result<Answer, String> {
     Ok(answer(product_of(&KINDS, &dim), reader))
 }
 
+/// `newunit("name", quantity)`: a unit of the user's own, until the session ends or
+/// `removeunit` takes it away.
+pub fn define(name: &Expr, q: &Expr) -> Result<Answer, String> {
+    let usage = "newunit(\"name\", quantity): a new unit by a quantity of units that are there, as newunit(\"fortnight\", 14 day)";
+    let word = name.sym_name().or_else(|| crate::radix::text_of(name)).ok_or(usage)?.to_string();
+    let mut signs = word.chars();
+    if !signs.next().is_some_and(char::is_alphabetic) || !signs.all(|c| c.is_alphanumeric() || c == '_') {
+        return Err(format!("newunit: the name of a unit begins with a letter and holds letters, digits and _, {word} does not"));
+    }
+    if find(&word).is_some() {
+        return Err(format!("newunit: {word} is a unit already"));
+    }
+    if crate::names::function(&word).is_some() || crate::expr::is_const_name(&word) {
+        return Err(format!("newunit: {word} is the name of a function or of a constant"));
+    }
+    let mut reader = Reader { strangers: Vec::new() };
+    let (size, dim) = reader.measure(q)?;
+    if let Some(stranger) = reader.strangers.first() {
+        return Err(format!("newunit: {stranger} is no unit; a new unit is made of units that are there"));
+    }
+    let mut powers = [0i8; 8];
+    for (power, own) in dim.iter().zip(powers.iter_mut()) {
+        *own = (*power.denom() == 1).then(|| power.numer().to_i8()).flatten().ok_or("newunit: a unit has whole powers of the base units")?;
+    }
+    let size = simplify::simplify(&size);
+    if size.is_zero() {
+        return Err("newunit: a unit of the size zero measures nothing".into());
+    }
+    let def: &'static Def = Box::leak(Box::new(unit(Box::leak(word.clone().into_boxed_str()), powers, "")));
+    OWN.with(|own| own.borrow_mut().push((def, size)));
+    Ok(Answer { value: Expr::sym(&word), notes: Vec::new() })
+}
+
+/// `removeunit("name")`: a unit that `newunit` made is a name again.
+pub fn forget(name: &Expr) -> Result<Answer, String> {
+    let word = name.sym_name().or_else(|| crate::radix::text_of(name)).ok_or("removeunit(\"name\"): the name of a unit that newunit made")?.to_string();
+    let found = OWN.with(|own| {
+        let mut own = own.borrow_mut();
+        let before = own.len();
+        own.retain(|(def, _)| !exact(def, &word));
+        own.len() < before
+    });
+    match found {
+        true => Ok(Answer { value: Expr::Bool(true), notes: Vec::new() }),
+        false if find(&word).is_some() => Err(format!("removeunit: {word} is a unit of the program itself; only the units that newunit made go away")),
+        false => Err(format!("removeunit: {word} is no unit")),
+    }
+}
+
 /// `quantity(value, unit)` as it is written.
 pub fn make(value: &Expr, unit: &Expr) -> Result<Answer, String> {
     let mut reader = Reader {
@@ -895,4 +955,26 @@ pub fn unit_text(unit: &Expr) -> String {
         })
         .collect();
     parts.join("*")
+}
+
+#[cfg(test)]
+mod own_units {
+    fn said(input: &str) -> String {
+        crate::eval::run_line(input).map_or_else(|e| format!("error: {e}"), |lines| lines.join("|"))
+    }
+
+    #[test]
+    fn a_unit_of_the_users_own_is_read_until_it_is_removed() {
+        // (the units of a session stay: every line of this test is of one session)
+        assert_eq!(said("newunit(\"smoot\", 1.7018 m); convert(364.4 smoot, m)"), "smoot|620.13592 m");
+        assert_eq!(said("newunit(\"earsmoot\", smoot/67); convert(134 earsmoot, m)"), "earsmoot|3.4036 m");
+        assert!(said("newunit(\"smoot\", 2 m)").contains("smoot is a unit already"));
+        assert_eq!(said("newunit(\"warp\", 3 c); dimension(2 warp)"), "warp|length/time");
+        assert!(said("removeunit(\"smoot\"); convert(1 smoot, m)").contains("smoot is no unit"));
+        assert_eq!(said("removeunit(\"warp\")"), "true");
+        assert!(said("newunit(\"km\", 2 m)").contains("is a unit already"));
+        assert!(said("newunit(\"cos\", 2 m)").contains("name of a function"));
+        assert!(said("newunit(\"zz\", 2 qq)").contains("qq is no unit"));
+        assert!(said("removeunit(\"km\")").contains("of the program itself"));
+    }
 }

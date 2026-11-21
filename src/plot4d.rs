@@ -395,6 +395,23 @@ pub struct Shape {
     thickness: usize,
     /// The voxels of the surface.
     pub voxels: usize,
+    /// What the four numbers are when they are not the parts of z and of f(z) (the
+    /// coordinates of a solid): in full, and in short.
+    pub(crate) names: Option<([String; 4], [String; 4])>,
+}
+
+impl Shape {
+    /// What one of the four numbers is.
+    pub(crate) fn long(&self, part: usize) -> &str {
+        match &self.names {
+            Some((long, _)) => &long[part],
+            None => PARTS[part],
+        }
+    }
+
+    pub(crate) fn short(&self, part: usize) -> Option<&str> {
+        self.names.as_ref().map(|(_, short)| short[part].as_str())
+    }
 }
 
 fn value(f: &Expr, var: &Rc<str>, env: &mut Env, x: f64, y: f64) -> [f64; 2] {
@@ -560,6 +577,9 @@ fn pieces(
 
 /// The shape of a function.
 pub fn shape(plan: &Plan) -> Result<Shape, String> {
+    if crate::solids4d::is_solid(&plan.f) {
+        return solid_shape(plan, &crate::solids4d::Solid::read(&plan.f)?);
+    }
     let sizes = plan.sizes;
     let side = |part: usize| plan.axes[part].index();
     let (na, nb) = (sizes[side(0)], sizes[side(1)]);
@@ -637,6 +657,7 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
             fill: plan.fill,
             thickness: 1,
             voxels,
+            names: None,
         });
     }
     let ranges = [plan.re, plan.im, real, imag];
@@ -826,6 +847,142 @@ pub fn shape(plan: &Plan) -> Result<Shape, String> {
         fill: plan.fill,
         thickness: plan.thickness.max(1),
         voxels,
+        names: None,
+    })
+}
+
+/// The body of a solid of four dimensions: three of its coordinates across, upwards and
+/// along the frames, and in the colours what the solid does along the fourth: its highest
+/// point there (its lowest with fill = below, how far it reaches with fill = between), or
+/// for a solid that is cut how deep the place lies in it.
+fn solid_shape(plan: &Plan, solid: &crate::solids4d::Solid) -> Result<Shape, String> {
+    if plan.rotate.is_some() || plan.normalize || plan.thickness > 1 || plan.range_real.is_some() || plan.range_imag.is_some() {
+        return Err("rotate, normalize, thickness, range_real and range_imag belong to the shape of a function: a solid is turned by rotate4d(solid, \"xw\", degrees), made larger by scale4d and cut by section4d".to_string());
+    }
+    let sizes = plan.sizes;
+    let side = |part: usize| plan.axes[part].index();
+    let on = |wanted: usize| (0..4).find(|part| side(*part) == wanted).unwrap_or(wanted);
+    let (across, upwards, along, coloured) = (on(0), on(1), on(2), on(3));
+    let ends = plan.re;
+    let [width, height, frames, colours] = sizes;
+    if (width * height).saturating_mul(frames) > 1 << 28 {
+        return Err("the body of a solid has 268 million voxels at most: take a smaller width, height or frames".to_string());
+    }
+    let place = |k: usize, count: usize| ends.0 + (ends.1 - ends.0) * (k as f64 + 0.5) / count as f64;
+    let reach = solid.reach();
+    let form = &solid.form;
+    let (cut, fill) = (solid.cut, plan.fill);
+    // what the colour of a voxel shows, as a number
+    let shown = move |p: &mut [f64; 4]| -> Option<f64> {
+        let rest = reach * reach - (p[across] * p[across] + p[upwards] * p[upwards] + p[along] * p[along]);
+        if rest < 0.0 {
+            return None;
+        }
+        // (the line leaves the ball around the solid: no need to look farther)
+        let ends = (ends.0.max(-rest.sqrt()), ends.1.min(rest.sqrt()));
+        match cut {
+            Some(c) => {
+                p[coloured] = c;
+                if !form.holds(p) {
+                    return None;
+                }
+                let (low, high) = form.fibre(p, coloured, ends)?;
+                Some((c - low).min(high - c).max(0.0))
+            }
+            None => {
+                let (low, high) = form.fibre(p, coloured, ends)?;
+                Some(match fill {
+                    Fill::Below => low,
+                    Fill::Between => high - low,
+                    _ => high,
+                })
+            }
+        }
+    };
+    let threads = std::thread::available_parallelism().map_or(4, |n| n.get()).min(frames.max(1));
+    let found: Vec<Vec<(u32, f32)>> = std::thread::scope(|scope| {
+        let shown = &shown;
+        let handles: Vec<_> = (0..threads)
+            .map(|t| {
+                scope.spawn(move || {
+                    let mut mine = Vec::new();
+                    for k in (t..frames).step_by(threads) {
+                        let mut slice: Vec<(u32, f32)> = Vec::new();
+                        let mut p = [0.0; 4];
+                        p[along] = place(k, frames);
+                        for row in 0..height {
+                            p[upwards] = place(height - 1 - row, height);
+                            for i in 0..width {
+                                p[across] = place(i, width);
+                                if let Some(value) = shown(&mut p) {
+                                    slice.push(((row * width + i) as u32, value as f32));
+                                }
+                            }
+                        }
+                        mine.push((k, slice));
+                    }
+                    mine
+                })
+            })
+            .collect();
+        let mut all: Vec<Vec<(u32, f32)>> = vec![Vec::new(); frames];
+        for handle in handles {
+            for (k, slice) in handle.join().unwrap_or_default() {
+                all[k] = slice;
+            }
+        }
+        all
+    });
+    let voxels: usize = found.iter().map(Vec::len).sum();
+    if voxels == 0 {
+        return Err("plot4d: nothing of the solid lies in the box of the picture".to_string());
+    }
+    // the colours go over what is there
+    let (mut least, mut most) = (f32::MAX, f32::MIN);
+    for (_, value) in found.iter().flatten() {
+        least = least.min(*value);
+        most = most.max(*value);
+    }
+    let wide = (most - least).max(f32::MIN_POSITIVE);
+    let slices: Vec<Vec<Voxel>> = found
+        .into_iter()
+        .map(|slice| {
+            slice
+                .into_iter()
+                .map(|(pixel, value)| {
+                    let level = (((value - least) / wide) * colours as f32) as usize;
+                    (pixel, 0, level.min(colours - 1) as u16, [0; 3])
+                })
+                .collect()
+        })
+        .collect();
+    let mut ranges = [ends; 4];
+    ranges[coloured] = (f64::from(least), f64::from(most));
+    let letters = ["x", "y", "z", "w"];
+    let mut long = letters.map(String::from);
+    let mut short = letters.map(String::from);
+    long[coloured] = crate::solids4d::colours_of(solid, plan.fill, letters[coloured]);
+    short[coloured] = match (solid.cut, plan.fill) {
+        (Some(_), _) => format!("depth along {}", letters[coloured]),
+        (None, Fill::Below) => format!("lowest {}", letters[coloured]),
+        (None, Fill::Between) => format!("reach along {}", letters[coloured]),
+        _ => format!("highest {}", letters[coloured]),
+    };
+    Ok(Shape {
+        sizes,
+        axes: plan.axes,
+        ranges,
+        narrowed: [false; 4],
+        slices,
+        columns: None,
+        between: None,
+        turn: None,
+        normalize: false,
+        stretched: None,
+        fill: Fill::Surface,
+        thickness: 1,
+        voxels,
+        names: Some((long, short)),
     })
 }
 
@@ -1184,6 +1341,19 @@ impl Session {
         if f.as_list().is_some() || matches!(f, Expr::Rel(..) | Expr::Bool(_)) {
             return Err(usage());
         }
+        if crate::solids4d::is_solid(&f) {
+            // a solid of four dimensions in a box around it (or of the half size that is given)
+            let solid = crate::solids4d::Solid::read(&f)?;
+            let half = match &args[1..] {
+                [] => solid.reach() * 1.05,
+                [r] => match crate::plot::number(r) {
+                    Some(r) if r > 0.0 => r,
+                    _ => return Err(format!("{name}(solid4d(\"name\", ...)[, half the size of the box])")),
+                },
+                _ => return Err(format!("{name}(solid4d(\"name\", ...)[, half the size of the box])")),
+            };
+            return Ok((f, Rc::from("_"), (-half, half), (-half, half)));
+        }
         let (var, rest): (Rc<str>, &[Expr]) = match args.get(1) {
             Some(Expr::Sym(name)) if !crate::expr::is_const_name(name) => {
                 (name.clone(), &args[2..])
@@ -1348,7 +1518,7 @@ impl Session {
                 "plot4d of {function}: frame {} of {}, where {} is from {} to {}; the characters {} are the colours, {}",
                 middle + 1,
                 plan.sizes[2],
-                PARTS[part],
+                shape.long(part),
                 label(cut(middle)),
                 label(cut(middle + 1)),
                 String::from_utf8_lossy(MARKS),
@@ -1427,7 +1597,7 @@ fn facts(shape: &Shape, colours: Option<&str>) -> Vec<String> {
             }
             _ => format!(
                 "the {side}: {} from {} to {}{upwards}",
-                PARTS[part],
+                shape.long(part),
                 label(low),
                 label(high)
             ),
@@ -1450,7 +1620,7 @@ pub(crate) fn notes(shape: &Shape) -> Vec<String> {
         if shape.narrowed[part] {
             lines.push(format!(
                 "{} goes far beyond these ends (near a pole): what lies outside is left out; {name} = [least, greatest] sets other ends",
-                PARTS[part]
+                shape.long(part)
             ));
         }
     }
@@ -1493,8 +1663,9 @@ pub(crate) fn notes(shape: &Shape) -> Vec<String> {
     lines.push(format!(
         "{} voxels of the box of {width} x {height} x {frames} belong to the {} ({} %){filled}",
         shape.voxels,
-        match shape.fill {
-            Fill::Between => "body between the real and the imaginary part of f(z)",
+        match (shape.fill, shape.names.is_some()) {
+            (_, true) => "solid",
+            (Fill::Between, _) => "body between the real and the imaginary part of f(z)",
             _ => "surface",
         },
         label(100.0 * shape.voxels as f64 / (width * height * frames) as f64)

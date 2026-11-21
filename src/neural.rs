@@ -21,26 +21,26 @@ fn bits() -> u32 {
     crate::mfun::bits()
 }
 
-fn fl<T>(x: T) -> Float
+pub(crate) fn fl<T>(x: T) -> Float
 where
     Float: rug::Assign<T>,
 {
     Float::with_val(bits(), x)
 }
 
-fn zero() -> Float {
+pub(crate) fn zero() -> Float {
     Float::new(bits())
 }
 
-fn real(e: &Expr, who: &str) -> Result<Float, String> {
+pub(crate) fn real(e: &Expr, who: &str) -> Result<Float, String> {
     crate::mfun::real(e, bits(), who)
 }
 
-fn shown(x: &Float) -> Expr {
+pub(crate) fn shown(x: &Float) -> Expr {
     crate::mfun::value(x)
 }
 
-fn text(e: &Expr) -> Option<String> {
+pub(crate) fn text(e: &Expr) -> Option<String> {
     word(e).map(|w| {
         w.chars()
             .filter(|c| !matches!(c, ' ' | '-' | '_'))
@@ -70,7 +70,7 @@ fn half(x: Expr) -> Expr {
 }
 
 /// The first name of a function of a unit.
-fn unit_name(w: &str) -> Option<&'static str> {
+pub(crate) fn unit_name(w: &str) -> Option<&'static str> {
     Some(match w {
         "relu" | "poslin" => "relu",
         "leakyrelu" => "leakyrelu",
@@ -105,7 +105,7 @@ fn unit_names() -> String {
 }
 
 /// The number that a function of a unit takes besides its value, unless one is given.
-fn usual(name: &str) -> Option<Expr> {
+pub(crate) fn usual(name: &str) -> Option<Expr> {
     match name {
         "leakyrelu" => Some(Expr::rat(1, 100)),
         "clippedrelu" => Some(int(6)),
@@ -276,7 +276,7 @@ fn softmax(items: &[Expr], who: &str) -> Result<Vec<Expr>, String> {
         .collect())
 }
 
-fn soft(values: &[Float]) -> Vec<Float> {
+pub(crate) fn soft(values: &[Float]) -> Vec<Float> {
     let top = values.iter().fold(values[0].clone(), |a, b| a.max(b));
     let powers: Vec<Float> = values.iter().map(|v| fl(v - &top).exp()).collect();
     let total = powers.iter().fold(zero(), |a, b| a + b);
@@ -1048,7 +1048,7 @@ fn step(name: &str, a: &[Expr]) -> Res {
 
 /// A layer as it is written: the weights (a row for every unit), the biases, the first
 /// name of the function, and the number that the function takes.
-struct Written {
+pub(crate) struct Written {
     w: Vec<Vec<Expr>>,
     b: Vec<Expr>,
     f: &'static str,
@@ -1057,11 +1057,11 @@ struct Written {
 
 /// A layer of numbers.
 #[derive(Clone)]
-struct Dense {
-    w: Vec<Vec<Float>>,
-    b: Vec<Float>,
-    f: &'static str,
-    extra: Option<Float>,
+pub(crate) struct Dense {
+    pub(crate) w: Vec<Vec<Float>>,
+    pub(crate) b: Vec<Float>,
+    pub(crate) f: &'static str,
+    pub(crate) extra: Option<Float>,
 }
 
 fn layer_of(e: &Expr) -> Option<Written> {
@@ -1083,12 +1083,12 @@ fn layer_of(e: &Expr) -> Option<Written> {
     })
 }
 
-fn is_net(e: &Expr) -> bool {
+pub(crate) fn is_net(e: &Expr) -> bool {
     e.as_list()
         .is_some_and(|l| !l.is_empty() && l.iter().all(|x| layer_of(x).is_some()))
 }
 
-fn net_of(e: &Expr, who: &str) -> Result<Vec<Written>, String> {
+pub(crate) fn net_of(e: &Expr, who: &str) -> Result<Vec<Written>, String> {
     let wrong = || {
         format!(
             "{who}: a network is a list of layers [weights, biases, \"function\"] with a row of weights for every unit (feedforwardnet makes one); the functions are {}",
@@ -1119,7 +1119,7 @@ fn net_of(e: &Expr, who: &str) -> Result<Vec<Written>, String> {
     Ok(layers)
 }
 
-fn net_shown(net: &[Dense]) -> Expr {
+pub(crate) fn net_shown(net: &[Dense]) -> Expr {
     Expr::list(
         net.iter()
             .map(|l| {
@@ -1137,7 +1137,7 @@ fn net_shown(net: &[Dense]) -> Expr {
     )
 }
 
-fn dense(layers: &[Written], who: &str) -> Result<Vec<Dense>, String> {
+pub(crate) fn dense(layers: &[Written], who: &str) -> Result<Vec<Dense>, String> {
     layers
         .iter()
         .map(|l| {
@@ -1179,7 +1179,7 @@ fn softplus(z: &Float) -> Float {
 }
 
 /// The function of a unit for a number.
-fn value(f: &str, z: &Float, extra: Option<&Float>) -> Float {
+pub(crate) fn value(f: &str, z: &Float, extra: Option<&Float>) -> Float {
     let one = fl(1);
     match f {
         "relu" => z.clone().max(&zero()),
@@ -1211,7 +1211,7 @@ fn value(f: &str, z: &Float, extra: Option<&Float>) -> Float {
 }
 
 /// The slope of the function of a unit, where it has one to learn by.
-fn slope(f: &str, z: &Float, a: &Float, extra: Option<&Float>) -> Option<Float> {
+pub(crate) fn slope(f: &str, z: &Float, a: &Float, extra: Option<&Float>) -> Option<Float> {
     let one = fl(1);
     Some(match f {
         "relu" => fl(i32::from(*z > 0)),
@@ -1722,10 +1722,10 @@ fn train(
 }
 
 /// Numbers between -1 and 1 that are the same on every machine.
-struct Shuffle(u64);
+pub(crate) struct Shuffle(pub(crate) u64);
 
 impl Shuffle {
-    fn next(&mut self) -> f64 {
+    pub(crate) fn next(&mut self) -> f64 {
         self.0 = self
             .0
             .wrapping_mul(6364136223846793005)
@@ -2305,6 +2305,9 @@ fn memory(name: &str, a: &[Expr]) -> Res {
 /// The commands of networks of neurons.
 pub fn call(name: &str, a: &[Expr]) -> Option<Res> {
     let n = a.len();
+    if let Some(r) = crate::convnet::call(name, a) {
+        return Some(r);
+    }
     Some(match name {
         "relu" | "leakyrelu" | "clippedrelu" | "elu" | "gelu" | "swish" | "mish" | "softplus"
         | "softsign" | "sigmoid" | "tansig" | "purelin" | "satlin" | "satlins" | "hardlim"

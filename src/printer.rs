@@ -458,6 +458,10 @@ fn render(e: &Expr) -> (String, u8) {
         Expr::Pow(b, x) => pow_str(b, x),
         Expr::Fn(name, args) => match (&**name, args.len()) {
             (":=", 2) => (format!("{} := {}", show(&args[0], 0), show(&args[1], 0)), 0),
+            ("cellarray", _) => {
+                let inner: Vec<String> = args.iter().map(|a| show(a, 0)).collect();
+                (format!("{{{}}}", inner.join(", ")), P_ATOM)
+            }
             ("factorial", 1) | ("factorial2", 1) => {
                 let bang = if &**name == "factorial" { "!" } else { "!!" };
                 (

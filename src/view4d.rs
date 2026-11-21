@@ -10,7 +10,7 @@ use crate::eval::Session;
 use crate::expr::Expr;
 use crate::picture::{self, Choices};
 use crate::plot::label;
-use crate::plot4d::{self, Axis, EMPTY, Fill, Frames, PARTS, Shape, Tints};
+use crate::plot4d::{self, Axis, EMPTY, Fill, Frames, Shape, Tints};
 use crate::raster::Rgb;
 use crate::scene::{self, Body, Drawing, Face, Item, Legend, Space};
 
@@ -295,7 +295,7 @@ impl Session {
             true => ["width", "height", "frames"].map(String::from),
             false => parts.map(|p| match (between, p) {
                 (true, 2) => "re, im f(z)".to_string(),
-                _ => SHORT[p].to_string(),
+                _ => shape.short(p).unwrap_or(SHORT[p]).to_string(),
             }),
         });
         if between {
@@ -306,7 +306,7 @@ impl Session {
             });
         } else if !shape.normalize {
             drawing.legend = Some(Legend {
-                name: SHORT[coloured].to_string(),
+                name: shape.short(coloured).unwrap_or(SHORT[coloured]).to_string(),
                 ends: Some(shape.ranges[coloured]),
                 colors: tints,
             });
@@ -328,7 +328,7 @@ impl Session {
                     label(low),
                     label(high)
                 ),
-                _ => format!("{} from {} to {}", PARTS[parts[k]], label(low), label(high)),
+                _ => format!("{} from {} to {}", shape.long(parts[k]), label(low), label(high)),
             }
         };
         let (low, high) = shape.ranges[coloured];
@@ -336,7 +336,7 @@ impl Session {
             true => "the colours go from the real part of f(z), the first colour, to the imaginary part, the last".to_string(),
             false => format!(
                 "the colours are {} from {} to {}",
-                PARTS[coloured],
+                shape.long(coloured),
                 label(low),
                 label(high)
             ),

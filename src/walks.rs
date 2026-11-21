@@ -21,7 +21,26 @@ pub fn is_walk(name: &str) -> bool {
             | "primemodwalk3d"
             | "ulamspiral"
             | "sacksspiral"
+            | "randomwalk"
+            | "randomwalk3d"
     )
+}
+
+/// Whether a walk goes along digits of chance: `walk(random, base, digits[, seed])`.
+fn of_chance(x: &Expr) -> bool {
+    crate::arrays::word(x).is_some_and(|w| matches!(w.as_str(), "random" | "rand" | "chance"))
+}
+
+/// The numbers of chance of a walk: of its seed, or of the session (which begin the same
+/// way every time unless rng started them otherwise).
+fn draws(seed: Option<&Expr>) -> Result<(crate::random::Draws, String), String> {
+    match seed {
+        None => Ok((crate::random::Draws::new(), String::new())),
+        Some(e) => {
+            let seed = whole(Some(e), 0, (0, u64::from(u32::MAX)), "the seed")? as u32;
+            Ok((crate::random::Draws::seeded(seed), format!(" (seed {seed})")))
+        }
+    }
 }
 
 /// A whole number among the arguments, or the one that stands for a missing argument.
@@ -140,6 +159,23 @@ fn walk(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
     let x = a.first().ok_or(usage)?;
     let base = radix::base_of(a.get(1))?;
     let count = whole(a.get(2), 1000, (1, MOST as u64), "the number of digits")? as usize;
+    if of_chance(x) {
+        let (mut chance, seeded) = draws(a.get(3))?;
+        let digits: Vec<u32> = (0..count).map(|_| chance.below(base as usize) as u32).collect();
+        let (dirs, steps) = directions(&digits, |d| {
+            let (sin, cos) = turn((u64::from(d), u64::from(base)));
+            [cos, sin, 0.0]
+        });
+        let told = format!(
+            "{} along digits of chance in base {base}{seeded}: the digit d is a step at {}*d degrees",
+            counted(steps.len(), "step"),
+            degrees(u64::from(base)),
+        );
+        return Ok(trail(dirs, steps, Vec::new(), false, told));
+    }
+    if a.len() > 3 {
+        return Err(usage.into());
+    }
     let lead = radix::leading(x, base, count, notes).map_err(|why| {
         match why.ends_with("is no real number") {
             true => format!("{why}: walk3d(z, base, digits) walks along a complex number"),
@@ -173,6 +209,25 @@ fn walk3d(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
     let z = a.first().ok_or(usage)?;
     let base = radix::base_of(a.get(1))?;
     let count = whole(a.get(2), 1000, (1, MOST as u64), "the number of digits")? as usize;
+    if of_chance(z) {
+        let (mut chance, seeded) = draws(a.get(3))?;
+        let pairs: Vec<(u32, u32)> = (0..count)
+            .map(|_| (chance.below(base as usize) as u32, chance.below(base as usize) as u32))
+            .collect();
+        let parts = u64::from(base);
+        let (dirs, steps) = directions(&pairs, |(a, c)| {
+            lifted((u64::from(a), parts), (u64::from(c), parts))
+        });
+        let angle = degrees(parts);
+        let told = format!(
+            "{} along two rows of digits of chance in base {base}{seeded}: the digits a and c of a place are a step at {angle}*a degrees around the z-axis, {angle}*c degrees above the plane",
+            counted(steps.len(), "step"),
+        );
+        return Ok(trail(dirs, steps, Vec::new(), true, told));
+    }
+    if a.len() > 3 {
+        return Err(usage.into());
+    }
     let [re, im] = radix::leading_pair(z, base, count, notes)?;
     // (digits that ended go on with zeros)
     let length = re.digits.len().max(im.digits.len());
@@ -194,6 +249,103 @@ fn walk3d(a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
         if ended { ", which end there" } else { "" },
     );
     Ok(trail(dirs, steps, Vec::new(), true, told))
+}
+
+/// `randomwalk(n, kind, seed)` and `randomwalk3d(n, kind, seed)`: steps of chance. In the
+/// plane the kind is the number of directions (4 unless given), in space "lattice" (the six
+/// directions of the axes); or "any" direction, "normal" steps (the motion of Brown),
+/// "levy" flights (any direction, lengths with a heavy tail).
+fn randomwalk(a: &[Expr], solid: bool) -> Result<Drawing, String> {
+    let name = if solid { "randomwalk3d" } else { "randomwalk" };
+    let usage = match solid {
+        true => "randomwalk3d(n[, \"lattice\" | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in space",
+        false => "randomwalk(n[, directions | \"any\" | \"normal\" | \"levy\"][, seed]): n steps of chance in the plane, in one of 4 directions unless said",
+    };
+    let count = whole(a.first(), 1000, (1, MOST as u64), "the number of steps")? as usize;
+    let kind = match a.get(1) {
+        None => None,
+        Some(e) => match crate::arrays::word(e) {
+            Some(w) => Some(Err(w)),
+            None => Some(Ok(whole(Some(e), 4, (2, 3600), "the number of directions")?)),
+        },
+    };
+    let (mut chance, seeded) = draws(a.get(2))?;
+    let tau = std::f64::consts::TAU;
+    let mut unit = |chance: &mut crate::random::Draws| chance.unit().to_f64();
+    let any = |chance: &mut crate::random::Draws, unit: &mut dyn FnMut(&mut crate::random::Draws) -> f64| -> Point {
+        match solid {
+            true => {
+                let (z, turn) = (2.0 * unit(chance) - 1.0, tau * unit(chance));
+                let wide = (1.0 - z * z).max(0.0).sqrt();
+                [wide * turn.cos(), wide * turn.sin(), z]
+            }
+            false => {
+                let turn = tau * unit(chance);
+                [turn.cos(), turn.sin(), 0.0]
+            }
+        }
+    };
+    let (dirs, steps, how): (Vec<Point>, Vec<u32>, String) = match kind {
+        None | Some(Ok(_)) | Some(Err(_)) if matches!(&kind, None | Some(Ok(_))) || matches!(&kind, Some(Err(w)) if w == "lattice") => {
+            let directions: Vec<Point> = match (solid, &kind) {
+                (true, None) | (true, Some(Err(_))) => vec![[1.0, 0.0, 0.0], [-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0]],
+                (true, Some(Ok(_))) => return Err(usage.into()),
+                (false, Some(Err(_))) => return Err(usage.into()),
+                (false, k) => {
+                    let parts = match k {
+                        Some(Ok(parts)) => *parts,
+                        _ => 4,
+                    };
+                    (0..parts)
+                        .map(|d| {
+                            let (sin, cos) = turn((d, parts));
+                            [cos, sin, 0.0]
+                        })
+                        .collect()
+                }
+            };
+            let steps: Vec<u32> = (0..count).map(|_| chance.below(directions.len()) as u32).collect();
+            let how = format!("each of the {} directions as likely as another", directions.len());
+            (directions, steps, how)
+        }
+        Some(Err(w)) => {
+            let mut dirs = Vec::with_capacity(count);
+            let how = match w.as_str() {
+                "any" => {
+                    for _ in 0..count {
+                        dirs.push(any(&mut chance, &mut unit));
+                    }
+                    "of the length 1 in any direction".to_string()
+                }
+                "normal" | "brownian" | "gaussian" => {
+                    for _ in 0..count {
+                        let mut bell = || chance.normal().to_f64();
+                        dirs.push([bell(), bell(), if solid { bell() } else { 0.0 }]);
+                    }
+                    "whose parts along the axes follow the normal law (the motion of Brown)".to_string()
+                }
+                "levy" => {
+                    for _ in 0..count {
+                        // lengths above 1 whose chance falls as their power -3/2
+                        let far = (1.0 - unit(&mut chance)).max(1e-300).powf(-2.0 / 3.0);
+                        let d = any(&mut chance, &mut unit);
+                        dirs.push([d[0] * far, d[1] * far, d[2] * far]);
+                    }
+                    "in any direction, with lengths of a heavy tail (flights of Levy)".to_string()
+                }
+                _ => return Err(usage.into()),
+            };
+            (dirs, (0..count as u32).collect(), how)
+        }
+        _ => return Err(usage.into()),
+    };
+    let told = format!(
+        "{} of chance in {}{seeded}: {how}",
+        counted(count, "step"),
+        if solid { "space" } else { "the plane" },
+    );
+    let _ = name;
+    Ok(trail(dirs, steps, Vec::new(), solid, told))
 }
 
 /// The first `n` primes.
@@ -421,7 +573,8 @@ fn sacksspiral(a: &[Expr]) -> Result<Drawing, String> {
 pub fn build(name: &str, a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing, String> {
     let most = match name {
         "primewalk" | "primemodwalk3d" => 3,
-        "walk" | "walk3d" => 3,
+        "walk" | "walk3d" if a.first().is_some_and(of_chance) => 4,
+        "walk" | "walk3d" | "randomwalk" | "randomwalk3d" => 3,
         "primewalk3d" | "primemodwalk" => 2,
         _ => 1,
     };
@@ -439,6 +592,8 @@ pub fn build(name: &str, a: &[Expr], notes: &mut Vec<String>) -> Result<Drawing,
         "primemodwalk" => primemodwalk(a),
         "primemodwalk3d" => primemodwalk3d(a),
         "ulamspiral" => ulamspiral(a),
+        "randomwalk" => randomwalk(a, false),
+        "randomwalk3d" => randomwalk(a, true),
         _ => sacksspiral(a),
     }
 }
@@ -468,6 +623,37 @@ mod tests {
 
     fn near(p: Point, q: [f64; 3]) -> bool {
         (0..3).all(|k| (p[k] - q[k]).abs() < 1e-12)
+    }
+
+    #[test]
+    fn walks_of_chance_repeat_with_their_seed() {
+        let chance = |seed: &str| {
+            let a = vec![Expr::sym("random"), number("4"), number("50"), number(seed)];
+            build("walk", &a, &mut Vec::new()).expect("a drawing")
+        };
+        let (first, again, other) = (path(&chance("7")), path(&chance("7")), path(&chance("8")));
+        assert_eq!(first.len(), 51);
+        assert_eq!(first, again);
+        assert_ne!(first, other);
+        // every step of a walk on the lattice is one of the four neighbours
+        let d = drawn("randomwalk", &["200", "4", "3"]);
+        let p = path(&d);
+        assert_eq!(p.len(), 201);
+        assert!(p.windows(2).all(|w| {
+            let (dx, dy) = ((w[1][0] - w[0][0]).abs(), (w[1][1] - w[0][1]).abs());
+            (dx - 1.0).abs() < 1e-12 && dy < 1e-12 || dx < 1e-12 && (dy - 1.0).abs() < 1e-12
+        }));
+        assert_eq!(d.facts[0], "200 steps of chance in the plane (seed 3): each of the 4 directions as likely as another");
+        // in space: steps of the length 1 in any direction
+        let d = drawn("randomwalk3d", &["100", "\"any\"", "2"]);
+        let p = path(&d);
+        assert_eq!(d.space, Space::Solid);
+        assert!(p.windows(2).all(|w| {
+            let far: f64 = (0..3).map(|k| (w[1][k] - w[0][k]).powi(2)).sum();
+            (far - 1.0).abs() < 1e-12
+        }));
+        let a = vec![number("5"), number("7")];
+        assert!(build("randomwalk3d", &a, &mut Vec::new()).is_err());
     }
 
     #[test]

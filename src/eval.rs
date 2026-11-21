@@ -234,7 +234,15 @@ impl Session {
             Expr::Fn(n, a)
                 if matches!(
                     &**n,
-                    "disp" | "fprintf" | "writematrix" | "writetable" | "imwrite" | "pretty"
+                    "disp"
+                        | "fprintf"
+                        | "writematrix"
+                        | "writetable"
+                        | "imwrite"
+                        | "pretty"
+                        | "arcgridwrite"
+                        | "worldfilewrite"
+                        | "matwrite"
                 ) =>
             {
                 let args = self.eval_args(a)?;
@@ -1588,6 +1596,10 @@ impl Session {
             ("siunits", [q]) => units::siunits(q),
             ("dimension", [q]) => units::dimension(q),
             ("quantity", [value, unit]) => units::make(value, unit),
+            ("newunit", [name, q]) => units::define(name, q),
+            ("removeunit", [name]) => units::forget(name),
+            ("newunit", _) => Err("newunit(\"name\", quantity), for example newunit(\"fortnight\", 14 day)".into()),
+            ("removeunit", _) => Err("removeunit(\"name\"): the name of a unit that newunit made".into()),
             ("convert", _) => {
                 Err("convert(quantity, unit), for example convert(100 km/h, m/s)".into())
             }
@@ -1678,8 +1690,15 @@ impl Session {
             true => self.control_chart(name, &args)?,
             false => args,
         };
+        // (a chart of a grid of the earth is the chart of its matrix)
+        let (name, args) = match self.map_chart(name, &args)? {
+            Some((other, args)) => (other, args),
+            None => (name, args),
+        };
         let mut notes = Vec::new();
-        let drawing = if crate::walks::is_walk(name) {
+        let drawing = if name == "wire4d" {
+            crate::solids4d::wire(&args, choices.look.frames)?
+        } else if crate::walks::is_walk(name) {
             crate::walks::build(name, &args, &mut notes)?
         } else {
             crate::chart::build(name, &args, choices.detail(pixels))?
@@ -2097,6 +2116,15 @@ impl Session {
             return Ok(crate::quat::make([x, y, z, w]));
         }
         let digits = numeric::digits();
+        if let Some(r) = self.cells(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.delays(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.mimo(name, &a) {
+            return r;
+        }
         if let Some(parts) = crate::sigdesign::apart(name, &a) {
             return self.call(name, &parts?);
         }
@@ -2110,6 +2138,12 @@ impl Session {
             return r;
         }
         if let Some(r) = crate::geodesy::call(name, &a) {
+            return r;
+        }
+        if let Some(r) = self.georaster(name, &a) {
+            return r;
+        }
+        if let Some(r) = crate::solids4d::call(name, &a) {
             return r;
         }
         if let Some(r) = crate::neural::call(name, &a) {
@@ -2144,6 +2178,9 @@ impl Session {
             .or_else(|| crate::signal::call(name, &a))
             .or_else(|| crate::elem::call(name, &a))
             .or_else(|| crate::random::call(name, &a))
+            .or_else(|| crate::matfile::call(name, &a))
+            .or_else(|| crate::blocks::call(name, &a))
+            .or_else(|| crate::imageproc::call(name, &a))
             .or_else(|| crate::optim::call(name, &a))
             .or_else(|| crate::compgeom::call(name, &a))
             .or_else(|| crate::extras::call(name, &a))

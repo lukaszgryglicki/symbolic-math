@@ -20,20 +20,20 @@ type Res = Result<Expr, String>;
 /// A system with one input and one output: the coefficients of its two polynomials from
 /// the highest power, and the time of a sample when it is sampled (-1: not said).
 #[derive(Clone)]
-struct Sys {
-    num: Vec<Expr>,
-    den: Vec<Expr>,
-    ts: Option<Expr>,
+pub(crate) struct Sys {
+    pub(crate) num: Vec<Expr>,
+    pub(crate) den: Vec<Expr>,
+    pub(crate) ts: Option<Expr>,
 }
 
-fn list_of(e: &Expr) -> Vec<Expr> {
+pub(crate) fn list_of(e: &Expr) -> Vec<Expr> {
     match e.as_list() {
         Some(items) => items.to_vec(),
         None => vec![e.clone()],
     }
 }
 
-fn trimmed(mut p: Vec<Expr>) -> Vec<Expr> {
+pub(crate) fn trimmed(mut p: Vec<Expr>) -> Vec<Expr> {
     while p.len() > 1 && p[0].is_zero() {
         p.remove(0);
     }
@@ -57,7 +57,7 @@ fn poly_expr(p: &[Expr], var: &Expr) -> Expr {
         .collect()))
 }
 
-fn poly_mul(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
+pub(crate) fn poly_mul(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
     let mut out = vec![Expr::zero(); a.len() + b.len() - 1];
     for (i, x) in a.iter().enumerate() {
         for (j, y) in b.iter().enumerate() {
@@ -67,7 +67,7 @@ fn poly_mul(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
     out.into_iter().map(tidy).collect()
 }
 
-fn poly_add(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
+pub(crate) fn poly_add(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
     let n = a.len().max(b.len());
     let at = |p: &[Expr], k: usize| -> Expr {
         match (k + p.len()).checked_sub(n) {
@@ -82,7 +82,7 @@ fn poly_add(a: &[Expr], b: &[Expr]) -> Vec<Expr> {
     )
 }
 
-fn poly_scaled(a: &[Expr], by: &Expr) -> Vec<Expr> {
+pub(crate) fn poly_scaled(a: &[Expr], by: &Expr) -> Vec<Expr> {
     a.iter()
         .map(|c| tidy(mul(vec![c.clone(), by.clone()])))
         .collect()
@@ -138,12 +138,12 @@ impl Sys {
         Expr::sym(if self.ts.is_some() { "z" } else { "s" })
     }
 
-    fn expr(&self) -> Expr {
+    pub(crate) fn expr(&self) -> Expr {
         let var = self.var();
         tidy(div(poly_expr(&self.num, &var), poly_expr(&self.den, &var)))
     }
 
-    fn object(&self) -> Expr {
+    pub(crate) fn object(&self) -> Expr {
         let mut args = vec![Expr::list(self.num.clone()), Expr::list(self.den.clone())];
         if let Some(ts) = &self.ts {
             args.push(ts.clone());
@@ -163,7 +163,7 @@ impl Sys {
         }
     }
 
-    fn at(&self, x: &Expr) -> Expr {
+    pub(crate) fn at(&self, x: &Expr) -> Expr {
         tidy(div(poly_at(&self.num, x), poly_at(&self.den, x)))
     }
 }
@@ -173,7 +173,7 @@ pub(crate) fn is_system(e: &Expr) -> bool {
 }
 
 /// The matrices of `ss(A, B, C, D[, Ts])`.
-fn state_space(e: &Expr) -> Option<([Rows; 4], Option<Expr>)> {
+pub(crate) fn state_space(e: &Expr) -> Option<([Rows; 4], Option<Expr>)> {
     let args = e.fn_args("ss").filter(|a| a.len() == 4 || a.len() == 5)?;
     // a number is a matrix of one entry; a flat list is a column of B and a row of C and D
     let m = |k: usize| -> Rows {
@@ -198,7 +198,7 @@ fn state_space(e: &Expr) -> Option<([Rows; 4], Option<Expr>)> {
 
 /// det(s*I - A) and the matrices of adj(s*I - A) from the highest power of s (Faddeev and
 /// LeVerrier).
-fn resolvent(a: &Rows) -> Result<(Vec<Expr>, Vec<Rows>), String> {
+pub(crate) fn resolvent(a: &Rows) -> Result<(Vec<Expr>, Vec<Rows>), String> {
     let n = a.len();
     let mut coeffs = vec![Expr::one()];
     let mut parts = Vec::new();
@@ -227,7 +227,7 @@ fn resolvent(a: &Rows) -> Result<(Vec<Expr>, Vec<Rows>), String> {
 }
 
 /// The transfer function of `C*(s*I - A)^-1*B + D` for one input and one output.
-fn ss_to_tf(m: &[Rows; 4]) -> Result<(Vec<Expr>, Vec<Expr>), String> {
+pub(crate) fn ss_to_tf(m: &[Rows; 4]) -> Result<(Vec<Expr>, Vec<Expr>), String> {
     let [a, b, c, d] = m;
     let n = a.len();
     if a.iter().any(|r| r.len() != n) || b.len() != n || c.iter().any(|r| r.len() != n) {
@@ -247,7 +247,7 @@ fn ss_to_tf(m: &[Rows; 4]) -> Result<(Vec<Expr>, Vec<Expr>), String> {
 }
 
 /// The companion form that MATLAB's tf2ss gives.
-fn tf_to_ss(num: &[Expr], den: &[Expr]) -> Result<[Rows; 4], String> {
+pub(crate) fn tf_to_ss(num: &[Expr], den: &[Expr]) -> Result<[Rows; 4], String> {
     let n = den.len() - 1;
     if num.len() > den.len() {
         return Err("a state space needs a transfer function whose numerator is of no higher degree than its denominator".into());
@@ -727,7 +727,7 @@ impl Session {
         })
     }
 
-    fn poly_of(&mut self, p: &Expr, var: &Expr, who: &str) -> Result<Vec<Expr>, String> {
+    pub(crate) fn poly_of(&mut self, p: &Expr, var: &Expr, who: &str) -> Result<Vec<Expr>, String> {
         if !p.has(var) {
             return Ok(vec![p.clone()]);
         }
@@ -738,7 +738,7 @@ impl Session {
     }
 
     /// A ratio of polynomials in s or z as a system.
-    fn sys_of_expr(&mut self, e: &Expr, ts: Option<Expr>, who: &str) -> Result<Sys, String> {
+    pub(crate) fn sys_of_expr(&mut self, e: &Expr, ts: Option<Expr>, who: &str) -> Result<Sys, String> {
         let sampled = ts.is_some() || (e.has(&Expr::sym("z")) && !e.has(&Expr::sym("s")));
         let var = Expr::sym(if sampled { "z" } else { "s" });
         let both = self.call("numden", &[tidy(e.clone())])?;
@@ -755,7 +755,7 @@ impl Session {
         })
     }
 
-    fn sys_of(&mut self, e: &Expr, who: &str) -> Result<Sys, String> {
+    pub(crate) fn sys_of(&mut self, e: &Expr, who: &str) -> Result<Sys, String> {
         if let Some(args) = e.fn_args("tf").filter(|a| a.len() == 2 || a.len() == 3) {
             let (num, den) = (trimmed(list_of(&args[0])), trimmed(list_of(&args[1])));
             if den.len() == 1 && den[0].is_zero() {
@@ -823,7 +823,7 @@ impl Session {
         ))
     }
 
-    fn roots_of(&mut self, p: &[Expr]) -> Result<Vec<Expr>, String> {
+    pub(crate) fn roots_of(&mut self, p: &[Expr]) -> Result<Vec<Expr>, String> {
         match p.len() {
             0 | 1 => Ok(Vec::new()),
             _ => Ok(list_of(&self.call("roots", &[Expr::list(p.to_vec())])?)),
@@ -980,7 +980,7 @@ impl Session {
 
     /// The answer in time to an input with the transform `drive`: an expression of t for
     /// running time; for a sampled system the first samples.
-    fn response(&mut self, sys: &Sys, drive: Expr, times: Option<&Expr>, who: &str) -> Res {
+    pub(crate) fn response(&mut self, sys: &Sys, drive: Expr, times: Option<&Expr>, who: &str) -> Res {
         match &sys.ts {
             None => {
                 let (s, t) = (Expr::sym("s"), Expr::sym("t"));
@@ -1089,7 +1089,7 @@ impl Session {
 
     /// The names that the transforms use (s, z, t) are no values of the one who asks while
     /// a system is worked on: `s := tf("s")` is a usual way to write systems.
-    fn without_names<T>(&mut self, work: impl FnOnce(&mut Session) -> T) -> T {
+    pub(crate) fn without_names<T>(&mut self, work: impl FnOnce(&mut Session) -> T) -> T {
         let hidden: Vec<(String, Expr)> = ["s", "z", "t", "_k"]
             .iter()
             .filter_map(|name| self.vars.remove(*name).map(|v| (name.to_string(), v)))
@@ -1104,6 +1104,9 @@ impl Session {
     /// A sum or a product of values: systems among them are joined, entry by entry where
     /// lists stand among them.
     pub(crate) fn joined(&mut self, sum: bool, items: Vec<Expr>) -> Res {
+        if items.iter().any(crate::mimo::is_wide) {
+            return self.wide_joined(sum, &items);
+        }
         let listed = items.iter().any(|e| e.as_list().is_some());
         if !listed && items.iter().any(is_system) {
             return self.systems_joined(sum, &items);
@@ -1123,6 +1126,9 @@ impl Session {
 
     /// A power of values: of a system, or of a list that holds systems.
     pub(crate) fn raised(&mut self, base: Expr, exponent: Expr) -> Res {
+        if crate::mimo::is_wide(&base) {
+            return self.wide_power(&base, &exponent);
+        }
         if is_system(&base) {
             return self.system_power(&base, &exponent);
         }
@@ -1155,6 +1161,9 @@ impl Session {
         } else {
             "a product with a system"
         };
+        if items.iter().any(crate::delays::is_delayed) {
+            return self.without_names(|session| session.delay_joined(sum, items));
+        }
         self.without_names(|session| {
             let mut all: Option<Sys> = None;
             for item in items {
@@ -1444,7 +1453,11 @@ impl Session {
                                 Some(_) => return Err("feedback(G, H[, sign]): the sign is -1 (the usual, negative feedback) or +1".into()),
                                 None => 1,
                             };
-                            div(g.clone(), add(vec![Expr::one(), mul(vec![Expr::int(sign), g, h])]))
+                            let around = tidy(add(vec![Expr::one(), mul(vec![Expr::int(sign), g.clone(), h])]));
+                            if self.call("simplify", std::slice::from_ref(&around))?.is_zero() {
+                                return Err("feedback: the loop has no answer: what goes around it comes back as it went (1 + G*H is zero)".into());
+                            }
+                            div(g, around)
                         }
                     };
                     self.combined(e, ts, who)?
@@ -1734,6 +1747,12 @@ impl Session {
                 }
                 ("covar", 2) => {
                     let (m, ts, _, _) = self.gramians(&a[0], who)?;
+                    // (the intensity of the noise of one input: a number, or a matrix of one entry)
+                    let intensity = match list_of(&a[1]).iter().flat_map(list_of).collect::<Vec<Expr>>() {
+                        only if only.len() == 1 && only[0].as_list().is_none() => only[0].clone(),
+                        _ => return Err("covar(system, W): the intensity W of the noise is a number for a system with one input".into()),
+                    };
+                    let a = [a[0].clone(), intensity];
                     let spread = poly_scaled(&matrix::matmul(&m[1], &matrix::transpose(&m[1]))?.concat(), &a[1]);
                     let size = m[0].len();
                     let noise: Rows = spread.chunks(size).map(|r| r.to_vec()).collect();
@@ -2293,6 +2312,32 @@ impl Session {
                 ),
                 (
                     "PMFrequency",
+                    Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect()),
+                ),
+                // the delay that uses a phase margin up: its angle over the frequency (for a
+                // sampled system in samples)
+                (
+                    "DelayMargin",
+                    Expr::list(
+                        phase_margins
+                            .iter()
+                            .map(|(margin, w)| {
+                                let pi = Float::with_val(prec, rug::float::Constant::Pi);
+                                let mut lag = Float::with_val(prec, margin * &pi) / 180u32;
+                                if lag < 0 {
+                                    lag += Float::with_val(prec, &pi * 2u32);
+                                }
+                                let time = lag / w;
+                                match &ts {
+                                    Some(step) => shown(&(time / step)),
+                                    None => shown(&time),
+                                }
+                            })
+                            .collect(),
+                    ),
+                ),
+                (
+                    "DMFrequency",
                     Expr::list(phase_margins.iter().map(|m| shown(&m.1)).collect()),
                 ),
                 ("Stable", Expr::Bool(stable)),

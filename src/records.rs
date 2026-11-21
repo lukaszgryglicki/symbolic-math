@@ -307,24 +307,13 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             a[0].as_list()
                 .is_some_and(|items| items.iter().all(|x| text_of(x).is_some())),
         ),
-        ("cell", 1 | 2) => {
-            let size =
-                |k: usize| crate::arrays::whole(&a[k], "the size", 0, 100_000).map(|s| s as usize);
-            let empty = || Expr::list(Vec::new());
-            match n {
-                1 => Expr::list((0..size(0)?).map(|_| empty()).collect()),
-                _ => {
-                    let (rows, columns) = (size(0)?, size(1)?);
-                    Expr::list(
-                        (0..rows)
-                            .map(|_| Expr::list((0..columns).map(|_| empty()).collect()))
-                            .collect(),
-                    )
-                }
-            }
-        }
         _ => return Ok(None),
     }))
+}
+
+/// A function of records by its name, as it was before cell arrays wrapped its answer.
+pub(crate) fn call_plain(name: &str, a: &[Expr]) -> Res {
+    inner(name, a)?.ok_or_else(|| format!("{name}: no such function of records"))
 }
 
 impl Session {

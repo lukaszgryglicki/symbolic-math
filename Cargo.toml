@@ -16,6 +16,7 @@ name = "symbolic-math"
 path = "src/main.rs"
 
 [dependencies]
+flate2 = "1"
 font8x8 = "0.3"
 jxl-sys = "0.1.12"
 libc = "0.2"

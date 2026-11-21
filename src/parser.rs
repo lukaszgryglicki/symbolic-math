@@ -1069,6 +1069,11 @@ impl Parser<'_> {
             self.bump();
             return Ok(Expr::sym(&word));
         }
+        // walk(random, base, digits): chance instead of a number
+        if self.ends_argument(1) && matches!(word.as_str(), "random" | "rand") {
+            self.bump();
+            return Ok(Expr::sym("random"));
+        }
         // rotate(yaw, pitch, roll) turns the body of a picture of space: any count of angles
         if word == "rotate" && self.op_at(1, "(") {
             self.bump();
@@ -1401,7 +1406,11 @@ impl Parser<'_> {
                 Ok(Expr::call("rule", vec![head, body]))
             }
             Tok::Op("[") => self.list("]"),
-            Tok::Op("{") => self.list("}"),
+            // a cell array: what the braces hold, rows of cells as lists
+            Tok::Op("{") => self.list("}").map(|items| match items {
+                Expr::List(all) => Expr::call("cellarray", all.to_vec()),
+                other => other,
+            }),
             Tok::Op("|") => self.enclosed("|", "abs"),
             Tok::Op("‖") => self.enclosed("‖", "norm"),
             Tok::Op("⌊") => self.enclosed("⌋", "floor"),
