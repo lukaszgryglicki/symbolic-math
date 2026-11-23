@@ -53,6 +53,16 @@ fn better(best: &mut Expr, best_cost: &mut usize, candidate: Expr) {
     }
 }
 
+/// `simplify`, telling the forms that are tried as steps (where steps are told at all): for
+/// the value of a statement, not for the many small simplifications inside a method.
+pub fn simplify_told(e: &Expr) -> Expr {
+    simplify_with(e, crate::trace::on())
+}
+
+pub fn simplify(e: &Expr) -> Expr {
+    simplify_with(e, false)
+}
+
 /// The expression with the arguments of its functions and the bases of its roots simplified.
 fn simplify_parts(e: &Expr) -> Expr {
     match e {
@@ -75,10 +85,12 @@ fn simplify_parts(e: &Expr) -> Expr {
     }
 }
 
-pub fn simplify(e: &Expr) -> Expr {
+fn simplify_with(e: &Expr, told: bool) -> Expr {
     match e {
         Expr::Num(_) | Expr::Float(_) | Expr::Sym(_) | Expr::Bool(_) => return e.clone(),
-        Expr::List(_) | Expr::Rel(..) => return crate::canon::rebuild(e, &mut |c| simplify(c)),
+        Expr::List(_) | Expr::Rel(..) => {
+            return crate::canon::rebuild(e, &mut |c| simplify_with(c, told));
+        }
         Expr::Fn(n, _) if matches!(&**n, "hold" | "based" | "string") => return e.clone(),
         Expr::Fn(n, _) if &**n == "quat" => {
             return crate::quat::simple(e).unwrap_or_else(|| e.clone());
@@ -88,7 +100,11 @@ pub fn simplify(e: &Expr) -> Expr {
     if e.is_infinite() || crate::budget::expired() {
         return e.clone();
     }
+    use crate::trace::step;
     if is_zero(e) {
+        if told && !e.is_zero() {
+            step(|| format!("simplify {e}: it is 0 for every value of its names"));
+        }
         return Expr::zero();
     }
     let parts = simplify_parts(e);
@@ -97,29 +113,67 @@ pub fn simplify(e: &Expr) -> Expr {
     } else {
         parts
     };
+    if told && parts != *e {
+        step(|| format!("its parts simplified one by one: {parts}"));
+    }
     let e = &parts;
     if e.is_number() || matches!(e, Expr::Sym(_)) {
         return parts;
     }
     let mut best = e.clone();
     let mut best_cost = cost(e);
+    // the forms that are tried, each with its length: told when one of them is shorter than
+    // what was there (with every detail: always)
+    let mut forms: Vec<String> = Vec::new();
+    let mut tried = |best: &mut Expr, best_cost: &mut usize, name: &str, form: Expr| {
+        if told && form != *e {
+            let length = cost(&form);
+            forms.push(format!(
+                "{name}: {form} ({}{})",
+                crate::trace::count(length, "character"),
+                if length < *best_cost { ": shorter" } else { "" }
+            ));
+        }
+        better(best, best_cost, form);
+    };
+    let length = best_cost;
     // a tower of powers has a degree, and a tower of functions a count of forms, that grows
     // with each floor as the floors below taken together: such a tower is left standing
     let (degree, depth) = (degree_bound(e), kernel_depth(e));
     let terms = dense_terms(degree, kernel_count(e));
     if !towering(e) {
-        better(&mut best, &mut best_cost, expand(e));
+        tried(&mut best, &mut best_cost, "multiplied out", expand(e));
     }
     if e.size() <= 400 && degree <= 128 && depth <= 8 {
         let t = ratsimp::together(e);
-        better(&mut best, &mut best_cost, t.clone());
+        tried(&mut best, &mut best_cost, "over a common denominator, cancelled", t.clone());
         if e.size() <= 150 {
             // in several variables the factors of a high degree take long to find
             if terms <= 150 {
-                better(&mut best, &mut best_cost, ratsimp::factor(&t));
+                tried(&mut best, &mut best_cost, "factored", ratsimp::factor(&t));
             }
-            better(&mut best, &mut best_cost, ratsimp::trigsimp(e));
+            tried(&mut best, &mut best_cost, "with the identities of sines and cosines", ratsimp::trigsimp(e));
         }
+    }
+    if told && (best != *e || crate::trace::deep()) {
+        step(|| {
+            format!(
+                "simplify {e} ({}): the shortest of these forms is kept",
+                crate::trace::count(length, "character")
+            )
+        });
+        let nest = crate::trace::nest();
+        for form in forms {
+            step(|| form);
+        }
+        drop(nest);
+        step(|| {
+            if best == *e {
+                "none is shorter: it stays as it is".to_string()
+            } else {
+                format!("the shortest: {best}")
+            }
+        });
     }
     best
 }

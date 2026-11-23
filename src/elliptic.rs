@@ -292,7 +292,7 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
         let mut sum = Complex::new(w);
         let mut top = i64::MIN;
         let mut small = 0;
-        for n in 0..2_000_000u32 {
+        for n in 0..u32::try_from(crate::settings::terms(2_000_000)).unwrap_or(u32::MAX) {
             let wave = if kind == 1 {
                 Complex::with_val(w, &e - &f)
             } else {

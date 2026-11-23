@@ -2365,6 +2365,11 @@ fn value_with(
                         e
                     });
                 }
+                // a value that is too large at the nearest fixed point is the answer: farther
+                // fixed points have other iterates
+                if e.ends_with("the iterate may be too large for a number") {
+                    return Err(e);
+                }
                 if !e.starts_with("no fixed point with a slope of size 1")
                     && failure.as_ref().is_none_or(|old| old == NO_POINT)
                 {

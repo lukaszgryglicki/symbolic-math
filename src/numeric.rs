@@ -463,6 +463,82 @@ fn on_cut(name: &str, z: &Complex, value: Complex) -> Complex {
     }
 }
 
+/// `a^2 - b^2 = 1` to the last bit. There `1 - z^2` (z = a + b i) has no real part at all, and
+/// the inverse sine of the library MPC (1.4.1) asks for more and more precision without an
+/// end, until the memory of the machine is used up.
+fn on_hyperbola(a: &Float, b: &Float) -> bool {
+    let (Some(ea), Some(eb)) = (a.get_exp(), b.get_exp()) else {
+        return false;
+    };
+    // (numbers that far apart, or that large, cannot differ by exactly 1 in their squares)
+    let p = i64::from(a.prec().max(b.prec()));
+    if i64::from(ea) < 1 || i64::from(ea) > p / 2 + 2 || i64::from(eb) < -p || eb > ea {
+        return false;
+    }
+    match (a.to_rational(), b.to_rational()) {
+        (Some(a), Some(b)) => {
+            let difference = rug::Rational::from(a.square_ref()) - rug::Rational::from(b.square_ref());
+            difference == 1
+        }
+        _ => false,
+    }
+}
+
+/// The precision at which the logarithm formulas of the inverse functions keep `p` bits at `z`.
+fn wide(z: &Complex, p: u32) -> u32 {
+    let size = magnitude(z).clamp(0, 1 << 24) as u32;
+    p + 2 * size + 64
+}
+
+/// The inverse sine. On the hyperbola where the library does not end: -i ln(i z + sqrt(1 - z^2)).
+pub fn asin(z: &Complex) -> Complex {
+    if !on_hyperbola(z.real(), z.imag()) {
+        return z.clone().asin();
+    }
+    let p = z.prec().0.max(z.prec().1);
+    let q = wide(z, p);
+    let zz = Complex::with_val(q, z);
+    let root = (Complex::with_val(q, 1) - zz.clone().square()).sqrt();
+    Complex::with_val(p, (zz.mul_i(false) + root).ln().mul_i(true))
+}
+
+/// The inverse cosine: pi/2 - asin(z) where the library does not end.
+pub fn acos(z: &Complex) -> Complex {
+    if !on_hyperbola(z.real(), z.imag()) {
+        return z.clone().acos();
+    }
+    let p = z.prec().0.max(z.prec().1);
+    let q = wide(z, p);
+    let half_pi = Float::with_val(q, Constant::Pi) / 2u32;
+    Complex::with_val(p, half_pi - asin(&Complex::with_val(q, z)))
+}
+
+/// The inverse hyperbolic sine (the library takes it from the inverse sine of i z):
+/// ln(z + sqrt(z^2 + 1)) where that does not end.
+pub fn asinh(z: &Complex) -> Complex {
+    if !on_hyperbola(z.imag(), z.real()) {
+        return z.clone().asinh();
+    }
+    let p = z.prec().0.max(z.prec().1);
+    let q = wide(z, p);
+    let zz = Complex::with_val(q, z);
+    let root = (zz.clone().square() + 1u32).sqrt();
+    Complex::with_val(p, (zz + root).ln())
+}
+
+/// The inverse hyperbolic cosine (the library takes it from the inverse cosine):
+/// ln(z + sqrt(z + 1) sqrt(z - 1)) where that does not end.
+pub fn acosh(z: &Complex) -> Complex {
+    if !on_hyperbola(z.real(), z.imag()) {
+        return z.clone().acosh();
+    }
+    let p = z.prec().0.max(z.prec().1);
+    let q = wide(z, p);
+    let zz = Complex::with_val(q, z);
+    let root = Complex::with_val(q, &zz + 1u32).sqrt() * Complex::with_val(q, &zz - 1u32).sqrt();
+    Complex::with_val(p, (zz + root).ln())
+}
+
 /// Outer `None`: unknown function; inner `None`: pole or undefined point.
 fn call(name: &str, a: &[Complex], p: u32) -> Option<Option<Complex>> {
     let real = |x: Float| Complex::with_val(p, x);
@@ -471,14 +547,14 @@ fn call(name: &str, a: &[Complex], p: u32) -> Option<Option<Complex>> {
         ("sin", 1) => z.clone().sin(),
         ("cos", 1) => z.clone().cos(),
         ("tan", 1) => z.clone().tan(),
-        ("asin", 1) => on_cut(name, z, z.clone().asin()),
-        ("acos", 1) => on_cut(name, z, z.clone().acos()),
+        ("asin", 1) => on_cut(name, z, asin(z)),
+        ("acos", 1) => on_cut(name, z, acos(z)),
         ("atan", 1) => on_cut(name, z, z.clone().atan()),
         ("sinh", 1) => z.clone().sinh(),
         ("cosh", 1) => z.clone().cosh(),
         ("tanh", 1) => z.clone().tanh(),
-        ("asinh", 1) => on_cut(name, z, z.clone().asinh()),
-        ("acosh", 1) => z.clone().acosh(),
+        ("asinh", 1) => on_cut(name, z, asinh(z)),
+        ("acosh", 1) => acosh(z),
         ("atanh", 1) => on_cut(name, z, z.clone().atanh()),
         ("ln", 1) => {
             if z.is_zero() {
@@ -590,6 +666,13 @@ pub fn evalf_digits_env(e: &Expr, digits: u32, env: Option<&Env>) -> Result<Comp
             judge(hi.imag(), lo.imag(), cx.max_exp, p, need + 2),
         ];
         let settled = parts.iter().all(|s| *s == Part::Stable);
+        crate::trace::detail(|| {
+            format!(
+                "the value of {e} with {p} and with {} bits: the digits {}",
+                p + 64,
+                if settled { "agree" } else { "do not agree yet: more bits are taken" }
+            )
+        });
         if settled || (round == rounds && !parts.contains(&Part::Unsettled)) {
             let mut out = Complex::with_val(need + 32, &hi);
             if parts[0] == Part::Noise {

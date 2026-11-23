@@ -201,7 +201,148 @@ pub fn poly_roots(coeffs: &[rug::Rational], digits: u32) -> Option<Vec<Complex>>
     Some(sorted(z, digits))
 }
 
-/// Root of `f` near `start` by the secant method in the complex plane, to `digits` digits.
+/// The size of a number as a float of 64 bits.
+fn modulus(z: &Complex) -> Float {
+    Float::with_val(64, z.abs_ref())
+}
+
+/// The value of `f` at `x` and its first derivative there, by differences over `h` to both
+/// sides, at the precision of `x`; with `second` the second derivative too.
+fn slopes(
+    f: &mut dyn FnMut(&Complex) -> Option<Complex>,
+    x: &Complex,
+    h: &Float,
+) -> Option<(Complex, Complex, Complex)> {
+    let prec = x.prec().0;
+    let step = Float::with_val(prec, h);
+    let here = f(x)?;
+    let above = f(&Complex::with_val(prec, x + &step))?;
+    let below = f(&Complex::with_val(prec, x - &step))?;
+    let first = Complex::with_val(prec, &above - &below) / Float::with_val(prec, &step * 2u32);
+    let second = (Complex::with_val(prec, &above + &below) - Complex::with_val(prec, &here * 2u32))
+        / Float::with_val(prec, step.square_ref());
+    let whole = |v: &Complex| v.real().is_finite() && v.imag().is_finite();
+    (whole(&here) && whole(&first) && whole(&second)).then_some((here, first, second))
+}
+
+/// A root that the function has several times over, about `spread` away from `x`: there the
+/// secant method only creeps, and the digits of the function end long before those of the
+/// root. Newton's method with the count of times (which the first two derivatives tell), at
+/// as many times the precision; to `target` bits.
+fn repeated(
+    f: &mut dyn FnMut(&Complex) -> Option<Complex>,
+    x: &Complex,
+    spread: &Float,
+    target: u32,
+) -> Option<Complex> {
+    if spread.is_zero() || !spread.is_finite() {
+        return None;
+    }
+    let bits = i64::from(target);
+    // how often: f f''/f'^2 is (m - 1)/m next to a root that counts m times
+    let first = Complex::with_val(2 * target + 64, x);
+    let (value, slope, bend) = slopes(f, &first, &Float::with_val(64, spread >> 16u32))?;
+    if value.is_zero() {
+        return Some(Complex::with_val(target, x));
+    }
+    if slope.is_zero() {
+        return None;
+    }
+    let share = Complex::with_val(64, &value * &bend) / Complex::with_val(64, slope.square_ref());
+    let times = Complex::with_val(64, 1 - share).recip();
+    let count = times.real().to_f64().round();
+    if !(1.0..=12.0).contains(&count)
+        || (times.real().to_f64() - count).abs() > 0.25
+        || times.imag().to_f64().abs() > 0.25
+    {
+        return None;
+    }
+    let count = count as u32;
+    let prec = (count + 1) * target + 64;
+    let mut at = Complex::with_val(prec, x);
+    let mut far = Float::with_val(64, spread);
+    let mut before: Option<Float> = None;
+    let mut slow = 0;
+    let reach = Float::with_val(64, spread * 64u32);
+    for _ in 0..80 {
+        let here = f(&at)?;
+        if here.is_zero() {
+            break;
+        }
+        // how far the root is now: the function shrank as the `count`-th power of that
+        let size = modulus(&here);
+        if let Some(old) = &before {
+            let ratio = Float::with_val(64, &size / old).to_f64();
+            let shrunk = crate::detmath::pow(ratio, 1.0 / f64::from(count));
+            if !shrunk.is_finite() {
+                return None;
+            }
+            // (creeping, or running away: not such a root)
+            slow = if shrunk > 0.5 { slow + 1 } else { 0 };
+            if slow >= 3 {
+                return None;
+            }
+            far *= shrunk.max(1e-300);
+        }
+        before = Some(size);
+        if far.is_zero() {
+            break;
+        }
+        let h = Float::with_val(64, &far >> 16u32);
+        let (_, slope, _) = slopes(f, &at, &h)?;
+        if slope.is_zero() {
+            return None;
+        }
+        let step = Complex::with_val(prec, &here * count) / slope;
+        at -= &step;
+        if !(at.real().is_finite() && at.imag().is_finite())
+            || modulus(&Complex::with_val(64, &at - x)) > reach
+        {
+            return None;
+        }
+        if exponent(&at) < 16 - 2 * bits {
+            // 0 itself, or nothing: the function only fades away towards 0
+            let zero = Complex::new(target);
+            return f(&zero).filter(Complex::is_zero).map(|_| zero);
+        }
+        if step.is_zero() || exponent(&step) < exponent(&at).saturating_sub(bits + 8) {
+            break;
+        }
+    }
+    Some(Complex::with_val(target, at))
+}
+
+/// A root as the secant method gave it, looked at once more with half as many bits again: a
+/// root that counts several times was left where the digits of the function ended, with half
+/// the digits of the root (or a third of them) still wrong. Such a root is found again by
+/// `repeated`.
+fn checked(
+    f: &mut dyn FnMut(&Complex) -> Option<Complex>,
+    root: Complex,
+    target: u32,
+) -> Complex {
+    if root.is_zero() {
+        return root;
+    }
+    let size = modulus(&root);
+    let wide = Complex::with_val(target + target / 2 + 32, &root);
+    let h = Float::with_val(64, &size >> (target / 2 + 8));
+    let Some((value, slope, _)) = slopes(f, &wide, &h) else {
+        return root;
+    };
+    if value.is_zero() || slope.is_zero() {
+        return root;
+    }
+    // what one step of Newton's method would still change
+    let change = modulus(&Complex::with_val(64, &value / &slope));
+    if !change.is_finite() || change <= Float::with_val(64, &size >> (target - 40)) {
+        return root;
+    }
+    repeated(f, &root, &Float::with_val(64, &change * 4u32), target).unwrap_or(root)
+}
+
+/// Root of `f` near `start` by the secant method in the complex plane, to `digits` digits. A
+/// root that counts several times is found by Newton's method with that count (`repeated`).
 pub fn find_root(
     f: &mut dyn FnMut(&Complex) -> Option<Complex>,
     start: &Complex,
@@ -214,33 +355,74 @@ pub fn find_root(
     let mut f0 = f(&x0)?;
     let mut f1 = f(&x1)?;
     let mut settled = 0;
+    // the last step was small: the iteration has arrived, as far as this precision tells
+    let mut arrived = false;
+    // the last small step was small only as a number, not next to the point itself: the
+    // iteration creeps towards 0
+    let mut creeps = false;
+    // steps in a row that were each shorter than the one before, and the last one: the mark
+    // of a root that counts several times, towards which the secant method only creeps
+    let mut shrinking = 0u32;
+    let mut last: Option<Float> = None;
+    let mut tried = false;
     for _ in 0..400 {
         if f1.is_zero() {
             if prec >= target {
-                return Some(x1);
+                return Some(checked(f, x1, target));
             }
             f0 = Complex::with_val(prec, (1e-30, 0));
         }
         let df = Complex::with_val(prec, &f1 - &f0);
-        if df.is_zero() {
-            return None;
+        let small = if df.is_zero() {
+            // the same value at two points: a flat function, or two points that the rounding
+            // no longer tells apart at the root
+            if !arrived {
+                return None;
+            }
+            true
+        } else {
+            let step = Complex::with_val(prec, &f1 * Complex::with_val(prec, &x1 - &x0)) / df;
+            let x2 = Complex::with_val(prec, &x1 - &step);
+            if !(x2.real().is_finite() && x2.imag().is_finite()) || exponent(&x2) > 4000 {
+                return None;
+            }
+            let bits = i64::from(prec);
+            let next_to_it =
+                step.is_zero() || exponent(&step) < exponent(&x2).saturating_sub(bits - 16);
+            let small = next_to_it || exponent(&step) < 16 - 2 * bits;
+            creeps = small && !next_to_it;
+            let size = modulus(&step);
+            shrinking = match &last {
+                Some(old) if size < *old && !size.is_zero() => shrinking + 1,
+                _ => 0,
+            };
+            last = Some(size);
+            x0 = x1;
+            f0 = f1;
+            x1 = x2;
+            f1 = f(&x1)?;
+            small
+        };
+        arrived = small;
+        if !small && !tried && shrinking >= 32 {
+            // (once: a search that wanders has such a row of steps by chance only)
+            tried = true;
+            let spread = last.as_ref().map(|size| Float::with_val(64, size * 8u32));
+            if let Some(root) = spread.and_then(|spread| repeated(f, &x1, &spread, target)) {
+                return Some(root);
+            }
         }
-        let step = Complex::with_val(prec, &f1 * Complex::with_val(prec, &x1 - &x0)) / df;
-        let x2 = Complex::with_val(prec, &x1 - &step);
-        if !(x2.real().is_finite() && x2.imag().is_finite()) || exponent(&x2) > 4000 {
-            return None;
-        }
-        let small = step.is_zero()
-            || exponent(&step) < exponent(&x2).max(-i64::from(prec)) - i64::from(prec) + 16;
-        x0 = x1;
-        f0 = f1;
-        x1 = x2;
-        f1 = f(&x1)?;
         if small {
             if prec >= target {
                 settled += 1;
                 if settled >= 2 {
-                    return Some(x1);
+                    if creeps {
+                        // 0 itself is the root, or the function only fades away towards 0
+                        // (as x ln(x) does) and has no root there
+                        let zero = Complex::new(prec);
+                        return f(&zero).filter(Complex::is_zero).map(|_| zero);
+                    }
+                    return Some(checked(f, x1, target));
                 }
             } else {
                 let old = prec;
@@ -253,6 +435,9 @@ pub fn find_root(
                 }
                 f0 = f(&x0)?;
                 f1 = f(&x1)?;
+                arrived = false;
+                shrinking = 0;
+                last = None;
             }
         }
     }

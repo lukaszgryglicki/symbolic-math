@@ -8,7 +8,8 @@ Usage: symbolic-math [OPTIONS] [INPUT]...
 
 Options:
   -d, --digits N    significant digits of numeric values (default 32, or more when a number of the
-                    input has more digits)
+                    input has more digits); --prec N and --precision N are the same, and so is
+                    the statement digits = N
   -r, --real        real numbers only: symbols are real, only real solutions are given, odd roots
                     of negative numbers are real; the same as the statement domain(real)
   -q, --quaternions quaternions: j and k are units next to i (i*j = k), symbols are real, the
@@ -16,6 +17,13 @@ Options:
                     quat(a, b, c, d) works in every domain
   -n, --numeric     print numeric values instead of exact forms
   -e, --exact       print exact forms only, without the numeric line
+      --roots N     a numeric search for the roots of an equation gives the N nearest to 0; the
+                    same as the statement roots = N
+      --terms N     the most terms that a sum or a series takes one by one; the same as the
+                    statement terms = N
+  -v, --verbose     tell the steps that lead to each result, as lines `step: ...`; the same as
+                    the statement verbose
+      --debug       tell every detail as well; the same as the statement debug
       --functions   list the functions with all their names
       --constants   list the constants with all their names
       --units       list the units of convert(...) with their names and sizes
@@ -26,11 +34,38 @@ Environment:
   SYMBOLIC_MATH_SANDBOX=N  for a service that runs the program for strangers: files are read and
                     written only under plain names in the current directory, 64 files and
                     N megabytes at most (32 megabytes when N is no number from 1 to 4096)
+  SYMBOLIC_MATH_MEMORY=N   the program takes N megabytes of memory at most (64 or more): a
+                    calculation that needs more ends with an error and leaves the machine alone
 
 Numbers are exact (integers, fractions, decimals, complex with i) or have the digits asked for.
 An input with a decimal point is answered in decimals. Names have ASCII and Unicode spellings:
 pi or π, sqrt(2) or √2, inf or ∞, x^2 or x², <= or ≤. A line `  ~ ...` of the output is the
 numeric value of the line above it, a line `note: ...` is a remark.
+
+Settings are statements of their own: digits = N (also prec, precision), roots = N (also
+maxroots, solutions), terms = N (also maxterms), verbose and debug (verbose = 0, 1, 2 or off,
+on, all), and settings, which lists them. The `=` may be left out, and so may the `;` or `,`
+after a setting: `prec=100 pi`, `roots=20; sin(x) = x`, `verbose, x^2 = 2`. The value default
+sets a setting back. A setting holds for the rest of the run: in a session, until it is set
+again.
+
+How numeric results end. A value is worked out with more bits than its digits need and once
+more with still more bits, until the digits of both agree: how good a value is depends on
+digits = N, never on a count of terms. A root is followed until two steps in a row no longer
+change its digits. An infinite sum is added term by term until 64 terms in a row no longer
+change the digits, or the sums of its first terms are extrapolated until three extrapolations
+agree; terms = N sets where a sum or a series gives up, and the error says what is missing.
+A numeric search for the roots of an equation lists the 8 nearest to 0 that it finds when the
+equation is made of elementary functions, and what fixed starting points find for the others;
+roots = N asks for the N nearest (roots that are equally far from 0 stay together, so a root
+and its conjugate may make it N + 1).
+
+A session, and programs. Without an input the program reads the standard input line by line:
+lines that are typed, or a file (`symbolic-math < file`). Each line is one input, a line that
+begins with `#` is skipped, `quit` or `exit` ends. All lines share what they define: `a := 5`
+a variable, `f(x) := x^2` a function, `ans` or `%` the last result; if(...), while(...),
+for(...), do(...) and block(...) decide and repeat (examples: "Programs, conditions and
+logic" below).
 
 Examples of every kind of operation. Each line is what follows `symbolic-math` on the command
 line: one or more inputs in quotes, sometimes an option before them, and after `#` what the
@@ -2625,10 +2660,69 @@ Real numbers only, quaternions, digits and forms of the output:
   'quat(1, 2, 3, 4)*quat(0, 1, 0, 0)' 'inv(quat(1, 1, 1, 1))' 'domain(quaternion); k*j'
       # without the option
   'rotate([1, 0, 0], rotationquat(pi/2, [0, 0, 1]))'  # a rotation by a quaternion
-  -d 50 'pi' 'sqrt(2)'  # fifty digits
+  -d 50 'pi' 'sqrt(2)'
+      # fifty digits; the statement digits = 50 does the same (see the settings below)
   -n 'sqrt(2) + pi' 'x^2 = 2'  # numbers only
   -e 'x^2 = 2' 'cos(pi/5)'  # exact forms only
   'x := 0.1234567890123456789012345678901234567890123; sin(x)'  # as many digits as the input has
+
+Settings as statements: digits, how many roots, how many terms (they hold for the rest of the run):
+  'prec=100 pi' 'digits = 50; sqrt(2)' 'precision 40, e'
+      # the digits of what follows: the = and the ; or , after a setting may be left out
+  'digits = 60; x := sqrt(2); N(x); N(x^3)' 'digits = 50; pi; digits = default; pi'
+      # a setting holds until it is set again; default sets it back
+  'prec = 100' 'settings' 'roots = 7, terms = 1000000, settings'
+      # a setting alone says what is set; settings lists them all
+  'sin(x) = x'
+      # a numeric search lists the 8 roots nearest to 0 that it finds (9 where two are equally far)
+  'roots = 3; sin(x) = x' 'roots=20 x = cos(x)' 'roots = 12; tan(x) = x'
+      # roots = N: the N nearest to 0
+  'prec=50, roots=2, cos(x) = x' 'roots = 2; e^x = x^2; roots = default; e^x = x^2'
+      # with fifty digits; back to what the search lists by itself
+  -r 'roots = 6; x*sin(x) = 1' 'roots = 3; sin(x) = x/10'  # real roots only
+  'roots = 5; besselj(0, x) = 0' 'roots = 4; gamma(x) = 5' 'roots = 4; [sin(x) = y, cos(y) = x]'
+      # of any function; solutions of a system
+  --roots 5 'e^x = x^2'  # the same as an option
+  'sum(1/(k^3 + 1), k, 1, 250000)'
+      # more than 200000 terms that have no closed form are added as numbers
+  'terms = 50; sum(1/(k^2 + 1), k, 1, 100)'
+      # terms = N: more terms than that are not taken one by one, the sum stays as it is
+  'sum(0.99^n/(n^2 + 1), n, 1, inf)' 'product(1 + 0.99^n, n, 1, inf)'
+      # terms that shrink slowly are added until they no longer count: 12197 here
+  'terms = 20000; sum(0.99^n/(n^2 + 1), n, 1, inf)'
+      # where a sum gives up: with terms = 1000 the error says that about 12197 terms are needed
+  --terms 20000 --prec 40 'sum(0.99^n/n^2, n, 1, inf)'  # the same as options
+
+Steps: verbose tells how a result was found, debug every detail (lines step: ...):
+  'verbose; x^2 - 5x + 6 = 0' 'verbose; x^3 - 2x + 1 = 0'
+      # the steps of a solution, each on a line step: ...
+  'verbose; 2sin(3x + 1) = 1' 'verbose; e^(2x) - 3e^x + 2 = 0'
+      # what is done to x is undone step by step; a common factor
+  'verbose; sqrt(x + 1) = x - 1' 'verbose; x*e^x = 2'
+      # roots removed, and what does not hold left out; the function W of Lambert
+  'verbose; x^5 - x - 1 = 0' 'verbose; sin(x) = x'  # roots found as numbers: how the search goes
+  'verbose; (x^2 - 1)/(x - 1)' 'verbose; sin(x)^2 + cos(x)^2'
+      # the forms that a simplification tries, the shortest is kept
+  'verbose; diff(x^2*sin(x), x)' 'verbose; integrate(x^2*e^x + 1/x, x)'
+  'verbose; integrate(1/(2 + cos(x)), x)'  # the rules of an integral
+  'verbose; integrate(sin(x)^2, x, 0, pi)' 'verbose; integrate(exp(-x^2)*sin(x^3), x, 0, 1)'
+      # between limits; as a number where no rule applies
+  'verbose; limit(sin(x)/x, x, 0)' 'verbose; limit((1 + 1/n)^n, n, inf)'
+  'verbose; series(e^x*sin(x), x, 0, 4)'
+  'verbose; [x + y = 3, x - y = 1]' 'verbose; [x*y = 6, x + y = 5]'
+      # systems: elimination; one unknown after the other
+  'verbose; sum(1/n^2, n, 1, inf)' 'verbose; sum(1/(n^3 + 1), n, 1, inf)'
+  'verbose; sum(0.9^n/(n^2 + 1), n, 1, inf)'  # a known sum; extrapolation; term by term
+  "verbose; dsolve(y' + y = x)" "verbose; dsolve(y'' - 3y' + 2y = 0)"
+      # the kind of a differential equation and its method
+  'verbose; 2^^0.5'  # each run of the program tet with its arguments
+  'debug; N(pi^e, 40)' 'debug; a := 5; f(x) := x^2 + a; f(3) + sin(pi/6)'
+      # every detail: the bits that settle a value, each command with what it gives
+  'debug; cos(x) = x'  # every starting point of a search with what it finds
+  'verbose; x^2 = 4; verbose = off; x^2 = 9' 'verbose = 2; 1 + 1; verbose = 0'
+      # on and off inside an input: 0 no steps, 1 the steps, 2 every detail
+  -v 'x^2 = 2'  # the same as an option
+  --debug 'N(sqrt(2), 50)'
 
 Names: every name has a plain spelling and a Unicode one:
   '√2 · √8' 'x² + 2x + 1 = 0' '∛27' 'e^(iπ) + 1'

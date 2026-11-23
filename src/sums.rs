@@ -17,6 +17,12 @@ use std::rc::Rc;
 
 const DIRECT_LIMIT: i64 = 200_000;
 
+/// As many terms of a sum or factors of a product with whole ends are taken one by one;
+/// `terms = N` sets another count.
+fn direct_limit() -> i64 {
+    i64::try_from(crate::settings::terms(DIRECT_LIMIT as u64)).unwrap_or(i64::MAX)
+}
+
 /// Bernoulli polynomial `B_n(x)`.
 fn bernoulli_poly(n: u32, x: &Expr) -> Expr {
     let mut terms = Vec::new();
@@ -379,11 +385,84 @@ fn numeric_term(f: &Expr, k: &str, n: &Int, prec: u32) -> Option<Complex> {
     numeric::evalf_env(f, prec, &env).ok()
 }
 
-/// Numeric value of an infinite sum: direct for geometric decay, Richardson extrapolation otherwise.
-fn numeric_sum(f: &Expr, k: &str, a: &Int) -> Option<Complex> {
-    if !f.free_syms().iter().all(|s| &**s == k) {
+/// ln|z|; -inf for 0.
+fn ln_size(z: &Complex) -> f64 {
+    let norm = rug::Float::with_val(64, z.norm_ref());
+    if norm.is_zero() {
+        f64::NEG_INFINITY
+    } else {
+        norm.ln().to_f64() / 2.0
+    }
+}
+
+/// How a series shrinks far out, when it does so like `r^n/n^p`: the rate `-ln r` of a term
+/// (above 0: the terms end up as small as wanted) and the terms that `bits` bits need. The
+/// largest of 200 terms in a row is measured, so that terms that wave do not mislead, and the
+/// law must hold again much farther out, where a power of the index no longer counts.
+fn geometric_rate(term: &dyn Fn(&Int) -> Option<Complex>, a: &Int, bits: u32) -> Option<(f64, u64)> {
+    const ROW: u32 = 200;
+    let first = a.to_f64();
+    let largest = |from: u32| -> Option<f64> {
+        let mut most = f64::NEG_INFINITY;
+        for n in from..from + ROW {
+            most = most.max(ln_size(&term(&Int::from(a + n))?));
+        }
+        Some(most)
+    };
+    // the fall of ln|term| over a row from the index n on, and ln((n + row)/n)
+    let fall = |n: u32| -> Option<(f64, f64)> {
+        let index = first + f64::from(n);
+        let fall = largest(n)? - largest(n + ROW)?;
+        (index > 0.0 && fall.is_finite())
+            .then(|| (fall, crate::detmath::ln((index + f64::from(ROW)) / index)))
+    };
+    let ((l1, a1), (l2, a2)) = (fall(5_000)?, fall(50_000)?);
+    // fall = p ln((n + row)/n) + row rate
+    let p = (l1 - l2) / (a1 - a2);
+    let rate = (l2 - p * a2) / f64::from(ROW);
+    crate::trace::detail(|| {
+        format!(
+            "the size of the terms far out, as r^n/n^p: r = {:.9}, p = {p:.4} (from the terms near the 5000th and the 50000th)",
+            crate::detmath::exp(-rate)
+        )
+    });
+    if !(rate.is_finite() && rate > 1e-13 && p.abs() < 1e6) {
         return None;
     }
+    let fits = |n: u32| {
+        fall(n).is_some_and(|(l, a)| {
+            (l - (p * a + f64::from(ROW) * rate)).abs() <= 0.05 * l.abs() + 1e-12
+        })
+    };
+    // far out the ratio must do most of the shrinking: the terms 1/n, or ln(1 + 1/n), look
+    // like a geometric series with a ratio next to 1 when only two places are measured
+    let rules = fall(5_000_000).is_some_and(|(l, _)| f64::from(ROW) * rate >= 0.5 * l);
+    if !(fits(20_000) && fits(5_000_000) && rules) {
+        return None;
+    }
+    let needed = (f64::from(bits) + 64.0) * std::f64::consts::LN_2 / rate + p.max(0.0) * 64.0;
+    Some((rate, needed.min(1e18) as u64))
+}
+
+/// ln(1 + e) without the loss of a small `e`.
+fn ln_1p(e: Complex, prec: u32) -> Complex {
+    let small = rug::Float::with_val(64, e.norm_ref()) < 0.25f64;
+    if !small {
+        return Complex::with_val(prec, e + 1u32).ln();
+    }
+    // ln|1 + e| = ln(1 + 2 re + |e|^2)/2, and the angle of 1 + e
+    let twice = rug::Float::with_val(prec, e.real() * 2u32) + rug::Float::with_val(prec, e.norm_ref());
+    let re = twice.ln_1p() / 2u32;
+    let im = rug::Float::with_val(prec, e.imag()).atan2(&rug::Float::with_val(prec, e.real() + 1u32));
+    Complex::with_val(prec, (re, im))
+}
+
+/// Numeric value of an infinite sum: term by term where the terms shrink like those of a
+/// geometric series, Richardson extrapolation where they shrink like a power of the index.
+/// `term_at` gives the term of an index at a precision. The error tells what is missing when
+/// that is known (more terms than `terms` allows).
+fn numeric_sum(term_at: &dyn Fn(&Int, u32) -> Option<Complex>, a: &Int) -> Result<Complex, String> {
+    let unknown = String::new;
     let digits = numeric::digits();
     let target = numeric::bits_for(digits);
     let prec = target * 2 + 128;
@@ -393,45 +472,110 @@ fn numeric_sum(f: &Expr, k: &str, a: &Int) -> Option<Complex> {
             .map_or(i64::MIN, i64::from)
             .max(z.imag().get_exp().map_or(i64::MIN, i64::from))
     };
-    let term = |n: &Int| numeric_term(f, k, n, prec);
-    let (t1, t2) = (term(&Int::from(a + 200u32))?, term(&Int::from(a + 240u32))?);
-    if t2.is_zero() || size(&t2) < size(&t1) - 6 {
-        // geometric or faster
+    let term = |n: &Int| term_at(n, prec);
+    let most = crate::settings::terms(2_000_000);
+    // the terms one by one until 64 in a row no longer change the digits (`spare` bits beyond
+    // them): terms that vanish now and then, as with a cosine of the index, are no end
+    let direct = |spare: i64| -> Option<Complex> {
+        let below = i64::from(target) + spare;
         let mut sum = Complex::new(prec);
         let mut n = a.clone();
-        for _ in 0..2_000_000u32 {
+        let mut quiet = 0u32;
+        for _ in 0..most {
             let t = term(&n)?;
-            let done = t.is_zero() || size(&t) < size(&sum) - i64::from(target) - 24;
+            if t.is_zero() || size(&t) < size(&sum).saturating_sub(below) {
+                quiet += 1;
+            } else {
+                quiet = 0;
+            }
             sum += t;
             n += 1u32;
-            if done && Int::from(&n - a) > 8 {
-                let next = term(&n)?;
-                if next.is_zero() || size(&next) <= size(&sum) - i64::from(target) - 20 {
-                    return Some(sum);
-                }
+            if quiet >= 64 {
+                crate::trace::step(|| {
+                    format!(
+                        "{} terms were added: the last 64 of them no longer change the digits",
+                        Int::from(&n - a)
+                    )
+                });
+                return Some(sum);
             }
         }
-        return None;
+        None
+    };
+    let allowed = || match crate::settings::terms_set() {
+        Some(n) => format!("terms = {n} allows {n} of them"),
+        None => format!("{most} are allowed: terms = N allows more"),
+    };
+    let (t1, t2) = (
+        term(&Int::from(a + 200u32)).ok_or_else(unknown)?,
+        term(&Int::from(a + 240u32)).ok_or_else(unknown)?,
+    );
+    if t2.is_zero() || size(&t2) < size(&t1).saturating_sub(6) {
+        // geometric or faster
+        crate::trace::step(|| {
+            "the terms shrink at least as fast as those of a geometric series: they are added one by one".to_string()
+        });
+        return direct(24).ok_or_else(|| {
+            format!("after {most} terms the next ones still change the digits ({})", allowed())
+        });
+    }
+    let mut missing = unknown();
+    let ended = [5_000u32, 50_000, 5_000_000]
+        .iter()
+        .any(|n| term(&Int::from(a + *n)).is_some_and(|t| t.is_zero()));
+    if ended {
+        // (terms that are nothing at this precision: as good as an end)
+        if let Some(v) = direct(24) {
+            return Ok(v);
+        }
+    } else if let Some((rate, needed)) = geometric_rate(&|n| term_at(n, 64), a, target) {
+        crate::trace::step(|| {
+            format!(
+                "the terms shrink like those of a geometric series with the ratio {:.6}: about {needed} terms give {digits} digits",
+                crate::detmath::exp(-rate)
+            )
+        });
+        if needed <= most {
+            // (what is left after a term is that term over 1 - ratio)
+            let spare = 28 + crate::detmath::log2(1.0 / rate).max(0.0).ceil() as i64;
+            if let Some(v) = direct(spare) {
+                return Ok(v);
+            }
+        } else {
+            missing = format!("about {needed} terms give {digits} digits, {}", allowed());
+        }
     }
     // algebraic decay: extrapolate the partial sums S(N) at N = 16, 32, 48, ... in 1/N to 1/N = 0;
     // terms of alternating sign are taken in pairs
     let alternating = {
-        let (u, v) = (term(&Int::from(a + 300u32))?, term(&Int::from(a + 301u32))?);
+        let (u, v) = (
+            term(&Int::from(a + 300u32)).ok_or_else(unknown)?,
+            term(&Int::from(a + 301u32)).ok_or_else(unknown)?,
+        );
         u.real().is_sign_negative() != v.real().is_sign_negative()
     };
+    crate::trace::step(|| {
+        format!(
+            "the terms shrink like a power of the index{}: the sums of the first 16, 32, 48, ... terms are extrapolated to all of them (Richardson)",
+            if alternating { ", with alternating signs (taken in pairs)" } else { "" }
+        )
+    });
     let work = target * 5 + 512;
-    let wide = |n: &Int| numeric_term(f, k, n, work);
+    let wide = |n: &Int| term_at(n, work);
     let mut partial = Complex::new(work);
     let mut n = a.clone();
     let mut diagonal: Vec<Complex> = Vec::new();
     let mut previous_row: Vec<Complex> = Vec::new();
     let mut agreed = 0;
-    for j in 0..(6 * digits as usize + 40) {
+    // (sixteen terms a row, or thirty-two: `terms = N` ends the rows sooner)
+    let usual = 6 * digits as usize + 40;
+    let rows = usual.min(crate::settings::terms_set().map_or(usize::MAX, |t| (t / 16).max(8) as usize));
+    for j in 0..rows {
         for _ in 0..16 {
-            partial += wide(&n)?;
+            partial += wide(&n).ok_or_else(unknown)?;
             n += 1u32;
             if alternating {
-                partial += wide(&n)?;
+                partial += wide(&n).ok_or_else(unknown)?;
                 n += 1u32;
             }
         }
@@ -447,17 +591,92 @@ fn numeric_sum(f: &Expr, k: &str, a: &Int) -> Option<Complex> {
         previous_row = row;
         if j >= 4 {
             let d = Complex::with_val(work, &diagonal[j] - &diagonal[j - 1]);
-            if d.is_zero() || size(&d) < size(&diagonal[j]) - i64::from(target) - 10 {
+            if d.is_zero() || size(&d) < size(&diagonal[j]).saturating_sub(i64::from(target) + 10) {
                 agreed += 1;
                 if agreed >= 3 {
-                    return Some(Complex::with_val(prec, &diagonal[j]));
+                    crate::trace::step(|| {
+                        format!(
+                            "{} terms were used: three extrapolations in a row agree to {digits} digits",
+                            Int::from(&n - a)
+                        )
+                    });
+                    return Ok(Complex::with_val(prec, &diagonal[j]));
                 }
             } else {
                 agreed = 0;
             }
         }
     }
-    None
+    if rows < usual && missing.is_empty() {
+        missing = format!(
+            "the extrapolation from the first {} terms did not settle, and terms = {} allows no more",
+            Int::from(&n - a),
+            crate::settings::terms_set().unwrap_or(0)
+        );
+    }
+    Err(missing)
+}
+
+/// The most bits of an exact sum or product of many fractions: beyond them (about 78000
+/// digits) the fraction is not written out, and the terms are taken as numbers.
+const EXACT_BITS: usize = 1 << 18;
+
+/// The terms (or the factors) from `lo` to `hi` taken together exactly; `None` when they are
+/// numbers whose exact sum or product grows beyond `EXACT_BITS`.
+fn taken_exactly(f: &Expr, k: &str, lo: i64, hi: i64, times: bool) -> Option<Expr> {
+    let join = |parts: Vec<Expr>| simplify(&if times { mul(parts) } else { add(parts) });
+    let at = |i: i64| subst_sym(f, k, &Expr::int(i));
+    let numbers = hi - lo >= 2048
+        && simplify(&at(lo)).as_rat().is_some()
+        && simplify(&at(hi)).as_rat().is_some();
+    if !numbers {
+        return Some(join((lo..=hi).map(at).collect()));
+    }
+    let mut total = if times { Expr::one() } else { Expr::zero() };
+    let mut from = lo;
+    while from <= hi {
+        let to = (from + 1023).min(hi);
+        let mut parts: Vec<Expr> = (from..=to).map(at).collect();
+        parts.push(total);
+        total = join(parts);
+        let bits = total.as_rat().map_or(0, |q| {
+            q.numer().significant_bits() as usize + q.denom().significant_bits() as usize
+        });
+        if bits > EXACT_BITS {
+            return None;
+        }
+        from = to + 1;
+    }
+    Some(total)
+}
+
+/// The sum (or the product) of `f` for the whole numbers from `lo` to `hi` by numbers: for
+/// more terms than are taken exactly, when the term has no other name.
+fn numeric_finite(f: &Expr, k: &str, lo: i64, hi: i64, times: bool) -> Option<Complex> {
+    let count = u64::try_from(hi - lo).ok()?.checked_add(1)?;
+    if count > crate::settings::terms(2_000_000) || !f.free_syms().iter().all(|s| &**s == k) {
+        return None;
+    }
+    let prec = numeric::bits_for(numeric::digits()) * 2 + 128;
+    let mut total = Complex::with_val(prec, u32::from(times));
+    for n in lo..=hi {
+        let t = numeric_term(f, k, &Int::from(n), prec)?;
+        if !(t.real().is_finite() && t.imag().is_finite()) {
+            return None;
+        }
+        if times {
+            total *= t;
+        } else {
+            total += t;
+        }
+    }
+    crate::trace::step(|| {
+        format!(
+            "the {count} {} are taken one by one as numbers of {prec} bits",
+            if times { "factors" } else { "terms" }
+        )
+    });
+    Some(total)
 }
 
 /// `(value, approximate)`.
@@ -478,18 +697,31 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
         if hi < lo {
             return Ok((Expr::zero(), false));
         }
-        if hi - lo <= DIRECT_LIMIT {
-            let total = add((lo..=hi).map(|i| subst_sym(&f, k, &Expr::int(i))).collect());
-            return Ok((simplify(&total), false));
+        if hi - lo <= direct_limit() {
+            if let Some(total) = taken_exactly(&f, k, lo, hi, false) {
+                crate::trace::step(|| {
+                    format!("the {} terms from {k} = {lo} to {hi} are added one by one", hi - lo + 1)
+                });
+                return Ok((total, false));
+            }
+            crate::trace::step(|| {
+                format!(
+                    "the exact sum of the {} terms would have more than {} digits: it is not written out",
+                    hi - lo + 1,
+                    EXACT_BITS * 3 / 10
+                )
+            });
         }
     }
     if a.is_neg_inf() {
         return Err("sum: the lower end must be finite".into());
     }
     if a.is_one() && !b.is_inf() && f == powi(Expr::sym(k), -1) {
+        crate::trace::step(|| format!("1 + 1/2 + ... + 1/{b} is the harmonic number of {b}"));
         return Ok((func("harmonic", vec![b.clone()]), false));
     }
     if let Some(r) = binomial_theorem(&f, k, a, b) {
+        crate::trace::step(|| format!("by the binomial theorem: {r}"));
         return Ok((r, false));
     }
     let s = Summer { k, a, b };
@@ -500,9 +732,25 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
     };
     let closed: Option<Vec<Expr>> = terms.iter().map(|t| s.term(t)).collect();
     if let Some(parts) = closed {
+        crate::trace::step(|| {
+            format!(
+                "the sum of {f} for {k} from {a} to {b}: each term has a known sum (powers of {k} by the formulas of Faulhaber, r^{k} by the geometric series, 1/{k}^s by the zeta function, x^{k}/{k}! by the exponential): {}",
+                terms
+                    .iter()
+                    .zip(&parts)
+                    .map(|(t, p)| format!("{t} gives {p}"))
+                    .collect::<Vec<_>>()
+                    .join("; ")
+            )
+        });
         return Ok((simplify(&add(parts)), false));
     }
     if let Some(r) = s.rational(&f) {
+        crate::trace::step(|| {
+            format!(
+                "the sum of {f} for {k} from {a} to {b}: a ratio of polynomials is split into partial fractions, whose sums telescope or are values of the digamma function: {r}"
+            )
+        });
         return Ok((r, false));
     }
     // alternating rational terms: pair even and odd indices
@@ -532,19 +780,35 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
                 return Ok((simplify(&add(vec![first, r])), false));
             }
         }
-        if let Some(v) = numeric_sum(&f, k, &Int::from(lo)) {
-            let digits = numeric::digits();
-            return Ok((
-                numeric::to_float_expr(
-                    Complex::with_val(numeric::bits_for(digits) + 32, v),
-                    digits,
-                ),
-                true,
-            ));
-        }
-        return Err(format!(
-            "no value found for the sum of {f} (it may diverge)"
-        ));
+        let only_index = f.free_syms().iter().all(|s| &**s == k);
+        let found = if only_index {
+            numeric_sum(&|n, prec| numeric_term(&f, k, n, prec), &Int::from(lo))
+        } else {
+            Err(String::new())
+        };
+        return match found {
+            Ok(v) => {
+                let digits = numeric::digits();
+                Ok((
+                    numeric::to_float_expr(
+                        Complex::with_val(numeric::bits_for(digits) + 32, v),
+                        digits,
+                    ),
+                    true,
+                ))
+            }
+            Err(missing) if missing.is_empty() => Err(format!(
+                "no value found for the sum of {f} (it may diverge)"
+            )),
+            Err(missing) => Err(format!("no value found for the sum of {f}: {missing}")),
+        };
+    }
+    if let (Some(lo), Some(hi)) = (a.as_i64(), b.as_i64())
+        && let Some(v) = numeric_finite(&f, k, lo, hi, false)
+    {
+        let digits = numeric::digits();
+        let value = Complex::with_val(numeric::bits_for(digits) + 32, v);
+        return Ok((numeric::to_float_expr(value, digits), true));
     }
     Ok((
         Expr::call("sum", vec![f, Expr::sym(k), a.clone(), b.clone()]),
@@ -666,9 +930,10 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
         if hi < lo {
             return Ok((Expr::one(), false));
         }
-        if hi - lo <= DIRECT_LIMIT {
-            let total = mul((lo..=hi).map(|i| subst_sym(&f, k, &Expr::int(i))).collect());
-            return Ok((simplify(&total), false));
+        if hi - lo <= direct_limit()
+            && let Some(total) = taken_exactly(&f, k, lo, hi, true)
+        {
+            return Ok((total, false));
         }
     }
     if !f.has_sym(k) && !b.is_inf() {
@@ -690,15 +955,36 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
     if b.is_inf()
         && let Some(lo) = a.as_i64()
     {
-        let log = func("ln", vec![f.clone()]);
-        if let Some(v) = numeric_sum(&log, k, &Int::from(lo)) {
-            let digits = numeric::digits();
-            let value = Complex::with_val(numeric::bits_for(digits) + 32, v.exp());
-            return Ok((numeric::to_float_expr(value, digits), true));
-        }
-        return Err(format!(
-            "no value found for the product of {f} (it may diverge)"
-        ));
+        // the sum of the logarithms, each from the factor less 1: a factor near 1 keeps its digits
+        let excess = simplify(&sub(f.clone(), Expr::one()));
+        let found = if f.free_syms().iter().all(|s| &**s == k) {
+            numeric_sum(
+                &|n, prec| numeric_term(&excess, k, n, prec).map(|e| ln_1p(e, prec)),
+                &Int::from(lo),
+            )
+        } else {
+            Err(String::new())
+        };
+        return match found {
+            Ok(v) => {
+                let digits = numeric::digits();
+                let value = Complex::with_val(numeric::bits_for(digits) + 32, v.exp());
+                Ok((numeric::to_float_expr(value, digits), true))
+            }
+            Err(missing) if missing.is_empty() => Err(format!(
+                "no value found for the product of {f} (it may diverge)"
+            )),
+            Err(missing) => Err(format!(
+                "no value found for the product of {f}: of the sum of its logarithms {missing}"
+            )),
+        };
+    }
+    if let (Some(lo), Some(hi)) = (a.as_i64(), b.as_i64())
+        && let Some(v) = numeric_finite(&f, k, lo, hi, true)
+    {
+        let digits = numeric::digits();
+        let value = Complex::with_val(numeric::bits_for(digits) + 32, v);
+        return Ok((numeric::to_float_expr(value, digits), true));
     }
     Ok((
         Expr::call("product", vec![f, kx, a.clone(), b.clone()]),

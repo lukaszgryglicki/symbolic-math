@@ -6,6 +6,11 @@ use rug::{Complex, Float};
 
 const MAX_TERMS: u32 = 3_000_000;
 
+/// The most terms of a series; `terms = N` sets another count.
+fn max_terms() -> u32 {
+    u32::try_from(crate::settings::terms(u64::from(MAX_TERMS))).unwrap_or(u32::MAX)
+}
+
 /// The whole number `z` is, if it is one.
 pub(crate) fn is_int(z: &Complex) -> Option<i64> {
     if !z.imag().is_zero() || !z.real().is_integer() {
@@ -53,7 +58,7 @@ fn series_once(
     let mut sum = term.clone();
     let mut top = 1i64;
     let mut small = 0;
-    for k in 0..MAX_TERMS {
+    for k in 0..max_terms() {
         let mut num = zz.clone();
         for x in a {
             num *= Complex::with_val(wp, x + k);
@@ -315,7 +320,7 @@ fn taylor_step(
     let mut sum = Complex::with_val(wp, &u0 + Complex::with_val(wp, &u1 * h));
     let mut dsum = u1.clone();
     let mut small = 0;
-    for n in 0..MAX_TERMS {
+    for n in 0..max_terms() {
         let lower = Complex::with_val(wp, a + n) * Complex::with_val(wp, b + n) * &u0;
         let upper = (Complex::with_val(wp, &c1 * n) + &c2) * &u1 * (n + 1);
         let next = (lower - upper) / (Complex::with_val(wp, &q * (n + 2)) * (n + 1));
@@ -496,7 +501,7 @@ fn u_asymptotic(a: &Complex, b: &Complex, z: &Complex, wp: u32) -> Option<Comple
     let mut sum = term.clone();
     let mut last = i64::MAX;
     let mut done = false;
-    for k in 0..MAX_TERMS {
+    for k in 0..max_terms() {
         let f = Complex::with_val(wp, a + k) * Complex::with_val(wp, &ab + k);
         if f.is_zero() {
             done = true;
@@ -690,7 +695,7 @@ fn beta_share(x: &Float, a: &Float, b: &Float, p: u32) -> Option<Float> {
     let mut d =
         kept(1u32 - Float::with_val(wp, &whole * &x) / Float::with_val(wp, &a + 1u32)).recip();
     let mut h = d.clone();
-    for m in 1..=20_000_000u32 {
+    for m in 1..=u32::try_from(crate::settings::terms(20_000_000)).unwrap_or(u32::MAX) {
         let twice = Float::with_val(wp, &a + 2 * m);
         let even =
             Float::with_val(wp, &b - m) * m * &x / (Float::with_val(wp, &twice - 1u32) * &twice);

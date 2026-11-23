@@ -546,12 +546,56 @@ impl Parser<'_> {
             if *self.peek() == Tok::End {
                 break;
             }
+            if let Some(setting) = self.setting() {
+                // what follows a setting is the next statement, with or without a comma
+                out.push(setting);
+                self.eat(",");
+                continue;
+            }
             out.push(self.statement()?);
             if !self.is_op(";") && *self.peek() != Tok::End {
                 return Err(self.error("expected an operator or the end of the expression"));
             }
         }
         Ok(out)
+    }
+
+    /// A setting at the start of a statement: `digits = 50`, `roots 10`, `verbose`. Its value
+    /// is one whole number or one word; with anything else the words are names as before.
+    fn setting(&mut self) -> Option<Expr> {
+        let Tok::Ident(name) = self.peek().clone() else {
+            return None;
+        };
+        let kind = crate::settings::named(&name)?;
+        let equals = self.op_at(1, "=");
+        let at = if equals { 2 } else { 1 };
+        let value = match self.peek_at(at) {
+            Tok::Num(text) if text.bytes().all(|b| b.is_ascii_digit()) => {
+                Some(Expr::rational(parse_decimal(text)?))
+            }
+            Tok::Ident(word) if crate::settings::value_word(word) => Some(Expr::sym(word)),
+            _ => None,
+        };
+        if value.is_none() && (equals || !crate::settings::bare(kind)) {
+            return None;
+        }
+        let after = at + usize::from(value.is_some());
+        let next_statement = match self.peek_at(after) {
+            Tok::End | Tok::Ident(_) | Tok::Num(_) | Tok::Exact(_) | Tok::Text(_) | Tok::Root(_) => {
+                true
+            }
+            // (a word alone before a parenthesis is a name: verbose(x) := ...)
+            Tok::Op("(") => value.is_some(),
+            Tok::Op(op) => matches!(*op, ";" | "," | "[" | "{"),
+            Tok::Sup(_) => false,
+        };
+        if !next_statement {
+            return None;
+        }
+        self.pos += after;
+        let mut args = vec![Expr::sym(crate::settings::name(kind))];
+        args.extend(value);
+        Some(Expr::call("setting", args))
     }
 
     /// Items separated by commas: one item is itself, several are a list.

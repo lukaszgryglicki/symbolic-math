@@ -360,6 +360,21 @@ fn run_tet(mode: Mode, digits: u32, a: &Complex, b: &Complex) -> Result<Complex,
         Mode::Sroot => &["-q", "--sroot"],
     };
     let d = digits + 8;
+    crate::trace::step(|| {
+        let what = match mode {
+            Mode::Tet => "base, height",
+            Mode::Slog => "base, value",
+            Mode::Sroot => "value, height",
+        };
+        format!(
+            "the program tet is run: tet {} {digits} {} {} {} {} ({what}, each as its real and its imaginary part, for {digits} digits)",
+            flags.join(" "),
+            crate::numeric::fmt_real(a.real(), 12),
+            crate::numeric::fmt_real(a.imag(), 12),
+            crate::numeric::fmt_real(b.real(), 12),
+            crate::numeric::fmt_real(b.imag(), 12)
+        )
+    });
     let output = command()
         .args(flags)
         .arg(digits.to_string())
@@ -392,7 +407,9 @@ fn run_tet(mode: Mode, digits: u32, a: &Complex, b: &Complex) -> Result<Complex,
             format!("tet: {reason}")
         }));
     }
-    parse_output(&output.stdout, bits_for(digits) + 8).map_err(NumErr::External)
+    let value = parse_output(&output.stdout, bits_for(digits) + 8).map_err(NumErr::External)?;
+    crate::trace::step(|| format!("  tet gives {}", crate::trace::number(&value)));
+    Ok(value)
 }
 
 fn tower(base: &Complex, n: i64, prec: u32) -> Option<Complex> {

@@ -21,7 +21,7 @@ fn hankel_sum(nu: &Complex, z: &Complex, turn: u8, wp: u32) -> Option<Complex> {
     let mut sum = term.clone();
     let mut last = i64::MAX;
     let order = size(nu);
-    for k in 1..4_000_000u64 {
+    for k in 1..crate::settings::terms(4_000_000) {
         let odd = 2 * k - 1;
         let f = Complex::with_val(wp, &mu - odd * odd);
         if f.is_zero() {
@@ -308,7 +308,7 @@ fn airy_direct(derivative: bool, z: &Complex, w: u32) -> Option<Complex> {
     let mut sum = u.clone();
     let mut last = i64::MAX;
     let mut done = false;
-    for k in 1..4_000_000u64 {
+    for k in 1..crate::settings::terms(4_000_000) {
         u = u * ((6 * k - 5) * (6 * k - 3) * (6 * k - 1)) / (216 * k * (2 * k - 1)) * &step;
         let term = if derivative {
             -Complex::with_val(w, &u * (6 * k + 1)) / (6 * k - 1)

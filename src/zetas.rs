@@ -127,7 +127,7 @@ fn polylog_near_one(s: &Complex, mu: &Complex, wp: u32) -> Option<Option<(Comple
     }
     let mut power = Complex::with_val(wp, 1);
     let mut small = 0;
-    for k in 0..200_000u32 {
+    for k in 0..u32::try_from(crate::settings::terms(200_000)).unwrap_or(u32::MAX) {
         if k > 0 {
             power = power * mu / k;
         }
@@ -322,7 +322,7 @@ pub(crate) fn lerch(z: &Complex, s: &Complex, a: &Complex, p: u32) -> Out {
         let mut power = Complex::with_val(wp, 1);
         let mut sum = Complex::new(wp);
         let mut top = -(1i64 << 40);
-        for k in 0..4_000_000u32 {
+        for k in 0..u32::try_from(crate::settings::terms(4_000_000)).unwrap_or(u32::MAX) {
             let base = Complex::with_val(wp, a + k);
             // (a whole power of a real number is real: no logarithm turns it about)
             let fall = match whole {

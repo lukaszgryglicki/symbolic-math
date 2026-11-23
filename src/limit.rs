@@ -90,10 +90,17 @@ fn plausible(g: &Expr, value: &Expr) -> bool {
     db <= da.clone() + 1e-30 || db < Float::with_val(64, size(&l) + 1u32) * 1e-9
 }
 
+/// The limit as `t -> 0` from above; the steps of a way that finds none are not told.
 fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
+    crate::trace::trial(|| right_limit_rules(g, depth))
+}
+
+fn right_limit_rules(g: &Expr, depth: u32) -> Option<Expr> {
+    use crate::trace::step;
     let t = Expr::sym(T);
     let direct = simplify(&subst(g, &t, &Expr::zero()));
     if settled(&direct) && !direct.is_infinite() {
+        step(|| format!("{g} has a value at t = 0: {direct}"));
         return Some(direct);
     }
     for n in [6usize, 12, 24] {
@@ -103,6 +110,17 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
         let s = s.trim();
         if let Some(c) = s.c.first() {
             if let Some(v) = leading(c, s.lo) {
+                step(|| {
+                    let power = match (s.lo, s.den) {
+                        (0, _) => String::new(),
+                        (1, 1) => " t".to_string(),
+                        (lo, 1) => format!(" t^{lo}"),
+                        (lo, den) => format!(" t^({lo}/{den})"),
+                    };
+                    format!(
+                        "the series of {g} in t begins with ({c}){power}: as t -> 0 that goes to {v}"
+                    )
+                });
                 return Some(v);
             }
             break;
@@ -113,8 +131,9 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             && !b.has_sym(T)
         {
             let inner = right_limit(e, depth + 1)?;
-            let v = simplify(&pow((**b).clone(), inner));
+            let v = simplify(&pow((**b).clone(), inner.clone()));
             if settled(&v) && !v.is_undefined() {
+                step(|| format!("{g}: the base to the limit {inner} of the exponent, {v}"));
                 return Some(v);
             }
         }
@@ -123,6 +142,7 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             && b.has_sym(T)
             && e.has_sym(T)
         {
+            step(|| format!("{g} is e to the power of ({e}) ln({b}): the limit of that exponent first"));
             let inner = right_limit(
                 &simplify(&mul(vec![
                     (**e).clone(),
@@ -130,7 +150,9 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
                 ])),
                 depth + 1,
             )?;
-            return Some(simplify(&pow(Expr::e(), inner)));
+            let v = simplify(&pow(Expr::e(), inner.clone()));
+            step(|| format!("e to the power of {inner}: {v}"));
+            return Some(v);
         }
         let (num, den) = numer_denom(g);
         if den.has_sym(T) && num.has_sym(T) {
@@ -142,11 +164,18 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
                 if both_zero || both_inf {
                     let next = simplify(&div(diff(&num, T), diff(&den, T)));
                     if next.size() <= g.size() * 3 + 40 {
+                        step(|| {
+                            format!(
+                                "{g} is {} there: by the rule of L'Hopital, the derivative of the numerator over that of the denominator, {next}",
+                                if both_zero { "0/0" } else { "inf/inf" }
+                            )
+                        });
                         return right_limit(&next, depth + 1);
                     }
                 } else {
                     let q = simplify(&div(a.clone(), b.clone()));
                     if settled(&q) && !q.is_undefined() {
+                        step(|| format!("{g}: the limit {a} of the numerator over the limit {b} of the denominator, {q}"));
                         return Some(q);
                     }
                     if b.is_zero() && !a.is_zero() && !a.is_infinite() {
@@ -158,6 +187,7 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
                             } else {
                                 1
                             };
+                        step(|| format!("{g}: the numerator goes to {a}, the denominator to 0 from one side: infinite, with the sign of both"));
                         return side.imag().is_zero().then(|| signed_inf(s));
                     }
                 }
@@ -169,6 +199,7 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             if let Some(parts) = parts {
                 let total = simplify(&add(parts));
                 if settled(&total) && !total.is_undefined() {
+                    step(|| format!("{g}: the sum of the limits of its terms, {total}"));
                     return Some(total);
                 }
             }
@@ -194,10 +225,14 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             _ => false,
         };
         if dies(g) {
+            step(|| format!("{g}: an exponential whose exponent goes to -inf goes to 0"));
             return Some(Expr::zero());
         }
         if let Expr::Mul(factors) = g {
             if factors.iter().any(dies) && factors.iter().all(|f| dies(f) || tame(f)) {
+                step(|| {
+                    format!("{g}: an exponential that dies out beats the powers and logarithms beside it, 0")
+                });
                 return Some(Expr::zero());
             }
             let parts: Option<Vec<Expr>> =
@@ -205,6 +240,7 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             if let Some(parts) = parts {
                 let total = simplify(&mul(parts));
                 if settled(&total) && !total.is_undefined() {
+                    step(|| format!("{g}: the product of the limits of its factors, {total}"));
                     return Some(total);
                 }
             }
@@ -213,8 +249,9 @@ fn right_limit(g: &Expr, depth: u32) -> Option<Expr> {
             && args.len() == 1
         {
             let inner = right_limit(&args[0], depth + 1)?;
-            let v = simplify(&crate::funcs::func(name, vec![inner]));
+            let v = simplify(&crate::funcs::func(name, vec![inner.clone()]));
             if settled(&v) && !v.is_undefined() {
+                step(|| format!("{g}: {name} of the limit {inner} of what is inside, {v}"));
                 return Some(v);
             }
         }
@@ -261,6 +298,11 @@ fn numeric_limit(g: &Expr) -> Option<Expr> {
     let scale = size(v[3].clone()) + 1u32;
     let tiny = Float::with_val(64, &scale >> (numeric::bits_for(digits) + 8));
     if d3 <= tiny && d2 <= Float::with_val(64, &d1 + &tiny) {
+        crate::trace::step(|| {
+            format!(
+                "no rule gives the limit: the values at t = 2^-60, 2^-120, 2^-180 and 2^-240 settle to {digits} digits"
+            )
+        });
         return Some(numeric::to_float_expr(
             Complex::with_val(numeric::bits_for(digits) + 32, &v[3]),
             digits,
@@ -283,6 +325,19 @@ fn one_sided(f: &Expr, var: &str, point: &Expr, right: bool) -> Option<(Expr, bo
     };
     assume::set(T, Facts::positive());
     let g = simplify(&subst(f, &x, &at));
+    crate::trace::step(|| {
+        format!(
+            "{}: with {var} = {at} it is the limit of {g} as t -> 0 from above",
+            if point.is_infinite() {
+                format!("as {var} -> {point}")
+            } else if right {
+                "from the right".to_string()
+            } else {
+                "from the left".to_string()
+            }
+        )
+    });
+    let _nest = crate::trace::nest();
     let found = right_limit(&g, 0)
         .filter(|v| plausible(&g, v))
         .map(|v| (v, false));
@@ -298,18 +353,27 @@ pub fn limit(f: &Expr, var: &str, point: &Expr, dir: Dir) -> Result<(Expr, bool)
     }
     let f = simplify(f);
     let infinite = point.is_inf() || point.is_neg_inf();
+    crate::trace::step(|| format!("the limit of {f} as {var} -> {point}"));
+    let _nest = crate::trace::nest();
     if !infinite {
         // a point where the function is defined and nothing degenerates
         let direct = simplify(&subst(&f, &Expr::sym(var), point));
         let regular = !direct.any(&|x| x.is_infinite())
             && !f.any(&|x| matches!(x, Expr::Fn(n, _) if matches!(&**n, "floor" | "ceil" | "round" | "trunc" | "frac" | "sign" | "abs" | "arg")));
         if regular {
+            crate::trace::step(|| {
+                format!("the function has a value at {var} = {point}, where nothing of it breaks down: {direct}")
+            });
             return Ok((direct, false));
         }
+        crate::trace::step(|| {
+            format!("{var} = {point} cannot be put in (0/0, a division by 0 or a jump): the function is followed towards the point")
+        });
     }
     if infinite {
         let direct = simplify(&subst(&f, &Expr::sym(var), point));
         if settled(&direct) && !direct.is_undefined() {
+            crate::trace::step(|| format!("with {var} = {point} every part has a value: {direct}"));
             return Ok((direct, false));
         }
     }

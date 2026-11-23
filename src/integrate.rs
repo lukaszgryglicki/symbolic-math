@@ -15,6 +15,7 @@ use crate::quad;
 use crate::ratsimp;
 use crate::simplify::{self, simplify};
 use crate::solve;
+use crate::trace;
 use crate::zfactor;
 use rug::{Complete, Complex, Float};
 use std::rc::Rc;
@@ -60,45 +61,76 @@ impl Cx {
             return Some(mul(vec![f.clone(), self.x.clone()]));
         }
         self.depth += 1;
-        let r = self.rules(f);
+        // (the steps of a way that finds no integral are not told)
+        let r = trace::trial(|| self.rules(f));
         self.depth -= 1;
         r
     }
 
+    /// The variable as the steps write it: `t`, `u`, `w` for the ones of substitutions.
+    fn shown(&self, e: &Expr) -> String {
+        shown(e)
+    }
+
     fn rules(&mut self, f: &Expr) -> Option<Expr> {
+        let var = self.shown(&self.x);
+        let of = |method: &str| format!("integral of {} d{var}: {method}", shown(f));
+        // a way that was begun and led nowhere takes its steps back
+        let begun = trace::mark();
         if let Expr::Add(terms) = f {
+            trace::step(|| of("term by term"));
+            let nest = trace::nest();
             let parts: Option<Vec<Expr>> = terms.iter().map(|t| self.go(t)).collect();
+            drop(nest);
             if let Some(parts) = parts {
                 return Some(add(parts));
             }
+            trace::forget(begun);
         }
         if let Expr::Mul(factors) = f {
             let (with, without): (Vec<Expr>, Vec<Expr>) =
                 factors.iter().cloned().partition(|t| self.has(t));
             if !without.is_empty() {
-                return Some(mul(vec![mul(without), self.go(&mul(with))?]));
+                let front = mul(without);
+                trace::step(|| of(&format!("the factor {} without {var} stands in front", shown(&front))));
+                let _nest = trace::nest();
+                return Some(mul(vec![front, self.go(&mul(with))?]));
             }
         }
+        let told = |method: &str, r: &Expr| {
+            trace::step(|| format!("integral of {} d{var} = {} ({method})", shown(f), shown(r)));
+        };
         if let Some(r) = self.table(f) {
+            told("a known integral", &r);
             return Some(r);
         }
         if let Some(r) = self.exp_poly(f) {
+            told(
+                "powers of the variable times exponentials, sines or cosines: known integrals",
+                &r,
+            );
             return Some(r);
         }
         if let Some(r) = self.rational(f) {
+            told("a ratio of polynomials: divided, then split into partial fractions", &r);
             return Some(r);
         }
         if let Some(r) = self.by_parts(f) {
             return Some(r);
         }
+        trace::forget(begun);
         if let Some(r) = self.substitution(f) {
             return Some(r);
         }
+        trace::forget(begun);
         if let Some(r) = self.half_angle(f) {
             return Some(r);
         }
+        trace::forget(begun);
         let ex = expand(f);
         if ex != *f && matches!(ex, Expr::Add(_)) {
+            trace::step(|| of(&format!("multiplied out, it is {}", shown(&ex))));
+            let _nest = trace::nest();
             return self.go(&ex);
         }
         None
@@ -929,12 +961,14 @@ impl Cx {
     fn substitution(&mut self, f: &Expr) -> Option<Expr> {
         let name = format!("#u{}", self.depth);
         let t = Expr::sym(&name);
+        let begun = trace::mark();
         for u in self.candidates(f) {
+            trace::forget(begun);
             let du = diff(&u, &self.var);
             if du.is_zero() {
                 continue;
             }
-            let g = simplify(&div(f.clone(), du));
+            let g = simplify(&div(f.clone(), du.clone()));
             let mut g2 = subst(&g, &u, &t);
             if self.has(&g2) {
                 // x = t^(1/k) would pick a branch
@@ -952,10 +986,30 @@ impl Cx {
             if g2.size() > f.size() * 3 + 30 {
                 continue;
             }
-            if let Some(r) = self.inner(&name).go(&g2) {
-                return Some(subst(&r, &t, &u));
+            trace::step(|| {
+                format!(
+                    "integral of {} d{}: with {} = {} (d{} = {} d{}) it is the integral of {} d{}",
+                    shown(f),
+                    shown(&self.x),
+                    shown(&t),
+                    shown(&u),
+                    shown(&t),
+                    shown(&du),
+                    shown(&self.x),
+                    shown(&g2),
+                    shown(&t)
+                )
+            });
+            let nest = trace::nest();
+            let found = self.inner(&name).go(&g2);
+            drop(nest);
+            if let Some(r) = found {
+                let back = subst(&r, &t, &u);
+                trace::step(|| format!("with {} = {} again: {}", shown(&t), shown(&u), shown(&back)));
+                return Some(back);
             }
         }
+        trace::forget(begun);
         None
     }
 
@@ -978,12 +1032,30 @@ impl Cx {
             .map(|(_, e)| e.clone())
             .collect());
         let var = self.var.clone();
+        trace::step(|| {
+            format!(
+                "integral of {} d{}: by parts with u = {}, dv = {} d{}: it is u v less the integral of v du",
+                shown(f),
+                shown(&self.x),
+                shown(&u),
+                shown(&dv),
+                shown(&self.x)
+            )
+        });
+        let _nest = trace::nest();
         let v = self.inner(&var).go(&dv)?;
         let rest = simplify(&mul(vec![v.clone(), diff(&u, &var)]));
         // the same integral again: I = u v - c I
         let ratio = simplify(&div(rest.clone(), f.clone()));
         if !self.has(&ratio) {
-            let denominator = simplify(&add(vec![Expr::one(), ratio]));
+            let denominator = simplify(&add(vec![Expr::one(), ratio.clone()]));
+            trace::step(|| {
+                format!(
+                    "v du is {} times what is integrated: the integral I is u v - ({}) I, which is solved for I",
+                    shown(&ratio),
+                    shown(&ratio)
+                )
+            });
             return (!denominator.is_zero()).then(|| div(mul(vec![u, v]), denominator));
         }
         if rest.size() > f.size() * 4 + 40 {
@@ -1024,9 +1096,41 @@ impl Cx {
             _ => e,
         });
         let g = ratsimp::together(&mul(vec![g, Expr::int(2), powi(one_plus.clone(), -1)]));
+        trace::step(|| {
+            format!(
+                "integral of {} d{}: with {t} = tan({}/2), where sin = 2{t}/(1 + {t}^2), cos = (1 - {t}^2)/(1 + {t}^2), d{} = 2 d{t}/(1 + {t}^2), it is the integral of {} d{t}",
+                shown(f),
+                shown(&x),
+                shown(&x),
+                shown(&x),
+                shown(&g),
+                t = shown(&t)
+            )
+        });
+        let _nest = trace::nest();
         let r = self.inner(&name).go(&g)?;
         Some(subst(&r, &t, &f1("tan", &div(x, Expr::int(2)))))
     }
+}
+
+/// An expression as a step shows it: the variables of substitutions by plain letters.
+fn shown(e: &Expr) -> String {
+    let mut text = e.to_string();
+    for (inner, letter) in [("#u", "t"), ("#w", "s")] {
+        while let Some(at) = text.find(inner) {
+            let digits = text[at + 2..]
+                .chars()
+                .take_while(char::is_ascii_digit)
+                .count();
+            let level = &text[at + 2..at + 2 + digits];
+            let name = match level {
+                "" | "0" | "1" => letter.to_string(),
+                more => format!("{letter}{more}"),
+            };
+            text.replace_range(at..at + 2 + digits, &name);
+        }
+    }
+    text
 }
 
 /// The expression with the named functions of exactly `x` replaced by constants.
@@ -1331,7 +1435,11 @@ pub fn integrate(f: &Expr, var: &str) -> Option<Expr> {
         x: Expr::sym(var),
         depth: 0,
     };
-    let raw = cx.go(f)?;
+    let raw = trace::whole(|| cx.go(f));
+    if raw.is_none() {
+        trace::step(|| format!("no rule gives the integral of {f} d{var}"));
+    }
+    let raw = raw?;
     if raw.any(&|e| matches!(e, Expr::Sym(s) if s.starts_with('#'))) {
         return None;
     }
@@ -1342,9 +1450,20 @@ pub fn integrate(f: &Expr, var: &str) -> Option<Expr> {
     });
     let result = simplify(&raw);
     if verify(&result, f, var) {
+        trace::step(|| {
+            format!("its derivative is {f} again (checked): the integral is {result}")
+        });
         return Some(result);
     }
-    verify(&raw, f, var).then_some(raw)
+    let holds = verify(&raw, f, var);
+    trace::step(|| {
+        if holds {
+            format!("its derivative is {f} again (checked): the integral is {raw}")
+        } else {
+            format!("the derivative of {raw} is not {f} again: the integral is not given")
+        }
+    });
+    holds.then_some(raw)
 }
 
 fn real_point(e: &Expr, prec: u32) -> Option<Float> {
@@ -1426,7 +1545,11 @@ fn singular_points(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Vec<Expr>>
     if !den.has_sym(var) {
         return Some(Vec::new());
     }
-    let solved = solve::solve(&den, var).ok()?;
+    // (where the denominator vanishes: the steps of that equation are not told)
+    let solved = {
+        let _quiet = trace::mute();
+        solve::solve(&den, var).ok()?
+    };
     if !solved.params.is_empty() || solved.all {
         return None;
     }
@@ -1663,7 +1786,19 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
     cuts.push(b.clone());
     if let (Some(anti), Some(points)) = (integrate(f, var), &singular) {
         let mut pieces = Vec::new();
+        trace::step(|| {
+            format!(
+                "from {a} to {b}: the value of {anti} at the upper end less its value at the lower end{}",
+                if points.is_empty() {
+                    String::new()
+                } else {
+                    format!(", piece by piece between the points where the integrand has no value ({})", points.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(", "))
+                }
+            )
+        });
         for w in cuts.windows(2) {
+            // (the values at the ends are limits: their own steps are not told)
+            let _quiet = trace::mute();
             match (
                 limit::limit(&anti, var, &w[1], Dir::Left),
                 limit::limit(&anti, var, &w[0], Dir::Right),
@@ -1711,6 +1846,11 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
     if !scan(f, var, a, b).clean {
         return Err(format!("the integrand {f} is singular between {a} and {b}"));
     }
+    trace::step(|| {
+        format!(
+            "no antiderivative in closed form: the integral from {a} to {b} is found as a number, by the tanh-sinh rule (the step is halved until the sum settles to {digits} digits)"
+        )
+    });
     let mut total = Complex::new(numeric::bits_for(digits) + 32);
     for w in cuts.windows(2) {
         total += numeric_integral(f, var, &w[0], &w[1], digits).ok_or_else(no_value)?;

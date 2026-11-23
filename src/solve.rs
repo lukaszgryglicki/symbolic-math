@@ -12,6 +12,7 @@ use crate::numroots;
 use crate::poly::Poly;
 use crate::ratsimp::{self, Gens};
 use crate::simplify::{self, simplify};
+use crate::trace;
 use crate::zfactor;
 use rug::{Complete, Complex};
 use std::collections::BTreeSet;
@@ -184,6 +185,14 @@ impl Solver {
             return Ok(Vec::new());
         }
         if let Some(cs) = ratsimp::coefficients(f, &self.var) {
+            trace::step(|| {
+                format!(
+                    "{f} = 0: a polynomial of degree {} in {}",
+                    cs.len().saturating_sub(1),
+                    self.var
+                )
+            });
+            let _nest = trace::nest();
             return self.solve_poly(cs);
         }
         let scaled = |roots: Vec<Root>, e: &Expr| -> Vec<Root> {
@@ -200,6 +209,8 @@ impl Solver {
             Expr::Mul(a) => {
                 let mut out = Vec::new();
                 let var = self.var.clone();
+                trace::step(|| format!("{f} = 0: a product is zero where one of its factors is"));
+                let _nest = trace::nest();
                 for fac in a.iter().filter(|fac| fac.has_sym(&var)) {
                     match fac {
                         Expr::Pow(b, e) if e.free_of(&var) => match numeric::sign(e) {
@@ -213,17 +224,33 @@ impl Solver {
                 return Ok(together(out, &self.params));
             }
             Expr::Pow(b, e) if e.free_of(&self.var) && numeric::sign(e) == Some(1) => {
+                trace::step(|| format!("{f} = 0: a power is zero where its base is"));
+                let _nest = trace::nest();
                 return Ok(scaled(self.solve_expr(b)?, e));
             }
             _ => {}
         }
         if occurrences(f, &self.var) == 1 {
+            trace::step(|| {
+                format!(
+                    "{} stands in one place: what is done to it is undone step by step",
+                    self.var
+                )
+            });
+            let _nest = trace::nest();
             return self.invert(f, &Expr::zero());
         }
         if let Expr::Add(terms) = f {
             let (with, without): (Vec<Expr>, Vec<Expr>) =
                 terms.iter().cloned().partition(|t| t.has_sym(&self.var));
             if with.len() == 1 && !without.is_empty() {
+                trace::step(|| {
+                    format!(
+                        "{} stands in one term: the others go to the right side, then what is done to it is undone step by step",
+                        self.var
+                    )
+                });
+                let _nest = trace::nest();
                 return self.invert(&with[0], &neg(add(without)));
             }
         }
@@ -235,9 +262,11 @@ impl Solver {
             };
             if let Expr::Mul(parts) = &product
                 && parts.iter().filter(|p| p.has_sym(&self.var)).count() >= 2
-                && let Ok(found) = self.solve_expr(&product)
             {
-                return Ok(found);
+                trace::step(|| format!("{f} has a common factor: it is {product}"));
+                if let Ok(found) = self.solve_expr(&product) {
+                    return Ok(found);
+                }
             }
         }
         self.by_kernels(f)
@@ -250,6 +279,16 @@ impl Solver {
         let mut out = Vec::new();
         let low = cs.iter().take_while(|c| simplify::is_zero(c)).count();
         if low > 0 && low < cs.len() {
+            trace::step(|| {
+                if low == 1 {
+                    format!("{} is a factor: {} = 0 is a root", self.var, self.var)
+                } else {
+                    format!(
+                        "{}^{low} is a factor: {} = 0 is a root that counts {low} times",
+                        self.var, self.var
+                    )
+                }
+            });
             out.push(Root {
                 value: Expr::zero(),
                 mult: low as u32,
@@ -270,6 +309,13 @@ impl Solver {
         // only powers of x^k
         let step = (1..=n).filter(|i| !cs[*i].is_zero()).fold(0, gcd_usize);
         if step > 1 {
+            trace::step(|| {
+                format!(
+                    "only powers of {}^{step} occur: it is solved for {}^{step}, then the {step} roots of each value are taken",
+                    self.var, self.var
+                )
+            });
+            let _nest = trace::nest();
             let reduced: Vec<Expr> = cs.iter().step_by(step).cloned().collect();
             for r in self.solve_poly(reduced)? {
                 for v in kth_roots(&r.value, step as u32) {
@@ -282,8 +328,24 @@ impl Solver {
             return Ok(out);
         }
         match n {
-            1 => out.push(exact(tidy(&neg(div(cs[0].clone(), cs[1].clone()))))),
-            2 => out.extend(quadratic(&cs[2], &cs[1], &cs[0])),
+            1 => {
+                trace::step(|| {
+                    format!(
+                        "degree 1: a {} + b = 0 gives {} = -b/a with a = {}, b = {}",
+                        self.var, self.var, cs[1], cs[0]
+                    )
+                });
+                out.push(exact(tidy(&neg(div(cs[0].clone(), cs[1].clone())))));
+            }
+            2 => {
+                trace::step(|| {
+                    format!(
+                        "degree 2: the formula (-b +- sqrt(b^2 - 4 a c))/(2 a) with a = {}, b = {}, c = {}",
+                        cs[2], cs[1], cs[0]
+                    )
+                });
+                out.extend(quadratic(&cs[2], &cs[1], &cs[0]));
+            }
             _ => {
                 let x = self.x.clone();
                 let poly = add(cs
@@ -297,11 +359,16 @@ impl Solver {
                     _ => Vec::new(),
                 };
                 if parts.len() >= 2 || parts.iter().any(|p| matches!(p, Expr::Pow(..))) {
+                    trace::step(|| format!("it factors as {factored}: each factor is solved by itself"));
+                    let _nest = trace::nest();
                     for p in parts {
                         out.extend(self.solve_expr(&p)?);
                     }
                     out = together(out, &self.params);
                 } else if poly.free_syms().len() == 1 {
+                    trace::step(|| {
+                        format!("degree {n}, no factors found: its {n} roots are found as numbers")
+                    });
                     match self.constant_poly(&cs) {
                         Some(roots) => out.extend(roots),
                         None => out.extend(self.numeric(&poly)?),
@@ -373,8 +440,41 @@ impl Solver {
     fn rational_poly(&mut self, dense: &[Rat]) -> Vec<Root> {
         let (_, factors, _) = zfactor::factor(&Poly::from_dense(1, 0, dense));
         let mut out = Vec::new();
+        let var = self.var.clone();
+        let written = |c: &[Rat]| {
+            let x = Expr::sym(&var);
+            add(c.iter()
+                .enumerate()
+                .map(|(i, c)| mul(vec![Expr::rational(c.clone()), pow(x.clone(), Expr::int(i as i64))]))
+                .collect())
+            .to_string()
+        };
+        if trace::on() && (factors.len() > 1 || factors.iter().any(|(_, m)| *m > 1)) {
+            let shown: Vec<String> = factors
+                .iter()
+                .map(|(f, m)| {
+                    let c = f.to_dense(0).unwrap_or_default();
+                    if *m > 1 {
+                        format!("({})^{m}", written(&c))
+                    } else {
+                        format!("({})", written(&c))
+                    }
+                })
+                .collect();
+            trace::step(|| {
+                format!(
+                    "over the rational numbers it factors into {}",
+                    shown.join(" ")
+                )
+            });
+        }
+        let several = factors.len() > 1;
         for (f, mult) in factors {
             let c = f.to_dense(0).unwrap();
+            if several {
+                trace::step(|| format!("{} = 0:", written(&c)));
+            }
+            let _nest = several.then(trace::nest);
             for mut r in self.irreducible(&c) {
                 r.mult *= mult;
                 out.push(r);
@@ -387,13 +487,31 @@ impl Solver {
         let n = c.len() - 1;
         let e = |r: &Rat| Expr::rational(r.clone());
         if n == 1 {
-            return vec![exact(Expr::rational((-&c[0]).complete() / &c[1]))];
+            let root = Expr::rational((-&c[0]).complete() / &c[1]);
+            trace::step(|| format!("degree 1: {} = {root}", self.var));
+            return vec![exact(root)];
         }
         if n == 2 {
+            trace::step(|| {
+                format!(
+                    "degree 2: the formula (-b +- sqrt(b^2 - 4 a c))/(2 a) with a = {}, b = {}, c = {}; b^2 - 4 a c = {}",
+                    c[2],
+                    c[1],
+                    c[0],
+                    (&c[1] * &c[1]).complete() - Rat::from(4) * &c[2] * &c[0]
+                )
+            });
             return quadratic(&e(&c[2]), &e(&c[1]), &e(&c[0]));
         }
         let step = (1..=n).filter(|i| !c[*i].is_zero()).fold(0, gcd_usize);
         if step > 1 {
+            trace::step(|| {
+                format!(
+                    "only powers of {}^{step} occur: it is solved for {}^{step}, then the {step} roots of each value are taken",
+                    self.var, self.var
+                )
+            });
+            let _nest = trace::nest();
             let reduced: Vec<Rat> = c.iter().step_by(step).cloned().collect();
             let mut out = Vec::new();
             for r in self.rational_poly(&reduced) {
@@ -410,6 +528,9 @@ impl Solver {
             return out;
         }
         if let Some(roots) = cyclotomic_roots(c) {
+            trace::step(|| {
+                format!("a cyclotomic polynomial: its {n} roots are roots of 1")
+            });
             return roots;
         }
         let exact_roots = match n {
@@ -419,14 +540,41 @@ impl Solver {
         };
         match exact_roots {
             Some(roots) if roots.iter().all(|r| simplify::cost(r) <= 160) => {
+                trace::step(|| {
+                    format!(
+                        "degree {n}, no rational root: the formula of {}",
+                        if n == 3 { "Cardano" } else { "Ferrari" }
+                    )
+                });
                 roots.into_iter().map(exact).collect()
             }
-            _ => self.numeric_poly(c),
+            Some(_) => {
+                trace::step(|| {
+                    format!(
+                        "degree {n}, no rational root: the roots by radicals are too long to read, they are given as numbers"
+                    )
+                });
+                self.numeric_poly(c)
+            }
+            None => {
+                trace::step(|| {
+                    format!(
+                        "degree {n}, it does not factor over the rational numbers: no formula in general, its {n} roots are found as numbers"
+                    )
+                });
+                self.numeric_poly(c)
+            }
         }
     }
 
     fn numeric_poly(&mut self, c: &[Rat]) -> Vec<Root> {
         let digits = numeric::digits();
+        trace::step(|| {
+            format!(
+                "all {} roots at once by the iteration of Aberth and Ehrlich, to {digits} digits",
+                c.len() - 1
+            )
+        });
         match numroots::poly_roots(c, digits) {
             Some(roots) => roots
                 .into_iter()
@@ -448,6 +596,7 @@ impl Solver {
     fn invert(&mut self, lhs: &Expr, rhs: &Expr) -> Roots {
         let var = self.var.clone();
         let has = |e: &Expr| e.has_sym(&var);
+        trace::step(|| format!("{lhs} = {rhs}"));
         if *lhs == self.x {
             return Ok(vec![exact(tidy(rhs))]);
         }
@@ -505,6 +654,9 @@ impl Solver {
                 }
                 if **b == self.x && **e == self.x {
                     // x^x = c
+                    trace::step(|| {
+                        format!("{var}^{var} = c: {var} = e^W(ln(c)) with the function W of Lambert")
+                    });
                     return Ok(vec![exact(pow(
                         Expr::e(),
                         func("lambertw", vec![log_of(rhs)]),
@@ -636,6 +788,10 @@ impl Solver {
                     (part(&terms[s], "sin"), part(&terms[c], "cos"))
                     && u == v
                 {
+                    trace::step(|| {
+                        format!("a sin(u) + b cos(u) = 0 is tan(u) = -b/a, with u = {u}")
+                    });
+                    let _nest = trace::nest();
                     return self.invert(&func("tan", vec![u]), &neg(div(b, a)));
                 }
             }
@@ -669,6 +825,15 @@ impl Solver {
             };
             let cs: Vec<Expr> = num.coeffs(idx).iter().map(|c| gens.expr(c)).collect();
             let mut out = Vec::new();
+            trace::step(|| {
+                format!(
+                    "{} stands only in {kernel}: with t = {kernel} the equation is a polynomial of degree {} in t; it is solved for t, then {kernel} = t for {}",
+                    self.var,
+                    cs.len().saturating_sub(1),
+                    self.var
+                )
+            });
+            let _nest = trace::nest();
             for r in self.solve_poly(cs)? {
                 for mut s in self.invert(&kernel, &r.value)? {
                     s.approx |= r.approx;
@@ -680,7 +845,14 @@ impl Solver {
         if kinds.contains(&"trig") {
             let g = rewrite_exp(f);
             if g != *f {
-                return self.solve_expr(&ratsimp::fraction(&g).0);
+                let numerator = ratsimp::fraction(&g).0;
+                trace::step(|| {
+                    format!(
+                        "sines and cosines are written with e^(i u): {numerator} = 0"
+                    )
+                });
+                let _nest = trace::nest();
+                return self.solve_expr(&numerator);
             }
         }
         if kinds.contains(&"ln")
@@ -716,7 +888,12 @@ impl Solver {
             }
             if ok && !product.is_empty() {
                 let eq = sub(mul(product), pow(Expr::e(), neg(add(rest))));
-                return self.solve_expr(&ratsimp::fraction(&eq).0);
+                let numerator = ratsimp::fraction(&eq).0;
+                trace::step(|| {
+                    format!("the logarithms are joined into one and undone: {numerator} = 0")
+                });
+                let _nest = trace::nest();
+                return self.solve_expr(&numerator);
             }
         }
         if kinds.contains(&"root") && kinds.iter().all(|k| matches!(*k, "root" | "x")) {
@@ -739,7 +916,14 @@ impl Solver {
                 eliminated = true;
             }
             if eliminated && !p.is_zero() {
-                return self.solve_expr(&gens.expr(&p));
+                let free = gens.expr(&p);
+                trace::step(|| {
+                    format!(
+                        "the roots are removed (each one is set apart and raised to its power): {free} = 0; what solves it is tried in the equation as it was given"
+                    )
+                });
+                let _nest = trace::nest();
+                return self.solve_expr(&free);
             }
         }
         if let Some(r) = self.lambert(f, &gens, &xk, &kinds) {
@@ -823,6 +1007,12 @@ impl Solver {
                 shift,
             )));
         }
+        trace::step(|| {
+            format!(
+                "{} stands in a power and beside it: the equation has the form (a {} + b) e^(l {} + d) = c, which the function W of Lambert solves",
+                self.var, self.var, self.var
+            )
+        });
         self.note("Lambert W: the real branches are given; lambertw(k, z) with other integers k gives complex solutions");
         Some(Ok(out))
     }
@@ -835,9 +1025,36 @@ impl Solver {
         }
         let digits = numeric::digits();
         let key: Rc<str> = vars[0].clone();
+        trace::step(|| {
+            format!(
+                "{f} = 0: no exact method applies (no polynomial, {} cannot be set apart, no substitution makes it one)",
+                self.var
+            )
+        });
+        let _nest = trace::nest();
         // simple numbers that solve the equation exactly; where one counts several times the
         // search looks at the equation without it (it would only creep towards such a root)
         let mut simple = self.simple_roots(f);
+        trace::step(|| {
+            let found: Vec<String> = simple
+                .iter()
+                .map(|(c, times)| {
+                    if *times > 1 {
+                        format!("{c} ({times} times: the derivatives below the order {times} vanish there too)")
+                    } else {
+                        c.to_string()
+                    }
+                })
+                .collect();
+            format!(
+                "simple numbers are tried (whole numbers to 6, halves, pi, pi/2, i): {}",
+                match found.len() {
+                    0 => "none solves it".to_string(),
+                    1 => format!("{} solves it", found[0]),
+                    _ => format!("{} solve it", found.join(", ")),
+                }
+            )
+        });
         let places: Vec<(Complex, u32)> = simple
             .iter()
             .filter_map(|(c, times)| Some((numeric::evalf(c, 1024).ok()?, *times)))
@@ -898,13 +1115,59 @@ impl Solver {
             starts.push((a, b));
         }
         let mut found: Vec<Complex> = Vec::new();
+        // roots = N: the N nearest to 0 are looked for on a lattice, not from these points;
+        // so are 8 of an equation of elementary functions that was asked for no count (in the
+        // plane as far as 64 from 0, on the real line beyond)
+        let asked = crate::settings::roots();
+        let lattice = match asked {
+            Some(want) => Some((want as usize, f64::INFINITY)),
+            None if elementary(f) && f.size() <= 64 => Some((8, 64.0)),
+            None => None,
+        };
+        if asked.is_none() && lattice.is_none() && elementary(f) {
+            trace::detail(|| {
+                format!(
+                    "the equation is long ({} parts): the search starts from fixed points, not from a lattice",
+                    f.size()
+                )
+            });
+        }
+        let mut searched = None;
+        if let Some((want, plane)) = lattice {
+            let known: Vec<Complex> = places.iter().map(|(at, _)| at.clone()).collect();
+            let real = assume::is_real_sym(&self.var);
+            let search = crate::rootsearch::nearest(
+                &mut eval,
+                want,
+                digits,
+                real,
+                &known,
+                plane,
+                asked.is_some(),
+            );
+            found = search.roots;
+            searched = Some((want, search.radius, search.stopped));
+            starts.clear();
+        }
+        if lattice.is_none() {
+            trace::step(|| {
+                format!(
+                    "the secant method from {} starting points in the plane, each to {digits} digits ({} bits)",
+                    starts.len(),
+                    numeric::bits_for(digits) + 48
+                )
+            });
+        }
+        let _starts = trace::nest();
         for (at, (re, im)) in starts.into_iter().enumerate() {
             // (the far starting points only when the near ones found next to nothing)
             if at >= 32 && found.len() + simple.len() >= 2 {
+                trace::detail(|| "the far starting points are left out: the near ones found roots".to_string());
                 break;
             }
             let start = Complex::with_val(64, (re + 0.013, im));
             let Some(mut z) = numroots::find_root(&mut eval, &start, digits) else {
+                trace::detail(|| format!("from {}: no root", trace::number(&start)));
                 continue;
             };
             let scale = rug::Float::with_val(64, z.abs_ref()) + 1u32;
@@ -922,10 +1185,28 @@ impl Solver {
                     rug::Float::with_val(64, d.abs_ref())
                         < rug::Float::with_val(64, &scale >> 40u32)
                 });
+            trace::detail(|| {
+                format!(
+                    "from {}: {}{}",
+                    trace::number(&start),
+                    trace::number(&z),
+                    if known { " (known)" } else { "" }
+                )
+            });
             if !known {
                 found.push(z);
             }
         }
+        drop(_starts);
+        trace::step(|| {
+            format!(
+                "{} found by the search{}",
+                trace::count(found.len(), "root"),
+                if found.is_empty() { String::new() } else {
+                    format!(": {}", found.iter().map(trace::number).collect::<Vec<_>>().join(", "))
+                }
+            )
+        });
         found.sort_by(|a, b| {
             let key = |v: &Complex| !v.imag().is_zero();
             key(a)
@@ -985,7 +1266,49 @@ impl Solver {
                 "the equation holds on whole stretches of numbers: the ones listed are examples",
             );
         }
-        self.note("numeric search: the roots found are listed, there may be others");
+        match searched {
+            Some((want, radius, stopped)) => {
+                // the nearest to 0 of all that were found, the simple numbers among them
+                let size = |z: &Complex| rug::Float::with_val(64, z.abs_ref());
+                let mut sizes: Vec<rug::Float> = found
+                    .iter()
+                    .map(size)
+                    .chain(places.iter().map(|(at, _)| size(at)))
+                    .collect();
+                sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+                let total = sizes.len();
+                if total > want {
+                    let most = sizes[want - 1].clone();
+                    found.retain(|z| size(z) <= most);
+                    let keep: Vec<bool> = places.iter().map(|(at, _)| size(at) <= most).collect();
+                    let mut kept = keep.iter();
+                    simple.retain(|_| *kept.next().unwrap_or(&true));
+                    // (roots of one size, as a number and its conjugate, stay together)
+                }
+                let listed = found.len() + simple.len();
+                self.note(&if asked.is_none() {
+                    "numeric search: the roots found are listed, there may be others".to_string()
+                } else if stopped {
+                    format!(
+                        "numeric search (roots = {want}): the search was stopped at its limit of time; {listed} roots found until then are listed, there may be others"
+                    )
+                } else if total >= want {
+                    format!(
+                        "numeric search (roots = {want}): the {listed} roots nearest to 0 that were found are listed, there may be others"
+                    )
+                } else {
+                    format!(
+                        "numeric search (roots = {want}): only {} found from -{radius} to {radius}, there may be others",
+                        match listed {
+                            0 => "no roots were".to_string(),
+                            1 => "1 root was".to_string(),
+                            n => format!("{n} roots were"),
+                        }
+                    )
+                });
+            }
+            None => self.note("numeric search: the roots found are listed, there may be others"),
+        }
         if found.is_empty() && !simple.is_empty() {
             self.note("no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed");
         }
@@ -1050,6 +1373,19 @@ impl Solver {
         }
         out
     }
+}
+
+/// An expression of elementary functions alone: sums, products, powers, logarithms,
+/// trigonometric and hyperbolic functions and their inverses. They cost little at a point and
+/// have a derivative nearly everywhere.
+fn elementary(e: &Expr) -> bool {
+    !e.any(&|x| {
+        matches!(x, Expr::Fn(n, _) if !matches!(
+            &**n,
+            "ln" | "sin" | "cos" | "tan" | "sinh" | "cosh" | "tanh" | "asin" | "acos" | "atan"
+                | "asinh" | "acosh" | "atanh" | "sinc"
+        )) || matches!(x, Expr::List(_) | Expr::Rel(..) | Expr::Bool(_))
+    })
 }
 
 /// The roots of the factors of a product: a root of several factors counts as often as they
@@ -1495,7 +1831,10 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
     });
     let given = &open;
     let f = simplify::normal(given);
+    trace::step(|| format!("solve for {var}: {f} = 0"));
+    let _nest = trace::nest();
     if !f.has_sym(var) {
+        trace::step(|| format!("{var} is not left in it: it holds for every {var} or for none"));
         return Ok(Solved {
             all: simplify::is_zero(&f),
             ..Solved::default()
@@ -1517,6 +1856,13 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
     } else {
         f.clone()
     };
+    if target != f {
+        trace::step(|| {
+            format!(
+                "a fraction is zero where its numerator is: {target} = 0 (what makes the denominator zero too is left out at the end)"
+            )
+        });
+    }
     let result = solver.solve_expr(&target);
     let mut candidates = match result {
         Ok(c) => c,
@@ -1585,6 +1931,12 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         if !verify(&f, var, &r, &solver.params)
             && !(at >= own && verify(given, var, &r, &solver.params))
         {
+            trace::step(|| {
+                format!(
+                    "{var} = {} is put into the equation: it does not hold there, so it is left out",
+                    r.value
+                )
+            });
             continue;
         }
         // two families that hold the same numbers are one
@@ -1610,6 +1962,13 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
     for r in roots {
         restrict(r, given, var, &mut solver, false, &mut kept);
     }
+    trace::step(|| {
+        match kept.len() {
+            0 => "no solution holds in the equation as it was given".to_string(),
+            1 => "1 solution holds in the equation as it was given".to_string(),
+            n => format!("{n} solutions hold in the equation as it was given"),
+        }
+    });
     Ok(finish(kept, solver))
 }
 

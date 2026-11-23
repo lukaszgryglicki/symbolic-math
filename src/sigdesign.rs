@@ -687,7 +687,7 @@ fn asn(w: &Complex, k: &Float) -> Complex {
         w = Complex::with_val(bits(), w / (root + 1u32)) * 2u32 / (int(1) + &pair[1]);
     }
     // u = 1 - (2/pi)*acos(w)
-    Complex::with_val(bits(), 1) - Complex::with_val(bits(), w.acos() * 2u32) / pi()
+    Complex::with_val(bits(), 1) - Complex::with_val(bits(), crate::numeric::acos(&w) * 2u32) / pi()
 }
 
 /// The modulus k whose ratio of quarter periods is n times that of k1.

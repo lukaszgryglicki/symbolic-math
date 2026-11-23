@@ -62,7 +62,40 @@ pub(crate) fn linear_rows(eqs: &[Expr], vars: &[String]) -> Option<matrix::Rows>
 
 pub(crate) fn solve_linear(rows: matrix::Rows, vars: &[String], out: &mut SystemSolved) {
     let n = vars.len();
+    crate::trace::step(|| {
+        format!(
+            "the equations are linear in {}: the rows of coefficients with the right sides, {}",
+            vars.join(", "),
+            matrix::from_rows(
+                rows.iter()
+                    .map(|r| {
+                        let mut row = r.clone();
+                        if let Some(last) = row.last_mut() {
+                            *last = neg(last.clone());
+                        }
+                        row
+                    })
+                    .collect()
+            )
+        )
+    });
     let (m, rank, _) = matrix::eliminate(rows, true);
+    crate::trace::step(|| {
+        format!(
+            "elimination (Gauss and Jordan) leaves {} of rank {rank}",
+            matrix::from_rows(
+                m.iter()
+                    .map(|r| {
+                        let mut row = r.clone();
+                        if let Some(last) = row.last_mut() {
+                            *last = neg(last.clone());
+                        }
+                        row
+                    })
+                    .collect()
+            )
+        )
+    });
     out.empty = true;
     out.complete = true;
     for row in &m[rank.min(m.len())..] {
@@ -142,8 +175,20 @@ impl Search {
         }
         order.sort();
         let mut last_error = "no method for this system".to_string();
+        let begun = crate::trace::mark();
         for (count, _, code) in order {
+            // (the steps of an equation that is not used after all are taken back)
+            crate::trace::forget(begun);
             let (i, j) = (code / vars.len(), code % vars.len());
+            crate::trace::step(|| {
+                format!(
+                    "{} = 0 is solved for {}{}",
+                    eqs[i],
+                    vars[j],
+                    if count == 1 { " (its only unknown)" } else { "" }
+                )
+            });
+            let nest = crate::trace::nest();
             let solved = match solve::solve(&eqs[i], &vars[j]) {
                 Ok(s) => s,
                 Err(e) => {
@@ -151,6 +196,7 @@ impl Search {
                     continue;
                 }
             };
+            drop(nest);
             if solved.all {
                 continue;
             }
@@ -168,6 +214,14 @@ impl Search {
             self.partial |= !steady || !solved.notes.is_empty() || !solved.params.is_empty();
             self.params.extend(solved.params.iter().cloned());
             for n in solved.notes {
+                // (every equation of the chain had a count of roots of its own: the system
+                // has one note)
+                let n = match crate::settings::roots() {
+                    Some(want) if n.starts_with("numeric search (roots = ") => format!(
+                        "numeric search (roots = {want}): the solutions found are listed, there may be others"
+                    ),
+                    _ => n,
+                };
                 if !self.notes.contains(&n) {
                     self.notes.push(n);
                 }
@@ -181,6 +235,20 @@ impl Search {
                     .filter(|(k, _)| *k != i)
                     .map(|(_, e)| subst_sym(e, &vars[j], &r.value))
                     .collect();
+                if !rest.is_empty() {
+                    crate::trace::step(|| {
+                        format!(
+                            "{} = {} is put into the other equations: {}",
+                            vars[j],
+                            r.value,
+                            rest.iter()
+                                .map(|e| format!("{} = 0", simplify::normal(e)))
+                                .collect::<Vec<_>>()
+                                .join(", ")
+                        )
+                    });
+                }
+                let _nest = crate::trace::nest();
                 for mut tail in self.chain(&rest, &rest_vars)? {
                     let mut value = r.value.clone();
                     for (name, v) in &tail {
@@ -195,6 +263,7 @@ impl Search {
             }
             return Ok(out);
         }
+        crate::trace::forget(begun);
         Err(last_error)
     }
 }
@@ -341,7 +410,8 @@ pub(crate) fn defined_at(eqs: &[Expr], vars: &[String], point: &[Complex], digit
 
 /// Solutions of as many equations as unknowns by Newton's method from many starting points,
 /// without the ones in `known` (which they join). With `real` only real solutions count. The
-/// six nearest to the origin are given: a periodic system has no end of them.
+/// six nearest to the origin are given: a periodic system has no end of them. `roots = N` asks
+/// for N of them, from as many more starting points.
 pub fn numeric_search(
     eqs: &[Expr],
     vars: &[String],
@@ -353,18 +423,31 @@ pub fn numeric_search(
     let mut dice = Dice(0x9E37_79B9_7F4A_7C15);
     let mut found = Vec::new();
     let started = std::time::Instant::now();
-    for round in 0..if real { 60 } else { 120 } {
-        if started.elapsed().as_secs() >= 15 {
+    let asked = crate::settings::roots().map(|n| n as usize);
+    let most = asked.unwrap_or(6);
+    let usual = if real { 60 } else { 120 };
+    let rounds = usual * most.div_ceil(6).min(400);
+    let seconds = 15 + asked.map_or(0, |n| (n as u64 / 2).min(285));
+    crate::trace::step(|| {
+        format!(
+            "Newton's method for {} equations from {rounds} starting points of chance (a fixed row of them): the {most} solutions nearest to 0 are kept",
+            eqs.len()
+        )
+    });
+    for round in 0..rounds {
+        if started.elapsed().as_secs() >= seconds {
             break;
         }
+        // (the starting points of more rounds than usual lie farther out)
+        let wide = (1 + round / usual) as f64;
         let start: Vec<Complex> = vars
             .iter()
             .map(|_| {
-                let re = dice.roll();
+                let re = dice.roll() * wide;
                 let im = if real || round % 2 == 0 {
                     0.0
                 } else {
-                    dice.roll()
+                    dice.roll() * wide
                 };
                 Complex::with_val(64, (re, im))
             })
@@ -392,13 +475,26 @@ pub fn numeric_search(
             .partial_cmp(&size(b))
             .unwrap_or(std::cmp::Ordering::Equal)
     });
-    found.truncate(6);
+    found.truncate(most);
     found
 }
 
 /// Solves `eqs = 0` for `vars`.
 pub fn solve_system(given: &[Expr], vars: &[String]) -> Result<SystemSolved, String> {
     let mut out = SystemSolved::default();
+    crate::trace::step(|| {
+        format!(
+            "a system of {} for {}: {}",
+            crate::trace::count(given.len(), "equation"),
+            vars.join(", "),
+            given
+                .iter()
+                .map(|e| format!("{e} = 0"))
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
+    });
+    let _nest = crate::trace::nest();
     let eqs: Vec<Expr> = given
         .iter()
         .map(|e| ratsimp::fraction(&simplify::normal(e)).0)
@@ -417,6 +513,13 @@ pub fn solve_system(given: &[Expr], vars: &[String]) -> Result<SystemSolved, Str
     out.empty = true;
     out.complete = true;
     let mut failure = None;
+    if cases > 1 {
+        crate::trace::step(|| {
+            format!(
+                "equations that are products hold where one of their factors is 0: {cases} systems, one for each choice of factors"
+            )
+        });
+    }
     for case in 0..cases {
         let mut index = case;
         let branch: Vec<Expr> = choices
@@ -427,6 +530,20 @@ pub fn solve_system(given: &[Expr], vars: &[String]) -> Result<SystemSolved, Str
                 pick
             })
             .collect();
+        if cases > 1 {
+            crate::trace::step(|| {
+                format!(
+                    "case {}: {}",
+                    case + 1,
+                    branch
+                        .iter()
+                        .map(|e| format!("{e} = 0"))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                )
+            });
+        }
+        let _case = (cases > 1).then(crate::trace::nest);
         match solve_case(&branch, vars) {
             Ok(found) => {
                 out.empty &= found.empty;
@@ -552,6 +669,15 @@ fn solve_case(eqs: &[Expr], vars: &[String]) -> Result<SystemSolved, String> {
         }
         work = basis.iter().map(|p| gens.expr(p)).collect();
         triangular = true;
+        crate::trace::step(|| {
+            format!(
+                "polynomial equations: a Groebner basis (the unknowns removed one after the other) is {}",
+                work.iter()
+                    .map(|e| format!("{e} = 0"))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            )
+        });
     }
     let mut search = Search {
         notes: Vec::new(),
@@ -560,11 +686,20 @@ fn solve_case(eqs: &[Expr], vars: &[String]) -> Result<SystemSolved, String> {
         budget: 400,
         partial: false,
     };
-    let found = search.chain(&work, vars)?;
+    let found = crate::trace::whole(|| search.chain(&work, vars))?;
     let mut seen: BTreeSet<String> = BTreeSet::new();
     for mut s in found {
         s.sort_by_key(|(name, _)| vars.iter().position(|v| v == name).unwrap_or(usize::MAX));
         if !check(eqs, &s, search.approx) {
+            crate::trace::step(|| {
+                format!(
+                    "{} is put into the equations as they were given: they do not all hold, so it is left out",
+                    s.iter()
+                        .map(|(n, v)| format!("{n} = {v}"))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                )
+            });
             search.partial = true;
             continue;
         }

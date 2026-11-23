@@ -83,6 +83,7 @@ impl Session {
     pub fn new() -> Session {
         assume::clear_all();
         assume::set_domain(assume::Domain::Complex);
+        crate::settings::reset();
         Session {
             vars: HashMap::new(),
             funcs: HashMap::new(),
@@ -99,6 +100,58 @@ impl Session {
     /// Chooses the numbers of the session: complex (the default), real or quaternions.
     pub fn set_domain(&mut self, domain: assume::Domain) {
         assume::set_domain(domain);
+    }
+
+    /// A setting written as a statement: `[name]` or `[name, value]`. The lines tell what is
+    /// set now.
+    fn setting(&mut self, a: &[Expr]) -> Result<Vec<String>, String> {
+        use crate::settings::{self, Setting};
+        let kind = a
+            .first()
+            .and_then(Expr::sym_name)
+            .and_then(settings::named)
+            .ok_or("a setting is digits, roots, terms or verbose")?;
+        let value = a.get(1);
+        let word = value.and_then(Expr::sym_name);
+        let usual = matches!(word, Some("default" | "auto"));
+        let whole = |most: u64| -> Result<u64, String> {
+            value
+                .and_then(Expr::as_int)
+                .and_then(rug::Integer::to_u64)
+                .filter(|n| (1..=most).contains(n))
+                .ok_or_else(|| {
+                    format!(
+                        "{} = N: a whole number from 1 to {most}, or default",
+                        settings::name(kind)
+                    )
+                })
+        };
+        match kind {
+            Setting::Digits if usual => self.digits = None,
+            Setting::Digits => self.digits = Some(whole(u64::from(settings::MAX_DIGITS))? as u32),
+            Setting::Roots if usual => settings::set_roots(None),
+            Setting::Roots => settings::set_roots(Some(whole(u64::from(settings::MAX_ROOTS))? as u32)),
+            Setting::Terms if usual => settings::set_terms(None),
+            Setting::Terms => settings::set_terms(Some(whole(settings::MAX_TERMS)?)),
+            Setting::Verbose | Setting::Debug => {
+                let most = if kind == Setting::Debug { 2 } else { 1 };
+                let level = match (word, value.and_then(Expr::as_i64)) {
+                    (None, None) | (Some("on" | "yes" | "true"), _) => most,
+                    (Some("all"), _) | (_, Some(2)) => 2,
+                    (Some("off" | "no" | "false" | "none" | "default"), _) | (_, Some(0)) => 0,
+                    (_, Some(1)) => 1,
+                    _ => {
+                        return Err(
+                            "verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail"
+                                .to_string(),
+                        );
+                    }
+                };
+                crate::trace::set_level(level);
+            }
+            Setting::List => return Ok(settings::listed(self.digits)),
+        }
+        Ok(vec![settings::shown(kind, self.digits)])
     }
 
     /// Evaluates every statement of `input` and returns the lines to print.
@@ -179,10 +232,35 @@ impl Session {
         let decimal = self.numeric || parsed.decimal;
         self.decimal = decimal;
         let mut lines = Vec::new();
+        let is_setting = |stmt: &Expr| stmt.fn_args("setting").is_some();
+        // an input of settings alone answers with what was set (`settings` lists them all)
+        let lists = |stmt: &Expr| {
+            stmt.fn_args("setting")
+                .and_then(|a| a.first())
+                .and_then(Expr::sym_name)
+                .and_then(crate::settings::named)
+                == Some(crate::settings::Setting::List)
+        };
+        let listed = parsed.stmts.iter().any(lists);
+        let alone = parsed.stmts.iter().all(is_setting);
         for stmt in &parsed.stmts {
+            if let Some(setting) = stmt.fn_args("setting") {
+                let set = self.setting(setting)?;
+                numeric::set_digits(self.digits.unwrap_or(32).max(parsed.max_digits));
+                if lists(stmt) || (alone && !listed) {
+                    lines.extend(set);
+                }
+                continue;
+            }
             self.notes.clear();
             crate::tetration::forget_missing();
+            if crate::trace::on() {
+                // with the steps on the lines are printed as they come, where they can be
+                lines.retain(|line| !crate::trace::print(line));
+                crate::trace::step(|| format!("the input is read as {}", crate::trace::written(stmt)));
+            }
             let done = self.statement(stmt, decimal);
+            lines.extend(crate::trace::take());
             // a drawing of tetration that fails without the program tet says that, not that
             // the function has no values there
             let drawn = matches!(stmt, Expr::Fn(n, _)
@@ -414,10 +492,13 @@ impl Session {
                     return Err("an operand is missing after the last sign (a one-sided point like 0+ belongs in limit)".into());
                 }
                 let keeps_form = matches!(stmt, Expr::Fn(n, _) if FORM_COMMANDS.contains(&&**n));
+                let defines = matches!(stmt, Expr::Fn(n, _) if &**n == ":=");
                 let value = if keeps_form {
                     target
-                } else {
+                } else if defines {
                     simplify(&target)
+                } else {
+                    crate::simplify::simplify_told(&target)
                 };
                 // quantities that were multiplied or added come together as one
                 let loose = value.has_fn("quantity")
@@ -1864,7 +1945,10 @@ impl Session {
         match e {
             Expr::Num(_) | Expr::Float(_) | Expr::Bool(_) => Ok(e.clone()),
             Expr::Sym(s) => match self.vars.get(&**s) {
-                Some(v) => Ok(v.clone()),
+                Some(v) => {
+                    crate::trace::detail(|| format!("{s} stands for {v}"));
+                    Ok(v.clone())
+                }
                 None if &**s == "ans" => self
                     .ans
                     .clone()
@@ -1907,7 +1991,15 @@ impl Session {
             // (what a function makes of systems in a list, as sum does, is joined too)
             Expr::Fn(name, args) => match self.call(name, args)? {
                 out if crate::control::joins_a_system(&out) => self.eval(&out),
-                out => Ok(out),
+                out => {
+                    if crate::trace::deep() && !matches!(&**name, ":=" | "string" | "rule") {
+                        let (asked, given) = (e.to_string(), out.to_string());
+                        if asked != given {
+                            crate::trace::detail(|| format!("{asked} gives {given}"));
+                        }
+                    }
+                    Ok(out)
+                }
             },
         }
     }
@@ -2930,8 +3022,19 @@ impl Session {
         Some(match (name, a.len()) {
             ("diff", _) => (|| {
                 let mut out = a[0].clone();
+                let told = |f: &Expr, var: &str, times: u32, d: &Expr| {
+                    crate::trace::step(|| {
+                        format!(
+                            "the derivative of {f} with respect to {var}{}, by the rules for sums, products, powers and a function of a function: {d}",
+                            if times == 1 { String::new() } else { format!(", {times} times") }
+                        )
+                    });
+                };
                 if a.len() == 1 {
-                    return Ok(simplify(&diff::diff(&out, &Self::var_of(None, &a[0])?)));
+                    let var = Self::var_of(None, &a[0])?;
+                    let d = diff::diff(&out, &var);
+                    told(&out, &var, 1, &d);
+                    return Ok(simplify(&d));
                 }
                 let mut i = 1;
                 while i < a.len() {
@@ -2948,7 +3051,9 @@ impl Session {
                         }
                         None => 1,
                     };
-                    out = diff::diff_n(&out, &var, times);
+                    let d = diff::diff_n(&out, &var, times);
+                    told(&out, &var, times, &d);
+                    out = d;
                     i += 1;
                 }
                 Ok(out)
@@ -3154,6 +3259,12 @@ impl Session {
                         "series: the order must be a whole number from 0 to 200".to_string()
                     );
                 }
+                crate::trace::step(|| {
+                    format!(
+                        "the series of {} at {var} = {point} to the order {order}: the known series of its parts are added, multiplied and put into each other, and the terms beyond the order are dropped",
+                        a[0]
+                    )
+                });
                 series::series_expr(&a[0], &var, &point, order)
                     .ok_or_else(|| format!("no series found for {} at {var} = {point}", a[0]))
             })(),

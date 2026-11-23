@@ -338,7 +338,16 @@ impl Ode {
             .enumerate()
             .map(|(k, c)| mul(vec![c.clone(), powi(r.clone(), k as i64)]))
             .collect());
-        let solved = solve::solve(&p, ROOT);
+        crate::trace::step(|| {
+            format!(
+                "linear with constant coefficients: {} = e^(r {var}) solves the equation without its right side when r is a root of {p} = 0 (a root that counts k times gives e^(r {var}) times 1, {var}, ..., {var}^(k - 1))",
+                self.y
+            )
+        });
+        let solved = {
+            let _nest = crate::trace::nest();
+            solve::solve(&p, ROOT)
+        };
         let rooted = solved.map(|s| {
             solve::release(&s.params);
             let split: Vec<(Expr, Expr)> = s
@@ -409,10 +418,18 @@ impl Ode {
         let p = simplify(&div(a0.clone(), a1.clone()));
         let q = simplify(&div(g.clone(), a1.clone()));
         let fail = |what: &Expr| format!("cannot integrate {what}");
+        crate::trace::step(|| {
+            format!(
+                "linear of order 1: {y}' + p {y} = q with p = {p}, q = {q}; times the factor e^(integral of p) the left side is the derivative of that factor times {y}",
+                y = self.y
+            )
+        });
+        let _nest = crate::trace::nest();
         let factor = simplify(&pow(
             Expr::e(),
             integrate(&p, &self.x).ok_or_else(|| fail(&p))?,
         ));
+        crate::trace::step(|| format!("the factor is {factor}"));
         let c = self.constant();
         if q.is_zero() {
             return Ok(simplify(&div(c, factor)));
@@ -433,6 +450,11 @@ impl Ode {
         if !cs.iter().all(|c| c.free_of(&self.x)) {
             return None;
         }
+        crate::trace::step(|| {
+            format!(
+                "the k-th derivative stands with {x}^k (the form of Cauchy and Euler): with {x} = e^t the coefficients are constant"
+            )
+        });
         let d = Expr::sym(ROOT);
         let falling = |k: usize| {
             mul((0..k)
@@ -660,7 +682,11 @@ impl Ode {
 
     fn first_order(&mut self, f: &Expr) -> Result<Vec<Solution>, String> {
         let d1 = marker(1);
-        let solved = solve::solve(f, &d1)?;
+        let solved = {
+            // (the steps of solving for the derivative are not told: what it gives is)
+            let _quiet = crate::trace::mute();
+            solve::solve(f, &d1)?
+        };
         solve::release(&solved.params);
         let slopes: Vec<Expr> = solved
             .roots
@@ -672,22 +698,45 @@ impl Ode {
             return Err(format!("the equation cannot be solved for {}'", self.y));
         }
         let mut out = Vec::new();
+        let (x, y) = (self.x.clone(), self.y.clone());
         for slope in slopes {
+            crate::trace::step(|| format!("solved for the derivative: {y}' = {slope}"));
+            let _nest = crate::trace::nest();
+            let begun = crate::trace::mark();
+            // a kind that is tried and is not the one of the equation takes its steps back
+            let kind = |_: &mut Ode, name: &str| {
+                crate::trace::forget(begun);
+                crate::trace::step(|| name.to_string());
+            };
             if !slope.has_sym(&self.y) {
+                kind(self, &format!("the right side has no {y}: {y} is its integral, plus a constant"));
                 let anti = integrate(&slope, &self.x)
                     .ok_or_else(|| format!("cannot integrate {slope}"))?;
                 out.push(Solution::Explicit(add(vec![anti, self.constant()])));
-            } else if let Some(s) = self.bernoulli(&slope) {
-                out.extend(s.into_iter().map(Solution::Explicit));
-            } else if let Some(s) = self.separable(&slope) {
-                out.extend(s);
-            } else if let Some(s) = self.homogeneous(&slope) {
-                out.extend(s);
-            } else if let Some(s) = self.exact(f) {
-                out.extend(s);
-            } else {
-                return Err(format!("no method for {}' = {slope}", self.y));
+                continue;
             }
+            kind(self, &format!("an equation of Bernoulli, {y}' = b {y} + c {y}^n: with v = {y}^(1 - n) it is linear in v"));
+            if let Some(s) = self.bernoulli(&slope) {
+                out.extend(s.into_iter().map(Solution::Explicit));
+                continue;
+            }
+            kind(self, &format!("separable, {y}' = f({x}) g({y}): the integral of d{y}/g({y}) is the integral of f({x}) d{x}, plus a constant"));
+            if let Some(s) = self.separable(&slope) {
+                out.extend(s);
+                continue;
+            }
+            kind(self, &format!("homogeneous, {y}' depends on {y}/{x} alone: with {y} = v {x} it is separable in v"));
+            if let Some(s) = self.homogeneous(&slope) {
+                out.extend(s);
+                continue;
+            }
+            kind(self, &format!("exact, M d{x} + N d{y} = 0 with dM/d{y} = dN/d{x}: a function F with dF/d{x} = M, dF/d{y} = N is constant along a solution"));
+            if let Some(s) = self.exact(f) {
+                out.extend(s);
+                continue;
+            }
+            crate::trace::forget(begun);
+            return Err(format!("no method for {}' = {slope}", self.y));
         }
         Ok(out)
     }
@@ -731,6 +780,17 @@ pub fn dsolve(
             .collect());
         is_zero(&sub(sub(f.clone(), rebuilt), neg(g.clone())))
     };
+    crate::trace::step(|| {
+        format!(
+            "a differential equation of order {order} for {y}({x}){}",
+            if linear {
+                format!(", linear: the right side is {g}")
+            } else {
+                ", not linear".to_string()
+            }
+        )
+    });
+    let _nest = crate::trace::nest();
     let solutions = if linear && a.iter().all(|c| c.free_of(x)) {
         vec![Solution::Explicit(ode.constant_coefficients(&a, &g, x)?)]
     } else if linear && order == 1 {
@@ -756,6 +816,9 @@ pub fn dsolve(
         for k in 1..=order {
             residual = subst_sym(&residual, &marker(k), &diff_n(e, x, k));
         }
+        crate::trace::step(|| {
+            format!("{y} = {e} is put into the equation and tried at points of the real line")
+        });
         match check(&simplify(&residual), x) {
             (0, 0) => notes.push(format!("{y} = {e} was not verified numerically")),
             (0, _) => {
