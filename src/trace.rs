@@ -307,3 +307,88 @@ pub fn written(stmt: &crate::expr::Expr) -> String {
     }
     tidy(stmt).to_string()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn names_that_methods_use_inside_are_written_as_a_reader_would() {
+        assert_eq!(
+            plain("#t + 2#101 + #L*#u1".to_string()),
+            "t + 2#101 + ln(t)*u1"
+        );
+        assert_eq!(plain("x^2 + 1".to_string()), "x^2 + 1");
+        assert_eq!(
+            plain("16#ff + #r^2 - 3*#r".to_string()),
+            "16#ff + r^2 - 3*r"
+        );
+        assert_eq!(count(0, "root"), "no roots");
+        assert_eq!(count(1, "root"), "1 root");
+        assert_eq!(count(2, "starting point"), "2 starting points");
+    }
+
+    #[test]
+    fn steps_are_told_only_when_they_are_asked_for() {
+        set_level(0);
+        step(|| panic!("no step is made when none is told"));
+        assert!(take().is_empty());
+        set_level(1);
+        step(|| "one".to_string());
+        detail(|| panic!("a detail is for the level 2"));
+        {
+            let _inner = nest();
+            step(|| "two".to_string());
+            let _quiet = mute();
+            step(|| panic!("muted"));
+        }
+        step(|| "three".to_string());
+        assert_eq!(take(), ["step: one", "step:   two", "step: three"]);
+        set_level(2);
+        detail(|| "four".to_string());
+        assert_eq!(take(), ["step: four"]);
+        set_level(0);
+    }
+
+    #[test]
+    fn the_steps_of_a_way_that_leads_nowhere_are_taken_back() {
+        set_level(1);
+        let none: Option<u32> = trial(|| {
+            step(|| "lost".to_string());
+            None
+        });
+        assert_eq!(none, None);
+        let some = trial(|| {
+            step(|| "kept".to_string());
+            let inner: Option<u32> = trial(|| {
+                step(|| "lost too".to_string());
+                None
+            });
+            assert!(inner.is_none());
+            Some(7)
+        });
+        assert_eq!(some, Some(7));
+        whole(|| {
+            step(|| "first".to_string());
+            let begun = mark();
+            step(|| "forgotten".to_string());
+            forget(begun);
+            step(|| "second".to_string());
+        });
+        assert_eq!(take(), ["step: kept", "step: first", "step: second"]);
+        // a long line is cut, and a statement tells 4000 steps at most
+        step(|| "x".repeat(700));
+        let lines = take();
+        assert_eq!(
+            lines[0].chars().count(),
+            "step: ".len() + WIDTH + " ...".len()
+        );
+        for k in 0..LINES + 50 {
+            step(|| k.to_string());
+        }
+        let lines = take();
+        assert_eq!(lines.len(), LINES + 1);
+        assert_eq!(lines[LINES], "step: (more steps are not shown)");
+        set_level(0);
+    }
+}

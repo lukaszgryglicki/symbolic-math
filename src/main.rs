@@ -38,11 +38,29 @@ fn limit_memory() -> Result<(), String> {
     }
 }
 
+/// The stack of the thread that works: room for a function that calls itself some thousand
+/// times, one call inside the other.
+const STACK: usize = 64 << 20;
+
 fn main() -> ExitCode {
     if let Err(why) = limit_memory() {
         eprintln!("error: {why}");
         return ExitCode::from(2);
     }
+    let worker = std::thread::Builder::new().stack_size(STACK).spawn(|| {
+        // (a quarter of the stack is left to the work inside the innermost call)
+        symbolic_math::eval::stack_for_calls(STACK - STACK / 4);
+        work()
+    });
+    match worker {
+        Ok(thread) => thread.join().unwrap_or(ExitCode::from(101)),
+        // (no memory for such a stack: the stack of the program itself, and fewer calls)
+        Err(_) => work(),
+    }
+}
+
+/// Reads the options and runs the inputs.
+fn work() -> ExitCode {
     let mut session = Session::new();
     let mut inputs = Vec::new();
     let mut args = std::env::args().skip(1);
@@ -63,7 +81,8 @@ fn main() -> ExitCode {
             Some((name, value)) if name.starts_with("--") => (name, Some(value.to_string())),
             _ => (arg.as_str(), None),
         };
-        let mut given = |args: &mut dyn Iterator<Item = String>| value.take().or_else(|| args.next());
+        let mut given =
+            |args: &mut dyn Iterator<Item = String>| value.take().or_else(|| args.next());
         match name {
             "-h" | "--help" => return shown(USAGE),
             "-V" | "--version" => {

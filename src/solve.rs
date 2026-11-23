@@ -359,7 +359,9 @@ impl Solver {
                     _ => Vec::new(),
                 };
                 if parts.len() >= 2 || parts.iter().any(|p| matches!(p, Expr::Pow(..))) {
-                    trace::step(|| format!("it factors as {factored}: each factor is solved by itself"));
+                    trace::step(|| {
+                        format!("it factors as {factored}: each factor is solved by itself")
+                    });
                     let _nest = trace::nest();
                     for p in parts {
                         out.extend(self.solve_expr(&p)?);
@@ -443,9 +445,15 @@ impl Solver {
         let var = self.var.clone();
         let written = |c: &[Rat]| {
             let x = Expr::sym(&var);
-            add(c.iter()
+            add(c
+                .iter()
                 .enumerate()
-                .map(|(i, c)| mul(vec![Expr::rational(c.clone()), pow(x.clone(), Expr::int(i as i64))]))
+                .map(|(i, c)| {
+                    mul(vec![
+                        Expr::rational(c.clone()),
+                        pow(x.clone(), Expr::int(i as i64)),
+                    ])
+                })
                 .collect())
             .to_string()
         };
@@ -528,9 +536,7 @@ impl Solver {
             return out;
         }
         if let Some(roots) = cyclotomic_roots(c) {
-            trace::step(|| {
-                format!("a cyclotomic polynomial: its {n} roots are roots of 1")
-            });
+            trace::step(|| format!("a cyclotomic polynomial: its {n} roots are roots of 1"));
             return roots;
         }
         let exact_roots = match n {
@@ -655,7 +661,9 @@ impl Solver {
                 if **b == self.x && **e == self.x {
                     // x^x = c
                     trace::step(|| {
-                        format!("{var}^{var} = c: {var} = e^W(ln(c)) with the function W of Lambert")
+                        format!(
+                            "{var}^{var} = c: {var} = e^W(ln(c)) with the function W of Lambert"
+                        )
                     });
                     return Ok(vec![exact(pow(
                         Expr::e(),
@@ -847,9 +855,7 @@ impl Solver {
             if g != *f {
                 let numerator = ratsimp::fraction(&g).0;
                 trace::step(|| {
-                    format!(
-                        "sines and cosines are written with e^(i u): {numerator} = 0"
-                    )
+                    format!("sines and cosines are written with e^(i u): {numerator} = 0")
                 });
                 let _nest = trace::nest();
                 return self.solve_expr(&numerator);
@@ -997,6 +1003,61 @@ impl Solver {
             div(l.clone(), a1),
             pow(Expr::e(), sub(mul(vec![l.clone(), shift.clone()]), d)),
         ]));
+        trace::step(|| {
+            format!(
+                "{} stands in a power and beside it: the equation has the form (a {} + b) e^(l {} + d) = c, which the function W of Lambert solves",
+                self.var, self.var, self.var
+            )
+        });
+        if let Some(want) = crate::settings::roots()
+            && !assume::is_real_sym(&self.var)
+        {
+            // roots = N: every branch of W gives a solution, the ones nearest to 0 are listed
+            // (not among the real numbers: there the two real branches are all there is)
+            let want = want as usize;
+            let reach = want as i64 + 2;
+            let mut branches: Vec<(rug::Float, i64, Expr)> = Vec::new();
+            for k in -reach..=reach {
+                let branch = if k == 0 {
+                    w(c.clone())
+                } else {
+                    func("lambertw", vec![Expr::int(k), c.clone()])
+                };
+                let root = sub(div(branch, l.clone()), shift.clone());
+                let Ok(value) = numeric::evalf(&root, 64) else {
+                    continue;
+                };
+                if value.real().is_finite() && value.imag().is_finite() {
+                    branches.push((rug::Float::with_val(64, value.abs_ref()), k, root));
+                }
+            }
+            branches.sort_by(|a, b| {
+                a.0.partial_cmp(&b.0)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+                    .then(a.1.cmp(&b.1))
+            });
+            if branches.len() > want {
+                // (solutions of one size, as a number and its conjugate, stay together)
+                let most = rug::Float::with_val(64, &branches[want - 1].0 * (1.0 + 1e-15));
+                branches.retain(|(size, _, _)| *size <= most);
+            }
+            if !branches.is_empty() {
+                let listed = branches.len();
+                self.note(&if listed == 1 {
+                    format!(
+                        "Lambert W (roots = {want}): the solution nearest to 0 is listed; lambertw(k, z) with other integers k gives the others"
+                    )
+                } else {
+                    format!(
+                        "Lambert W (roots = {want}): the {listed} solutions nearest to 0 are listed; lambertw(k, z) with other integers k gives the others"
+                    )
+                });
+                return Some(Ok(branches
+                    .into_iter()
+                    .map(|(_, _, root)| exact(root))
+                    .collect()));
+            }
+        }
         let mut out = vec![exact(sub(div(w(c.clone()), l.clone()), shift.clone()))];
         if let Some(v) = numeric::real_value(&c, 20)
             && v.is_sign_negative()
@@ -1007,12 +1068,6 @@ impl Solver {
                 shift,
             )));
         }
-        trace::step(|| {
-            format!(
-                "{} stands in a power and beside it: the equation has the form (a {} + b) e^(l {} + d) = c, which the function W of Lambert solves",
-                self.var, self.var, self.var
-            )
-        });
         self.note("Lambert W: the real branches are given; lambertw(k, z) with other integers k gives complex solutions");
         Some(Ok(out))
     }
@@ -1059,15 +1114,13 @@ impl Solver {
             .iter()
             .filter_map(|(c, times)| Some((numeric::evalf(c, 1024).ok()?, *times)))
             .collect();
-        let mut eval = |z: &Complex| -> Option<Complex> {
-            // (far away nothing is looked for, and gamma or zeta cost much there)
+        // (far away nothing is looked for, and gamma or zeta cost much there)
+        let near = |z: &Complex| {
             let size = rug::Float::with_val(64, z.abs_ref());
-            if size.is_nan() || size >= 1e6f64 {
-                return None;
-            }
-            let mut env = Env::new();
-            env.insert(key.clone(), z.clone());
-            let mut value = numeric::evalf_env(f, z.prec().0, &env).ok()?;
+            !size.is_nan() && size < 1e6f64
+        };
+        // the function without the roots that it has several times at simple numbers
+        let without = |z: &Complex, mut value: Complex| -> Option<Complex> {
             for (at, times) in places.iter().filter(|(_, times)| *times > 1) {
                 let gap = Complex::with_val(z.prec(), z - at);
                 if gap.is_zero() {
@@ -1078,6 +1131,26 @@ impl Solver {
                 }
             }
             Some(value)
+        };
+        let eval = |z: &Complex| -> Option<Complex> {
+            if !near(z) {
+                return None;
+            }
+            let mut env = Env::new();
+            env.insert(key.clone(), z.clone());
+            without(z, numeric::evalf_env(f, z.prec().0, &env).ok()?)
+        };
+        // the function as the lattice of a search looks at it. A sum of exponentials, as the
+        // one that sines and cosines were written with, may rise so steeply to one side that
+        // its size hides the roots there: times e^(-m x), with m the middle of its exponents,
+        // it has the same roots and rises alike to all sides
+        let middle = middle_of_exponents(f, &self.var);
+        let mut sized = |z: &Complex| -> Option<(Complex, f64)> {
+            let value = eval(z)?;
+            let scale = middle.map_or(0.0, |(re, im)| {
+                re * z.real().to_f64() - im * z.imag().to_f64()
+            });
+            Some((value, scale))
         };
         let mut starts: Vec<(f64, f64)> = Vec::new();
         for r in [
@@ -1137,7 +1210,8 @@ impl Solver {
             let known: Vec<Complex> = places.iter().map(|(at, _)| at.clone()).collect();
             let real = assume::is_real_sym(&self.var);
             let search = crate::rootsearch::nearest(
-                &mut eval,
+                &mut { eval },
+                &mut sized,
                 want,
                 digits,
                 real,
@@ -1162,11 +1236,13 @@ impl Solver {
         for (at, (re, im)) in starts.into_iter().enumerate() {
             // (the far starting points only when the near ones found next to nothing)
             if at >= 32 && found.len() + simple.len() >= 2 {
-                trace::detail(|| "the far starting points are left out: the near ones found roots".to_string());
+                trace::detail(|| {
+                    "the far starting points are left out: the near ones found roots".to_string()
+                });
                 break;
             }
             let start = Complex::with_val(64, (re + 0.013, im));
-            let Some(mut z) = numroots::find_root(&mut eval, &start, digits) else {
+            let Some(mut z) = numroots::find_root(&mut { eval }, &start, digits) else {
                 trace::detail(|| format!("from {}: no root", trace::number(&start)));
                 continue;
             };
@@ -1202,8 +1278,17 @@ impl Solver {
             format!(
                 "{} found by the search{}",
                 trace::count(found.len(), "root"),
-                if found.is_empty() { String::new() } else {
-                    format!(": {}", found.iter().map(trace::number).collect::<Vec<_>>().join(", "))
+                if found.is_empty() {
+                    String::new()
+                } else {
+                    format!(
+                        ": {}",
+                        found
+                            .iter()
+                            .map(trace::number)
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    )
                 }
             )
         });
@@ -1241,11 +1326,11 @@ impl Solver {
                 z + Complex::with_val(prec, (&zero, &step)),
             ))
         };
-        if found
+        let stretches = found
             .iter()
             .chain(places.iter().map(|(at, _)| at))
-            .any(beside)
-        {
+            .any(beside);
+        if stretches {
             // a few examples, as round as they can be
             for z in found.iter_mut() {
                 let round = format!("{:.2}", z.real().to_f64());
@@ -1260,14 +1345,16 @@ impl Solver {
             found.dedup();
             let short = |z: &Complex| numeric::to_float_expr(z.clone(), digits).to_string().len();
             found.sort_by_key(short);
-            found.truncate(3);
-            simple.truncate(3);
+            let examples = asked.map_or(3, |n| (n as usize).min(3));
+            found.truncate(examples);
+            simple.truncate(examples);
             self.note(
                 "the equation holds on whole stretches of numbers: the ones listed are examples",
             );
         }
         match searched {
-            Some((want, radius, stopped)) => {
+            // (of examples no count is told)
+            Some((want, radius, stopped)) if !stretches => {
                 // the nearest to 0 of all that were found, the simple numbers among them
                 let size = |z: &Complex| rug::Float::with_val(64, z.abs_ref());
                 let mut sizes: Vec<rug::Float> = found
@@ -1292,6 +1379,10 @@ impl Solver {
                     format!(
                         "numeric search (roots = {want}): the search was stopped at its limit of time; {listed} roots found until then are listed, there may be others"
                     )
+                } else if total >= want && listed == 1 {
+                    format!(
+                        "numeric search (roots = {want}): the root nearest to 0 that was found is listed, there may be others"
+                    )
                 } else if total >= want {
                     format!(
                         "numeric search (roots = {want}): the {listed} roots nearest to 0 that were found are listed, there may be others"
@@ -1307,7 +1398,7 @@ impl Solver {
                     )
                 });
             }
-            None => self.note("numeric search: the roots found are listed, there may be others"),
+            _ => self.note("numeric search: the roots found are listed, there may be others"),
         }
         if found.is_empty() && !simple.is_empty() {
             self.note("no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed");
@@ -1373,6 +1464,56 @@ impl Solver {
         }
         out
     }
+}
+
+/// The middle of the exponents of a sum of exponentials: for `f` = c1(x) e^(l1 x) + c2(x)
+/// e^(l2 x) + ... with polynomials c, the middle of the box of the plane that holds the
+/// numbers l (real part, imaginary part). `None` for a function of another kind, and where
+/// there is nothing to balance.
+fn middle_of_exponents(f: &Expr, var: &str) -> Option<(f64, f64)> {
+    let terms: &[Expr] = match f {
+        Expr::Add(terms) => terms,
+        other => std::slice::from_ref(other),
+    };
+    let mut exponents: Vec<(f64, f64)> = Vec::new();
+    for term in terms {
+        let factors: &[Expr] = match term {
+            Expr::Mul(factors) => factors,
+            other => std::slice::from_ref(other),
+        };
+        let (mut re, mut im) = (0.0, 0.0);
+        for factor in factors.iter().filter(|x| x.has_sym(var)) {
+            match factor {
+                // b^(a x + c) with numbers a, b, c: the exponent a ln(b)
+                Expr::Pow(base, exponent) if !base.has_sym(var) => {
+                    let line = ratsimp::coefficients(exponent, var).filter(|cs| cs.len() == 2)?;
+                    let rate = if base.is_sym("e") {
+                        line[1].clone()
+                    } else {
+                        mul(vec![line[1].clone(), func("ln", vec![(**base).clone()])])
+                    };
+                    let rate = numeric::evalf(&rate, 64).ok()?;
+                    re += rate.real().to_f64();
+                    im += rate.imag().to_f64();
+                }
+                // a polynomial beside the exponentials
+                other => {
+                    ratsimp::coefficients(other, var)?;
+                }
+            }
+        }
+        if !(re.is_finite() && im.is_finite()) {
+            return None;
+        }
+        exponents.push((re, im));
+    }
+    let middle = |part: fn(&(f64, f64)) -> f64| {
+        let least = exponents.iter().map(part).fold(f64::INFINITY, f64::min);
+        let most = exponents.iter().map(part).fold(f64::NEG_INFINITY, f64::max);
+        (least + most) / 2.0
+    };
+    let found = (middle(|l| l.0), middle(|l| l.1));
+    (found != (0.0, 0.0)).then_some(found)
 }
 
 /// An expression of elementary functions alone: sums, products, powers, logarithms,
@@ -1850,7 +1991,7 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         notes: Vec::new(),
         depth: 0,
     };
-    let (num, _) = ratsimp::fraction(&f);
+    let (num, den) = ratsimp::fraction(&f);
     let target = if num.has_sym(var) {
         num.clone()
     } else {
@@ -1858,9 +1999,13 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
     };
     if target != f {
         trace::step(|| {
-            format!(
-                "a fraction is zero where its numerator is: {target} = 0 (what makes the denominator zero too is left out at the end)"
-            )
+            if den.is_one() {
+                format!("multiplied out: {target} = 0")
+            } else {
+                format!(
+                    "a fraction is zero where its numerator is: {target} = 0 (what makes the denominator zero too is left out at the end)"
+                )
+            }
         });
     }
     let result = solver.solve_expr(&target);
@@ -1962,13 +2107,14 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
     for r in roots {
         restrict(r, given, var, &mut solver, false, &mut kept);
     }
-    trace::step(|| {
-        match kept.len() {
-            0 => "no solution holds in the equation as it was given".to_string(),
-            1 => "1 solution holds in the equation as it was given".to_string(),
-            n => format!("{n} solutions hold in the equation as it was given"),
-        }
+    trace::step(|| match kept.len() {
+        0 => "no solution holds in the equation as it was given".to_string(),
+        1 => "1 solution holds in the equation as it was given".to_string(),
+        n => format!("{n} solutions hold in the equation as it was given"),
     });
+    if let Some(want) = crate::settings::roots() {
+        nearest_of_all(&mut kept, &mut solver.notes, want as usize);
+    }
     Ok(finish(kept, solver))
 }
 
@@ -2030,6 +2176,57 @@ fn restrict(
 }
 
 /// The roots in their order, without the numbers that a family holds already.
+/// `roots = N` for an equation as a whole: where several searches were made, one for each
+/// factor of a product, each listed its N nearest roots; of them all, and of the exact
+/// numbers beside them, the N nearest to 0 stay (families with a whole number in them stay
+/// as they are), and one note tells how many are listed.
+fn nearest_of_all(roots: &mut Vec<Root>, notes: &mut Vec<String>, want: usize) {
+    const SEARCH: &str = "numeric search (roots = ";
+    let searches = notes.iter().filter(|n| n.starts_with(SEARCH)).count();
+    if searches == 0 {
+        return;
+    }
+    let size = |r: &Root| -> Option<rug::Float> {
+        numeric::evalf(&r.value, 64)
+            .ok()
+            .map(|z| rug::Float::with_val(64, z.abs_ref()))
+    };
+    let mut sizes: Vec<rug::Float> = roots.iter().filter_map(size).collect();
+    sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    let before = sizes.len();
+    if before > want {
+        // (roots of one size, as a number and its conjugate, stay together)
+        let most = rug::Float::with_val(64, &sizes[want - 1] * (1.0 + 1e-15));
+        roots.retain(|r| size(r).is_none_or(|s| s <= most));
+    }
+    let listed = roots.iter().filter(|r| size(r).is_some()).count();
+    if listed == before && searches == 1 {
+        return;
+    }
+    // (what a search said of itself no longer holds for the whole)
+    let stopped = notes
+        .iter()
+        .any(|n| n.starts_with(SEARCH) && n.contains("was stopped"));
+    notes.retain(|n| !n.starts_with(SEARCH));
+    notes.push(if stopped {
+        format!(
+            "numeric search (roots = {want}): a search was stopped at its limit of time; {listed} roots found until then are listed, there may be others"
+        )
+    } else if listed == 1 {
+        format!(
+            "numeric search (roots = {want}): the root nearest to 0 that was found is listed, there may be others"
+        )
+    } else if listed >= want {
+        format!(
+            "numeric search (roots = {want}): the {listed} roots nearest to 0 that were found are listed, there may be others"
+        )
+    } else {
+        format!(
+            "numeric search (roots = {want}): only {listed} roots were found, there may be others"
+        )
+    });
+}
+
 fn finish(mut roots: Vec<Root>, mut solver: Solver) -> Solved {
     let families: Vec<(Expr, Expr, Vec<i64>)> = roots
         .iter()
@@ -2186,5 +2383,36 @@ fn within(x: &Expr, y: &Expr, params: &[String]) -> bool {
 pub fn release(params: &[String]) {
     for p in params {
         assume::clear(p);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn read(text: &str) -> Expr {
+        let parsed = crate::parser::parse(text).expect("an expression");
+        simplify(&parsed.stmts[0])
+    }
+
+    #[test]
+    fn the_middle_of_the_exponents_of_a_sum_of_exponentials() {
+        // cos(x) cosh(x) - 1 with exponentials for its functions: the exponents 2i, 2 + 2i, 2,
+        // 1 + i and 0
+        let f = read("e^(2*i*x)/4 + e^(2*x + 2*i*x)/4 + e^(2*x)/4 - e^(x + i*x) + 1/4");
+        assert_eq!(middle_of_exponents(&f, "x"), Some((1.0, 1.0)));
+        // sin(x) - x: i, 2i and 0, with a polynomial beside one of them
+        let f = read("-x*e^(i*x) - i*e^(2*i*x)/2 + i/2");
+        assert_eq!(middle_of_exponents(&f, "x"), Some((0.0, 1.0)));
+        // other bases than e
+        let (re, im) = middle_of_exponents(&read("2^x - x^2"), "x").expect("a middle");
+        assert!((re - 2f64.ln() / 2.0).abs() < 1e-15 && im == 0.0);
+        // nothing to balance, and functions of another kind
+        assert_eq!(middle_of_exponents(&read("x^3 - 2*x + 1"), "x"), None);
+        assert_eq!(middle_of_exponents(&read("e^x + e^(-x) - 3"), "x"), None);
+        assert_eq!(middle_of_exponents(&read("sin(x) - x"), "x"), None);
+        assert_eq!(middle_of_exponents(&read("e^(x^2) - x"), "x"), None);
+        assert_eq!(middle_of_exponents(&read("x^x - 2"), "x"), None);
+        assert_eq!(middle_of_exponents(&read("ln(x) - e^x"), "x"), None);
     }
 }

@@ -146,13 +146,23 @@ fn simplify_with(e: &Expr, told: bool) -> Expr {
     }
     if e.size() <= 400 && degree <= 128 && depth <= 8 {
         let t = ratsimp::together(e);
-        tried(&mut best, &mut best_cost, "over a common denominator, cancelled", t.clone());
+        tried(
+            &mut best,
+            &mut best_cost,
+            "over a common denominator, cancelled",
+            t.clone(),
+        );
         if e.size() <= 150 {
             // in several variables the factors of a high degree take long to find
             if terms <= 150 {
                 tried(&mut best, &mut best_cost, "factored", ratsimp::factor(&t));
             }
-            tried(&mut best, &mut best_cost, "with the identities of sines and cosines", ratsimp::trigsimp(e));
+            tried(
+                &mut best,
+                &mut best_cost,
+                "with the identities of sines and cosines",
+                ratsimp::trigsimp(e),
+            );
         }
     }
     if told && (best != *e || crate::trace::deep()) {

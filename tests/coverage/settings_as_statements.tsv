@@ -1,0 +1,125 @@
+	prec=100 pi	pi|  ~ 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068
+	prec = 40; e	e|  ~ 2.718281828459045235360287471352662497757
+	precision 45, sqrt(2)	sqrt(2)|  ~ 1.41421356237309504880168872420969807856967188
+	digits 36 pi	pi|  ~ 3.14159265358979323846264338327950288
+	digits=50; N(pi); digits=default; N(pi)	3.1415926535897932384626433832795028841971693993751|3.1415926535897932384626433832795
+	digits = 50, N(e); digits = auto, N(e)	2.7182818284590452353602874713526624977572470937|2.7182818284590452353602874713527
+	prec=100	digits = 100
+	digits = 12	digits = 12
+	precision = 33	digits = 33
+	precision 33	digits = 33
+	roots = 5	roots = 5
+	maxroots = 6	roots = 6
+	solutions = 7	roots = 7
+	solutions 7	roots = 7
+	terms = 1000	terms = 1000
+	maxterms = 2000	terms = 2000
+	maxterms 2000;	terms = 2000
+	verbose	verbose = on
+	verbose = 1	verbose = on
+	verbose on	verbose = on
+	verbose = yes	verbose = on
+	verbose = true	verbose = on
+	verbose = 2	verbose = all
+	verbose = all	verbose = all
+	debug	verbose = all
+	debug = on	verbose = all
+	verbose = off	verbose = off
+	verbose = 0	verbose = off
+	verbose = no	verbose = off
+	verbose = false	verbose = off
+	verbose = none	verbose = off
+	verbose = default	verbose = off
+	debug = off	verbose = off
+	debug; verbose = off	verbose = all|verbose = off
+	digits=40, roots=3	digits = 40|roots = 3
+	digits=40 roots=3 terms=9	digits = 40|roots = 3|terms = 9
+	digits=40; roots=3; terms=9;	digits = 40|roots = 3|terms = 9
+	roots = 5; roots = default	roots = 5|roots = default (a numeric search lists what its usual starting points find)
+	terms = 5; terms = auto	terms = 5|terms = default (each sum and each series has its own limit)
+	digits = 5; digits = default	digits = 5|digits = default (32, or as many as the longest number of an input)
+	settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = off
+	digits=40, roots=3, terms=5000, verbose=off, settings	digits = 40|roots = 3|terms = 5000|verbose = off
+	roots = 7, terms = 1000000, settings	digits = default (32, or as many as the longest number of an input)|roots = 7|terms = 1000000|verbose = off
+	settings; 1 + 1	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = off|2
+	debug; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = all
+	digits = 5; pi	pi|  ~ 3.1416
+	digits = 1; pi	pi|  ~ 3
+	digits = 3; 2/3 + 0.0	0.667
+	prec=20 1/3 + 0.0	0.33333333333333333333
+	roots = 2; 1 + 1	2
+	terms = 7; 2*3	6
+	verbose = 0; 2^10	1024
+	digits = 5; 1.234567890123 + 0	1.234567890123
+	digits = 40; x := 0.5; sin(x)	0.5|0.4794255386042030002732879352155713880818
+	pi; digits = 10; pi; digits = 20; pi	pi|  ~ 3.1415926535897932384626433832795|pi|  ~ 3.141592654|pi|  ~ 3.1415926535897932385
+	N(1/7); prec 12 N(1/7); prec 6 N(1/7)	0.14285714285714285714285714285714|0.142857142857|0.142857
+-d 50	digits = default; pi	pi|  ~ 3.1415926535897932384626433832795
+-d 50	pi	pi|  ~ 3.1415926535897932384626433832795028841971693993751
+--prec 40	pi	pi|  ~ 3.141592653589793238462643383279502884197
+--prec 40	digits = 12; pi	pi|  ~ 3.14159265359
+--precision=40	pi	pi|  ~ 3.141592653589793238462643383279502884197
+--digits=45	e	e|  ~ 2.71828182845904523536028747135266249775724709
+--prec=45	e	e|  ~ 2.71828182845904523536028747135266249775724709
+--digits 45 --roots 3 --terms=100 -v	settings	digits = 45|roots = 3|terms = 100|verbose = on
+--debug	settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = all
+--roots=9	roots = default, settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = off
+	prec = x + 1	x = prec - 1
+	prec = 100 - 1	prec = 99
+	prec = 2*3	prec = 6
+	digits = pi	error: expected `(` after the function name `digits`
+	roots = x^2	error: expected `(` after the function name `roots`
+	terms + 1	terms + 1
+	terms*2 = 6	terms = 3
+	verbose := 3; verbose + 1	3|4
+	terms := 4; terms^2	4|16
+	digits := 7; digits!	error: expected `(` after the function name `digits`
+	prec := 2; prec^10	2|1024
+	precision := 1/3; precision + 1	1/3|  ~ 0.33333333333333333333333333333333|4/3|  ~ 1.3333333333333333333333333333333
+	solutions := [1, 2]; sum(solutions)	[1, 2]|3
+	maxroots := 5; maxroots - 1	5|4
+	debug := 2; debug*debug	2|4
+	settings := 9; sqrt(settings)	9|3
+	solve(prec^2 = 4, prec)	prec = -2|prec = 2
+	solve(verbose + 1 = 0, verbose)	verbose = -1
+	x = prec	x = prec
+	[roots = 3]	error: expected `(` after the function name `roots`
+	[digits = 2, terms = 3]	error: expected `(` after the function name `digits`
+	f(roots) := roots + 1; f(2)	error: expected `(` after the function name `roots`
+	g(verbose, debug) := verbose*debug; g(3, 4)	g(verbose, debug) := debug*verbose|12
+	diff(terms^3, terms)	3terms^2
+	integrate(prec, prec)	prec^2/2
+	subst(digits^2, digits, 5)	error: expected `(` after the function name `digits`
+	roots(x^2 - 1)	[-1, 1]
+	roots([1, -3, 2])	[1, 2]
+	digits(1/7)	[[0], [], [1, 4, 2, 8, 5, 7]]
+	digits(1234)	[[1, 2, 3, 4], [], []]
+	x := 2; prec = 100; x	2|2
+	prec = 100; prec	prec
+	prec == 100	digits = 100
+	prec != 100	prec != 100
+	prec > 5	prec > 5
+	2*prec + prec	3prec
+	verbose - verbose	0
+	roots/roots	error: expected `(` after the function name `roots`
+	verbose = maybe	maybe = verbose
+	digits = many	error: expected `(` after the function name `digits`
+	digits = 0	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = 2000000	error: digits = N: a whole number from 1 to 1000000, or default
+	roots = 0	error: roots = N: a whole number from 1 to 100000, or default
+	roots = 100001	error: roots = N: a whole number from 1 to 100000, or default
+	terms = 0	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = 2000000000000	error: terms = N: a whole number from 1 to 1000000000000, or default
+	verbose = 7	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	verbose = 3	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	debug = 5	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	digits = 1.5	error: expected `(` after the function name `digits`
+	roots = 2.5	error: expected `(` after the function name `roots`
+	roots = on	error: roots = N: a whole number from 1 to 100000, or default
+	terms = off	error: terms = N: a whole number from 1 to 1000000000000, or default
+	digits = on	error: digits = N: a whole number from 1 to 1000000, or default
+--roots 0	pi	error: --roots needs a whole number from 1 to 100000
+--terms 0	pi	error: --terms needs a whole number from 1 to 1000000000000
+--digits 0	pi	error: --digits needs a whole number from 1 to 1000000
+--prec x	pi	error: --digits needs a whole number from 1 to 1000000
+--roots	pi	error: --roots needs a whole number from 1 to 100000

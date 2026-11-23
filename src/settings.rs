@@ -98,7 +98,9 @@ pub fn shown(setting: Setting, digits: Option<u32>) -> String {
     match setting {
         Setting::Digits => match digits {
             Some(d) => format!("digits = {d}"),
-            None => "digits = default (32, or as many as the longest number of an input)".to_string(),
+            None => {
+                "digits = default (32, or as many as the longest number of an input)".to_string()
+            }
         },
         Setting::Roots => match roots() {
             Some(n) => format!("roots = {n}"),
@@ -132,4 +134,70 @@ pub fn listed(digits: Option<u32>) -> Vec<String> {
     .iter()
     .map(|s| shown(*s, digits))
     .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn the_words_of_settings_and_their_values() {
+        for (word, setting) in [
+            ("digits", Setting::Digits),
+            ("prec", Setting::Digits),
+            ("precision", Setting::Digits),
+            ("roots", Setting::Roots),
+            ("maxroots", Setting::Roots),
+            ("solutions", Setting::Roots),
+            ("terms", Setting::Terms),
+            ("maxterms", Setting::Terms),
+            ("verbose", Setting::Verbose),
+            ("debug", Setting::Debug),
+            ("settings", Setting::List),
+        ] {
+            assert_eq!(named(word), Some(setting), "{word}");
+            assert_eq!(named(name(setting)), Some(setting));
+        }
+        assert_eq!(named("Digits"), None);
+        assert_eq!(named("root"), None);
+        assert!(bare(Setting::Verbose) && bare(Setting::Debug) && bare(Setting::List));
+        assert!(!bare(Setting::Digits) && !bare(Setting::Roots) && !bare(Setting::Terms));
+        assert!(value_word("default") && value_word("off") && !value_word("maybe"));
+    }
+
+    #[test]
+    fn what_is_set_is_what_the_methods_see() {
+        reset();
+        assert_eq!(
+            (roots(), terms_set(), terms(2_000_000)),
+            (None, None, 2_000_000)
+        );
+        set_roots(Some(7));
+        set_terms(Some(500));
+        assert_eq!(
+            (roots(), terms_set(), terms(2_000_000)),
+            (Some(7), Some(500), 500)
+        );
+        // (out of range: the nearest value that is allowed)
+        set_roots(Some(0));
+        set_terms(Some(0));
+        assert_eq!((roots(), terms_set()), (Some(1), Some(1)));
+        set_roots(Some(u32::MAX));
+        set_terms(Some(u64::MAX));
+        assert_eq!((roots(), terms_set()), (Some(MAX_ROOTS), Some(MAX_TERMS)));
+        assert_eq!(
+            listed(Some(40))[..3],
+            ["digits = 40", "roots = 100000", "terms = 1000000000000"]
+        );
+        reset();
+        assert_eq!(
+            listed(None),
+            [
+                "digits = default (32, or as many as the longest number of an input)",
+                "roots = default (a numeric search lists what its usual starting points find)",
+                "terms = default (each sum and each series has its own limit)",
+                "verbose = off"
+            ]
+        );
+    }
 }

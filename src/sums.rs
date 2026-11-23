@@ -399,7 +399,11 @@ fn ln_size(z: &Complex) -> f64 {
 /// (above 0: the terms end up as small as wanted) and the terms that `bits` bits need. The
 /// largest of 200 terms in a row is measured, so that terms that wave do not mislead, and the
 /// law must hold again much farther out, where a power of the index no longer counts.
-fn geometric_rate(term: &dyn Fn(&Int) -> Option<Complex>, a: &Int, bits: u32) -> Option<(f64, u64)> {
+fn geometric_rate(
+    term: &dyn Fn(&Int) -> Option<Complex>,
+    a: &Int,
+    bits: u32,
+) -> Option<(f64, u64)> {
     const ROW: u32 = 200;
     let first = a.to_f64();
     let largest = |from: u32| -> Option<f64> {
@@ -451,9 +455,11 @@ fn ln_1p(e: Complex, prec: u32) -> Complex {
         return Complex::with_val(prec, e + 1u32).ln();
     }
     // ln|1 + e| = ln(1 + 2 re + |e|^2)/2, and the angle of 1 + e
-    let twice = rug::Float::with_val(prec, e.real() * 2u32) + rug::Float::with_val(prec, e.norm_ref());
+    let twice =
+        rug::Float::with_val(prec, e.real() * 2u32) + rug::Float::with_val(prec, e.norm_ref());
     let re = twice.ln_1p() / 2u32;
-    let im = rug::Float::with_val(prec, e.imag()).atan2(&rug::Float::with_val(prec, e.real() + 1u32));
+    let im =
+        rug::Float::with_val(prec, e.imag()).atan2(&rug::Float::with_val(prec, e.real() + 1u32));
     Complex::with_val(prec, (re, im))
 }
 
@@ -516,7 +522,10 @@ fn numeric_sum(term_at: &dyn Fn(&Int, u32) -> Option<Complex>, a: &Int) -> Resul
             "the terms shrink at least as fast as those of a geometric series: they are added one by one".to_string()
         });
         return direct(24).ok_or_else(|| {
-            format!("after {most} terms the next ones still change the digits ({})", allowed())
+            format!(
+                "after {most} terms the next ones still change the digits ({})",
+                allowed()
+            )
         });
     }
     let mut missing = unknown();
@@ -557,7 +566,11 @@ fn numeric_sum(term_at: &dyn Fn(&Int, u32) -> Option<Complex>, a: &Int) -> Resul
     crate::trace::step(|| {
         format!(
             "the terms shrink like a power of the index{}: the sums of the first 16, 32, 48, ... terms are extrapolated to all of them (Richardson)",
-            if alternating { ", with alternating signs (taken in pairs)" } else { "" }
+            if alternating {
+                ", with alternating signs (taken in pairs)"
+            } else {
+                ""
+            }
         )
     });
     let work = target * 5 + 512;
@@ -569,7 +582,8 @@ fn numeric_sum(term_at: &dyn Fn(&Int, u32) -> Option<Complex>, a: &Int) -> Resul
     let mut agreed = 0;
     // (sixteen terms a row, or thirty-two: `terms = N` ends the rows sooner)
     let usual = 6 * digits as usize + 40;
-    let rows = usual.min(crate::settings::terms_set().map_or(usize::MAX, |t| (t / 16).max(8) as usize));
+    let rows =
+        usual.min(crate::settings::terms_set().map_or(usize::MAX, |t| (t / 16).max(8) as usize));
     for j in 0..rows {
         for _ in 0..16 {
             partial += wide(&n).ok_or_else(unknown)?;
@@ -700,7 +714,10 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
         if hi - lo <= direct_limit() {
             if let Some(total) = taken_exactly(&f, k, lo, hi, false) {
                 crate::trace::step(|| {
-                    format!("the {} terms from {k} = {lo} to {hi} are added one by one", hi - lo + 1)
+                    format!(
+                        "the {} terms from {k} = {lo} to {hi} are added one by one",
+                        hi - lo + 1
+                    )
                 });
                 return Ok((total, false));
             }
@@ -956,6 +973,11 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
         && let Some(lo) = a.as_i64()
     {
         // the sum of the logarithms, each from the factor less 1: a factor near 1 keeps its digits
+        crate::trace::step(|| {
+            format!(
+                "no closed form of the product is known: it is e to the power of the sum of the logarithms of its factors, ln({f})"
+            )
+        });
         let excess = simplify(&sub(f.clone(), Expr::one()));
         let found = if f.free_syms().iter().all(|s| &**s == k) {
             numeric_sum(
@@ -990,4 +1012,81 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
         Expr::call("product", vec![f, kx, a.clone(), b.clone()]),
         false,
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn how_fast_the_terms_of_a_series_shrink() {
+        let bits = numeric::bits_for(32);
+        let term = |q: f64, p: i32| {
+            move |n: &Int| -> Option<Complex> {
+                let n = rug::Float::with_val(64, n);
+                let power = rug::Float::with_val(64, q).ln() * &n;
+                Some(Complex::with_val(64, power.exp() / n.pow(p)))
+            }
+        };
+        use rug::ops::Pow;
+        // 0.99^n/n^2: the ratio 0.99, about twelve thousand terms for 32 digits
+        let (rate, needed) = geometric_rate(&term(0.99, 2), &Int::from(1), bits).expect("a rate");
+        assert!((rate + 0.99f64.ln()).abs() < 1e-6, "{rate}");
+        assert!((11_000..14_000).contains(&needed), "{needed}");
+        let (rate, needed) = geometric_rate(&term(0.999, 0), &Int::from(1), bits).expect("a rate");
+        assert!((rate + 0.999f64.ln()).abs() < 1e-7, "{rate}");
+        assert!((110_000..130_000).contains(&needed), "{needed}");
+        // powers of the index alone, and ln(1 + 1/n), are no geometric series
+        assert!(geometric_rate(&term(1.0, 2), &Int::from(1), bits).is_none());
+        let log = |n: &Int| -> Option<Complex> {
+            let n = rug::Float::with_val(64, n);
+            Some(Complex::with_val(64, n.recip().ln_1p()))
+        };
+        assert!(geometric_rate(&log, &Int::from(1), bits).is_none());
+    }
+
+    #[test]
+    fn the_logarithm_of_a_factor_near_one_keeps_its_digits() {
+        for (re, im) in [
+            (1e-30, 0.0),
+            (-1e-25, 3e-27),
+            (0.2, -0.1),
+            (3.0, 4.0),
+            (-0.5, 0.0),
+        ] {
+            let e = Complex::with_val(400, (re, im));
+            let exact = Complex::with_val(2000, &e + 1u32).ln();
+            let got = ln_1p(e, 400);
+            let gap = Complex::with_val(400, &got - &exact);
+            let scale = rug::Float::with_val(64, exact.abs_ref());
+            assert!(
+                rug::Float::with_val(64, gap.abs_ref()) <= scale * 1e-100f64,
+                "ln(1 + ({re} + {im} i))"
+            );
+        }
+    }
+
+    #[test]
+    fn an_exact_sum_that_grows_beyond_use_is_not_written_out() {
+        let k = Expr::sym("k");
+        let term = crate::canon::powi(add(vec![crate::canon::powi(k, 2), Expr::one()]), -1);
+        // 1/(k^2 + 1): three thousand terms are a fraction that can be read, a hundred thousand not
+        let small = taken_exactly(&term, "k", 1, 3000, false).expect("an exact sum");
+        assert!(small.as_rat().is_some());
+        assert!(taken_exactly(&term, "k", 1, 100_000, false).is_none());
+        // whole numbers stay small, and what is no number is not counted
+        let square = crate::canon::powi(Expr::sym("k"), 2);
+        assert_eq!(
+            taken_exactly(&square, "k", 1, 200_000, false).and_then(|s| s.as_i64()),
+            Some(2_666_686_666_700_000)
+        );
+        assert_eq!(
+            taken_exactly(&square, "k", 1, 2000, false).and_then(|s| s.as_i64()),
+            Some(2000 * 2001 * 4001 / 6)
+        );
+        assert_eq!(
+            taken_exactly(&Expr::sym("k"), "k", 1, 10, true).and_then(|s| s.as_i64()),
+            Some(3_628_800)
+        );
+    }
 }

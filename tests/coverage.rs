@@ -273,6 +273,13 @@ tables!(
     matlab_files6,
     matlab_pictures,
     matlab_pictures_known,
+    settings_as_statements,
+    roots_nearest_to_zero,
+    sums_by_numbers,
+    repeated_roots_and_no_roots,
+    inverse_sines_on_the_hyperbola,
+    steps_told,
+    programs_of_statements,
 );
 
 /// Whether `name(` or `name[` stands in a text, as the call of that function and of no longer

@@ -52,13 +52,16 @@ again.
 How numeric results end. A value is worked out with more bits than its digits need and once
 more with still more bits, until the digits of both agree: how good a value is depends on
 digits = N, never on a count of terms. A root is followed until two steps in a row no longer
-change its digits. An infinite sum is added term by term until 64 terms in a row no longer
-change the digits, or the sums of its first terms are extrapolated until three extrapolations
-agree; terms = N sets where a sum or a series gives up, and the error says what is missing.
-A numeric search for the roots of an equation lists the 8 nearest to 0 that it finds when the
-equation is made of elementary functions, and what fixed starting points find for the others;
-roots = N asks for the N nearest (roots that are equally far from 0 stay together, so a root
-and its conjugate may make it N + 1).
+change its digits, and looked at once more with half as many bits again: a root that counts
+several times is then found by Newton's method with that count. An infinite sum is added
+term by term until 64 terms in a row no longer change the digits, or the sums of its first
+terms are extrapolated until three extrapolations agree; terms = N sets where a sum or a
+series gives up, and the error says what is missing. A numeric search for the roots of an
+equation lists the 8 nearest to 0 that it finds when the equation is made of elementary
+functions, and what fixed starting points find for the others; roots = N asks for the N
+nearest (roots that are equally far from 0 stay together, so a root and its conjugate may
+make it N + 1), also of an equation that the function W of Lambert solves: there every
+branch lambertw(k, z) gives a solution.
 
 A session, and programs. Without an input the program reads the standard input line by line:
 lines that are typed, or a file (`symbolic-math < file`). Each line is one input, a line that
@@ -383,6 +386,11 @@ Programs, conditions and logic:
   'f(x) := piecewise(x < 0, 0, x); f(-2); f(3); integrate(f(x), x, -1, 2)'
   'k := 1; while(k < 100, k := 2k); k' 's := 0; do(s := s + k^2, [k, 1, 10]); s'
   'for(k, 1, 3, k^2)' 'block(a := 2, b := 3, a*b)'
+  'fb(n) := if(n < 2, n, fb(n - 1) + fb(n - 2)); fb(20)'
+  'f(n) := if(n <= 1, 1, n*f(n - 1)); f(1000) == 1000!'
+      # a function of any name may call itself, thousands of calls deep
+  'steps(n) := if(n == 1, 0, 1 + steps(if(n mod 2 == 0, n/2, 3n + 1))); steps(27)'
+      # how often 27 is halved or tripled until it is 1
   'true and false' 'and(1 < 2, 2 < 3)' 'or(true, false)'
   'not(1 < 2)' 'xor(true, true)' 'implies(false, true)'
   '1 < 2 && 2 < 3' 'true or false' '¬(2 ≤ 1) ∨ false' '(1 < 2) ∧ true'
@@ -2682,6 +2690,11 @@ Settings as statements: digits, how many roots, how many terms (they hold for th
   -r 'roots = 6; x*sin(x) = 1' 'roots = 3; sin(x) = x/10'  # real roots only
   'roots = 5; besselj(0, x) = 0' 'roots = 4; gamma(x) = 5' 'roots = 4; [sin(x) = y, cos(y) = x]'
       # of any function; solutions of a system
+  'roots = 5; x*e^x = 2' 'roots = 6; e^x = x + 2'
+      # the branches of the function W of Lambert that give the nearest solutions
+  'nsolve(1 - cos(x - 1) = 0, x, 1.3)' 'nsolve((cos(x) - x)^3 = 0, x, 0.7)'
+  'nsolve(e^x = 1 + 10^(-50), x, 1/10)'
+      # roots that count several times, and tiny ones, with all their digits
   --roots 5 'e^x = x^2'  # the same as an option
   'sum(1/(k^3 + 1), k, 1, 250000)'
       # more than 200000 terms that have no closed form are added as numbers

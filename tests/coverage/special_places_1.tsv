@@ -322,7 +322,7 @@
 -e	atan(true)	atan(true)
 -e	atan(-7/3)	-atan(7/3)
 -e	atan(0.5)	0.46364760900080611621425623146121
--e	acot(0)	atan(ComplexInfinity)
+-e	acot(0)	pi/2
 -e	acot(1)	pi/4
 -e	acot(-1)	-pi/4
 -e	acot(1/2)	atan(2)
@@ -340,7 +340,7 @@
 -e	acot(true)	atan(1/true)
 -e	acot(-7/3)	-atan(3/7)
 -e	acot(0.5)	1.1071487177940905030170654601785
--e	asec(0)	acos(ComplexInfinity)
+-e	asec(0)	ComplexInfinity
 -e	asec(1)	0
 -e	asec(-1)	pi
 -e	asec(1/2)	acos(2)
@@ -358,7 +358,7 @@
 -e	asec(true)	acos(1/true)
 -e	asec(-7/3)	acos(-3/7)
 -e	asec(0.5)	1.316957896924816708625046347308i
--e	acsc(0)	asin(ComplexInfinity)
+-e	acsc(0)	ComplexInfinity
 -e	acsc(1)	pi/2
 -e	acsc(-1)	-pi/2
 -e	acsc(1/2)	asin(2)
@@ -538,7 +538,7 @@
 -e	atanh(true)	atanh(true)
 -e	atanh(-7/3)	-atanh(7/3)
 -e	atanh(0.5)	0.54930614433405484569762261846126
--e	acoth(0)	atanh(ComplexInfinity)
+-e	acoth(0)	i*pi/2
 -e	acoth(1)	inf
 -e	acoth(-1)	-inf
 -e	acoth(1/2)	atanh(2)
@@ -556,7 +556,7 @@
 -e	acoth(true)	atanh(1/true)
 -e	acoth(-7/3)	-atanh(3/7)
 -e	acoth(0.5)	0.54930614433405484569762261846126 - 1.5707963267948966192313216916398i
--e	asech(0)	acosh(ComplexInfinity)
+-e	asech(0)	inf
 -e	asech(1)	0
 -e	asech(-1)	acosh(-1)
 -e	asech(1/2)	acosh(2)
@@ -574,7 +574,7 @@
 -e	asech(true)	acosh(1/true)
 -e	asech(-7/3)	acosh(-3/7)
 -e	asech(0.5)	1.316957896924816708625046347308
--e	acsch(0)	asinh(ComplexInfinity)
+-e	acsch(0)	ComplexInfinity
 -e	acsch(1)	asinh(1)
 -e	acsch(-1)	-asinh(1)
 -e	acsch(1/2)	asinh(2)

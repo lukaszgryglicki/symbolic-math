@@ -74,11 +74,15 @@ definitions, assumptions and the last result (`ans` or `%`).
 
 | Option | Meaning |
 | --- | --- |
-| `-d N`, `--digits N` | significant digits of numeric values (default 32, or more when a number of the input has more digits) |
+| `-d N`, `--digits N`, `--prec N`, `--precision N` | significant digits of numeric values (default 32, or more when a number of the input has more digits); the statement `digits = N` does the same |
 | `-r`, `--real` | real numbers only (the statement `domain(real)` does the same) |
 | `-q`, `--quaternions` | quaternions: `j` and `k` are units next to `i`, the unknown of an equation is a quaternion (`domain(quaternion)`) |
 | `-n`, `--numeric` | print numeric values instead of exact forms |
 | `-e`, `--exact` | print exact forms only, without the numeric line |
+| `--roots N` | a numeric search for the roots of an equation gives the `N` nearest to 0 (the statement `roots = N`) |
+| `--terms N` | the most terms that a sum or a series takes one by one (the statement `terms = N`) |
+| `-v`, `--verbose` | tell the steps that lead to each result, as lines `step: ...` (the statement `verbose`) |
+| `--debug` | tell every detail as well (the statement `debug`) |
 | `--functions` | list the functions with all their names |
 | `--constants` | list the constants with all their names |
 | `--units` | list the units with all their names and their sizes |
@@ -99,7 +103,9 @@ make the exit status 1.
 
 Where the program runs for strangers, as behind a web page, the environment variable
 `SYMBOLIC_MATH_SANDBOX=N` keeps the files that it reads and writes under plain names in the
-current directory, 64 files and `N` megabytes at most.
+current directory, 64 files and `N` megabytes at most. `SYMBOLIC_MATH_MEMORY=N` (Linux and
+FreeBSD) lets the program take `N` megabytes of memory at most, 64 or more: a calculation
+that needs more ends with an error and leaves the machine alone.
 
 `symbolic-math --help` prints, after the options, an example of every kind of operation: every
 function and every constant of the program is in at least one of its lines, each line can be
@@ -287,9 +293,13 @@ solve(...)` hold the solutions as a list.
                                          note: free: y, z (any value)
                                          note: free: x (any value)
 'sin(x)+y=1, x-y=1'                      x = 1.1060601577062719106167372970301, y = 0.10606015770627191061673729703007
-                                         x = -29.71469768582627937478337646524 + 4.1582135162052696736721622812845i, y = -30.71469768582627937478337646524 + 4.1582135162052696736721622812845i
+                                         x = -10.743789480773016390181099384907 - 3.2687827563025964339361123879444i, y = -11.743789480773016390181099384907 - 3.2687827563025964339361123879444i
+                                         x = -10.743789480773016390181099384907 + 3.2687827563025964339361123879444i, y = -11.743789480773016390181099384907 + 3.2687827563025964339361123879444i
+                                         x = -4.3165396770471007402706630535392 - 2.6114255442395965953681945547882i, y = -5.3165396770471007402706630535392 - 2.6114255442395965953681945547882i
                                          x = -4.3165396770471007402706630535392 + 2.6114255442395965953681945547882i, y = -5.3165396770471007402706630535392 + 2.6114255442395965953681945547882i
+                                         x = 3.9868981342821752127605526449077 - 1.6323448990594223732641651728579i, y = 2.9868981342821752127605526449077 - 1.6323448990594223732641651728579i
                                          x = 3.9868981342821752127605526449077 + 1.6323448990594223732641651728579i, y = 2.9868981342821752127605526449077 + 1.6323448990594223732641651728579i
+                                         x = 10.670593855146943920308018388534 - 2.9038473037758443345039936265515i, y = 9.6705938551469439203080183885341 - 2.9038473037758443345039936265515i
                                          x = 10.670593855146943920308018388534 + 2.9038473037758443345039936265515i, y = 9.6705938551469439203080183885341 + 2.9038473037758443345039936265515i
                                          note: numeric search: the roots found are listed, there may be others
 'exp(x)*sin(y) = 1, exp(x)*cos(y) = 1'   x = 0.34657359027997265470861606072909, y = 0.78539816339744830961566084581988
@@ -336,6 +346,216 @@ points where it is taken, on the whole line or between two bounds.
 'minimize(x+1/x, x, 0, inf)'   [2, x = 1]
 'minimize(x^3)'                -inf
                                note: x^3 is unbounded below (x -> -inf)
+```
+
+### How many digits, how many roots, how many terms
+
+Three settings are statements of their own. They may begin an input or stand between its
+statements, with or without `;` or `,` after them, and they hold for the rest of the run (in
+a session: until they are set again):
+
+| Setting | Also written | What it sets |
+| --- | --- | --- |
+| `digits = N` | `prec`, `precision` | the significant digits of numeric values, as `-d N` does |
+| `roots = N` | `maxroots`, `solutions` | a numeric search for the roots of an equation gives the `N` nearest to 0 |
+| `terms = N` | `maxterms` | the most terms that a sum, a product or a series takes one by one |
+| `verbose`, `debug` | `verbose = 0`, `1`, `2`, `off`, `on`, `all` | the steps to a result (next section) |
+| `settings` | | lists them |
+
+The `=` may be left out (`prec 100`), and the value `default` sets a setting back. A setting
+that stands alone answers with what is set. The words stay names where they are no settings:
+`prec = x + 1` is an equation, `terms := 4` a variable, `roots(x^2 - 1)` and `digits(1/7)` the
+functions.
+
+How a numeric result ends does not depend on a count of terms. A value is worked out with
+more bits than its digits need and once more with still more bits, until the digits of both
+agree. A root is followed until two steps in a row no longer change its digits, and then
+looked at once more with half as many bits again: a root that counts several times, which a
+plain search leaves with half of its digits, is found again by Newton's method with that
+count. An infinite sum is added term by term until 64 terms in a row no longer change the
+digits, or the sums of its first terms are extrapolated until three extrapolations agree;
+`terms = N` only sets where a sum or a series gives up, and the error then says how many
+terms it would take.
+
+An equation that no exact method solves is searched for roots by numbers. For an equation
+of elementary functions the size of the function is looked at on a lattice of points around
+0, and the 8 roots nearest to 0 are listed; `roots = N` asks for the `N` nearest of any
+equation, in the plane or, with `-r`, on the real line. Roots that are equally far from 0
+stay together, so a root and its conjugate may make it `N + 1`. An equation that is solved
+factor by factor gets the `N` nearest of all its roots, and one that the function W of
+Lambert solves the branches `lambertw(k, z)` that give them.
+
+```
+'prec=100 pi'                                 pi
+                                                ~ 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068
+'digits = 50; sqrt(2); digits = default; sqrt(2)'
+                                              sqrt(2)
+                                                ~ 1.4142135623730950488016887242096980785696718753769
+                                              sqrt(2)
+                                                ~ 1.4142135623730950488016887242097
+'sin(x) = x'                                  x = 0 (multiplicity 3)
+                                              x ~ -13.899959713976464002205598382182 - 3.352209884853504905194946667497i
+                                              x ~ -13.899959713976464002205598382182 + 3.352209884853504905194946667497i
+                                              x ~ -7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                              x ~ -7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                              x ~ 7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                              x ~ 7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                              x ~ 13.899959713976464002205598382182 - 3.352209884853504905194946667497i
+                                              x ~ 13.899959713976464002205598382182 + 3.352209884853504905194946667497i
+                                              note: numeric search: the roots found are listed, there may be others
+'roots = 3; sin(x) = x'                       x = 0 (multiplicity 3)
+                                              x ~ -7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                              x ~ -7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                              x ~ 7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                              x ~ 7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                              note: numeric search (roots = 3): the 5 roots nearest to 0 that were found are listed, there may be others
+'roots = 4; tan(x) = x'                       x ~ -7.725251836937707164195068933063
+                                              x ~ -4.4934094579090641753078809272803
+                                              x = 0 (multiplicity 3)
+                                              x ~ 4.4934094579090641753078809272803
+                                              x ~ 7.725251836937707164195068933063
+                                              note: numeric search (roots = 4): the 5 roots nearest to 0 that were found are listed, there may be others
+-r 'roots = 6; x*sin(x) = 1'                  x ~ -6.4391172384172464617245148403109
+                                              x ~ -2.7726047082659912339535697214993
+                                              x ~ -1.1141571408719300873005251781692
+                                              x ~ 1.1141571408719300873005251781692
+                                              x ~ 2.7726047082659912339535697214993
+                                              x ~ 6.4391172384172464617245148403109
+                                              note: numeric search (roots = 6): the 6 roots nearest to 0 that were found are listed, there may be others
+'prec=40, roots=2, cos(x) = x'                x ~ 0.7390851332151606416553120876738734040134
+                                              x ~ -2.486885698908560230696957034350657979423 - 1.8093613412957033190162761001940113256i
+                                              x ~ -2.486885698908560230696957034350657979423 + 1.8093613412957033190162761001940113256i
+                                              note: numeric search (roots = 2): the 3 roots nearest to 0 that were found are listed, there may be others
+'roots = 3; [sin(x) = y, cos(y) = x]'         x = 0.76816915673679597746208623955866, y = 0.69481969073078756557842007277519
+                                              x = -0.95280604716804636504773716202317 - 1.5765189754790050477875087089183i, y = -2.05585949014656684183707728075 - 1.3417102622371502292364089318368i
+                                              x = -0.95280604716804636504773716202317 + 1.5765189754790050477875087089183i, y = -2.05585949014656684183707728075 + 1.3417102622371502292364089318368i
+                                              note: numeric search (roots = 3): the solutions found are listed, there may be others
+'roots = 5; x*e^x = 2'                        x = lambertw(2)
+                                                ~ 0.85260550201372549134647241469532
+                                              x = lambertw(-2, 2)
+                                                ~ -1.7022590055576041842116953184942 - 10.839808676359298171614302965288i
+                                              x = lambertw(2, 2)
+                                                ~ -1.7022590055576041842116953184942 + 10.839808676359298171614302965288i
+                                              x = lambertw(-1, 2)
+                                                ~ -0.83431036663111001469472529817133 - 4.5302659985550082921313662798405i
+                                              x = lambertw(1, 2)
+                                                ~ -0.83431036663111001469472529817133 + 4.5302659985550082921313662798405i
+                                              note: Lambert W (roots = 5): the 5 solutions nearest to 0 are listed; lambertw(k, z) with other integers k gives the others
+'nsolve(1 - cos(x - 1) = 0, x, 1.3)' 'nsolve((cos(x) - x)^3 = 0, x, 0.7)'
+                                              1
+                                              0.73908513321516064165531208767387
+'sum(0.99^n/(n^2 + 1), n, 1, inf)'            1.0270645059885924094721924697161
+'terms = 1000; sum(0.99^n/(n^2 + 1), n, 1, inf)'
+                                              error: no value found for the sum of (99/100)^n/(1 + n^2): about 12197 terms give 32 digits, terms = 1000 allows 1000 of them
+'terms = 50; sum(1/(k^2 + 1), k, 1, 100)'     sum(1/(k^2 + 1), k, 1, 100)
+'sum(1/(k^3 + 1), k, 1, 250000)'              0.68650334233062391796454121239165
+'roots = 7, terms = 1000000, settings'        digits = default (32, or as many as the longest number of an input)
+                                              roots = 7
+                                              terms = 1000000
+                                              verbose = off
+```
+
+### The steps to a result
+
+`verbose` (or the option `-v`) tells how a result was found, each step on a line that begins
+with `step:`, before the result: the method of an equation and what it does to the unknown,
+the forms that a simplification tries, the rules of an integral, of a limit, of a sum, of a
+differential equation, the lattices of a search for roots, each run of the program `tet`.
+`debug` (or `--debug`) tells every detail as well: each command with what it gives, the
+bits with which a value settles, every starting point of a search. `verbose = off` ends it.
+
+```
+'verbose; x^2 - 5x + 6 = 0'                  step: the input is read as x^2 - 5x + 6 = 0
+                                             step: solve for x: x^2 - 5x + 6 = 0
+                                             step:   x^2 - 5x + 6 = 0: a polynomial of degree 2 in x
+                                             step:     over the rational numbers it factors into (x - 3) (x - 2)
+                                             step:     x - 3 = 0:
+                                             step:       degree 1: x = 3
+                                             step:     x - 2 = 0:
+                                             step:       degree 1: x = 2
+                                             step:   2 solutions hold in the equation as it was given
+                                             x = 2
+                                             x = 3
+'verbose; 2sin(3x + 1) = 1'                  step: the input is read as 2sin(3x + 1) = 1
+                                             step: solve for x: 2sin(3x + 1) - 1 = 0
+                                             step:   x stands in one place: what is done to it is undone step by step
+                                             step:     2sin(3x + 1) - 1 = 0
+                                             step:     2sin(3x + 1) = 1
+                                             step:     sin(3x + 1) = 1/2
+                                             step:     3x + 1 = pi/6 + 2k*pi
+                                             step:     3x = -1 + pi/6 + 2k*pi
+                                             step:     x = -1/3 + pi/18 + 2k*pi/3
+                                             step:     3x + 1 = 5pi/6 + 2n*pi
+                                             step:     3x = -1 + 5pi/6 + 2n*pi
+                                             step:     x = -1/3 + 5pi/18 + 2n*pi/3
+                                             step:   2 solutions hold in the equation as it was given
+                                             x = -1/3 + 5pi/18 + 2n*pi/3, n is an integer
+                                             x = -1/3 + pi/18 + 2k*pi/3, k is an integer
+'verbose; sqrt(x + 1) = x - 1'               step: the input is read as sqrt(x + 1) = x - 1
+                                             step: solve for x: -x + sqrt(x + 1) + 1 = 0
+                                             step:   the roots are removed (each one is set apart and raised to its power): x^2 - 3x = 0; what solves it is tried in the equation as it was given
+                                             step:     x^2 - 3x = 0: a polynomial of degree 2 in x
+                                             step:       x is a factor: x = 0 is a root
+                                             step:       degree 1: x = 3
+                                             step:   x = 0 is put into the equation: it does not hold there, so it is left out
+                                             step:   1 solution holds in the equation as it was given
+                                             x = 3
+'verbose; (x^2 - 1)/(x - 1)'                 step: the input is read as (x^2 - 1)/(x - 1)
+                                             step: simplify (x^2 - 1)/(x - 1) (17 characters): the shortest of these forms is kept
+                                             step:   multiplied out: x^2/(x - 1) - 1/(x - 1) (23 characters)
+                                             step:   over a common denominator, cancelled: x + 1 (5 characters: shorter)
+                                             step:   factored: x + 1 (5 characters)
+                                             step: the shortest: x + 1
+                                             x + 1
+'verbose; integrate(1/(2 + cos(x)), x)'      step: the input is read as integrate(1/(cos(x) + 2), x)
+                                             step: integral of 1/(cos(x) + 2) dx: with s = tan(x/2), where sin = 2s/(1 + s^2), cos = (1 - s^2)/(1 + s^2), dx = 2 ds/(1 + s^2), it is the integral of 2/(s^2 + 3) ds
+                                             step:   integral of 2/(s^2 + 3) ds: the factor 2 without s stands in front
+                                             step:     integral of 1/(s^2 + 3) ds = sqrt(3)*atan(sqrt(3)*s/3)/3 (a ratio of polynomials: divided, then split into partial fractions)
+                                             step: its derivative is 1/(cos(x) + 2) again (checked): the integral is 2sqrt(3)*atan(sqrt(3)*tan(x/2)/3)/3
+                                             2sqrt(3)*atan(sqrt(3)*tan(x/2)/3)/3
+'verbose; limit((1 + 1/n)^n, n, inf)'        step: the input is read as limit((1/n + 1)^n, n, inf)
+                                             step: the limit of (1/n + 1)^n as n -> inf
+                                             step:   as n -> inf: with n = 1/t it is the limit of (t + 1)^(1/t) as t -> 0 from above
+                                             step:     the series of (t + 1)^(1/t) in t begins with (e): as t -> 0 that goes to e
+                                             e
+                                               ~ 2.7182818284590452353602874713527
+'verbose; [x + y = 3, x - y = 1]'            step: the input is read as [x + y = 3, x - y = 1]
+                                             step: a system of 2 equations for x, y: x + y - 3 = 0, x - y - 1 = 0
+                                             step:   the equations are linear in x, y: the rows of coefficients with the right sides, [[1, 1, 3], [1, -1, 1]]
+                                             step:   elimination (Gauss and Jordan) leaves [[1, 0, 2], [0, 1, 1]] of rank 2
+                                             x = 2, y = 1
+'verbose; sum(0.9^n/(n^2 + 1), n, 1, inf)'   step: the input is read as sum((9/10)^n/(n^2 + 1), n, 1, inf)
+                                             step: the terms shrink at least as fast as those of a geometric series: they are added one by one
+                                             step: 832 terms were added: the last 64 of them no longer change the digits
+                                             0.79693959847909342216393950688095
+'verbose; sin(x) = x'                        step: the input is read as sin(x) = x
+                                             step: solve for x: sin(x) - x = 0
+                                             step:   sines and cosines are written with e^(i u): -x*e^(i*x) - i*e^(2i*x)/2 + i/2 = 0
+                                             step:     -x*e^(i*x) - i*e^(2i*x)/2 + i/2 = 0: no exact method applies (no polynomial, x cannot be set apart, no substitution makes it one)
+                                             step:       simple numbers are tried (whole numbers to 6, halves, pi, pi/2, i): 0 (3 times: the derivatives below the order 3 vanish there too) solves it
+                                             step:       search for the 8 roots nearest to 0 in the plane: the size of the function on a lattice of points (the upper half tells the lower one)
+                                             step:         the square from -4 to 4, step 0.125: no starting points, 1 root inside
+                                             step:         the square from -4 to 4, step 0.0625: no starting points, 1 root inside
+                                             step:         the square from -8 to 8, step 0.25: 4 starting points, 5 roots inside
+                                             step:         the square from -8 to 8, step 0.125: 4 starting points, 5 roots inside
+                                             step:         the square from -16 to 16, step 0.5: 8 starting points, 9 roots inside, the 8 nearest within 14.298468140408545
+                                             step:         the square from -16 to 16, step 0.25: 8 starting points, 9 roots inside, the 8 nearest within 14.298468140408545
+                                             step:       8 roots found by the search: -7.49767627778 - 2.76867828299i, -7.49767627778 + 2.76867828299i, 7.49767627778 - 2.76867828299i, 7.49767627778 + 2.76867828299i, -13.899959714 - 3.35220988485i, -13.899959714 + 3.35220988485i, 13.899959714 - 3.35220988485i, 13.899959714 + 3.35220988485i
+                                             step:   9 solutions hold in the equation as it was given
+                                             x = 0 (multiplicity 3)
+                                             x ~ -13.899959713976464002205598382182 - 3.352209884853504905194946667497i
+                                             x ~ -13.899959713976464002205598382182 + 3.352209884853504905194946667497i
+                                             x ~ -7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                             x ~ -7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                             x ~ 7.4976762777763854982723249965899 - 2.7686782829873215324953139130514i
+                                             x ~ 7.4976762777763854982723249965899 + 2.7686782829873215324953139130514i
+                                             x ~ 13.899959713976464002205598382182 - 3.352209884853504905194946667497i
+                                             x ~ 13.899959713976464002205598382182 + 3.352209884853504905194946667497i
+                                             note: numeric search: the roots found are listed, there may be others
+'debug; N(pi^e, 40)'                         step: the input is read as N(pi^e, 40)
+                                             step: the value of pi^e with 169 and with 233 bits: the digits agree
+                                             step: N(pi^e, 40) gives 22.45915771836104547342715220454373502759
+                                             22.45915771836104547342715220454373502759
 ```
 
 ### Derivatives, integrals, limits, series, sums
@@ -603,6 +823,46 @@ a function, written `x -> expression` or as the name of a function (`map`, `sele
 small programs; `and`, `or`, `not`, `xor`, `implies` and the comparisons give `true` or
 `false` for exact numbers, with all the digits that the decision needs.
 
+A program is a row of statements that share what they define: `name := value` a variable,
+`name(x, y) := expression` a function (a name of one letter or of several), `ans` or `%` the
+last result. A function may call itself, thousands of calls deep. Without an input on the
+command line the program reads the standard input line by line, as a session at the
+keyboard or from a file: each line is one input, a line that begins with `#` is skipped,
+`quit` or `exit` ends, and a line that fails does not end the rest.
+
+```console
+$ cat collatz.sm
+# how many steps a number takes to reach 1 (halve it when it is even, else 3n + 1)
+steps(n) := if(n == 1, 0, 1 + steps(if(n mod 2 == 0, n/2, 3n + 1)))
+steps(27)
+
+# the number below 30 that takes the longest
+champion := 1; record := 0
+for(k, 1, 29, if(steps(k) > record, block(champion := k, record := steps(k)), 0))
+[champion, record]
+
+# settings are lines of their own, and hold for the lines after them
+digits = 40
+sqrt(champion)
+roots = 2
+cos(x) = x
+$ symbolic-math < collatz.sm
+steps(n) := if(n = 1, 0, steps(if(mod(n, 2) = 0, n/2, 3n + 1)) + 1)
+111
+1
+0
+0
+[27, 111]
+digits = 40
+3sqrt(3)
+  ~ 5.196152422706631880582339024517617100828
+roots = 2
+x ~ 0.7390851332151606416553120876738734040134
+x ~ -2.486885698908560230696957034350657979423 - 1.8093613412957033190162761001940113256i
+x ~ -2.486885698908560230696957034350657979423 + 1.8093613412957033190162761001940113256i
+note: numeric search (roots = 2): the 3 roots nearest to 0 that were found are listed, there may be others
+```
+
 ```
 'table(k^2, k, 1, 5)'                         [1, 4, 9, 16, 25]
 'map(x -> x^2, [1, 2, 3])' 'select(range(20), isprime)'
@@ -627,6 +887,12 @@ small programs; `and`, `or`, `not`, `xor`, `implies` and the comparisons give `t
                                               385
                                               385
 'if(isprime(2^61-1), yes, no)'                yes
+'fb(n) := if(n < 2, n, fb(n - 1) + fb(n - 2)); fb(20)'
+                                              fb(n) := if(n < 2, n, fb(n - 1) + fb(n - 2))
+                                              6765
+'f(n) := if(n <= 1, 1, n*f(n - 1)); f(1000) == 1000!'
+                                              f(n) := if(n <= 1, 1, n*f(n - 1))
+                                              true
 '[x + y, x*y] = [3, 2]'                       x = 2, y = 1
                                               x = 1, y = 2
 'isrational(sqrt(2))' 'e^pi > pi^e'           false
@@ -3191,16 +3457,19 @@ values checked with other software, the law `f[s](f[t](x)) = f[s + t](x)`), `tes
 (lists, statistics, distributions, transforms, special functions and more), `tests/round4.rs`
 (equations in one unknown and with quaternion unknowns, units, graphs, plots),
 `tests/round5.rs` (numbers in a base, walks, pictures of characters, saved pictures: PNG
-files byte for byte, JPEG XL files decoded and compared with them), `tests/help.rs` (every
+files byte for byte, JPEG XL files decoded and compared with them), `tests/round8.rs`
+(settings as statements and as options, the steps of `verbose`, programs from the standard
+input, the limit on memory), `tests/help.rs` (every
 example of `--help` runs, every function and constant has one, and every picture of `jxls/`
 stands there with its input, which runs with small sizes) and `tests/coverage.rs`
-with the tables of `tests/coverage/`: more than 52000 inputs with their answers, among them
+with the tables of `tests/coverage/`: more than 58000 inputs with their answers, among them
 every name of every function, too few and too many arguments, numbers against exact
 arithmetic, functions against values of 25 digits from mpmath, identities of matrices, lists
 and polynomials, derivatives of integrals, texts, programs, refusals, what MATLAB has area by
-area, the shapes of four dimensions through every value of every choice, and the inputs
-whose answers agreed with other software (the tables `checked_by_*`). A test fails when a
-function has no row.
+area, the shapes of four dimensions through every value of every choice, the roots that a
+numeric search lists (each one put back into its equation with mpmath), sums against mpmath,
+the steps that `verbose` tells, and the inputs whose answers agreed with other software (the
+tables `checked_by_*`). A test fails when a function has no row.
 What MATLAB has was compared with GNU Octave (more than 1200 cases), SciPy and NumPy (more
 than 1800 checks), python-control, statsmodels and scikit-learn, geographiclib, PROJ and
 pymap3d (more than 1200 cases) and mpmath while it was written; the scripts are not part of

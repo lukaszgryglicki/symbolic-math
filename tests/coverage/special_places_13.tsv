@@ -507,7 +507,7 @@
 -e	atand(true)	180atan(true)/pi
 -e	atand(-7/3)	-180atan(7/3)/pi
 -e	atand(0.5)	26.565051177077989351572193720453
--e	acotd(0)	180atan(ComplexInfinity)/pi
+-e	acotd(0)	90
 -e	acotd(1)	45
 -e	acotd(-1)	-45
 -e	acotd(1/2)	180atan(2)/pi
@@ -525,7 +525,7 @@
 -e	acotd(true)	180atan(1/true)/pi
 -e	acotd(-7/3)	-180atan(3/7)/pi
 -e	acotd(0.5)	63.434948822922010648427806279547
--e	asecd(0)	180acos(ComplexInfinity)/pi
+-e	asecd(0)	ComplexInfinity
 -e	asecd(1)	0
 -e	asecd(-1)	180
 -e	asecd(1/2)	180acos(2)/pi
@@ -543,7 +543,7 @@
 -e	asecd(true)	180acos(1/true)/pi
 -e	asecd(-7/3)	180acos(-3/7)/pi
 -e	asecd(0.5)	75.456129290216892004100125807761i
--e	acscd(0)	180asin(ComplexInfinity)/pi
+-e	acscd(0)	ComplexInfinity
 -e	acscd(1)	90
 -e	acscd(-1)	-90
 -e	acscd(1/2)	180asin(2)/pi

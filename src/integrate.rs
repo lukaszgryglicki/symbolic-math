@@ -92,7 +92,12 @@ impl Cx {
                 factors.iter().cloned().partition(|t| self.has(t));
             if !without.is_empty() {
                 let front = mul(without);
-                trace::step(|| of(&format!("the factor {} without {var} stands in front", shown(&front))));
+                trace::step(|| {
+                    of(&format!(
+                        "the factor {} without {var} stands in front",
+                        shown(&front)
+                    ))
+                });
                 let _nest = trace::nest();
                 return Some(mul(vec![front, self.go(&mul(with))?]));
             }
@@ -112,7 +117,10 @@ impl Cx {
             return Some(r);
         }
         if let Some(r) = self.rational(f) {
-            told("a ratio of polynomials: divided, then split into partial fractions", &r);
+            told(
+                "a ratio of polynomials: divided, then split into partial fractions",
+                &r,
+            );
             return Some(r);
         }
         if let Some(r) = self.by_parts(f) {
@@ -1005,7 +1013,9 @@ impl Cx {
             drop(nest);
             if let Some(r) = found {
                 let back = subst(&r, &t, &u);
-                trace::step(|| format!("with {} = {} again: {}", shown(&t), shown(&u), shown(&back)));
+                trace::step(|| {
+                    format!("with {} = {} again: {}", shown(&t), shown(&u), shown(&back))
+                });
                 return Some(back);
             }
         }
@@ -1450,9 +1460,7 @@ pub fn integrate(f: &Expr, var: &str) -> Option<Expr> {
     });
     let result = simplify(&raw);
     if verify(&result, f, var) {
-        trace::step(|| {
-            format!("its derivative is {f} again (checked): the integral is {result}")
-        });
+        trace::step(|| format!("its derivative is {f} again (checked): the integral is {result}"));
         return Some(result);
     }
     let holds = verify(&raw, f, var);
@@ -1792,7 +1800,14 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
                 if points.is_empty() {
                     String::new()
                 } else {
-                    format!(", piece by piece between the points where the integrand has no value ({})", points.iter().map(|p| p.to_string()).collect::<Vec<_>>().join(", "))
+                    format!(
+                        ", piece by piece between the points where the integrand has no value ({})",
+                        points
+                            .iter()
+                            .map(|p| p.to_string())
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    )
                 }
             )
         });

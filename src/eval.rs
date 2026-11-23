@@ -18,8 +18,8 @@ pub struct Session {
     ans: Option<Expr>,
     /// Remarks of the commands of the current statement.
     pub(crate) notes: Vec<String>,
-    /// Nesting of the calls of defined functions.
-    depth: u32,
+    /// The defined functions whose calls are under way, the outermost first.
+    calls: Vec<String>,
     /// Digits asked for on the command line.
     pub digits: Option<u32>,
     /// Print numeric values instead of exact forms.
@@ -79,6 +79,30 @@ const EXACT_COMMANDS: &[&str] = &[
     "rat",
 ];
 
+thread_local! {
+    /// Where the stack of this thread begins and how much of it functions that call themselves
+    /// may take; where that is not known their calls are counted.
+    static CALL_STACK: std::cell::Cell<Option<(usize, usize)>> = const { std::cell::Cell::new(None) };
+}
+
+/// Tells that this thread has a stack with `room` bytes for functions that call themselves:
+/// from here on such calls end when that room is used up, and not after 64 of them.
+pub fn stack_for_calls(room: usize) {
+    let here = 0u8;
+    CALL_STACK.set(Some((std::ptr::addr_of!(here) as usize, room)));
+}
+
+/// A function has called itself (or another one that calls it) as deep as it may.
+fn too_deep(depth: usize) -> bool {
+    match CALL_STACK.get() {
+        Some((top, room)) => {
+            let here = 0u8;
+            top.abs_diff(std::ptr::addr_of!(here) as usize) > room
+        }
+        None => depth >= 64,
+    }
+}
+
 impl Session {
     pub fn new() -> Session {
         assume::clear_all();
@@ -89,7 +113,7 @@ impl Session {
             funcs: HashMap::new(),
             ans: None,
             notes: Vec::new(),
-            depth: 0,
+            calls: Vec::new(),
             digits: None,
             numeric: false,
             exact: false,
@@ -130,7 +154,9 @@ impl Session {
             Setting::Digits if usual => self.digits = None,
             Setting::Digits => self.digits = Some(whole(u64::from(settings::MAX_DIGITS))? as u32),
             Setting::Roots if usual => settings::set_roots(None),
-            Setting::Roots => settings::set_roots(Some(whole(u64::from(settings::MAX_ROOTS))? as u32)),
+            Setting::Roots => {
+                settings::set_roots(Some(whole(u64::from(settings::MAX_ROOTS))? as u32))
+            }
             Setting::Terms if usual => settings::set_terms(None),
             Setting::Terms => settings::set_terms(Some(whole(settings::MAX_TERMS)?)),
             Setting::Verbose | Setting::Debug => {
@@ -257,7 +283,9 @@ impl Session {
             if crate::trace::on() {
                 // with the steps on the lines are printed as they come, where they can be
                 lines.retain(|line| !crate::trace::print(line));
-                crate::trace::step(|| format!("the input is read as {}", crate::trace::written(stmt)));
+                crate::trace::step(|| {
+                    format!("the input is read as {}", crate::trace::written(stmt))
+                });
             }
             let done = self.statement(stmt, decimal);
             lines.extend(crate::trace::take());
@@ -2047,13 +2075,26 @@ impl Session {
     }
 
     pub(crate) fn apply_user(&mut self, name: &str, args: &[Expr]) -> Res {
-        if self.depth >= 64 {
-            return Err(format!("{name} calls itself without end"));
+        if too_deep(self.calls.len()) {
+            let itself = self.calls_itself(name);
+            return Err(format!("{itself} calls itself without end"));
         }
-        self.depth += 1;
+        self.calls.push(name.to_string());
         let result = self.apply_user_body(name, args);
-        self.depth -= 1;
+        self.calls.pop();
         result
+    }
+
+    /// Of the functions whose calls are under way when `name` is called once too often, the
+    /// first that is called again further in: the same one however deep the calls could go,
+    /// which is not the same on every system.
+    fn calls_itself(&self, name: &str) -> String {
+        let mut times: HashMap<&str, u32> = HashMap::new();
+        for call in self.calls.iter().map(String::as_str).chain([name]) {
+            *times.entry(call).or_default() += 1;
+        }
+        let again = self.calls.iter().find(|call| times[call.as_str()] > 1);
+        again.map_or(name, String::as_str).to_string()
     }
 
     fn apply_user_body(&mut self, name: &str, args: &[Expr]) -> Res {
@@ -3026,7 +3067,11 @@ impl Session {
                     crate::trace::step(|| {
                         format!(
                             "the derivative of {f} with respect to {var}{}, by the rules for sums, products, powers and a function of a function: {d}",
-                            if times == 1 { String::new() } else { format!(", {times} times") }
+                            if times == 1 {
+                                String::new()
+                            } else {
+                                format!(", {times} times")
+                            }
                         )
                     });
                 };

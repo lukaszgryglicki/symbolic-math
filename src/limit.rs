@@ -142,7 +142,9 @@ fn right_limit_rules(g: &Expr, depth: u32) -> Option<Expr> {
             && b.has_sym(T)
             && e.has_sym(T)
         {
-            step(|| format!("{g} is e to the power of ({e}) ln({b}): the limit of that exponent first"));
+            step(|| {
+                format!("{g} is e to the power of ({e}) ln({b}): the limit of that exponent first")
+            });
             let inner = right_limit(
                 &simplify(&mul(vec![
                     (**e).clone(),
@@ -175,7 +177,11 @@ fn right_limit_rules(g: &Expr, depth: u32) -> Option<Expr> {
                 } else {
                     let q = simplify(&div(a.clone(), b.clone()));
                     if settled(&q) && !q.is_undefined() {
-                        step(|| format!("{g}: the limit {a} of the numerator over the limit {b} of the denominator, {q}"));
+                        step(|| {
+                            format!(
+                                "{g}: the limit {a} of the numerator over the limit {b} of the denominator, {q}"
+                            )
+                        });
                         return Some(q);
                     }
                     if b.is_zero() && !a.is_zero() && !a.is_infinite() {
@@ -187,7 +193,11 @@ fn right_limit_rules(g: &Expr, depth: u32) -> Option<Expr> {
                             } else {
                                 1
                             };
-                        step(|| format!("{g}: the numerator goes to {a}, the denominator to 0 from one side: infinite, with the sign of both"));
+                        step(|| {
+                            format!(
+                                "{g}: the numerator goes to {a}, the denominator to 0 from one side: infinite, with the sign of both"
+                            )
+                        });
                         return side.imag().is_zero().then(|| signed_inf(s));
                     }
                 }
@@ -231,7 +241,9 @@ fn right_limit_rules(g: &Expr, depth: u32) -> Option<Expr> {
         if let Expr::Mul(factors) = g {
             if factors.iter().any(dies) && factors.iter().all(|f| dies(f) || tame(f)) {
                 step(|| {
-                    format!("{g}: an exponential that dies out beats the powers and logarithms beside it, 0")
+                    format!(
+                        "{g}: an exponential that dies out beats the powers and logarithms beside it, 0"
+                    )
                 });
                 return Some(Expr::zero());
             }
@@ -351,9 +363,16 @@ pub fn limit(f: &Expr, var: &str, point: &Expr, dir: Dir) -> Result<(Expr, bool)
     if !f.has_sym(var) {
         return Ok((f.clone(), false));
     }
+    let given = f;
     let f = simplify(f);
     let infinite = point.is_inf() || point.is_neg_inf();
-    crate::trace::step(|| format!("the limit of {f} as {var} -> {point}"));
+    crate::trace::step(|| {
+        if f == *given {
+            format!("the limit of {f} as {var} -> {point}")
+        } else {
+            format!("the limit of {given} as {var} -> {point}: the function simplifies to {f}")
+        }
+    });
     let _nest = crate::trace::nest();
     if !infinite {
         // a point where the function is defined and nothing degenerates
@@ -362,12 +381,16 @@ pub fn limit(f: &Expr, var: &str, point: &Expr, dir: Dir) -> Result<(Expr, bool)
             && !f.any(&|x| matches!(x, Expr::Fn(n, _) if matches!(&**n, "floor" | "ceil" | "round" | "trunc" | "frac" | "sign" | "abs" | "arg")));
         if regular {
             crate::trace::step(|| {
-                format!("the function has a value at {var} = {point}, where nothing of it breaks down: {direct}")
+                format!(
+                    "the function has a value at {var} = {point}, where nothing of it breaks down: {direct}"
+                )
             });
             return Ok((direct, false));
         }
         crate::trace::step(|| {
-            format!("{var} = {point} cannot be put in (0/0, a division by 0 or a jump): the function is followed towards the point")
+            format!(
+                "{var} = {point} cannot be put in (0/0, a division by 0 or a jump): the function is followed towards the point"
+            )
         });
     }
     if infinite {

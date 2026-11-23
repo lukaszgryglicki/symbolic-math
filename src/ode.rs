@@ -709,28 +709,51 @@ impl Ode {
                 crate::trace::step(|| name.to_string());
             };
             if !slope.has_sym(&self.y) {
-                kind(self, &format!("the right side has no {y}: {y} is its integral, plus a constant"));
+                kind(
+                    self,
+                    &format!("the right side has no {y}: {y} is its integral, plus a constant"),
+                );
                 let anti = integrate(&slope, &self.x)
                     .ok_or_else(|| format!("cannot integrate {slope}"))?;
                 out.push(Solution::Explicit(add(vec![anti, self.constant()])));
                 continue;
             }
-            kind(self, &format!("an equation of Bernoulli, {y}' = b {y} + c {y}^n: with v = {y}^(1 - n) it is linear in v"));
+            kind(
+                self,
+                &format!(
+                    "an equation of Bernoulli, {y}' = b {y} + c {y}^n: with v = {y}^(1 - n) it is linear in v"
+                ),
+            );
             if let Some(s) = self.bernoulli(&slope) {
                 out.extend(s.into_iter().map(Solution::Explicit));
                 continue;
             }
-            kind(self, &format!("separable, {y}' = f({x}) g({y}): the integral of d{y}/g({y}) is the integral of f({x}) d{x}, plus a constant"));
+            kind(
+                self,
+                &format!(
+                    "separable, {y}' = f({x}) g({y}): the integral of d{y}/g({y}) is the integral of f({x}) d{x}, plus a constant"
+                ),
+            );
             if let Some(s) = self.separable(&slope) {
                 out.extend(s);
                 continue;
             }
-            kind(self, &format!("homogeneous, {y}' depends on {y}/{x} alone: with {y} = v {x} it is separable in v"));
+            kind(
+                self,
+                &format!(
+                    "homogeneous, {y}' depends on {y}/{x} alone: with {y} = v {x} it is separable in v"
+                ),
+            );
             if let Some(s) = self.homogeneous(&slope) {
                 out.extend(s);
                 continue;
             }
-            kind(self, &format!("exact, M d{x} + N d{y} = 0 with dM/d{y} = dN/d{x}: a function F with dF/d{x} = M, dF/d{y} = N is constant along a solution"));
+            kind(
+                self,
+                &format!(
+                    "exact, M d{x} + N d{y} = 0 with dM/d{y} = dN/d{x}: a function F with dF/d{x} = M, dF/d{y} = N is constant along a solution"
+                ),
+            );
             if let Some(s) = self.exact(f) {
                 out.extend(s);
                 continue;

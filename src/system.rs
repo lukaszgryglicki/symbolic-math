@@ -185,7 +185,11 @@ impl Search {
                     "{} = 0 is solved for {}{}",
                     eqs[i],
                     vars[j],
-                    if count == 1 { " (its only unknown)" } else { "" }
+                    if count == 1 {
+                        " (its only unknown)"
+                    } else {
+                        ""
+                    }
                 )
             });
             let nest = crate::trace::nest();

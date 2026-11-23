@@ -285,7 +285,12 @@ fn repeated(
             far *= shrunk.max(1e-300);
         }
         before = Some(size);
-        if far.is_zero() {
+        // (as near as the digits ask for: the differences below would only be rounding)
+        let near = !at.is_zero()
+            && far
+                .get_exp()
+                .is_none_or(|e| i64::from(e) < exponent(&at) - (bits + 8));
+        if far.is_zero() || near {
             break;
         }
         let h = Float::with_val(64, &far >> 16u32);
@@ -316,11 +321,7 @@ fn repeated(
 /// root that counts several times was left where the digits of the function ended, with half
 /// the digits of the root (or a third of them) still wrong. Such a root is found again by
 /// `repeated`.
-fn checked(
-    f: &mut dyn FnMut(&Complex) -> Option<Complex>,
-    root: Complex,
-    target: u32,
-) -> Complex {
+fn checked(f: &mut dyn FnMut(&Complex) -> Option<Complex>, root: Complex, target: u32) -> Complex {
     if root.is_zero() {
         return root;
     }
@@ -442,4 +443,101 @@ pub fn find_root(
         }
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rug::ops::Pow;
+
+    /// The root of cos(x) = x to more digits than are asked for.
+    const DOTTIE: &str = "0.739085133215160641655312087673873404013411758900757464965680635773284654883547594599376106931766531849801246";
+
+    fn off(root: &Complex, re: &str, im: f64) -> f64 {
+        let want = Float::with_val(256, Float::parse(re).expect("a number"));
+        let gap = Complex::with_val(256, root - Complex::with_val(256, (want, im)));
+        Float::with_val(64, gap.abs_ref()).to_f64()
+    }
+
+    #[test]
+    fn a_root_that_counts_several_times_has_all_its_digits() {
+        // (the secant method alone leaves such a root with a half or a third of its digits)
+        for times in 1..=6u32 {
+            let mut f = |z: &Complex| {
+                let p = z.prec().0;
+                let base = Complex::with_val(p, z.cos_ref()) - z;
+                Some(Complex::with_val(p, base.pow(times)))
+            };
+            for digits in [12, 32, 60] {
+                let root = find_root(&mut f, &Complex::with_val(64, (0.7, 0.0)), digits)
+                    .unwrap_or_else(|| panic!("no root for the power {times}"));
+                let gap = off(&root, DOTTIE, 0.0);
+                assert!(
+                    gap < 10f64.powi(-(digits as i32) - 1),
+                    "power {times}, {digits} digits: off by {gap:e}"
+                );
+            }
+        }
+        // a root in the plane, twice: the square of sin(z) - z
+        let mut f = |z: &Complex| {
+            let p = z.prec().0;
+            Some((Complex::with_val(p, z.sin_ref()) - z).square())
+        };
+        let root = find_root(&mut f, &Complex::with_val(64, (7.5, 2.7)), 32).expect("a root");
+        let value = Complex::with_val(400, root.sin_ref()) - &root;
+        assert!(Float::with_val(64, value.abs_ref()) < 1e-40f64, "{root}");
+    }
+
+    #[test]
+    fn a_root_at_zero_is_zero_itself() {
+        for power in [1u32, 2, 5, 7] {
+            let mut f = |z: &Complex| Some(Complex::with_val(z.prec(), z.pow(power)));
+            let root = find_root(&mut f, &Complex::with_val(64, (0.3, 0.0)), 32);
+            assert!(root.is_some_and(|z| z.is_zero()), "x^{power}");
+        }
+        // sin(x)^2, tan(x) - x: not powers, and yet 0 exactly
+        let mut f = |z: &Complex| Some(Complex::with_val(z.prec(), z.sin_ref()).square());
+        assert!(
+            find_root(&mut f, &Complex::with_val(64, (0.3, 0.0)), 32).is_some_and(|z| z.is_zero())
+        );
+        let mut f = |z: &Complex| Some(Complex::with_val(z.prec(), z.tan_ref()) - z);
+        assert!(
+            find_root(&mut f, &Complex::with_val(64, (0.2, 0.0)), 32).is_some_and(|z| z.is_zero())
+        );
+    }
+
+    #[test]
+    fn a_place_where_the_function_only_fades_away_is_no_root() {
+        // x ln(x) - sin(x) goes to 0 at 0, where it has no value
+        let mut f = |z: &Complex| {
+            if z.is_zero() {
+                return None;
+            }
+            let p = z.prec().0;
+            let log = Complex::with_val(p, z.ln_ref());
+            Some(Complex::with_val(p, z * log) - Complex::with_val(p, z.sin_ref()))
+        };
+        assert!(find_root(&mut f, &Complex::with_val(64, (0.1, 0.0)), 32).is_none());
+        // ... and its root that is one is found from farther right
+        let root = find_root(&mut f, &Complex::with_val(64, (1.5, 0.0)), 32).expect("a root");
+        assert!(off(&root, "1.7526772813628442960253420704836", 0.0) < 1e-31);
+    }
+
+    #[test]
+    fn a_root_that_counts_once_is_as_before() {
+        let mut f = |z: &Complex| Some(Complex::with_val(z.prec(), z.cos_ref()) - z);
+        let root = find_root(&mut f, &Complex::with_val(64, (1.0, 0.0)), 50).expect("a root");
+        assert!(off(&root, DOTTIE, 0.0) < 1e-51);
+        // a tiny root is no creeping towards 0, and it has its digits though the function loses
+        // them all at the precision of the search: e^x = 1 + 10^-50 has the root 10^-50 - ...
+        let mut f = |z: &Complex| {
+            let p = z.prec().0;
+            let small = Float::with_val(p, Float::parse("1e-50").expect("a number"));
+            Some(Complex::with_val(p, z.exp_ref()) - Complex::with_val(p, (small + 1u32, 0)))
+        };
+        let root = find_root(&mut f, &Complex::with_val(64, (0.1, 0.0)), 32).expect("a root");
+        let want = Float::with_val(600, Float::parse("1e-50").expect("a number")).ln_1p();
+        let gap = Float::with_val(64, Float::with_val(600, root.real() - &want).abs() / &want);
+        assert!(gap < 1e-33f64 && root.imag().is_zero(), "{root}");
+    }
 }

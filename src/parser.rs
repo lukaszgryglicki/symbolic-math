@@ -581,9 +581,12 @@ impl Parser<'_> {
         }
         let after = at + usize::from(value.is_some());
         let next_statement = match self.peek_at(after) {
-            Tok::End | Tok::Ident(_) | Tok::Num(_) | Tok::Exact(_) | Tok::Text(_) | Tok::Root(_) => {
-                true
-            }
+            Tok::End
+            | Tok::Ident(_)
+            | Tok::Num(_)
+            | Tok::Exact(_)
+            | Tok::Text(_)
+            | Tok::Root(_) => true,
             // (a word alone before a parenthesis is a name: verbose(x) := ...)
             Tok::Op("(") => value.is_some(),
             Tok::Op(op) => matches!(*op, ";" | "," | "[" | "{"),
@@ -1816,6 +1819,47 @@ pub fn call_by_name(name: &str, args: Vec<Expr>) -> Res {
     }
 }
 
+/// The names of several letters that a text defines as functions, `name(x, y) := ...` at the
+/// start of a statement: without that they would be functions that the program does not know.
+fn defined(toks: &[(Tok, usize)]) -> Vec<String> {
+    let mut names = Vec::new();
+    let mut start = true;
+    for (at, (tok, _)) in toks.iter().enumerate() {
+        if start
+            && let Tok::Ident(name) = tok
+            && toks.get(at + 1).is_some_and(|t| t.0 == Tok::Op("("))
+        {
+            // the bracket that closes the list of its variables
+            let mut depth = 0usize;
+            let closed = toks[at + 1..].iter().position(|(t, _)| {
+                match t {
+                    Tok::Op("(") => depth += 1,
+                    Tok::Op(")") => depth -= 1,
+                    _ => {}
+                }
+                depth == 0
+            });
+            let defines = closed
+                .and_then(|k| toks.get(at + 2 + k))
+                .is_some_and(|t| t.0 == Tok::Op(":="));
+            let variable_like = name.chars().count() == 1
+                || names::is_greek_name(name)
+                || name.chars().any(|c| c.is_ascii_digit() || c == '_');
+            if defines
+                && !variable_like
+                && names::function(name).is_none()
+                && names::constant(name).is_none()
+                && crate::settings::named(name).is_none()
+                && !names.contains(name)
+            {
+                names.push(name.clone());
+            }
+        }
+        start = *tok == Tok::Op(";");
+    }
+    names
+}
+
 pub fn parse_with(src: &str, user_fn: &dyn Fn(&str) -> bool) -> Result<Parsed, String> {
     parse_radix(src, 10, user_fn)
 }
@@ -1828,6 +1872,11 @@ pub fn parse_radix(
     user_fn: &dyn Fn(&str) -> bool,
 ) -> Result<Parsed, String> {
     let toks = tokenize(src, radix)?;
+    // a name that the text itself defines as a function is one from its first statement on:
+    // in the definition, where it may call itself, and in what follows
+    let own = defined(&toks);
+    let known = |name: &str| user_fn(name) || own.iter().any(|d| d == name);
+    let user_fn: &dyn Fn(&str) -> bool = &known;
     let read = |or_bars: bool| {
         let mut p = Parser {
             toks: toks.clone(),

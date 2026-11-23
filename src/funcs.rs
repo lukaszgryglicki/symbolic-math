@@ -408,6 +408,11 @@ fn number_theory(name: &str, a: &[Expr]) -> Option<Expr> {
     })
 }
 
+/// The number 0, exact or as a decimal.
+fn nothing(e: &Expr) -> bool {
+    e.is_zero() || matches!(e, Expr::Float(f) if f.v.is_zero())
+}
+
 fn rewrite(name: &str, a: &[Expr]) -> Option<Expr> {
     let f = |n: &str, x: Expr| func(n, vec![x]);
     let x = || a[0].clone();
@@ -426,6 +431,11 @@ fn rewrite(name: &str, a: &[Expr]) -> Option<Expr> {
         ("sech", 1) => powi(f("cosh", x()), -1),
         ("csch", 1) => powi(f("sinh", x()), -1),
         ("coth", 1) => powi(f("tanh", x()), -1),
+        // at 0 the reciprocal is no number: the values that are usual there
+        ("acot", 1) if nothing(&a[0]) => div(Expr::pi(), Expr::int(2)),
+        ("acoth", 1) if nothing(&a[0]) => mul(vec![Expr::i(), div(Expr::pi(), Expr::int(2))]),
+        ("asech", 1) if nothing(&a[0]) => Expr::inf(),
+        ("asec" | "acsc" | "acsch", 1) if nothing(&a[0]) => Expr::sym(crate::expr::ZOO),
         ("asec", 1) => f("acos", powi(x(), -1)),
         ("acsc", 1) => f("asin", powi(x(), -1)),
         ("acot", 1) => f("atan", powi(x(), -1)),

@@ -477,7 +477,8 @@ fn on_hyperbola(a: &Float, b: &Float) -> bool {
     }
     match (a.to_rational(), b.to_rational()) {
         (Some(a), Some(b)) => {
-            let difference = rug::Rational::from(a.square_ref()) - rug::Rational::from(b.square_ref());
+            let difference =
+                rug::Rational::from(a.square_ref()) - rug::Rational::from(b.square_ref());
             difference == 1
         }
         _ => false,
@@ -670,7 +671,11 @@ pub fn evalf_digits_env(e: &Expr, digits: u32, env: Option<&Env>) -> Result<Comp
             format!(
                 "the value of {e} with {p} and with {} bits: the digits {}",
                 p + 64,
-                if settled { "agree" } else { "do not agree yet: more bits are taken" }
+                if settled {
+                    "agree"
+                } else {
+                    "do not agree yet: more bits are taken"
+                }
             )
         });
         if settled || (round == rounds && !parts.contains(&Part::Unsettled)) {
@@ -828,6 +833,25 @@ pub fn n(e: &Expr, digits: u32) -> Expr {
         },
         Expr::Pow(b, x) if x.as_rat().is_some() => pow(n(b, digits), (**x).clone()),
         Expr::Pow(b, x) if b.is_sym("e") => pow(Expr::e(), n(x, digits)),
+        Expr::Add(terms) => {
+            // the numbers of a sum are taken together: each one by itself has its digits, and
+            // their sum would have none where they cancel (ln(101) + ... - 50 ln(10) is 10^-50)
+            let (numbers, others): (Vec<Expr>, Vec<Expr>) = terms
+                .iter()
+                .cloned()
+                .partition(|t| t.is_const() && !t.is_infinite());
+            if numbers.len() < 2 {
+                return rebuild(e, &mut |c| n(c, digits));
+            }
+            let together = crate::canon::add(numbers);
+            let value = match evalf_digits(&together, digits) {
+                Ok(v) => to_float_expr(v, digits),
+                Err(_) => rebuild(&together, &mut |c| n(c, digits)),
+            };
+            let mut parts: Vec<Expr> = others.iter().map(|c| n(c, digits)).collect();
+            parts.push(value);
+            crate::canon::add(parts)
+        }
         _ => rebuild(e, &mut |c| n(c, digits)),
     }
 }
