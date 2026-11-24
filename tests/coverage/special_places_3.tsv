@@ -664,7 +664,7 @@
 -e	solve(x)	x = 0
 -e	solve([])	false
 -e	solve([1, 2])	false
--e	solve("text")	no solution
+-e	solve("text")	no solution found|note: no exact method: a numeric search found no solution, there may be some
 -e	solve(true)	false
 -e	solve(-7/3)	false
 -e	solve(0.5)	false

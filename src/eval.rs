@@ -18,8 +18,11 @@ pub struct Session {
     ans: Option<Expr>,
     /// Remarks of the commands of the current statement.
     pub(crate) notes: Vec<String>,
-    /// The defined functions whose calls are under way, the outermost first.
-    calls: Vec<String>,
+    /// The defined functions whose calls are under way, the outermost first, each with the
+    /// count of `undecided` when it was called.
+    calls: Vec<(String, u32)>,
+    /// How many conditions that could not be decided have their branches worked out now.
+    pub(crate) undecided: u32,
     /// Digits asked for on the command line.
     pub digits: Option<u32>,
     /// Print numeric values instead of exact forms.
@@ -114,6 +117,7 @@ impl Session {
             ans: None,
             notes: Vec::new(),
             calls: Vec::new(),
+            undecided: 0,
             digits: None,
             numeric: false,
             exact: false,
@@ -627,8 +631,15 @@ impl Session {
         if solved.all {
             lines.push(format!("every {var} is a solution"));
         } else if solved.roots.is_empty() {
+            // (after a numeric search that found nothing it is not known that there is none)
+            let searched = solved
+                .notes
+                .iter()
+                .any(|n| n.starts_with("no exact method"));
             lines.push(if found > 0 {
                 format!("no {} solution", kind(facts))
+            } else if searched {
+                "no solution found".to_string()
             } else {
                 "no solution".to_string()
             });
@@ -829,8 +840,9 @@ impl Session {
                 // (the remarks come last)
                 let (notes, mut found): (Vec<String>, Vec<String>) =
                     lines.into_iter().partition(|l| l.starts_with("note:"));
-                if found.iter().any(|l| l != "no solution") {
-                    found.retain(|l| l != "no solution");
+                let none = |l: &String| l == "no solution" || l == "no solution found";
+                if found.iter().any(|l| !none(l)) {
+                    found.retain(|l| !none(l));
                 }
                 found.extend(notes);
                 return Ok(Some((Expr::list(values), found)));
@@ -2079,7 +2091,14 @@ impl Session {
             let itself = self.calls_itself(name);
             return Err(format!("{itself} calls itself without end"));
         }
-        self.calls.push(name.to_string());
+        // A function that calls itself in a branch of a condition that could not be decided
+        // (its argument is a name, not a number) would do so without end, each call with a
+        // longer argument: there the call stays as it is written, with its arguments worked out.
+        let within = self.calls.iter().rev().find(|(call, _)| call == name);
+        if within.is_some_and(|(_, undecided)| self.undecided > *undecided) {
+            return Ok(Expr::call(name, self.eval_all(args)?));
+        }
+        self.calls.push((name.to_string(), self.undecided));
         let result = self.apply_user_body(name, args);
         self.calls.pop();
         result
@@ -2090,11 +2109,16 @@ impl Session {
     /// which is not the same on every system.
     fn calls_itself(&self, name: &str) -> String {
         let mut times: HashMap<&str, u32> = HashMap::new();
-        for call in self.calls.iter().map(String::as_str).chain([name]) {
+        for call in self
+            .calls
+            .iter()
+            .map(|(call, _)| call.as_str())
+            .chain([name])
+        {
             *times.entry(call).or_default() += 1;
         }
-        let again = self.calls.iter().find(|call| times[call.as_str()] > 1);
-        again.map_or(name, String::as_str).to_string()
+        let again = self.calls.iter().find(|(call, _)| times[call.as_str()] > 1);
+        again.map_or(name, |(call, _)| call.as_str()).to_string()
     }
 
     fn apply_user_body(&mut self, name: &str, args: &[Expr]) -> Res {

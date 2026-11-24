@@ -389,6 +389,8 @@ Programs, conditions and logic:
   'fb(n) := if(n < 2, n, fb(n - 1) + fb(n - 2)); fb(20)'
   'f(n) := if(n <= 1, 1, n*f(n - 1)); f(1000) == 1000!'
       # a function of any name may call itself, thousands of calls deep
+  'f(n) := if(n <= 1, 1, n*f(n - 1)); f(a)'
+      # with a name as its argument the condition cannot be decided: the function stays a call there
   'steps(n) := if(n == 1, 0, 1 + steps(if(n mod 2 == 0, n/2, 3n + 1))); steps(27)'
       # how often 27 is halved or tripled until it is 1
   'true and false' 'and(1 < 2, 2 < 3)' 'or(true, false)'
@@ -2696,6 +2698,11 @@ Settings as statements: digits, how many roots, how many terms (they hold for th
   'nsolve(e^x = 1 + 10^(-50), x, 1/10)'
       # roots that count several times, and tiny ones, with all their digits
   --roots 5 'e^x = x^2'  # the same as an option
+  -r '(cos(x) - x)^3 = 0' '(x^2 - 2)^2 = 0'
+      # a power is zero where its base is: each root counts as often as the power says
+  'e^x = 2 + x + x^1000'
+      # a search that found nothing says "no solution found": "no solution" is said only where there
+      # is none
   'sum(1/(k^3 + 1), k, 1, 250000)'
       # more than 200000 terms that have no closed form are added as numbers
   'terms = 50; sum(1/(k^2 + 1), k, 1, 100)'

@@ -1879,7 +1879,7 @@ const EQUATIONS_IN_ONE_UNKNOWN: &[(&str, &str)] = &[
     (r"ln(x)/(x - 1) = 0", r"no solution"),
     (
         r"ln(x)/(x - 1) = 1",
-        r"no solution|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed",
+        r"no solution found|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed",
     ),
     (r"x*ln(x) = 0", r"x = 1"),
     (r"x*ln(x) = ln(x)", r"x = 1 (multiplicity 2)"),

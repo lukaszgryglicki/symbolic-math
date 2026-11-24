@@ -192,7 +192,16 @@ pub fn int_pow(base: &Complex, k: i32, prec: u32) -> Complex {
         }
     }
     if k < 0 {
-        result.recip_mut();
+        // (the conjugate by the square of the size, not the correctly rounded reciprocal: of a
+        // number with one part smaller than the other by more than any precision, as
+        // 2^10000000 + i, MPC rounds it only with as many bits as the parts are apart)
+        let norm = Float::with_val(work, result.norm_ref());
+        if norm.is_finite() && !norm.is_zero() {
+            result.conj_mut();
+            result /= norm;
+        } else {
+            result.recip_mut();
+        }
     }
     Complex::with_val(prec, result)
 }

@@ -368,12 +368,11 @@ fn the_memory_of_a_run_can_be_limited() {
         )
     );
     // a calculation that needs more than it may take ends, and prints no result (who says so
-    // depends on where the memory ends: the allocator of Rust or the one of GMP)
+    // depends on where the memory ends: the allocator of Rust says "memory allocation of N
+    // bytes failed", the one of GMP "Cannot allocate memory" or "Cannot reallocate memory")
     let (out, err, code) = limited("200", "length(string(expand((x + y + z + 1)^120)))");
     assert!(
-        out.is_empty()
-            && (err.contains("memory allocation") || err.contains("Cannot allocate memory"))
-            && code != Some(0),
+        out.is_empty() && err.contains("memory") && code != Some(0),
         "{out} {err} {code:?}"
     );
 }

@@ -108,7 +108,8 @@ fn plain(text: String) -> String {
 }
 
 fn tell(text: String) {
-    let text = plain(text);
+    // (a step is one line: the end of a line inside a text that it shows is written \n)
+    let text = plain(text).replace('\n', "\\n");
     let indent = "  ".repeat(DEPTH.get().min(12) as usize);
     let line = if text.chars().count() > WIDTH {
         let short: String = text.chars().take(WIDTH).collect();
@@ -376,6 +377,9 @@ mod tests {
             step(|| "second".to_string());
         });
         assert_eq!(take(), ["step: kept", "step: first", "step: second"]);
+        // a step is one line, whatever it shows
+        step(|| "a text of\ntwo lines".to_string());
+        assert_eq!(take(), ["step: a text of\\ntwo lines"]);
         // a long line is cut, and a statement tells 4000 steps at most
         step(|| "x".repeat(700));
         let lines = take();

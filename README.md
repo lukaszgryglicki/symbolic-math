@@ -383,7 +383,10 @@ of elementary functions the size of the function is looked at on a lattice of po
 equation, in the plane or, with `-r`, on the real line. Roots that are equally far from 0
 stay together, so a root and its conjugate may make it `N + 1`. An equation that is solved
 factor by factor gets the `N` nearest of all its roots, and one that the function W of
-Lambert solves the branches `lambertw(k, z)` that give them.
+Lambert solves the branches `lambertw(k, z)` that give them. A power is zero where its base
+is: the base is solved, and each of its roots counts as often as the power says. A search
+that finds nothing answers `no solution found`; `no solution` is said only of an equation
+that is known to have none.
 
 ```
 'prec=100 pi'                                 pi
@@ -444,6 +447,10 @@ Lambert solves the branches `lambertw(k, z)` that give them.
 'nsolve(1 - cos(x - 1) = 0, x, 1.3)' 'nsolve((cos(x) - x)^3 = 0, x, 0.7)'
                                               1
                                               0.73908513321516064165531208767387
+-r '(cos(x) - x)^3 = 0'                       x ~ 0.73908513321516064165531208767387 (multiplicity 3)
+                                              note: numeric search: the roots found are listed, there may be others
+'e^x = 2 + x + x^1000'                        no solution found
+                                              note: no exact method: a numeric search found no solution, there may be some
 'sum(0.99^n/(n^2 + 1), n, 1, inf)'            1.0270645059885924094721924697161
 'terms = 1000; sum(0.99^n/(n^2 + 1), n, 1, inf)'
                                               error: no value found for the sum of (99/100)^n/(1 + n^2): about 12197 terms give 32 digits, terms = 1000 allows 1000 of them
@@ -825,7 +832,8 @@ small programs; `and`, `or`, `not`, `xor`, `implies` and the comparisons give `t
 
 A program is a row of statements that share what they define: `name := value` a variable,
 `name(x, y) := expression` a function (a name of one letter or of several), `ans` or `%` the
-last result. A function may call itself, thousands of calls deep. Without an input on the
+last result. A function may call itself, thousands of calls deep; with a name for its
+argument, where its condition cannot be decided, it stays a call. Without an input on the
 command line the program reads the standard input line by line, as a session at the
 keyboard or from a file: each line is one input, a line that begins with `#` is skipped,
 `quit` or `exit` ends, and a line that fails does not end the rest.
@@ -893,6 +901,8 @@ note: numeric search (roots = 2): the 3 roots nearest to 0 that were found are l
 'f(n) := if(n <= 1, 1, n*f(n - 1)); f(1000) == 1000!'
                                               f(n) := if(n <= 1, 1, n*f(n - 1))
                                               true
+'f(n) := if(n <= 1, 1, n*f(n - 1)); f(a)'     f(n) := if(n <= 1, 1, n*f(n - 1))
+                                              piecewise(a <= 1, 1, a*f(a - 1))
 '[x + y, x*y] = [3, 2]'                       x = 2, y = 1
                                               x = 1, y = 2
 'isrational(sqrt(2))' 'e^pi > pi^e'           false

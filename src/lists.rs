@@ -1252,10 +1252,13 @@ impl Session {
                         None => Ok(Expr::list(Vec::new())),
                     },
                     None => {
-                        let mut args = vec![c, self.eval(&raw[1])?];
-                        if let Some(e) = raw.get(2) {
-                            args.push(self.eval(e)?);
-                        }
+                        // (a function that calls itself in these branches stays a call there)
+                        self.undecided += 1;
+                        let branches: Result<Vec<Expr>, String> =
+                            raw[1..].iter().map(|e| self.eval(e)).collect();
+                        self.undecided -= 1;
+                        let mut args = vec![c];
+                        args.extend(branches?);
                         Ok(crate::funcs::func("piecewise", args))
                     }
                 }

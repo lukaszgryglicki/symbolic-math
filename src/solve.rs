@@ -739,6 +739,9 @@ impl Solver {
                             }
                         }
                     }
+                    "gamma" | "factorial" if simplify::is_zero(&c) => {
+                        trace::step(|| format!("{name} is zero nowhere"));
+                    }
                     _ => return self.numeric(&sub(lhs.clone(), rhs.clone())),
                 }
                 let mut out = Vec::new();
@@ -1126,8 +1129,15 @@ impl Solver {
                 if gap.is_zero() {
                     return None;
                 }
+                // (times the conjugate and by the square of the size, not `value /= gap`: where
+                // one part of the value is larger than the other by more than any precision,
+                // as x^10000000 makes it, the correctly rounded quotient by a number like
+                // 4 + 4i takes MPC as many bits as the parts are apart)
+                let turned = Complex::with_val(z.prec(), gap.conj_ref());
+                let norm = rug::Float::with_val(z.prec().0, gap.norm_ref());
                 for _ in 0..*times {
-                    value /= &gap;
+                    value *= &turned;
+                    value /= &norm;
                 }
             }
             Some(value)
@@ -1221,9 +1231,19 @@ impl Solver {
             );
             found = search.roots;
             searched = Some((want, search.radius, search.stopped));
-            starts.clear();
+            if found.is_empty() && places.is_empty() {
+                // (a function that is huge next to its roots, as one with x^50 in an
+                // exponent, shows them to no lattice: the fixed points may still find some)
+                trace::step(|| {
+                    "the lattice found no root: the search goes on from fixed starting points"
+                        .to_string()
+                });
+            } else {
+                starts.clear();
+            }
         }
-        if lattice.is_none() {
+        let from_fixed = !starts.is_empty();
+        if from_fixed {
             trace::step(|| {
                 format!(
                     "the secant method from {} starting points in the plane, each to {digits} digits ({} bits)",
@@ -1274,6 +1294,10 @@ impl Solver {
             }
         }
         drop(_starts);
+        if from_fixed && !found.is_empty() {
+            // (what the fixed points found is no count of the roots of a square)
+            searched = None;
+        }
         trace::step(|| {
             format!(
                 "{} found by the search{}",
@@ -1971,6 +1995,26 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         None => x,
     });
     let given = &open;
+    // a power is zero where its base is: the base is solved, and the power is not multiplied
+    // out (that makes each root of the base one that counts several times, which a search
+    // by numbers finds badly, and (cos(x) - x)^300 has more terms than fit anywhere)
+    if let Expr::Pow(base, times) = given
+        && base.has_sym(var)
+        && let Some(times) = times.as_i64().and_then(|k| u32::try_from(k).ok())
+        && times >= 2
+    {
+        trace::step(|| {
+            format!(
+                "solve for {var}: {given} = 0: a power is zero where its base is, {times} times over"
+            )
+        });
+        let _nest = trace::nest();
+        let mut solved = solve(base, var)?;
+        for root in &mut solved.roots {
+            root.mult = root.mult.saturating_mul(times);
+        }
+        return Ok(solved);
+    }
     let f = simplify::normal(given);
     trace::step(|| format!("solve for {var}: {f} = 0"));
     let _nest = trace::nest();
@@ -2255,7 +2299,20 @@ fn finish(mut roots: Vec<Root>, mut solver: Solver) -> Solved {
     if roots.iter().any(|r| r.approx) {
         solver.notes.retain(|n| !n.starts_with("no exact method"));
     } else {
+        // (a search was made and none of what it found is listed: that is said, and not
+        // "no solution" as of an equation that is known to have none)
+        let searched = solver.notes.iter().any(|n| n.starts_with("numeric search"));
         solver.notes.retain(|n| !n.starts_with("numeric search"));
+        let said = |n: &String| {
+            n.starts_with("no exact method") || n.starts_with("the equation holds on whole")
+        };
+        if searched && !solver.notes.iter().any(said) {
+            solver.note(if roots.is_empty() {
+                "no exact method: a numeric search found no solution, there may be some"
+            } else {
+                "no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed"
+            });
+        }
     }
     for p in solver.params.iter().filter(|p| !params.contains(p)) {
         assume::clear(p);

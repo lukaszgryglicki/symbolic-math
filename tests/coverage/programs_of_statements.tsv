@@ -30,6 +30,12 @@
 	f(x) := g(x); g(x) := g(x) + 1; f(1)	error: g calls itself without end
 	p(n) := q(n + 1); q(n) := r(n + 1); r(n) := q(n + 1); p(0)	error: q calls itself without end
 	f(x) := f(x) + 1; f(1)	error: f calls itself without end
+	c(n) := if(n == 1, 0, 1 + c(if(n mod 2 == 0, n/2, 3n + 1))); c(27); c(y)	c(n) := if(n = 1, 0, c(if(mod(n, 2) = 0, n/2, 3n + 1)) + 1)|111|piecewise(y = 1, 0, c(piecewise(mod(y, 2) = 0, y/2, 3y + 1)) + 1)
+	f(n) := if(n <= 1, 1, n*f(n - 1)); if(a > 0, f(5), 0); f(a); f(3000) == 3000!	f(n) := if(n <= 1, 1, n*f(n - 1))|piecewise(a > 0, 120, 0)|piecewise(a <= 1, 1, a*f(a - 1))|true
+	g(n) := if(x > 0, if(n == 0, 1, g(n - 1)), 0); g(3)	g(n) := if(x > 0, if(n = 0, 1, g(n - 1)), 0)|piecewise(x > 0, g(2), 0)
+	a(n) := if(n == 0, 1, b(n - 1)); b(n) := if(n == 0, 2, a(n - 1)); a(5); a(y)	a(n) := if(n = 0, 1, b(n - 1))|b(n) := if(n = 0, 2, a(n - 1))|2|piecewise(y = 0, 1, piecewise(y - 1 = 0, 2, a(y - 2)))
+	f(n) := if(n <= 1, 1, n*f(n - 1)); h := f(a); subst(h, a, 1); a := 4; f(a)	f(n) := if(n <= 1, 1, n*f(n - 1))|piecewise(a <= 1, 1, a*f(a - 1))|1|4|24
+	s(n) := if(n == 0, 0, n + s(n - 1)); s(y) - s(y)	s(n) := if(n = 0, 0, n + s(n - 1))|0
 	loop(n) := loop(n + 1); loop(0)	error: loop calls itself without end
 	myf(3)	error: unknown function `myf` (write `myf*(...)` for a product; --functions lists the functions)
 	sin(x) := 2	error: `sin` is a built-in function

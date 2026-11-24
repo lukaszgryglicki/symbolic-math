@@ -320,26 +320,36 @@ fn repeated(
 /// A root as the secant method gave it, looked at once more with half as many bits again: a
 /// root that counts several times was left where the digits of the function ended, with half
 /// the digits of the root (or a third of them) still wrong. Such a root is found again by
-/// `repeated`.
-fn checked(f: &mut dyn FnMut(&Complex) -> Option<Complex>, root: Complex, target: u32) -> Complex {
+/// `repeated`. `None`: the point is no root at all. The secant method also stands still
+/// where it came back from a point at which the function is huge (as next to the circle
+/// where x^1000 begins to count), and a step of Newton's method from there is long.
+fn checked(
+    f: &mut dyn FnMut(&Complex) -> Option<Complex>,
+    root: Complex,
+    target: u32,
+) -> Option<Complex> {
     if root.is_zero() {
-        return root;
+        return Some(root);
     }
     let size = modulus(&root);
     let wide = Complex::with_val(target + target / 2 + 32, &root);
     let h = Float::with_val(64, &size >> (target / 2 + 8));
     let Some((value, slope, _)) = slopes(f, &wide, &h) else {
-        return root;
+        return Some(root);
     };
     if value.is_zero() || slope.is_zero() {
-        return root;
+        return Some(root);
     }
     // what one step of Newton's method would still change
     let change = modulus(&Complex::with_val(64, &value / &slope));
     if !change.is_finite() || change <= Float::with_val(64, &size >> (target - 40)) {
-        return root;
+        return Some(root);
     }
-    repeated(f, &root, &Float::with_val(64, &change * 4u32), target).unwrap_or(root)
+    match repeated(f, &root, &Float::with_val(64, &change * 4u32), target) {
+        Some(better) => Some(better),
+        None if change > Float::with_val(64, &size >> 8u32) => None,
+        None => Some(root),
+    }
 }
 
 /// Root of `f` near `start` by the secant method in the complex plane, to `digits` digits. A
@@ -369,7 +379,7 @@ pub fn find_root(
     for _ in 0..400 {
         if f1.is_zero() {
             if prec >= target {
-                return Some(checked(f, x1, target));
+                return checked(f, x1, target);
             }
             f0 = Complex::with_val(prec, (1e-30, 0));
         }
@@ -423,7 +433,7 @@ pub fn find_root(
                         let zero = Complex::new(prec);
                         return f(&zero).filter(Complex::is_zero).map(|_| zero);
                     }
-                    return Some(checked(f, x1, target));
+                    return checked(f, x1, target);
                 }
             } else {
                 let old = prec;
@@ -486,6 +496,22 @@ mod tests {
         let root = find_root(&mut f, &Complex::with_val(64, (7.5, 2.7)), 32).expect("a root");
         let value = Complex::with_val(400, root.sin_ref()) - &root;
         assert!(Float::with_val(64, value.abs_ref()) < 1e-40f64, "{root}");
+    }
+
+    /// The secant method comes back from a point where the function is huge and stands still
+    /// there: that place is no root.
+    #[test]
+    fn a_standstill_away_from_a_root_is_no_root() {
+        // (e^z - 1 - z - z^1000)/z^2: huge outside the circle of radius 1
+        let mut f = |z: &Complex| {
+            let p = z.prec().0;
+            let power = Complex::with_val(p, z.pow(1000u32));
+            let value = Complex::with_val(p, z.exp_ref()) - 1u32 - z - power;
+            Some(value / Complex::with_val(p, z.square_ref()))
+        };
+        assert!(find_root(&mut f, &Complex::with_val(64, (0.875, -0.375)), 32).is_none());
+        let root = find_root(&mut f, &Complex::with_val(64, (1.0, 0.0)), 32).expect("a root");
+        assert!(off(&root, "0.9996683682940640163089920346389", 0.0) < 1e-30);
     }
 
     #[test]
