@@ -46,7 +46,7 @@ fn minus_one_pow(n: i64) -> Expr {
 
 /// Bessel functions of half-integer order by their elementary forms; `kind` is j, y, i or k.
 fn half_order(kind: char, twice: i64, z: &Expr) -> Option<Expr> {
-    if twice.abs() > 21 {
+    if twice.unsigned_abs() > 21 {
         return None;
     }
     let inv = powi(z.clone(), -1);
@@ -162,7 +162,7 @@ fn bessel(name: &str, nu: &Expr, z: &Expr) -> Option<Expr> {
     }
     if let Some(n) = nu.as_i64() {
         if n < 0 {
-            let flipped = f2(name, int(-n), z.clone());
+            let flipped = f2(name, int(n.checked_neg()?), z.clone());
             return Some(match kind {
                 'j' | 'y' => mul(vec![minus_one_pow(n), flipped]),
                 _ => flipped,

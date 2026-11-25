@@ -267,6 +267,24 @@ impl Gens {
                 if !bd.is_const() || bn.uses(i) {
                     continue;
                 }
+                // (the power of the base that the highest power of the root comes to: where
+                // it has millions of bits, as 3^(10^9) for sqrt(3)^(2 10^9 + 1), the powers
+                // of the root stay as they are)
+                let bits =
+                    bn.t.values()
+                        .map(|c| {
+                            c.numer()
+                                .significant_bits()
+                                .max(c.denom().significant_bits())
+                        })
+                        .fold(1u32, u32::max);
+                let work = u64::from(p.deg(i) / *q)
+                    .saturating_mul(u64::from(*pw))
+                    .saturating_mul(u64::from(bits))
+                    .saturating_mul(bn.t.len() as u64);
+                if work > 1 << 23 {
+                    continue;
+                }
                 let b = bn.scale(&bd.as_const().unwrap().recip()).pow(*pw);
                 let mut acc = Poly::zero(n);
                 for (d, c) in p.coeffs(i).iter().enumerate() {
@@ -516,8 +534,8 @@ pub fn is_zero(e: &Expr) -> Option<bool> {
     convert(e).map(|(_, (num, _))| num.is_zero())
 }
 
-fn factored(g: &Gens, p: &Poly) -> (Rat, Vec<Expr>) {
-    let (content, parts, _) = zfactor::factor(p);
+fn factored(g: &Gens, p: &Poly) -> (Rat, Vec<Expr>, bool) {
+    let (content, parts, complete) = zfactor::factor(p);
     let factors = parts
         .into_iter()
         .map(|(f, m)| {
@@ -529,40 +547,55 @@ fn factored(g: &Gens, p: &Poly) -> (Rat, Vec<Expr>) {
             }
         })
         .collect();
-    (content, factors)
+    (content, factors, complete)
 }
 
 /// Product of irreducible factors over the rationals (numerator and denominator).
 pub fn factor(e: &Expr) -> Expr {
+    factor_told(e).0
+}
+
+/// The same, and whether every factor is known to have no factors of its own: the search
+/// for them is given up where a polynomial has too many factors modulo the primes that are
+/// tried (as x^120 - 1 has), and it is left whole then.
+pub fn factor_told(e: &Expr) -> (Expr, bool) {
     if let Some(n) = e.as_int() {
-        return factor_integer(n);
+        return (factor_integer(n), true);
     }
     if let Expr::List(_) | Expr::Rel(..) = e {
-        return rebuild(e, &mut |c| factor(c));
+        let mut complete = true;
+        let parts = rebuild(e, &mut |c| {
+            let (part, known) = factor_told(c);
+            complete &= known;
+            part
+        });
+        return (parts, complete);
     }
     let Some((g, (num, den))) = convert(e) else {
-        return e.clone();
+        return (e.clone(), true);
     };
-    let (cn, mut top) = factored(&g, &num);
-    let (cd, bottom) = factored(&g, &den);
+    let (cn, mut top, above) = factored(&g, &num);
+    let (cd, bottom, below) = factored(&g, &den);
+    let complete = above && below;
     let content = cn / cd;
     top.extend(bottom.into_iter().map(|f| pow(f, Expr::minus_one())));
     if top.is_empty() {
-        return Expr::rational(content);
+        return (Expr::rational(content), complete);
     }
     if content == 1 {
-        return mul(top);
+        return (mul(top), complete);
     }
     if top.len() == 1 && matches!(top[0], Expr::Add(_)) {
-        return Expr::call(
+        let held = Expr::call(
             "hold",
             vec![Expr::Mul(
                 vec![Expr::rational(content), top.pop().unwrap()].into(),
             )],
         );
+        return (held, complete);
     }
     top.insert(0, Expr::rational(content));
-    mul(top)
+    (mul(top), complete)
 }
 
 pub fn factor_integer(n: &Int) -> Expr {

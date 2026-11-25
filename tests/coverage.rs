@@ -280,6 +280,12 @@ tables!(
     inverse_sines_on_the_hyperbola,
     steps_told,
     programs_of_statements,
+    round_9_roots,
+    round_9_values,
+    round_9_identities,
+    round_9_guards,
+    round_9_matrices,
+    round_9_lists,
 );
 
 /// Whether `name(` or `name[` stands in a text, as the call of that function and of no longer

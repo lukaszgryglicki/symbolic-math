@@ -1,0 +1,173 @@
+	fibonacci(-2^63)	fibonacci(-9223372036854775808)
+	fibonacci(-7)	13
+	lucas(-2^63)	lucas(-9223372036854775808)
+	chebyshevt(-2^63, x)	chebyshevt(-9223372036854775808, x)
+	chebyshevt(-3, x)	4x^3 - 3x
+	chebyshevu(-2^63, x)	chebyshevu(-9223372036854775808, x)
+	chebyshevu(-5, x)	4x - 8x^3
+	legendrep(-2^63, x)	legendrep(-9223372036854775808, x)
+	legendrep(-3, x)	3x^2/2 - 1/2
+	legendrep(3, -2^63, x)	0
+	legendrep(3, -2, x)	x/8 - x^3/8
+	sphericalharmonic(1, -2^63, t, p)	0
+	sphericalharmonic(1, 2^63, t, p)	sphericalharmonicy(1, 9223372036854775808, t, p)
+	sub2ind([2^63 - 1, 4], 2, 2)	9223372036854775809
+	sub2ind([3, 4], 2, 2)	5
+	reshape(range(6), [2, 3])	[[1, 2, 3], [4, 5, 6]]
+	sortrows([[3, 1], [1, 2]], -1)	[[3, 1], [1, 2]]
+	polynomialreduce(x^3 + y^3, [0, 0], [x, y])	x^3 + y^3
+	polynomialreduce(x^3 + y^3, [0, x + y], [x, y])	0
+	fortran(x^-2^63 + 1 + sin(y)/3)	"      t0 = x**-9223372036854775808 + sin(y)/3.0D0 + 1.0D0"
+	ccode(x^-2^63)	"t0 = pow(x, -9223372036854775808.0);"
+	diff(besselj(-2^63, x), x)	besselj(-9223372036854775809, x)/2 + besselj(9223372036854775807, x)/2
+	rsolve(a(n+2) = a(n+1) + a(n), a)	a(n) = C1*(1/2 - sqrt(5)/2)^n + C2*(1/2 + sqrt(5)/2)^n
+	c2d(tf([0], [1, 3, 2, 1]), 1/10, "matched")	tf([0], [1, -2.72311537903558240815012283657, 2.4647961018367546969409476678431, -0.74081822068171786606687377931782], 1/10)
+	polynomialdegree(x^-2^63 + x, x)	error: x + 1/x^9223372036854775808 is not a polynomial in x
+	datestr(-2^63, 27)	error: datestr: the calendar does not reach that far
+	weekday(-2^63)	error: weekday: the calendar does not reach that far
+	datestr(2^63 - 1)	error: datestr: the calendar does not reach that far
+	rsolve(a(n+1000000000) = a(n+1) + a(n), a)	error: only recurrences of an order up to 1000 are supported
+	rsolve(a(n+1001) = a(n), a)	error: only recurrences of an order up to 1000 are supported
+	x^-2^63 = 16	error: the exponent is too large
+	sortrows([[3, 1], [1, 2]], -2^63)	error: sortrows: -9223372036854775808 is no column of the matrix (a column counted from 1, with a minus sign for the falling order)
+	reshape(range(6), [2^63 - 1, 3])	error: 6 entries do not fill these sizes
+	grpdelay([], [])	error: grpdelay needs values
+	grpdelay([])	error: grpdelay needs values
+	tf2sos([], [])	error: tf2sos needs values
+	bilinear([1], {}, 10)	error: bilinear needs values
+	bilinear([1], [], 10)	error: bilinear needs values
+	lp2bp([1, 2], {}, 4, 1.5)	error: lp2bp needs values
+	lp2hp([1, 2], {}, 4)	error: lp2hp needs values
+	lp2hp([1, 2], [0], 4)	error: lp2hp: the denominator is zero
+	lp2lp([1, 2], [0, 0], 4)	error: lp2lp: the denominator is zero
+	lp2bs([1], [0], 4, 2)	error: lp2bs: the denominator is zero
+	det([[1, [5, 6]], [3, 4]])	error: the determinant needs a matrix of numbers and expressions: an entry is a list itself
+	inv([[1, [1, 2]], [3, 4]])	error: the inverse needs a matrix of numbers and expressions: an entry is a list itself
+	[[1, [5, 6]], [3, 4]]*[[1, 2], [3, 4]]	error: a product of matrices needs a matrix of numbers and expressions: an entry is a list itself
+	det([[1, 2], [3]])	error: det needs a matrix
+	triple([1, 0, 0], [0, 1, 0], [1])	error: the determinant needs a square matrix
+	filter2({}, [[2, 1], [1, 1]])	error: conv2(A, B): both are matrices with entries, as many in each of their rows
+	conv2([], [[1]])	error: conv2(A, B): both are matrices with entries, as many in each of their rows
+	c2d(tf([10.0], [1.0, 3.0, 10.0], "InputDelay", 4294967296), 0.25)	error: c2d: a delay of 100000 samples at most
+	c2d(tf([2.0, 1.0], [1.0, 3.0, 2.0], "InputDelay", 1.3), 2^-1075)	error: c2d: a delay of 100000 samples at most
+	c2d(tf([1], [1, 1], "InputDelay", 100001), 1)	error: c2d: a delay of 100000 samples at most
+	sin[-10^9](1)	error: too many steps
+	sin[-2^127](1)	error: too many steps
+	sin[2^127](1)	error: too many steps
+	rc2poly(poly2rc([0, -0.9, 0.2]))	error: rc2poly: undefined is not a real number
+	subspace([[0], [0]], [[1], [1]])	error: subspace needs two matrices that are not zero
+	rc2poly(poly2rc([1, -0.9, 0.2]))	[1, -0.9, 0.2]
+	subspace([[1], [0]], [[1], [1]])	pi/4|  ~ 0.78539816339744830961566084581988
+	roots = 5; besselj(-2^63, x) = 0	no solution found|note: no exact method: a numeric search found no solution, there may be some
+	dsolve(x^2*y'' + x*y' + (x^2 - 2^64)*y = 0, y, x)	y = C1*besselj(4294967296, x) + C2*bessely(4294967296, x)|note: y = C1*besselj(4294967296, x) + C2*bessely(4294967296, x) was not verified numerically
+	gbasis([x^2 + y^2 - 1, x - y], [x, y])	[x - y, y^2 - 1/2]
+	[x^2 + y^2 = 25, x + y = 7]	x = 4, y = 3|x = 3, y = 4
+-n	cheby1(4, -1, 0.3)	error: cheby1: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheby1(4, 0, 0.3)	error: cheby1: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheby2(4, 0, 0.3)	error: cheby2: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheby2(6, 2^31 - 1, 0.3)	error: cheby2: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheb1ap(3, -1)	error: cheb1ap: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheb2ap(3, 0)	error: cheb2ap: the ripple, in dB, is above 0 and 1000000 at most
+-n	ellip(4, 1, 2^40, 0.3)	error: ellip: the ripple, in dB, is above 0 and 1000000 at most
+-n	cheby1(4, 1, 0.3)	[[0.0083632395555545242020243947147431, 0.033452958222218096808097578858973, 0.050179437333327145212146368288459, 0.033452958222218096808097578858973, 0.0083632395555545242020243947147431], [1, -2.3741231747266082450966552446192, 2.7056566602050564121602952584201, -1.5917092215474796950199083309714, 0.41031508197431675846390212168271]]
+-n	cheby2(4, 40, 0.3)	[[0.018267424020139674547719895079766, -0.0093111005309132617956346860474083, 0.025669266122212743805476704550491, -0.0093111005309132617956346860474083, 0.018267424020139674547719895079766], [1, -2.6566257090265155835881220833275, 2.8076073961961802648659019222638, -1.3628990956390824563663476956069, 0.25549932157008334439821497928577]]
+-n	cheb1ap(3, 1)	[[], [-0.24708530247119023605012836576952 + 0.96599867499486701071790698596845i, -0.49417060494238047210025673153905, -0.24708530247119023605012836576952 - 0.96599867499486701071790698596845i], 0.49130668209006798450924308975826]
+-n	ellip(4, 1, 40, 0.3)	[[0.035306770274680941942854267630182, 0.023374875449924561649668562251418, 0.056049626350187293193806008306715, 0.023374875449924561649668562251418, 0.035306770274680941942854267630182], [1, -2.3209932904891710190135719217972, 2.6771554868803458284467011783615, -1.5773912625031945082173592799846, 0.41580156009729402234010952628085]]
+-n	c2d(tf([2.0, 1.0], [1.0, 3.0, 2.0], "InputDelay", 1.3), 1/4)	tf([0.3132506840245229075532861208973, -0.2194330440664274963406589094663, -0.050300084979607203568088836944118], [1, -1.3853314427840382918489698019695, 0.47236655274101470713804655094327, 0, 0, 0, 0, 0, 0], 0.25)
+-n	besselj(-2^63, 1)	besselj(-9223372036854775808, 1)
+-n	besselj(-3, 1)	-0.019563353982668405918905321621752
+	x^100000 = 2	error: the equation is a polynomial of the degree 100000 in x: polynomials are solved up to the degree 1000
+	x^1001 = 2	error: the equation is a polynomial of the degree 1001 in x: polynomials are solved up to the degree 1000
+	x^65535 = 4	error: the equation is a polynomial of the degree 65535 in x: polynomials are solved up to the degree 1000
+	x^2000 = x^1999	x = 0 (multiplicity 1999)|x = 1
+	abs((3/10 + (-7/5)*i))^4294967295 == 41/20	false
+	sqrt(2)^4294967295	2^(4294967295/2)
+	sqrt(2)^101	1125899906842624sqrt(2)|  ~ 1592262918131443.1411559535896304
+	8^(2/3)	4
+	sqrt(41/20)^7	68921sqrt(205)/80000|  ~ 12.334981818775869196964146955551
+	sin[-2](1)	asin(pi/2)|  ~ 1.5707963267948966192313216916398 - 1.0232274785475505793174956779493i
+-e	cbrt(10^(-2^32))	1/10^(4294967296/3)
+-q	x^49 = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	x^64 = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	x^100000 = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	(x + j)^100 = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	x^-64 = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	x^(2^70) = 1	error: no method for this equation: among the quaternions a power of the unknown is followed up to the 48th
+-q	x^2 = -1	x = u, u is any unit pure quaternion|note: a unit pure quaternion is a*i + b*j + c*k with a^2 + b^2 + c^2 = 1; its square is -1
+-q	(1 + j)^64	4294967296
+-q	(a + b*j)^3	a^3 - 3a*b^2 - (b^3 - 3a^2*b)*j
+-q	(1 + j)^100000 == ((1 + j)^50000)^2	true
+-q	x*(x - i)*(x - j) = 0	x = 0|x = i|x = j
+-q	x^3 = 8	x = 2|x = sqrt(3)*u - 1, u is any unit pure quaternion|  ~ 1.7320508075688772935274463415059u - 1|note: a unit pure quaternion is a*i + b*j + c*k with a^2 + b^2 + c^2 = 1; its square is -1
+-q	x^-3 = 1/8	x = 2|x = sqrt(3)*u - 1, u is any unit pure quaternion|  ~ 1.7320508075688772935274463415059u - 1|note: a unit pure quaternion is a*i + b*j + c*k with a^2 + b^2 + c^2 = 1; its square is -1
+	sin[10^6](1)	0.0017320415240522019051136029017261
+	(cos(x) - x)^300 = 0	x ~ 0.73908513321516064165531208767387 (multiplicity 300)|x ~ -9.1099874539365630067992197228856 - 2.9501708616994369577625248695066i (multiplicity 300)|x ~ -9.1099874539365630067992197228856 + 2.9501708616994369577625248695066i (multiplicity 300)|x ~ -2.4868856989085602306969570343507 - 1.809361341295703319016276100194i (multiplicity 300)|x ~ -2.4868856989085602306969570343507 + 1.809361341295703319016276100194i (multiplicity 300)|x ~ 5.8695603773476143940881725681928 - 2.5448857668857093265559704256731i (multiplicity 300)|x ~ 5.8695603773476143940881725681928 + 2.5448857668857093265559704256731i (multiplicity 300)|x ~ 12.308557602869556231953449009541 - 3.2355040686191297238524490154616i (multiplicity 300)|x ~ 12.308557602869556231953449009541 + 3.2355040686191297238524490154616i (multiplicity 300)|note: numeric search: the roots found are listed, there may be others
+	terms = 10^6	terms = 1000000
+	terms = 10^6; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = 1000000|verbose = off
+	terms = 1e6; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = 1000000|verbose = off
+	maxterms = 2^10; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = 1024|verbose = off
+	terms = 10^12; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = 1000000000000|verbose = off
+	prec = 2*10	digits = 20
+	prec = 100 - 1	digits = 99
+	prec = 2*10; N(pi)	3.1415926535897932385
+	n := 40; prec = n; N(pi)	40|3.141592653589793238462643383279502884197
+	n := 20; digits = 2*n; N(pi)	20|3.141592653589793238462643383279502884197
+	36; prec = ans; N(pi)	36|3.14159265358979323846264338327950288
+	prec = floor(10*pi); N(pi)	3.14159265358979323846264338328
+	precision = 6!/20; N(pi)	3.14159265358979323846264338327950288
+	prec = 40.0; N(pi)	3.141592653589793238462643383279502884197
+	prec = +40; N(pi)	3.141592653589793238462643383279502884197
+	prec = (40); N(pi)	3.141592653589793238462643383279502884197
+	prec = 4e1; N(pi)	3.141592653589793238462643383279502884197
+	digits = 2*30, sqrt(2)	sqrt(2)|  ~ 1.41421356237309504880168872420969807856967187537694807317668
+	terms = 10^6, sum(1/n^2, n, 1, inf)	pi^2/6|  ~ 1.644934066848226436472415166646
+	roots = 2*2	roots = 4
+	roots = 2*2; settings	digits = default (32, or as many as the longest number of an input)|roots = 4|terms = default (each sum and each series has its own limit)|verbose = off
+	solutions = 2 + 1; sin(x) = x/2	x ~ -1.8954942670339809471440357380936|x = 0|x ~ 1.8954942670339809471440357380936|note: numeric search (roots = 3): the 3 roots nearest to 0 that were found are listed, there may be others
+	verbose = 1 + 1; settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = all
+	verbose = 2 - 2; x^2 = 4	x = -2|x = 2
+	debug = 3 - 2; 1 + 1	step: the input is read as 1 + 1|2
+	prec = 2*10, terms = 3^4, roots = 1 + 1, settings	digits = 20|roots = 2|terms = 81|verbose = off
+	prec = 2*10, terms = 3^4	digits = 20|terms = 81
+	terms = -5	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = 10^13	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = 0*5	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = x	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = 5/2	error: terms = N: a whole number from 1 to 1000000000000, or default
+	terms = 10^6 sum(1/n^2, n, 1, inf)	error: terms = N: a whole number from 1 to 1000000000000, or default
+	prec = 10^10	error: digits = N: a whole number from 1 to 1000000, or default
+	prec = 30 + i	error: digits = N: a whole number from 1 to 1000000, or default
+	prec = inf	error: digits = N: a whole number from 1 to 1000000, or default
+	prec = sqrt(2)	error: digits = N: a whole number from 1 to 1000000, or default
+	prec = N(pi)	error: digits = N: a whole number from 1 to 1000000, or default
+	prec=1e2 pi	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = many	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = pi	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = x + 1	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = 1.5	error: digits = N: a whole number from 1 to 1000000, or default
+	digits = digits(1234)	error: digits = N: a whole number from 1 to 1000000, or default
+	roots = -1	error: roots = N: a whole number from 1 to 100000, or default
+	roots = 2.5	error: roots = N: a whole number from 1 to 100000, or default
+	roots = x	error: roots = N: a whole number from 1 to 100000, or default
+	roots = x^2	error: roots = N: a whole number from 1 to 100000, or default
+	roots = [1, 2]	error: roots = N: a whole number from 1 to 100000, or default
+	roots = roots(x^2 - 1)	error: roots = N: a whole number from 1 to 100000, or default
+	roots = 10^5 + 1	error: roots = N: a whole number from 1 to 100000, or default
+	solutions = many	error: roots = N: a whole number from 1 to 100000, or default
+	verbose = maybe	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	verbose = 1/2	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	verbose = 3 - 6	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	verbose = 1 + 2	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	debug = x	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	terms = -5; settings	error: terms = N: a whole number from 1 to 1000000000000, or default
+	prec = x + 1	x = prec - 1
+	prec = x + 1, y = 2	x = prec - 1, y = 2
+	terms = x + y; terms = 2*3; settings	x = terms - y|digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = 6|verbose = off
+	prec = 50; terms = x + 1	x = terms - 1
+	prec = 5 = x	prec = 5 and 5 = x
+	x = prec	x = prec
+	terms*2 = 6	terms = 3
+	prec = 40 x^2	x^2
+	verbose = on + 1	on = verbose - 1
+	block(prec = 50, N(pi))	3.1415926535897932384626433832795
+	prec = ans	error: there is no previous result

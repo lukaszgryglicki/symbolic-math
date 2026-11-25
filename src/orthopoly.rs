@@ -5,6 +5,7 @@ use crate::expand::expand;
 use crate::expr::Expr;
 use crate::funcs::func;
 use crate::hyper::{hyp1f1, hyp2f1};
+use crate::numeric::SafeExp;
 use crate::special::{Out, gamma_any, pi, rgamma};
 use rug::{Complex, Float};
 
@@ -174,10 +175,10 @@ fn factorial(n: i64) -> Expr {
 fn associated_legendre(n: i64, m: i64, x: &Expr) -> Expr {
     if m < 0 {
         // P_n^(-m) = (-1)^m (n - m)!/(n + m)! P_n^m
-        let k = -m;
-        if k > n {
+        if m < -n {
             return Expr::zero();
         }
+        let k = -m;
         let sign = if k % 2 == 0 { 1 } else { -1 };
         return mul(vec![
             int(sign),
@@ -224,7 +225,7 @@ pub fn symbolic(name: &str, a: &[Expr]) -> Option<Expr> {
     Some(match (name, a.len()) {
         ("legendrep", 2) => {
             // P_(-n-1) = P_n
-            let n = a[0].as_i64().map(|n| if n < 0 { -n - 1 } else { n })?;
+            let n = a[0].as_i64().map(|n| if n < 0 { -(n + 1) } else { n })?;
             legendre_p(degree(&int(n))?, x, sym)
         }
         ("legendrep", 3) => {
@@ -254,12 +255,12 @@ pub fn symbolic(name: &str, a: &[Expr]) -> Option<Expr> {
                 crate::simplify::simplify(&out)
             }
         }
-        ("chebyshevt", 2) => chebyshev(false, degree(&int(a[0].as_i64()?.abs()))?, x, sym),
+        ("chebyshevt", 2) => chebyshev(false, degree(&int(a[0].as_i64()?.checked_abs()?))?, x, sym),
         ("chebyshevu", 2) => {
             let n = a[0].as_i64()?;
             match n {
                 -1 => Expr::zero(),
-                n if n < -1 => neg(chebyshev(true, degree(&int(-n - 2))?, x, sym)),
+                n if n < -1 => neg(chebyshev(true, degree(&int(-(n + 2)))?, x, sym)),
                 n => chebyshev(true, degree(&int(n))?, x, sym),
             }
         }
@@ -288,7 +289,7 @@ pub fn symbolic(name: &str, a: &[Expr]) -> Option<Expr> {
         }
         ("sphericalharmonicy", 4) => {
             let (l, m) = (degree(&a[0])?, a[1].as_i64()?);
-            if m.abs() > l {
+            if m.unsigned_abs() > l as u64 {
                 return Some(Expr::zero());
             }
             if l > 60 {
@@ -381,7 +382,7 @@ pub fn numeric(name: &str, a: &[Complex], p: u32) -> Out {
                 let lost = crate::special::expo(&t1).max(crate::special::expo(&t2))
                     - crate::special::expo(&diff);
                 let scale =
-                    (Complex::with_val(w, nu) * Float::with_val(w, 2).ln()).exp() * pi(w).sqrt();
+                    (Complex::with_val(w, nu) * Float::with_val(w, 2).ln()).cexp() * pi(w).sqrt();
                 Some(Some((diff * scale, lost.max(0))))
             })
         }

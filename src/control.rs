@@ -1632,6 +1632,11 @@ impl Session {
                 ("pid", 1..=4) => {
                     let zero = Expr::zero();
                     let (kp, ki, kd, tf) = (&a[0], a.get(1).unwrap_or(&zero), a.get(2).unwrap_or(&zero), a.get(3).unwrap_or(&zero));
+                    // (a list for a gain made a system with a list for a coefficient, which
+                    // nothing reads)
+                    if a.iter().any(|x| x.as_list().is_some()) {
+                        return Err("pid(Kp, Ki, Kd, Tf): the gains are numbers or names, no lists".into());
+                    }
                     let s = Expr::sym("s");
                     let e = add(vec![
                         kp.clone(),
@@ -2373,7 +2378,14 @@ impl Session {
             if phase > 0 {
                 phase -= 360u32;
             }
-            phase_margins.push((phase + 180u32, rolled(&x, &ts)));
+            // (a phase of half a turn leaves no margin: 0, not the rounding of 180 - 180,
+            // whose sign would decide between no delay and a whole turn of it)
+            let mut margin = phase + 180u32;
+            if Float::with_val(prec, margin.abs_ref()) <= Float::with_val(prec, 180) >> (prec - 24)
+            {
+                margin = Float::new(prec);
+            }
+            phase_margins.push((margin, rolled(&x, &ts)));
         }
         let shown = crate::mfun::value;
         if all {
@@ -2966,7 +2978,9 @@ impl Session {
                 let (top, den) = (whole(&new_zeros), whole(&new_poles));
                 // the gains agree at s = 0 and z = 1, or at the first whole s that is no zero and no pole
                 let free = |p: &[Expr], x: &Expr| !crate::simplify::is_zero(&poly_at(p, x));
-                let at_s = (0..)
+                // (two polynomials have fewer roots than coefficients: among so many whole
+                // numbers one is free, unless the system is zero altogether)
+                let at_s = (0..=(sys.num.len() + sys.den.len()) as i64)
                     .map(Expr::int)
                     .find(|x| free(&sys.num, x) && free(&sys.den, x))
                     .unwrap_or_else(Expr::zero);

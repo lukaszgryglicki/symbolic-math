@@ -126,6 +126,9 @@ pub fn rsolve(
     if low == high {
         return Err("the equation has one term of the sequence only".to_string());
     }
+    if high.checked_sub(low).is_none_or(|order| order > 1000) {
+        return Err("only recurrences of an order up to 1000 are supported".to_string());
+    }
     let names: Vec<String> = (low..=high).map(marker).collect();
     let free = |e: &Expr| names.iter().all(|m| !e.has_sym(m));
     let c: Vec<Expr> = names

@@ -552,6 +552,11 @@ impl Parser<'_> {
                 self.eat(",");
                 continue;
             }
+            if let Some(setting) = self.valued_setting() {
+                out.push(setting);
+                self.eat(",");
+                continue;
+            }
             out.push(self.statement()?);
             if !self.is_op(";") && *self.peek() != Tok::End {
                 return Err(self.error("expected an operator or the end of the expression"));
@@ -599,6 +604,31 @@ impl Parser<'_> {
         let mut args = vec![Expr::sym(crate::settings::name(kind))];
         args.extend(value);
         Some(Expr::call("setting", args))
+    }
+
+    /// A setting whose value is a formula: `terms = 10^6`, `digits = 2*n`. The formula is the
+    /// rest of the statement; whether it gives a number is seen when it is worked out (with
+    /// names that have no value it is an equation among names, as it was written).
+    fn valued_setting(&mut self) -> Option<Expr> {
+        let Tok::Ident(name) = self.peek().clone() else {
+            return None;
+        };
+        let kind = crate::settings::named(&name)?;
+        if kind == crate::settings::Setting::List || !self.op_at(1, "=") {
+            return None;
+        }
+        let before = (self.pos, self.depth, self.bars, self.units, self.or_bars);
+        self.pos += 2;
+        let value = self.span().ok().filter(|value| match self.peek() {
+            Tok::End | Tok::Op(";") => true,
+            // (before a comma only a value without names: `a = x, b = y` is a list of equations)
+            Tok::Op(",") => value.is_const(),
+            _ => false,
+        });
+        if value.is_none() {
+            (self.pos, self.depth, self.bars, self.units, self.or_bars) = before;
+        }
+        Some(Expr::call("setting", vec![Expr::sym(&name), value?]))
     }
 
     /// Items separated by commas: one item is itself, several are a list.
@@ -1281,11 +1311,20 @@ impl Parser<'_> {
         match self.peek().clone() {
             Tok::Num(text) => {
                 self.bump();
-                let value =
-                    parse_decimal(&text).ok_or_else(|| format!("invalid number `{text}`"))?;
                 self.max_digits = self.max_digits.max(literal_digits(&text));
                 self.decimal |= text.contains(['.', 'e', 'E']);
-                Ok(Expr::rational(value))
+                match parse_decimal(&text) {
+                    Some(value) => Ok(Expr::rational(value)),
+                    // (a power of ten beyond 10^1000000: the rounded number that the
+                    // program prints for a value of that size)
+                    None => crate::num::parse_rounded(&text, crate::numeric::digits())
+                        .map(Expr::float)
+                        .ok_or_else(|| {
+                            format!(
+                                "invalid number `{text}`: a decimal number, with a power of ten that the numbers of the program reach (about 10^323000000 at most)"
+                            )
+                        }),
+                }
             }
             Tok::Exact(r) => {
                 self.bump();
@@ -1819,14 +1858,14 @@ pub fn call_by_name(name: &str, args: Vec<Expr>) -> Res {
     }
 }
 
-/// The names of several letters that a text defines as functions, `name(x, y) := ...` at the
-/// start of a statement: without that they would be functions that the program does not know.
+/// The names of several letters that a text defines as functions, `name(x, y) := ...`:
+/// without that they would be functions that the program does not know. (Wherever the
+/// definition stands: after a `;`, after a setting that has none, as `roots = 3 f(n) := n^2`,
+/// or inside a loop.)
 fn defined(toks: &[(Tok, usize)]) -> Vec<String> {
     let mut names = Vec::new();
-    let mut start = true;
     for (at, (tok, _)) in toks.iter().enumerate() {
-        if start
-            && let Tok::Ident(name) = tok
+        if let Tok::Ident(name) = tok
             && toks.get(at + 1).is_some_and(|t| t.0 == Tok::Op("("))
         {
             // the bracket that closes the list of its variables
@@ -1855,7 +1894,6 @@ fn defined(toks: &[(Tok, usize)]) -> Vec<String> {
                 names.push(name.clone());
             }
         }
-        start = *tok == Tok::Op(";");
     }
     names
 }

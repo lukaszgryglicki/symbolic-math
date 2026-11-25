@@ -31,14 +31,31 @@ fn value_of(e: &Expr) -> Option<Float> {
 struct RealRoots {
     fixed: Vec<Expr>,
     families: Vec<(Expr, Expr)>,
+    /// A numeric search found some of the roots: it may have missed others.
+    searched: bool,
+    /// The search did not come to the last of the roots: there are more than it goes on for.
+    unfinished: bool,
 }
 
-fn real_roots(g: &Expr, var: &str) -> Result<RealRoots, String> {
+/// What is told with an answer whose points a numeric search found.
+const SEARCHED: &str = "found by a numeric search along the real line: there may be others";
+
+/// Every real solution: of the whole line, or of the interval `range`.
+fn real_roots(g: &Expr, var: &str, range: Option<(f64, f64)>) -> Result<RealRoots, String> {
     let mut out = RealRoots::default();
     if !g.has_sym(var) {
         return Ok(out);
     }
-    let solved = solve::solve(g, var)?;
+    // (every real root counts here: no setting of the user cuts their list)
+    let solved = crate::settings::thorough(range, || solve::solve(g, var))?;
+    // (numbers of a stretch on which the equation holds are examples: no ends that a search
+    // may have missed some of)
+    let stretches = solved
+        .notes
+        .iter()
+        .any(|n| n.starts_with("the equation holds on whole stretches"));
+    out.searched = !stretches && solved.roots.iter().any(|r| r.approx);
+    out.unfinished = solved.notes.iter().any(|n| n == solve::UNFINISHED);
     let mut failure = None;
     for r in &solved.roots {
         let params: Vec<&String> = solved
@@ -148,6 +165,13 @@ fn kinks(f: &Expr, var: &str) -> Vec<Expr> {
 
 const STEPS: [&str; 5] = ["floor", "ceil", "round", "trunc", "frac"];
 
+/// The interval between two bounds as a numeric search takes it: `None` when one of them is
+/// infinite.
+fn span(lo: Option<&Float>, hi: Option<&Float>) -> Option<(f64, f64)> {
+    let (lo, hi) = (lo?.to_f64(), hi?.to_f64());
+    (lo.is_finite() && hi.is_finite() && lo < hi).then_some((lo, hi))
+}
+
 /// A real bound of an interval: `None` for an infinite one.
 fn bound(e: &Expr) -> Option<Option<Float>> {
     if e.is_infinite() {
@@ -161,6 +185,7 @@ fn bound(e: &Expr) -> Option<Option<Float>> {
 /// sign, crossings of min and max, steps of floor and its kin. `None` when they cannot be listed.
 pub fn corners(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Vec<Expr>> {
     let (lo, hi) = (bound(a)?, bound(b)?);
+    let range = span(lo.as_ref(), hi.as_ref());
     let inside = |v: &Float| lo.as_ref().is_none_or(|l| v > l) && hi.as_ref().is_none_or(|h| v < h);
     let mut points: Vec<(Float, Expr)> = Vec::new();
     let mut keep = |e: Expr| {
@@ -173,7 +198,7 @@ pub fn corners(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Vec<Expr>> {
         }
     };
     for g in kinks(f, var) {
-        let roots = real_roots(&g, var).ok()?;
+        let roots = real_roots(&g, var, range).ok().filter(|r| !r.unfinished)?;
         roots.fixed.into_iter().for_each(&mut keep);
         for (base, step) in roots.families {
             let (l, h) = (lo.as_ref()?, hi.as_ref()?);
@@ -401,22 +426,38 @@ pub fn inequalities(rels: &[(Expr, Rel)], var: &str) -> Result<Vec<String>, Stri
     // (relation, base, step or none, kind)
     let mut fixed: Vec<(usize, Expr, Kind)> = Vec::new();
     let mut families: Vec<(usize, Expr, Expr, Kind)> = Vec::new();
+    // the ends of the pieces were found by a numeric search
+    let mut searched = false;
     for (i, (f, _)) in rels.iter().enumerate() {
         let (num, den) = ratsimp::fraction(f);
         let mut sources = vec![
-            (real_roots(&num, var).map_err(fail)?, Kind::Zero),
-            (real_roots(&den, var).map_err(fail)?, Kind::Pole),
+            (real_roots(&num, var, None).map_err(fail)?, Kind::Zero),
+            (real_roots(&den, var, None).map_err(fail)?, Kind::Pole),
         ];
         for (g, kind) in domain_edges(f, var) {
-            if let Ok(r) = real_roots(&g, var) {
+            if let Ok(r) = real_roots(&g, var, None) {
                 sources.push((r, kind));
             }
         }
         for (roots, kind) in sources {
+            if roots.unfinished {
+                // (the pieces beyond the last end that was found would be told wrong)
+                return Err(fail(
+                    "its ends are roots that only a numeric search finds, and the search did not come to the last of them"
+                        .to_string(),
+                ));
+            }
+            searched |= roots.searched;
             fixed.extend(roots.fixed.into_iter().map(|r| (i, r, kind)));
             families.extend(roots.families.into_iter().map(|(b, s)| (i, b, s, kind)));
         }
     }
+    let told = |mut lines: Vec<String>| {
+        if searched {
+            lines.push(format!("note: the ends were {SEARCHED}"));
+        }
+        lines
+    };
     let inside = |x: &Float| {
         rels.iter()
             .all(|(f, op)| real_at(f, var, x).is_some_and(|v| holds(*op, &v)))
@@ -486,11 +527,11 @@ pub fn inequalities(rels: &[(Expr, Rel)], var: &str) -> Result<Vec<String>, Stri
             pieces.push(piece(var, &end(i, true), &end(j, false)));
             i = j + 1;
         }
-        return Ok(vec![if pieces.is_empty() {
+        return Ok(told(vec![if pieces.is_empty() {
             nothing
         } else {
             pieces.join(" or ")
-        }]);
+        }]));
     }
     if !fixed.is_empty() {
         return Err(fail(
@@ -570,11 +611,11 @@ pub fn inequalities(rels: &[(Expr, Rel)], var: &str) -> Result<Vec<String>, Stri
     points.sort_by(|a, b| a.at.total_cmp(&b.at));
     let n = points.len();
     if n == 0 {
-        return Ok(vec![if inside(&Float::with_val(PREC, 0.1234)) {
+        return Ok(told(vec![if inside(&Float::with_val(PREC, 0.1234)) {
             everything
         } else {
             nothing
-        }]);
+        }]));
     }
     // cyclic flags: point 0, interval (0, 1), point 1, ..., interval (n-1, 0 + period)
     let mut flags = Vec::with_capacity(2 * n);
@@ -590,7 +631,7 @@ pub fn inequalities(rels: &[(Expr, Rel)], var: &str) -> Result<Vec<String>, Stri
         ));
     }
     let Some(start) = flags.iter().position(|x| !*x) else {
-        return Ok(vec![everything]);
+        return Ok(told(vec![everything]));
     };
     let name = free_name(&rels, var);
     let known = crate::assume::get(&name);
@@ -632,11 +673,11 @@ pub fn inequalities(rels: &[(Expr, Rel)], var: &str) -> Result<Vec<String>, Stri
     if known != crate::assume::Facts::default() {
         crate::assume::set(&name, known);
     }
-    Ok(vec![if pieces.is_empty() {
+    Ok(told(vec![if pieces.is_empty() {
         nothing
     } else {
         format!("{}, {name} is an integer", pieces.join(" or "))
-    }])
+    }]))
 }
 
 /// Smallest (or largest) value of `f` on the real line or on `[lo, hi]`: the value and where it is taken.
@@ -666,7 +707,7 @@ pub fn extremum(
     let df = simplify(&crate::diff::diff(&f, var));
     if f.free_syms().iter().any(|s| **s != *var) {
         // parameters: the stationary points of the right curvature, when there is exactly one
-        let solved = solve::solve(&df, var)?;
+        let solved = crate::settings::thorough(None, || solve::solve(&df, var))?;
         solve::release(&solved.params);
         let second = crate::diff::diff(&df, var);
         let wanted = if minimize { 1 } else { -1 };
@@ -695,19 +736,41 @@ pub fn extremum(
         };
     }
     let (num, den) = ratsimp::fraction(&df);
-    let critical =
-        real_roots(&num, var).map_err(|e| format!("cannot find the critical points: {e}"))?;
+    // (between the bounds when there are two: there every one of them is looked for)
+    let range = span(low.as_ref(), high.as_ref());
+    let critical = real_roots(&num, var, range)
+        .map_err(|e| format!("cannot find the critical points: {e}"))?;
     let mut places: Vec<Expr> = critical.fixed.clone();
-    let mut singular = real_roots(&den, var).unwrap_or_default();
+    let mut singular = real_roots(&den, var, range).unwrap_or_default();
+    let (mut searched, mut unfinished) = (
+        critical.searched || singular.searched,
+        critical.unfinished || singular.unfinished,
+    );
     for (g, _) in domain_edges(&f, var) {
-        if let Ok(r) = real_roots(&g, var) {
+        if let Ok(r) = real_roots(&g, var, range) {
+            searched |= r.searched;
+            unfinished |= r.unfinished;
             singular.fixed.extend(r.fixed);
         }
     }
     places.extend(singular.fixed.iter().cloned());
     for g in kinks(&f, var) {
-        if let Ok(r) = real_roots(&g, var) {
+        if let Ok(r) = real_roots(&g, var, range) {
+            searched |= r.searched;
+            unfinished |= r.unfinished;
             places.extend(r.fixed);
+        }
+    }
+    if unfinished {
+        return Err(match range {
+            Some(_) => "too many critical points in the interval".to_string(),
+            None => "cannot find the critical points: only a numeric search finds them, and it did not come to the last of them (an interval bounds them)".to_string(),
+        });
+    }
+    if searched {
+        let note = format!("the critical points were {SEARCHED}");
+        if !notes.contains(&note) {
+            notes.push(note);
         }
     }
     for (base, step) in critical.families.iter().chain(&singular.families) {

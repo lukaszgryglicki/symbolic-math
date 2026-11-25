@@ -383,7 +383,9 @@ fn pell(d: &Integer, n: &Integer, vars: &[String], notes: &mut Vec<String>) -> R
     if *n == 0 {
         return Ok(Expr::list(vec![pair(&Integer::new(), &Integer::new())]));
     }
-    let (x1, y1) = ntheory::pell(d).ok_or("no fundamental solution found")?;
+    let (x1, y1) = ntheory::pell(d).ok_or(
+        "no fundamental solution found (the period of the continued fraction of the square root has more than 100000 steps)",
+    )?;
     // v up to y1 sqrt(|n| / (2 (x1 +- 1)))
     let low = if *n > 0 {
         Integer::from(&x1 + 1u32) * 2u32

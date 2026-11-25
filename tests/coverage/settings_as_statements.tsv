@@ -65,10 +65,10 @@
 --debug	settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = all
 --roots=9	roots = default, settings	digits = default (32, or as many as the longest number of an input)|roots = default (a numeric search lists what its usual starting points find)|terms = default (each sum and each series has its own limit)|verbose = off
 	prec = x + 1	x = prec - 1
-	prec = 100 - 1	prec = 99
-	prec = 2*3	prec = 6
-	digits = pi	error: expected `(` after the function name `digits`
-	roots = x^2	error: expected `(` after the function name `roots`
+	prec = 100 - 1	digits = 99
+	prec = 2*3	digits = 6
+	digits = pi	error: digits = N: a whole number from 1 to 1000000, or default
+	roots = x^2	error: roots = N: a whole number from 1 to 100000, or default
 	terms + 1	terms + 1
 	terms*2 = 6	terms = 3
 	verbose := 3; verbose + 1	3|4
@@ -102,8 +102,8 @@
 	2*prec + prec	3prec
 	verbose - verbose	0
 	roots/roots	error: expected `(` after the function name `roots`
-	verbose = maybe	maybe = verbose
-	digits = many	error: expected `(` after the function name `digits`
+	verbose = maybe	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
+	digits = many	error: digits = N: a whole number from 1 to 1000000, or default
 	digits = 0	error: digits = N: a whole number from 1 to 1000000, or default
 	digits = 2000000	error: digits = N: a whole number from 1 to 1000000, or default
 	roots = 0	error: roots = N: a whole number from 1 to 100000, or default
@@ -113,8 +113,8 @@
 	verbose = 7	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
 	verbose = 3	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
 	debug = 5	error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail
-	digits = 1.5	error: expected `(` after the function name `digits`
-	roots = 2.5	error: expected `(` after the function name `roots`
+	digits = 1.5	error: digits = N: a whole number from 1 to 1000000, or default
+	roots = 2.5	error: roots = N: a whole number from 1 to 100000, or default
 	roots = on	error: roots = N: a whole number from 1 to 100000, or default
 	terms = off	error: terms = N: a whole number from 1 to 1000000000000, or default
 	digits = on	error: digits = N: a whole number from 1 to 1000000, or default

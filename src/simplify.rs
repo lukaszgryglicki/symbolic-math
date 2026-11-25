@@ -262,7 +262,7 @@ fn gamma_ratios(e: Expr) -> Expr {
         for j in i + 1..found.len() {
             while found[i].1 != 0 && found[j].1 != 0 && (found[i].1 > 0) == (found[j].1 > 0) {
                 let m = match add(vec![found[i].0.clone(), found[j].0.clone()]).as_i64() {
-                    Some(m) if m.abs() <= 64 => m,
+                    Some(m) if m.unsigned_abs() <= 64 => m,
                     _ => break,
                 };
                 let u = found[i].0.clone();
@@ -278,7 +278,7 @@ fn gamma_ratios(e: Expr) -> Expr {
                 let nearest = number
                     .map(|n| (n.re.clone() + crate::num::rat(1, 2)).floor())
                     .and_then(|r| r.numer().to_i64());
-                let whole = nearest.filter(|n| n.abs() <= 64).unwrap_or(0);
+                let whole = nearest.filter(|n| n.unsigned_abs() <= 64).unwrap_or(0);
                 let w = sub(u.clone(), Expr::int(whole));
                 // (and sin(pi (1/2 + z)) = cos(pi z))
                 let half = number.is_some_and(|n| {
@@ -317,7 +317,7 @@ fn gamma_ratios(e: Expr) -> Expr {
             while found[i].1 > 0 && found[j].1 < 0 {
                 // gamma(u)/gamma(v) with u = v + d
                 let d = match crate::canon::sub(found[i].0.clone(), found[j].0.clone()).as_i64() {
-                    Some(d) if d.abs() <= 64 => d,
+                    Some(d) if d.unsigned_abs() <= 64 => d,
                     _ => break,
                 };
                 let v = &found[j].0;
@@ -399,7 +399,7 @@ fn towering(e: &Expr) -> bool {
 fn dense_terms(degree: u64, variables: usize) -> u64 {
     let mut terms = 1u64;
     for k in 1..=variables as u64 {
-        terms = terms.saturating_mul(degree + k) / k;
+        terms = terms.saturating_mul(degree.saturating_add(k)) / k;
         if terms > 1 << 40 {
             break;
         }

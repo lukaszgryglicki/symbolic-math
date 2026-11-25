@@ -80,7 +80,20 @@ fn dot(a: &[Expr], b: &[Expr]) -> Expr {
     )
 }
 
+/// A row inside a row makes no matrix to calculate with: its entries are numbers and
+/// expressions.
+fn scalars(m: &Rows, who: &str) -> Result<(), String> {
+    match m.iter().flatten().any(|x| matches!(x, Expr::List(_))) {
+        true => Err(format!(
+            "{who} needs a matrix of numbers and expressions: an entry is a list itself"
+        )),
+        false => Ok(()),
+    }
+}
+
 pub fn matmul(a: &Rows, b: &Rows) -> Result<Rows, String> {
+    scalars(a, "a product of matrices")?;
+    scalars(b, "a product of matrices")?;
     if a.is_empty() || b.is_empty() {
         return Err("a matrix without entries cannot be multiplied".to_string());
     }
@@ -183,6 +196,92 @@ pub fn pow(b: Expr, e: Expr) -> Result<Expr, String> {
     }
 }
 
+/// The size of an entry that is a number, as far as the choice of a pivot needs it.
+pub(crate) fn size_of_number(e: &Expr) -> Option<rug::Float> {
+    let value = match e {
+        Expr::Float(f) => rug::Complex::with_val(64, &f.v),
+        Expr::Num(n) => n.to_complex(64),
+        _ => return None,
+    };
+    Some(rug::Float::with_val(64, value.abs_ref()))
+}
+
+/// The row from `rank` on whose entry in the column `col` is the pivot: the first that is
+/// not zero. Among rounded numbers the largest one: a small one in front (10^-40 next to 1)
+/// would take the digits of every row that it is taken from.
+fn pivot_row(m: &Rows, rank: usize, col: usize, zero: &dyn Fn(&Expr) -> bool) -> Option<usize> {
+    let found: Vec<usize> = (rank..m.len()).filter(|&r| !zero(&m[r][col])).collect();
+    let first = *found.first()?;
+    if !found.iter().any(|&r| matches!(m[r][col], Expr::Float(_))) {
+        return Some(first);
+    }
+    let Some(sizes) = found
+        .iter()
+        .map(|&r| size_of_number(&m[r][col]))
+        .collect::<Option<Vec<_>>>()
+    else {
+        return Some(first);
+    };
+    let mut best = 0;
+    for (k, size) in sizes.iter().enumerate() {
+        if *size > sizes[best] {
+            best = k;
+        }
+    }
+    Some(found[best])
+}
+
+/// The bits that a difference of rounded numbers may lose before it is rounding only: all
+/// but these of the bits of its numbers.
+const LEFT_OF_A_DIFFERENCE: i64 = 24;
+
+/// `x - t` in an elimination. Where both are numbers and the difference is a rounded one, a
+/// part of it that is smaller than the parts it came from by nearly all their bits is what
+/// the rounding left of a zero: it is 0. (Taken for a number, it would be the pivot of a
+/// matrix that has none there, and every entry after it would be made of rounding.)
+fn difference(x: &Expr, t: &Expr) -> Expr {
+    let v = crate::simplify::normal(&canon::sub(x.clone(), t.clone()));
+    let Expr::Float(f) = &v else {
+        return v;
+    };
+    let prec = f.v.prec().0;
+    let number = |e: &Expr| match e {
+        Expr::Float(g) => Some(rug::Complex::with_val(prec, &g.v)),
+        Expr::Num(n) => Some(n.to_complex(prec)),
+        _ => None,
+    };
+    let (Some(a), Some(b)) = (number(x), number(t)) else {
+        return v;
+    };
+    let rounding = |d: &rug::Float, a: &rug::Float, b: &rug::Float| -> bool {
+        let Some(top) = a.get_exp().max(b.get_exp()) else {
+            return false;
+        };
+        d.get_exp().is_some_and(|e| {
+            i64::from(e) < i64::from(top) - (i64::from(prec) - LEFT_OF_A_DIFFERENCE)
+        })
+    };
+    let (re, im) = (
+        rounding(f.v.real(), a.real(), b.real()),
+        rounding(f.v.imag(), a.imag(), b.imag()),
+    );
+    if !re && !im {
+        return v;
+    }
+    let part = |d: &rug::Float, gone: bool| match gone {
+        true => rug::Float::new(prec),
+        false => d.clone(),
+    };
+    let left = rug::Complex::with_val(prec, (part(f.v.real(), re), part(f.v.imag(), im)));
+    if left.is_zero() {
+        return Expr::zero();
+    }
+    Expr::float(crate::num::Flt {
+        v: left,
+        digits: f.digits,
+    })
+}
+
 /// Gauss-Jordan elimination with exact zero tests; returns the reduced matrix, its rank and
 /// the product of the pivots with the sign of the row exchanges.
 pub fn eliminate(m: Rows, full: bool) -> (Rows, usize, Expr) {
@@ -204,7 +303,7 @@ pub fn eliminate_with(
         if rank == nr {
             break;
         }
-        let Some(p) = (rank..nr).find(|&r| !zero(&m[r][col])) else {
+        let Some(p) = pivot_row(&m, rank, col, zero) else {
             for row in m.iter_mut().skip(rank) {
                 row[col] = Expr::zero();
             }
@@ -219,6 +318,9 @@ pub fn eliminate_with(
         for x in m[rank].iter_mut() {
             *x = crate::simplify::normal(&canon::div(x.clone(), pivot.clone()));
         }
+        // (1 and 0 as they are meant: a rounded number over itself may be a hair off 1, and
+        // what it leaves in its column would be taken for an entry later)
+        m[rank][col] = Expr::one();
         for r in 0..nr {
             if r == rank || (!full && r < rank) {
                 continue;
@@ -233,9 +335,9 @@ pub fn eliminate_with(
             }
             let pivot_row = m[rank].clone();
             for (x, p) in m[r].iter_mut().zip(&pivot_row) {
-                let v = canon::sub(x.clone(), canon::mul(vec![factor.clone(), p.clone()]));
-                *x = crate::simplify::normal(&v);
+                *x = difference(x, &canon::mul(vec![factor.clone(), p.clone()]));
             }
+            m[r][col] = Expr::zero();
         }
         rank += 1;
     }
@@ -243,11 +345,14 @@ pub fn eliminate_with(
 }
 
 pub fn det(m: &Rows) -> Result<Expr, String> {
-    if m.len() != m[0].len() {
+    if m.iter().any(|row| row.len() != m.len()) {
         return Err("the determinant needs a square matrix".into());
     }
+    scalars(m, "the determinant")?;
     let n = m.len();
-    if n <= 3 {
+    // (rounded numbers go by the elimination, which knows what the rounding left of a zero)
+    let rounded = m.iter().flatten().any(|e| matches!(e, Expr::Float(_)));
+    if n <= 3 && !rounded {
         let d = |i: usize, j: usize| m[i][j].clone();
         let e = match n {
             1 => d(0, 0),
@@ -270,9 +375,10 @@ pub fn det(m: &Rows) -> Result<Expr, String> {
 
 pub fn inverse(m: &Rows) -> Result<Rows, String> {
     let n = m.len();
-    if n != m[0].len() {
+    if m.iter().any(|row| row.len() != n) {
         return Err("the inverse needs a square matrix".into());
     }
+    scalars(m, "the inverse")?;
     let wide: Rows = m
         .iter()
         .zip(identity(n))
@@ -294,7 +400,8 @@ pub fn inverse(m: &Rows) -> Result<Rows, String> {
 }
 
 pub fn transpose(m: &Rows) -> Rows {
-    (0..m[0].len())
+    // (no rows: no columns)
+    (0..m.first().map_or(0, Vec::len))
         .map(|j| m.iter().map(|r| r[j].clone()).collect())
         .collect()
 }
@@ -561,6 +668,113 @@ pub fn cholesky(a: &Rows) -> Result<Rows, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A rounded number of `prec` bits.
+    fn rounded(text: &str, prec: u32) -> Expr {
+        let value = rug::Float::with_val(prec, rug::Float::parse(text).expect("a number"));
+        crate::numeric::to_float_expr(rug::Complex::with_val(prec, value), 32)
+    }
+
+    fn matrix_of(rows: &[&[&str]], prec: u32) -> Rows {
+        rows.iter()
+            .map(|row| row.iter().map(|x| rounded(x, prec)).collect())
+            .collect()
+    }
+
+    #[test]
+    fn the_column_of_a_pivot_is_1_and_0_as_they_are_meant() {
+        // the equation of Lyapunov of a balanced system: with some numbers of bits a pivot
+        // over itself is a hair off 1, and what it left in its column was taken for an entry
+        let m: &[&[&str]] = &[
+            &[
+                "-0.8171793746730032",
+                "0.9701425001453319",
+                "0.9701425001453319",
+                "0",
+            ],
+            &["-0.9701425001453319", "-3", "0", "0.9701425001453319"],
+            &["-0.9701425001453319", "0", "-3", "0.9701425001453319"],
+            &[
+                "0",
+                "-0.9701425001453319",
+                "-0.9701425001453319",
+                "-5.182820625326997",
+            ],
+        ];
+        for prec in (64..400).step_by(3) {
+            let (reduced, rank, _) = eliminate(matrix_of(m, prec), true);
+            assert_eq!(rank, 4, "{prec} bits");
+            for (i, row) in reduced.iter().enumerate() {
+                for (j, x) in row.iter().enumerate() {
+                    assert!(
+                        if i == j { x.is_one() } else { x.is_zero() },
+                        "{prec} bits: {x} at {i}, {j}"
+                    );
+                }
+            }
+            let right: Vec<Expr> = ["1", "2", "3", "4"]
+                .iter()
+                .map(|x| rounded(x, prec))
+                .collect();
+            let solved = linsolve(&matrix_of(m, prec), &right).expect("one solution");
+            assert!(!solved.to_string().contains('t'), "{prec} bits: {solved}");
+        }
+    }
+
+    #[test]
+    fn among_rounded_numbers_the_largest_is_the_pivot() {
+        // (the first one that was not 0 was taken: 10^-40 in front took the digits of every
+        // row, the inverse was "singular" and the solution was 0.333984375)
+        let m = matrix_of(&[&["1e-40", "1"], &["3", "1"]], 150);
+        let inv = inverse(&m).expect("an inverse");
+        let wanted = [
+            [
+                "-0.33333333333333333333333333333333",
+                "0.33333333333333333333333333333333",
+            ],
+            ["1", "-3.3333333333333333333333333333333e-41"],
+        ];
+        for (row, texts) in inv.iter().zip(wanted) {
+            for (x, text) in row.iter().zip(texts) {
+                assert_eq!(x.to_string(), text);
+            }
+        }
+        let solved = linsolve(&m, &[Expr::int(1), Expr::int(2)]).expect("a solution");
+        assert_eq!(
+            solved.to_string(),
+            "[0.33333333333333333333333333333333, 1]"
+        );
+        // exact numbers keep the first pivot that is not 0, as they did
+        let exact = vec![
+            vec![Expr::rational(rug::Rational::from((1, 1000))), Expr::int(1)],
+            vec![Expr::int(3), Expr::int(1)],
+        ];
+        let (_, rank, det) = eliminate(exact, false);
+        assert_eq!((rank, det.to_string().as_str()), (2, "-2999/1000"));
+    }
+
+    #[test]
+    fn what_the_rounding_leaves_of_a_zero_is_no_pivot() {
+        for prec in [100u32, 150, 173, 200, 256] {
+            let third = |k: u32| {
+                let value = rug::Float::with_val(prec, k) / 3u32;
+                crate::numeric::to_float_expr(rug::Complex::with_val(prec, value), 32)
+            };
+            // rows 1 and 2 are the same but for a factor: no inverse, determinant 0, rank 2
+            let m = vec![
+                vec![third(3), third(6), third(9)],
+                vec![third(1), third(2), third(3)],
+                vec![third(15), third(18), third(24)],
+            ];
+            assert!(inverse(&m).is_err(), "{prec} bits");
+            assert!(det(&m).expect("a determinant").is_zero(), "{prec} bits");
+            assert_eq!(eliminate(m, false).1, 2, "{prec} bits");
+        }
+        // a small number that stands in the matrix is one
+        let m = matrix_of(&[&["1", "0"], &["0", "1e-60"]], 150);
+        assert_eq!(eliminate(m.clone(), false).1, 2);
+        assert_eq!(inverse(&m).expect("an inverse")[1][1].to_string(), "1e60");
+    }
 
     #[test]
     fn a_matrix_without_entries_is_no_trap() {

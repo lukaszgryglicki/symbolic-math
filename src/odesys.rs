@@ -237,9 +237,25 @@ pub(crate) fn integrate_by(
             }
             None => {
                 h /= 4u32;
-                let tiny = Float::with_val(prec, h.abs_ref())
-                    < Float::with_val(prec, span.abs_ref()) >> 70u32;
-                if tiny {
+                // A step that short stands before a singular point, where the slopes grow
+                // without end, or before a kink of the slopes (that of abs(y) where y changes
+                // its sign), which is passed once the step is as short as half the bits asked
+                // for: the size of the slopes tells which.
+                let length = Float::with_val(prec, h.abs_ref());
+                let whole = Float::with_val(prec, span.abs_ref());
+                let short = length < Float::with_val(prec, &whole >> 70u32);
+                let tiny = length < whole.clone() >> 70u32.max(bits / 2 + 24);
+                let steep = short
+                    && match f(&t, &y) {
+                        None => true,
+                        Some(slopes) => {
+                            let size =
+                                |v: &[Complex]| v.iter().map(magnitude).max().unwrap_or(i64::MIN);
+                            let way = whole.get_exp().map_or(0, i64::from);
+                            size(&slopes).saturating_add(way) > size(&y).max(0) + 40
+                        }
+                    };
+                if tiny || steep {
                     return Err(format!(
                         "the numeric solution does not get past {}: a singular point",
                         numeric::fmt_complex(&Complex::with_val(prec, &t), 12)

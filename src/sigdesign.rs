@@ -85,6 +85,48 @@ pub(crate) fn shown_c(v: &[Complex]) -> Expr {
     Expr::list(crate::decomp::from_complex_list(v))
 }
 
+/// A list of numbers as a value, each as it is: for values that fall away over many powers
+/// of ten (the answer of a filter to a blow, the ends of a window of Gauss), where a small
+/// one is no rounding of a zero.
+pub(crate) fn shown_each(v: &[Float]) -> Expr {
+    Expr::list(
+        v.iter()
+            .map(|x| match x.is_zero() {
+                true => Expr::zero(),
+                false => crate::mfun::value(x),
+            })
+            .collect(),
+    )
+}
+
+/// A list of complex numbers as a value, each as it is (the response of a filter deep in its
+/// stopband is no rounding of a zero): only a part of a number that is smaller than its other
+/// part by nearly all the bits is 0.
+pub(crate) fn shown_c_each(v: &[Complex]) -> Expr {
+    let prec = bits();
+    let apart = i64::from(prec) - 24;
+    Expr::list(
+        v.iter()
+            .map(|z| {
+                let (mut re, mut im) = (z.real().clone(), z.imag().clone());
+                if let (Some(a), Some(b)) = (re.get_exp(), im.get_exp()) {
+                    if i64::from(a) < i64::from(b) - apart {
+                        re = Float::new(prec);
+                    } else if i64::from(b) < i64::from(a) - apart {
+                        im = Float::new(prec);
+                    }
+                }
+                match re.is_zero() && im.is_zero() {
+                    true => Expr::zero(),
+                    false => {
+                        numeric::to_float_expr(Complex::with_val(prec, (re, im)), numeric::digits())
+                    }
+                }
+            })
+            .collect(),
+    )
+}
+
 pub(crate) fn count(e: &Expr, what: &str, low: i64, high: i64) -> Result<usize, String> {
     Ok(whole(e, what, low, high)? as usize)
 }
@@ -170,6 +212,10 @@ pub(crate) fn window(name: &str, n: usize, shape: Option<&Float>) -> Result<Vec<
             .collect(),
         "bohmanwin" => (0..n)
             .map(|k| {
+                // (0 at both ends: the sine of the rounded pi would leave its rounding there)
+                if k == 0 || k == n - 1 {
+                    return Float::new(bits());
+                }
                 let x = across(k).abs();
                 let angle = pi() * &x;
                 (int(1) - &x) * angle.clone().cos() + angle.sin() / pi()
@@ -933,6 +979,22 @@ pub(crate) fn response_at(b: &[Float], a: &[Float], w: &Float) -> Complex {
     sum(b) / sum(a)
 }
 
+/// Whether the response of the coefficients `b` is 0 at the frequency `w`, as far as the
+/// digits tell: there it has no phase, and the angle of what the rounding left is no number
+/// to give.
+pub(crate) fn vanishes_at(b: &[Float], w: &Float) -> bool {
+    let back = unit(&Float::with_val(bits(), -w));
+    let sum = b
+        .iter()
+        .rev()
+        .fold(Complex::new(bits()), |s, c| s * &back + c);
+    let sizes = b.iter().fold(Float::new(bits()), |s, c| {
+        s + Float::with_val(bits(), c.abs_ref())
+    });
+    let least = sizes * Float::with_val(bits(), Float::i_pow_u(10, numeric::digits() + 8)).recip();
+    Float::with_val(bits(), sum.abs_ref()) <= least
+}
+
 /// The frequencies of a response: n of them from 0 up to pi, or the ones given.
 pub(crate) fn frequencies(e: Option<&Expr>, who: &str) -> Result<Vec<Float>, String> {
     match e {
@@ -1426,6 +1488,18 @@ impl Session {
                 false => Ok(v),
             };
             let pair = |b: Vec<Float>, a: Vec<Float>| Expr::list(vec![shown(&b), shown(&a)]);
+            // the ripple of a passband or the depth of a stopband, in dB: no number below
+            // 0 (the filter would have no real poles), and none so large that the poles
+            // differ by more than all the digits that there are
+            let ripple = |k: usize| -> Result<Float, String> {
+                let value = number(k)?;
+                match value > 0 && value <= 1_000_000 {
+                    true => Ok(value),
+                    false => Err(format!(
+                        "{who}: the ripple, in dB, is above 0 and 1000000 at most"
+                    )),
+                }
+            };
             Ok(match (name, n) {
                 // ---- windows
                 ("vartestn", 1) => shown(&window("bartlett", count(&a[0], "the number of values", 0, 1 << 20)?, None)?),
@@ -1435,24 +1509,30 @@ impl Session {
                     1 | 2,
                 ) => {
                     let size = count(&a[0], "the number of values", 0, 1 << 20)?;
+                    // (the ends of the windows of Gauss and of Kaiser are small numbers of their
+                    // own, not what the rounding left of a zero)
+                    let listed = |w: &[Float]| match name {
+                        "gausswin" | "kaiser" => shown_each(w),
+                        _ => shown(w),
+                    };
                     match a.get(1).map(|e| (word(e), e)) {
-                        None => shown(&window(name, size, None)?),
+                        None => listed(&window(name, size, None)?),
                         Some((Some(flag), _)) if flag == "periodic" => {
                             let mut w = window(name, size + 1, None)?;
                             w.pop();
-                            shown(&w)
+                            listed(&w)
                         }
-                        Some((Some(flag), _)) if flag == "symmetric" => shown(&window(name, size, None)?),
+                        Some((Some(flag), _)) if flag == "symmetric" => listed(&window(name, size, None)?),
                         Some((None, shape)) if matches!(name, "gausswin" | "tukeywin" | "kaiser" | "chebwin") => {
-                            shown(&window(name, size, Some(&real(shape, who)?))?)
+                            listed(&window(name, size, Some(&real(shape, who)?))?)
                         }
                         Some(_) => return Err(format!("{name}(n), {name}(n, \"periodic\"); gausswin, tukeywin, kaiser and chebwin take their shape as a second number")),
                     }
                 }
                 // ---- prototypes and filters
                 ("buttap", 1) => buttap(count(&a[0], "the order", 1, 500)?).shown(),
-                ("cheb1ap", 2) => cheb1ap(count(&a[0], "the order", 1, 500)?, &number(1)?).shown(),
-                ("cheb2ap", 2) => cheb2ap(count(&a[0], "the order", 1, 500)?, &number(1)?).shown(),
+                ("cheb1ap", 2) => cheb1ap(count(&a[0], "the order", 1, 500)?, &ripple(1)?).shown(),
+                ("cheb2ap", 2) => cheb2ap(count(&a[0], "the order", 1, 500)?, &ripple(1)?).shown(),
                 ("ellipap", 3) => {
                     let (rp, rs) = (number(1)?, number(2)?);
                     if rp <= 0 || rs <= rp {
@@ -1472,10 +1552,10 @@ impl Session {
                     let (kind, analog) = design_words(&a[at + 1..], edges.len(), who)?;
                     let proto = match name {
                         "butter" => buttap(order),
-                        "cheby1" => cheb1ap(order, &number(1)?),
-                        "cheby2" => cheb2ap(order, &number(1)?),
+                        "cheby1" => cheb1ap(order, &ripple(1)?),
+                        "cheby2" => cheb2ap(order, &ripple(1)?),
                         "ellip" => {
-                            let (rp, rs) = (number(1)?, number(2)?);
+                            let (rp, rs) = (number(1)?, ripple(2)?);
                             if rp <= 0 || rs <= rp {
                                 return Err("ellip(n, Rp, Rs, Wp): the ripple Rp is above 0 and below the depth Rs, both in dB".into());
                             }
@@ -1580,7 +1660,10 @@ impl Session {
                     Expr::list(vec![crate::arrays::tidy(crate::mfun::value(&order)), edges])
                 }
                 ("lp2lp" | "lp2hp", 3) | ("lp2bp" | "lp2bs", 4) | ("bilinear", 3) => {
-                    let (b, den, wo) = (trimmed(list(0)?), trimmed(list(1)?), number(2)?);
+                    let (b, den, wo) = (some(trimmed(list(0)?))?, some(trimmed(list(1)?))?, number(2)?);
+                    if den.iter().all(Float::is_zero) {
+                        return Err(format!("{name}: the denominator is zero"));
+                    }
                     let (top, bottom): (Vec<Float>, Vec<Float>) = match name {
                         "lp2lp" => (vec![int(1), int(0)], vec![wo]),
                         "lp2hp" => (vec![wo], vec![int(1), int(0)]),
@@ -1758,39 +1841,70 @@ impl Session {
                 ("freqz", 1..=3) => {
                     let (b, den) = (list(0)?, if n > 1 { list(1)? } else { vec![int(1)] });
                     let ws = frequencies(a.get(2), who)?;
-                    let h: Vec<Complex> = ws.iter().map(|w| response_at(&b, &den, w)).collect();
-                    Expr::list(vec![shown_c(&h), shown(&ws)])
+                    // (0 where the numerator is 0 as far as its digits tell; every other value
+                    // as it is, however small next to the others)
+                    let h: Vec<Complex> = ws
+                        .iter()
+                        .map(|w| match vanishes_at(&b, w) {
+                            true => Complex::new(bits()),
+                            false => response_at(&b, &den, w),
+                        })
+                        .collect();
+                    Expr::list(vec![shown_c_each(&h), shown(&ws)])
                 }
                 ("freqs", 3) => {
                     let (b, den) = (list(0)?, list(1)?);
+                    let least = Float::with_val(bits(), Float::i_pow_u(10, numeric::digits() + 8)).recip();
                     let h: Vec<Complex> = list(2)?
                         .iter()
                         .map(|w| {
                             let s = Complex::with_val(bits(), (0, w));
-                            poly_at(&b, &s) / poly_at(&den, &s)
+                            let top = poly_at(&b, &s);
+                            // the sum of the sizes of the terms of the numerator
+                            let size = Float::with_val(bits(), w.abs_ref());
+                            let sizes = b.iter().fold(Float::new(bits()), |sum, c| sum * &size + Float::with_val(bits(), c.abs_ref()));
+                            match Float::with_val(bits(), top.abs_ref()) <= Float::with_val(bits(), &sizes * &least) {
+                                true => Complex::new(bits()),
+                                false => top / poly_at(&den, &s),
+                            }
                         })
                         .collect();
                     match a[2].as_list() {
-                        Some(_) => shown_c(&h),
-                        None => shown_c(&h).as_list().map(|l| l[0].clone()).unwrap_or_else(Expr::undefined),
+                        Some(_) => shown_c_each(&h),
+                        None => shown_c_each(&h).as_list().map(|l| l[0].clone()).unwrap_or_else(Expr::undefined),
                     }
                 }
                 ("grpdelay", 1..=3) => {
-                    let (b, den) = (list(0)?, if n > 1 { list(1)? } else { vec![int(1)] });
+                    let (b, den) = (some(list(0)?)?, if n > 1 { some(list(1)?)? } else { vec![int(1)] });
                     let ws = frequencies(a.get(2), who)?;
                     let mut reversed = den.clone();
                     reversed.reverse();
                     let c = poly_mul(&b, &reversed);
                     let ramp: Vec<Float> = c.iter().enumerate().map(|(k, v)| Float::with_val(bits(), v * k as u64)).collect();
+                    // the real part of ramp/c at a frequency, with numbers of `prec` bits
+                    let delay = |w: &Float, prec: u32| -> Float {
+                        let (sin, cos) = Float::with_val(prec, -w).sin_cos(Float::new(prec));
+                        let back = Complex::with_val(prec, (cos, sin));
+                        let sum = |p: &[Float]| p.iter().rev().fold(Complex::new(prec), |s, v| s * &back + v);
+                        Complex::with_val(prec, sum(&ramp) / sum(&c)).real().clone() - (den.len() as u64 - 1)
+                    };
                     let delays: Vec<Float> = ws
                         .iter()
-                        .map(|w| {
-                            let back = unit(&Float::with_val(bits(), -w));
-                            let sum = |p: &[Float]| p.iter().rev().fold(Complex::new(bits()), |s, v| s * &back + v);
-                            Complex::with_val(bits(), sum(&ramp) / sum(&c)).real().clone() - (den.len() as u64 - 1)
+                        .map(|w| match vanishes_at(&c, w) {
+                            // A zero (or a pole) on the circle: the delay there is the one on
+                            // both sides of it, where the quotient is the rounding of 0 over
+                            // the rounding of 0. With three times the bits, a step of the bits
+                            // away, the mean of both sides is right to twice the bits.
+                            true => {
+                                let prec = 3 * bits();
+                                let step = Float::with_val(prec, 1) >> bits();
+                                let sides = delay(&Float::with_val(prec, w - &step), prec) + delay(&Float::with_val(prec, w + &step), prec);
+                                Float::with_val(bits(), sides / 2u32)
+                            }
+                            false => delay(w, bits()),
                         })
                         .collect();
-                    Expr::list(vec![shown(&delays), shown(&ws)])
+                    Expr::list(vec![shown_each(&delays), shown(&ws)])
                 }
                 ("impz" | "stepz", 1..=3) => {
                     let (b, den) = (some(list(0)?)?, if n > 1 { some(list(1)?)? } else { vec![int(1)] });
@@ -1801,7 +1915,8 @@ impl Session {
                     };
                     let mut x = vec![int(if name == "stepz" { 1 } else { 0 }); samples];
                     x[0] = int(1);
-                    shown(&lfilter(&b, &den, &x, None))
+                    // (an answer that dies away is small, not the rounding of a zero)
+                    shown_each(&lfilter(&b, &den, &x, None))
                 }
                 ("filtfilt", 3) => shown(&filtfilt(&list(0)?, &list(1)?, &list(2)?)?),
                 ("sosfilt", 2) => {
@@ -1812,7 +1927,7 @@ impl Session {
                         }
                         x = lfilter(&row[..3], &row[3..], &x, None);
                     }
-                    shown(&x)
+                    shown_each(&x)
                 }
                 ("sos2tf", 1 | 2) => {
                     let (mut b, mut den) = (vec![int(1)], vec![int(1)]);
@@ -1839,7 +1954,7 @@ impl Session {
                 ("tf2sos", 2) | ("zp2sos", 3) => {
                     let (z, p, k) = match name {
                         "tf2sos" => {
-                            let (b, den) = (trimmed(list(0)?), trimmed(list(1)?));
+                            let (b, den) = (some(trimmed(list(0)?))?, some(trimmed(list(1)?))?);
                             let k = Float::with_val(bits(), &b[0] / &den[0]);
                             (self.signal_roots(&b, who)?, self.signal_roots(&den, who)?, k)
                         }

@@ -308,12 +308,36 @@ pub fn mul(factors: Vec<Expr>) -> Expr {
             } else {
                 Expr::Pow(Rc::new(k.clone()), Rc::new(e))
             };
-            if let Ok(v) = numeric::evalf(&factor, f.v.prec().0) {
-                pows.remove(&k);
-                coef.mul(&Coef::Approx(Flt {
-                    v,
-                    digits: f.digits,
-                }));
+            // (a factor whose value is beyond the exponents of the numbers that are kept is
+            // no 0 and no infinity to multiply with: it stays a factor. The product of
+            // 1277^(-10^9) and 2147483648^(10^9) is no 0.)
+            let (value, beyond) = numeric::underflowed(|| numeric::evalf(&factor, f.v.prec().0));
+            if let Ok(v) = value
+                && !(beyond && v.is_zero())
+                && v.real().is_finite()
+                && v.imag().is_finite()
+            {
+                // (nor is a product that is itself beyond them, as 5^(-n) 7^(-n) for a
+                // large n, where each of the two is a number)
+                let zero = v.is_zero();
+                let mut with = coef.clone();
+                let (_, beyond) = numeric::underflowed(|| {
+                    with.mul(&Coef::Approx(Flt {
+                        v,
+                        digits: f.digits,
+                    }))
+                });
+                let lost = match &with {
+                    Coef::Approx(w) => {
+                        (w.v.is_zero() && !zero && !coef.is_zero())
+                            || !(w.v.real().is_finite() && w.v.imag().is_finite())
+                    }
+                    Coef::Exact(_) => false,
+                };
+                if !(beyond && lost) {
+                    pows.remove(&k);
+                    coef = with;
+                }
             }
         }
     }
@@ -492,11 +516,21 @@ fn prime_powers(primes: &mut BTreeMap<Int, Rat>, n: &Int, e: &Rat) {
 fn radicals_from_primes(primes: BTreeMap<Int, Rat>) -> (Rat, Vec<(Int, Rat)>) {
     let mut coef = Rat::from(1);
     let mut groups: BTreeMap<Rat, Int> = BTreeMap::new();
+    // primes whose whole power is no number to write out (millions of bits): they keep
+    // their exponents
+    let mut large: Vec<(Int, Rat)> = Vec::new();
     for (p, e) in primes {
         let whole = e.clone().floor();
-        if let Some(k) = whole.numer().to_i32()
-            && k != 0
-        {
+        let bits = u64::from(p.significant_bits());
+        let Some(k) = whole
+            .numer()
+            .to_i32()
+            .filter(|k| bits.saturating_mul(u64::from(k.unsigned_abs())) <= MAX_POWER_BITS)
+        else {
+            large.push((p, e));
+            continue;
+        };
+        if k != 0 {
             coef *= Rat::from(p.clone()).pow(k);
         }
         let frac = e - whole;
@@ -504,7 +538,8 @@ fn radicals_from_primes(primes: BTreeMap<Int, Rat>) -> (Rat, Vec<(Int, Rat)>) {
             *groups.entry(frac).or_insert_with(|| Int::from(1)) *= &p;
         }
     }
-    (coef, groups.into_iter().map(|(f, m)| (m, f)).collect())
+    let parts = groups.into_iter().map(|(f, m)| (m, f)).chain(large);
+    (coef, parts.collect())
 }
 
 fn radical_expr(coef: Rat, parts: Vec<(Int, Rat)>) -> Expr {
@@ -603,6 +638,11 @@ fn num_pow(x: &Num, y: &Num) -> Expr {
         return raw();
     }
     let r = &y.re;
+    // (the whole part of the exponent makes a number of as many times the bits)
+    let whole = r.clone().abs().floor().numer().to_u64();
+    if whole.is_none_or(|k| u64::from(x.bits()).saturating_mul(k) > MAX_POWER_BITS) {
+        return raw();
+    }
     if x.is_real() {
         if x.re.is_positive() {
             return rational_radical(&x.re, r);
@@ -644,6 +684,11 @@ fn float_pow(b: &Expr, e: &Expr) -> Option<Expr> {
     let prec = like.v.prec().0;
     let (x, y) = (numeric::evalf(b, prec).ok()?, numeric::evalf(e, prec).ok()?);
     let v = numeric::cpow(&x, &y)?;
+    // (smaller or larger than every number that is kept: no 0 and no infinity, the power
+    // stays as it is written)
+    if (v.is_zero() && !x.is_zero()) || !(v.real().is_finite() && v.imag().is_finite()) {
+        return None;
+    }
     Some(Expr::float(Flt {
         v,
         digits: like.digits,

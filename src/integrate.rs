@@ -1553,12 +1553,21 @@ fn singular_points(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Vec<Expr>>
     if !den.has_sym(var) {
         return Some(Vec::new());
     }
-    // (where the denominator vanishes: the steps of that equation are not told)
+    // (where the denominator vanishes: the steps of that equation are not told. Every real
+    // root between the bounds counts, whatever `roots = N` says of the equations of the user)
+    let range = match (numeric::real_value(a, 30), numeric::real_value(b, 30)) {
+        (Some(lo), Some(hi)) => Some((lo.to_f64(), hi.to_f64()))
+            .filter(|(lo, hi)| lo.is_finite() && hi.is_finite() && lo < hi),
+        _ => None,
+    };
     let solved = {
         let _quiet = trace::mute();
-        solve::solve(&den, var).ok()?
+        crate::settings::thorough(range, || solve::solve(&den, var)).ok()?
     };
-    if !solved.params.is_empty() || solved.all {
+    if !solved.params.is_empty()
+        || solved.all
+        || solved.notes.iter().any(|n| n == solve::UNFINISHED)
+    {
         return None;
     }
     let inside = |r: &Expr| -> Option<bool> {
@@ -1586,6 +1595,70 @@ fn singular_points(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Vec<Expr>>
     }
     points.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
     Some(points.into_iter().map(|(_, e)| e).collect())
+}
+
+/// What an antiderivative does next to a point where the integrand has no value and that is
+/// known as a number only (a root that a search found): there no limit by rules tells it.
+enum Nearby {
+    /// It grows without end, to this infinity.
+    Grows(Expr),
+    /// It comes to a value, as 2 sqrt(u) does where u is 0: the limit by rules at the number
+    /// is that value, to the digits that count (what the two sides of the point leave out of
+    /// it is the same, and goes away in their difference).
+    Settles,
+    /// Nothing can be told.
+    Unknown,
+}
+
+/// The values of an antiderivative nearer and nearer to such a point, from the left or from
+/// the right.
+fn end_by_numbers(anti: &Expr, var: &str, at: &Expr, left: bool) -> Nearby {
+    const BITS: u32 = 320;
+    let Some(point) = real_point(at, BITS) else {
+        return Nearby::Unknown;
+    };
+    let size = Float::with_val(BITS, point.abs_ref()) + 1u32;
+    let key: Rc<str> = Rc::from(var);
+    // (the point itself is right to 32 digits or more: the nearest step stays well above that)
+    let mut values = Vec::new();
+    for digits in [8u32, 16, 24] {
+        let step = Float::with_val(
+            BITS,
+            &size / Float::with_val(BITS, Float::i_pow_u(10, digits)),
+        );
+        let x = if left {
+            Float::with_val(BITS, &point - &step)
+        } else {
+            Float::with_val(BITS, &point + &step)
+        };
+        let mut env = Env::new();
+        env.insert(key.clone(), Complex::with_val(BITS, x));
+        let Ok(value) = numeric::evalf_env(anti, BITS, &env) else {
+            return Nearby::Unknown;
+        };
+        values.push(value);
+    }
+    let size = |z: &Complex| Float::with_val(64, z.abs_ref());
+    let sizes: Vec<Float> = values.iter().map(size).collect();
+    let grows = sizes[1] > Float::with_val(64, &sizes[0] + 1u32)
+        && sizes[2] > Float::with_val(64, &sizes[1] + 1u32);
+    if grows {
+        // (to an infinity of the real line when the values are real and of one sign)
+        let real = values.iter().all(|v| v.imag().is_zero());
+        let down = values[2].real().is_sign_negative();
+        return match real && values[1].real().is_sign_negative() == down {
+            true if down => Nearby::Grows(Expr::neg_inf()),
+            true => Nearby::Grows(Expr::inf()),
+            false => Nearby::Unknown,
+        };
+    }
+    // the steps between the values get shorter: they come to a value
+    let first = size(&Complex::with_val(BITS, &values[1] - &values[0]));
+    let second = size(&Complex::with_val(BITS, &values[2] - &values[1]));
+    match first.is_zero() || Float::with_val(64, &second * 4u32) <= first {
+        true => Nearby::Settles,
+        false => Nearby::Unknown,
+    }
 }
 
 /// Samples of the integrand on a finite interval: no failure and no isolated spike (a pole between
@@ -1710,9 +1783,18 @@ fn delta_integral(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Option<Result<(Exp
         if rest.has_fn("diracdelta") {
             return None;
         }
-        let solved = solve::solve(&g, var).ok()?;
+        // (every real root of the argument has its share)
+        let range = match (&lo, &hi) {
+            (Some(lo), Some(hi)) => Some((lo.to_f64(), hi.to_f64()))
+                .filter(|(lo, hi)| lo.is_finite() && hi.is_finite() && lo < hi),
+            _ => None,
+        };
+        let solved = crate::settings::thorough(range, || solve::solve(&g, var)).ok()?;
         solve::release(&solved.params);
-        if solved.all || !solved.params.is_empty() {
+        if solved.all
+            || !solved.params.is_empty()
+            || solved.notes.iter().any(|n| n == solve::UNFINISHED)
+        {
             return None;
         }
         let slope = diff(&g, var);
@@ -1775,6 +1857,17 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
                 total.push(v);
             }
             let value = simplify(&add(total));
+            // a corner that a search found is a number next to the corner: an antiderivative
+            // with a logarithm leaves an imaginary part of the size of that gap there, which
+            // is noise next to the real part (and no part of the integral of a real function)
+            let rough = cuts.iter().any(|p| p.any(&|x| matches!(x, Expr::Float(_))));
+            if rough
+                && value.is_const()
+                && let Ok(z) = numeric::evalf(&value, numeric::bits_for(digits) + 32)
+            {
+                let z = crate::rootsearch::settled(z, digits);
+                return Ok((numeric::to_float_expr(z, digits), true));
+            }
             return Ok((
                 if approx {
                     numeric::n(&value, digits)
@@ -1811,14 +1904,28 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
                 }
             )
         });
+        // a point that a search found as a number is not the point itself: next to it the
+        // antiderivative is looked at by numbers
+        let found = |p: &Expr| p.any(&|x| matches!(x, Expr::Float(_)));
         for w in cuts.windows(2) {
             // (the values at the ends are limits: their own steps are not told)
             let _quiet = trace::mute();
-            match (
-                limit::limit(&anti, var, &w[1], Dir::Left),
-                limit::limit(&anti, var, &w[0], Dir::Right),
-            ) {
-                (Ok((hi, false)), Ok((lo, false))) => pieces.push(sub(hi, lo)),
+            let end = |p: &Expr, left: bool| -> Option<Expr> {
+                if found(p) {
+                    match end_by_numbers(&anti, var, p, left) {
+                        Nearby::Grows(infinity) => return Some(infinity),
+                        Nearby::Unknown => return None,
+                        Nearby::Settles => {}
+                    }
+                }
+                let side = if left { Dir::Left } else { Dir::Right };
+                match limit::limit(&anti, var, p, side) {
+                    Ok((value, false)) => Some(value),
+                    _ => None,
+                }
+            };
+            match (end(&w[1], true), end(&w[0], false)) {
+                (Some(hi), Some(lo)) => pieces.push(sub(hi, lo)),
                 _ => {
                     pieces.clear();
                     break;
@@ -1858,7 +1965,8 @@ pub fn definite(f: &Expr, var: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool),
             }
         }
     }
-    if !scan(f, var, a, b).clean {
+    // (between the points that are known each piece is integrated up to them)
+    if singular.as_ref().is_none_or(|points| points.is_empty()) && !scan(f, var, a, b).clean {
         return Err(format!("the integrand {f} is singular between {a} and {b}"));
     }
     trace::step(|| {

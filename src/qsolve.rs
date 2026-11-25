@@ -542,15 +542,19 @@ fn real_cases(comps: &[Expr], names: &[String]) -> Option<Vec<Case>> {
     }
     let mut cases = Vec::new();
     let mut budget = 300;
-    reduce(
-        tops,
-        Vec::new(),
-        false,
-        names,
-        &mut cases,
-        &mut budget,
-        false,
-    );
+    // (the bases of these equations may take longer than any patience: after 20 seconds
+    // the cases that were found until then are what is told)
+    crate::budget::with_limit(std::time::Duration::from_secs(20), || {
+        reduce(
+            tops,
+            Vec::new(),
+            false,
+            names,
+            &mut cases,
+            &mut budget,
+            false,
+        )
+    });
     // a denominator must not vanish
     cases.retain(|case| {
         bottoms.iter().all(|d| {

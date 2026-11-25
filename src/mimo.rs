@@ -885,6 +885,22 @@ impl Session {
         if !self.wide_stable(s, who)? {
             return Ok(Expr::list(vec![Expr::inf(), Expr::undefined()]));
         }
+        // The place of the peak is found by comparing gains, which tells it to half the
+        // digits that the gains have: the search goes with twice the digits.
+        let digits = numeric::digits();
+        numeric::set_digits(2 * digits + 8);
+        let found = self.wide_peak_searched(s, who);
+        numeric::set_digits(digits);
+        let (gain, place) = found?;
+        let place = match place.is_infinite() {
+            true => Expr::inf(),
+            false => crate::mfun::value(&place),
+        };
+        Ok(Expr::list(vec![crate::mfun::value(&gain), place]))
+    }
+
+    /// The largest gain of a stable system and the frequency where it has it.
+    fn wide_peak_searched(&mut self, s: &Ss, who: &str) -> Result<(Float, Float), String> {
         let prec = crate::mfun::bits();
         let numbers = Self::wide_numbers(s, who)?;
         let gain = |w: &Float| -> Result<Float, String> {
@@ -985,11 +1001,7 @@ impl Session {
                 best = found;
             }
         }
-        let place = match best.1.is_infinite() {
-            true => Expr::inf(),
-            false => crate::mfun::value(&best.1),
-        };
-        Ok(Expr::list(vec![crate::mfun::value(&best.0), place]))
+        Ok(best)
     }
 
     /// A value that takes part in a sum or a product of systems.
@@ -1089,7 +1101,7 @@ impl Session {
     /// A whole power of a system of several inputs and outputs.
     pub(crate) fn wide_power(&mut self, base: &Expr, exponent: &Expr) -> Res {
         let who = "a power of a system";
-        let Some(k) = exponent.as_i64().filter(|k| k.abs() <= 64) else {
+        let Some(k) = exponent.as_i64().filter(|k| k.unsigned_abs() <= 64) else {
             return Err(format!(
                 "{who} is a whole one, as G^2 or G^-1: not {exponent}"
             ));

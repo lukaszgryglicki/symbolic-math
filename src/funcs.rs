@@ -107,6 +107,10 @@ pub fn func(name: &str, args: Vec<Expr>) -> Expr {
         ("beta", 3) => Some(func("betainc", args.clone())),
         ("lambertw", 1) => lambertw(&args[0]),
         ("lambertw", 2) if args[0].is_zero() => Some(func("lambertw", vec![args[1].clone()])),
+        // (at -1/e the two real branches meet: no number of bits tells that value by steps)
+        ("lambertw", 2) if args[0].is_minus_one() && args[1] == neg(powi(Expr::e(), -1)) => {
+            Some(Expr::minus_one())
+        }
         ("harmonic", 1) => args[0]
             .as_i64()
             .filter(|n| (0..=100_000).contains(n))
@@ -149,6 +153,15 @@ fn number_theory(name: &str, a: &[Expr]) -> Option<Expr> {
         ("isprime", 1) => Expr::Bool(a[0].as_num()?.as_int().is_some_and(nt::is_prime)),
         ("issquare", 1) => Expr::Bool(a[0].as_num()?.as_int().is_some_and(nt::is_square)),
         ("issquarefree", 1) => Expr::Bool(nt::is_squarefree(int(0)?)?),
+        // (a number of thousands of digits: each test of a neighbour takes seconds, and
+        // thousands of neighbours are tested; beyond 20000 bits the name stays as it is)
+        ("nextprime" | "prevprime", 1)
+            if a[0]
+                .as_rat()
+                .is_some_and(|q| q.numer().significant_bits() > 20_000) =>
+        {
+            return None;
+        }
         ("nextprime", 1) => num(nt::next_prime(&whole(0)?)),
         ("prevprime", 1) => or_undefined(nt::prev_prime(a[0].as_rat()?.clone().ceil().numer())),
         ("prime", 1) => num(nt::nth_prime(
@@ -175,7 +188,7 @@ fn number_theory(name: &str, a: &[Expr]) -> Option<Expr> {
             Expr::list(vec![num(b), Expr::int(i64::from(e))])
         }
         ("fibonacci" | "lucas", 1) => {
-            let n = a[0].as_i64().filter(|n| n.abs() <= 10_000_000)?;
+            let n = a[0].as_i64().filter(|n| n.unsigned_abs() <= 10_000_000)?;
             num(if name == "fibonacci" {
                 nt::fibonacci(n)
             } else {
@@ -337,7 +350,9 @@ fn number_theory(name: &str, a: &[Expr]) -> Option<Expr> {
         ("pell", 1 | 2) => {
             let d = int(0)?;
             let Some((x1, y1)) = nt::pell(d) else {
-                return Some(Expr::undefined());
+                // (no solution for a number that is not positive or is a square; one that
+                // is too long to be found for another: the name stays then)
+                return (!d.is_positive() || nt::is_square(d)).then(Expr::undefined);
             };
             let n = if a.len() == 2 {
                 index(1, 100_000).filter(|n| *n >= 1)?
@@ -467,7 +482,21 @@ fn float_eval(name: &str, args: &[Expr]) -> Option<Expr> {
     if !args.iter().all(Expr::is_const) {
         return None;
     }
-    let v = numeric::evalf(&Expr::call(name, args.to_vec()), like.v.prec().0).ok()?;
+    // (with a look at the same value with more bits: a series that loses its digits gives
+    // no number that is shown as if it had them)
+    let (v, under) = numeric::underflowed(|| {
+        numeric::evalf_checked(
+            &Expr::call(name, args.to_vec()),
+            like.v.prec().0,
+            like.digits,
+        )
+    });
+    let v = v?;
+    // (a 0 that is none: the value is too small for the exponents of the numbers that are
+    // kept, and the function stays as it is written)
+    if under && v.is_zero() {
+        return None;
+    }
     Some(Expr::float(Flt {
         v,
         digits: like.digits,
@@ -1293,6 +1322,29 @@ fn gamma(x: &Expr) -> Option<Expr> {
     x.is_inf().then(Expr::inf)
 }
 
+/// About how many bits the binomial coefficient of a whole `n` over `k` has, and no fewer.
+fn binomial_bits(n: &Int, k: u32) -> f64 {
+    // C(-n, k) is C(n + k - 1, k) but for its sign
+    let top = if n.is_negative() {
+        Int::from(-n) + k
+    } else {
+        n.clone()
+    };
+    if top < k {
+        return 0.0;
+    }
+    // the smaller of k and top - k picks as many factors, each below `top`, over as many
+    // from 1 on: at most (e top/m)^m
+    let rest = Int::from(&top - k);
+    let m = rest.to_u32().map_or(k, |r| r.min(k));
+    if m == 0 {
+        return 0.0;
+    }
+    // (log2(m) from below, by its bits: the same on every system)
+    let log = f64::from(31 - m.leading_zeros());
+    f64::from(m) * (f64::from(top.significant_bits()) - log + 1.45)
+}
+
 fn binomial(n: &Expr, k: &Expr) -> Option<Expr> {
     if let Some(kk) = k.as_int() {
         if kk.is_negative() {
@@ -1305,7 +1357,9 @@ fn binomial(n: &Expr, k: &Expr) -> Option<Expr> {
             return Some(n.clone());
         }
         if let (Some(nn), Some(k32)) = (n.as_int(), kk.to_u32()) {
-            return Some(Expr::integer(nn.clone().binomial(k32)));
+            // (as with factorials: a number of millions of digits stays as it is written)
+            return (binomial_bits(nn, k32) <= 4.0e6)
+                .then(|| Expr::integer(nn.clone().binomial(k32)));
         }
         if let (Some(r), Some(k32)) = (n.as_rat(), kk.to_u32().filter(|k| *k <= 1000)) {
             let mut acc = Rat::from(1);
@@ -1455,7 +1509,10 @@ fn digamma(x: &Expr) -> Option<Expr> {
     {
         // Gauss: psi(p/q) = -gamma - ln(2q) - (pi/2) cot(pi p/q) + 2 sum_{n < q/2} cos(2 pi n p/q) ln sin(pi n/q)
         let whole = r.clone().floor();
-        let m = whole.numer().to_i64().filter(|m| m.abs() <= 1000)?;
+        let m = whole
+            .numer()
+            .to_i64()
+            .filter(|m| m.unsigned_abs() <= 1000)?;
         let p = (r.clone() - whole).numer().to_i64()?;
         let turn = |a: i64, b: i64| mul(vec![Expr::rat(a, b), Expr::pi()]);
         let mut terms = vec![

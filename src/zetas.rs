@@ -3,6 +3,7 @@
 
 use crate::hyper::{adaptive, is_int};
 use crate::ntheory::bernoulli;
+use crate::numeric::SafeExp;
 use crate::special::{Out, erf_any, expo, gamma_any, pi, real_arg, rgamma, size, zeta_any};
 use rug::{Complex, Float};
 
@@ -35,7 +36,7 @@ pub(crate) fn hurwitz(s: &Complex, a: &Complex, p: u32) -> Out {
     // terms left of the imaginary axis are taken off first
     let mut guard = 0;
     while base.real().is_sign_negative() || base.real().is_zero() {
-        sum += (Complex::with_val(wp, &neg_s * ln_c(&base, wp))).exp();
+        sum += (Complex::with_val(wp, &neg_s * ln_c(&base, wp))).cexp();
         base += 1u32;
         guard += 1;
         if guard > 2_000_000 {
@@ -44,11 +45,11 @@ pub(crate) fn hurwitz(s: &Complex, a: &Complex, p: u32) -> Out {
     }
     for k in 0..n {
         let x = Complex::with_val(wp, &base + k);
-        sum += Complex::with_val(wp, &neg_s * ln_c(&x, wp)).exp();
+        sum += Complex::with_val(wp, &neg_s * ln_c(&x, wp)).cexp();
     }
     let w = Complex::with_val(wp, &base + n);
     let ln_w = ln_c(&w, wp);
-    let w_s = Complex::with_val(wp, &neg_s * &ln_w).exp();
+    let w_s = Complex::with_val(wp, &neg_s * &ln_w).cexp();
     let s1 = Complex::with_val(wp, s - 1u32);
     sum += Complex::with_val(wp, &w_s * &w) / &s1;
     sum += Complex::with_val(wp, &w_s / 2u32);
@@ -83,7 +84,7 @@ fn polylog_series(s: &Complex, z: &Complex, wp: u32) -> Option<(Complex, i64)> {
     let mut top = expo(&sum);
     for k in 2..4_000_000u32 {
         power *= &zz;
-        let weight = Complex::with_val(wp, &neg_s * Float::with_val(wp, k).ln()).exp();
+        let weight = Complex::with_val(wp, &neg_s * Float::with_val(wp, k).ln()).cexp();
         let term = Complex::with_val(wp, &power * &weight);
         sum += &term;
         let e = expo(&term);
@@ -120,7 +121,7 @@ fn polylog_near_one(s: &Complex, mu: &Complex, wp: u32) -> Option<Option<(Comple
             let Some(g) = gamma_any(&one_s, wp)? else {
                 return Some(None);
             };
-            let lead = g * (Complex::with_val(wp, s - 1u32) * ln_c(&minus_mu, wp)).exp();
+            let lead = g * (Complex::with_val(wp, s - 1u32) * ln_c(&minus_mu, wp)).cexp();
             top = top.max(expo(&lead));
             sum += lead;
         }
@@ -189,7 +190,7 @@ pub(crate) fn polylog(s: &Complex, z: &Complex, p: u32) -> Out {
         let ss = Complex::with_val(w, s);
         let inverse = Complex::with_val(w, z.recip_ref());
         let (inner, _) = polylog_series(&ss, &inverse, w)?;
-        let turn = Complex::with_val(w, &ss * &pi(w)).mul_i(false).exp();
+        let turn = Complex::with_val(w, &ss * &pi(w)).mul_i(false).cexp();
         let t2 = inner * turn;
         let r = rgamma(&ss, w)?;
         let t1 = if r.is_zero() {
@@ -202,7 +203,7 @@ pub(crate) fn polylog(s: &Complex, z: &Complex, p: u32) -> Out {
             let Some(h) = hurwitz(&one_s, &a, w)? else {
                 return Some(None);
             };
-            (Complex::with_val(w, &ss * ln_c(&two_pi_i, w))).exp() * r * h
+            (Complex::with_val(w, &ss * ln_c(&two_pi_i, w))).cexp() * r * h
         };
         let value = Complex::with_val(w, &t1 - &t2);
         let lost = expo(&t1).max(expo(&t2)) - expo(&value);
@@ -310,10 +311,16 @@ pub(crate) fn lerch(z: &Complex, s: &Complex, a: &Complex, p: u32) -> Out {
         let (Some(low), Some(high)) = (hurwitz(s, &half, wp)?, hurwitz(s, &next, wp)?) else {
             return Some(None);
         };
-        let scale = (-Complex::with_val(wp, s * Float::with_val(wp, 2).ln())).exp();
+        let scale = (-Complex::with_val(wp, s * Float::with_val(wp, 2).ln())).cexp();
         return Some(Some(Complex::with_val(p, (low - high) * scale)));
     }
     if size(z) > 0.9995 {
+        return None;
+    }
+    // (the terms are followed until k is past the size of a and s: with more of them than
+    // the series may take there is no value, and no need to go through them first)
+    let most = crate::settings::terms(4_000_000);
+    if 2.0 * (size(a) + size(s)) + 8.0 >= most as f64 {
         return None;
     }
     let whole = is_int(s).and_then(|n| i32::try_from(n).ok());
@@ -322,12 +329,12 @@ pub(crate) fn lerch(z: &Complex, s: &Complex, a: &Complex, p: u32) -> Out {
         let mut power = Complex::with_val(wp, 1);
         let mut sum = Complex::new(wp);
         let mut top = -(1i64 << 40);
-        for k in 0..u32::try_from(crate::settings::terms(4_000_000)).unwrap_or(u32::MAX) {
+        for k in 0..u32::try_from(most).unwrap_or(u32::MAX) {
             let base = Complex::with_val(wp, a + k);
             // (a whole power of a real number is real: no logarithm turns it about)
             let fall = match whole {
                 Some(n) => Complex::with_val(wp, rug::ops::Pow::pow(&base, -n)),
-                None => (-Complex::with_val(wp, s * ln_c(&base, wp))).exp(),
+                None => (-Complex::with_val(wp, s * ln_c(&base, wp))).cexp(),
             };
             let term = Complex::with_val(wp, &power * fall);
             top = top.max(expo(&term));
@@ -366,7 +373,7 @@ pub fn call(name: &str, a: &[Complex], p: u32) -> Out {
             let Some(zeta) = zeta_any(z, wp)? else {
                 return Some(None);
             };
-            let factor = Complex::with_val(wp, 1u32 - Complex::with_val(wp, &s1 * &ln2).exp());
+            let factor = Complex::with_val(wp, 1u32 - Complex::with_val(wp, &s1 * &ln2).cexp());
             Some(Some(Complex::with_val(p, zeta * factor)))
         }
         ("erfinv", 1) => real(erfinv(&x?, p)),

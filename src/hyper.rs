@@ -1,6 +1,7 @@
 //! Hypergeometric series, summed with the precision raised until the sum is accurate, and the
 //! functions built on them: 0F1, 1F1, U, 2F1, pFq, incomplete gamma and beta functions.
 
+use crate::numeric::SafeExp;
 use crate::special::{Out, expo, gamma_any, rgamma, size};
 use rug::{Complex, Float};
 
@@ -53,7 +54,33 @@ fn series_once(
     wp: u32,
 ) -> Option<Option<(Complex, i64)>> {
     let zz = Complex::with_val(wp, z);
-    let big = a.iter().chain(b).map(size).fold(0.0f64, f64::max);
+    // the terms may grow again as long as k is below an upper parameter, and next to a
+    // lower one that is negative (there a factor of the denominator is next to 0). A large
+    // lower parameter that is positive only makes them fall faster: the order 10^19 of a
+    // Bessel function is no reason to go through 10^19 terms that are all 0. Nor is a
+    // negative one -n that far out, where the terms come back to |z|^n n!^(p - q - 1) at
+    // most (p upper and q lower parameters): with p <= q that is below every bit
+    let whole_log2 = |x: f64| ((x.to_bits() >> 52) & 0x7ff) as f64 - 1023.0;
+    let slope = a.len() as f64 - b.len() as f64 - 1.0;
+    let above = whole_log2(size(&zz)) + 1.0;
+    let late = |y: &&Complex| {
+        let n = size(y);
+        let back = n * (above + slope * (whole_log2(n) - 2.0));
+        y.real().is_sign_negative()
+            && !(n >= 64.0 && slope < 0.0 && back < -(4.0 * f64::from(wp) + 64.0))
+    };
+    let big = a
+        .iter()
+        .chain(b.iter().filter(late))
+        .map(size)
+        .fold(0.0f64, f64::max);
+    // (the series is followed until k is past `big`: with more terms than it may take it
+    // has no end here, unless it ends by itself before, as a polynomial does)
+    let most = f64::from(max_terms());
+    let ends = a.iter().any(|x| nonpositive_int(x) && size(x) < most);
+    if big >= most && !ends {
+        return None;
+    }
     let mut term = Complex::with_val(wp, 1);
     let mut sum = term.clone();
     let mut top = 1i64;
@@ -260,7 +287,7 @@ pub(crate) fn meijer_g(
                 false => Complex::with_val(wp, &own[h] - 1u32),
             };
             let log = Complex::with_val(wp, z.ln_ref());
-            term *= Complex::with_val(wp, (log * power).exp_ref());
+            term *= Complex::with_val(wp, log * power).cexp();
             term *= series;
             top = top.max(expo(&term));
             sum += term;
@@ -295,7 +322,7 @@ pub(crate) fn hyp1f1(a: &Complex, b: &Complex, z: &Complex, p: u32) -> Out {
         let ba = Complex::with_val(wp, b - a);
         let minus = Complex::with_val(wp, -z);
         let m = pfq(&[ba], std::slice::from_ref(b), &minus, wp)?;
-        return Some(m.map(|m| Complex::with_val(p, m * Complex::with_val(wp, z.exp_ref()))));
+        return Some(m.map(|m| Complex::with_val(p, m * Complex::with_val(wp, z).cexp())));
     }
     pfq(std::slice::from_ref(a), std::slice::from_ref(b), z, p)
 }
@@ -320,6 +347,9 @@ fn taylor_step(
     let mut sum = Complex::with_val(wp, &u0 + Complex::with_val(wp, &u1 * h));
     let mut dsum = u1.clone();
     let mut small = 0;
+    // (with large parameters the terms are small at first, rise, and only fall for good when
+    // their count is past the size of the parameters: none is taken for the last before)
+    let rise = 2.0 * (size(a) + size(b) + size(c)) + 8.0;
     for n in 0..max_terms() {
         let lower = Complex::with_val(wp, a + n) * Complex::with_val(wp, b + n) * &u0;
         let upper = (Complex::with_val(wp, &c1 * n) + &c2) * &u1 * (n + 1);
@@ -332,7 +362,7 @@ fn taylor_step(
         dsum += &dterm;
         let tiny = (term.is_zero() || expo(&term) < expo(&sum) - i64::from(wp) - 8)
             && (dterm.is_zero() || expo(&dterm) < expo(&dsum) - i64::from(wp) - 8);
-        if tiny && n > 8 {
+        if tiny && f64::from(n) > rise {
             small += 1;
             if small >= 4 {
                 return Some((sum, dsum));
@@ -350,6 +380,12 @@ fn taylor_step(
 /// steps of half the distance to the singular points 0 and 1. A point on the cut from 1 to
 /// infinity is reached from below.
 fn hyp2f1_far(a: &Complex, b: &Complex, c: &Complex, z: &Complex, wp: u32) -> Out {
+    // (the terms of a step fall only when their count is past the size of the parameters:
+    // with parameters beyond the terms that a series may take no step comes to its end)
+    let large = size(a).max(size(b)).max(size(c));
+    if 2.0 * large >= f64::from(max_terms()) {
+        return None;
+    }
     let below = z.imag().is_sign_negative() && !z.imag().is_zero()
         || (z.imag().is_zero() && *z.real() > 1u32);
     let root3 = Float::with_val(wp, 3).sqrt() / 4u32;
@@ -393,9 +429,10 @@ fn hyp2f1_far(a: &Complex, b: &Complex, c: &Complex, z: &Complex, wp: u32) -> Ou
     None
 }
 
-/// Gauss's function far left on the real axis, by its two series in 1/z:
+/// Gauss's function away from the unit disk, by its two series in 1/z:
 /// gamma(c) gamma(b - a)/(gamma(b) gamma(c - a)) (-z)^(-a) 2F1(a, a - c + 1; a - b + 1; 1/z) and
-/// the same with a and b the other way round. `None`: not this way.
+/// the same with a and b the other way round. `None`: not this way. (On the cut from 1 to
+/// infinity -z has the angle pi: the value that is reached from below, as everywhere else.)
 fn hyp2f1_inverse(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) -> Option<Complex> {
     // (a - b a whole number: both parts have poles that cancel each other; b moved a hair
     // stands for the limit, with twice the bits)
@@ -407,7 +444,7 @@ fn hyp2f1_inverse(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) ->
         false => Complex::with_val(wp, b),
     };
     let inv = Complex::with_val(wp, z.recip_ref());
-    let log = Complex::with_val(wp, Float::with_val(wp, -z.real())).ln();
+    let log = crate::numeric::cln(crate::numeric::unsigned_zero(Complex::with_val(wp, -z)));
     let gc = gamma_any(&c, wp)??;
     let part = |a: &Complex, b: &Complex| -> Option<Complex> {
         let low = rgamma(b, wp)? * rgamma(&Complex::with_val(wp, &c - a), wp)?;
@@ -421,7 +458,7 @@ fn hyp2f1_inverse(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) ->
             &inv,
             wp,
         )??;
-        let power = (Complex::with_val(wp, -a) * &log).exp();
+        let power = (Complex::with_val(wp, -a) * &log).cexp();
         Some(Complex::with_val(wp, &gc * top) * low * power * series)
     };
     let (first, second) = (part(&a, &b)?, part(&b, &a)?);
@@ -433,6 +470,10 @@ fn hyp2f1_inverse(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) ->
     }
     Some(Complex::with_val(p, sum))
 }
+
+/// The bits that the way to a point step by step is given more for each unit of the size of
+/// the parameters.
+const SPARE: f64 = 1.25;
 
 /// Gauss's hypergeometric function, on its principal branch (cut from 1 to infinity).
 pub(crate) fn hyp2f1(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32) -> Out {
@@ -478,18 +519,30 @@ pub(crate) fn hyp2f1(a: &Complex, b: &Complex, c: &Complex, z: &Complex, p: u32)
         let Some(f) = pfq(&[a.clone(), cb], std::slice::from_ref(c), &w, wp)? else {
             return Some(None);
         };
-        let factor = (Complex::with_val(wp, -a) * crate::numeric::unsigned_zero(one_z).ln()).exp();
+        let factor = (Complex::with_val(wp, -a) * crate::numeric::unsigned_zero(one_z).ln()).cexp();
         return Some(Some(Complex::with_val(p, f * factor)));
     }
-    if z.imag().is_zero()
-        && *z.real() < -1.35
+    // (beyond the circle of the radius 4/3 the series in 1/z fall as fast as the ones
+    // above: the way to z step by step loses its digits where the parameters are large)
+    if size(z) >= 1.35
         && let Some(v) = hyp2f1_inverse(a, b, c, z, p)
     {
         return Some(Some(v));
     }
     let far = size(z).max(2.0).log2().min(1e6) as u32;
     let near = (-size(&one_z).min(1.0).log2()).clamp(0.0, 1e6) as u32;
-    let wp = p + 64 + 8 * (far + near);
+    // (the coefficients of a step come from a recurrence that loses about as many bits as
+    // the parameters are large, at each of the steps)
+    let large = size(a).max(size(b)).max(size(c));
+    if large > 20_000.0 {
+        return None;
+    }
+    let spare = if large > 64.0 {
+        (SPARE * large) as u32
+    } else {
+        0
+    };
+    let wp = p + 64 + 8 * (far + near) + spare;
     hyp2f1_far(a, b, c, z, wp).map(|v| v.map(|v| Complex::with_val(p, v)))
 }
 
@@ -524,7 +577,7 @@ fn u_asymptotic(a: &Complex, b: &Complex, z: &Complex, wp: u32) -> Option<Comple
     }
     let power = (Complex::with_val(wp, -a)
         * crate::numeric::unsigned_zero(Complex::with_val(wp, z)).ln())
-    .exp();
+    .cexp();
     Some(sum * power)
 }
 
@@ -575,7 +628,7 @@ pub(crate) fn hyperu(a: &Complex, b: &Complex, z: &Complex, p: u32) -> Out {
         };
         let power = (Complex::with_val(w2, &one - &bb)
             * crate::numeric::unsigned_zero(zz.clone()).ln())
-        .exp();
+        .cexp();
         let t1 = g1 * rgamma(&ab1, w2)? * m1;
         let t2 = g2 * rgamma(&aa, w2)? * power * m2;
         let sum = Complex::with_val(w2, &t1 + &t2);
@@ -603,7 +656,7 @@ pub(crate) fn upper_gamma(a: &Complex, z: &Complex, p: u32) -> Out {
     };
     Some(Some(Complex::with_val(
         p,
-        u * Complex::with_val(wp, -z).exp(),
+        u * Complex::with_val(wp, -z).cexp(),
     )))
 }
 
@@ -627,7 +680,7 @@ pub(crate) fn lower_gamma(a: &Complex, z: &Complex, p: u32) -> Out {
     };
     let power = (Complex::with_val(wp, a)
         * crate::numeric::unsigned_zero(Complex::with_val(wp, z)).ln())
-    .exp();
+    .cexp();
     Some(Some(Complex::with_val(p, m * power / a)))
 }
 
@@ -644,6 +697,12 @@ pub(crate) fn beta_inc(z: &Complex, a: &Complex, b: &Complex, p: u32) -> Out {
             Some(None)
         };
     }
+    // (z^a beyond the exponents of the numbers that are kept: no value, and no long way
+    // of Gauss's function to a point like 2^53 with a parameter like 100000)
+    let log = crate::numeric::cln(crate::numeric::unsigned_zero(Complex::with_val(64, z)));
+    if Complex::with_val(64, a * log).real().to_f64().abs() > 7.0e8 {
+        return None;
+    }
     // z^a/a 2F1(a, 1 - b; a + 1; z)
     let one_b = Complex::with_val(wp, 1u32 - Complex::with_val(wp, b));
     let a1 = Complex::with_val(wp, a + 1u32);
@@ -652,7 +711,7 @@ pub(crate) fn beta_inc(z: &Complex, a: &Complex, b: &Complex, p: u32) -> Out {
     };
     let power = (Complex::with_val(wp, a)
         * crate::numeric::unsigned_zero(Complex::with_val(wp, z)).ln())
-    .exp();
+    .cexp();
     Some(Some(Complex::with_val(p, f * power / a)))
 }
 
@@ -660,7 +719,11 @@ pub(crate) fn beta_inc(z: &Complex, a: &Complex, b: &Complex, p: u32) -> Out {
 /// large positive `a`, `b`: by the continued fraction, which loses nothing where the series
 /// cancels itself away. `None` when it does not settle.
 fn beta_share(x: &Float, a: &Float, b: &Float, p: u32) -> Option<Float> {
-    let size = Float::with_val(64, a + b).to_f64().max(4.0).log2().ceil() as u32;
+    // (the bits of a + b; with more of them than any precision the fraction is not tried)
+    let size = Float::with_val(64, a + b)
+        .get_exp()
+        .filter(|e| *e <= 100_000)?
+        .max(2) as u32;
     let wp = p + 64 + 2 * size;
     let (x, a, b) = (
         Float::with_val(wp, x),
@@ -867,7 +930,7 @@ fn dispatch(name: &str, a: &[Complex], p: u32) -> Out {
             };
             let power = (Complex::with_val(wp, n - 1u32)
                 * crate::numeric::unsigned_zero(Complex::with_val(wp, z)).ln())
-            .exp();
+            .cexp();
             Some(cut(Some(g * power)))
         }
         ("betainc" | "betaregularized", 3) if beta_large(&a[0], &a[1], &a[2]) => {

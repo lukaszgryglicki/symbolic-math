@@ -97,8 +97,70 @@ fn from_roots(roots: &[Expr]) -> Vec<Expr> {
     for r in roots {
         p = convolve(&p, &[Expr::one(), neg(r.clone())]);
     }
-    p.into_iter()
+    let p = p
+        .into_iter()
         .map(|c| simplify(&crate::expand::expand(&c)))
+        .collect();
+    settled_coefficients(roots, p)
+}
+
+/// The coefficients of a polynomial with rounded roots. Each is a sum of products of the
+/// roots: a part of it that is smaller than the sum of the sizes of these products by more
+/// than the digits that the roots stand for is what the rounding left of a zero. (The
+/// imaginary parts, where the roots are pairs of conjugates: the poles of a filter.)
+fn settled_coefficients(roots: &[Expr], p: Vec<Expr>) -> Vec<Expr> {
+    use rug::Float;
+    let stand_for = roots
+        .iter()
+        .filter_map(|r| match r {
+            Expr::Float(f) => Some(f.digits),
+            _ => None,
+        })
+        .min();
+    let (Some(digits), Some(sizes)) = (
+        stand_for,
+        roots
+            .iter()
+            .map(matrix::size_of_number)
+            .collect::<Option<Vec<Float>>>(),
+    ) else {
+        return p;
+    };
+    // the sums of the sizes of the products: the coefficients of prod(x + |r|)
+    let mut sums = vec![Float::with_val(64, 1)];
+    for size in &sizes {
+        let mut next = vec![Float::new(64); sums.len() + 1];
+        for (k, c) in sums.iter().enumerate() {
+            next[k] += c;
+            next[k + 1] += Float::with_val(64, c * size);
+        }
+        sums = next;
+    }
+    let share = Float::with_val(64, Float::i_pow_u(10, digits.saturating_add(8))).recip();
+    p.into_iter()
+        .zip(sums)
+        .map(|(c, sum)| {
+            let Expr::Float(f) = &c else {
+                return c;
+            };
+            let least = Float::with_val(64, &sum * &share);
+            let prec = f.v.prec().0;
+            let kept = |part: &Float| match Float::with_val(64, part.abs_ref()) <= least {
+                true => Float::new(prec),
+                false => part.clone(),
+            };
+            let (re, im) = (kept(f.v.real()), kept(f.v.imag()));
+            if re == *f.v.real() && im == *f.v.imag() {
+                return c;
+            }
+            if re.is_zero() && im.is_zero() {
+                return Expr::zero();
+            }
+            Expr::float(crate::num::Flt {
+                v: rug::Complex::with_val(prec, (re, im)),
+                digits: f.digits,
+            })
+        })
         .collect()
 }
 
@@ -1102,7 +1164,11 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
         ("gbasis", 1 | 2) => {
             let polys = a[0].as_list().ok_or("gbasis([polynomials], [variables])")?;
             let (gens, ps, back) = polynomials(polys, a.get(1), name)?;
-            let basis = crate::poly::groebner(&ps, 20_000).ok_or("gbasis: too much work")?;
+            // (a basis whose coefficients grow without end is given up after five minutes)
+            let basis = crate::budget::with_limit(std::time::Duration::from_secs(300), || {
+                crate::poly::groebner(&ps, 20_000)
+            })
+            .ok_or("gbasis: too much work")?;
             Expr::list(
                 basis
                     .iter()

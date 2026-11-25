@@ -12,6 +12,10 @@ use crate::solve;
 use rug::{Complex, Float};
 use std::collections::BTreeSet;
 
+/// How long the basis of a system of polynomial equations may take: where its coefficients
+/// grow without end, the other methods and the numeric search go on without it.
+const BASIS_TIME: std::time::Duration = std::time::Duration::from_secs(30);
+
 pub type Assignment = Vec<(String, Expr)>;
 
 #[derive(Default, Debug)]
@@ -664,7 +668,7 @@ fn solve_case(eqs: &[Expr], vars: &[String]) -> Result<SystemSolved, String> {
             .kernels()
             .iter()
             .all(|k| k.sym_name().is_some_and(|s| vars.iter().any(|v| v == s)))
-        && let Some(basis) = poly::groebner(&polys, 4000)
+        && let Some(basis) = crate::budget::with_limit(BASIS_TIME, || poly::groebner(&polys, 4000))
     {
         if basis.len() == 1 && basis[0].is_const() {
             out.empty = true;

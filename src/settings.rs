@@ -7,6 +7,44 @@ use std::cell::Cell;
 thread_local! {
     static ROOTS: Cell<Option<u32>> = const { Cell::new(None) };
     static TERMS: Cell<Option<u64>> = const { Cell::new(None) };
+    static SOLVING: Cell<Solving> = const { Cell::new(Solving::Inside) };
+}
+
+/// For whom an equation is solved.
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub enum Solving {
+    /// An equation that the user wrote: `roots = N` holds for it, and a numeric search lists
+    /// the roots nearest to 0.
+    Listed,
+    /// An equation that a method solves on its way: no setting of the user changes it.
+    Inside,
+    /// An equation whose every real root counts: the ends of an inequality, the poles of an
+    /// integrand, the turning points of a function. A numeric search goes along the real
+    /// line - between the two numbers when they are given - for all the roots that are
+    /// there, and none is left out.
+    Thorough(Option<(f64, f64)>),
+}
+
+fn solving_as<T>(kind: Solving, f: impl FnOnce() -> T) -> T {
+    let before = SOLVING.replace(kind);
+    let out = f();
+    SOLVING.set(before);
+    out
+}
+
+/// Runs `f` as the solving of an equation of the user (`Solving::Listed`).
+pub fn listing<T>(f: impl FnOnce() -> T) -> T {
+    solving_as(Solving::Listed, f)
+}
+
+/// Runs `f` as the solving of an equation whose every real root counts, between the two
+/// numbers of `range` when it has them (`Solving::Thorough`).
+pub fn thorough<T>(range: Option<(f64, f64)>, f: impl FnOnce() -> T) -> T {
+    solving_as(Solving::Thorough(range), f)
+}
+
+pub fn solving() -> Solving {
+    SOLVING.get()
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -63,8 +101,17 @@ pub fn value_word(word: &str) -> bool {
     )
 }
 
-/// How many roots a numeric search is asked for; `None` leaves each search its own way.
+/// How many roots a numeric search is asked for by `roots = N`: for an equation of the user
+/// only (see `Solving`); `None` leaves each search its own way.
 pub fn roots() -> Option<u32> {
+    match solving() {
+        Solving::Listed => ROOTS.get(),
+        _ => None,
+    }
+}
+
+/// `roots = N` as it was set.
+pub fn roots_set() -> Option<u32> {
     ROOTS.get()
 }
 
@@ -102,7 +149,7 @@ pub fn shown(setting: Setting, digits: Option<u32>) -> String {
                 "digits = default (32, or as many as the longest number of an input)".to_string()
             }
         },
-        Setting::Roots => match roots() {
+        Setting::Roots => match roots_set() {
             Some(n) => format!("roots = {n}"),
             None => "roots = default (a numeric search lists what its usual starting points find)"
                 .to_string(),
@@ -169,22 +216,25 @@ mod tests {
     fn what_is_set_is_what_the_methods_see() {
         reset();
         assert_eq!(
-            (roots(), terms_set(), terms(2_000_000)),
+            (roots_set(), terms_set(), terms(2_000_000)),
             (None, None, 2_000_000)
         );
         set_roots(Some(7));
         set_terms(Some(500));
         assert_eq!(
-            (roots(), terms_set(), terms(2_000_000)),
+            (roots_set(), terms_set(), terms(2_000_000)),
             (Some(7), Some(500), 500)
         );
         // (out of range: the nearest value that is allowed)
         set_roots(Some(0));
         set_terms(Some(0));
-        assert_eq!((roots(), terms_set()), (Some(1), Some(1)));
+        assert_eq!((roots_set(), terms_set()), (Some(1), Some(1)));
         set_roots(Some(u32::MAX));
         set_terms(Some(u64::MAX));
-        assert_eq!((roots(), terms_set()), (Some(MAX_ROOTS), Some(MAX_TERMS)));
+        assert_eq!(
+            (roots_set(), terms_set()),
+            (Some(MAX_ROOTS), Some(MAX_TERMS))
+        );
         assert_eq!(
             listed(Some(40))[..3],
             ["digits = 40", "roots = 100000", "terms = 1000000000000"]
@@ -199,5 +249,31 @@ mod tests {
                 "verbose = off"
             ]
         );
+    }
+
+    #[test]
+    fn the_count_of_roots_holds_for_an_equation_of_the_user_only() {
+        reset();
+        set_roots(Some(3));
+        // (an equation that a method solves on its way is not cut to that count)
+        assert_eq!((solving(), roots()), (Solving::Inside, None));
+        listing(|| {
+            assert_eq!((solving(), roots()), (Solving::Listed, Some(3)));
+            // the ends of an inequality inside it: every real root
+            thorough(Some((0.0, 2.0)), || {
+                assert_eq!(solving(), Solving::Thorough(Some((0.0, 2.0))));
+                assert_eq!(roots(), None);
+            });
+            assert_eq!((solving(), roots()), (Solving::Listed, Some(3)));
+        });
+        thorough(None, || {
+            assert_eq!((solving(), roots()), (Solving::Thorough(None), None));
+            listing(|| assert_eq!(roots(), Some(3)));
+        });
+        assert_eq!(
+            (solving(), roots(), roots_set()),
+            (Solving::Inside, None, Some(3))
+        );
+        reset();
     }
 }

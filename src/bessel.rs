@@ -1,6 +1,7 @@
 //! Bessel, Hankel, Airy and Struve functions of complex order and argument.
 
 use crate::hyper::{adaptive, hyp0f1, is_int, pfq};
+use crate::numeric::SafeExp;
 use crate::special::{Out, expo, pi, rgamma, size};
 use rug::{Complex, Float};
 
@@ -52,7 +53,9 @@ fn half_turn(nu: &Complex, m: i32, wp: u32) -> Complex {
     if let Some(n) = is_int(nu) {
         return Complex::with_val(wp, if n % 2 == 0 { 1 } else { -1 });
     }
-    (Complex::with_val(wp, nu * &pi(wp)) * m).mul_i(false).exp()
+    (Complex::with_val(wp, nu * &pi(wp)) * m)
+        .mul_i(false)
+        .cexp()
 }
 
 /// J (0), Y (1), H1 (2), H2 (3), I (4), K (5) far from the origin, by Hankel's expansions: the
@@ -107,19 +110,19 @@ fn far(kind: u8, nu: &Complex, z: &Complex, wp: u32) -> Option<(Complex, i64)> {
         }
     }
     let zz = Complex::with_val(w, z);
-    let root = (ln_c(&zz, w) / -2i32).exp();
+    let root = (ln_c(&zz, w) / -2i32).cexp();
     if kind >= 4 {
         // e^z/sqrt(2 pi z) sum (-1)^k a_k/z^k +- i e^(+-nu pi i) e^(-z)/sqrt(2 pi z) sum a_k/z^k
         let falling = hankel_sum(nu, &zz, 0, w)?;
-        let small = Complex::with_val(w, -&zz).exp() * &root;
+        let small = Complex::with_val(w, -&zz).cexp() * &root;
         if kind == 5 {
             return Some((small * falling * (pi(w) / 2u32).sqrt(), 0));
         }
         let rising = hankel_sum(nu, &zz, 2, w)?;
         let front = (pi(w) * 2u32).sqrt().recip();
-        let t1 = Complex::with_val(w, zz.exp_ref()) * &root * rising * &front;
+        let t1 = Complex::with_val(w, &zz).cexp() * &root * rising * &front;
         let m: i32 = if upper { 1 } else { -1 };
-        let phase = (Complex::with_val(w, nu * &pi(w)) * m).mul_i(false).exp();
+        let phase = (Complex::with_val(w, nu * &pi(w)) * m).mul_i(false).cexp();
         let t2 = (small * falling * front * phase).mul_i(!upper);
         let sum = Complex::with_val(w, &t1 + &t2);
         let lost = expo(&t1).max(expo(&t2)) - expo(&sum);
@@ -129,10 +132,10 @@ fn far(kind: u8, nu: &Complex, z: &Complex, wp: u32) -> Option<(Complex, i64)> {
     let front = root * (Float::with_val(w, 2) / pi(w)).sqrt();
     let omega = Complex::with_val(w, &zz - Complex::with_val(w, nu * &pi(w)) / 2u32) - pi(w) / 4u32;
     let h1 = |w: u32| -> Option<Complex> {
-        Some(hankel_sum(nu, &zz, 1, w)? * Complex::with_val(w, &omega).mul_i(false).exp() * &front)
+        Some(hankel_sum(nu, &zz, 1, w)? * Complex::with_val(w, &omega).mul_i(false).cexp() * &front)
     };
     let h2 = |w: u32| -> Option<Complex> {
-        Some(hankel_sum(nu, &zz, 3, w)? * Complex::with_val(w, &omega).mul_i(true).exp() * &front)
+        Some(hankel_sum(nu, &zz, 3, w)? * Complex::with_val(w, &omega).mul_i(true).cexp() * &front)
     };
     match kind {
         2 => Some((h1(w)?, 0)),
@@ -173,7 +176,7 @@ fn bessel_ji(nu: &Complex, z: &Complex, modified: bool, p: u32) -> Out {
     }
     if let Some(n) = is_int(nu).filter(|n| *n < 0) {
         // J_(-n) = (-1)^n J_n and I_(-n) = I_n
-        let v = bessel_ji(&Complex::with_val(p, -n), z, modified, p)?;
+        let v = bessel_ji(&Complex::with_val(p, n.unsigned_abs()), z, modified, p)?;
         let flip = !modified && n % 2 != 0;
         return Some(v.map(|v| if flip { -v } else { v }));
     }
@@ -196,7 +199,7 @@ fn bessel_ji(nu: &Complex, z: &Complex, modified: bool, p: u32) -> Out {
         return Some(None);
     };
     let half = Complex::with_val(wp, z) / 2u32;
-    let power = (Complex::with_val(wp, nu) * ln_c(&half, wp)).exp();
+    let power = (Complex::with_val(wp, nu) * ln_c(&half, wp)).cexp();
     Some(Some(Complex::with_val(p, f * power * rgamma(&b, wp)?)))
 }
 
@@ -293,7 +296,7 @@ fn spherical(second: bool, n: &Complex, z: &Complex, p: u32) -> Out {
         return Some(None);
     };
     // z^(-1/2) on the branch of the power in the Bessel function: whole orders give entire functions
-    let factor = (ln_c(z, wp) / -2i32).exp() * (pi(wp) / 2u32).sqrt();
+    let factor = (ln_c(z, wp) / -2i32).cexp() * (pi(wp) / 2u32).sqrt();
     Some(Some(Complex::with_val(p, value * factor)))
 }
 
@@ -301,7 +304,7 @@ fn spherical(second: bool, n: &Complex, z: &Complex, p: u32) -> Out {
 /// `e^(-zeta)/(2 sqrt(pi) z^(1/4)) sum (-1)^k u_k/zeta^k` with `zeta = 2/3 z^(3/2)`.
 fn airy_direct(derivative: bool, z: &Complex, w: u32) -> Option<Complex> {
     let l = ln_c(z, w);
-    let zeta = Complex::with_val(w, &l * Float::with_val(w, 1.5)).exp() * 2u32 / 3u32;
+    let zeta = Complex::with_val(w, &l * Float::with_val(w, 1.5)).cexp() * 2u32 / 3u32;
     let step = -Complex::with_val(w, zeta.recip_ref());
     // u_k = u_(k-1) (6k-5)(6k-3)(6k-1)/(216 k (2k-1)), v_k = -(6k+1)/(6k-1) u_k
     let mut u = Complex::with_val(w, 1);
@@ -329,8 +332,8 @@ fn airy_direct(derivative: bool, z: &Complex, w: u32) -> Option<Complex> {
     if !done {
         return None;
     }
-    let quarter = Complex::with_val(w, &l / 4u32).exp();
-    let front = (-zeta).exp() / (pi(w).sqrt() * 2u32);
+    let quarter = Complex::with_val(w, &l / 4u32).cexp();
+    let front = (-zeta).cexp() / (pi(w).sqrt() * 2u32);
     Some(if derivative {
         -(sum * front * quarter)
     } else {
@@ -477,7 +480,7 @@ fn struve(nu: &Complex, z: &Complex, modified: bool, p: u32) -> Out {
         return Some(None);
     };
     let zh = Complex::with_val(wp, z) / 2u32;
-    let power = ((Complex::with_val(wp, nu) + 1u32) * ln_c(&zh, wp)).exp();
+    let power = ((Complex::with_val(wp, nu) + 1u32) * ln_c(&zh, wp)).cexp();
     Some(Some(Complex::with_val(
         p,
         f * power * rgamma(&b1, wp)? * rgamma(&b2, wp)?,

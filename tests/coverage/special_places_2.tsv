@@ -156,8 +156,8 @@
 -e	polar(10^20)	100000000000000000000e^0
 -e	polar(10^(-20))	(1/100000000000000000000)e^0
 -e	polar(x)	abs(x)*e^(i*arg(x))
--e	polar([])	abs([])*e^(i*arg([]))
--e	polar([1, 2])	abs([1, 2])*e^(i*arg([1, 2]))
+-e	polar([])	[]
+-e	polar([1, 2])	[e^0, 2e^0]
 -e	polar("text")	abs("text")*e^(i*arg("text"))
 -e	polar(true)	abs(true)*e^(i*arg(true))
 -e	polar(-7/3)	(7/3)e^(i*pi)
@@ -282,7 +282,7 @@
 -e	min(10^20)	100000000000000000000
 -e	min(10^(-20))	1/100000000000000000000
 -e	min(x)	x
--e	min([])	min()
+-e	min([])	[]
 -e	min([1, 2])	1
 -e	min("text")	"text"
 -e	min(true)	true
@@ -300,7 +300,7 @@
 -e	max(10^20)	100000000000000000000
 -e	max(10^(-20))	1/100000000000000000000
 -e	max(x)	x
--e	max([])	max()
+-e	max([])	[]
 -e	max([1, 2])	2
 -e	max("text")	"text"
 -e	max(true)	true

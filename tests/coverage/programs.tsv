@@ -82,7 +82,7 @@
 	assume(n, integer); cos(n*pi)	true|(-1)^n
 	assume(x, real); conj(x)	true|x
 	assume(x > 0); forget(x); sqrt(x^2)	true|true|sqrt(x^2)
-	assume(x > 0); assumealso(x < 1); assumptions()	true|true|["x is positive"]
+	assume(x > 0); assumealso(x < 1); assumptions()	true|true|note: of x < 1 only the kind of number is kept: x is real|["x is positive"]
 	domain(real); (-8)^(1/3)	real|-2
 	domain(real); x^2 + 1 = 0	real|no real solution
 	domain(complex); x^2 + 1 = 0	complex|x = -i|x = i

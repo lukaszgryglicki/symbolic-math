@@ -22,8 +22,10 @@ Options:
       --terms N     the most terms that a sum or a series takes one by one; the same as the
                     statement terms = N
   -v, --verbose     tell the steps that lead to each result, as lines `step: ...`; the same as
-                    the statement verbose
+                    the statement verbose; --verbose=off, --verbose=on and --verbose=all (every
+                    detail) say which
       --debug       tell every detail as well; the same as the statement debug
+                    (a long option may take its value after `=`: --digits=50, --roots=5)
       --functions   list the functions with all their names
       --constants   list the constants with all their names
       --units       list the units of convert(...) with their names and sizes
@@ -35,19 +37,25 @@ Environment:
                     written only under plain names in the current directory, 64 files and
                     N megabytes at most (32 megabytes when N is no number from 1 to 4096)
   SYMBOLIC_MATH_MEMORY=N   the program takes N megabytes of memory at most (64 or more): a
-                    calculation that needs more ends with an error and leaves the machine alone
+                    calculation that needs more ends with the error `out of memory` and leaves
+                    the machine alone. Without it: 8192 megabytes or three quarters of the
+                    memory of the machine, whichever is less (and never more than a limit of
+                    the shell); SYMBOLIC_MATH_MEMORY=unlimited takes what the system gives.
+                    (Linux and FreeBSD; macOS does not hold a program to such a limit)
 
 Numbers are exact (integers, fractions, decimals, complex with i) or have the digits asked for.
-An input with a decimal point is answered in decimals. Names have ASCII and Unicode spellings:
-pi or π, sqrt(2) or √2, inf or ∞, x^2 or x², <= or ≤. A line `  ~ ...` of the output is the
-numeric value of the line above it, a line `note: ...` is a remark.
+An input with a decimal point is answered in decimals (a decimal number with a power of ten
+beyond 10^1000000, as the program prints some, is read as a rounded number). Names have ASCII
+and Unicode spellings: pi or π, sqrt(2) or √2, inf or ∞, x^2 or x², <= or ≤. A line `  ~ ...`
+of the output is the numeric value of the line above it, a line `note: ...` is a remark.
 
 Settings are statements of their own: digits = N (also prec, precision), roots = N (also
 maxroots, solutions), terms = N (also maxterms), verbose and debug (verbose = 0, 1, 2 or off,
 on, all), and settings, which lists them. The `=` may be left out, and so may the `;` or `,`
-after a setting: `prec=100 pi`, `roots=20; sin(x) = x`, `verbose, x^2 = 2`. The value default
-sets a setting back. A setting holds for the rest of the run: in a session, until it is set
-again.
+after a setting: `prec=100 pi`, `roots=20; sin(x) = x`, `verbose, x^2 = 2`. After an `=` the
+value may be a formula that gives a whole number: `terms = 10^6`, `n := 40; digits = n`. The
+value default sets a setting back. A setting holds for the rest of the run: in a session,
+until it is set again.
 
 How numeric results end. A value is worked out with more bits than its digits need and once
 more with still more bits, until the digits of both agree: how good a value is depends on
@@ -59,9 +67,14 @@ terms are extrapolated until three extrapolations agree; terms = N sets where a 
 series gives up, and the error says what is missing. A numeric search for the roots of an
 equation lists the 8 nearest to 0 that it finds when the equation is made of elementary
 functions, and what fixed starting points find for the others; roots = N asks for the N
-nearest (roots that are equally far from 0 stay together, so a root and its conjugate may
-make it N + 1), also of an equation that the function W of Lambert solves: there every
-branch lambertw(k, z) gives a solution.
+nearest (roots that are equally far from 0 stay together: a root and its conjugate may make
+it N + 1, the four such roots of sin(x) = x N + 3), also of an equation that the function W
+of Lambert solves: there every branch lambertw(k, z) gives a solution. The place where a
+distribution reaches a probability (tinv, chi2inv, finv, ...) is searched with more and more
+digits of the distribution function until two places agree, also far out in a tail
+(tinv(1 - 10^-30, 7)). Among rounded numbers an elimination takes the largest pivot, and
+what the rounding leaves of a zero is 0: a matrix of rounded numbers without an inverse says
+so, and its determinant is 0.
 
 A session, and programs. Without an input the program reads the standard input line by line:
 lines that are typed, or a file (`symbolic-math < file`). Each line is one input, a line that
@@ -2683,10 +2696,13 @@ Settings as statements: digits, how many roots, how many terms (they hold for th
       # a setting holds until it is set again; default sets it back
   'prec = 100' 'settings' 'roots = 7, terms = 1000000, settings'
       # a setting alone says what is set; settings lists them all
+  'terms = 10^6' 'n := 40; prec = n; N(pi)' 'digits = 2*30, sqrt(2)'
+      # after an = the value may be a formula that gives a whole number
   'sin(x) = x'
-      # a numeric search lists the 8 roots nearest to 0 that it finds (9 where two are equally far)
+      # a numeric search lists the 8 roots nearest to 0 that it finds (9 here: roots that are
+      # equally far from 0 stay together)
   'roots = 3; sin(x) = x' 'roots=20 x = cos(x)' 'roots = 12; tan(x) = x'
-      # roots = N: the N nearest to 0
+      # roots = N: the N nearest to 0 (5 of sin(x) = x, where four are equally far)
   'prec=50, roots=2, cos(x) = x' 'roots = 2; e^x = x^2; roots = default; e^x = x^2'
       # with fifty digits; back to what the search lists by itself
   -r 'roots = 6; x*sin(x) = 1' 'roots = 3; sin(x) = x/10'  # real roots only
@@ -2743,6 +2759,31 @@ Steps: verbose tells how a result was found, debug every detail (lines step: ...
       # on and off inside an input: 0 no steps, 1 the steps, 2 every detail
   -v 'x^2 = 2'  # the same as an option
   --debug 'N(sqrt(2), 50)'
+
+Results that hold whatever digits are asked for: rounded numbers, far tails, lists that fall away:
+  'inv(N([[10^-40, 1], [3, 1]]))' 'linsolve(N([[10^-40, 1], [3, 1]]), [1, 2])'
+      # among rounded numbers an elimination takes the largest pivot
+  'det(N([[1, 2, 3], [1/3, 2/3, 1], [5, 6, 8]]))' 'rank(N([[1, 2, 3], [1/3, 2/3, 1], [5, 6, 8]]))'
+      # what the rounding leaves of a zero is 0
+  'poly(buttap(3)[[2]])' 'poly(roots([1, 2, 3, 4, 5, 6]))'
+      # the polynomial of rounded roots has no rounding for coefficients
+  'tinv(1 - 10^-30, 7)' 'chi2inv(10^-300, 1)' 'tinv(0.5, 7)'
+      # a place far out in a tail has all its digits; the middle is 0
+  'impz([1], [1, -0.001], 16)' 'gausswin(5, 30)'
+      # values that fall away over many powers of ten are kept
+  'freqs([1], [1, 1], [1, 10^40])' 'grpdelay([1, 0, 0, 1], [1], 6)'
+      # a response deep in the stopband; the delay at a zero of the response
+  'hinfnorm(ss([[-5/2, 2], [0, -3]], [[1], [1]], [[-2, -1], [-1, 1]], [[1], [0]]))'
+      # the largest gain and its frequency
+  'bvp4c(@(x, y, z) [z, -abs(y)], @(ya, za, yb, zb) [ya, yb + 2], [0, 4], [-1, 0])'
+      # a path over a kink of the slopes
+  'N(fpdf(1, 2^31, 3))' 'N(binomial(10^9, 5*10^8)/2^(10^9))'
+      # factors beyond the exponents that are kept: the product by logarithms
+  'nsolve(sin(x) + e^x = 1 + 10^(-90), x, 1/10)'  # a root next to 0 with all its digits
+  'ballvolume([1, 2, 3])' 'rotx([30, 60])' 'flat2ecc([1/2, 1/3])'
+      # a formula for one number that is given a list: the list of its values
+  'N((2.0^10000000 + i)^(-2))' '1.2210132480785093001320470902279e-6020600*2'
+      # what is printed can be read: beyond 10^1000000 a decimal number is a rounded one
 
 Names: every name has a plain spelling and a Unicode one:
   '√2 · √8' 'x² + 2x + 1 = 0' '∛27' 'e^(iπ) + 1'

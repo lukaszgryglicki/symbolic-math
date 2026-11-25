@@ -226,7 +226,7 @@ fn year_of(r: &Rat, what: &str, name: &str) -> Result<i64, String> {
     r.is_integer()
         .then(|| r.numer().to_i64())
         .flatten()
-        .filter(|y| y.abs() <= YEARS)
+        .filter(|y| y.unsigned_abs() <= YEARS as u64)
         .ok_or_else(|| match r.is_integer() {
             true => format!("{name}: the calendar does not reach that far"),
             false => format!("{name} needs a whole {what}, {r} is none"),
@@ -254,7 +254,7 @@ fn split(n: &Rat, name: &str) -> Result<(i64, i64), String> {
         .ok_or_else(far)?;
     let day = whole
         .to_i64()
-        .filter(|d| d.abs() <= YEARS * 366)
+        .filter(|d| d.unsigned_abs() <= (YEARS * 366) as u64)
         .ok_or_else(far)?;
     Ok(match millis == MILLIS {
         true => (day + 1, 0),
@@ -461,7 +461,7 @@ fn parts(n: &Rat, name: &str) -> Res {
     let whole = floor(n);
     let day = whole
         .to_i64()
-        .filter(|d| d.abs() <= YEARS * 366)
+        .filter(|d| d.unsigned_abs() <= (YEARS * 366) as u64)
         .ok_or_else(|| format!("{name}: the calendar does not reach that far"))?;
     let (year, month, of_month) = civil(day);
     let seconds = Rat::from(n - &whole) * Rat::from(86_400);
@@ -511,13 +511,13 @@ fn moved(n: &Rat, by: &Rat, part: &str, name: &str) -> Result<Rat, String> {
             let (year, month, day) = civil(
                 whole
                     .to_i64()
-                    .filter(|d| d.abs() <= YEARS * 366)
+                    .filter(|d| d.unsigned_abs() <= (YEARS * 366) as u64)
                     .ok_or_else(|| format!("{name}: the calendar does not reach that far"))?,
             );
             let count = year_of(by, "number of years or months", name)?;
             let months = year * 12 + month - 1 + count * if part == "year" { 12 } else { 1 };
             let (year, month) = (months.div_euclid(12), months.rem_euclid(12) + 1);
-            if year.abs() > YEARS {
+            if year.unsigned_abs() > YEARS as u64 {
                 return Err(format!("{name}: the calendar does not reach that far"));
             }
             let start = before(year, month) + day.min(last_day(year, month));

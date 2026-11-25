@@ -91,6 +91,42 @@ fn settings_hold_for_the_lines_of_a_session() {
     );
 }
 
+/// `terms = 10^6` once printed `terms = 1000000`, the equation that it was read as, and set
+/// nothing; so did `prec = n` with a number for n.
+#[test]
+fn the_value_of_a_setting_may_be_a_formula() {
+    let session = "n := 40\nprec = n\nN(pi)\nterms = 10^6\nroots = 2*2\nsettings\nterms = -5\n\
+                   verbose = maybe\ndigits = many\nprec = x + 1\nterms = 2^5, prec = 6*2, N(pi)\n\
+                   settings\n";
+    let (out, err, code) = run_with(&[], Some(session), &[]);
+    assert_eq!(
+        out,
+        "40\n\
+         digits = 40\n\
+         3.141592653589793238462643383279502884197\n\
+         terms = 1000000\n\
+         roots = 4\n\
+         digits = 40\n\
+         roots = 4\n\
+         terms = 1000000\n\
+         verbose = off\n\
+         x = prec - 1\n\
+         3.14159265359\n\
+         digits = 12\n\
+         roots = 4\n\
+         terms = 32\n\
+         verbose = off\n"
+    );
+    // what is no whole number is told as that, and the setting stays as it was
+    assert_eq!(
+        err,
+        "error: terms = N: a whole number from 1 to 1000000000000, or default\n\
+         error: verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail\n\
+         error: digits = N: a whole number from 1 to 1000000, or default\n"
+    );
+    assert_eq!(code, Some(1));
+}
+
 #[test]
 fn a_program_is_read_from_the_standard_input_line_by_line() {
     let program = "# the numbers of Fibonacci, three ways\n\
@@ -232,6 +268,65 @@ fn an_option_without_its_number_ends_the_run() {
     }
 }
 
+/// `--verbose` and `--debug` take a value as the statement `verbose = ...` does; the options
+/// that only switch something on take none (and `--real=no` once switched the real numbers
+/// on).
+#[test]
+fn an_option_with_a_value_means_that_value() {
+    let input = "N(sqrt(2), 50)";
+    let plain = lines(&[input]);
+    let steps = lines(&["-v", input]);
+    let all = lines(&["--debug", input]);
+    assert!(plain.len() < steps.len() && steps.len() < all.len());
+    for (option, want) in [
+        ("--verbose=off", &plain),
+        ("--verbose=no", &plain),
+        ("--verbose=0", &plain),
+        ("--verbose=none", &plain),
+        ("--debug=off", &plain),
+        ("--debug=0", &plain),
+        ("--verbose=on", &steps),
+        ("--verbose=yes", &steps),
+        ("--verbose=1", &steps),
+        ("--debug=1", &steps),
+        ("--verbose=all", &all),
+        ("--verbose=2", &all),
+        ("--debug=on", &all),
+        ("--debug=all", &all),
+        ("--debug=2", &all),
+    ] {
+        assert_eq!(&lines(&[option, input]), want, "{option}");
+    }
+    // (the last one holds)
+    assert_eq!(lines(&["-v", "--verbose=off", input]), plain);
+    assert_eq!(lines(&["--verbose=off", "--debug", input]), all);
+    for (option, message) in [
+        (
+            "--verbose=maybe",
+            "error: --verbose=maybe: the value is 0, 1 or 2 (off, on, all): no steps, the steps, every detail\n",
+        ),
+        (
+            "--debug=3",
+            "error: --debug=3: the value is 0, 1 or 2 (off, on, all): no steps, the steps, every detail\n",
+        ),
+        ("--real=no", "error: --real takes no value\n"),
+        ("--real=yes", "error: --real takes no value\n"),
+        ("--exact=1", "error: --exact takes no value\n"),
+        ("--numeric=off", "error: --numeric takes no value\n"),
+        ("--quaternions=on", "error: --quaternions takes no value\n"),
+        ("--help=all", "error: --help takes no value\n"),
+        ("--version=1", "error: --version takes no value\n"),
+        ("--functions=sin", "error: --functions takes no value\n"),
+    ] {
+        let (out, err, code) = run(&[option, "x^2 = -4"]);
+        assert_eq!(
+            (out.as_str(), err.as_str(), code),
+            ("", message, Some(2)),
+            "{option}"
+        );
+    }
+}
+
 #[test]
 fn the_steps_are_printed_where_the_results_are_and_in_their_order() {
     let (out, err, code) = run(&["verbose; x - 1 = 0; 1/0; 2 + 2; verbose = off; 3 + 3"]);
@@ -327,16 +422,24 @@ fn a_function_may_call_itself_thousands_of_times() {
 /// `SYMBOLIC_MATH_MEMORY` is a limit on the address space, which Linux and FreeBSD keep.
 #[test]
 fn the_memory_of_a_run_can_be_limited() {
-    for wrong in ["abc", "32", "0", "-5", "64.5", ""] {
+    for wrong in ["abc", "32", "0", "-5", "64.5", "", "unlimited 5", "all"] {
         let (out, err, code) = run_with(&["2 + 2"], None, &[("SYMBOLIC_MATH_MEMORY", wrong)]);
         assert_eq!(
             (out.as_str(), err.as_str(), code),
             (
                 "",
-                "error: SYMBOLIC_MATH_MEMORY needs megabytes: a whole number from 64 on\n",
+                "error: SYMBOLIC_MATH_MEMORY needs megabytes: a whole number from 64 on, or unlimited\n",
                 Some(2)
             ),
             "{wrong}"
+        );
+    }
+    // no limit at all, on every system
+    for free in ["unlimited", "none", " unlimited "] {
+        assert_eq!(
+            run_with(&["2 + 2"], None, &[("SYMBOLIC_MATH_MEMORY", free)]),
+            ("4\n".into(), String::new(), Some(0)),
+            "{free}"
         );
     }
     if !cfg!(any(target_os = "linux", target_os = "freebsd")) {
@@ -367,12 +470,74 @@ fn the_memory_of_a_run_can_be_limited() {
             Some(0)
         )
     );
-    // a calculation that needs more than it may take ends, and prints no result (who says so
-    // depends on where the memory ends: the allocator of Rust says "memory allocation of N
-    // bytes failed", the one of GMP "Cannot allocate memory" or "Cannot reallocate memory")
-    let (out, err, code) = limited("200", "length(string(expand((x + y + z + 1)^120)))");
-    assert!(
-        out.is_empty() && err.contains("memory") && code != Some(0),
-        "{out} {err} {code:?}"
+    // a calculation that needs more than it may take ends as an error like any other, with
+    // no result: wherever the memory ends (in a number of GMP that grows, in a list, in the
+    // terms of a sum), the program says so itself, and no core is written
+    let told = "error: out of memory: the calculation needs more than the 200 megabytes that the program may take (SYMBOLIC_MATH_MEMORY=N sets another limit, SYMBOLIC_MATH_MEMORY=unlimited none)\n";
+    for needs_more in [
+        "length(string(expand((x + y + z + 1)^120)))",
+        "k := 2; while(k > 0, k := k*k)",
+        "a := [1]; do(a := join(a, a), [k, 1, 40]); length(a)",
+    ] {
+        assert_eq!(
+            limited("200", needs_more),
+            (String::new(), told.to_string(), Some(1)),
+            "{needs_more}"
+        );
+    }
+}
+
+/// Without `SYMBOLIC_MATH_MEMORY` the program takes 8192 megabytes at most (less on a small
+/// machine), and never more than a limit that it was started with: a calculation without end
+/// stops with an error and leaves the machine its memory.
+#[test]
+fn a_run_has_a_limit_of_memory_of_its_own() {
+    if !cfg!(any(target_os = "linux", target_os = "freebsd")) {
+        return;
+    }
+    // (under a limit of the shell that is lower than the usual one: that one is told)
+    let script = format!(
+        "ulimit -v 307200; exec {} 'k := 2; while(k > 0, k := k*k)'",
+        env!("CARGO_BIN_EXE_symbolic-math")
+    );
+    let out = Command::new("sh")
+        .args(["-c", &script])
+        .env_remove("SYMBOLIC_MATH_MEMORY")
+        .stdin(Stdio::null())
+        .output()
+        .expect("sh runs");
+    assert_eq!(
+        (
+            String::from_utf8_lossy(&out.stdout).as_ref(),
+            String::from_utf8_lossy(&out.stderr).as_ref(),
+            out.status.code()
+        ),
+        (
+            "",
+            "error: out of memory: the calculation needs more than the 300 megabytes that the program may take (SYMBOLIC_MATH_MEMORY=N sets another limit, SYMBOLIC_MATH_MEMORY=unlimited none)\n",
+            Some(1)
+        )
+    );
+    // `unlimited` does not lift a limit of the shell
+    let script = format!(
+        "ulimit -v 307200; SYMBOLIC_MATH_MEMORY=unlimited exec {} 'a := [1]; do(a := join(a, a), [k, 1, 40]); length(a)'",
+        env!("CARGO_BIN_EXE_symbolic-math")
+    );
+    let out = Command::new("sh")
+        .args(["-c", &script])
+        .stdin(Stdio::null())
+        .output()
+        .expect("sh runs");
+    assert_eq!(
+        (
+            String::from_utf8_lossy(&out.stdout).as_ref(),
+            String::from_utf8_lossy(&out.stderr).as_ref(),
+            out.status.code()
+        ),
+        (
+            "",
+            "error: out of memory: the calculation needs more than the 300 megabytes that the program may take (SYMBOLIC_MATH_MEMORY=N sets another limit, SYMBOLIC_MATH_MEMORY=unlimited none)\n",
+            Some(1)
+        )
     );
 }

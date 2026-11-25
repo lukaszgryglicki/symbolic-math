@@ -5,7 +5,7 @@
 use crate::canon::{add, div, mul, neg, pow, sub, subst_sym};
 use crate::expr::Expr;
 use crate::funcs::func;
-use crate::numeric::{self, Env};
+use crate::numeric::{self, Env, SafeExp};
 use crate::simplify::{is_zero, simplify};
 use crate::{diff, ratsimp, solve};
 use rug::float::{Constant, Special};
@@ -309,7 +309,7 @@ pub fn symbolic(f: &Expr, x: &str, t: &Expr) -> Option<Expr> {
     }
     // a whole number of steps: the map or its inverse again and again, tidied up as long as
     // that takes no time
-    let composed = t.as_i64().filter(|n| n.abs() <= 64).and_then(|n| {
+    let composed = t.as_i64().filter(|n| n.unsigned_abs() <= 64).and_then(|n| {
         let step = if n > 0 {
             f.clone()
         } else {
@@ -589,7 +589,7 @@ impl<'a> Map<'a> {
             match flat {
                 Some((m, c)) if m >= 2 => {
                     let ratio = numeric::unsigned_zero(Complex::with_val(prec, &rise / &c));
-                    let root = (ratio.ln() / m).exp();
+                    let root = (ratio.ln() / m).cexp();
                     Complex::with_val(prec, &root + z)
                 }
                 _ => z.clone(),
@@ -786,7 +786,7 @@ fn iterate_series(a: &[Complex], t: &Complex, log: &Complex, prec: u32) -> Optio
     }
     // distinct diagonal lambda^j: Parlett's recurrence for the function z^t
     let diagonal: Vec<Complex> = (1..=n)
-        .map(|j| (Complex::with_val(prec, t * log) * j as u32).exp())
+        .map(|j| (Complex::with_val(prec, t * log) * j as u32).cexp())
         .collect();
     let mut f: Vec<Vec<Complex>> = vec![vec![zero.clone(); n]; n];
     for j in 0..n {
@@ -1279,6 +1279,11 @@ fn regular(
     if reaches(stretch.log2(), 1e5) {
         return Err("the count of steps is too large".into());
     }
+    // (next to a fixed point with the slope 1 the steps back are as many steps of the inverse
+    // map, each with more digits than the one before: a million of them take a minute)
+    if tangent && Float::with_val(64, t.abs_ref()) > 1e6 {
+        return Err("too many steps".into());
+    }
     let ratio: f64 = if tangent { 24.0 } else { 256.0 };
     let terms = (f64::from(digits) * std::f64::consts::LOG2_10 / ratio.log2()).ceil() as usize + 6;
     let mut near = if tangent {
@@ -1691,7 +1696,7 @@ fn superattracting(
                 40
             };
             let residual = |v: &Complex| -> Option<Complex> {
-                let u = Complex::with_val(prec, v.exp_ref()) + &p;
+                let u = Complex::with_val(prec, v).cexp() + &p;
                 let mut d = Complex::with_val(prec, coordinate(&u)? - &target);
                 // the imaginary part of a logarithm: up to turns
                 let turns = Float::with_val(prec, d.imag() / &two_pi).round();
@@ -1767,18 +1772,18 @@ fn superattracting(
             }
         }
     };
-    let goal = Complex::with_val(prec, &base * Complex::with_val(prec, t * &ln_m).exp());
+    let goal = Complex::with_val(prec, &base * Complex::with_val(prec, t * &ln_m).cexp());
     if !goal.real().is_sign_negative() || goal.real().is_zero() {
         return Err("the iterate leaves the basin of the fixed point with the slope 0: Boettcher's coordinate would have the size 1 or more".into());
     }
     let v = reach(&goal, digits)?;
     // the point that this inverse of the coordinate has in the place of the start: itself,
     // unless a fold of the map lies between
-    let u0 = Complex::with_val(prec, reach(&base, 16)?.exp_ref()) + &p;
+    let u0 = Complex::with_val(prec, reach(&base, 16)?).cexp() + &p;
     let gap = abs(&Complex::with_val(prec, &u0 - &start));
     let stand_in = (gap > 1e-9 * abs(&Complex::with_val(prec, &start - &p)))
         .then(|| Complex::with_val(low, u0));
-    Ok(Some((Complex::with_val(low, v.exp() + p), m, stand_in)))
+    Ok(Some((Complex::with_val(low, v.cexp() + p), m, stand_in)))
 }
 
 /// The value at `start` of the `t`-th iterate at a fixed point where the slope has size 1 and
@@ -2680,7 +2685,7 @@ mod tests {
         ] {
             let log = real(2.0).ln();
             let got = iterate_series(&b, &t, &log, BITS).expect("a series");
-            let power = Complex::with_val(BITS, &t * &log).exp();
+            let power = Complex::with_val(BITS, &t * &log).cexp();
             // the binomial coefficients of the power 2^t
             let mut want = Complex::with_val(BITS, 1);
             for (k, c) in got.iter().enumerate() {

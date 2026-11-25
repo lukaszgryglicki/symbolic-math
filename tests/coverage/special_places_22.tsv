@@ -1,4 +1,4 @@
--e	pid([1, 2])	tf([[1, 2]], [1])
+-e	pid([1, 2])	error: pid(Kp, Ki, Kd, Tf): the gains are numbers or names, no lists
 -e	pid("text")	tf(["text"], [1])
 -e	pid(true)	tf([true], [1])
 -e	pid(-7/3)	tf([-7], [3])
@@ -547,7 +547,7 @@
 -e	bohmanwin(1)	[1]
 -e	bohmanwin(-1)	error: the number of values must be a whole number from 0 to 1048576, not -1
 -e	bohmanwin(1/2)	error: the number of values must be a whole number from 0 to 1048576, not 1/2
--e	bohmanwin(2)	[-2.6766586818635740791673632885161e-54, -2.6766586818635740791673632885161e-54]
+-e	bohmanwin(2)	[0, 0]
 -e	bohmanwin(i)	error: the number of values must be a whole number from 0 to 1048576, not i
 -e	bohmanwin(inf)	error: the number of values must be a whole number from 0 to 1048576, not inf
 -e	bohmanwin(-inf)	error: the number of values must be a whole number from 0 to 1048576, not -inf

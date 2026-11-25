@@ -1588,6 +1588,7 @@ fn train(
     l2: &Float,
     most: usize,
     tolerance: &Float,
+    enough: Option<&Float>,
     who: &str,
 ) -> Result<Trained, String> {
     let mut theta = flat_of(net);
@@ -1606,11 +1607,29 @@ fn train(
     let mut plain = true;
     let mut steps = 0;
     let largest = |g: &[Float]| g.iter().fold(zero(), |m, x| m.max(&fl(x.abs_ref())));
+    // Steps in a row that no longer made the loss smaller, as far as its digits tell: a loss
+    // that is flat along some direction lets the slope come down to the root of the rounding
+    // only. With the slope below `enough` such steps end the training (ten of them: the last
+    // steps to a least value that is not flat do not change the loss either).
+    let mut idle = 0u32;
+    let unseen = fl(Float::i_pow_u(10, numeric::digits() + 8)).recip();
     while steps < most {
-        if largest(&g) <= fl(tolerance * (fl(1) + fl(f.abs_ref()))) {
+        let slope = largest(&g);
+        let level = fl(1) + fl(f.abs_ref());
+        let mut d: Vec<Float> = h.iter().map(|row| -dot(row, &g)).collect();
+        // (with the tolerance of the program itself the weights stand as well: what the next
+        // step would change them by is below the digits that are shown. A loss that is nearly
+        // flat along some direction has a small slope long before that)
+        let stands = enough.is_none() || plain || {
+            let size = fl(1) + largest(&theta);
+            largest(&d) <= fl(tolerance * size)
+        };
+        if slope <= fl(tolerance * &level) && stands {
             break;
         }
-        let mut d: Vec<Float> = h.iter().map(|row| -dot(row, &g)).collect();
+        if idle >= 10 && enough.is_some_and(|enough| slope <= fl(enough * &level)) {
+            break;
+        }
         let mut down = dot(&g, &d);
         if down >= 0 {
             h = unit_matrix();
@@ -1705,6 +1724,10 @@ fn train(
             }
         }
         let still = largest(&s).is_zero();
+        idle = match fl(&f - &value) <= fl(fl(value.abs_ref()) * &unseen) {
+            true => idle + 1,
+            false => 0,
+        };
         theta = trial;
         f = value;
         g = slope;
@@ -1901,11 +1924,18 @@ fn network(name: &str, a: &[Expr]) -> Res {
             let last = net[net.len() - 1].f;
             let (mut entropy, mut most, mut report) = (last == "softmax", 1000usize, false);
             let mut l2: Option<Float> = None;
-            let mut tolerance = Float::with_val(
-                bits(),
-                Float::i_pow_u(10, numeric::digits().saturating_sub(12).max(6)),
-            )
-            .recip();
+            // (the slope that ends the training: small enough for the weights to have the
+            // digits that are shown; with 10^-(digits - 12) they had 21 of 32. That slope is
+            // enough where the loss no longer falls: see `train`)
+            let mut tolerance =
+                Float::with_val(bits(), Float::i_pow_u(10, numeric::digits() + 2)).recip();
+            let mut enough = Some(
+                Float::with_val(
+                    bits(),
+                    Float::i_pow_u(10, numeric::digits().saturating_sub(12).max(6)),
+                )
+                .recip(),
+            );
             let mut k = 3;
             while k < n {
                 let w = text(&a[k])
@@ -1923,7 +1953,10 @@ fn network(name: &str, a: &[Expr]) -> Res {
                             "epochs" | "maxepochs" | "iterations" => {
                                 most = count(value, "the number of steps", 0, 10_000_000)?
                             }
-                            "tolerance" => tolerance = real(value, name)?,
+                            "tolerance" => {
+                                tolerance = real(value, name)?;
+                                enough = None;
+                            }
                             _ => l2 = Some(real(value, name)?),
                         }
                         k += 1;
@@ -1970,7 +2003,22 @@ fn network(name: &str, a: &[Expr]) -> Res {
             if xs.is_empty() {
                 return Err(format!("{name}: no observations"));
             }
-            let found = train(&mut net, &xs, &ts, entropy, &l2, most, &tolerance, name)?;
+            // (with twice the digits: a loss tells its least place to half its own digits)
+            let digits = numeric::digits();
+            numeric::set_digits(2 * digits + 8);
+            let found = train(
+                &mut net,
+                &xs,
+                &ts,
+                entropy,
+                &l2,
+                most,
+                &tolerance,
+                enough.as_ref(),
+                name,
+            );
+            numeric::set_digits(digits);
+            let found = found?;
             Ok(match report {
                 true => Expr::list(vec![
                     net_shown(&net),

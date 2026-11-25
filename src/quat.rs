@@ -162,7 +162,13 @@ fn analytic(p: &Parts, f: &dyn Fn(Expr) -> Expr) -> Option<Expr> {
 pub fn power(b: &Expr, e: &Expr) -> Option<Expr> {
     match (parts(b), parts(e)) {
         (Some(p), None) => {
-            if let Some(n) = e.as_i64().filter(|n| n.abs() <= 100_000) {
+            // (with names among its parts a power is a polynomial in them of that degree, with
+            // thousands of terms from the 32nd on: beyond the 48th it stays as it is written)
+            let most = match p.iter().all(Expr::is_const) {
+                true => 100_000,
+                false => 48,
+            };
+            if let Some(n) = e.as_i64().filter(|n| n.unsigned_abs() <= most) {
                 let mut square = if n < 0 { inverse(&p) } else { p };
                 let mut result = lift(&Expr::one());
                 let mut k = n.unsigned_abs();

@@ -697,4 +697,4 @@
 -e	pid(10^20)	tf([100000000000000000000], [1])
 -e	pid(10^(-20))	tf([1], [100000000000000000000])
 -e	pid(x)	tf([x], [1])
--e	pid([])	tf([[]], [1])
+-e	pid([])	error: pid(Kp, Ki, Kd, Tf): the gains are numbers or names, no lists

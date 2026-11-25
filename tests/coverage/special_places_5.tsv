@@ -90,8 +90,8 @@
 -e	solidangle(10^20)	2pi*(1 - cos(100000000000000000000))
 -e	solidangle(10^(-20))	2pi*(1 - cos(1/100000000000000000000))
 -e	solidangle(x)	2pi*(1 - cos(x))
--e	solidangle([])	2pi*(1 - cos([]))
--e	solidangle([1, 2])	2pi*(1 - cos([1, 2]))
+-e	solidangle([])	[]
+-e	solidangle([1, 2])	[2pi*(1 - cos(1)), 2pi*(1 - cos(2))]
 -e	solidangle("text")	2pi*(1 - cos("text"))
 -e	solidangle(true)	2pi*(1 - cos(true))
 -e	solidangle(-7/3)	2pi*(1 - cos(7/3))
@@ -108,8 +108,8 @@
 -e	ballvolume(10^20)	pi^50000000000000000000/gamma(50000000000000000001)
 -e	ballvolume(10^(-20))	pi^(1/200000000000000000000)/gamma(200000000000000000001/200000000000000000000)
 -e	ballvolume(x)	pi^(x/2)/gamma(x/2 + 1)
--e	ballvolume([])	pi^([]/2)/gamma(1 + []/2)
--e	ballvolume([1, 2])	pi^([1, 2]/2)/gamma(1 + [1, 2]/2)
+-e	ballvolume([])	[]
+-e	ballvolume([1, 2])	[2, pi]
 -e	ballvolume("text")	pi^("text"/2)/gamma("text"/2 + 1)
 -e	ballvolume(true)	pi^(true/2)/gamma(1 + true/2)
 -e	ballvolume(-7/3)	1/(pi^(7/6)*gamma(-1/6))
@@ -126,8 +126,8 @@
 -e	spherearea(10^20)	100000000000000000000pi^50000000000000000000/gamma(50000000000000000001)
 -e	spherearea(10^(-20))	pi^(1/200000000000000000000)/(100000000000000000000gamma(200000000000000000001/200000000000000000000))
 -e	spherearea(x)	x*pi^(x/2)/gamma(x/2 + 1)
--e	spherearea([])	pi^([]/2)*[]/gamma(1 + []/2)
--e	spherearea([1, 2])	pi^([1, 2]/2)*[1, 2]/gamma(1 + [1, 2]/2)
+-e	spherearea([])	[]
+-e	spherearea([1, 2])	[2, 2pi]
 -e	spherearea("text")	pi^("text"/2)*"text"/gamma("text"/2 + 1)
 -e	spherearea(true)	pi^(true/2)*true/gamma(1 + true/2)
 -e	spherearea(-7/3)	-7/(3pi^(7/6)*gamma(-1/6))
@@ -144,8 +144,8 @@
 -e	rotationmatrix(10^20)	[[cos(100000000000000000000), -sin(100000000000000000000)], [sin(100000000000000000000), cos(100000000000000000000)]]
 -e	rotationmatrix(10^(-20))	[[cos(1/100000000000000000000), -sin(1/100000000000000000000)], [sin(1/100000000000000000000), cos(1/100000000000000000000)]]
 -e	rotationmatrix(x)	[[cos(x), -sin(x)], [sin(x), cos(x)]]
--e	rotationmatrix([])	[[cos([]), -sin([])], [sin([]), cos([])]]
--e	rotationmatrix([1, 2])	[[cos([1, 2]), -sin([1, 2])], [sin([1, 2]), cos([1, 2])]]
+-e	rotationmatrix([])	[]
+-e	rotationmatrix([1, 2])	[[[cos(1), -sin(1)], [sin(1), cos(1)]], [[cos(2), -sin(2)], [sin(2), cos(2)]]]
 -e	rotationmatrix("text")	[[cos("text"), -sin("text")], [sin("text"), cos("text")]]
 -e	rotationmatrix(true)	[[cos(true), -sin(true)], [sin(true), cos(true)]]
 -e	rotationmatrix(-7/3)	[[cos(7/3), sin(7/3)], [-sin(7/3), cos(7/3)]]
@@ -198,8 +198,8 @@
 -e	regularpolygon(10^20)	[sides -> 100000000000000000000, diagonals -> 4999999999999999999850000000000000000000, area -> 25000000000000000000a^2/tan(pi/100000000000000000000), perimeter -> 100000000000000000000a, circumradius -> a/(2sin(pi/100000000000000000000)), inradius -> a/(2tan(pi/100000000000000000000)), angle -> 49999999999999999999pi/50000000000000000000]
 -e	regularpolygon(10^(-20))	[sides -> 1/100000000000000000000, diagonals -> -299999999999999999999/20000000000000000000000000000000000000000, area -> ComplexInfinity, perimeter -> a/100000000000000000000, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -199999999999999999999pi]
 -e	regularpolygon(x)	[sides -> x, diagonals -> x*(x - 3)/2, area -> a^2*x/(4tan(pi/x)), perimeter -> a*x, circumradius -> a/(2sin(pi/x)), inradius -> a/(2tan(pi/x)), angle -> pi - 2pi/x]
--e	regularpolygon([])	[sides -> [], diagonals -> ([] - 3)*[]/2, area -> a^2*[]/(4tan(pi/[])), perimeter -> a*[], circumradius -> a/(2sin(pi/[])), inradius -> a/(2tan(pi/[])), angle -> pi - 2pi/[]]
--e	regularpolygon([1, 2])	[sides -> [1, 2], diagonals -> ([1, 2] - 3)*[1, 2]/2, area -> a^2*[1, 2]/(4tan(pi/[1, 2])), perimeter -> a*[1, 2], circumradius -> a/(2sin(pi/[1, 2])), inradius -> a/(2tan(pi/[1, 2])), angle -> pi - 2pi/[1, 2]]
+-e	regularpolygon([])	[]
+-e	regularpolygon([1, 2])	[[sides -> 1, diagonals -> -1, area -> ComplexInfinity, perimeter -> a, circumradius -> ComplexInfinity, inradius -> ComplexInfinity, angle -> -pi], [sides -> 2, diagonals -> -1, area -> 0, perimeter -> 2a, circumradius -> a/2, inradius -> 0, angle -> 0]]
 -e	regularpolygon("text")	[sides -> "text", diagonals -> "text"*("text" - 3)/2, area -> a^2*"text"/(4tan(pi/"text")), perimeter -> a*"text", circumradius -> a/(2sin(pi/"text")), inradius -> a/(2tan(pi/"text")), angle -> pi - 2pi/"text"]
 -e	regularpolygon(true)	[sides -> true, diagonals -> (true - 3)*true/2, area -> a^2*true/(4tan(pi/true)), perimeter -> a*true, circumradius -> a/(2sin(pi/true)), inradius -> a/(2tan(pi/true)), angle -> pi - 2pi/true]
 -e	regularpolygon(-7/3)	[sides -> -7/3, diagonals -> 56/9, area -> 7a^2/(12tan(3pi/7)), perimeter -> -7a/3, circumradius -> -a/(2sin(3pi/7)), inradius -> -a/(2tan(3pi/7)), angle -> 13pi/7]

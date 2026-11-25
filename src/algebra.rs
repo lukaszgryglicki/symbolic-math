@@ -123,7 +123,7 @@ fn sin_cos(arg: &Expr, hyper: bool) -> (Expr, Expr) {
         );
     }
     let (k, rest) = coeff_and_rest(arg);
-    if let Some(n) = k.as_i64().filter(|n| (2..=64).contains(&n.abs()))
+    if let Some(n) = k.as_i64().filter(|n| (2..=64).contains(&n.unsigned_abs()))
         && !rest.is_one()
     {
         let (ss, cc) = join(

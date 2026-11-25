@@ -1442,9 +1442,13 @@ pub fn centroid(region: &Expr) -> Result<Expr, String> {
 
 /// The real crossing points of `f` with zero, in increasing order.
 fn crossings(f: &Expr, var: &str) -> Result<Vec<Expr>, String> {
-    let solved = crate::solve::solve(f, var)?;
+    // (every real crossing counts)
+    let solved = crate::settings::thorough(None, || crate::solve::solve(f, var))?;
     crate::solve::release(&solved.params);
-    if solved.all || solved.roots.iter().any(|r| !r.value.is_const()) {
+    if solved.all
+        || solved.roots.iter().any(|r| !r.value.is_const())
+        || solved.notes.iter().any(|n| n == crate::solve::UNFINISHED)
+    {
         return Err("the curves cross without end: give the interval".into());
     }
     let digits = numeric::digits();

@@ -1,0 +1,133 @@
+	nsolve(sin(x) + e^x = 1 + 10^(-8), x, 1/10)	4.999999993750000015624999938151e-9
+	nsolve(sin(x) + e^x = 1 + 10^(-20), x, 1/10)	4.99999999999999999999375e-21
+	nsolve(sin(x) + e^x = 1 + 10^(-33), x, 1/10)	5e-34
+	nsolve(sin(x) + e^x = 1 + 10^(-90), x, 1/10)	5e-91
+	nsolve(sin(x) + e^x = 1 + 10^(-200), x, 1/10)	5e-201
+	nsolve(sin(x) + e^x = 1 + 10^(-1000), x, 1/10)	5e-1001
+	nsolve(x + x^2 = 10^(-120), x, 1/10)	1e-120
+	nsolve(cos(x) + x = 1 + 10^(-150), x, 1/10)	1e-150
+	nsolve(e^x = 1 + 10^(-200), x, 1/10)	1e-200
+	nsolve(e^x = 1 + 10^(-50), x, 1/10)	1e-50
+	nsolve(ln(1 + x) = 10^(-400), x, 1/10)	1e-400
+	nsolve(x + sin(x)^2 = (1+i)*10^(-40), x, 1/10)	1e-40 + 1e-40i
+	nsolve(x + x^2 = 10^(-12), x, 1/10)	9.99999999999000000000002e-13
+	nsolve(tan(x) + x^3 = 10^(-22), x, 1/10)	1e-22
+	nsolve(cos(x) + x = 1 + 10^(-25), x, 1/10)	1.00000000000000000000000005e-25
+	nsolve(x^2 - 2x + 1 = 10^(-30)*e^x, x, 2)	1.0000000000000016487212707001295
+	nsolve(x^2 - 2x + 1 = 10^(-50)*e^x, x, 2)	1.0000000000000000000000001648721
+	nsolve((x - 1)^2 = 10^(-18)*cos(x), x, 3/2)	1.0000000007350525867239801049381
+	nsolve((x - 1)^2 = 10^(-60)*cos(x), x, 3/2)	1.0000000000000000000000000000007
+	nsolve(cos(x)^2 = 10^(-24)*x, x, 1)	1.5707963267936433050940066913885
+	nsolve((x - 1)^2*(x + 2) = 10^(-20)*sin(x), x, 3/2)	1.000000000052961337622258512858
+	nsolve(x*ln(x) = sin(x), x, 2)	1.7526772813628442960253420704836
+	nsolve((cos(x) - x)^3 = 0, x, 0.7)	0.73908513321516064165531208767387
+	nsolve(besselj(1, x) = 1/2, x, 1)	1.2067184630059078866565349810721
+-d 60	nsolve(sin(x) + e^x = 1 + 10^(-20), x, 1/10)	4.999999999999999999993750000000000000000015625e-21
+	nsolve(x^5 = 0, x, 1)	0
+	nsolve(tan(x) = x, x, 0.2)	0
+	nsolve(e^x = 1 + x, x, 1)	0
+	nsolve(1 - cos(x - 1) = 0, x, 1.3)	1
+	nsolve(sin(x)^2 = 0, x, 3)	3.1415926535897932384626433832795
+	nsolve(sin(x) = x, x, 1/2)	0
+	nsolve(x*ln(x) = sin(x), x, 0.1)	error: no root found for x*ln(x) - sin(x)
+	nsolve(1/x = 0, x, 1)	error: no root found for 1/x
+-r	roots = 1; sin(x) + e^x = 1 + 10^(-20)	x ~ 4.99999999999999999999375e-21|note: numeric search (roots = 1): the root nearest to 0 that was found is listed, there may be others
+-r	roots = 1; sin(x) + e^x = 1 + 10^(-8)	x ~ 4.999999993750000015624999938151e-9|note: numeric search (roots = 1): the root nearest to 0 that was found is listed, there may be others
+-r	cos(x)^2 = 10^(-24)*x	x ~ 1.5707963267936433050940066913885|x ~ 1.570796326796149933368637691891|x ~ 4.7123889803825190539302907719412|x ~ 4.7123889803868606614576403778973|x ~ 7.8539816339716806005484099938491|x ~ 7.8539816339772855917648079225484|x ~ 10.995574287560960377097274070368|x ~ 10.995574287567592292141230612589|note: numeric search: the roots found are listed, there may be others
+-r	roots = 4; cos(x)^2 = 10^(-24)*x	x ~ 1.5707963267936433050940066913885|x ~ 1.570796326796149933368637691891|x ~ 4.7123889803825190539302907719412|x ~ 4.7123889803868606614576403778973|note: numeric search (roots = 4): the 4 roots nearest to 0 that were found are listed, there may be others
+-r	(x - 1)^2 = 10^(-18)*cos(x)	x ~ 0.999999999264947412434548910254|x ~ 1.0000000007350525867239801049381|note: numeric search: the roots found are listed, there may be others
+-r	x^2 - 2x + 1 = 10^(-30)*e^x	x ~ 0.99999999999999835127872929987321|x ~ 1.0000000000000016487212707001295|x ~ 77.758891242964269093765995974006|note: numeric search: the roots found are listed, there may be others
+-r	roots = 3; x^2 + 1 + sin(x^2 + 1)*(x - 3) = 0	x ~ -1.2275337480996928907417883121641|x ~ 0.95860852474288736051162714379994|note: numeric search (roots = 3): only 2 roots were found from -256 to 256, there may be others
+-r	roots = 1; x^2 + 1 + sin(x^2 + 1)*(x - 3) = 0	x ~ 0.95860852474288736051162714379994|note: numeric search (roots = 1): the root nearest to 0 that was found is listed, there may be others
+-r	roots = 1; tan(x)/x = 2	x ~ -1.1655611852072113068339179779586|x ~ 1.1655611852072113068339179779586|note: numeric search (roots = 1): the 2 roots nearest to 0 that were found are listed, there may be others
+-r	roots = 1; (1 - cos(x))/x^2 = 1/4	x ~ -2.783114756503020300639922729237|x ~ 2.783114756503020300639922729237|note: numeric search (roots = 1): the 2 roots nearest to 0 that were found are listed, there may be others
+-r	x*cos(x)^2 = 1	x ~ 2.2922693838324285444817120262932|x ~ 4.2028380683623322038627727355041|x ~ 5.1678655114372845186030357286217|x ~ 7.4796563564898018023186184728527|x ~ 8.2104771748089892754156559298609|x ~ 10.684660981492657551083032508952|x ~ 11.297660769772815925045845872987|x ~ 13.86527269468676971238302309833|note: numeric search: the roots found are listed, there may be others
+	roots = 1; x + sin(x)^2 = (1+i)*10^(-40)	x ~ 1e-40 + 1e-40i|note: numeric search (roots = 1): the root nearest to 0 that was found is listed, there may be others
+	x^2 - 2x + 1 = 10^(-30)*e^x	x ~ 0.99999999999999835127872929987321|x ~ 1.0000000000000016487212707001295|x ~ 77.758891242964269093765995974006|note: numeric search: the roots found are listed, there may be others
+	roots = 1; sin(x)/x = 1/2	x ~ -1.8954942670339809471440357380936|x ~ 1.8954942670339809471440357380936|note: numeric search (roots = 1): the 2 roots nearest to 0 that were found are listed, there may be others
+	roots = 2; sin(x)/x = 1/2	x ~ -1.8954942670339809471440357380936|x ~ 1.8954942670339809471440357380936|note: numeric search (roots = 2): the 2 roots nearest to 0 that were found are listed, there may be others
+	roots = 1; (e^x - 1 - x)/x^2 = 1/2	x ~ 3.8386020477829022514350687206008 - 8.3668155066743487732850519090823i|x ~ 3.8386020477829022514350687206008 + 8.3668155066743487732850519090823i|note: numeric search (roots = 1): the 2 roots nearest to 0 that were found are listed, there may be others
+	roots = 20; sin(30*x) = x	x ~ -0.9047821955881081660469011259278|x ~ -0.87314530560362478687030741522497|x ~ -0.7068695293414936180154901852932|x ~ -0.65199215989597156400253529931291|x ~ -0.50591727428441492049462194473753|x ~ -0.43383726614688702162572991371592|x ~ -0.30386761163191016952969293622693|x ~ -0.2167213344487064186705969437366|x ~ -0.10133607775769261440563173748425|x = 0|x ~ 0.10133607775769261440563173748425|x ~ 0.2167213344487064186705969437366|x ~ 0.30386761163191016952969293622693|x ~ 0.43383726614688702162572991371592|x ~ 0.50591727428441492049462194473753|x ~ 0.65199215989597156400253529931291|x ~ 0.7068695293414936180154901852932|x ~ 0.87314530560362478687030741522497|x ~ 0.9047821955881081660469011259278|x ~ -1.0984814229718334994943916695969 - 0.014716624767119070747291452607021i|x ~ -1.0984814229718334994943916695969 + 0.014716624767119070747291452607021i|x ~ 1.0984814229718334994943916695969 - 0.014716624767119070747291452607021i|x ~ 1.0984814229718334994943916695969 + 0.014716624767119070747291452607021i|note: numeric search (roots = 20): the 23 roots nearest to 0 that were found are listed, there may be others
+	roots = 2; erfc(x) = 0	x ~ -1.354810128112006248899850540891 - 1.9914668428338795772821578426216i|x ~ -1.354810128112006248899850540891 + 1.9914668428338795772821578426216i|note: numeric search (roots = 2): the 2 roots nearest to 0 that were found are listed, there may be others
+	assume(x < 0); e^x*sin(x) = x + 50	true|x ~ -49.999999999999999999999949394454|note: numeric search: the roots found are listed, there may be others
+	assume(x > 0); x*sin(x) = 1	true|x ~ 1.1141571408719300873005251781692|x ~ 2.7726047082659912339535697214993|x ~ 6.4391172384172464617245148403109|x ~ 9.3172429414148096186012885135695|x ~ 12.645532578789107952407985386681|x ~ 15.643997374773143101808792643828|x ~ 18.902483730342445217608229675182|x ~ 21.945565498819684133520340353015|note: numeric search: the roots found are listed, there may be others
+	assume(x > 40); x*sin(x) = 1	true|note: of x > 40 only the kind of number is kept: x is positive|x ~ 1.1141571408719300873005251781692|x ~ 2.7726047082659912339535697214993|x ~ 6.4391172384172464617245148403109|x ~ 9.3172429414148096186012885135695|x ~ 12.645532578789107952407985386681|x ~ 15.643997374773143101808792643828|x ~ 18.902483730342445217608229675182|x ~ 21.945565498819684133520340353015|note: numeric search: the roots found are listed, there may be others
+	assume(x > 0); cos(x) = x	true|x ~ 0.73908513321516064165531208767387|note: numeric search: the roots found are listed, there may be others
+	x^-2^31 - 5x + 6 = 0	x ~ 1.2|note: numeric search: the roots found are listed, there may be others
+	(cos(x) - x)^40 = 1	x = 0|x ~ 1.283428741745765316797130600633|x ~ -2.8279205047140222509906359916335 - 1.9099016380019114686107333058876i|x ~ -2.8279205047140222509906359916335 + 1.9099016380019114686107333058876i|x ~ 0.085806767293510656255542123240178 - 0.28432066132241680506861391204846i|x ~ 0.085806767293510656255542123240178 + 0.28432066132241680506861391204846i|x ~ 0.26230091878503297484552784496704 - 0.46330452187721342736523363333951i|x ~ 0.26230091878503297484552784496704 + 0.46330452187721342736523363333951i|x ~ 1.0285509934049599527756026770881 - 0.47176156283331450460845406990989i|x ~ 1.0285509934049599527756026770881 + 0.47176156283331450460845406990989i|x ~ 56.463894396701958817378205665422 + 4.7123963171872198418367041353894i|note: numeric search: the roots found are listed, there may be others
+	assume(x < 0); cos(x) = x	true|no negative solution found|note: numeric search: the roots found are listed, there may be others
+	assume(x, integer); cos(x) = x	true|no integer solution found|note: numeric search: the roots found are listed, there may be others
+	assume(x > 0); sin(x) = x	true|no positive solution found|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed
+	assume(x > 40); x^2 = 4	true|note: of x > 40 only the kind of number is kept: x is positive|x = 2
+	assume(x > -5); x^2 = 4	true|note: of x > -5 only the kind of number is kept: x is real|x = -2|x = 2
+	assume(x < 0); x^2 = 4	true|x = -2
+	assume(x != 0); x^2 = x	true|x = 1
+	assume(2 > x)	true|note: of x < 2 only the kind of number is kept: x is real
+	assume(x <= -1/2); assumptions()	true|note: of x <= -1/2 only the kind of number is kept: x is negative|["x is negative"]
+	assume(x >= 0)	true
+	assume(x > 0); assumealso(x < 1); assumptions()	true|true|note: of x < 1 only the kind of number is kept: x is real|["x is positive"]
+	assume(x != 2)	error: x != 2 is nothing that can be assumed: assume(x > 0), assume(x, real), assume(n, integer), assume(x != 0)
+	assume(x = 2)	error: x = 2 is nothing that can be assumed: assume(x > 0), assume(x, real), assume(n, integer), assume(x != 0)
+-r	roots = 12; floor(x) = x	x = -6|x = -5|x = -4|x = -3|x = -2|x = -1|x = 0|x = 1|x = 2|x = 3|x = 4|x = 5|x = 6|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed
+-r	roots = 3; frac(x) = 0	x = -1|x = 0|x = 1|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed
+-r	roots = 50; floor(x) = x	x ~ -25|x ~ -24|x ~ -23|x ~ -22|x ~ -21|x ~ -20|x ~ -19|x ~ -18|x ~ -17|x ~ -16|x ~ -15|x ~ -14|x ~ -13|x ~ -12|x ~ -11|x ~ -10|x ~ -9|x ~ -8|x ~ -7|x = -6|x = -5|x = -4|x = -3|x = -2|x = -1|x = 0|x = 1|x = 2|x = 3|x = 4|x = 5|x = 6|x ~ 7|x ~ 8|x ~ 9|x ~ 10|x ~ 11|x ~ 12|x ~ 13|x ~ 14|x ~ 15|x ~ 16|x ~ 17|x ~ 18|x ~ 19|x ~ 20|x ~ 21|x ~ 22|x ~ 23|x ~ 24|x ~ 25|note: numeric search (roots = 50): the 51 roots nearest to 0 that were found are listed, there may be others
+	roots = 3; abs(x)/x = 1	x ~ 0.12|x ~ 0.5|note: the equation holds on whole stretches of numbers: the ones listed are examples|note: numeric search: the roots found are listed, there may be others
+	roots = 2; floor(x) = 2	x ~ 2|x ~ 2.12|note: the equation holds on whole stretches of numbers: the ones listed are examples|note: numeric search: the roots found are listed, there may be others
+	asin(sin(x)) = x	x = -pi/2|  ~ -1.5707963267948966192313216916398|x ~ -0.25|x ~ -0.12|x ~ 0.12|x = pi/2|  ~ 1.5707963267948966192313216916398|note: the equation holds on whole stretches of numbers: the ones listed are examples|note: numeric search: the roots found are listed, there may be others
+	ln(e^x) = x	x ~ -0.375|x ~ 0.5|x ~ 0.625|note: the equation holds on whole stretches of numbers: the ones listed are examples|note: numeric search: the roots found are listed, there may be others
+	roots = 1; x*e^x = -1/e	x = -1|note: Lambert W (roots = 1): the solution nearest to 0 is listed; lambertw(k, z) with other integers k gives the others
+	x*e^x = -1/e	x = -1|note: Lambert W: the real branches are given; lambertw(k, z) with other integers k gives complex solutions
+	roots = 4; x*e^x = 0	x = 0
+	lambertw(-1, -1/e)	-1
+	N(lambertw(-1, -1/e))	-1
+	lambertw(-1, -exp(-1))	-1
+	lambertw(-1/e)	-1
+	roots = 3; x*e^x = -1/e	x = -1|x = lambertw(-2, -1/e)|  ~ -3.0888430156130438559570867167749 - 7.4614892856542545569061166121864i|x = lambertw(1, -1/e)|  ~ -3.0888430156130438559570867167749 + 7.4614892856542545569061166121864i|note: Lambert W (roots = 3): the 3 solutions nearest to 0 are listed; lambertw(k, z) with other integers k gives the others
+	roots = 3; (x*e^x - 2)*(x*e^x - 3) = 0	x = lambertw(2)|  ~ 0.85260550201372549134647241469532|x = lambertw(3)|  ~ 1.0499088949640399599886970705529|x = lambertw(-1, 2)|  ~ -0.83431036663111001469472529817133 - 4.5302659985550082921313662798405i|x = lambertw(1, 2)|  ~ -0.83431036663111001469472529817133 + 4.5302659985550082921313662798405i|note: Lambert W (roots = 3): the 4 solutions nearest to 0 are listed; lambertw(k, z) with other integers k gives the others
+	roots = 5; x*e^x = 2	x = lambertw(2)|  ~ 0.85260550201372549134647241469532|x = lambertw(-2, 2)|  ~ -1.7022590055576041842116953184942 - 10.839808676359298171614302965288i|x = lambertw(2, 2)|  ~ -1.7022590055576041842116953184942 + 10.839808676359298171614302965288i|x = lambertw(-1, 2)|  ~ -0.83431036663111001469472529817133 - 4.5302659985550082921313662798405i|x = lambertw(1, 2)|  ~ -0.83431036663111001469472529817133 + 4.5302659985550082921313662798405i|note: Lambert W (roots = 5): the 5 solutions nearest to 0 are listed; lambertw(k, z) with other integers k gives the others
+	roots = 2; (x*e^x - 2)*(x - 5)*(sin(x) - x) = 0	x = 0 (multiplicity 3)|x = lambertw(2)|  ~ 0.85260550201372549134647241469532|note: Lambert W: lambertw(k, z) with other integers k gives the others|note: no exact method: simple numbers were tried and a numeric search was made, solutions may have been missed
+-n	lambertw(-1, -1/e + 10^-20)	-1.0000000002331643981778342991947
+-n	lambertw(0, -1/e + 10^-20)	-0.9999999997668356018584094585181
+-n	lambertw(-1, -1/e - 10^-30)	-0.99999999999999999999999999999819 - 2.3316439815971242033635360621665e-15i
+	acot(x) = pi/2	x = 0
+	acot(x - 2) = pi/2	x = 2
+	acot(x^2 - 1) = pi/2	x = -1|x = 1
+	acot(x) = pi/4	x = 1
+	acot(x) = -pi/2	no solution
+	acot(x) = 0	no solution
+	atan(1/x) = pi/2	x = 0
+-r	cos(x) > x^2/200	-13.104545570670097832984939713292 < x < -11.7589502849807563834652042645 or -7.5638685965191171158870186752528 < x < -4.8292638239015965249992432747344 or -1.5586490930887433922285145983695 < x < 1.5586490930887433922285145983695 or 4.8292638239015965249992432747344 < x < 7.5638685965191171158870186752528 or 11.7589502849807563834652042645 < x < 13.104545570670097832984939713292|note: the ends were found by a numeric search along the real line: there may be others
+-r	roots = 2; cos(x) > x^2/200	-13.104545570670097832984939713292 < x < -11.7589502849807563834652042645 or -7.5638685965191171158870186752528 < x < -4.8292638239015965249992432747344 or -1.5586490930887433922285145983695 < x < 1.5586490930887433922285145983695 or 4.8292638239015965249992432747344 < x < 7.5638685965191171158870186752528 or 11.7589502849807563834652042645 < x < 13.104545570670097832984939713292|note: the ends were found by a numeric search along the real line: there may be others
+-r	x^3 - 3x > sin(x)	-1.8733779656932733514695517687897 < x < 0 or x > 1.8733779656932733514695517687897|note: the ends were found by a numeric search along the real line: there may be others
+-r	sin(x) > x/10	x < -8.4232039323604917336110695961549 or -7.0681743580958173959770197132951 < x < -2.8523418944500916483252199407028 or 0 < x < 2.8523418944500916483252199407028 or 7.0681743580958173959770197132951 < x < 8.4232039323604917336110695961549|note: the ends were found by a numeric search along the real line: there may be others
+-r	besselj(0, x) > 1/2	-1.5211440576687651481513018730625 < x < 1.5211440576687651481513018730625|note: the ends were found by a numeric search along the real line: there may be others
+-r	(x - 1)^2 > 10^(-18)*cos(x)	x < 0.999999999264947412434548910254 or x > 1.0000000007350525867239801049381|note: the ends were found by a numeric search along the real line: there may be others
+-r	cos(x) < x^2/20	x < -1.4634990863669806726875699712877 or x > 1.4634990863669806726875699712877|note: the ends were found by a numeric search along the real line: there may be others
+-r	roots = 1; x^3 - 3x > sin(x)	-1.8733779656932733514695517687897 < x < 0 or x > 1.8733779656932733514695517687897|note: the ends were found by a numeric search along the real line: there may be others
+-r	roots = 1; e^x > 3x	x < -lambertw(-1/3) or x > -lambertw(-1, -1/3)
+-r	roots = 1; maximize(sin(x) + x*cos(x)/5, x, 0, 10)	[1.7125074821539378424503622156406, x = 6.9923517929484980309618913553019]|note: the critical points were found by a numeric search along the real line: there may be others
+-r	roots = 1; minimize(x*e^x - 2x^2, x)	-inf|note: x*e^x - 2x^2 is unbounded below (x -> -inf)
+-r	roots = 2; sin(x) > x/10	x < -8.4232039323604917336110695961549 or -7.0681743580958173959770197132951 < x < -2.8523418944500916483252199407028 or 0 < x < 2.8523418944500916483252199407028 or 7.0681743580958173959770197132951 < x < 8.4232039323604917336110695961549|note: the ends were found by a numeric search along the real line: there may be others
+-r	roots = 1; minimize(cos(x) + x^2/50, x, -20, 20)	[-0.81020883451149628789238598199071, x = -3.0204776614628804890862778627863, x = 3.0204776614628804890862778627863]|note: the critical points were found by a numeric search along the real line: there may be others
+-r	e^x > 3x	x < -lambertw(-1/3) or x > -lambertw(-1, -1/3)
+-r	x^2 > 2	x < -sqrt(2) or x > sqrt(2)
+-r	sin(x) > 1/2	pi/6 + 2k*pi < x < 5pi/6 + 2k*pi, k is an integer
+-r	minimize(abs(x) + abs(x - 2), x)	[2, x = 0, x = 2]
+-r	isalways(abs(x) >= x)	true
+-r	maximize(sin(x) + x*cos(x)/5, x, 0, 10)	[1.7125074821539378424503622156406, x = 6.9923517929484980309618913553019]|note: the critical points were found by a numeric search along the real line: there may be others
+-r	maximize(sin(x) + x*cos(x)/5, x, 0, 500)	[99.281580101127660434159246547209, x = 496.38372610142170940749867648071]|note: the critical points were found by a numeric search along the real line: there may be others
+-r	maximize(sin(x) + x*cos(x)/5, x, 20, 40)	[7.634458297070346263511791413828, x = 37.856298451283700740863979032328]|note: the critical points were found by a numeric search along the real line: there may be others
+-r	maximize(sin(x) + x*cos(x)/5, x)	error: cannot find the critical points: only a numeric search finds them, and it did not come to the last of them (an interval bounds them)
+-r	x*sin(x) > 1	error: cannot solve the inequality: its ends are roots that only a numeric search finds, and the search did not come to the last of them
+	integrate((sin(x) + x*cos(x))/(x*sin(x) - 1)^2, x, 5, 7)	inf
+	integrate((sin(x) + x*cos(x))/(x*sin(x) - 1)^2, x, 2, 3)	-inf
+	integrate((sin(x) + x*cos(x))/(x*sin(x) - 1)^2, x, 1, 2)	inf
+	integrate((e^x - 3)/(e^x - 3x)^2, x, 1, 2)	inf
+	roots = 1; integrate((e^x - 3)/(e^x - 3x)^2, x, 1, 2)	inf
+	integrate(1/(x - 1)^2, x, 0, 2)	inf
+-r	integrate((sin(x) + x*cos(x))/(x*sin(x) - 1)^2, x, 5, 7)	inf
+-r	roots = 1; integrate((e^x - 3)/(e^x - 3x)^2, x, 1, 2)	inf
+	integrate((sin(x) + x*cos(x))/sqrt(x*sin(x) - 1), x, 5, 7)	3.7941566604617282896936023657914 - 4.8144039603322413121470496457492i
+	integrate((sin(x) + x*cos(x))/(x*sin(x) - 1)^(2/3), x, 5, 7)	1.9031715567973728587065884000545 - 4.6665247591539468212830808813481i
+	integrate(ln(abs(x*sin(x) - 1))*(sin(x) + x*cos(x)), x, 5, 7)	5.3960844679269095272848496343286
+	integrate(abs(x*sin(x) - 1), x, 5, 7)	6.2920543327329616050250595990129

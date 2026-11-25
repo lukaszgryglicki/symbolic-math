@@ -948,7 +948,7 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             let width = m[0].len() as i64;
             let col = |e: &Expr| {
                 e.as_i64()
-                    .filter(|k| *k != 0 && k.abs() <= width)
+                    .filter(|k| *k != 0 && k.unsigned_abs() <= width as u64)
                     .ok_or_else(|| format!("sortrows: {e} is no column of the matrix (a column counted from 1, with a minus sign for the falling order)"))
             };
             let keys: Vec<i64> = match a.get(1) {
@@ -1239,7 +1239,9 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             let one = |r: &Expr, c: &Expr| -> Res {
                 let r = whole(r, "the row", 1, rows)?;
                 let c = whole(c, "the column", 1, cols)?;
-                Ok(Expr::int((c - 1) * rows + r))
+                // (a matrix of 2^63 rows has indices beyond the whole numbers of the machine)
+                let index = rug::Integer::from(c - 1) * rows + r;
+                Ok(Expr::integer(index))
             };
             match (a[1].as_list(), a[2].as_list()) {
                 (Some(r), Some(c)) if r.len() == c.len() => Expr::list(

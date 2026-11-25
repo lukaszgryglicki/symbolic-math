@@ -297,8 +297,9 @@ fn term_key(t: &Expr) -> TermKey {
         match (&b, e.as_rat()) {
             (Expr::Sym(s), Some(r)) => {
                 if !b.is_const() {
-                    let scaled = (r.to_f64() * 1e6) as i64;
-                    degree += scaled;
+                    // (an exponent beyond every degree that a sum is ordered by counts as 2^60)
+                    let scaled = ((r.to_f64() * 1e6) as i64).clamp(-(1 << 60), 1 << 60);
+                    degree = degree.saturating_add(scaled);
                     vars.push((s.to_string(), -scaled));
                 }
             }

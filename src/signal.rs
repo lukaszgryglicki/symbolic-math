@@ -416,6 +416,17 @@ fn inner(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
         }
         ("conv2", 2 | 3) => {
             let ((p, _), (q, _)) = (grid(&a[0]), grid(&a[1]));
+            let filled = |m: &Rows| {
+                m.first().is_some_and(|first| {
+                    !first.is_empty() && m.iter().all(|r| r.len() == first.len())
+                })
+            };
+            if !filled(&p) || !filled(&q) {
+                return Err(
+                    "conv2(A, B): both are matrices with entries, as many in each of their rows"
+                        .into(),
+                );
+            }
             let (r, c) = (p.len() + q.len() - 1, p[0].len() + q[0].len() - 1);
             let mut sums = vec![vec![Vec::new(); c]; r];
             for (i, row) in p.iter().enumerate() {

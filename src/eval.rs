@@ -41,6 +41,14 @@ impl Default for Session {
 
 type Res = Result<Expr, String>;
 
+/// What a statement that begins with the name of a setting turned out to be.
+enum Stated {
+    /// A setting: the lines that say what is set now.
+    Set(Vec<String>),
+    /// An equation among names.
+    Equation(Expr),
+}
+
 /// Commands whose result is printed in the form they produce.
 const FORM_COMMANDS: &[&str] = &[
     "expand",
@@ -131,15 +139,53 @@ impl Session {
     }
 
     /// A setting written as a statement: `[name]` or `[name, value]`. The lines tell what is
-    /// set now.
-    fn setting(&mut self, a: &[Expr]) -> Result<Vec<String>, String> {
+    /// set now. A value that is a formula is worked out first (`terms = 10^6`, `digits = n`
+    /// once n has a value); a formula with names that have no value is the equation among
+    /// names that it was before there were settings (`prec = x + 1`).
+    fn setting(&mut self, a: &[Expr]) -> Result<Stated, String> {
         use crate::settings::{self, Setting};
-        let kind = a
+        let written = a
             .first()
             .and_then(Expr::sym_name)
-            .and_then(settings::named)
             .ok_or("a setting is digits, roots, terms or verbose")?;
-        let value = a.get(1);
+        let kind =
+            settings::named(written).ok_or("a setting is digits, roots, terms or verbose")?;
+        let most = match kind {
+            Setting::Digits => u64::from(settings::MAX_DIGITS),
+            Setting::Roots => u64::from(settings::MAX_ROOTS),
+            _ => settings::MAX_TERMS,
+        };
+        let usage = || match kind {
+            Setting::Verbose | Setting::Debug => {
+                "verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail".to_string()
+            }
+            _ => format!(
+                "{} = N: a whole number from 1 to {most}, or default",
+                settings::name(kind)
+            ),
+        };
+        let formula = a
+            .get(1)
+            .filter(|v| v.as_int().is_none() && !v.sym_name().is_some_and(settings::value_word));
+        let worked = match formula {
+            Some(formula) => {
+                let value = self.eval(formula)?;
+                if value.as_int().is_none() {
+                    // (a name that is a function as well, digits or roots, is no name of an equation)
+                    let equation = !value.is_const()
+                        && !matches!(formula, Expr::Sym(_))
+                        && crate::names::function(written).is_none();
+                    if !equation {
+                        return Err(usage());
+                    }
+                    let equation = Expr::rel(Rel::Eq, Expr::sym(written), formula.clone());
+                    return Ok(Stated::Equation(equation));
+                }
+                Some(value)
+            }
+            None => None,
+        };
+        let value = worked.as_ref().or(a.get(1));
         let word = value.and_then(Expr::sym_name);
         let usual = matches!(word, Some("default" | "auto"));
         let whole = |most: u64| -> Result<u64, String> {
@@ -147,12 +193,7 @@ impl Session {
                 .and_then(Expr::as_int)
                 .and_then(rug::Integer::to_u64)
                 .filter(|n| (1..=most).contains(n))
-                .ok_or_else(|| {
-                    format!(
-                        "{} = N: a whole number from 1 to {most}, or default",
-                        settings::name(kind)
-                    )
-                })
+                .ok_or_else(usage)
         };
         match kind {
             Setting::Digits if usual => self.digits = None,
@@ -170,18 +211,13 @@ impl Session {
                     (Some("all"), _) | (_, Some(2)) => 2,
                     (Some("off" | "no" | "false" | "none" | "default"), _) | (_, Some(0)) => 0,
                     (_, Some(1)) => 1,
-                    _ => {
-                        return Err(
-                            "verbose = 0, 1 or 2 (off, on, all): no steps, the steps, every detail"
-                                .to_string(),
-                        );
-                    }
+                    _ => return Err(usage()),
                 };
                 crate::trace::set_level(level);
             }
-            Setting::List => return Ok(settings::listed(self.digits)),
+            Setting::List => return Ok(Stated::Set(settings::listed(self.digits))),
         }
-        Ok(vec![settings::shown(kind, self.digits)])
+        Ok(Stated::Set(vec![settings::shown(kind, self.digits)]))
     }
 
     /// Evaluates every statement of `input` and returns the lines to print.
@@ -262,7 +298,6 @@ impl Session {
         let decimal = self.numeric || parsed.decimal;
         self.decimal = decimal;
         let mut lines = Vec::new();
-        let is_setting = |stmt: &Expr| stmt.fn_args("setting").is_some();
         // an input of settings alone answers with what was set (`settings` lists them all)
         let lists = |stmt: &Expr| {
             stmt.fn_args("setting")
@@ -272,16 +307,28 @@ impl Session {
                 == Some(crate::settings::Setting::List)
         };
         let listed = parsed.stmts.iter().any(lists);
-        let alone = parsed.stmts.iter().all(is_setting);
+        let (mut said, mut others) = (Vec::new(), 0);
         for stmt in &parsed.stmts {
-            if let Some(setting) = stmt.fn_args("setting") {
-                let set = self.setting(setting)?;
-                numeric::set_digits(self.digits.unwrap_or(32).max(parsed.max_digits));
-                if lists(stmt) || (alone && !listed) {
-                    lines.extend(set);
-                }
-                continue;
-            }
+            let equation;
+            let stmt = match stmt.fn_args("setting") {
+                Some(setting) => match self.setting(setting)? {
+                    Stated::Set(set) => {
+                        numeric::set_digits(self.digits.unwrap_or(32).max(parsed.max_digits));
+                        if lists(stmt) {
+                            lines.extend(set);
+                        } else {
+                            said.extend(set);
+                        }
+                        continue;
+                    }
+                    Stated::Equation(written) => {
+                        equation = written;
+                        &equation
+                    }
+                },
+                None => stmt,
+            };
+            others += 1;
             self.notes.clear();
             crate::tetration::forget_missing();
             if crate::trace::on() {
@@ -309,6 +356,9 @@ impl Session {
             lines.extend(out);
             lines.extend(self.notes.drain(..).map(|n| format!("note: {n}")));
             self.ans = Some(value);
+        }
+        if others == 0 && !listed {
+            lines.extend(said);
         }
         Ok(lines)
     }
@@ -586,7 +636,8 @@ impl Session {
                 }
             },
         };
-        let solved = crate::solve::solve(f, &var)?;
+        // (an equation of the user: `roots = N` holds for it)
+        let solved = crate::settings::listing(|| crate::solve::solve(f, &var))?;
         Ok(self.show_roots(solved, &var, decimal))
     }
 
@@ -631,17 +682,17 @@ impl Session {
         if solved.all {
             lines.push(format!("every {var} is a solution"));
         } else if solved.roots.is_empty() {
-            // (after a numeric search that found nothing it is not known that there is none)
+            // (after a numeric search it is not known that there is none: what it found is
+            // not all there is)
             let searched = solved
                 .notes
                 .iter()
-                .any(|n| n.starts_with("no exact method"));
-            lines.push(if found > 0 {
-                format!("no {} solution", kind(facts))
-            } else if searched {
-                "no solution found".to_string()
-            } else {
-                "no solution".to_string()
+                .any(|n| n.starts_with("no exact method") || n.starts_with("numeric search"));
+            lines.push(match (found > 0, searched) {
+                (true, true) => format!("no {} solution found", kind(facts)),
+                (true, false) => format!("no {} solution", kind(facts)),
+                (false, true) => "no solution found".to_string(),
+                (false, false) => "no solution".to_string(),
             });
         }
         for r in &solved.roots {
@@ -882,6 +933,24 @@ impl Session {
                 parts,
             });
         }
+        // a power of a quaternion unknown is a polynomial of that degree in its four parts:
+        // thousands of terms from the 32nd power on, and minutes of work beyond the 48th
+        let quaternion = |name: &str| unknowns.iter().any(|u| u.name == name && u.parts.is_some());
+        let high = raw.any(&|e| match e {
+            Expr::Pow(base, power) if base.free_syms().iter().any(|s| quaternion(s)) => {
+                // (the exponent as it is written: -64, 2^70)
+                simplify(power)
+                    .as_int()
+                    .is_some_and(|k| k.to_i64().is_none_or(|k| k.unsigned_abs() > 48))
+            }
+            _ => false,
+        });
+        if high {
+            return Err(
+                "no method for this equation: among the quaternions a power of the unknown is followed up to the 48th"
+                    .to_string(),
+            );
+        }
         let sphere = fresh(
             &mut taken,
             &["u", "v", "w", "n", "p", "q"].map(String::from),
@@ -961,11 +1030,13 @@ impl Session {
             let solved = match (comps.as_slice(), unknowns.as_slice()) {
                 ([one], [unknown]) if unknown.parts.is_some() => {
                     let slice = self.slice_form(raw, &unknown.name);
-                    qsolve::single(one, unknown, slice.as_ref(), &sphere)?
+                    crate::settings::listing(|| {
+                        qsolve::single(one, unknown, slice.as_ref(), &sphere)
+                    })?
                 }
                 _ => {
                     let all: Vec<Expr> = comps.iter().flatten().cloned().collect();
-                    qsolve::by_components(&all, &unknowns, &sphere)?
+                    crate::settings::listing(|| qsolve::by_components(&all, &unknowns, &sphere))?
                 }
             };
             Ok(Some(
@@ -1473,7 +1544,7 @@ impl Session {
                 Ok((truth.clone(), vec![truth.to_string()]))
             }
             [var] if op == Rel::Ne => {
-                let solved = crate::solve::solve(f, var)?;
+                let solved = crate::settings::listing(|| crate::solve::solve(f, var))?;
                 let mut lines: Vec<String> = Vec::new();
                 if solved.all {
                     lines.push("no solution".to_string());
@@ -1531,7 +1602,8 @@ impl Session {
         };
         let searchable = eqs.len() == vars.len() && eqs.iter().all(only_unknowns);
         // (no method: the numeric search may still find solutions)
-        let (mut solved, failure) = match crate::system::solve_system(eqs, &vars) {
+        use crate::settings::listing;
+        let (mut solved, failure) = match listing(|| crate::system::solve_system(eqs, &vars)) {
             Ok(solved) => (solved, None),
             Err(failure) if searchable => (Default::default(), Some(failure)),
             Err(failure) => return Err(failure),
@@ -1539,7 +1611,9 @@ impl Session {
         if solved.solutions.is_empty() && !solved.empty && searchable {
             // nothing found and nothing proved: Newton's method from many starting points
             let real = vars.iter().all(|v| assume::is_real_sym(v));
-            for point in crate::system::numeric_search(eqs, &vars, real, &mut Vec::new()) {
+            let points =
+                listing(|| crate::system::numeric_search(eqs, &vars, real, &mut Vec::new()));
+            for point in points {
                 let values = point.into_iter().map(|z| numeric::to_float_expr(z, digits));
                 solved
                     .solutions
@@ -1557,7 +1631,7 @@ impl Session {
             && !solved.empty
             && let [var] = vars.as_slice()
             && eqs.len() > 1
-            && let Ok(common) = crate::solve::common(eqs, var)
+            && let Ok(common) = listing(|| crate::solve::common(eqs, var))
             && !common.roots.is_empty()
         {
             // one unknown in several equations: the roots of one that are roots of the others
@@ -2145,7 +2219,36 @@ impl Session {
         result
     }
 
+    /// The value of a function. A formula for single numbers that was given a list for one of
+    /// them (ballvolume([1, 2]), rotx([30, 60]), flat2ecc([1/2, 1/3])) is the list of its values
+    /// for the items: the formula with the list put in was left as it stood, and read again it
+    /// meant something else (a list times a list is their product of vectors).
     pub(crate) fn call(&mut self, name: &str, raw: &[Expr]) -> Res {
+        let result = self.call_as_written(name, raw)?;
+        if !has_stuck_list(&result) || raw.iter().any(has_stuck_list) {
+            return Ok(result);
+        }
+        let Ok(given) = self.eval_all(raw) else {
+            return Ok(result);
+        };
+        let mut lists = given
+            .iter()
+            .enumerate()
+            .filter(|(_, a)| a.as_list().is_some());
+        let (Some((at, list)), None) = (lists.next(), lists.next()) else {
+            return Ok(result);
+        };
+        let items = list.as_list().map(<[Expr]>::to_vec).unwrap_or_default();
+        let mut values = Vec::with_capacity(items.len());
+        for item in items {
+            let mut each = given.clone();
+            each[at] = item;
+            values.push(self.call(name, &each)?);
+        }
+        Ok(Expr::list(values))
+    }
+
+    fn call_as_written(&mut self, name: &str, raw: &[Expr]) -> Res {
         if name == "clear" {
             return self.clear(raw);
         }
@@ -2385,7 +2488,17 @@ impl Session {
             ("simplify", 1) => simplify(&a[0]),
             ("expand", 1) => expand(&a[0]),
             ("rewrite_exp", 1) => crate::solve::rewrite_exp(&a[0]),
-            ("factor", 1) => crate::ratsimp::factor(&a[0]),
+            ("factor", 1) => {
+                let (factors, complete) = crate::ratsimp::factor_told(&a[0]);
+                if !complete {
+                    // (a polynomial that is left whole is not said to have no factors)
+                    let note = "factor: the search for factors was given up for a polynomial of the result, which may have factors".to_string();
+                    if !self.notes.contains(&note) {
+                        self.notes.push(note);
+                    }
+                }
+                factors
+            }
             ("together" | "cancel", 1) => crate::ratsimp::together(&a[0]),
             ("numer", 1) => crate::ratsimp::fraction(&a[0]).0,
             ("denom", 1) => crate::ratsimp::fraction(&a[0]).1,
@@ -2569,7 +2682,11 @@ impl Session {
                     })
                     .ok_or("reshape(list, [n1, n2, ...]) needs whole sizes")?;
                 let data = Tensor::of(&a[0]).data;
-                if dims.iter().product::<usize>() != data.len() {
+                // (sizes whose product is beyond the whole numbers of the machine fit nothing)
+                let fill = dims
+                    .iter()
+                    .try_fold(1usize, |all, size| all.checked_mul(*size));
+                if fill != Some(data.len()) {
                     return Err(format!("{} entries do not fill these sizes", data.len()));
                 }
                 Ok(Tensor { dims, data }.expr())
@@ -3553,7 +3670,7 @@ impl Session {
                 }
                 let f = zero_form(&a[0]);
                 let v = Self::var_of(a.get(1), &f)?;
-                let solved = crate::solve::solve(&f, &v)?;
+                let solved = crate::settings::listing(|| crate::solve::solve(&f, &v))?;
                 crate::solve::release(&solved.params);
                 Ok(Expr::list(
                     solved
@@ -3825,15 +3942,15 @@ impl Session {
                         .map(|(x, y)| rug::Complex::with_val(64, (*x + 0.013, *y)))
                         .collect(),
                     };
+                // (0 is a root when the equation says so, not when its terms are too small
+                // for the bits of the search)
+                let zero = canon::subst_sym(&f, &v, &Expr::zero());
+                let at_zero = !zero.any(&|x| x.is_infinite()) && crate::simplify::is_zero(&zero);
                 for s in starts {
-                    if let Some(mut z) = crate::numroots::find_root(&mut value, &s, digits) {
-                        let scale = rug::Float::with_val(64, z.abs_ref()) + 1u32;
-                        if rug::Float::with_val(64, z.imag().abs_ref())
-                            < rug::Float::with_val(64, &scale >> (numeric::bits_for(digits) - 8))
+                    if let Some(z) = crate::numroots::find_root(&mut value, &s, digits) {
+                        let z = crate::rootsearch::settled(z, digits);
+                        if (assume::real_mode() && !z.imag().is_zero()) || (z.is_zero() && !at_zero)
                         {
-                            z = rug::Complex::with_val(z.prec(), z.real());
-                        }
-                        if assume::real_mode() && !z.imag().is_zero() {
                             continue;
                         }
                         return Ok(numeric::to_float_expr(z, digits));
@@ -3983,7 +4100,9 @@ impl Session {
                     (bound, Expr::Sym(v)) => (v.clone(), op.flip(), bound),
                     _ => return Err(usage.into()),
                 };
-                let s = numeric::sign(&self.eval(bound)?).ok_or(usage)?;
+                let bound = self.eval(bound)?;
+                let s = numeric::sign(&bound).ok_or(usage)?;
+                let said = Expr::Rel(op, Expr::Sym(v.clone()).into(), bound.into());
                 let facts = match (op, s) {
                     (Rel::Gt, s) if s >= 0 => Facts::positive(),
                     (Rel::Ge, s) if s > 0 => Facts::positive(),
@@ -3994,8 +4113,22 @@ impl Session {
                         nonzero: true,
                         ..Facts::default()
                     },
+                    // (a number that is not 2 is of no kind: it need not even be real)
+                    (Rel::Ne | Rel::Eq, _) => {
+                        return Err(format!(
+                            "{said} is nothing that can be assumed: {usage}, assume(x != 0)"
+                        ));
+                    }
                     _ => Facts::real(),
                 };
+                if s != 0 {
+                    // a bound other than 0 is not kept: only what it says of the kind of
+                    // number (a solution on the wrong side of it is listed all the same)
+                    let kept = kind(facts);
+                    self.notes.push(format!(
+                        "of {said} only the kind of number is kept: {v} is {kept}"
+                    ));
+                }
                 (v, facts)
             }
             _ => return Err(usage.into()),
@@ -4115,8 +4248,32 @@ fn real_solution(value: &Expr, params: &[String]) -> Option<Expr> {
         .then_some(candidate)
 }
 
+/// A list that stands as a term of a sum, a factor of a product, the base or the exponent of
+/// a power, or as what an elementary function is taken of: what a formula for single numbers
+/// leaves of a list that was given for one of them. (Sums and products of lists that are
+/// worked out do not look like that: they are lists, or numbers.)
+fn has_stuck_list(e: &Expr) -> bool {
+    const ELEMENTARY: &[&str] = &[
+        "sin", "cos", "tan", "cot", "sec", "csc", "asin", "acos", "atan", "sinh", "cosh", "tanh",
+        "exp", "ln", "log", "sqrt", "cbrt", "abs", "arg", "gamma", "sign", "re", "im", "conj",
+        "floor", "ceil", "round",
+    ];
+    let list = |x: &Expr| matches!(x, Expr::List(_));
+    e.any(&|node| match node {
+        Expr::Add(items) | Expr::Mul(items) => items.iter().any(list),
+        Expr::Pow(base, power) => list(base) || list(power),
+        Expr::Fn(name, args) => args.len() == 1 && list(&args[0]) && ELEMENTARY.contains(&&**name),
+        _ => false,
+    })
+}
+
 fn listable(name: &str, a: Vec<Expr>) -> Expr {
     match a.as_slice() {
+        // (of no values there is no largest one: the empty list, not a call without arguments
+        // that the program itself would not read)
+        [Expr::List(items)] if matches!(name, "min" | "max") && items.is_empty() => {
+            Expr::list(Vec::new())
+        }
         [Expr::List(items)] if matches!(name, "min" | "max") => func(name, items.to_vec()),
         [Expr::List(_)] if matches!(name, "piecewise" | "and" | "or" | "not") => func(name, a),
         [Expr::List(items)] => Expr::list(

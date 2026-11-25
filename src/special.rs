@@ -1,6 +1,7 @@
 //! Special functions for the numeric evaluator, for real and complex arguments.
 
 use crate::ntheory::bernoulli;
+use crate::numeric::SafeExp;
 use rug::float::Constant;
 use rug::{Complex, Float, Integer};
 use std::f64::consts::{LN_2, LOG2_E};
@@ -101,10 +102,16 @@ fn gamma(z: &Complex, p: u32) -> Out {
     for j in 0..n {
         prod *= Complex::with_val(wp, z + j);
     }
-    Some(Some(Complex::with_val(p, stirling(&w, wp).exp() / prod)))
+    Some(Some(Complex::with_val(p, stirling(&w, wp).cexp() / prod)))
 }
 
 /// The principal branch of `ln gamma(z)`.
+/// The logarithm of the gamma function for the sum of the logarithms of a product: with
+/// its angle (that of a negative value is pi), up to whole turns.
+pub(crate) fn log_gamma(z: &Complex, p: u32) -> Out {
+    lgamma(z, p)
+}
+
 fn lgamma(z: &Complex, p: u32) -> Out {
     if is_pole(z) {
         return Some(None);
@@ -188,8 +195,8 @@ fn zeta(s: &Complex, p: u32) -> Out {
             return Some(None);
         };
         let sin = (Complex::with_val(wp, s) * pi(wp) / 2u32).sin();
-        let two = (Complex::with_val(wp, s) * Float::with_val(wp, 2).ln()).exp();
-        let pis = (s1 * pi(wp).ln()).exp();
+        let two = (Complex::with_val(wp, s) * Float::with_val(wp, 2).ln()).cexp();
+        let pis = (s1 * pi(wp).ln()).cexp();
         return Some(Some(Complex::with_val(p, two * pis * sin * g * zt)));
     }
     let n = (0.2 * f64::from(wp) + a + 10.0) as u32;
@@ -197,10 +204,10 @@ fn zeta(s: &Complex, p: u32) -> Out {
     let mut sum = Complex::new(wp);
     for k in 1..n {
         let ln_k = Float::with_val(wp, k).ln();
-        sum += Complex::with_val(wp, &neg_s * &ln_k).exp();
+        sum += Complex::with_val(wp, &neg_s * &ln_k).cexp();
     }
     let ln_n = Float::with_val(wp, n).ln();
-    let n_s = Complex::with_val(wp, &neg_s * &ln_n).exp();
+    let n_s = Complex::with_val(wp, &neg_s * &ln_n).cexp();
     sum += Complex::with_val(wp, &n_s * n) / &s1;
     sum += Complex::with_val(wp, &n_s / 2u32);
     let mut q = Complex::with_val(wp, s * &n_s) / n / 2u32;
@@ -262,7 +269,7 @@ fn erf(z: &Complex, p: u32) -> Option<Complex> {
             last = e;
         }
         if done {
-            let c = (-w2).exp() * sum / (w * pi(base).sqrt());
+            let c = (-w2).cexp() * sum / (w * pi(base).sqrt());
             let r = Complex::with_val(base, 1) - c;
             return Some(Complex::with_val(p, if flip { -r } else { r }));
         }
@@ -315,7 +322,7 @@ fn ei_far(z: &Complex, wp: u32) -> Option<Complex> {
     if !done {
         return None;
     }
-    let mut v = Complex::with_val(wp, z.exp_ref()) * sum * inv;
+    let mut v = Complex::with_val(wp, z).cexp() * sum * inv;
     if !z.imag().is_zero() {
         let turn = Complex::with_val(wp, (0, pi(wp)));
         if z.imag().is_sign_positive() {
@@ -581,9 +588,9 @@ pub fn call(name: &str, a: &[Complex], p: u32) -> Out {
             let Some(g) = gamma_any(&(Complex::with_val(wp, &zz / 2u32) + 1u32), wp)? else {
                 return Some(None);
             };
-            let two = (Complex::with_val(wp, &zz / 2u32) * Float::with_val(wp, 2).ln()).exp();
+            let two = (Complex::with_val(wp, &zz / 2u32) * Float::with_val(wp, 2).ln()).cexp();
             let turn = (Complex::with_val(wp, &zz * &pi(wp)).cos() - 1u32) / 4u32;
-            let half_pi = (turn * (pi(wp) / 2u32).ln()).exp();
+            let half_pi = (turn * (pi(wp) / 2u32).ln()).cexp();
             Some(Some(Complex::with_val(p, two * half_pi * g)))
         }
         ("lambertw", 1) => Some(lambert_w(0, z)),
@@ -646,7 +653,7 @@ pub fn lambert_w(k: i64, z: &Complex) -> Option<Complex> {
     let mut stalled = 0;
     for _ in 0..400 {
         let zz = Complex::with_val(prec, z);
-        let ew = w.clone().exp();
+        let ew = w.clone().cexp();
         let f = Complex::with_val(prec, &w * &ew) - &zz;
         let w1 = Complex::with_val(prec, &w + 1u32);
         if w1.is_zero() {
@@ -693,7 +700,7 @@ mod tests {
             let w = lambert_w(0, &Complex::with_val(128, (z, 0))).expect("a value");
             assert!((w.real().to_f64() - re).abs() < 1e-12, "W({z}) = {w}");
             assert!((w.imag().to_f64() - im).abs() < 1e-12, "W({z}) = {w}");
-            let back = Complex::with_val(128, &w * w.clone().exp());
+            let back = Complex::with_val(128, &w * w.clone().cexp());
             assert!((back.real().to_f64() - z).abs() < 1e-25 && back.imag().to_f64().abs() < 1e-25);
         };
         check(-1.0, -0.318_131_505_204_764_1, 1.337_235_701_430_689_4);

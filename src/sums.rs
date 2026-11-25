@@ -17,10 +17,13 @@ use std::rc::Rc;
 
 const DIRECT_LIMIT: i64 = 200_000;
 
-/// As many terms of a sum or factors of a product with whole ends are taken one by one;
-/// `terms = N` sets another count.
+/// As many terms of a sum or factors of a product with whole ends are taken one by one and
+/// exactly; `terms = N` sets a smaller count. (A larger one is for the sums that are added as
+/// numbers: a million terms sin(k) written out one by one are no answer.)
 fn direct_limit() -> i64 {
-    i64::try_from(crate::settings::terms(DIRECT_LIMIT as u64)).unwrap_or(i64::MAX)
+    i64::try_from(crate::settings::terms(DIRECT_LIMIT as u64))
+        .unwrap_or(i64::MAX)
+        .min(DIRECT_LIMIT)
 }
 
 /// Bernoulli polynomial `B_n(x)`.
@@ -166,7 +169,9 @@ impl Summer<'_> {
             if self.b.is_inf() {
                 return None;
             }
-            let p = u32::try_from(p).ok()?;
+            // (the formula of Faulhaber for the power p has p + 2 terms with the numbers of
+            // Bernoulli up to that one: beyond the thousandth it is no closed form to read)
+            let p = u32::try_from(p).ok().filter(|p| *p <= 1000)?;
             let hi = bernoulli_poly(p + 1, &add(vec![self.b.clone(), Expr::one()]));
             let lo = bernoulli_poly(p + 1, self.a);
             return Some(mul(vec![
@@ -318,7 +323,7 @@ fn whole_shifts(e: &Expr) -> Expr {
             .iter()
             .find_map(|t| t.as_rat())
             .and_then(|r| r.clone().floor().numer().to_i64())
-            .filter(|c| *c != 0 && c.abs() <= 64);
+            .filter(|c| *c != 0 && c.unsigned_abs() <= 64);
         let (Some(c), false) = (c, arg.is_const()) else {
             return x;
         };
@@ -648,16 +653,23 @@ fn taken_exactly(f: &Expr, k: &str, lo: i64, hi: i64, times: bool) -> Option<Exp
     }
     let mut total = if times { Expr::one() } else { Expr::zero() };
     let mut from = lo;
-    while from <= hi {
-        let to = (from + 1023).min(hi);
+    loop {
+        let to = from.saturating_add(1023).min(hi);
         let mut parts: Vec<Expr> = (from..=to).map(at).collect();
         parts.push(total);
         total = join(parts);
-        let bits = total.as_rat().map_or(0, |q| {
-            q.numer().significant_bits() as usize + q.denom().significant_bits() as usize
-        });
+        let Some(q) = total.as_rat() else {
+            // not numbers after all (the terms at both ends of the sum of sqrt(k) to 90000
+            // are whole): what was added so far would be gone through again with every
+            // thousand terms more, so all of them are joined at once
+            return Some(join((lo..=hi).map(at).collect()));
+        };
+        let bits = q.numer().significant_bits() as usize + q.denom().significant_bits() as usize;
         if bits > EXACT_BITS {
             return None;
+        }
+        if to == hi {
+            break;
         }
         from = to + 1;
     }
@@ -667,7 +679,7 @@ fn taken_exactly(f: &Expr, k: &str, lo: i64, hi: i64, times: bool) -> Option<Exp
 /// The sum (or the product) of `f` for the whole numbers from `lo` to `hi` by numbers: for
 /// more terms than are taken exactly, when the term has no other name.
 fn numeric_finite(f: &Expr, k: &str, lo: i64, hi: i64, times: bool) -> Option<Complex> {
-    let count = u64::try_from(hi - lo).ok()?.checked_add(1)?;
+    let count = u64::try_from(hi.checked_sub(lo)?).ok()?.checked_add(1)?;
     if count > crate::settings::terms(2_000_000) || !f.free_syms().iter().all(|s| &**s == k) {
         return None;
     }
@@ -711,7 +723,10 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
         if hi < lo {
             return Ok((Expr::zero(), false));
         }
-        if hi - lo <= direct_limit() {
+        if hi
+            .checked_sub(lo)
+            .is_some_and(|span| span <= direct_limit())
+        {
             if let Some(total) = taken_exactly(&f, k, lo, hi, false) {
                 crate::trace::step(|| {
                     format!(
@@ -791,7 +806,7 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
         }
         if !paired.any(&|e| matches!(e, Expr::Pow(b, _) if b.is_minus_one())) && lo % 2 != 0 {
             let first = subst_sym(&f, k, &Expr::int(lo));
-            let half = Expr::int((lo + 1) / 2);
+            let half = Expr::int(lo.div_euclid(2) + lo.rem_euclid(2));
             let inner = Summer { k, a: &half, b };
             if let Some(r) = inner.rational(&paired) {
                 return Ok((simplify(&add(vec![first, r])), false));
@@ -799,7 +814,16 @@ fn sum_integer_index(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, boo
         }
         let only_index = f.free_syms().iter().all(|s| &**s == k);
         let found = if only_index {
-            numeric_sum(&|n, prec| numeric_term(&f, k, n, prec), &Int::from(lo))
+            let (found, under) = numeric::underflowed(|| {
+                numeric_sum(&|n, prec| numeric_term(&f, k, n, prec), &Int::from(lo))
+            });
+            match found {
+                // (a sum that begins so far out that its terms are 0 as numbers)
+                Ok(v) if under && v.is_zero() => {
+                    Err("its terms are smaller than the smallest number that is kept".to_string())
+                }
+                other => other,
+            }
         } else {
             Err(String::new())
         };
@@ -947,7 +971,9 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
         if hi < lo {
             return Ok((Expr::one(), false));
         }
-        if hi - lo <= direct_limit()
+        if hi
+            .checked_sub(lo)
+            .is_some_and(|span| span <= direct_limit())
             && let Some(total) = taken_exactly(&f, k, lo, hi, true)
         {
             return Ok((total, false));
@@ -990,7 +1016,7 @@ pub fn product(f: &Expr, k: &str, a: &Expr, b: &Expr) -> Result<(Expr, bool), St
         return match found {
             Ok(v) => {
                 let digits = numeric::digits();
-                let value = Complex::with_val(numeric::bits_for(digits) + 32, v.exp());
+                let value = Complex::with_val(numeric::bits_for(digits) + 32, numeric::cexp(v));
                 Ok((numeric::to_float_expr(value, digits), true))
             }
             Err(missing) if missing.is_empty() => Err(format!(

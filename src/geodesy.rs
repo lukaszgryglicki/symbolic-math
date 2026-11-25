@@ -554,6 +554,19 @@ fn integral(from: &Float, to: &Float, f: &dyn Fn(&Float) -> Float) -> Float {
     total * width
 }
 
+/// The integral of a function with a period, from one angle to another that may be many
+/// periods away (a way of many times around the earth): the whole periods are counted, and
+/// only what is left of the way is gone through.
+fn integral_over(from: &Float, to: &Float, period: &Float, f: &dyn Fn(&Float) -> Float) -> Float {
+    let whole = fl(fl(to - from) / period).trunc();
+    if fl(whole.abs_ref()) < 2 {
+        return integral(from, to, f);
+    }
+    let one = integral(&zero(), period, f);
+    let rest = fl(from + fl(&whole * period));
+    fl(&one * &whole) + integral(&rest, to, f)
+}
+
 /// The geodesics of an ellipsoid: the shortest lines on it.
 struct Geodesic<'a> {
     on: &'a Ellipsoid,
@@ -628,7 +641,7 @@ impl Geodesic<'_> {
         if self.on.round() {
             return fl(to - from);
         }
-        integral(from, to, &|t| {
+        integral_over(from, to, &pi(), &|t| {
             let s = t.clone().sin();
             (int(1) + fl(&line.k2 * s.square())).sqrt()
         })
@@ -640,7 +653,7 @@ impl Geodesic<'_> {
             return zero();
         }
         let f = &self.on.f;
-        let part = integral(from, to, &|t| {
+        let part = integral_over(from, to, &pi(), &|t| {
             let s = t.clone().sin();
             let root = (int(1) + fl(&line.k2 * s.square())).sqrt();
             fl(int(2) - f) / (int(1) + fl(int(1) - f) * root)
@@ -667,7 +680,7 @@ impl Geodesic<'_> {
             }
         };
         let top = t(&second);
-        let part = integral(from, to, &|sigma| {
+        let part = integral_over(from, to, &fl(pi() * 2u32), &|sigma| {
             let s = sigma.clone().sin();
             let x = fl(&line.k2 * fl(s.square_ref()));
             let below = fl(&second - &x);
@@ -708,6 +721,11 @@ impl Geodesic<'_> {
             false => atan2(&sb, &along),
         };
         let target = fl(length / self.on.b());
+        // (so many times around that the bits at hand no longer tell where the way ends)
+        if !target.is_finite() || target.get_exp().is_some_and(|e| e > (bits() / 2) as i32) {
+            let none = Float::with_val(bits(), rug::float::Special::Nan);
+            return (none.clone(), none.clone(), none);
+        }
         // the arc whose length from the first place is the target
         let mut s2 = fl(&s1 + &target);
         if !self.on.round() {
@@ -1015,6 +1033,12 @@ fn onward(
     length: &Float,
     course: &Float,
 ) -> (Float, Float, Float) {
+    // (a way so long that the bits at hand no longer tell where on its last turn around
+    // the earth it ends: no place)
+    if !length.is_finite() || length.get_exp().is_some_and(|e| e > (bits() / 2) as i32) {
+        let none = Float::with_val(bits(), rug::float::Special::Nan);
+        return (none.clone(), none.clone(), none);
+    }
     if rhumb_line {
         let (lat2, lon2) = rhumb_reckon(on, lat, lon, length, course);
         return (lat2, lon2, course.clone());
@@ -1902,7 +1926,13 @@ fn navigation(name: &str, a: &[Expr]) -> Result<Option<Expr>, String> {
             let (mut out_lats, mut out_lons) = (vec![lats[0].clone()], vec![lons[0].clone()]);
             for k in 1..lats.len() {
                 let (rise, east) = (fl(&lats[k] - &lats[k - 1]), fl(&lons[k] - &lons[k - 1]));
-                let parts = (fl(rise.abs_ref()).max(&fl(east.abs_ref())) / &most - dust() * 64u32)
+                // (a longitude of more than a turn away is a place within a turn: along a
+                // track the parts are counted by that)
+                let across = match !straight && fl(east.abs_ref()) > pi() * 2u32 {
+                    true => wrapped(east.clone()),
+                    false => east.clone(),
+                };
+                let parts = (fl(rise.abs_ref()).max(&fl(across.abs_ref())) / &most - dust() * 64u32)
                     .ceil()
                     .to_f64()
                     .clamp(1.0, 1e6) as u32;

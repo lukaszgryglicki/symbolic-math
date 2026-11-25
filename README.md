@@ -81,8 +81,9 @@ definitions, assumptions and the last result (`ans` or `%`).
 | `-e`, `--exact` | print exact forms only, without the numeric line |
 | `--roots N` | a numeric search for the roots of an equation gives the `N` nearest to 0 (the statement `roots = N`) |
 | `--terms N` | the most terms that a sum or a series takes one by one (the statement `terms = N`) |
-| `-v`, `--verbose` | tell the steps that lead to each result, as lines `step: ...` (the statement `verbose`) |
+| `-v`, `--verbose` | tell the steps that lead to each result, as lines `step: ...` (the statement `verbose`); `--verbose=off`, `--verbose=on` and `--verbose=all` (every detail) say which |
 | `--debug` | tell every detail as well (the statement `debug`) |
+| `--name=value` | a long option may take its value after `=`: `--digits=50`, `--roots=5` |
 | `--functions` | list the functions with all their names |
 | `--constants` | list the constants with all their names |
 | `--units` | list the units with all their names and their sizes |
@@ -103,9 +104,14 @@ make the exit status 1.
 
 Where the program runs for strangers, as behind a web page, the environment variable
 `SYMBOLIC_MATH_SANDBOX=N` keeps the files that it reads and writes under plain names in the
-current directory, 64 files and `N` megabytes at most. `SYMBOLIC_MATH_MEMORY=N` (Linux and
-FreeBSD) lets the program take `N` megabytes of memory at most, 64 or more: a calculation
-that needs more ends with an error and leaves the machine alone.
+current directory, 64 files and `N` megabytes at most.
+
+`SYMBOLIC_MATH_MEMORY=N` (Linux and FreeBSD) lets the program take `N` megabytes of memory at
+most, 64 or more: a calculation that needs more ends with the error `out of memory` (exit
+status 1) and leaves the machine alone. Without the variable the limit is 8192 megabytes or
+three quarters of the memory of the machine, whichever is less, and never more than a limit
+that the shell has set; `SYMBOLIC_MATH_MEMORY=unlimited` takes what the system gives. macOS
+does not hold a program to such a limit.
 
 `symbolic-math --help` prints, after the options, an example of every kind of operation: every
 function and every constant of the program is in at least one of its lines, each line can be
@@ -362,10 +368,12 @@ a session: until they are set again):
 | `verbose`, `debug` | `verbose = 0`, `1`, `2`, `off`, `on`, `all` | the steps to a result (next section) |
 | `settings` | | lists them |
 
-The `=` may be left out (`prec 100`), and the value `default` sets a setting back. A setting
-that stands alone answers with what is set. The words stay names where they are no settings:
-`prec = x + 1` is an equation, `terms := 4` a variable, `roots(x^2 - 1)` and `digits(1/7)` the
-functions.
+The `=` may be left out (`prec 100`), and the value `default` sets a setting back. After an
+`=` the value may be a formula that gives a whole number (`terms = 10^6`,
+`n := 40; digits = n`); a value that is none is an error that says what the setting takes. A
+setting that stands alone answers with what is set. The words stay names where they are no
+settings: `prec = x + 1` is an equation, `terms := 4` a variable, `roots(x^2 - 1)` and
+`digits(1/7)` the functions.
 
 How a numeric result ends does not depend on a count of terms. A value is worked out with
 more bits than its digits need and once more with still more bits, until the digits of both
@@ -377,16 +385,25 @@ digits, or the sums of its first terms are extrapolated until three extrapolatio
 `terms = N` only sets where a sum or a series gives up, and the error then says how many
 terms it would take.
 
-An equation that no exact method solves is searched for roots by numbers. For an equation
-of elementary functions the size of the function is looked at on a lattice of points around
-0, and the 8 roots nearest to 0 are listed; `roots = N` asks for the `N` nearest of any
+An equation that no exact method solves is searched for roots by numbers. For an equation of
+elementary functions the size of the function is looked at on a lattice of points around 0,
+and the 8 roots nearest to 0 are listed; `roots = N` asks for the `N` nearest of any
 equation, in the plane or, with `-r`, on the real line. Roots that are equally far from 0
-stay together, so a root and its conjugate may make it `N + 1`. An equation that is solved
-factor by factor gets the `N` nearest of all its roots, and one that the function W of
-Lambert solves the branches `lambertw(k, z)` that give them. A power is zero where its base
-is: the base is solved, and each of its roots counts as often as the power says. A search
-that finds nothing answers `no solution found`; `no solution` is said only of an equation
-that is known to have none.
+stay together: a root and its conjugate may make it `N + 1`, the four such roots of
+`sin(x) = x` `N + 3`. An equation that is solved factor by factor gets the `N` nearest of
+all its roots, and one that the function W of Lambert solves the branches `lambertw(k, z)`
+that give them. A power is zero where its base is: the base is solved, and each of its roots
+counts as often as the power says. A search that finds nothing answers `no solution found`;
+`no solution` is said only of an equation that is known to have none.
+
+The place where a distribution reaches a probability (`tinv`, `chi2inv`, `finv`, `betainv`,
+...) is searched with more and more digits of the distribution function until two places
+agree: `tinv(1 - 10^-30, 7)` and `chi2inv(10^-300, 1)` have all their digits. Among rounded
+numbers an elimination (`inv`, `det`, `linsolve`, `A\b`, `rank`, `rref`) takes the largest
+pivot, and what the rounding leaves of a zero is 0: a matrix of rounded numbers that has no
+inverse says so, and its determinant is 0. A list of values that fall away over many powers
+of ten (the answer of a filter to a blow, the ends of a narrow window, a response deep in a
+stopband) keeps its small values.
 
 ```
 'prec=100 pi'                                 pi
@@ -460,6 +477,9 @@ that is known to have none.
                                               roots = 7
                                               terms = 1000000
                                               verbose = off
+'terms = 10^6' 'n := 40; prec = n; N(pi)'     terms = 1000000
+                                              40
+                                              3.141592653589793238462643383279502884197
 ```
 
 ### The steps to a result
@@ -2925,8 +2945,8 @@ exactly.
 'predict([[[[1, 2]], [0], "tanh"]], [x, y])'
                                               tanh(x + 2y)
 'n := trainnet(feedforwardnet([2, 3, 1]), [[0, 0], [0, 1], [1, 0], [1, 1]], [0, 1, 1, 0]); predict(n, [[0, 0], [0, 1], [1, 0], [1, 1]])'
-                                              [[[[-1.5593111976748562181481237054619, 2.3123583995979380205359152887447], [1.8737670968965111728250142469164, 1.4359779290051702595716891081343], [1.0925094885194510464567038796402, -0.43961668273364131771864803575]], [1.4400756727768834308185805004257, 0.39882989693949209307197343570631, -0.280099398568542311014202295086], "tanh"], [[[-1.2604978439472344973318994107689, 1.3066141023723713593881953271341, -1.1231219191572280603582219984132]], [0.32477633327879649507530303038942], "purelin"]]
-                                              [-6.143284952071892301390187465889e-23, 0.99999999999999999999969609747215, 0.99999999999999999999987162766187, -6.6055715083967000056425267005849e-23]
+                                              [[[[-1.5593111976748562181484541788784, 2.3123583995979380205361268374987], [1.8737670968965111728253766518503, 1.4359779290051702595718084651345], [1.0925094885194510464568801490739, -0.43961668273364131771869500354071]], [1.4400756727768834308188738550436, 0.39882989693949209307196354312774, -0.28009939856854231101419797686099], "tanh"], [[[-1.2604978439472344973318917848972, 1.3066141023723713593883482595255, -1.1231219191572280603582864618353]], [0.32477633327879649507537208114752], "purelin"]]
+                                              [-1.6971794801012390469638333668525e-35, 1, 1, -2.8650951474048342123890214464049e-35]
 'perceptron([[0, 0], [0, 1], [1, 0], [1, 1]], [0, 0, 0, 1])'
                                               [[[[2, 1]], [-3], "hardlim"]]
 ```

@@ -1,0 +1,48 @@
+	asin(sin(y)) - y	asin(sin(y)) - y
+	asin(sin(t)) - t	asin(sin(t)) - t
+	asin(sin(a)) - a	asin(sin(a)) - a
+	asin(sin(w)) - w	asin(sin(w)) - w
+	ln(e^y) - y	ln(e^y) - y
+	ln(e^t) - t	ln(e^t) - t
+	atan(tan(a)) - a	atan(tan(a)) - a
+	atan(tan(y)) - y	atan(tan(y)) - y
+	acos(cos(y)) - y	acos(cos(y)) - y
+	sqrt(x^2) - x	sqrt(x^2) - x
+	ln(x^2) - 2ln(x)	ln(x^2) - 2ln(x)
+	sqrt(x)*sqrt(y) - sqrt(x*y)	sqrt(x)*sqrt(y) - sqrt(x*y)
+	(x^a)^b - x^(a*b)	(x^a)^b - x^(a*b)
+	asinh(sinh(z)) - z	asinh(sinh(z)) - z
+	atanh(tanh(u)) - u	atanh(tanh(u)) - u
+	acosh(cosh(v)) - v	acosh(cosh(v)) - v
+	ln(x*y) - ln(x) - ln(y)	-ln(x) + ln(x*y) - ln(y)
+	asin(sin(2x)) - 2x	asin(sin(2x)) - 2x
+	ln(e^(3x)) - 3x	ln(e^(3x)) - 3x
+	isalways(asin(sin(x)) == x)	false
+	sqrt(x)^2 - x	0
+	e^(ln(x)) - x	0
+	sin(asin(x)) - x	0
+	cos(asin(x)) - sqrt(1 - x^2)	0
+	tan(atan(x)) - x	0
+	asin(x) + acos(x) - pi/2	0
+	asinh(x) - ln(x + sqrt(x^2 + 1))	0
+	atanh(x) - ln((1 + x)/(1 - x))/2	0
+	x^a*x^b - x^(a + b)	0
+	sinh(asinh(y)) - y	0
+	cosh(acosh(t)) - t	0
+	tanh(atanh(w)) - w	0
+	cos(acos(a)) - a	0
+	e^(2ln(z)) - z^2	0
+	ln(e) - 1	0
+	sin(x)^2 + cos(x)^2 - 1	0
+	cosh(x)^2 - sinh(x)^2 - 1	0
+-r	ln(e^x) - x	0
+-r	asin(sin(x)) - x	asin(sin(x)) - x
+-r	assume(x > 0); assume(y > 0); ln(x*y) - ln(x) - ln(y)	true|true|0
+-r	assume(x > 0); sqrt(x^2) - x	true|0
+-r	sqrt(x^2) - abs(x)	0
+	roots = 3 myf(n) := n^2; myf(10)	myf(n) := n^2|100
+	digits = 40 sq(t) := t^2; sq(7)	sq(t) := t^2|49
+	verbose off, cube(n) := n^3; cube(3)	cube(n) := n^3|27
+	x = 1; roots = 3 myf(n) := if(n <= 1, 1, n*myf(n - 1)); myf(10)	x = 1|myf(n) := if(n <= 1, 1, n*myf(n - 1))|3628800
+	verbose; dsolve(y' = x*e^y, y, x)	step: the input is read as dsolve(y' = x*e^y, y, x)|step: a differential equation of order 1 for y(x), not linear|step:   solved for the derivative: y' = x*e^y|step:     separable, y' = f(x) g(y): the integral of dy/g(y) is the integral of f(x) dx, plus a constant|step:     integral of e^(-y) dy = -e^(-y) (a known integral)|step:     its derivative is e^(-y) again (checked): the integral is -e^(-y)|step:     integral of x dx = x^2/2 (a known integral)|step:     its derivative is x again (checked): the integral is x^2/2|step:   y = -ln(C1 - x^2/2) is put into the equation and tried at points of the real line|y = -ln(C1 - x^2/2)
+	verbose; dsolve(y' = (x + y)/x, y, x)	step: the input is read as dsolve(y' = (x + y)/x, y, x)|step: a differential equation of order 1 for y(x), linear: the right side is 1|step:   linear of order 1: y' + p y = q with p = -1/x, q = 1; times the factor e^(integral of p) the left side is the derivative of that factor times y|step:     integral of -1/x dx: the factor -1 without x stands in front|step:       integral of 1/x dx = ln(x) (a known integral)|step:     its derivative is -1/x again (checked): the integral is -ln(x)|step:     the factor is 1/x|step:     integral of 1/x dx = ln(x) (a known integral)|step:     its derivative is 1/x again (checked): the integral is ln(x)|step:   y = x*(C1 + ln(x)) is put into the equation and tried at points of the real line|y = x*(C1 + ln(x))

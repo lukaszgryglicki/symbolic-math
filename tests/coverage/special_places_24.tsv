@@ -307,7 +307,7 @@
 -e	ecc2flat(10^20)	1 - 3i*sqrt(1111111111111111111111111111111111111111)
 -e	ecc2flat(10^(-20))	1 - 3sqrt(1111111111111111111111111111111111111111)/100000000000000000000
 -e	ecc2flat(x)	1 - sqrt(1 - x^2)
--e	ecc2flat([])	1 - sqrt(1 - ([])^2)
+-e	ecc2flat([])	[]
 -e	ecc2flat([1, 2])	1 - i*sqrt(3)
 -e	ecc2flat("text")	1 - sqrt(1 - "text"^2)
 -e	ecc2flat(true)	1 - sqrt(1 - (true)^2)
@@ -325,8 +325,8 @@
 -e	flat2ecc(10^20)	10000000000i*sqrt(99999999999999999998)
 -e	flat2ecc(10^(-20))	sqrt(199999999999999999999)/100000000000000000000
 -e	flat2ecc(x)	sqrt(2x - x^2)
--e	flat2ecc([])	sqrt(2*[] - ([])^2)
--e	flat2ecc([1, 2])	sqrt(2*[1, 2] - ([1, 2])^2)
+-e	flat2ecc([])	[]
+-e	flat2ecc([1, 2])	[1, 0]
 -e	flat2ecc("text")	sqrt(2*"text" - "text"^2)
 -e	flat2ecc(true)	sqrt(2true - (true)^2)
 -e	flat2ecc(-7/3)	i*sqrt(91)/3
@@ -343,7 +343,7 @@
 -e	ecc2n(10^20)	(1 - 3i*sqrt(1111111111111111111111111111111111111111))/(1 + 3i*sqrt(1111111111111111111111111111111111111111))
 -e	ecc2n(10^(-20))	19999999999999999999999999999999999999999 - 600000000000000000000sqrt(1111111111111111111111111111111111111111)
 -e	ecc2n(x)	2/x^2 - 2sqrt(1 - x^2)/x^2 - 1
--e	ecc2n([])	(1 - sqrt(1 - ([])^2))/(1 + sqrt(1 - ([])^2))
+-e	ecc2n([])	[]
 -e	ecc2n([1, 2])	-1/2 - i*sqrt(3)/2
 -e	ecc2n("text")	2/"text"^2 - 2sqrt(1 - "text"^2)/"text"^2 - 1
 -e	ecc2n(true)	(1 - sqrt(1 - (true)^2))/(1 + sqrt(1 - (true)^2))
@@ -361,8 +361,8 @@
 -e	n2ecc(10^20)	20000000000/100000000000000000001
 -e	n2ecc(10^(-20))	20000000000/100000000000000000001
 -e	n2ecc(x)	2sqrt(x)/(x + 1)
--e	n2ecc([])	2sqrt([])/(1 + [])
--e	n2ecc([1, 2])	2sqrt([1, 2])/(1 + [1, 2])
+-e	n2ecc([])	[]
+-e	n2ecc([1, 2])	[1, 2sqrt(2)/3]
 -e	n2ecc("text")	2sqrt("text")/("text" + 1)
 -e	n2ecc(true)	2sqrt(true)/(1 + true)
 -e	n2ecc(-7/3)	-i*sqrt(21)/2

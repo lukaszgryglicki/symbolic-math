@@ -681,6 +681,12 @@ impl Ode {
     }
 
     fn first_order(&mut self, f: &Expr) -> Result<Vec<Solution>, String> {
+        // (the kinds of equations are tried one after the other, and the steps of a kind
+        // that it is not are taken back: that needs the steps to be kept until the end)
+        crate::trace::whole(|| self.first_order_kinds(f))
+    }
+
+    fn first_order_kinds(&mut self, f: &Expr) -> Result<Vec<Solution>, String> {
         let d1 = marker(1);
         let solved = {
             // (the steps of solving for the derivative are not told: what it gives is)

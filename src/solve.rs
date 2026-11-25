@@ -142,6 +142,9 @@ struct Solver {
     used: BTreeSet<String>,
     notes: Vec<String>,
     depth: u32,
+    /// The equation as a whole: what a root must make zero to be listed (a numerator, a
+    /// factor, the equation of a substitution are solved on the way).
+    whole: Option<Expr>,
 }
 
 type Roots = Result<Vec<Root>, String>;
@@ -275,6 +278,17 @@ impl Solver {
     fn solve_poly(&mut self, mut cs: Vec<Expr>) -> Roots {
         while cs.last().is_some_and(simplify::is_zero) {
             cs.pop();
+        }
+        // (a list of thousands of roots is no answer, and the work for it grows with the
+        // square of their count: minutes from the degree 1000 on. The root 0 of x^2000 =
+        // x^1999 is no work.)
+        let lowest = cs.iter().take_while(|c| simplify::is_zero(c)).count();
+        let degree = cs.len().saturating_sub(1 + lowest);
+        if degree > POLYNOMIAL {
+            return Err(format!(
+                "the equation is a polynomial of the degree {degree} in {}: polynomials are solved up to the degree {POLYNOMIAL}",
+                self.var
+            ));
         }
         let mut out = Vec::new();
         let low = cs.iter().take_while(|c| simplify::is_zero(c)).count();
@@ -854,6 +868,19 @@ impl Solver {
             return Ok(out);
         }
         if kinds.contains(&"trig") {
+            // high powers of a sine or a cosine beside the unknown itself, as (cos(x) - x)^300
+            // has them: with e^(i x) for them the equation is a polynomial in x and e^(i x)
+            // of tens of thousands of terms, which no method here solves, and the products on
+            // the way to it take all the memory that there is
+            let steep = kinds.contains(&"x")
+                && gens.convert(f).is_some_and(|(num, _)| {
+                    xk.iter()
+                        .zip(&kinds)
+                        .any(|(at, kind)| *kind == "trig" && num.deg(*at) > 32)
+                });
+            if steep {
+                return self.numeric(f);
+            }
             let g = rewrite_exp(f);
             if g != *f {
                 let numerator = ratsimp::fraction(&g).0;
@@ -1020,7 +1047,11 @@ impl Solver {
             let want = want as usize;
             let reach = want as i64 + 2;
             let mut branches: Vec<(rug::Float, i64, Expr)> = Vec::new();
-            for k in -reach..=reach {
+            let mut values: Vec<Complex> = Vec::new();
+            // (the main branch first: where two of them meet, its name is the one that stays)
+            let mut order: Vec<i64> = (-reach..=reach).collect();
+            order.sort_by_key(|k| (k.unsigned_abs(), *k));
+            for k in order {
                 let branch = if k == 0 {
                     w(c.clone())
                 } else {
@@ -1030,8 +1061,14 @@ impl Solver {
                 let Ok(value) = numeric::evalf(&root, 64) else {
                     continue;
                 };
-                if value.real().is_finite() && value.imag().is_finite() {
+                // (two branches that meet, as the two real ones do at -1/e, give one solution)
+                let met = values.iter().any(|v: &Complex| {
+                    let gap = rug::Float::with_val(64, Complex::with_val(64, v - &value).abs_ref());
+                    gap <= rug::Float::with_val(64, value.abs_ref()) >> 40u32
+                });
+                if value.real().is_finite() && value.imag().is_finite() && !met {
                     branches.push((rug::Float::with_val(64, value.abs_ref()), k, root));
+                    values.push(value);
                 }
             }
             branches.sort_by(|a, b| {
@@ -1113,10 +1150,48 @@ impl Solver {
                 }
             )
         });
-        let places: Vec<(Complex, u32)> = simple
-            .iter()
-            .filter_map(|(c, times)| Some((numeric::evalf(c, 1024).ok()?, *times)))
-            .collect();
+        // every real root counts where the ends of an inequality or the poles of an
+        // integrand are looked for: then the search is along the real line
+        let thorough = match crate::settings::solving() {
+            crate::settings::Solving::Thorough(range) => Some(range),
+            _ => None,
+        };
+        let real = thorough.is_some() || assume::is_real_sym(&self.var);
+        // what is known of the unknown: a root that is no such number is not one that is
+        // looked for (where every real root counts, each of them is)
+        let facts = match thorough {
+            Some(_) => assume::Facts::default(),
+            None => assume::get(&self.var),
+        };
+        let fits = fitting(real, facts);
+        let side = if facts.positive || facts.nonnegative {
+            Some(std::cmp::Ordering::Greater)
+        } else if facts.negative {
+            Some(std::cmp::Ordering::Less)
+        } else {
+            None
+        };
+        // where they are; and which of them will be listed (they count among the roots that
+        // are asked for) and which will not: the equation as a whole has no value there, as
+        // sin(x)/x = 1/2 has none at 0, or the unknown is no such number
+        let mut places: Vec<(Complex, u32)> = Vec::new();
+        let (mut counted, mut uncounted): (Vec<Complex>, Vec<Complex>) = (Vec::new(), Vec::new());
+        for (c, times) in &simple {
+            let Ok(at) = numeric::evalf(c, 1024) else {
+                continue;
+            };
+            let listed = fits(&at)
+                && self
+                    .whole
+                    .as_ref()
+                    .is_none_or(|whole| verify(whole, &self.var, &exact(c.clone()), &self.params));
+            if listed {
+                counted.push(at.clone());
+            } else {
+                uncounted.push(at.clone());
+            }
+            places.push((at, *times));
+        }
         // (far away nothing is looked for, and gamma or zeta cost much there)
         let near = |z: &Complex| {
             let size = rug::Float::with_val(64, z.abs_ref());
@@ -1148,7 +1223,15 @@ impl Solver {
             }
             let mut env = Env::new();
             env.insert(key.clone(), z.clone());
-            without(z, numeric::evalf_env(f, z.prec().0, &env).ok()?)
+            let (value, under) = numeric::underflowed(|| numeric::evalf_env(f, z.prec().0, &env));
+            let value = value.ok()?;
+            // (a 0 that is none: the function is too small there for the exponents of the
+            // numbers that are kept, as a Bessel function of the order 2^63 is everywhere
+            // near 0. That is no root.)
+            if under && value.is_zero() {
+                return None;
+            }
+            without(z, value)
         };
         // the function as the lattice of a search looks at it. A sum of exponentials, as the
         // one that sines and cosines were written with, may rise so steeply to one side that
@@ -1200,12 +1283,14 @@ impl Solver {
         let mut found: Vec<Complex> = Vec::new();
         // roots = N: the N nearest to 0 are looked for on a lattice, not from these points;
         // so are 8 of an equation of elementary functions that was asked for no count (in the
-        // plane as far as 64 from 0, on the real line beyond)
+        // plane as far as 64 from 0, on the real line beyond); and so is every real root
+        // where each of them counts
         let asked = crate::settings::roots();
-        let lattice = match asked {
-            Some(want) => Some((want as usize, f64::INFINITY)),
-            None if elementary(f) && f.size() <= 64 => Some((8, 64.0)),
-            None => None,
+        let lattice = match (asked, thorough) {
+            (Some(want), _) => Some((want as usize, f64::INFINITY)),
+            (None, Some(_)) => Some((EVERY, 0.0)),
+            (None, None) if elementary(f) && f.size() <= 64 => Some((8, 64.0)),
+            (None, None) => None,
         };
         if asked.is_none() && lattice.is_none() && elementary(f) {
             trace::detail(|| {
@@ -1217,18 +1302,26 @@ impl Solver {
         }
         let mut searched = None;
         if let Some((want, plane)) = lattice {
-            let known: Vec<Complex> = places.iter().map(|(at, _)| at.clone()).collect();
-            let real = assume::is_real_sym(&self.var);
-            let search = crate::rootsearch::nearest(
-                &mut { eval },
-                &mut sized,
-                want,
-                digits,
-                real,
-                &known,
-                plane,
-                asked.is_some(),
-            );
+            let search = match thorough.flatten() {
+                Some(range) => {
+                    let known: Vec<Complex> = places.iter().map(|(at, _)| at.clone()).collect();
+                    crate::rootsearch::between(&mut { eval }, &mut sized, range, digits, &known)
+                }
+                None => crate::rootsearch::nearest(
+                    &mut { eval },
+                    &mut sized,
+                    &crate::rootsearch::Ask {
+                        want,
+                        digits,
+                        real,
+                        known: &counted,
+                        others: &uncounted,
+                        plane,
+                        asked: asked.is_some(),
+                        fits: crate::rootsearch::Fits { side, test: &fits },
+                    },
+                ),
+            };
             found = search.roots;
             searched = Some((want, search.radius, search.stopped));
             if found.is_empty() && places.is_empty() {
@@ -1262,25 +1355,15 @@ impl Solver {
                 break;
             }
             let start = Complex::with_val(64, (re + 0.013, im));
-            let Some(mut z) = numroots::find_root(&mut { eval }, &start, digits) else {
+            let Some(z) = numroots::find_root(&mut { eval }, &start, digits) else {
                 trace::detail(|| format!("from {}: no root", trace::number(&start)));
                 continue;
             };
-            let scale = rug::Float::with_val(64, z.abs_ref()) + 1u32;
-            let noise = rug::Float::with_val(64, &scale >> (numeric::bits_for(digits) - 8));
-            if rug::Float::with_val(64, z.imag().abs_ref()) < noise {
-                z = Complex::with_val(z.prec(), z.real());
-            } else if rug::Float::with_val(64, z.real().abs_ref()) < noise {
-                z = Complex::with_val(z.prec(), (0, z.imag()));
-            }
+            let z = crate::rootsearch::settled(z, digits);
             let known = found
                 .iter()
                 .chain(places.iter().map(|(at, _)| at))
-                .any(|w| {
-                    let d = Complex::with_val(64, &z - w);
-                    rug::Float::with_val(64, d.abs_ref())
-                        < rug::Float::with_val(64, &scale >> 40u32)
-                });
+                .any(|w| crate::rootsearch::same(&z, w));
             trace::detail(|| {
                 format!(
                     "from {}: {}{}",
@@ -1298,6 +1381,12 @@ impl Solver {
             // (what the fixed points found is no count of the roots of a square)
             searched = None;
         }
+        if thorough.is_some() {
+            found.retain(|z| z.imag().is_zero());
+        }
+        // 0 is a root when the equation says so (then it is among the simple numbers), not
+        // when its terms are too small for the bits of a search
+        found.retain(|z| !z.is_zero());
         trace::step(|| {
             format!(
                 "{} found by the search{}",
@@ -1377,17 +1466,22 @@ impl Solver {
             );
         }
         match searched {
+            // every real root: none is left out, and it is told when there are more
+            Some((want, _, stopped)) if !stretches && thorough.is_some() => {
+                self.note("numeric search: the roots found are listed, there may be others");
+                if stopped || (thorough == Some(None) && found.len() + counted.len() >= want) {
+                    self.note(UNFINISHED);
+                }
+            }
             // (of examples no count is told)
             Some((want, radius, stopped)) if !stretches => {
-                // the nearest to 0 of all that were found, the simple numbers among them
+                // the nearest to 0 of all that were found, the simple numbers that will be
+                // listed among them
                 let size = |z: &Complex| rug::Float::with_val(64, z.abs_ref());
-                let mut sizes: Vec<rug::Float> = found
-                    .iter()
-                    .map(size)
-                    .chain(places.iter().map(|(at, _)| size(at)))
-                    .collect();
+                let mut sizes: Vec<rug::Float> = found.iter().chain(&counted).map(size).collect();
                 sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
                 let total = sizes.len();
+                let mut listed = total;
                 if total > want {
                     let most = sizes[want - 1].clone();
                     found.retain(|z| size(z) <= most);
@@ -1395,13 +1489,13 @@ impl Solver {
                     let mut kept = keep.iter();
                     simple.retain(|_| *kept.next().unwrap_or(&true));
                     // (roots of one size, as a number and its conjugate, stay together)
+                    listed = found.len() + counted.iter().filter(|z| size(z) <= most).count();
                 }
-                let listed = found.len() + simple.len();
                 self.note(&if asked.is_none() {
                     "numeric search: the roots found are listed, there may be others".to_string()
                 } else if stopped {
                     format!(
-                        "numeric search (roots = {want}): the search was stopped at its limit of time; {listed} roots found until then are listed, there may be others"
+                        "numeric search (roots = {want}): the search was stopped at its limit; {listed} roots found until then are listed, there may be others"
                     )
                 } else if total >= want && listed == 1 {
                     format!(
@@ -1543,6 +1637,36 @@ fn middle_of_exponents(f: &Expr, var: &str) -> Option<(f64, f64)> {
 /// An expression of elementary functions alone: sums, products, powers, logarithms,
 /// trigonometric and hyperbolic functions and their inverses. They cost little at a point and
 /// have a derivative nearly everywhere.
+/// Whether a number is one that the unknown may be: real among the real numbers, of the sign
+/// that is known of it, whole where it is known to be.
+fn fitting(real: bool, facts: assume::Facts) -> impl Fn(&Complex) -> bool {
+    move |z: &Complex| {
+        let sign = z.real().cmp0().unwrap_or(std::cmp::Ordering::Equal);
+        let whole = || {
+            let off = rug::Float::with_val(64, z.real() - z.real().clone().round());
+            z.imag().is_zero() && off.abs() < 1e-20
+        };
+        !((real || facts.real) && !z.imag().is_zero())
+            && !(facts.positive && sign != std::cmp::Ordering::Greater)
+            && !(facts.negative && sign != std::cmp::Ordering::Less)
+            && !(facts.nonnegative && sign == std::cmp::Ordering::Less)
+            && !(facts.nonzero && z.is_zero())
+            && !(facts.integer && !whole())
+    }
+}
+
+/// The highest degree of a polynomial whose roots are looked for.
+const POLYNOMIAL: usize = 1000;
+
+/// How many real roots a search goes on for where every real root counts and no interval
+/// bounds them.
+const EVERY: usize = 64;
+
+/// The note of a search for every real root that did not come to the last of them: there are
+/// more than it goes on for, or no lattice in its reach showed the same ones twice.
+pub const UNFINISHED: &str =
+    "not every real root was found: the numeric search did not come to the last of them";
+
 fn elementary(e: &Expr) -> bool {
     !e.any(&|x| {
         matches!(x, Expr::Fn(n, _) if !matches!(
@@ -1566,7 +1690,9 @@ fn together(roots: Vec<Root>, params: &[String]) -> Vec<Root> {
         let env = Env::new();
         if let (Some(x), Some(y)) = (approx_value(&a.value, &env), approx_value(&b.value, &env)) {
             let gap = rug::Float::with_val(64, Complex::with_val(128, &x - &y).abs_ref());
-            if gap > (rug::Float::with_val(64, x.abs_ref()) + 1u32) >> 60u32 {
+            let scale =
+                rug::Float::with_val(64, x.abs_ref()).max(&rug::Float::with_val(64, y.abs_ref()));
+            if gap > scale >> 60u32 {
                 return false;
             }
         }
@@ -1879,6 +2005,29 @@ fn verify(f: &Expr, var: &str, root: &Root, params: &[String]) -> bool {
     checked && !unsound()
 }
 
+/// The inverse cotangent is written atan(1/u), which has no value where u is 0; acot(0) is
+/// pi/2 all the same. The equation with pi/2 for each atan(1/u) whose u the root makes 0:
+/// `None` when it has none.
+fn acot_at_zero(f: &Expr, var: &str, root: &Root) -> Option<Expr> {
+    if root.approx || !root.value.is_const() {
+        return None;
+    }
+    let x = Expr::sym(var);
+    let mut found = false;
+    let g = crate::canon::map_bottom_up(f, &mut |e| {
+        if let Some(Expr::Pow(u, k)) = e.fn_arg("atan")
+            && k.is_minus_one()
+            && u.has_sym(var)
+            && simplify::is_zero(&subst(u, &x, &root.value))
+        {
+            found = true;
+            return div(Expr::pi(), Expr::int(2));
+        }
+        e
+    });
+    found.then_some(g)
+}
+
 /// Whether `f` gets smaller towards the point, as it does at a root of any order: its sizes at
 /// two distances from the point. `None` when it has no values there.
 fn shrinks(f: &Expr, var: &str, at: &Complex) -> Option<bool> {
@@ -2034,6 +2183,7 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         used,
         notes: Vec::new(),
         depth: 0,
+        whole: Some(f.clone()),
     };
     let (num, den) = ratsimp::fraction(&f);
     let target = if num.has_sym(var) {
@@ -2108,6 +2258,8 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         }
     }
     let mut roots: Vec<Root> = Vec::new();
+    // (the values of the roots that are numbers)
+    let mut values: Vec<Option<Complex>> = Vec::new();
     for (at, mut r) in candidates.into_iter().enumerate() {
         if r.value.is_infinite() || r.value.any(&|x| x.is_infinite()) {
             continue;
@@ -2119,6 +2271,7 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         // denominator has none there)
         if !verify(&f, var, &r, &solver.params)
             && !(at >= own && verify(given, var, &r, &solver.params))
+            && !acot_at_zero(&f, var, &r).is_some_and(|g| verify(&g, var, &r, &solver.params))
         {
             trace::step(|| {
                 format!(
@@ -2128,11 +2281,34 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
             });
             continue;
         }
-        // two families that hold the same numbers are one
+        // two families that hold the same numbers are one. (Numbers that lie clearly apart
+        // are told so by their values: to compare the hundreds of branches of Lambert's W
+        // pair by pair as expressions takes minutes.)
+        let value = r
+            .value
+            .is_const()
+            .then(|| approx_value(&r.value, &Env::new()))
+            .flatten();
+        let apart = |other: &Option<Complex>| match (other, &value) {
+            (Some(x), Some(y)) => {
+                let gap = rug::Float::with_val(64, Complex::with_val(128, x - y).abs_ref());
+                let scale = rug::Float::with_val(64, x.abs_ref())
+                    .max(&rug::Float::with_val(64, y.abs_ref()));
+                gap > scale >> 40u32
+            }
+            _ => false,
+        };
         let same = |o: &Root| same_root(o, &r) || same_family(&o.value, &r.value, &solver.params);
-        match roots.iter_mut().find(|o| same(o)) {
-            Some(o) => o.mult = o.mult.max(r.mult),
-            None => roots.push(r),
+        let old = roots
+            .iter()
+            .zip(&values)
+            .position(|(o, v)| !apart(v) && same(o));
+        match old {
+            Some(at) => roots[at].mult = roots[at].mult.max(r.mult),
+            None => {
+                roots.push(r);
+                values.push(value);
+            }
         }
     }
     // a family whose numbers all stand in another one is not listed
@@ -2157,7 +2333,7 @@ pub fn solve(given: &Expr, var: &str) -> Result<Solved, String> {
         n => format!("{n} solutions hold in the equation as it was given"),
     });
     if let Some(want) = crate::settings::roots() {
-        nearest_of_all(&mut kept, &mut solver.notes, want as usize);
+        nearest_of_all(&mut kept, &mut solver.notes, want as usize, var);
     }
     Ok(finish(kept, solver))
 }
@@ -2223,38 +2399,58 @@ fn restrict(
 /// `roots = N` for an equation as a whole: where several searches were made, one for each
 /// factor of a product, each listed its N nearest roots; of them all, and of the exact
 /// numbers beside them, the N nearest to 0 stay (families with a whole number in them stay
-/// as they are), and one note tells how many are listed.
-fn nearest_of_all(roots: &mut Vec<Root>, notes: &mut Vec<String>, want: usize) {
+/// as they are), and one note tells how many are listed. (A number that the unknown may not
+/// be, as i among the real numbers, will not be listed: it does not count.)
+fn nearest_of_all(roots: &mut Vec<Root>, notes: &mut Vec<String>, want: usize, var: &str) {
     const SEARCH: &str = "numeric search (roots = ";
+    const LAMBERT: &str = "Lambert W (roots = ";
     let searches = notes.iter().filter(|n| n.starts_with(SEARCH)).count();
-    if searches == 0 {
+    let lamberts = notes.iter().filter(|n| n.starts_with(LAMBERT)).count();
+    if searches + lamberts == 0 {
         return;
     }
+    let fits = fitting(assume::is_real_sym(var), assume::get(var));
     let size = |r: &Root| -> Option<rug::Float> {
         numeric::evalf(&r.value, 64)
             .ok()
+            .filter(|z| fits(z))
             .map(|z| rug::Float::with_val(64, z.abs_ref()))
     };
-    let mut sizes: Vec<rug::Float> = roots.iter().filter_map(size).collect();
+    let known: Vec<Option<rug::Float>> = roots.iter().map(size).collect();
+    let mut sizes: Vec<rug::Float> = known.iter().flatten().cloned().collect();
     sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let before = sizes.len();
+    let mut listed = before;
     if before > want {
         // (roots of one size, as a number and its conjugate, stay together)
         let most = rug::Float::with_val(64, &sizes[want - 1] * (1.0 + 1e-15));
-        roots.retain(|r| size(r).is_none_or(|s| s <= most));
+        let mut sized = known.iter();
+        roots.retain(|_| {
+            sized
+                .next()
+                .is_none_or(|s| s.as_ref().is_none_or(|s| *s <= most))
+        });
+        listed = sizes.iter().filter(|s| **s <= most).count();
     }
-    let listed = roots.iter().filter(|r| size(r).is_some()).count();
-    if listed == before && searches == 1 {
+    if listed == before && searches + lamberts == 1 {
         return;
     }
-    // (what a search said of itself no longer holds for the whole)
+    // (what a search, or the function W for one factor, said of itself no longer holds for
+    // the whole)
     let stopped = notes
         .iter()
         .any(|n| n.starts_with(SEARCH) && n.contains("was stopped"));
-    notes.retain(|n| !n.starts_with(SEARCH));
-    notes.push(if stopped {
+    notes.retain(|n| !n.starts_with(SEARCH) && !n.starts_with(LAMBERT));
+    let others = "lambertw(k, z) with other integers k gives the others";
+    notes.push(if searches == 0 && listed == 1 {
+        format!("Lambert W (roots = {want}): the solution nearest to 0 is listed; {others}")
+    } else if searches == 0 {
         format!(
-            "numeric search (roots = {want}): a search was stopped at its limit of time; {listed} roots found until then are listed, there may be others"
+            "Lambert W (roots = {want}): the {listed} solutions nearest to 0 are listed; {others}"
+        )
+    } else if stopped {
+        format!(
+            "numeric search (roots = {want}): a search was stopped at its limit; {listed} roots found until then are listed, there may be others"
         )
     } else if listed == 1 {
         format!(
@@ -2269,6 +2465,9 @@ fn nearest_of_all(roots: &mut Vec<Root>, notes: &mut Vec<String>, want: usize) {
             "numeric search (roots = {want}): only {listed} roots were found, there may be others"
         )
     });
+    if searches > 0 && lamberts > 0 {
+        notes.push(format!("Lambert W: {others}"));
+    }
 }
 
 fn finish(mut roots: Vec<Root>, mut solver: Solver) -> Solved {
@@ -2356,6 +2555,7 @@ pub fn common(eqs: &[Expr], var: &str) -> Result<Solved, String> {
             used,
             notes: solved.notes.clone(),
             depth: 0,
+            whole: None,
         };
         let mut roots = solved.roots;
         for (other, g) in normal.iter().enumerate() {
@@ -2394,9 +2594,12 @@ fn same_root(a: &Root, b: &Root) -> bool {
         let env = Env::new();
         return match (approx_value(&a.value, &env), approx_value(&b.value, &env)) {
             (Some(x), Some(y)) => {
-                let d = Complex::with_val(128, &x - &y);
-                let scale = rug::Float::with_val(64, x.abs_ref()) + 1u32;
-                rug::Float::with_val(64, d.abs_ref()) < scale >> 60u32
+                // (next to their own size: a root next to 0 is not 0, and two of them there
+                // are two)
+                let d = rug::Float::with_val(64, Complex::with_val(128, &x - &y).abs_ref());
+                let scale = rug::Float::with_val(64, x.abs_ref())
+                    .max(&rug::Float::with_val(64, y.abs_ref()));
+                d.is_zero() || d < scale >> 60u32
             }
             _ => false,
         };

@@ -525,8 +525,17 @@ pub fn reduce(p: &Poly, basis: &[Poly]) -> Poly {
     let mut p = p.clone();
     let mut r = Poly::zero(p.n);
     'outer: while let Some((pm, pc)) = p.lead().map(|(m, c)| (m.clone(), c.clone())) {
+        // (where the coefficients grow a reduction may take longer than a search has: at
+        // the end of its time what is left stays as it is, which is in the same class)
+        if crate::budget::expired() {
+            r.t.extend(p.t);
+            return r;
+        }
         for g in basis {
-            let (gm, gc) = g.lead().unwrap();
+            // (by a polynomial that is zero nothing is reduced)
+            let Some((gm, gc)) = g.lead() else {
+                continue;
+            };
             if divides(gm, &pm) {
                 let m: Mono = pm.iter().zip(gm).map(|(a, b)| a - b).collect();
                 p = p.sub(&Poly::term(p.n, m, (&pc / gc).complete()).mul(g));

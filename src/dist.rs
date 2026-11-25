@@ -580,7 +580,19 @@ impl Bound<'_> {
         if at_end(1) {
             return Ok(hi);
         }
-        let target = numeric::real_value(q, digits + 5)
+        // how far out in a tail the probability lies: the digits of the smaller one of q and
+        // 1 - q that are zeros (1 - 10^-100 is no 1, though it rounds to it)
+        let out = |v: &Expr| {
+            numeric::real_value(v, 30)
+                .filter(|v| *v > 0u32 && v.is_finite())
+                .map(|v| -Float::with_val(64, v.log10_ref()).to_f64())
+        };
+        let complement = simplify(&sub(Expr::one(), q.clone()));
+        let (Some(below), Some(above)) = (out(q), out(&complement)) else {
+            return Err("quantile(dist, q): q must be a number from 0 to 1".into());
+        };
+        let tail = below.max(above).clamp(0.0, 1e6).ceil() as u32;
+        let target = numeric::real_value(q, digits + 5 + tail)
             .filter(|v| *v > 0u32 && *v < 1u32)
             .ok_or("quantile(dist, q): q must be a number from 0 to 1")?;
         if self.dist.discrete {
@@ -687,6 +699,58 @@ impl Bound<'_> {
             }
             return Ok(Expr::int(high));
         }
+        // The place by halving, with the distribution function worked out to more and more
+        // digits until two places in a row agree: far out in a tail (and next to the middle
+        // of an even distribution) the function has fewer digits than the place needs.
+        // (with as many digits more from the start as the tail has zeros: fewer do not even
+        // tell which side of the probability a place is on)
+        let most = 64 + 4 * (digits + tail);
+        let least = Float::with_val(64, Float::i_pow_u(10, digits + 2)).recip();
+        let mut before: Option<Float> = None;
+        let (mut more, mut step) = (tail, 16);
+        loop {
+            numeric::set_digits(digits + more);
+            let found = self.place(q, &lo, &hi, digits + more, before.as_ref());
+            numeric::set_digits(digits);
+            let Some(place) = found? else {
+                return Ok(Expr::zero());
+            };
+            let same = before.as_ref().is_some_and(|old| {
+                Float::with_val(64, &place - old).abs()
+                    <= Float::with_val(64, place.abs_ref()) * &least
+            });
+            if same {
+                return Ok(numeric::to_float_expr(
+                    rug::Complex::with_val(bits, place),
+                    digits,
+                ));
+            }
+            if more >= most {
+                return Err(
+                    "no quantile found: the distribution function has too few digits there".into(),
+                );
+            }
+            more += step;
+            step *= 2;
+            before = Some(place);
+        }
+    }
+
+    /// The smallest `x` with `cdf(x) >= q` of a continuous distribution between `lo` and
+    /// `hi`, by halving, with numbers of `digits` digits; `near` is the place that fewer
+    /// digits gave. `None`: 0 itself.
+    fn place(
+        &mut self,
+        q: &Expr,
+        lo: &Expr,
+        hi: &Expr,
+        digits: u32,
+        near: Option<&Float>,
+    ) -> Result<Option<Float>, String> {
+        let bits = numeric::bits_for(digits) + 32;
+        let target = numeric::real_value(q, digits + 5)
+            .filter(|v| *v > 0u32 && *v < 1u32)
+            .ok_or("quantile(dist, q): q must be a number from 0 to 1")?;
         let mut at = |x: &Float| -> Result<Float, String> {
             let point = numeric::to_float_expr(rug::Complex::with_val(bits, x), digits + 8);
             let v = self.cdf(&point)?;
@@ -694,48 +758,170 @@ impl Bound<'_> {
                 .ok_or_else(|| "the distribution function has no number here".to_string())
         };
         let finite = |e: &Expr| numeric::real_value(e, 30).map(|v| Float::with_val(bits, v));
-        // a bracket: the ends of the support, or steps that double away from 0
-        let mut a = match finite(&lo) {
-            Some(v) => v,
-            None => {
-                let mut v = Float::with_val(bits, -1);
-                while at(&v)? > target {
-                    v *= 2u32;
-                    if v < -1e300 {
-                        return Err("no quantile found".into());
-                    }
+        let (low, high) = (finite(lo), finite(hi));
+        // 0 itself, where the distribution reaches the probability there as far as its
+        // digits tell (the middle of a distribution that is even, as Student's t): the
+        // halving below would end a hair beside it, at a number made of rounding
+        let inside = |end: &Option<Float>, below: bool| match end {
+            Some(v) => (*v < 0u32) == below && !v.is_zero(),
+            None => true,
+        };
+        if inside(&low, true)
+            && inside(&high, false)
+            && let Ok(middle) = at(&Float::new(bits))
+        {
+            let off = Float::with_val(bits, &middle - &target).abs();
+            let share = Float::with_val(bits, Float::i_pow_u(10, digits + 3)).recip();
+            if off <= Float::with_val(bits, &target * share) {
+                return Ok(None);
+            }
+        }
+        // A bracket with the distribution function less the probability at both ends: around
+        // the place that fewer digits gave, where there is one
+        let off = |v: Float| Float::with_val(bits, v - &target);
+        let mut ends: Option<[Float; 4]> = None;
+        if let Some(old) = near.filter(|old| !old.is_zero()) {
+            let size = Float::with_val(bits, old.abs_ref());
+            let mut step = Float::with_val(bits, &size >> 40u32);
+            for _ in 0..6 {
+                let mut a = Float::with_val(bits, old - &step);
+                let mut b = Float::with_val(bits, old + &step);
+                if let Some(end) = &low {
+                    a = a.max(end);
                 }
-                v
+                if let Some(end) = &high {
+                    b = b.min(end);
+                }
+                let fa = match low.as_ref() == Some(&a) {
+                    true => Float::with_val(bits, -&target),
+                    false => off(at(&a)?),
+                };
+                let fb = match high.as_ref() == Some(&b) {
+                    true => Float::with_val(bits, 1u32 - Float::with_val(bits, &target)),
+                    false => off(at(&b)?),
+                };
+                if fa < 0u32 && fb >= 0u32 {
+                    ends = Some([a, fa, b, fb]);
+                    break;
+                }
+                step <<= 8u32;
+            }
+        }
+        // (or the ends of the support, or steps away from 0: twice as far each time, and
+        // after some steps the square of it, as a tail like that of Student's t reaches out
+        // to 10^120; the last place on the other side is the other end)
+        let further = |v: Float, doubled: u32| -> Result<Float, String> {
+            let limit = Float::with_val(bits, 1e300);
+            let size = Float::with_val(bits, v.abs_ref());
+            if size >= limit {
+                return Err("no quantile found".into());
+            }
+            let next = match doubled < 8 || size < 2u32 {
+                true => size * 2u32,
+                false => size.square().min(&limit),
+            };
+            Ok(if v.is_sign_negative() { -next } else { next })
+        };
+        let [mut a, mut fa, mut b, mut fb] = match ends {
+            Some(found) => found,
+            None => {
+                let mut above: Option<(Float, Float)> = None;
+                let (mut a, mut fa) = match low {
+                    Some(v) => (v, Float::with_val(bits, -&target)),
+                    None => {
+                        let mut v = Float::with_val(bits, -1);
+                        let mut doubled = 0;
+                        loop {
+                            let f = off(at(&v)?);
+                            if f <= 0u32 {
+                                break (v, f);
+                            }
+                            above = Some((v.clone(), f));
+                            v = further(v, doubled)?;
+                            doubled += 1;
+                        }
+                    }
+                };
+                let (b, fb) = match (above, high) {
+                    (Some(found), _) => found,
+                    (None, Some(v)) => (
+                        v,
+                        Float::with_val(bits, 1u32 - Float::with_val(bits, &target)),
+                    ),
+                    (None, None) => {
+                        let mut v = Float::with_val(bits, &a).abs() + 1u32;
+                        let mut doubled = 0;
+                        loop {
+                            let f = off(at(&v)?);
+                            if f >= 0u32 {
+                                break (v, f);
+                            }
+                            (a, fa) = (v.clone(), f);
+                            v = further(v, doubled)?;
+                            doubled += 1;
+                        }
+                    }
+                };
+                [a, fa, b, fb]
             }
         };
-        let mut b = match finite(&hi) {
-            Some(v) => v,
-            None => {
-                let mut v = Float::with_val(bits, &a).abs() + 1u32;
-                while at(&v)? < target {
-                    v *= 2u32;
-                    if v > 1e300 {
-                        return Err("no quantile found".into());
-                    }
-                }
-                v
-            }
-        };
-        for _ in 0..(bits + 64) {
+        if fa.is_zero() {
+            return Ok(Some(a));
+        }
+        // Between the ends: along the chord (with the value at an end that stays halved, so
+        // that both ends move), and every third step by halving, which alone ends for sure
+        let mut side = 0i8;
+        for step in 1..=3 * (bits + 64) {
             let mid = Float::with_val(bits, &a + &b) / 2u32;
             if mid == a || mid == b {
                 break;
             }
-            if at(&mid)? < target {
-                a = mid;
+            // (the middle of two ends of one sign that are far apart is the root of their
+            // product: the ends of a far tail differ by many powers of ten)
+            let (near, far) =
+                match Float::with_val(64, a.abs_ref()) < Float::with_val(64, b.abs_ref()) {
+                    true => (&a, &b),
+                    false => (&b, &a),
+                };
+            let apart = !near.is_zero()
+                && near.is_sign_negative() == far.is_sign_negative()
+                && Float::with_val(64, far / near) > 4u32;
+            let mut c = match apart {
+                true => {
+                    let root = Float::with_val(bits, &a * &b).sqrt();
+                    match a.is_sign_negative() {
+                        true => -root,
+                        false => root,
+                    }
+                }
+                false => mid,
+            };
+            if step % 3 != 0 && !apart {
+                let width = Float::with_val(bits, &b - &a);
+                let chord = Float::with_val(
+                    bits,
+                    &b - Float::with_val(bits, &fb * width) / Float::with_val(bits, &fb - &fa),
+                );
+                if chord > a && chord < b {
+                    c = chord;
+                }
+            }
+            let fc = off(at(&c)?);
+            if fc < 0u32 {
+                (a, fa) = (c, fc);
+                if side == -1 {
+                    fb /= 2u32;
+                }
+                side = -1;
             } else {
-                b = mid;
+                (b, fb) = (c, fc);
+                if side == 1 {
+                    fa /= 2u32;
+                }
+                side = 1;
             }
         }
-        Ok(numeric::to_float_expr(
-            rug::Complex::with_val(bits, b),
-            digits,
-        ))
+        Ok(Some(b))
     }
 
     fn quantile(&mut self, q: &Expr) -> Res {

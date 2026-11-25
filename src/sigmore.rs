@@ -8,7 +8,7 @@ use crate::expr::Expr;
 use crate::numeric;
 use crate::sigdesign::{
     Res, bits, complexes, count, cx, dec, fft, int, items, lfilter, pi, poly_mul, reals,
-    response_at, shown, shown_c, window, window_of,
+    response_at, shown, shown_c, shown_each, window, window_of,
 };
 use rug::{Complex, Float};
 
@@ -1020,7 +1020,11 @@ impl Session {
                     let mut turns = zero();
                     let mut before: Option<Float> = None;
                     for w in &ws {
-                        let phase = response_at(&b, &den, w).arg().real().clone();
+                        // (a response of 0 has the angle 0, as the angle of 0 is told)
+                        let phase = match crate::sigdesign::vanishes_at(&b, w) {
+                            true => zero(),
+                            false => response_at(&b, &den, w).arg().real().clone(),
+                        };
                         if let Some(old) = &before {
                             let step = Float::with_val(bits(), &phase - old);
                             if step > pi() {
@@ -1278,7 +1282,7 @@ impl Session {
                             of_lattice(&k, &v)
                         }
                     };
-                    shown(&lfilter(&b, &den, &x, None))
+                    shown_each(&lfilter(&b, &den, &x, None))
                 }
                 ("fftfilt", 2) => {
                     let (b, x) = (list(0)?, list(1)?);

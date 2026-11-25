@@ -107,12 +107,104 @@ fn finite(z: Complex, what: &dyn Fn() -> String) -> Result<Complex, NumErr> {
     }
 }
 
+/// The logarithm of a factor of a product, up to whole turns of its angle: of a power the
+/// exponent times that of the base, of the gamma function its own logarithm, of anything
+/// else the logarithm of its value. `None`: it has none (a factor that is 0, or no number).
+fn logarithm_of(e: &Expr, cx: &mut Ctx) -> Option<Complex> {
+    match e {
+        Expr::Mul(factors) => {
+            let mut sum = Complex::new(cx.prec);
+            for f in factors.iter() {
+                sum += logarithm_of(f, cx)?;
+            }
+            Some(sum)
+        }
+        Expr::Pow(b, x) if !b.is_sym("e") => Some(logarithm_of(b, cx)? * eval(x, cx).ok()?),
+        Expr::Pow(_, x) => eval(x, cx).ok(),
+        Expr::Fn(name, args) if matches!(&**name, "gamma" | "factorial") && args.len() == 1 => {
+            let mut at = eval(&args[0], cx).ok()?;
+            if &**name == "factorial" {
+                at += 1u32;
+            }
+            special::log_gamma(&at, cx.prec)?
+        }
+        // (n over k: n!/(k! (n - k)!))
+        Expr::Fn(name, args) if &**name == "binomial" && args.len() == 2 => {
+            let (n, k) = (eval(&args[0], cx).ok()?, eval(&args[1], cx).ok()?);
+            let of = |z: Complex| special::log_gamma(&(z + 1u32), cx.prec);
+            let rest = Complex::with_val(cx.prec, &n - &k);
+            Some(of(n)?? - of(k)?? - of(rest)??)
+        }
+        _ => {
+            let v = eval(e, cx).ok()?;
+            (!v.is_zero()).then(|| cln(v))
+        }
+    }
+}
+
+/// A product by the sum of the logarithms of its factors, with more bits than the product
+/// is asked for (the logarithms are large where the factors are, and their sum is not).
+/// `None`: not this way either.
+fn product_by_logarithms(factors: &[Expr], cx: &mut Ctx) -> Option<Complex> {
+    let mut wide = Ctx {
+        prec: cx.prec + 128,
+        env: cx.env,
+        max_exp: i64::MIN,
+    };
+    let (value, beyond) = underflowed(|| {
+        let mut sum = Complex::new(wide.prec);
+        for f in factors {
+            sum += logarithm_of(f, &mut wide)?;
+        }
+        Some(Complex::with_val(cx.prec, cexp(sum)))
+    });
+    value.filter(|v| !beyond && !v.is_zero() && v.real().is_finite() && v.imag().is_finite())
+}
+
+/// The size of an exponent beyond which `e` to it is no number that is kept: the exponents of
+/// two that the numbers have go to 2^30, and e^745000000 is 2^1074807806.
+const OUT_OF_RANGE: f64 = 7.45e8;
+
+/// `e^z` as a method of a complex number: by `cexp`, not by the library alone.
+pub trait SafeExp {
+    fn cexp(self) -> Complex;
+}
+
+impl SafeExp for Complex {
+    fn cexp(self) -> Complex {
+        cexp(self)
+    }
+}
+
 /// `e^z`. The library works with as many more bits as a part of `z` is smaller than 1, twice
 /// that for the imaginary part, so that a part like 1e-90000 makes it take forever: a part
 /// that is far below the bits at hand takes the first term of its series, which is all that
 /// these bits can hold.
 pub fn cexp(z: Complex) -> Complex {
     let prec = z.prec().0;
+    // a size beyond the exponents of the numbers that are kept: 0, or larger than every
+    // number, as the library would say. It is not asked: where the size comes near the end
+    // of the widest range of exponents that it has (e^z for z = (2^63 - 1) ln((1 + i)/2) is
+    // 2^(-2^62) in size), it does not end
+    if z.real().is_finite() && z.imag().is_finite() {
+        let size = z.real().to_f64();
+        if size < -OUT_OF_RANGE {
+            // SAFETY: sets a flag of MPFR, which belongs to this thread.
+            unsafe { mpfr_set_underflow() };
+            return Complex::new(prec);
+        }
+        if size > OUT_OF_RANGE {
+            // SAFETY: as above.
+            unsafe { mpfr_set_overflow() };
+            let (sin, cos) = Float::with_val(prec, z.imag()).sin_cos(Float::new(prec));
+            let endless = |part: Float| match part.cmp0() {
+                Some(std::cmp::Ordering::Less) => Float::with_val(prec, Special::NegInfinity),
+                Some(std::cmp::Ordering::Greater) => Float::with_val(prec, Special::Infinity),
+                _ => Float::new(prec),
+            };
+            return Complex::with_val(prec, (endless(cos), endless(sin)));
+        }
+    }
     let far_below = |x: &Float| x.get_exp().is_some_and(|e| e < -2 * (prec as i32) - 64);
     let (low_re, low_im) = (far_below(z.real()), far_below(z.imag()));
     if !low_re && !low_im {
@@ -133,6 +225,42 @@ pub fn cexp(z: Complex) -> Complex {
         let (sin, cos) = y.sin_cos(Float::new(prec));
         Complex::with_val(prec, (cos, sin))
     }
+}
+
+/// `a/b`. Where the parts of one of the numbers are further apart than `gap`: times the
+/// conjugate of `b`, over the square of its size. (The library rounds each part of a
+/// quotient as if it stood alone, with as many bits as the parts of the numbers are apart:
+/// where a function has values as 2^(10^9) + i, that takes all the memory.)
+pub fn cdiv(a: &Complex, b: &Complex) -> Complex {
+    let prec = a.prec().0.max(b.prec().0);
+    let apart = |z: &Complex| match (z.real().get_exp(), z.imag().get_exp()) {
+        (Some(re), Some(im)) => (i64::from(re) - i64::from(im)).abs() > gap(prec),
+        _ => false,
+    };
+    if !apart(a) && !apart(b) {
+        return Complex::with_val(prec, a / b);
+    }
+    let turned = Complex::with_val(prec, b.conj_ref());
+    let norm = Float::with_val(prec, b.norm_ref());
+    Complex::with_val(prec, a * &turned) / norm
+}
+
+/// `ln(z)`. Where one part of `z` is smaller than the other by more than all the bits at hand
+/// (a root that is followed towards the real line has such an imaginary part), the library
+/// works with as many bits as the two are apart: there the size of the larger part is the
+/// size of `z`, as far as these bits tell, and the angle is that of the two parts.
+pub fn cln(z: Complex) -> Complex {
+    let prec = z.prec().0;
+    let (Some(re), Some(im)) = (z.real().get_exp(), z.imag().get_exp()) else {
+        return z.ln();
+    };
+    if (i64::from(re) - i64::from(im)).abs() <= 2 * i64::from(prec) + 64 {
+        return z.ln();
+    }
+    let larger = if re > im { z.real() } else { z.imag() };
+    let size = Float::with_val(prec, larger.abs_ref()).ln();
+    let angle = Float::with_val(prec, z.imag().atan2_ref(z.real()));
+    Complex::with_val(prec, (size, angle))
 }
 
 pub fn cpow(x: &Complex, y: &Complex) -> Option<Complex> {
@@ -161,7 +289,7 @@ pub fn cpow(x: &Complex, y: &Complex) -> Option<Complex> {
     }
     // exp(y ln x): the angle needs as many more bits as the exponent has, and an exponent
     // beyond every precision gives no number
-    let rough = Complex::with_val(64, x.ln_ref()) * Complex::with_val(64, y);
+    let rough = cln(Complex::with_val(64, &x)) * Complex::with_val(64, y);
     let extra = Float::with_val(64, rough.abs_ref())
         .get_exp()
         .unwrap_or(0)
@@ -170,7 +298,16 @@ pub fn cpow(x: &Complex, y: &Complex) -> Option<Complex> {
         return None;
     }
     let work = prec + extra + 32;
-    let exponent = Complex::with_val(work, &x).ln() * Complex::with_val(work, y);
+    let exponent = cln(Complex::with_val(work, &x)) * Complex::with_val(work, y);
+    // (a size beyond the exponents of the numbers that are kept: larger than every number, or
+    // 0 as the power of a positive number is then. MPC would look for the digits of the
+    // other part, with as many bits as the two are apart.)
+    let size = exponent.real().to_f64();
+    if size > OUT_OF_RANGE {
+        // SAFETY: sets a flag of MPFR, which belongs to this thread.
+        unsafe { mpfr_set_overflow() };
+        return None;
+    }
     let r = Complex::with_val(prec, cexp(exponent));
     (r.real().is_finite() && r.imag().is_finite()).then(|| unsigned_zero(r))
 }
@@ -259,11 +396,27 @@ fn eval_node(e: &Expr, cx: &mut Ctx) -> Result<Complex, NumErr> {
             Ok(sum)
         }
         Expr::Mul(factors) => {
-            let mut prod = Complex::with_val(p, 1);
-            for f in factors.iter() {
-                prod *= eval(f, cx)?;
+            let (direct, beyond) = underflowed(|| -> Result<Complex, NumErr> {
+                let mut prod = Complex::with_val(p, 1);
+                for f in factors.iter() {
+                    prod *= eval(f, cx)?;
+                }
+                finite(prod, &|| e.to_string())
+            });
+            // factors beyond the exponents of the numbers that are kept, whose product is a
+            // number like any other (the density of a distribution with large parameters is
+            // a power with 10^9 digits over another one): by the sum of their logarithms
+            let lost = match &direct {
+                Ok(v) => v.is_zero(),
+                Err(_) => true,
+            };
+            if beyond
+                && lost
+                && let Some(v) = product_by_logarithms(factors, cx)
+            {
+                return finite(v, &|| e.to_string());
             }
-            finite(prod, &|| e.to_string())
+            direct
         }
         Expr::Pow(b, x) => {
             if b.is_sym("e") {
@@ -549,10 +702,85 @@ pub fn acosh(z: &Complex) -> Complex {
     Complex::with_val(p, (zz + root).ln())
 }
 
+/// How far apart the parts of a number may be, in bits, for the functions of the library:
+/// 2^16 (a part 10^19000 times smaller than the other still has its digits), or twice the
+/// bits of the number where that is more.
+fn gap(prec: u32) -> i64 {
+    (2 * i64::from(prec) + 64).max(1 << 16)
+}
+
+/// A number with one part smaller than the other by more than `gap`, with that part raised
+/// to twice the bits of the number below the other (and on its side of 0). The library
+/// works with as many bits as the parts of a number are apart, millions for
+/// sin(1 + i/10^(10^8)); to the bits at hand the function has the same value here. `None`:
+/// the number is none of these.
+fn levelled(z: &Complex) -> Option<Complex> {
+    let prec = z.prec().0;
+    let (re, im) = (
+        i64::from(z.real().get_exp()?),
+        i64::from(z.imag().get_exp()?),
+    );
+    if (re - im).abs() <= gap(prec) {
+        return None;
+    }
+    let below = 2 * i64::from(prec) + 64;
+    let raised = |small: &Float, large: i64| {
+        let size = Float::with_val(prec, 0.5) << i32::try_from(large - below).unwrap_or(i32::MIN);
+        if small.is_sign_negative() {
+            -size
+        } else {
+            size
+        }
+    };
+    Some(match re > im {
+        true => Complex::with_val(prec, (z.real(), raised(z.imag(), re))),
+        false => Complex::with_val(prec, (raised(z.real(), im), z.imag())),
+    })
+}
+
+/// The value of a function at a number that was `levelled`: a part of it that is smaller
+/// than the other by more than the bits at hand comes from the part that was raised, and is
+/// 0 as far as these bits tell.
+fn settled_parts(v: Complex) -> Complex {
+    let prec = v.prec().0;
+    let (Some(re), Some(im)) = (v.real().get_exp(), v.imag().get_exp()) else {
+        return v;
+    };
+    let apart = i64::from(re) - i64::from(im);
+    if apart.abs() <= i64::from(prec) {
+        return v;
+    }
+    let (re, im) = v.into_real_imag();
+    match apart > 0 {
+        true => Complex::with_val(prec, (re, 0)),
+        false => Complex::with_val(prec, (0, im)),
+    }
+}
+
 /// Outer `None`: unknown function; inner `None`: pole or undefined point.
 fn call(name: &str, a: &[Complex], p: u32) -> Option<Option<Complex>> {
     let real = |x: Float| Complex::with_val(p, x);
     let z = a.first()?;
+    if a.len() == 1
+        && matches!(
+            name,
+            "sin"
+                | "cos"
+                | "tan"
+                | "asin"
+                | "acos"
+                | "atan"
+                | "sinh"
+                | "cosh"
+                | "tanh"
+                | "asinh"
+                | "acosh"
+                | "atanh"
+        )
+        && let Some(near) = levelled(z)
+    {
+        return call(name, &[near], p).map(|v| v.map(settled_parts));
+    }
     let one = match (name, a.len()) {
         ("sin", 1) => z.clone().sin(),
         ("cos", 1) => z.clone().cos(),
@@ -570,7 +798,7 @@ fn call(name: &str, a: &[Complex], p: u32) -> Option<Option<Complex>> {
             if z.is_zero() {
                 return Some(None);
             }
-            z.clone().ln()
+            cln(z.clone())
         }
         ("abs", 1) => z.clone().abs(),
         ("arg", 1) => z.clone().arg(),
@@ -633,10 +861,17 @@ fn judge(hi: &Float, lo: &Float, scale: i64, lo_prec: u32, need: u32) -> Part {
     if hi.is_zero() != lo.is_zero() {
         return Part::Noise;
     }
+    // (no numbers: the same infinity twice has settled, anything else has not)
+    if !hi.is_finite() || !lo.is_finite() {
+        return match hi == lo {
+            true => Part::Stable,
+            false => Part::Unsettled,
+        };
+    }
     let diff = Float::with_val(hi.prec(), hi - lo);
     let d = diff.get_exp().map_or(i64::MIN, i64::from);
     let h = hi.get_exp().map_or(i64::MIN, i64::from);
-    if d <= h - i64::from(need) {
+    if d <= h.saturating_sub(i64::from(need)) {
         Part::Stable
     } else if h.max(lo.get_exp().map_or(i64::MIN, i64::from)) <= scale - i64::from(lo_prec) + 12 {
         Part::Noise
@@ -758,6 +993,38 @@ pub fn evalf_digits(e: &Expr, digits: u32) -> Result<Complex, NumErr> {
     evalf_digits_env(e, digits, None)
 }
 
+/// The value of a function of approximate numbers with `prec` bits, as `evalf` gives it, when
+/// the same value with more bits has the same `digits` digits. Where the two differ, the
+/// bits were not enough for the way the function is calculated (a series whose terms cancel,
+/// a recurrence that loses its digits): then the value that settles with more of them, or
+/// none where none does.
+pub fn evalf_checked(e: &Expr, prec: u32, digits: u32) -> Option<Complex> {
+    let mut cx = Ctx {
+        prec: prec + 64,
+        env: None,
+        max_exp: i64::MIN,
+    };
+    let lo = evalf(e, prec).ok()?;
+    // (what is no number is given as it always was: there is nothing to compare)
+    if !(lo.real().is_finite() && lo.imag().is_finite()) {
+        return Some(lo);
+    }
+    let Ok(hi) = eval(e, &mut cx) else {
+        return Some(lo);
+    };
+    let need = bits_for(digits).min(prec.saturating_sub(8));
+    let parts = [
+        judge(hi.real(), lo.real(), cx.max_exp, prec, need),
+        judge(hi.imag(), lo.imag(), cx.max_exp, prec, need),
+    ];
+    match parts.contains(&Part::Unsettled) {
+        false => Some(lo),
+        true => evalf_digits(e, digits)
+            .ok()
+            .map(|v| Complex::with_val(prec, v)),
+    }
+}
+
 /// Zero test of `e` at the point `env`.
 pub fn is_zero_at(e: &Expr, env: &Env) -> Option<bool> {
     zero_test(e, Some(env)).ok()
@@ -816,6 +1083,41 @@ pub fn to_float_expr(v: Complex, digits: u32) -> Expr {
     Expr::float(Flt { v, digits })
 }
 
+unsafe extern "C" {
+    fn mpfr_clear_underflow();
+    fn mpfr_clear_overflow();
+    fn mpfr_set_underflow();
+    fn mpfr_set_overflow();
+    fn mpfr_underflow_p() -> std::ffi::c_int;
+    fn mpfr_overflow_p() -> std::ffi::c_int;
+}
+
+/// What `f` gives, and whether a number became smaller or larger on the way than the
+/// exponents of the numbers that are kept allow (MPFR makes it 0 or infinite then, and says
+/// so by its flags): 0.99 to the power 2^63 is no 0, and neither is 1 over the gamma function
+/// of 10^10.
+pub fn underflowed<T>(f: impl FnOnce() -> T) -> (T, bool) {
+    // SAFETY: these functions only read and write the flags of MPFR, which belong to this
+    // thread; they take no arguments and have no other effects.
+    let before = unsafe { (mpfr_underflow_p() != 0, mpfr_overflow_p() != 0) };
+    unsafe {
+        mpfr_clear_underflow();
+        mpfr_clear_overflow();
+    }
+    let out = f();
+    let during = unsafe { mpfr_underflow_p() != 0 || mpfr_overflow_p() != 0 };
+    // (what was raised before stays raised: one of these may run inside another)
+    unsafe {
+        if before.0 {
+            mpfr_set_underflow();
+        }
+        if before.1 {
+            mpfr_set_overflow();
+        }
+    }
+    (out, during)
+}
+
 /// Numeric form: constants become approximate numbers, variables stay.
 pub fn n(e: &Expr, digits: u32) -> Expr {
     match e {
@@ -836,10 +1138,14 @@ pub fn n(e: &Expr, digits: u32) -> Expr {
             n(&plain, digits)
         }
         Expr::List(_) | Expr::Rel(..) => rebuild(e, &mut |c| n(c, digits)),
-        _ if e.is_const() && !e.is_infinite() => match evalf_digits(e, digits) {
-            Ok(v) => to_float_expr(v, digits),
-            Err(_) => rebuild(e, &mut |c| n(c, digits)),
-        },
+        _ if e.is_const() && !e.is_infinite() => {
+            match underflowed(|| evalf_digits(e, digits)) {
+                // (a 0 that is none: the number is too small for the exponents that are
+                // kept, and it stays as it is written, as one that is too large does)
+                (Ok(v), under) if !(under && v.is_zero()) => to_float_expr(v, digits),
+                _ => rebuild(e, &mut |c| n(c, digits)),
+            }
+        }
         Expr::Pow(b, x) if x.as_rat().is_some() => pow(n(b, digits), (**x).clone()),
         Expr::Pow(b, x) if b.is_sym("e") => pow(Expr::e(), n(x, digits)),
         Expr::Add(terms) => {
@@ -959,6 +1265,12 @@ pub fn sample_env(vars: &[Rc<str>], trial: u32, prec: u32) -> Env {
 
 /// The functions that are made of pieces: one of them may be zero on a whole stretch of
 /// its values without being zero everywhere.
+/// Functions that take one of several values (a logarithm, an inverse sine): an identity
+/// with them is tried at numbers of many sizes.
+const CUTS: &[&str] = &[
+    "ln", "asin", "acos", "atan", "asinh", "acosh", "atanh", "lambertw",
+];
+
 const PIECES: &[&str] = &[
     "abs",
     "sign",
@@ -1010,11 +1322,21 @@ pub fn is_zero_identity(e: &Expr) -> Option<bool> {
         Expr::Rel(..) | Expr::Bool(_) => true,
         _ => false,
     });
-    if pieces {
+    // functions with several values, of which one is taken: what holds for the numbers next
+    // to 0 need not hold for all of them (asin(sin(x)) is x between -pi/2 and pi/2 only,
+    // ln(e^x) is x where the imaginary part of x is between -pi and pi)
+    let cuts = !pieces
+        && e.any(&|x| match x {
+            Expr::Fn(n, _) => CUTS.contains(&&**n),
+            Expr::Pow(base, power) => !base.is_const() && power.as_int().is_none(),
+            _ => false,
+        });
+    if pieces || cuts {
         // values of many sizes, real ones of both signs among them: every one must agree
         const SIZES: [f64; 8] = [1.0, 0.001, 30.0, 0.25, 1000.0, 0.03, 4.0, 0.5];
+        let (trials, enough) = if pieces { (48u32, 24) } else { (16, 8) };
         let mut hits = 0;
-        for trial in 0..48u32 {
+        for trial in 0..trials {
             let mut env = sample_env(&vars, trial, 512);
             for (name, value) in env.iter_mut() {
                 if assume::is_integer_sym(name) {
@@ -1036,7 +1358,7 @@ pub fn is_zero_identity(e: &Expr) -> Option<bool> {
                 Err(_) => continue,
             }
         }
-        return match hits >= 24 {
+        return match hits >= enough {
             true => Some(true),
             false => None,
         };
@@ -1054,4 +1376,68 @@ pub fn is_zero_identity(e: &Expr) -> Option<bool> {
         }
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_quotient_is_the_one_of_the_library_where_the_parts_are_near() {
+        for prec in [64u32, 96, 170, 300] {
+            let a = Complex::with_val(prec, (1.25, -3.5));
+            let b = Complex::with_val(prec, (0.013, 1e-5));
+            assert_eq!(
+                cdiv(&a, &b),
+                Complex::with_val(prec, &a / &b),
+                "{prec} bits"
+            );
+            let zero = Complex::new(prec);
+            assert!(cdiv(&zero, &b).is_zero());
+        }
+    }
+
+    #[test]
+    fn a_quotient_of_parts_far_apart_takes_no_more_bits_than_it_has() {
+        // 1/(2^100000 + i): the library would work with 100000 bits for each part
+        let prec = 170;
+        let huge = Float::with_val(prec, 1) << 100_000u32;
+        let b = Complex::with_val(prec, (huge.clone(), 1));
+        let q = cdiv(&Complex::with_val(prec, 1), &b);
+        assert_eq!(*q.real(), Float::with_val(prec, huge.recip_ref()));
+        assert_eq!(q.imag().get_exp(), Some(-199_999));
+        assert!(q.imag().is_sign_negative());
+    }
+
+    #[test]
+    fn the_exponential_function_ends_beyond_the_exponents_that_are_kept() {
+        let prec = 128;
+        let (small, flagged) = underflowed(|| cexp(Complex::with_val(prec, (-1e9, 1))));
+        assert!(small.is_zero() && flagged);
+        let (large, flagged) = underflowed(|| cexp(Complex::with_val(prec, (1e9, 0))));
+        assert!(large.real().is_infinite() && flagged);
+        // (the size that made the library go on for ever: next to the end of its exponents)
+        let near_the_end = Float::with_val(prec, 0.5).ln() * Float::with_val(prec, i64::MAX);
+        let (gone, flagged) = underflowed(|| cexp(Complex::with_val(prec, (near_the_end, 2))));
+        assert!(gone.is_zero() && flagged);
+        let (usual, flagged) = underflowed(|| cexp(Complex::with_val(prec, (1, 0))));
+        assert!(!flagged && (usual.real().to_f64() - std::f64::consts::E).abs() < 1e-15);
+    }
+
+    #[test]
+    fn a_tiny_part_of_an_argument_does_not_take_the_memory() {
+        // sin(1 + i/2^(10^7)): the library works with as many bits as the parts are apart
+        let prec = 170;
+        let tiny = Float::with_val(prec, 1) >> 10_000_000u32;
+        let z = Complex::with_val(prec, (1, tiny));
+        let got = call("sin", &[z], prec).flatten().expect("a value");
+        assert_eq!(*got.real(), Float::with_val(prec, 1).sin());
+        assert!(got.imag().is_zero());
+        // (a part that is small, not out of reach, keeps its digits)
+        let small = Float::with_val(prec, 1) >> 1000u32;
+        let z = Complex::with_val(prec, (1, small.clone()));
+        let got = call("sin", &[z], prec).flatten().expect("a value");
+        let wanted = Float::with_val(prec, 1).cos() * small;
+        assert_eq!(got.imag().get_exp(), wanted.get_exp());
+    }
 }

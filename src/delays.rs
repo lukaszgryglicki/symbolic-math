@@ -370,10 +370,12 @@ impl Session {
             // the lag that is left until -180 degrees, from 0 to under a whole turn
             let mut left = Float::with_val(prec, &phase + &pi);
             let turn = Float::with_val(prec, &pi * 2u32);
-            while left < 0 {
+            // (by whole turns at once: a phase may be millions of them)
+            left -= Float::with_val(prec, &left / &turn).floor() * &turn;
+            if left < 0 {
                 left += &turn;
             }
-            while left >= turn {
+            if left >= turn {
                 left -= &turn;
             }
             // the delays T0 + k*turn/w at which a zero is on the axis there
@@ -433,10 +435,15 @@ impl Session {
             let mut margin =
                 (Float::with_val(prec, &phase - Float::with_val(prec, &w * &dead)) + &pi) * 180u32
                     / &pi;
-            while margin > 180 {
+            // (into the turn from -180 to 180 degrees, by whole turns at once: with a gain of
+            // 2^64 the delay turns the phase 10^17 times)
+            margin -= Float::with_val(prec, (Float::with_val(prec, &margin - 180u32)) / 360u32)
+                .ceil()
+                * 360u32;
+            if margin > 180 {
                 margin -= 360u32;
             }
-            while margin <= -180 {
+            if margin <= -180 {
                 margin += 360u32;
             }
             phase_margins.push((margin, w));
@@ -506,7 +513,10 @@ impl Session {
             before = now;
         }
         if all {
-            let stable = self.delay_unstable(&sys, &delay, who)? == 0;
+            // (a loop without any margin of phase has a pole on the axis: not stable, whatever
+            // side the rounding puts that pole on)
+            let stable = self.delay_unstable(&sys, &delay, who)? == 0
+                && !phase_margins.iter().any(|(margin, _)| margin.is_zero());
             let delays: Vec<Expr> = phase_margins
                 .iter()
                 .map(|(margin, w)| {
@@ -580,7 +590,12 @@ impl Session {
             den.extend(vec![Expr::zero(); zeros]);
             Sys { den, ..sys }.object()
         };
+        // (each sample of delay is one more pole at 0: a coefficient of the denominator)
+        let too_long = || format!("{who}: a delay of 100000 samples at most");
         if let Some(whole) = samples.as_i64().filter(|k| *k >= 0) {
+            if whole > 100_000 {
+                return Err(too_long());
+            }
             let mut args = vec![sys.object(), step.clone()];
             args.extend(method.cloned());
             let base = self.call("c2d", &args)?;
@@ -603,6 +618,10 @@ impl Session {
             ));
         }
         let whole = Float::with_val(prec, &dead / &h).ceil();
+        // (a count that is no number is too long as well)
+        if whole.is_nan() || whole > 100_000 {
+            return Err(too_long());
+        }
         let count = whole.to_f64() as usize;
         // the part of the last sample that the delay takes, above 0 and at most h
         let part = Float::with_val(prec, &dead - Float::with_val(prec, &h * (count - 1) as u64));

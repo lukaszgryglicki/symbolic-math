@@ -231,6 +231,31 @@ pub fn parse_decimal(s: &str) -> Option<Rat> {
     })
 }
 
+/// A decimal number whose power of ten is beyond what `parse_decimal` takes as an exact
+/// number (10^1000000), as the rounded number with `digits` digits that the program itself
+/// prints for such a size: 1.5e-6020600 is what N((2.0^10000000 + i)^(-2)) looks like, and
+/// what is printed can be read. `None`: no number, or one beyond the exponents that are kept.
+pub fn parse_rounded(s: &str, digits: u32) -> Option<Flt> {
+    let (mant, exp) = match s.find(['e', 'E']) {
+        Some(p) => (&s[..p], s[p + 1..].parse::<i64>().ok()?),
+        None => (s, 0),
+    };
+    let (ip, fp) = mant.split_once('.').unwrap_or((mant, ""));
+    if (ip.is_empty() && fp.is_empty()) || !ip.chars().chain(fp.chars()).all(|c| c.is_ascii_digit())
+    {
+        return None;
+    }
+    let n = Int::from_str_radix(&format!("{ip}{fp}"), 10).ok()?;
+    let e = i32::try_from(exp.checked_sub(i64::try_from(fp.len()).ok()?)?).ok()?;
+    let prec = crate::numeric::bits_for(digits.max(literal_digits(s))) + 64;
+    let power = rug::Float::with_val(prec, rug::ops::Pow::pow(rug::Float::with_val(prec, 10), e));
+    let value = rug::Float::with_val(prec, &n * &power);
+    (value.is_finite() && (!value.is_zero() || n.is_zero())).then(|| Flt {
+        v: Complex::with_val(prec, value),
+        digits: digits.max(literal_digits(s)),
+    })
+}
+
 /// Significant digits of a decimal literal.
 pub fn literal_digits(s: &str) -> u32 {
     let mant = s.split(['e', 'E']).next().unwrap_or(s);

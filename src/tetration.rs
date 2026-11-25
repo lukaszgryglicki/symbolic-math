@@ -137,7 +137,7 @@ pub fn simplify(name: &str, a: &Expr, b: &Expr) -> Option<Expr> {
                     (None, Some(n)) => Some((n, first)),
                     _ => None,
                 }
-                && n.abs() <= 16
+                && n.unsigned_abs() <= 16
                 && let Some(args) = inner.fn_args("slog")
                 && args[0] == *a
             {

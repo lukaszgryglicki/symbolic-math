@@ -1724,26 +1724,45 @@ pub fn eulerian(n: u32, k: u32) -> Integer {
 
 /// The smallest solution `(x, y)` with `y > 0` of `x^2 - d y^2 = 1`.
 pub fn pell(d: &Integer) -> Option<(Integer, Integer)> {
+    /// The longest period of a continued fraction that is followed: the solution has about
+    /// as many digits as the period has steps.
+    const PERIOD: usize = 100_000;
     if !d.is_positive() || is_square(d) {
         return None;
     }
+    // the continued fraction of sqrt(d), [a0; a1, a2, ...]: its period ends where the
+    // denominator is 1 again. (Its steps are small numbers; the convergents, which grow
+    // with every step, are made only when the period is known.)
     let a0 = d.sqrt_ref().complete();
     let (mut m, mut den, mut a) = (Integer::new(), Integer::from(1), a0.clone());
-    let (mut p_prev, mut p) = (Integer::from(1), a0.clone());
-    let (mut q_prev, mut q) = (Integer::new(), Integer::from(1));
-    for _ in 0..2_000_000 {
-        if Integer::from(p.square_ref()) - Integer::from(q.square_ref()) * d == 1 {
-            return Some((p, q));
+    let mut quotients: Vec<Integer> = Vec::new();
+    while den != 1 || quotients.is_empty() {
+        if quotients.len() == PERIOD {
+            return None;
         }
         m = Integer::from(&den * &a) - m;
         den = (d - Integer::from(m.square_ref())) / den;
         a = Integer::from(&a0 + &m) / &den;
-        let next_p = Integer::from(&a * &p) + &p_prev;
+        quotients.push(a.clone());
+    }
+    // the convergent before the end of a period solves x^2 - d y^2 = (-1)^period: with an
+    // odd period the one before the end of the second period is the solution
+    let period = quotients.len();
+    let last = if period.is_multiple_of(2) {
+        period - 1
+    } else {
+        2 * period - 1
+    };
+    let (mut p_prev, mut p) = (Integer::from(1), a0);
+    let (mut q_prev, mut q) = (Integer::new(), Integer::from(1));
+    for step in 0..last {
+        let a = &quotients[step % period];
+        let next_p = Integer::from(a * &p) + &p_prev;
         p_prev = mem::replace(&mut p, next_p);
-        let next_q = Integer::from(&a * &q) + &q_prev;
+        let next_q = Integer::from(a * &q) + &q_prev;
         q_prev = mem::replace(&mut q, next_q);
     }
-    None
+    Some((p, q))
 }
 
 /// The greedy expansion of `x` into a whole part and distinct unit fractions.

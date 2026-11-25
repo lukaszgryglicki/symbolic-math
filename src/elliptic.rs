@@ -2,6 +2,7 @@
 //! functions.
 
 use crate::hyper::{adaptive, hyp2f1};
+use crate::numeric::SafeExp;
 use crate::special::{Out, expo, pi, size};
 use rug::{Complex, Float};
 
@@ -273,7 +274,7 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
         let w = wp + 16;
         let qq = Complex::with_val(w, q);
         let q2 = Complex::with_val(w, qq.square_ref());
-        let e1 = Complex::with_val(w, z).mul_i(false).exp();
+        let e1 = Complex::with_val(w, z).mul_i(false).cexp();
         let f1 = Complex::with_val(w, e1.recip_ref());
         let (e2, f2) = (
             Complex::with_val(w, e1.square_ref()),
@@ -292,6 +293,8 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
         let mut sum = Complex::new(w);
         let mut top = i64::MIN;
         let mut small = 0;
+        // (the terms may run out before the series has its digits: then it has no value)
+        let mut done = false;
         for n in 0..u32::try_from(crate::settings::terms(2_000_000)).unwrap_or(u32::MAX) {
             let wave = if kind == 1 {
                 Complex::with_val(w, &e - &f)
@@ -310,6 +313,7 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
             if !sum.is_zero() && expo(&term) < expo(&sum) - i64::from(w) - 8 {
                 small += 1;
                 if small >= 3 {
+                    done = true;
                     break;
                 }
             } else {
@@ -320,6 +324,9 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
             e *= &e2;
             f *= &f2;
         }
+        if !done {
+            return None;
+        }
         let lost = if sum.is_zero() {
             i64::from(w)
         } else {
@@ -327,11 +334,11 @@ pub(crate) fn theta(kind: u8, z: &Complex, q: &Complex, p: u32) -> Out {
         };
         let value = match kind {
             1 => {
-                let quarter = (crate::numeric::unsigned_zero(qq).ln() / 4u32).exp();
+                let quarter = (crate::numeric::unsigned_zero(qq).ln() / 4u32).cexp();
                 (sum * quarter).mul_i(true)
             }
             2 => {
-                let quarter = (crate::numeric::unsigned_zero(qq).ln() / 4u32).exp();
+                let quarter = (crate::numeric::unsigned_zero(qq).ln() / 4u32).cexp();
                 sum * quarter
             }
             _ => sum,
@@ -352,7 +359,7 @@ fn nome(m: &Complex, wp: u32) -> Out {
     let (Some(k), Some(k1)) = (complete_k(m, wp)?, complete_k(&one_m, wp)?) else {
         return Some(None);
     };
-    Some(Some((-(k1 / k) * pi(wp)).exp()))
+    Some(Some((-(k1 / k) * pi(wp)).cexp()))
 }
 
 /// Jacobi's sn (kind 0), cn (1) and dn (2) of `u` with the parameter `m`.
@@ -378,6 +385,21 @@ fn jacobi(kind: u8, u: &Complex, m: &Complex, p: u32) -> Out {
             },
         )));
     }
+    // a parameter beyond the unit circle is turned round: with k = sqrt(m), sn(u | m) is
+    // sn(k u | 1/m)/k, cn(u | m) is dn(k u | 1/m) and dn(u | m) is cn(k u | 1/m). (The theta
+    // functions of a large m lose more digits than any precision has.)
+    if size(m) > 1.0 {
+        let k = Complex::with_val(wp, m).sqrt();
+        let turned = Complex::with_val(wp, &uu * &k);
+        let inverse = Complex::with_val(wp, m.recip_ref());
+        let other = match kind {
+            0 => 0,
+            1 => 2,
+            _ => 1,
+        };
+        let value = jacobi(other, &turned, &inverse, wp)?;
+        return Some(value.map(|v| Complex::with_val(p, if kind == 0 { v / k } else { v })));
+    }
     let q = nome(m, wp)??;
     if size(&q) >= 0.999_999 {
         return None;
@@ -386,7 +408,19 @@ fn jacobi(kind: u8, u: &Complex, m: &Complex, p: u32) -> Out {
     let t2 = theta(2, &zero, &q, wp)??;
     let t3 = theta(3, &zero, &q, wp)??;
     let t4 = theta(4, &zero, &q, wp)??;
-    let zeta = uu / Complex::with_val(wp, t3.square_ref());
+    let mut zeta = uu / Complex::with_val(wp, t3.square_ref());
+    // The whole periods pi tau (q = e^(i pi tau)) are taken off the argument. A step of pi tau
+    // leaves sn as it is and turns the sign of cn and dn; far from the real line each theta
+    // by itself is beyond every precision, though their quotients are not.
+    let period = crate::numeric::unsigned_zero(q.clone()).ln().mul_i(true);
+    let mut turned = false;
+    if period.imag().is_normal() {
+        let turns = Float::with_val(wp, zeta.imag() / period.imag()).round();
+        if turns.is_normal() {
+            turned = turns.to_integer().is_some_and(|n| n.is_odd());
+            zeta -= Complex::with_val(wp, &period * &turns);
+        }
+    }
     let low = theta(4, &zeta, &q, wp)??;
     if low.is_zero() {
         return Some(None);
@@ -396,6 +430,7 @@ fn jacobi(kind: u8, u: &Complex, m: &Complex, p: u32) -> Out {
         1 => theta(2, &zeta, &q, wp)?? * t4 / (t2 * low),
         _ => theta(3, &zeta, &q, wp)?? * t4 / (t3 * low),
     };
+    let value = if turned && kind != 0 { -value } else { value };
     Some(Some(Complex::with_val(p, value)))
 }
 

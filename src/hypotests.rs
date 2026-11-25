@@ -950,12 +950,22 @@ impl Session {
                     .fold(fl(0), |s, (r, v)| s + fl(&r[i] * v))
             })
             .collect();
+        // (a coefficient that is smaller than the sizes of its terms by nearly all the bits is
+        // what the rounding left of a zero: values that lie on a line through 0 have it)
         let beta: Vec<Float> = inverse
             .iter()
             .map(|r| {
-                r.iter()
+                let (sum, sizes) = r
+                    .iter()
                     .zip(&moments)
-                    .fold(fl(0), |s, (p, q)| s + fl(p * q))
+                    .fold((fl(0), fl(0)), |(s, t), (p, q)| {
+                        let term = fl(p * q);
+                        (s + &term, t + term.abs())
+                    });
+                match fl(sum.abs_ref()) <= fl(&sizes >> (bits() - 24)) {
+                    true => fl(0),
+                    false => sum,
+                }
             })
             .collect();
         let left = design.iter().zip(&y).fold(fl(0), |s, (r, v)| {
@@ -971,6 +981,11 @@ impl Session {
             return Err("fitlm: the values that are to be explained do not differ (regress gives the coefficients)".into());
         }
         let exact_fit = unit <= fl(fl(&total + &size) >> (bits() - 16)) || unit.is_nan();
+        // (a fit that leaves nothing leaves 0, not the rounding of its sums)
+        let (left, unit) = match exact_fit && !unit.is_nan() {
+            true => (fl(0), fl(0)),
+            false => (left, unit),
+        };
         let errors: Vec<Float> = (0..terms)
             .map(|i| fl(&unit * &inverse[i][i]).max(&fl(0)).sqrt())
             .collect();

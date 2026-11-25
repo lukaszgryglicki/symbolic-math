@@ -287,7 +287,7 @@ fn code(e: &Expr, lang: Lang) -> Result<(String, u8), String> {
                     ),
                     MUL,
                 ),
-                (_, Some(n)) if n < 0 => {
+                (_, Some(n)) if n < 0 && n > i64::MIN => {
                     let turned = crate::canon::pow((**base).clone(), Expr::int(-n));
                     (
                         format!(

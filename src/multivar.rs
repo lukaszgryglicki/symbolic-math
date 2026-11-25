@@ -1371,7 +1371,16 @@ fn nnmf(e: &Expr, rank: &Expr) -> Res {
     };
     let done = fl(&size * fl(Float::i_pow_u(10, numeric::digits() + 4)).recip());
     let mut last = misfit(&w, &h);
+    // the largest entry of the two factors, and the largest change of one in a round
+    let moved = |before: &(Mat, Mat), w: &Mat, h: &Mat| -> (Float, Float) {
+        let pairs = (before.0.iter().flatten().zip(w.iter().flatten()))
+            .chain(before.1.iter().flatten().zip(h.iter().flatten()));
+        pairs.fold((fl(0), fl(0)), |(top, step), (old, new)| {
+            (top.max(&fl(new.abs_ref())), step.max(&fl(old - new).abs()))
+        })
+    };
     for _ in 0..3000 {
+        let before = (w.clone(), h.clone());
         // one factor at a time, the others held (least squares cut off at zero)
         for j in 0..k {
             let column: Vec<Float> = w.iter().map(|r| r[j].clone()).collect();
@@ -1408,9 +1417,11 @@ fn nnmf(e: &Expr, rank: &Expr) -> Res {
                 }
             }
         }
+        // (the misfit stands still long before the factors do: next to its least value it
+        // changes with the square of what they still move)
         let now = misfit(&w, &h);
-        let gained = fl(&last - &now);
-        let settled = now <= done || gained <= fl(&now * (fl(1) >> (bits() - 16)));
+        let (top, step) = moved(&before, &w, &h);
+        let settled = now <= done || step <= fl(&top * (fl(1) >> (bits() - 16)));
         last = now;
         if settled {
             break;
